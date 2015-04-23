@@ -50,11 +50,13 @@ import org.robovm.apple.audiotoolbox.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /**
+     * @throws OSStatusException 
      * @since Available in iOS 4.0 and later.
      */
-    public static CMMuxedFormatDescription create(CMMuxedStreamType muxType, CMVideoFormatDescriptionExtension extensions) {
+    public static CMMuxedFormatDescription create(CMMuxedStreamType muxType, CMVideoFormatDescriptionExtension extensions) throws OSStatusException {
         CMMuxedFormatDescription.CMMuxedFormatDescriptionPtr ptr = new CMMuxedFormatDescription.CMMuxedFormatDescriptionPtr();
-        create(null, muxType, extensions, ptr);
+        OSStatus status = create0(null, muxType, extensions, ptr);
+        OSStatusException.throwIfNecessary(status);
         return ptr.get();
     }
     
@@ -66,6 +68,6 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMMuxedFormatDescriptionCreate", optional=true)
-    private static native OSStatus create(CFAllocator allocator, CMMuxedStreamType muxType, CMVideoFormatDescriptionExtension extensions, CMMuxedFormatDescription.CMMuxedFormatDescriptionPtr outDesc);
+    private static native OSStatus create0(CFAllocator allocator, CMMuxedStreamType muxType, CMVideoFormatDescriptionExtension extensions, CMMuxedFormatDescription.CMMuxedFormatDescriptionPtr outDesc);
     /*</methods>*/
 }

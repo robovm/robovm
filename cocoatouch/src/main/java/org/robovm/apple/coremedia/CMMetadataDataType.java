@@ -76,10 +76,20 @@ import org.robovm.apple.audiotoolbox.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /**
+     * @throws OSStatusException 
      * @since Available in iOS 8.0 and later.
      */
-    public OSStatus register(String description, List<String> conformingDataTypes) {
-        return registerDataType(dataType, description, conformingDataTypes);
+    public void register(String description, List<String> conformingDataTypes) throws OSStatusException {
+        OSStatus status = registerDataType0(dataType, description, conformingDataTypes);
+        OSStatusException.throwIfNecessary(status);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 8.0 and later.
+     */
+    public static void registerDataType(String dataType, String description, List<String> conformingDataTypes) throws OSStatusException {
+        OSStatus status = registerDataType0(dataType, description, conformingDataTypes);
+        OSStatusException.throwIfNecessary(status);
     }
     /**
      * @since Available in iOS 8.0 and later.
@@ -122,7 +132,7 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 8.0 and later.
      */
     @Bridge(symbol="CMMetadataDataTypeRegistryRegisterDataType", optional=true)
-    public static native OSStatus registerDataType(String dataType, String description, @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String> conformingDataTypes);
+    protected static native OSStatus registerDataType0(String dataType, String description, @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String> conformingDataTypes);
     /**
      * @since Available in iOS 8.0 and later.
      */

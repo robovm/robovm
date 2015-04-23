@@ -40,14 +40,12 @@ import org.robovm.apple.audiotoolbox.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/CMTimebaseError/*</name>*/ implements ValuedEnum {
-    No(0L),
+public enum /*<name>*/CMClockErrorCode/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    MissingRequiredParameter(-12748L),
-    InvalidParameter(-12749L),
-    AllocationFailed(-12750L),
-    TimerIntervalTooShort(-12751L),
-    ReadOnly(-12757L);
+    MissingRequiredParameter(-12745L),
+    InvalidParameter(-12746L),
+    AllocationFailed(-12747L),
+    UnsupportedOperation(-12756L);
     /*</values>*/
 
     /*<bind>*/
@@ -57,15 +55,15 @@ public enum /*<name>*/CMTimebaseError/*</name>*/ implements ValuedEnum {
 
     private final long n;
 
-    private /*<name>*/CMTimebaseError/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/CMClockErrorCode/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/CMTimebaseError/*</name>*/ valueOf(long n) {
-        for (/*<name>*/CMTimebaseError/*</name>*/ v : values()) {
+    public static /*<name>*/CMClockErrorCode/*</name>*/ valueOf(long n) {
+        for (/*<name>*/CMClockErrorCode/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/CMTimebaseError/*</name>*/.class.getName());
+            + /*<name>*/CMClockErrorCode/*</name>*/.class.getName());
     }
 }

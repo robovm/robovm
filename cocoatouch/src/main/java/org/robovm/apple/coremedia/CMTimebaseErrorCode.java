@@ -40,13 +40,13 @@ import org.robovm.apple.audiotoolbox.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/CMSimpleQueueError/*</name>*/ implements ValuedEnum {
-    No(0L),
+public enum /*<name>*/CMTimebaseErrorCode/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    AllocationFailed(-12770L),
-    RequiredParameterMissing(-12771L),
-    ParameterOutOfRange(-12772L),
-    QueueIsFull(-12773L);
+    MissingRequiredParameter(-12748L),
+    InvalidParameter(-12749L),
+    AllocationFailed(-12750L),
+    TimerIntervalTooShort(-12751L),
+    ReadOnly(-12757L);
     /*</values>*/
 
     /*<bind>*/
@@ -56,15 +56,15 @@ public enum /*<name>*/CMSimpleQueueError/*</name>*/ implements ValuedEnum {
 
     private final long n;
 
-    private /*<name>*/CMSimpleQueueError/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/CMTimebaseErrorCode/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/CMSimpleQueueError/*</name>*/ valueOf(long n) {
-        for (/*<name>*/CMSimpleQueueError/*</name>*/ v : values()) {
+    public static /*<name>*/CMTimebaseErrorCode/*</name>*/ valueOf(long n) {
+        for (/*<name>*/CMTimebaseErrorCode/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/CMSimpleQueueError/*</name>*/.class.getName());
+            + /*<name>*/CMTimebaseErrorCode/*</name>*/.class.getName());
     }
 }

@@ -66,9 +66,10 @@ import org.robovm.apple.corefoundation.*;
     }
     
     /**
+     * @throws OSStatusException 
      * @since Available in iOS 2.0 and later.
      */
-    public static SecTrust create(SecCertificate certificate, SecPolicy policy) {
+    public static SecTrust create(SecCertificate certificate, SecPolicy policy) throws OSStatusException {
         if (certificate == null) {
             throw new NullPointerException("certificate");
         }
@@ -76,13 +77,15 @@ import org.robovm.apple.corefoundation.*;
             throw new NullPointerException("policy");
         }
         SecTrust.SecTrustPtr ptr = new SecTrust.SecTrustPtr();
-        create(certificate, policy, ptr);
+        OSStatus status = create0(certificate, policy, ptr);
+        OSStatusException.throwIfNecessary(status);
         return ptr.get();
     }
     /**
+     * @throws OSStatusException 
      * @since Available in iOS 2.0 and later.
      */
-    public static SecTrust create(List<SecCertificate> certificates, List<SecPolicy> policies) {
+    public static SecTrust create(List<SecCertificate> certificates, List<SecPolicy> policies) throws OSStatusException {
         if (certificates == null) {
             throw new NullPointerException("certificates");
         }
@@ -90,85 +93,144 @@ import org.robovm.apple.corefoundation.*;
             throw new NullPointerException("policies");
         }
         SecTrust.SecTrustPtr ptr = new SecTrust.SecTrustPtr();
-        create(CFArray.create(certificates), CFArray.create(policies), ptr);
+        OSStatus status = create0(CFArray.create(certificates), CFArray.create(policies), ptr);
+        OSStatusException.throwIfNecessary(status);
         return ptr.get();
     }
     /**
+     * @throws OSStatusException 
      * @since Available in iOS 6.0 and later.
      */
-    public OSStatus setPolicy(SecPolicy policy) {
-        return setPolicies(policy);
+    public void setPolicy(SecPolicy policy) throws OSStatusException {
+        OSStatus status = setPolicies0(policy);
+        OSStatusException.throwIfNecessary(status);
     }
     /**
+     * @throws OSStatusException 
      * @since Available in iOS 6.0 and later.
      */
-    public OSStatus setPolicies(List<SecPolicy> policies) {
-        return setPolicies(CFArray.create(policies));
+    public void setPolicies(List<SecPolicy> policies) throws OSStatusException {
+        OSStatus status = setPolicies0(CFArray.create(policies));
+        OSStatusException.throwIfNecessary(status);
     }
     /**
+     * @throws OSStatusException 
      * @since Available in iOS 7.0 and later.
      */
-    public List<SecPolicy> getPolicies() {
+    public List<SecPolicy> getPolicies() throws OSStatusException {
         CFArray.CFArrayPtr ptr = new CFArray.CFArrayPtr();
-        getPolicies(ptr);
+        OSStatus status = getPolicies0(ptr);
+        OSStatusException.throwIfNecessary(status);
         if (ptr.get() != null) {
             return ptr.get().toList(SecPolicy.class);
         }
         return null;
     }
     /**
+     * @throws OSStatusException 
      * @since Available in iOS 7.0 and later.
      */
-    public boolean isNetworkFetchAllowed() {
+    public void setNetworkFetchAllowed(boolean allowFetch) throws OSStatusException {
+        OSStatus status = setNetworkFetchAllowed0(allowFetch);
+        OSStatusException.throwIfNecessary(status);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 7.0 and later.
+     */
+    public boolean isNetworkFetchAllowed() throws OSStatusException {
         BooleanPtr ptr = new BooleanPtr();
-        isNetworkFetchAllowed(ptr);
+        OSStatus status = isNetworkFetchAllowed0(ptr);
+        OSStatusException.throwIfNecessary(status);
         return ptr.get();
     }
     /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public void setAnchorCertificates(List<SecCertificate> anchorCertificates) throws OSStatusException {
+        OSStatus status = setAnchorCertificates0(anchorCertificates);
+        OSStatusException.throwIfNecessary(status);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public void setAnchorCertificatesOnly(boolean anchorCertificatesOnly) throws OSStatusException {
+        OSStatus status = setAnchorCertificatesOnly0(anchorCertificatesOnly);
+        OSStatusException.throwIfNecessary(status);
+    }
+    /**
+     * @throws OSStatusException 
      * @since Available in iOS 7.0 and later.
      */
-    public List<SecCertificate> getCustomAnchorCertificates() {
+    public List<SecCertificate> getCustomAnchorCertificates() throws OSStatusException {
         CFArray.CFArrayPtr ptr = new CFArray.CFArrayPtr();
-        getCustomAnchorCertificates(ptr);
+        OSStatus status = getCustomAnchorCertificates0(ptr);
+        OSStatusException.throwIfNecessary(status);
         if (ptr.get() != null) {
             return ptr.get().toList(SecCertificate.class);
         }
         return null;
     }
     /**
+     * @throws OSStatusException 
      * @since Available in iOS 2.0 and later.
      */
-    public SecTrustResultType evaluate() {
+    public void setVerifyDate(NSDate verifyDate) throws OSStatusException {
+        OSStatus status = setVerifyDate0(verifyDate);
+        OSStatusException.throwIfNecessary(status);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public SecTrustResultType evaluate() throws OSStatusException {
         IntPtr ptr = new IntPtr();
-        evaluate(ptr);
+        OSStatus status = evaluate0(ptr);
+        OSStatusException.throwIfNecessary(status);
         return SecTrustResultType.valueOf(ptr.get());
     }
     /**
+     * @throws OSStatusException 
      * @since Available in iOS 7.0 and later.
      */
-    public OSStatus evaluateAsync(DispatchQueue queue, VoidBlock2<SecTrust, SecTrustResultType> result) {
+    public void evaluateAsync(DispatchQueue queue, VoidBlock2<SecTrust, SecTrustResultType> result) throws OSStatusException {
+        OSStatus status = evaluateAsync0(queue, new FunctionPtr(cbEvaluate));
+        OSStatusException.throwIfNecessary(status);
         evaluateCallback = result;
-        return evaluateAsync(queue, new FunctionPtr(cbEvaluate));
     }
     /**
+     * @throws OSStatusException 
      * @since Available in iOS 7.0 and later.
      */
-    public SecTrustResultType getTrustResult() {
+    public SecTrustResultType getTrustResult() throws OSStatusException {
         IntPtr ptr = new IntPtr();
-        getTrustResult(ptr);
+        OSStatus status = getTrustResult0(ptr);
+        OSStatusException.throwIfNecessary(status);
         return SecTrustResultType.valueOf(ptr.get());
     }
     /**
+     * @throws OSStatusException 
      * @since Available in iOS 7.0 and later.
      */
-    public OSStatus setOCSPResponse(NSData responseData) {
-        return setOCSPResponse(responseData.as(CFData.class));
+    public void setOCSPResponse(NSData responseData) throws OSStatusException {
+        if (responseData == null) {
+            throw new NullPointerException("responseData");
+        }
+        OSStatus status = setOCSPResponse0(responseData.as(CFData.class));
+        OSStatusException.throwIfNecessary(status);
     }
     /**
-    * @since Available in iOS 7.0 and later.
+    * @throws OSStatusException 
+     * @since Available in iOS 7.0 and later.
     */
-    public OSStatus setOCSPResponse(List<NSData> responseData) {
-        return setOCSPResponse(CFArray.create(responseData));
+    public void setOCSPResponse(List<NSData> responseData) throws OSStatusException {
+        if (responseData == null) {
+            throw new NullPointerException("responseData");
+        }
+        OSStatus status = setOCSPResponse0(CFArray.create(responseData));
+        OSStatusException.throwIfNecessary(status);
     }
     /*<methods>*/
     /**
@@ -180,47 +242,47 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="SecTrustCreateWithCertificates", optional=true)
-    protected static native OSStatus create(CFType certificates, CFType policies, SecTrust.SecTrustPtr trust);
+    protected static native OSStatus create0(CFType certificates, CFType policies, SecTrust.SecTrustPtr trust);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="SecTrustSetPolicies", optional=true)
-    protected native OSStatus setPolicies(CFType policies);
+    protected native OSStatus setPolicies0(CFType policies);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Bridge(symbol="SecTrustCopyPolicies", optional=true)
-    protected native OSStatus getPolicies(CFArray.CFArrayPtr policies);
+    protected native OSStatus getPolicies0(CFArray.CFArrayPtr policies);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Bridge(symbol="SecTrustSetNetworkFetchAllowed", optional=true)
-    public native OSStatus setNetworkFetchAllowed(boolean allowFetch);
+    protected native OSStatus setNetworkFetchAllowed0(boolean allowFetch);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Bridge(symbol="SecTrustGetNetworkFetchAllowed", optional=true)
-    protected native OSStatus isNetworkFetchAllowed(BooleanPtr allowFetch);
+    protected native OSStatus isNetworkFetchAllowed0(BooleanPtr allowFetch);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="SecTrustSetAnchorCertificates", optional=true)
-    public native OSStatus setAnchorCertificates(@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<SecCertificate> anchorCertificates);
+    protected native OSStatus setAnchorCertificates0(@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<SecCertificate> anchorCertificates);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="SecTrustSetAnchorCertificatesOnly", optional=true)
-    public native OSStatus setAnchorCertificatesOnly(boolean anchorCertificatesOnly);
+    protected native OSStatus setAnchorCertificatesOnly0(boolean anchorCertificatesOnly);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Bridge(symbol="SecTrustCopyCustomAnchorCertificates", optional=true)
-    protected native OSStatus getCustomAnchorCertificates(CFArray.CFArrayPtr anchors);
+    protected native OSStatus getCustomAnchorCertificates0(CFArray.CFArrayPtr anchors);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="SecTrustSetVerifyDate", optional=true)
-    public native OSStatus setVerifyDate(NSDate verifyDate);
+    protected native OSStatus setVerifyDate0(NSDate verifyDate);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -230,17 +292,17 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="SecTrustEvaluate", optional=true)
-    protected native OSStatus evaluate(IntPtr result);
+    protected native OSStatus evaluate0(IntPtr result);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Bridge(symbol="SecTrustEvaluateAsync", optional=true)
-    protected native OSStatus evaluateAsync(DispatchQueue queue, FunctionPtr result);
+    protected native OSStatus evaluateAsync0(DispatchQueue queue, FunctionPtr result);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Bridge(symbol="SecTrustGetTrustResult", optional=true)
-    protected native OSStatus getTrustResult(IntPtr result);
+    protected native OSStatus getTrustResult0(IntPtr result);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -280,6 +342,6 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 7.0 and later.
      */
     @Bridge(symbol="SecTrustSetOCSPResponse", optional=true)
-    protected native OSStatus setOCSPResponse(CFType responseData);
+    protected native OSStatus setOCSPResponse0(CFType responseData);
     /*</methods>*/
 }

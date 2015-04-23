@@ -49,25 +49,34 @@ import org.robovm.apple.audiotoolbox.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    public static CMAudioFormatDescription create(AudioStreamBasicDescription asbd, @MachineSizedUInt long layoutSize, AudioChannelLayout layout, @MachineSizedUInt long magicCookieSize, VoidPtr magicCookie, NSDictionary<NSString, ?> extensions) {
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 4.0 and later.
+     */
+    public static CMAudioFormatDescription create(AudioStreamBasicDescription asbd, @MachineSizedUInt long layoutSize, AudioChannelLayout layout, @MachineSizedUInt long magicCookieSize, VoidPtr magicCookie, NSDictionary<NSString, ?> extensions) throws OSStatusException {
         CMAudioFormatDescriptionPtr ptr = new CMAudioFormatDescriptionPtr();
-        create(null, asbd, layoutSize, layout, magicCookieSize, magicCookie, extensions, ptr);
+        OSStatus status = create0(null, asbd, layoutSize, layout, magicCookieSize, magicCookie, extensions, ptr);
+        OSStatusException.throwIfNecessary(status);
         return ptr.get();
     }
     /**
+     * @throws OSStatusException 
      * @since Available in iOS 8.0 and later.
      */
-    public static CMAudioFormatDescription createFromBigEndianSoundDescriptionData(BytePtr soundDescriptionData, @MachineSizedUInt long soundDescriptionSize, CMSoundDescriptionFlavor soundDescriptionFlavor) {
+    public static CMAudioFormatDescription createFromBigEndianSoundDescriptionData(BytePtr soundDescriptionData, @MachineSizedUInt long soundDescriptionSize, CMSoundDescriptionFlavor soundDescriptionFlavor) throws OSStatusException {
         CMAudioFormatDescription.CMAudioFormatDescriptionPtr ptr = new CMAudioFormatDescription.CMAudioFormatDescriptionPtr();
-        createFromBigEndianSoundDescriptionData(null, soundDescriptionData, soundDescriptionSize, soundDescriptionFlavor, ptr);
+        OSStatus status = createFromBigEndianSoundDescriptionData0(null, soundDescriptionData, soundDescriptionSize, soundDescriptionFlavor, ptr);
+        OSStatusException.throwIfNecessary(status);
         return ptr.get();
     }
     /**
+     * @throws OSStatusException 
      * @since Available in iOS 8.0 and later.
      */
-    public static CMAudioFormatDescription createFromBigEndianSoundDescriptionBlockBuffer(CMBlockBuffer soundDescriptionBlockBuffer, CMSoundDescriptionFlavor soundDescriptionFlavor) {
+    public static CMAudioFormatDescription createFromBigEndianSoundDescriptionBlockBuffer(CMBlockBuffer soundDescriptionBlockBuffer, CMSoundDescriptionFlavor soundDescriptionFlavor) throws OSStatusException {
         CMAudioFormatDescription.CMAudioFormatDescriptionPtr ptr = new CMAudioFormatDescription.CMAudioFormatDescriptionPtr();
-        createFromBigEndianSoundDescriptionBlockBuffer(null, soundDescriptionBlockBuffer, soundDescriptionFlavor, ptr);
+        OSStatus status = createFromBigEndianSoundDescriptionBlockBuffer0(null, soundDescriptionBlockBuffer, soundDescriptionFlavor, ptr);
+        OSStatusException.throwIfNecessary(status);
         return ptr.get();
     }    
     
@@ -81,64 +90,68 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 4.0 and later.
      */
     public VoidPtr getMagicCookie() {
-        return getMagicCookie(null);
+        return getMagicCookie0(null);
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     public @MachineSizedUInt long getMagicCookieSize() {
         MachineSizedUIntPtr ptr = new MachineSizedUIntPtr();
-        getMagicCookie(ptr);
+        getMagicCookie0(ptr);
         return ptr.get();
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     public AudioChannelLayout getChannelLayout() {
-        return getChannelLayout(null);
+        return getChannelLayout0(null);
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     public @MachineSizedUInt long getChannelLayoutSize() {
         MachineSizedUIntPtr ptr = new MachineSizedUIntPtr();
-        getChannelLayout(ptr);
+        getChannelLayout0(ptr);
         return ptr.get();
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     public AudioFormatListItem getFormatList() {
-        return getFormatList(null);
+        return getFormatList0(null);
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     public @MachineSizedUInt long getFormatListSize() {
         MachineSizedUIntPtr ptr = new MachineSizedUIntPtr();
-        getFormatList(ptr);
+        getFormatList0(ptr);
         return ptr.get();
     }
     /**
+     * @throws OSStatusException 
      * @since Available in iOS 4.0 and later.
      */
-    public static CMAudioFormatDescription createSummary(List<CMAudioFormatDescription> formatDescriptionArray) {
+    public static CMAudioFormatDescription createSummary(List<CMAudioFormatDescription> formatDescriptionArray) throws OSStatusException {
         CMAudioFormatDescriptionPtr ptr = new CMAudioFormatDescriptionPtr();
-        createSummary(null, formatDescriptionArray, 0, ptr);
+        OSStatus status = createSummary0(null, formatDescriptionArray, 0, ptr);
+        OSStatusException.throwIfNecessary(status);
         return ptr.get();
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     public boolean equalsTo(CMAudioFormatDescription desc2, CMAudioFormatDescriptionMask equalityMask) {
-        return equalsTo(desc2, equalityMask, null);
+        return equalsTo0(desc2, equalityMask, null);
     }
     /**
+     * @throws OSStatusException 
      * @since Available in iOS 8.0 and later.
      */
-    public CMBlockBuffer copyAsBigEndianSoundDescriptionBlockBuffer(CMAudioFormatDescription audioFormatDescription, CMSoundDescriptionFlavor soundDescriptionFlavor) {
+    public CMBlockBuffer copyAsBigEndianSoundDescriptionBlockBuffer(CMAudioFormatDescription audioFormatDescription, CMSoundDescriptionFlavor soundDescriptionFlavor) throws OSStatusException {
         CMBlockBuffer.CMBlockBufferPtr ptr = new CMBlockBuffer.CMBlockBufferPtr();
-        copyAsBigEndianSoundDescriptionBlockBuffer(null, this, soundDescriptionFlavor, ptr);
+        OSStatus status = copyAsBigEndianSoundDescriptionBlockBuffer0(null, this, soundDescriptionFlavor, ptr);
+        OSStatusException.throwIfNecessary(status);
         return ptr.get();
     }
 
@@ -147,7 +160,7 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMAudioFormatDescriptionCreate", optional=true)
-    private static native OSStatus create(CFAllocator allocator, AudioStreamBasicDescription asbd, @MachineSizedUInt long layoutSize, AudioChannelLayout layout, @MachineSizedUInt long magicCookieSize, VoidPtr magicCookie, NSDictionary<NSString, ?> extensions, CMAudioFormatDescription.CMAudioFormatDescriptionPtr outDesc);
+    protected static native OSStatus create0(CFAllocator allocator, AudioStreamBasicDescription asbd, @MachineSizedUInt long layoutSize, AudioChannelLayout layout, @MachineSizedUInt long magicCookieSize, VoidPtr magicCookie, NSDictionary<NSString, ?> extensions, CMAudioFormatDescription.CMAudioFormatDescriptionPtr outDesc);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -157,17 +170,17 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMAudioFormatDescriptionGetMagicCookie", optional=true)
-    private native VoidPtr getMagicCookie(MachineSizedUIntPtr cookieSizeOut);
+    private native VoidPtr getMagicCookie0(MachineSizedUIntPtr cookieSizeOut);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMAudioFormatDescriptionGetChannelLayout", optional=true)
-    private native AudioChannelLayout getChannelLayout(MachineSizedUIntPtr layoutSize);
+    private native AudioChannelLayout getChannelLayout0(MachineSizedUIntPtr layoutSize);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMAudioFormatDescriptionGetFormatList", optional=true)
-    private native AudioFormatListItem getFormatList(MachineSizedUIntPtr formatListSize);
+    private native AudioFormatListItem getFormatList0(MachineSizedUIntPtr formatListSize);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -182,26 +195,26 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMAudioFormatDescriptionCreateSummary", optional=true)
-    private static native OSStatus createSummary(CFAllocator allocator, @org.robovm.rt.bro.annotation.Marshaler(CFType.AsListMarshaler.class) List<CMAudioFormatDescription> formatDescriptionArray, int flags, CMAudioFormatDescription.CMAudioFormatDescriptionPtr summaryFormatDescriptionOut);
+    private static native OSStatus createSummary0(CFAllocator allocator, @org.robovm.rt.bro.annotation.Marshaler(CFType.AsListMarshaler.class) List<CMAudioFormatDescription> formatDescriptionArray, int flags, CMAudioFormatDescription.CMAudioFormatDescriptionPtr summaryFormatDescriptionOut);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMAudioFormatDescriptionEqual", optional=true)
-    private native boolean equalsTo(CMAudioFormatDescription desc2, CMAudioFormatDescriptionMask equalityMask, IntPtr equalityMaskOut);
+    private native boolean equalsTo0(CMAudioFormatDescription desc2, CMAudioFormatDescriptionMask equalityMask, IntPtr equalityMaskOut);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Bridge(symbol="CMAudioFormatDescriptionCreateFromBigEndianSoundDescriptionData", optional=true)
-    private static native OSStatus createFromBigEndianSoundDescriptionData(CFAllocator allocator, BytePtr soundDescriptionData, @MachineSizedUInt long soundDescriptionSize, CMSoundDescriptionFlavor soundDescriptionFlavor, CMAudioFormatDescription.CMAudioFormatDescriptionPtr audioFormatDescriptionOut);
+    private static native OSStatus createFromBigEndianSoundDescriptionData0(CFAllocator allocator, BytePtr soundDescriptionData, @MachineSizedUInt long soundDescriptionSize, CMSoundDescriptionFlavor soundDescriptionFlavor, CMAudioFormatDescription.CMAudioFormatDescriptionPtr audioFormatDescriptionOut);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Bridge(symbol="CMAudioFormatDescriptionCreateFromBigEndianSoundDescriptionBlockBuffer", optional=true)
-    private static native OSStatus createFromBigEndianSoundDescriptionBlockBuffer(CFAllocator allocator, CMBlockBuffer soundDescriptionBlockBuffer, CMSoundDescriptionFlavor soundDescriptionFlavor, CMAudioFormatDescription.CMAudioFormatDescriptionPtr audioFormatDescriptionOut);
+    private static native OSStatus createFromBigEndianSoundDescriptionBlockBuffer0(CFAllocator allocator, CMBlockBuffer soundDescriptionBlockBuffer, CMSoundDescriptionFlavor soundDescriptionFlavor, CMAudioFormatDescription.CMAudioFormatDescriptionPtr audioFormatDescriptionOut);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Bridge(symbol="CMAudioFormatDescriptionCopyAsBigEndianSoundDescriptionBlockBuffer", optional=true)
-    private static native OSStatus copyAsBigEndianSoundDescriptionBlockBuffer(CFAllocator allocator, CMAudioFormatDescription audioFormatDescription, CMSoundDescriptionFlavor soundDescriptionFlavor, CMBlockBuffer.CMBlockBufferPtr soundDescriptionBlockBufferOut);
+    private static native OSStatus copyAsBigEndianSoundDescriptionBlockBuffer0(CFAllocator allocator, CMAudioFormatDescription audioFormatDescription, CMSoundDescriptionFlavor soundDescriptionFlavor, CMBlockBuffer.CMBlockBufferPtr soundDescriptionBlockBufferOut);
     /*</methods>*/
 }

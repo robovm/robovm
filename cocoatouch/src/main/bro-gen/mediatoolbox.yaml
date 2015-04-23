@@ -35,7 +35,8 @@ functions:
     (MT.*)GetTypeID:
         class: '#{g[0]}'
         name: getClassTypeID
-    
+
+    # MTAudioProcessingTap
     MTAudioProcessingTap(Create):
         class: MTAudioProcessingTap
         name: '#{g[0]}'
@@ -57,6 +58,14 @@ functions:
         name: '#{g[0]}'
         return_type: '@Pointer long'
         visibility: protected
+    MTAudioProcessingTap(GetSourceAudio):
+        class: MTAudioProcessingTap
+        name: '#{g[0]}0'
+        visibility: protected
+        parameters:
+            flagsOut:
+                type: MTAudioProcessingTapMutableFlags
+
     MTAudioProcessingTap(.*):
         class: MTAudioProcessingTap
         name: '#{g[0]}'

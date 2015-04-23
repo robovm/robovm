@@ -13,24 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.audiotoolbox;
+package org.robovm.apple.mediatoolbox;
 
 import org.robovm.rt.bro.Struct;
 import org.robovm.rt.bro.annotation.StructMember;
 
-public class AudioQueueProcessingTapMutableFlags extends Struct<AudioQueueProcessingTapMutableFlags> {
+public class MTAudioProcessingTapMutableFlags extends Struct<MTAudioProcessingTapMutableFlags> {
 
-    public AudioQueueProcessingTapFlags get() {
-        return new AudioQueueProcessingTapFlags(getValue());
+    public MTAudioProcessingTapFlags get() {
+        return new MTAudioProcessingTapFlags(getValue());
     }
-    
-    public void set(AudioQueueProcessingTapFlags flags) {
-        setValue((int)flags.value());
+
+    public void set(MTAudioProcessingTapFlags flags) {
+        setValue((int) flags.value());
     }
-    
+
     @StructMember(0)
     private native int getValue();
-    
+
     @StructMember(0)
     private native void setValue(int value);
 }

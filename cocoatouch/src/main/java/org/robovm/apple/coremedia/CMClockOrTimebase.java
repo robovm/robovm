@@ -50,25 +50,29 @@ import org.robovm.apple.audiotoolbox.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /**
+     * @throws OSStatusException 
      * @since Available in iOS 6.0 and later.
      */
-    public @ByVal CMTime getAnchorTime() {
+    public CMTime getAnchorTime() throws OSStatusException {
         CMTime.CMTimePtr ptr = new CMTime.CMTimePtr();
-        getRelativeRateAndAnchorTime(this, null, ptr, null);
+        OSStatus status = getRelativeRateAndAnchorTime0(this, null, ptr, null);
+        OSStatusException.throwIfNecessary(status);
+        return ptr.get();
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 6.0 and later.
+     */
+    public CMTime getRelativeAnchorTime() throws OSStatusException {
+        CMTime.CMTimePtr ptr = new CMTime.CMTimePtr();
+        OSStatus status = getRelativeRateAndAnchorTime0(this, null, null, ptr);
+        OSStatusException.throwIfNecessary(status);
         return ptr.get();
     }
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public @ByVal CMTime getRelativeAnchorTime() {
-        CMTime.CMTimePtr ptr = new CMTime.CMTimePtr();
-        getRelativeRateAndAnchorTime(this, null, null, ptr);
-        return ptr.get();
-    }
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    public @ByVal CMTime convertTime(@ByVal CMTime time, CMClockOrTimebase toClockOrTimebase) {
+    public CMTime convertTime(CMTime time, CMClockOrTimebase toClockOrTimebase) {
         return convertTime(time, this, toClockOrTimebase);
     }
     /*<methods>*/
@@ -81,7 +85,7 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="CMSyncGetRelativeRateAndAnchorTime", optional=true)
-    private native OSStatus getRelativeRateAndAnchorTime(CMClockOrTimebase relativeToClockOrTimebase, DoublePtr outRelativeRate, CMTime.CMTimePtr outOfClockOrTimebaseAnchorTime, CMTime.CMTimePtr outRelativeToClockOrTimebaseAnchorTime);
+    protected native OSStatus getRelativeRateAndAnchorTime0(CMClockOrTimebase relativeToClockOrTimebase, DoublePtr outRelativeRate, CMTime.CMTimePtr outOfClockOrTimebaseAnchorTime, CMTime.CMTimePtr outRelativeToClockOrTimebaseAnchorTime);
     /**
      * @since Available in iOS 6.0 and later.
      */

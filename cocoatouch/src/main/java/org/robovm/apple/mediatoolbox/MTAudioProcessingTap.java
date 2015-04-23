@@ -19,6 +19,7 @@ package org.robovm.apple.mediatoolbox;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -40,32 +41,19 @@ import org.robovm.apple.audiotoolbox.*;
     extends /*<extends>*/CFType/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
     
-    public interface InitCallback {
+    public interface Callbacks {
         void init(MTAudioProcessingTap tap);
-    }
-    public interface FinalizeCallback {
+        
         void finalize(MTAudioProcessingTap tap);
-    }
-    public interface PrepareCallback {
-        void prepare(MTAudioProcessingTap tap, @MachineSizedSInt long maxFrames, AudioStreamBasicDescription processingFormat);
-    }
-    public interface UnprepareCallback {
+        
+        void prepare(MTAudioProcessingTap tap, long maxFrames, AudioStreamBasicDescription processingFormat);
+        
         void unprepare(MTAudioProcessingTap tap);
-    }
-    public interface ProcessCallback {
-        void process(MTAudioProcessingTap tap, @MachineSizedSInt long numberFrames, MTAudioProcessingTapFlags flags, AudioBufferList bufferListInOut, 
-            MachineSizedSIntPtr numberFramesOut, MTAudioProcessingTapFlags.MTAudioProcessingTapFlagsPtr flagsOut);
+
+        long process(MTAudioProcessingTap tap, long numberFrames, MTAudioProcessingTapMutableFlags flags, AudioBufferList bufferList);
     }
     
-    private class Callbacks {
-        InitCallback init;
-        FinalizeCallback finalize;
-        PrepareCallback prepare;
-        UnprepareCallback unprepare;
-        ProcessCallback process;
-    }
-
-    private static java.util.concurrent.atomic.AtomicLong storageId = new java.util.concurrent.atomic.AtomicLong();
+    private static final java.util.concurrent.atomic.AtomicLong callbackId = new java.util.concurrent.atomic.AtomicLong();
     private static final LongMap<Callbacks> callbacks = new LongMap<>();
     private static final java.lang.reflect.Method cbInit;
     private static final java.lang.reflect.Method cbFinalize;
@@ -75,11 +63,11 @@ import org.robovm.apple.audiotoolbox.*;
     
     static {
         try {
-            cbInit = MTAudioProcessingTap.class.getDeclaredMethod("cbInit", MTAudioProcessingTap.class, long.class, LongPtr.LongPtrPtr.class);
+            cbInit = MTAudioProcessingTap.class.getDeclaredMethod("cbInit", MTAudioProcessingTap.class, Long.TYPE, LongPtr.LongPtrPtr.class);
             cbFinalize = MTAudioProcessingTap.class.getDeclaredMethod("cbFinalize", MTAudioProcessingTap.class);
-            cbPrepare = MTAudioProcessingTap.class.getDeclaredMethod("cbPrepare", MTAudioProcessingTap.class, long.class, AudioStreamBasicDescription.class);
+            cbPrepare = MTAudioProcessingTap.class.getDeclaredMethod("cbPrepare", MTAudioProcessingTap.class, Long.TYPE, AudioStreamBasicDescription.class);
             cbUnprepare = MTAudioProcessingTap.class.getDeclaredMethod("cbUnprepare", MTAudioProcessingTap.class);
-            cbProcess = MTAudioProcessingTap.class.getDeclaredMethod("cbProcess", MTAudioProcessingTap.class, long.class, MTAudioProcessingTapFlags.class, 
+            cbProcess = MTAudioProcessingTap.class.getDeclaredMethod("cbProcess", MTAudioProcessingTap.class, Long.TYPE, MTAudioProcessingTapMutableFlags.class, 
                 AudioBufferList.class, MachineSizedSIntPtr.class, MTAudioProcessingTapFlags.MTAudioProcessingTapFlagsPtr.class);
         } catch (Throwable e) {
             throw new Error(e);
@@ -94,68 +82,90 @@ import org.robovm.apple.audiotoolbox.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     @Callback
-    protected static void cbInit(MTAudioProcessingTap tap, @Pointer long clientInfo, LongPtr.LongPtrPtr tapStorageOut) {
+    private static void cbInit(MTAudioProcessingTap tap, @Pointer long clientInfo, LongPtr.LongPtrPtr tapStorageOut) {
         Callbacks cb = null;
         synchronized (callbacks) {
             cb = callbacks.get(clientInfo);
         }
-        cb.init.init(tap);
+        cb.init(tap);
 
         tapStorageOut.set(clientInfo);
     }
     @Callback
-    protected static void cbFinalize(MTAudioProcessingTap tap) {
+    private static void cbFinalize(MTAudioProcessingTap tap) {
         long storage = tap.getStorage();
         Callbacks cb = null;
         synchronized (callbacks) {
             cb = callbacks.remove(storage);
         }
-        cb.finalize.finalize(tap);
+        cb.finalize(tap);
     }
     @Callback
-    protected static void cbPrepare(MTAudioProcessingTap tap, @MachineSizedSInt long maxFrames, AudioStreamBasicDescription processingFormat) {
+    private static void cbPrepare(MTAudioProcessingTap tap, @MachineSizedSInt long maxFrames, AudioStreamBasicDescription processingFormat) {
         Callbacks cb = null;
         synchronized (callbacks) {
             cb = callbacks.get(tap.getStorage());
         }
-        cb.prepare.prepare(tap, maxFrames, processingFormat);
+        cb.prepare(tap, maxFrames, processingFormat);
     }
     @Callback
-    protected static void cbUnprepare(MTAudioProcessingTap tap) {
+    private static void cbUnprepare(MTAudioProcessingTap tap) {
         Callbacks cb = null;
         synchronized (callbacks) {
             cb = callbacks.get(tap.getStorage());
         }
-        cb.unprepare.unprepare(tap);
+        cb.unprepare(tap);
     }
     @Callback
-    protected static void cbProcess(MTAudioProcessingTap tap, @MachineSizedSInt long numberFrames, MTAudioProcessingTapFlags flags, AudioBufferList bufferListInOut, 
+    private static void cbProcess(MTAudioProcessingTap tap, @MachineSizedSInt long numberFrames, MTAudioProcessingTapMutableFlags flags, AudioBufferList bufferListInOut, 
             MachineSizedSIntPtr numberFramesOut, MTAudioProcessingTapFlags.MTAudioProcessingTapFlagsPtr flagsOut) {
         Callbacks cb = null;
         synchronized (callbacks) {
             cb = callbacks.get(tap.getStorage());
         }
-        cb.process.process(tap, numberFrames, flags, bufferListInOut, numberFramesOut, flagsOut);
+        long frames = cb.process(tap, numberFrames, flags, bufferListInOut);
+        numberFramesOut.set(frames);
+        flagsOut.set(flags.get());
     }
     
+    private CMTimeRange lastTimeRange;
+    
+    
     /**
+     * @throws OSStatusException 
      * @since Available in iOS 6.0 and later.
      */
-    public static MTAudioProcessingTap create(MTAudioProcessingTapCreationFlags flags) {
-        return create(null, flags);
+    public static MTAudioProcessingTap create(Callbacks callbacks, MTAudioProcessingTapCreationFlags flags) throws OSStatusException {
+        MTAudioProcessingTap.MTAudioProcessingTapPtr ptr = new MTAudioProcessingTap.MTAudioProcessingTapPtr();
+        long callbackId = MTAudioProcessingTap.callbackId.getAndIncrement();
+        
+        MTAudioProcessingTapCallbacksStruct struct = new MTAudioProcessingTapCallbacksStruct(0, callbackId, new FunctionPtr(cbInit), new FunctionPtr(cbFinalize), 
+            new FunctionPtr(cbPrepare), new FunctionPtr(cbUnprepare), new FunctionPtr(cbProcess));
+        OSStatus status = create(null, struct, flags, ptr);
+        if (OSStatusException.throwIfNecessary(status)) {
+            synchronized (MTAudioProcessingTap.callbacks) {
+                MTAudioProcessingTap.callbacks.put(callbackId, callbacks);
+            }
+            return ptr.get();
+        }
+        return null;
     }
     /**
+     * @throws OSStatusException 
      * @since Available in iOS 6.0 and later.
      */
-    public static MTAudioProcessingTap create(CFAllocator allocator, MTAudioProcessingTapCreationFlags flags) {
-        MTAudioProcessingTap.MTAudioProcessingTapPtr ptr = new MTAudioProcessingTap.MTAudioProcessingTapPtr();
-        long storage = MTAudioProcessingTap.storageId.getAndIncrement();
+    public long getSourceAudio(long numberFrames, AudioBufferList bufferList, MTAudioProcessingTapMutableFlags flags) throws OSStatusException {
+        CMTimeRange timeRangePtr = new CMTimeRange();
+        MachineSizedSIntPtr numberFramesPtr = new MachineSizedSIntPtr();
         
-        MTAudioProcessingTapCallbacksStruct callbacks = new MTAudioProcessingTapCallbacksStruct(0, storage, new FunctionPtr(cbInit), new FunctionPtr(cbFinalize), 
-            new FunctionPtr(cbPrepare), new FunctionPtr(cbUnprepare), new FunctionPtr(cbProcess));
-        create(allocator, callbacks, flags, ptr);
-        
-        return ptr.get();
+        OSStatus status = getSourceAudio0(numberFrames, bufferList, flags, timeRangePtr, numberFramesPtr);
+        OSStatusException.throwIfNecessary(status);
+        this.lastTimeRange = timeRangePtr;
+        return numberFramesPtr.get();
+    }
+
+    public CMTimeRange getLastTimeRange() {
+        return lastTimeRange;
     }
     /*<methods>*/
     /**
@@ -177,6 +187,6 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="MTAudioProcessingTapGetSourceAudio", optional=true)
-    public static native OSStatus getSourceAudio(MTAudioProcessingTap tap, @MachineSizedSInt long numberFrames, AudioBufferList bufferListInOut, MTAudioProcessingTapFlags.MTAudioProcessingTapFlagsPtr flagsOut, CMTimeRange.CMTimeRangePtr timeRangeOut, MachineSizedSIntPtr numberFramesOut);
+    protected native OSStatus getSourceAudio0(@MachineSizedSInt long numberFrames, AudioBufferList bufferListInOut, MTAudioProcessingTapMutableFlags flagsOut, CMTimeRange timeRangeOut, MachineSizedSIntPtr numberFramesOut);
     /*</methods>*/
 }

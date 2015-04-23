@@ -40,26 +40,11 @@ import org.robovm.apple.audiotoolbox.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/CMSampleBufferError/*</name>*/ implements ValuedEnum {
-    No(0L),
+public enum /*<name>*/CMFormatDescriptionErrorCode/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    AllocationFailed(-12730L),
-    RequiredParameterMissing(-12731L),
-    AlreadyHasDataBuffer(-12732L),
-    BufferNotReady(-12733L),
-    SampleIndexOutOfRange(-12734L),
-    BufferHasNoSampleSizes(-12735L),
-    BufferHasNoSampleTimingInfo(-12736L),
-    ArrayTooSmall(-12737L),
-    InvalidEntryCount(-12738L),
-    CannotSubdivide(-12739L),
-    SampleTimingInfoInvalid(-12740L),
-    InvalidMediaTypeForOperation(-12741L),
-    InvalidSampleData(-12742L),
-    InvalidMediaFormat(-12743L),
-    Invalidated(-12744L),
-    DataFailed(-12745L),
-    DataCanceled(-12746L);
+    InvalidParameter(-12710L),
+    AllocationFailed(-12711L),
+    ValueNotAvailable(-12718L);
     /*</values>*/
 
     /*<bind>*/
@@ -69,15 +54,15 @@ public enum /*<name>*/CMSampleBufferError/*</name>*/ implements ValuedEnum {
 
     private final long n;
 
-    private /*<name>*/CMSampleBufferError/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/CMFormatDescriptionErrorCode/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/CMSampleBufferError/*</name>*/ valueOf(long n) {
-        for (/*<name>*/CMSampleBufferError/*</name>*/ v : values()) {
+    public static /*<name>*/CMFormatDescriptionErrorCode/*</name>*/ valueOf(long n) {
+        for (/*<name>*/CMFormatDescriptionErrorCode/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/CMSampleBufferError/*</name>*/.class.getName());
+            + /*<name>*/CMFormatDescriptionErrorCode/*</name>*/.class.getName());
     }
 }

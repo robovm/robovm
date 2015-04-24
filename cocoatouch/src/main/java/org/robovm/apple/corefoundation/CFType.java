@@ -56,8 +56,14 @@ import org.robovm.apple.foundation.*;
             }
             long typeId = getTypeID(handle);
             Class<? extends CFType> cfTypeClass = allCFTypeClasses.get(typeId);
-            if (cfTypeClass != null) {
-                cls = cfTypeClass;
+            if (cfTypeClass != null && cfTypeClass != cls) {
+                if (cls.isAssignableFrom(cfTypeClass)) {
+                    /*
+                     * Only use cfTypeClass if it's a subclass of the expected
+                     * type (cls).
+                     */
+                    cls = cfTypeClass;
+                }
             }
             CFType o = (CFType) NativeObject.Marshaler.toObject(cls, handle, flags);
             if (retain) {
@@ -129,11 +135,12 @@ import org.robovm.apple.foundation.*;
         for (Class<? extends CFType> cls : classes) {
             if (cls != cfTypeClass && (cls.getModifiers() & ABSTRACT) == 0) {
                 try {
-                    java.lang.reflect.Method m = cls.getMethod("getClassTypeID", emptyArgs);
+                    java.lang.reflect.Method m = cls.getDeclaredMethod("getClassTypeID", emptyArgs);
+                    m.setAccessible(true);
                     Long typeId = (Long) m.invoke(null);
                     allCFTypeClasses.put(typeId, cls);
                 } catch (Throwable e) {
-                	// Ignore, because several of Apple's CFType subclasses don't contain a getClassTypeID() method.
+                    // Ignore, because several of Apple's CFType subclasses don't contain a getClassTypeID() method.
                 }
             }
         }

@@ -74,8 +74,10 @@ if [ ! -x $TARGET/vts ]; then
     export ROBOVM_DEV_ROOT=$BASE
     ROBOVM="$ROBOVM_DEV_ROOT/bin/robovm"
   fi
-  if [ "x$KEYCHAIN_PASSWORD" != "x" ]; then
-    security unlock-keychain -p $KEYCHAIN_PASSWORD
+  if [ "$OS" == 'ios' ]; then
+    if [ "x$KEYCHAIN_PASSWORD" != "x" ]; then
+      security unlock-keychain -p $KEYCHAIN_PASSWORD
+    fi
   fi
   "$ROBOVM" \
     -tmp $TARGET.tmp \

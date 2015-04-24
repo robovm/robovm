@@ -87,6 +87,10 @@ if [ ! -x $TARGET/vts ]; then
   if [ "$RET" != "0" ]; then
     exit $RET
   fi
+  if [ "x$SSH_HOST" != 'x' ]; then
+    rsync -a --delete -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=quiet" $TARGET/ $SSH_HOST:$TARGET/ >> $TARGET/robovm.log
+    sleep 5
+  fi
 fi
 
 LIBPATH=$TARGET
@@ -98,7 +102,7 @@ if [ "x$DYLD_LIBRARY_PATH" != 'x' ]; then
 fi
 
 if [ "x$SSH_HOST" != 'x' ]; then
-  rsync -a --delete -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=quiet" $TARGET/ $SSH_HOST:$TARGET/ > /dev/null
+#  rsync -a --delete -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=quiet" $TARGET/ $SSH_HOST:$TARGET/ >> $TARGET/robovm.log
   ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=quiet $SSH_HOST $TARGET/vts -rvm:MainClass=$MAINCLASS $RUNARGS
 else
   LD_LIBRARY_PATH=$LIBPATH DYLD_LIBRARY_PATH=$LIBPATH $TARGET/vts -rvm:MainClass=$MAINCLASS $RUNARGS

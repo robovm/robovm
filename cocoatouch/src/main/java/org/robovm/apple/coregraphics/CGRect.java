@@ -66,7 +66,6 @@ import org.robovm.apple.uikit.*;
     public static CGRect fromString(String string) {
         return UIGeometry.stringToCGRect(string);
     }
-    
     public static CGRect fromDictionary(NSDictionary<NSString, NSNumber> dict) {
         CGRect r = new CGRect();
         if (!fromDictionary(dict, r)) {
@@ -75,16 +74,22 @@ import org.robovm.apple.uikit.*;
         return r;
     }
 
+    public CGRect inset(UIEdgeInsets insets) {
+        getOrigin().setX(getOrigin().getX() + insets.getLeft());
+        getOrigin().setY(getOrigin().getY() + insets.getTop());
+        getSize().setWidth(getSize().getWidth() - (insets.getLeft() + insets.getRight()));
+        getSize().setHeight(getSize().getHeight() - (insets.getTop() + insets.getBottom()));
+        return this;
+    }
+    
     @Override
     public boolean equals(Object obj) {
         return obj instanceof CGRect && equalsTo(this, (CGRect) obj);
     }
-    
     @Override
     public String toString() {
         return UIGeometry.toString(this);
     }
-    
     /*<methods>*/
     /**
      * @since Available in iOS 2.0 and later.

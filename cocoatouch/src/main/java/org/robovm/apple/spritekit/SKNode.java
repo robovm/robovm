@@ -181,6 +181,8 @@ import org.robovm.apple.scenekit.*;
     public native @ByVal CGPoint convertPointToNode(@ByVal CGPoint point, SKNode node);
     @Method(selector = "intersectsNode:")
     public native boolean intersectsNode(SKNode node);
+    @Method(selector = "isEqualToNode:")
+    public native boolean equalsTo(SKNode node);
     @Method(selector = "node")
     public static native SKNode create();
     @Method(selector = "nodeWithFileNamed:")

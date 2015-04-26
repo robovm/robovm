@@ -41,7 +41,7 @@ import org.robovm.apple.metal.*;
 public final class /*<name>*/CVTimeFlags/*</name>*/ extends Bits</*<name>*/CVTimeFlags/*</name>*/> {
     /*<values>*/
     public static final CVTimeFlags None = new CVTimeFlags(0L);
-    public static final CVTimeFlags kCVTimeIsIndefinite = new CVTimeFlags(1L);
+    public static final CVTimeFlags IsIndefinite = new CVTimeFlags(1L);
     /*</values>*/
 
     /*<bind>*/

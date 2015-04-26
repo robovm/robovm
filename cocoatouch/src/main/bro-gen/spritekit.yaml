@@ -314,6 +314,8 @@ classes:
             '-objectForKeyedSubscript:':
                 name: findNodesByName
                 return_type: NSArray<SKNode>
+            '-isEqualToNode:':
+                name: equalsTo
             '+node':
                 name: create
             '+nodeWithFileNamed:':

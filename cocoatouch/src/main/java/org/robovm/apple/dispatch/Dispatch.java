@@ -39,7 +39,7 @@ import org.robovm.rt.bro.ptr.*;
     /*</ptr>*/
     /*<bind>*/static { Bro.bind(Dispatch.class); }/*</bind>*/
     /*<constants>*/
-    public static final int API_VERSION = 20140804;
+    public static final int API_VERSION = 20141121;
     protected static final long TIME_NOW = 0L;
     protected static final long TIME_FOREVER = ~0L;
     /*</constants>*/

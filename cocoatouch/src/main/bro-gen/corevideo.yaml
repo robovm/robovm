@@ -23,7 +23,7 @@ typedefs:
 enums:
     CVSMPTETimeType: { first: kCVSMPTETimeType24 }
     CVSMPTETimeFlags: { first: kCVSMPTETimeValid, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
-    CVTimeFlags: { first: kCVTimeIsIndefinite, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
+    CVTimeFlags: { first: kCVTimeIsIndefinite, prefix: kCVTime, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
     CVTimeStampFlags: { first: kCVTimeStampVideoTimeValid, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
     CVAttachmentMode: { first: kCVAttachmentMode_ShouldNotPropagate, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     CVPixelFormatType: { first: kCVPixelFormatType_1Monochrome, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }

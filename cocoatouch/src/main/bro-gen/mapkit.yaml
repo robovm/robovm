@@ -615,11 +615,11 @@ functions:
 values:
     MKMapSize(.*):
         class: MKMapSize
-        name: 'get#{g[0]}Size'
+        name: '#{g[0]}'
       
     MKMapRect(.*):
         class: MKMapRect
-        name: 'get#{g[0]}Rect'
+        name: '#{g[0]}'
         
     MKErrorDomain:
         class: MKError

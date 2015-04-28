@@ -258,8 +258,13 @@ public abstract class ObjCObject extends NativeObject {
         }
         
         if (!forceType) {
+            /*
+             * If the expected return type (cls) is incompatible with the type
+             * of the native instance we have to make sure we return an instance
+             * of the expected type. See issue #821.
+             */
             ObjCClass objCClass = ObjCClass.getFromObject(handle);
-            forceType = !cls.isAssignableFrom(objCClass.getType()) && !ObjCClass.isObjCProxy(cls);
+            forceType = !cls.isAssignableFrom(objCClass.getType());
         }
 
         synchronized (objcBridgeLock) {

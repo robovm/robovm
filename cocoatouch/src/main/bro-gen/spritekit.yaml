@@ -435,6 +435,9 @@ classes:
             '+infiniteRegion':
                 name: createInfiniteRegion
     SKScene: # DONE
+        properties:
+            'physicsWorld':
+                marshaler: NSObject.Marshaler
         methods:
             '-initWithSize:':
                 name: init

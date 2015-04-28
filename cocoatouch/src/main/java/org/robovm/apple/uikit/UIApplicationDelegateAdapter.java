@@ -72,6 +72,11 @@ import org.robovm.apple.corelocation.*;
     
     @Override
     public void didReceiveMemoryWarning(UIApplication application) {
+        /*
+         * We have to tell the GC to free some memory when we get a memory warning.
+         * Multiple calls to System.gc() will instruct the GC to start his work
+         * immediately.
+         */
         for (int i = 0; i < 10; i++) {
             System.gc();
         }

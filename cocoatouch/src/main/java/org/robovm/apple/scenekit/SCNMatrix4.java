@@ -130,6 +130,27 @@ import org.robovm.apple.opengles.*;
     @StructMember(15) public native float getM44();
     @StructMember(15) public native SCNMatrix4 setM44(float m44);
     /*</members>*/
+    public static SCNMatrix4 createTranslation(float x, float y, float z) {
+        SCNMatrix4 m = SCNMatrix4.Identity();
+        m.setM41(x);
+        m.setM42(y);
+        m.setM43(z);
+        return m;
+    }
+    public static SCNMatrix4 createScale(float sx, float sy, float sz) {
+        SCNMatrix4 m = SCNMatrix4.Identity();
+        m.setM11(sx);
+        m.setM22(sy);
+        m.setM33(sz);
+        return m;
+    }
+
+    public SCNMatrix4 translate(float x, float y, float z) {
+        setM41(getM41() + x);
+        setM42(getM42() + y);
+        setM43(getM43() + z);
+        return this;
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 8.0 and later.

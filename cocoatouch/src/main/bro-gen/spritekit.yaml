@@ -314,6 +314,8 @@ classes:
             '-objectForKeyedSubscript:':
                 name: findNodesByName
                 return_type: NSArray<SKNode>
+            '-isEqualToNode:':
+                name: equalsTo
             '+node':
                 name: create
             '+nodeWithFileNamed:':
@@ -433,6 +435,9 @@ classes:
             '+infiniteRegion':
                 name: createInfiniteRegion
     SKScene: # DONE
+        properties:
+            'physicsWorld':
+                marshaler: NSObject.Marshaler
         methods:
             '-initWithSize:':
                 name: init

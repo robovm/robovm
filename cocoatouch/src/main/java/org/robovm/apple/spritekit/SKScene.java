@@ -81,7 +81,7 @@ import org.robovm.apple.scenekit.*;
     @Property(selector = "setAnchorPoint:")
     public native void setAnchorPoint(@ByVal CGPoint v);
     @Property(selector = "physicsWorld")
-    public native SKPhysicsWorld getPhysicsWorld();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSObject.Marshaler.class) SKPhysicsWorld getPhysicsWorld();
     @Property(selector = "view")
     public native SKView getView();
     /*</properties>*/

@@ -19,6 +19,7 @@ package org.robovm.apple.uikit;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -66,12 +67,19 @@ import org.robovm.apple.corelocation.*;
     @StructMember(3) public native @MachineSizedFloat double getRight();
     @StructMember(3) public native UIEdgeInsets setRight(@MachineSizedFloat double right);
     /*</members>*/
+
+    public boolean equalsTo(UIEdgeInsets other) {
+        return getLeft() == other.getLeft() && getTop() == other.getTop() && getRight() == other.getRight() && getBottom() == other.getBottom();
+    }
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof UIEdgeInsets && equalsTo((UIEdgeInsets)obj);
+    }
     
     @Override
     public String toString() {
         return toString(this);
     }
-    
     /*<methods>*/
     @GlobalValue(symbol="UIEdgeInsetsZero", optional=true)
     public static native @ByVal UIEdgeInsets Zero();

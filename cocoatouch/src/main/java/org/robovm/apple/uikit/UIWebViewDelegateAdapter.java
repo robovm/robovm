@@ -54,7 +54,7 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("webView:shouldStartLoadWithRequest:navigationType:")
-    public boolean shouldStartLoad(UIWebView webView, NSURLRequest request, UIWebViewNavigationType navigationType) { return false; }
+    public boolean shouldStartLoad(UIWebView webView, NSURLRequest request, UIWebViewNavigationType navigationType) { return true; }
     @NotImplemented("webViewDidStartLoad:")
     public void didStartLoad(UIWebView webView) {}
     @NotImplemented("webViewDidFinishLoad:")

@@ -475,6 +475,13 @@ import org.robovm.apple.coretext.CTAttributedStringAttributes;
         long handle = create(getChars(str), str.length());
         return replacePercentEscapes(handle, sel_stringByReplacingPercentEscapesUsingEncoding$, encoding);
     }
+    
+    private static final Selector sel_rangeOfString$ = Selector.register("rangeOfString:");
+    @Bridge protected static native @ByVal NSRange rangeOf(@Pointer long handle, Selector sel, String string);
+    public static NSRange rangeOf(String str, String search) {
+        long handle = create(getChars(str), str.length());
+        return rangeOf(handle, sel_rangeOfString$, search);
+    }
     /*<methods>*/
     @Method(selector = "characterAtIndex:")
     protected native short getCharactersAt(@MachineSizedUInt long index);

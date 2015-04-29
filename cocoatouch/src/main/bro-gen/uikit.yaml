@@ -3850,18 +3850,23 @@ protocols:
         methods:
             '-textField:shouldChangeCharactersInRange:replacementString:':
                 name: shouldChangeCharacters
+                default: true
             '-textFieldDidBeginEditing:':
                 name: didBeginEditing
             '-textFieldDidEndEditing:':
                 name: didEndEditing
             '-textFieldShouldBeginEditing:':
                 name: shouldBeginEditing
+                default: true
             '-textFieldShouldClear:':
                 name: shouldClear
+                default: true
             '-textFieldShouldEndEditing:':
                 name: shouldEndEditing
+                default: true
             '-textFieldShouldReturn:':
                 name: shouldReturn
+                default: true
     UITextInput: # DONE
         properties:
             'markedTextStyle':
@@ -4063,6 +4068,7 @@ protocols:
                 name: didFailLoad
             '-webView:shouldStartLoadWithRequest:navigationType:':
                 name: shouldStartLoad
+                default: true
             '-webViewDidFinishLoad:':
                 name: didFinishLoad
             '-webViewDidStartLoad:':

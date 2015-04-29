@@ -54,18 +54,18 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("textFieldShouldBeginEditing:")
-    public boolean shouldBeginEditing(UITextField textField) { return false; }
+    public boolean shouldBeginEditing(UITextField textField) { return true; }
     @NotImplemented("textFieldDidBeginEditing:")
     public void didBeginEditing(UITextField textField) {}
     @NotImplemented("textFieldShouldEndEditing:")
-    public boolean shouldEndEditing(UITextField textField) { return false; }
+    public boolean shouldEndEditing(UITextField textField) { return true; }
     @NotImplemented("textFieldDidEndEditing:")
     public void didEndEditing(UITextField textField) {}
     @NotImplemented("textField:shouldChangeCharactersInRange:replacementString:")
-    public boolean shouldChangeCharacters(UITextField textField, @ByVal NSRange range, String string) { return false; }
+    public boolean shouldChangeCharacters(UITextField textField, @ByVal NSRange range, String string) { return true; }
     @NotImplemented("textFieldShouldClear:")
-    public boolean shouldClear(UITextField textField) { return false; }
+    public boolean shouldClear(UITextField textField) { return true; }
     @NotImplemented("textFieldShouldReturn:")
-    public boolean shouldReturn(UITextField textField) { return false; }
+    public boolean shouldReturn(UITextField textField) { return true; }
     /*</methods>*/
 }

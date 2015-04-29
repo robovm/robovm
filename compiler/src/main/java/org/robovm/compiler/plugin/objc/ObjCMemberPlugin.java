@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.robovm.compiler.Annotations;
 import org.robovm.compiler.Annotations.Visibility;
 import org.robovm.compiler.CompilerException;
 import org.robovm.compiler.MarshalerLookup.MarshalSite;
@@ -149,7 +150,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
     }
 
     @SuppressWarnings("unchecked")
-    private SootMethod getMsgSendMethod(String selectorName, SootMethod method, boolean isCallback,
+    private SootMethod getMsgSendMethod(String selectorName, SootMethod method, SootMethod annotatedMethod, boolean isCallback,
             Type receiverType, boolean extensions) {
 
         List<Type> paramTypes = new ArrayList<>();
@@ -168,20 +169,24 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         }
         SootMethod m = new SootMethod((isCallback ? "$cb$" : "$m$") + selectorName.replace(':', '$'),
                 paramTypes, method.getReturnType(), STATIC | PRIVATE | (isCallback ? 0 : NATIVE));
-        copyAnnotations(method, m, Visibility.RuntimeVisible);
-        if (extensions) {
-            copyParameterAnnotations(method, m, 0, 1, 0, Visibility.RuntimeVisible);
-            if (method.getParameterCount() > 1) {
-                copyParameterAnnotations(method, m, 1, method.getParameterCount(), 1, Visibility.RuntimeVisible);
-            }
-        } else {
-            copyParameterAnnotations(method, m, 0, method.getParameterCount(), 2, Visibility.RuntimeVisible);
-        }
+        copyAnnotations(annotatedMethod, m, extensions);
         return m;
     }
 
+    private static void copyAnnotations(SootMethod fromMethod, SootMethod toMethod, boolean extensions) {
+        Annotations.copyAnnotations(fromMethod, toMethod, Visibility.RuntimeVisible);
+        if (extensions) {
+            copyParameterAnnotations(fromMethod, toMethod, 0, 1, 0, Visibility.RuntimeVisible);
+            if (fromMethod.getParameterCount() > 1) {
+                copyParameterAnnotations(fromMethod, toMethod, 1, fromMethod.getParameterCount(), 1, Visibility.RuntimeVisible);
+            }
+        } else {
+            copyParameterAnnotations(fromMethod, toMethod, 0, fromMethod.getParameterCount(), 2, Visibility.RuntimeVisible);
+        }
+    }
+
     private SootMethod getMsgSendMethod(String selectorName, SootMethod method, boolean extensions) {
-        return getMsgSendMethod(selectorName, method, false, null, extensions);
+        return getMsgSendMethod(selectorName, method, method, false, null, extensions);
     }
 
     @SuppressWarnings("unchecked")
@@ -192,13 +197,12 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         paramTypes.addAll(method.getParameterTypes());
         SootMethod m = new SootMethod("$m$super$" + selectorName.replace(':', '$'),
                 paramTypes, method.getReturnType(), STATIC | PRIVATE | NATIVE);
-        copyAnnotations(method, m, Visibility.RuntimeVisible);
-        copyParameterAnnotations(method, m, 0, method.getParameterCount(), 2, Visibility.RuntimeVisible);
+        copyAnnotations(method, m, false);
         return m;
     }
 
-    private SootMethod getCallbackMethod(String selectorName, SootMethod method, Type receiverType) {
-        return getMsgSendMethod(selectorName, method, true, receiverType, false);
+    private SootMethod getCallbackMethod(String selectorName, SootMethod method, SootMethod annotatedMethod, Type receiverType) {
+        return getMsgSendMethod(selectorName, method, annotatedMethod, true, receiverType, false);
     }
 
     private void addBindCall(SootClass sootClass) {
@@ -450,7 +454,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
     }
 
     private boolean isCustomClass(SootClass cls) {
-        return !hasAnnotation(cls, NATIVE_CLASS);
+        return !hasAnnotation(cls, NATIVE_CLASS) && isNSObject(cls.getType());
     }
 
     @Override
@@ -576,12 +580,187 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
                     extensions);
             return;
         }
+        
+        if (!method.isStatic() && !method.isNative() && !method.isAbstract() && !method.isPrivate() 
+                && isCustomClass(sootClass) && !hasAnnotation(method, NOT_IMPLEMENTED)) {
+            /*
+             * Create a @Callback for this method if it overrides a
+             * @Method/@Property method in a superclass/interface.
+             */
+            List<SootMethod> superMethods = findOverriddenMethods(sootClass, method);
+            for (SootMethod superMethod : superMethods) {
+                if (createCustomClassCallbackIfNeeded(sootClass, method, superMethod)) {
+                    break;
+                }
+            }
+        }
+    }
+
+    private boolean createCustomClassCallbackIfNeeded(SootClass sootClass, SootMethod method, SootMethod superMethod) {
+        AnnotationTag annotation = getAnnotation(superMethod, METHOD);
+        if (annotation != null) {
+            createCallback(sootClass, method, superMethod, getObjCMethodSelectorName(annotation, superMethod, false),
+                    getReceiverType(sootClass));
+            return true;
+        } else {
+            annotation = getAnnotation(superMethod, PROPERTY);
+            if (annotation != null) {
+                boolean isGetter = method.getReturnType() != VoidType.v();
+                createCallback(sootClass, method, superMethod, getObjCPropertySelectorName(annotation, superMethod, isGetter),
+                        getReceiverType(sootClass));
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private List<SootMethod> findOverriddenMethods(SootClass sootClass, SootMethod method) {
+        SootClass supercls = sootClass.getSuperclass();
+        while (!supercls.getType().equals(org_robovm_objc_ObjCObject.getType())) {
+            try {
+                SootMethod m = supercls.getMethod(method.getName(), method.getParameterTypes(),
+                        method.getReturnType());
+                if (overrides(method, m) && !hasAnnotation(m, NOT_IMPLEMENTED)) {
+                    return Collections.singletonList(m);
+                }
+            } catch (RuntimeException e) {
+                // Soot throws RuntimeException if method not found
+            }
+            supercls = supercls.getSuperclass();
+        }
+
+        /*
+         * Method doesn't override any method in superclasses. Check interfaces
+         * as well. There may be several methods in interfaces which this method
+         * overrides. We have to return all of them as we cannot assume that
+         * first one found has the @Method or @Property annotation.
+         */
+        List<SootMethod> candidates = new ArrayList<>();
+        findOverriddenMethodsOnInterfaces(sootClass, method, candidates);
+
+        return candidates;
+    }
+
+    private void findOverriddenMethodsOnInterfaces(SootClass sootClass, SootMethod method, List<SootMethod> candidates) {
+        if (sootClass.isInterface()) {
+            try {
+                candidates.add(sootClass.getMethod(method.getName(), method.getParameterTypes(),
+                        method.getReturnType()));
+            } catch (RuntimeException e) {
+                // Soot throws RuntimeException if method not found
+            }
+        }
+
+        for (SootClass interfaze : sootClass.getInterfaces()) {
+            findOverriddenMethodsOnInterfaces(interfaze, method, candidates);
+        }
+        if (!sootClass.isInterface() && sootClass.hasSuperclass()
+                && !sootClass.getSuperclass().getType().equals(org_robovm_objc_ObjCObject.getType())) {
+            findOverriddenMethodsOnInterfaces(sootClass.getSuperclass(), method, candidates);
+        }
+    }
+
+    /**
+     * Returns {@code true} if subMethod overrides superMethod. The signatures
+     * are assumed to be the same when this is called.
+     */
+    private boolean overrides(SootMethod subMethod, SootMethod superMethod) {
+        if (!superMethod.isPrivate() && !superMethod.isStatic()) {
+            if (!superMethod.isPublic() && !superMethod.isProtected()) {
+                /*
+                 * Package private. The class of the methods must be in the same
+                 * package.
+                 */
+                String package1 = superMethod.getDeclaringClass().getPackageName();
+                String package2 = subMethod.getDeclaringClass().getPackageName();
+                return package1.equals(package2);
+            }
+            
+            /*
+             * superMethod is public or protected. subMethod must be overriding
+             * superMethod or else it would violate the JVM spec since an
+             * overriding method must not have a more restrictive visibility
+             * than the method it overrides.
+             */
+            return true;
+        }
+        return false;
     }
 
     private void transformObjCMethod(AnnotationTag annotation, SootClass sootClass,
             SootMethod method, Set<String> selectors, Set<String> overridables, boolean extensions) {
 
         // Determine the selector
+        String selectorName = getObjCMethodSelectorName(annotation, method, extensions);
+
+        // Create the @Bridge and @Callback methods needed for this selector
+        if (!extensions && isCustomClass(sootClass)) {
+            createCallback(sootClass, method, method, selectorName, getReceiverType(sootClass));
+        }
+        if (method.isNative()) {
+            if (checkOverridable(overridables, selectorName, method)) {
+                overridables.add(selectorName);
+            }
+            selectors.add(selectorName);
+            createBridge(sootClass, method, selectorName, false, extensions);
+        }
+    }
+
+    private Type getReceiverType(SootClass sootClass) {
+        Type receiverType = ObjCProtocolProxyPlugin.isObjCProxy(sootClass)
+                ? sootClass.getInterfaces().getFirst().getType()
+                : sootClass.getType();
+        return receiverType;
+    }
+
+    private void transformObjCProperty(AnnotationTag annotation, String javaAnnotation, SootClass sootClass,
+            SootMethod method, Set<String> selectors, Set<String> overridables, boolean extensions) {
+
+        int getterParamCount = extensions ? 1 : 0;
+        int setterParamCount = extensions ? 2 : 1;
+        if (method.getReturnType() != VoidType.v() && method.getParameterCount() != getterParamCount
+                || method.getReturnType() == VoidType.v() && method.getParameterCount() != setterParamCount) {
+
+            if (!extensions) {
+                throw new CompilerException("Objective-C " + getAnnotationName(annotation) + " method " + method
+                        + " does not have a supported signature. " + getAnnotationName(annotation) + " getter methods"
+                        + " must take 0 arguments and must not return void. " + getAnnotationName(annotation)
+                        + " setter methods must take 1 argument and return void.");
+            }
+            throw new CompilerException("Objective-C " + getAnnotationName(annotation) + " method " + method 
+                    + " in extension class does not have a supported signature. " + getAnnotationName(annotation)
+                    + " getter methods in extension classes" + " must take 1 argument (the 'this' reference) and " 
+                    + "must not return void. " + getAnnotationName(annotation) + " setter methods in extension classes "
+                    + "must take 2 arguments (first is the 'this' reference) and return void.");
+        }
+
+        boolean isGetter = method.getReturnType() != VoidType.v();
+
+        // Determine the selector
+        String selectorName = getObjCPropertySelectorName(annotation, method, isGetter);
+
+        // Create the @Bridge and @Callback methods needed for this selector
+        if (!extensions && isCustomClass(sootClass)) {
+            createCallback(sootClass, method, method, selectorName, getReceiverType(sootClass));
+        }
+        if (method.isNative()) {
+            if (checkOverridable(overridables, selectorName, method)) {
+                overridables.add(selectorName);
+            }
+            selectors.add(selectorName);
+            boolean strongRefSetter = !isGetter && readBooleanElem(annotation, "strongRef", false);
+            createBridge(sootClass, method, selectorName, strongRefSetter, extensions);
+        }
+    }
+
+    private String getAnnotationName(AnnotationTag annotation) {
+        // annotation.getType() returns the descriptor Lcom/example/ClassName;
+        String n = annotation.getType();
+        n = n.substring(1, n.length() - 1);
+        return "@" + n.substring(n.lastIndexOf('/') + 1);
+    }
+
+    private String getObjCMethodSelectorName(AnnotationTag annotation, SootMethod method, boolean extensions) {
         String selectorName = readStringElem(annotation, "selector", "").trim();
         if (selectorName.length() == 0) {
             int argCount = method.getParameterCount();
@@ -595,56 +774,19 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
                 selectorName = sb.toString();
             }
         }
-
-        // Create the @Bridge and @Callback methods needed for this selector
-        if (!extensions && (isCustomClass(sootClass) || (method.getModifiers() & Modifier.FINAL) == 0)) {
-            Type receiverType = ObjCProtocolProxyPlugin.isObjCProxy(sootClass)
-                    ? sootClass.getInterfaces().getFirst().getType()
-                    : sootClass.getType();
-            createCallback(sootClass, method, selectorName, receiverType);
-        }
-        if (method.isNative()) {
-            if (checkOverridable(overridables, selectorName, method)) {
-                overridables.add(selectorName);
-            }
-            selectors.add(selectorName);
-            createBridge(sootClass, method, selectorName, false, extensions);
-        }
+        return selectorName;
     }
 
-    private void transformObjCProperty(AnnotationTag annotation, String javaAnnotation, SootClass sootClass,
-            SootMethod method, Set<String> selectors, Set<String> overridables, boolean extensions) {
-
-        int getterParamCount = extensions ? 1 : 0;
-        int setterParamCount = extensions ? 2 : 1;
-        if (method.getReturnType() != VoidType.v() && method.getParameterCount() != getterParamCount
-                || method.getReturnType() == VoidType.v() && method.getParameterCount() != setterParamCount) {
-
-            if (!extensions) {
-                throw new CompilerException("Objective-C " + javaAnnotation + " method " + method
-                        + " does not have a supported signature. " + javaAnnotation + " getter methods"
-                        + " must take 0 arguments and must not return void. "
-                        + javaAnnotation + " setter methods must take 1 argument and return void.");
-            }
-            throw new CompilerException("Objective-C " + javaAnnotation + " method " + method + " in extension class"
-                    + " does not have a supported signature. " + javaAnnotation
-                    + " getter methods in extension classes"
-                    + " must take 1 argument (the 'this' reference) and must not return void. "
-                    + javaAnnotation + " setter methods in extension classes must "
-                    + "take 2 arguments (first is the 'this' reference) and return void.");
-        }
-
-        boolean isGetter = method.getReturnType() != VoidType.v();
-
-        // Determine the selector
+    private String getObjCPropertySelectorName(AnnotationTag annotation, SootMethod method,
+            boolean isGetter) {
         String selectorName = readStringElem(annotation, "selector", "").trim();
         if (selectorName.length() == 0) {
             String methodName = method.getName();
             if (!(isGetter && methodName.startsWith("get") && methodName.length() > 3)
                     && !(isGetter && methodName.startsWith("is") && methodName.length() > 2)
                     && !(!isGetter && methodName.startsWith("set") && methodName.length() > 3)) {
-                throw new CompilerException("Invalid Objective-C " + javaAnnotation + " method name "
-                        + method + ". " + javaAnnotation + " methods without an explicit selector value "
+                throw new CompilerException("Invalid Objective-C " + getAnnotationName(annotation) + " method name "
+                        + method + ". " + getAnnotationName(annotation) + " methods without an explicit selector value "
                         + "must follow the Java beans property method naming convention.");
             }
             selectorName = methodName;
@@ -658,32 +800,17 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
                 selectorName += ":";
             }
         }
-
-        // Create the @Bridge and @Callback methods needed for this selector
-        if (!extensions && (isCustomClass(sootClass) || (method.getModifiers() & Modifier.FINAL) == 0)) {
-            Type receiverType = ObjCProtocolProxyPlugin.isObjCProxy(sootClass)
-                    ? sootClass.getInterfaces().getFirst().getType()
-                    : sootClass.getType();
-            createCallback(sootClass, method, selectorName, receiverType);
-        }
-        if (method.isNative()) {
-            if (checkOverridable(overridables, selectorName, method)) {
-                overridables.add(selectorName);
-            }
-            selectors.add(selectorName);
-            boolean strongRefSetter = !isGetter && readBooleanElem(annotation, "strongRef", false);
-            createBridge(sootClass, method, selectorName, strongRefSetter, extensions);
-        }
+        return selectorName;
     }
 
-    private void createCallback(SootClass sootClass, SootMethod method, String selectorName, Type receiverType) {
+    private void createCallback(SootClass sootClass, SootMethod method, SootMethod annotatedMethod, String selectorName, Type receiverType) {
         Jimple j = Jimple.v();
 
-        SootMethod callbackMethod = getCallbackMethod(selectorName, method, receiverType);
+        SootMethod callbackMethod = getCallbackMethod(selectorName, method, annotatedMethod, receiverType);
         sootClass.addMethod(callbackMethod);
         addCallbackAnnotation(callbackMethod);
         addBindSelectorAnnotation(callbackMethod, selectorName);
-        if (!hasAnnotation(method, TYPE_ENCODING) && (isCustomClass(sootClass)
+        if (!hasAnnotation(annotatedMethod, TYPE_ENCODING) && (isCustomClass(sootClass)
                 || ObjCProtocolProxyPlugin.isObjCProxy(sootClass))) {
             String encoding = generateTypeEncoding(callbackMethod);
             try {
@@ -818,7 +945,8 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
      */
     private SootMethodRef getGenericMsgSendReplacementMethod(SootMethod method) {
         if (method.getParameterCount() == 2) {
-            if (isNSObject(method.getParameterType(0)) && isSelector(method.getParameterType(1))) {
+            if (isNSObject(method.getParameterType(0)) && isSelector(method.getParameterType(1))
+                    && !hasAnnotation(method, MARSHALER)) {
                 /*
                  * This is a no args ObjC method (only takes self and a
                  * selector). If it doesn't use any special marshaler for self
@@ -835,7 +963,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
                     if (method.getReturnType() == VoidType.v() || method.getReturnType() instanceof PrimType) {
                         // Primitive return type or void
                         String prefix = getPrimitiveReturnTypeModifier(method);
-                        return Scene.v().makeMethodRef(org_robovm_objc_$M, prefix + "_objc_msgSend", 
+                        return Scene.v().makeMethodRef(org_robovm_objc_$M, prefix + "_objc_msgSend",
                                 paramTypes, method.getReturnType(), true);
                     } else if (isNSObject(method.getReturnType())) {
                         MarshalerMethod retMarshalerMethod = config.getMarshalerLookup().findMarshalerMethod(
@@ -849,7 +977,8 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
                         MarshalerMethod retMarshalerMethod = config.getMarshalerLookup().findMarshalerMethod(
                                 new MarshalSite(method));
                         if (isNSString$AsStringMarshaler_toObject(retMarshalerMethod.getMethod())) {
-                            // Returns String marshaled using NSSring$AsStringMarshaler
+                            // Returns String marshaled using
+                            // NSSring$AsStringMarshaler
                             return Scene.v().makeMethodRef(org_robovm_objc_$M, "string_objc_msgSend",
                                     paramTypes, method.getReturnType(), true);
                         }
@@ -857,7 +986,8 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
                 }
             }
         } else if (method.getParameterCount() == 3 && method.getReturnType() == VoidType.v()) {
-            if (isNSObject(method.getParameterType(0)) && isSelector(method.getParameterType(1))) {
+            if (isNSObject(method.getParameterType(0)) && isSelector(method.getParameterType(1))
+                    && !hasParameterAnnotation(method, 1, MARSHALER)) {
                 /*
                  * This is a 1 arg ObjC method with no return type (void) (takes
                  * self, a selector and a third arg). If it doesn't use any
@@ -890,7 +1020,8 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
                         MarshalerMethod param2MarshalerMethod = config.getMarshalerLookup().findMarshalerMethod(
                                 new MarshalSite(method, 2));
                         if (isNSString$AsStringMarshaler_toNative(param2MarshalerMethod.getMethod())) {
-                            //  Arg is a String marshaled using NSSring@AsStringMarshaler
+                            // Arg is a String marshaled using
+                            // NSSring@AsStringMarshaler
                             return Scene.v().makeMethodRef(org_robovm_objc_$M, "objc_msgSend_string",
                                     paramTypes, method.getReturnType(), true);
                         }
@@ -915,7 +1046,8 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
              * marshaler or a String marshaled from an NSString we can replace
              * it with a call to $M.
              */
-            if (method.getParameterType(0).equals(org_robovm_objc_ObjCSuper.getType()) && isSelector(method.getParameterType(1))) {
+            if (method.getParameterType(0).equals(org_robovm_objc_ObjCSuper.getType())
+                    && isSelector(method.getParameterType(1)) && !hasAnnotation(method, MARSHALER)) {
                 if (method.getReturnType() == VoidType.v() || method.getReturnType() instanceof PrimType) {
                     // Primitive return type or void
                     String prefix = getPrimitiveReturnTypeModifier(method);
@@ -933,14 +1065,16 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
                     MarshalerMethod retMarshalerMethod = config.getMarshalerLookup().findMarshalerMethod(
                             new MarshalSite(method));
                     if (isNSString$AsStringMarshaler_toObject(retMarshalerMethod.getMethod())) {
-                        // Returns String marshaled using NSSring$AsStringMarshaler
+                        // Returns String marshaled using
+                        // NSSring$AsStringMarshaler
                         return Scene.v().makeMethodRef(org_robovm_objc_$M, "string_objc_msgSendSuper",
                                 method.getParameterTypes(), method.getReturnType(), true);
                     }
                 }
             }
         } else if (method.getParameterCount() == 3 && method.getReturnType() == VoidType.v()) {
-            if (method.getParameterType(0).equals(org_robovm_objc_ObjCSuper.getType()) && isSelector(method.getParameterType(1))) {
+            if (method.getParameterType(0).equals(org_robovm_objc_ObjCSuper.getType())
+                    && isSelector(method.getParameterType(1)) && !hasParameterAnnotation(method, 1, MARSHALER)) {
                 /*
                  * This is a 1 arg ObjC method with no return type (void) (takes
                  * super, a selector and a third arg). If the third arg is a
@@ -967,7 +1101,8 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
                     MarshalerMethod param2MarshalerMethod = config.getMarshalerLookup().findMarshalerMethod(
                             new MarshalSite(method, 2));
                     if (isNSString$AsStringMarshaler_toNative(param2MarshalerMethod.getMethod())) {
-                        //  Arg is a String marshaled using NSSring@AsStringMarshaler
+                        // Arg is a String marshaled using
+                        // NSSring@AsStringMarshaler
                         return Scene.v().makeMethodRef(org_robovm_objc_$M, "objc_msgSendSuper_string",
                                 method.getParameterTypes(), method.getReturnType(), true);
                     }
@@ -1062,9 +1197,6 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         }
 
         method.setModifiers(method.getModifiers() & ~NATIVE);
-        if (isOverridable(method)) {
-            addNotImplementedAnnotation(method, selectorName);
-        }
 
         Body body = j.newBody(method);
         method.setActiveBody(body);

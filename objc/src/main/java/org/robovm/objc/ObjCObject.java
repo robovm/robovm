@@ -189,11 +189,12 @@ public abstract class ObjCObject extends NativeObject {
 
     private static void removePeerObject(ObjCObject o) {
         synchronized (objcBridgeLock) {
-            ObjCObjectRef ref = peers.remove(o.getHandle());
+            long handle = o.getHandle();
+            ObjCObjectRef ref = peers.remove(handle);
             ObjCObject p = ref != null ? ref.get() : null;
             if (p != null && o != p) {
                 // Not the same peer. Put it back.
-                peers.put(o.getHandle(), new ObjCObjectRef(o));
+                peers.put(handle, new ObjCObjectRef(p));
             }
         }
     }
@@ -257,38 +258,88 @@ public abstract class ObjCObject extends NativeObject {
             return (T) ObjCClass.toObjCClass(handle);
         }
         
-        if (!forceType) {
+        if (forceType) {
             /*
-             * If the expected return type (cls) is incompatible with the type
-             * of the native instance we have to make sure we return an instance
-             * of the expected type. See issue #821.
+             * Always return a new instance without making it the new peer.
              */
-            ObjCClass objCClass = ObjCClass.getFromObject(handle);
-            forceType = !cls.isAssignableFrom(objCClass.getType());
+            return createInstance(ObjCClass.getByType(cls), handle, afterMarshaledFlags, false);
+        }
+
+        /*
+         * Determine the expected return type. Usually cls but it cls is an
+         * ObjCProxy class the expected type is instead the proxied interface.
+         */
+        Class<?> expectedType = cls;
+        if (ObjCClass.isObjCProxy(cls)) {
+            expectedType = cls.getInterfaces()[0];
         }
 
         synchronized (objcBridgeLock) {
             T o = getPeerObject(handle);
             if (o != null && o.getHandle() != 0) {
-                if (forceType && !cls.isAssignableFrom(o.getClass())) {
-                    throw new IllegalStateException("The peer object type " + o.getClass().getName()
-                            + " is not compatible with the forced type " + cls.getName());
+                if (!expectedType.isAssignableFrom(o.getClass())) {
+                    if (ObjCClass.isObjCProxy(o.getClass())) {
+                        /*
+                         * The current peer is an incompatible ObjCProxy.
+                         * Override that peer with a new one of the correct
+                         * type.
+                         */
+                        removePeerObject(o);
+                        o = null;
+                    } else if (ObjCClass.isObjCProxy(cls)) {
+                        /*
+                         * The current peer is not an ObjCProxy but we're
+                         * expected to return one. Just return a new instance of
+                         * the proxy without making it the peer.
+                         */
+                        return createInstance(ObjCClass.getByType(cls), handle, afterMarshaledFlags, false);
+                    } else {
+                        /*
+                         * Neither is an ObjCProxy. The current peer MUST be an
+                         * instance of the expected type.
+                         */
+                        throw new IllegalStateException("The peer object type " + o.getClass().getName()
+                                + " is not compatible with the expected type " + expectedType.getName());
+                    }
+                } else {
+                    return o;
                 }
-                return o;
             }
 
-            ObjCClass objCClass = forceType ? ObjCClass.getByType(cls) : ObjCClass.getFromObject(handle);
-            Class<T> c = (Class<T>) objCClass.getType();
-
-            o = VM.allocateObject(c);
-            o.setHandle(handle);
-            setPeerObject(handle, o);
-            if (objCClass.isCustom()) {
-                VM.setBoolean(VM.getObjectAddress(o) + CUSTOM_CLASS_OFFSET, true);
+            ObjCClass objCClass = ObjCClass.getFromObject(handle);
+            if (!expectedType.isAssignableFrom(objCClass.getType())) {
+                /*
+                 * If the expected return type is incompatible with the type of
+                 * the native instance we have to make sure we return an
+                 * instance of the expected type. See issue #821.
+                 */
+                objCClass = ObjCClass.getByType(cls);
             }
-            o.afterMarshaled(afterMarshaledFlags);
-            return o;
+
+            return createInstance(objCClass, handle, afterMarshaledFlags, true);
         }
+    }
+
+    /**
+     * Creates a new instance of the specified {@link ObjCClass}. If
+     * {@code makePeer == true} this method MUST be called while the
+     * {@link #objcBridgeLock} is held.
+     */
+    @SuppressWarnings("unchecked")
+    private static <T extends ObjCObject> T createInstance(ObjCClass objCClass, long handle, int afterMarshaledFlags,
+            boolean makePeer) {
+
+        Class<T> c = (Class<T>) objCClass.getType();
+        T o = VM.allocateObject(c);
+        o.setHandle(handle);
+        if (makePeer) {
+            setPeerObject(handle, o);
+        }
+        if (objCClass.isCustom()) {
+            VM.setBoolean(VM.getObjectAddress(o) + CUSTOM_CLASS_OFFSET, true);
+        }
+        o.afterMarshaled(afterMarshaledFlags);
+        return o;
     }
 
     public static class Marshaler {

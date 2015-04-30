@@ -267,7 +267,6 @@ public class AttributesEncoder {
             } else if (tag instanceof EnclosingMethodTag) {
                 EnclosingMethodTag emt = (EnclosingMethodTag) tag;
                 Value eClass = getString(emt.getEnclosingClass());
-                addDependency(emt.getEnclosingClass());
                 Value eMethod = getStringOrNull(emt.getEnclosingMethod());
                 Value eDesc = getStringOrNull(emt.getEnclosingMethodSig());
                 attributes.add(new PackedStructureConstant(new PackedStructureType(I8, I8_PTR, I8_PTR, I8_PTR), 
@@ -279,9 +278,7 @@ public class AttributesEncoder {
             } else if (tag instanceof InnerClassTag) {
                 InnerClassTag ict = (InnerClassTag) tag;
                 Value innerClass = getStringOrNull(ict.getInnerClass());
-                addDependency(ict.getInnerClass());
                 Value outerClass = getStringOrNull(ict.getOuterClass());
-                addDependency(ict.getOuterClass());
                 Value innerName = getStringOrNull(ict.getShortName());
                 Value innerClassAccess = new IntegerConstant(ict.getAccessFlags());
                 attributes.add(new PackedStructureConstant(new PackedStructureType(I8, I8_PTR, I8_PTR, I8_PTR, I32), 

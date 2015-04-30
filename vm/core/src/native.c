@@ -941,7 +941,7 @@ static jsize GetStringLength(JNIEnv* env, jstring str) {
 }
 
 static const jchar* GetStringChars(JNIEnv* env, jstring str, jboolean* isCopy) {
-    if (isCopy) *isCopy = JNI_TRUE;
+    if (isCopy) *isCopy = JNI_FALSE;
     return rvmGetStringChars((Env*) env, (Object*) str);
 }
 

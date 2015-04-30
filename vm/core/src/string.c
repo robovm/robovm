@@ -321,13 +321,7 @@ jint rvmGetStringLength(Env* env, Object* str) {
 jchar* rvmGetStringChars(Env* env, Object* str) {
     CharArray* value = (CharArray*) rvmGetObjectInstanceFieldValue(env, str, stringValueField);
     jint offset = rvmGetIntInstanceFieldValue(env, str, stringOffsetField);
-    jint count = rvmGetIntInstanceFieldValue(env, str, stringCountField);
-
-    jchar* result = rvmAllocateMemoryAtomic(env, sizeof(jchar) * count);
-    if (!result) return NULL;
-
-    memcpy(result, value->values + offset, sizeof(jchar) * count);
-    return result;
+    return value->values + offset;
 }
 
 jint rvmGetStringUTFLength(Env* env, Object* str) {

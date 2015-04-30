@@ -25,6 +25,7 @@
 #define LOG_TAG "core.memory"
 
 #define MIN_HEAP_SIZE (4*1024*1024) // 4MB
+#define DEFAULT_INITIAL_HEAP_SIZE (16*1024*1024) // 16MB
 #define GLOBAL_REFS_INITIAL_SIZE 2048
 
 static Class* java_nio_DirectByteBuffer = NULL;
@@ -461,7 +462,13 @@ jboolean initGC(Options* options) {
     if (options->maxHeapSize > 0) {
         GC_set_max_heap_size(options->maxHeapSize);
     }
-    jlong initialHeapSize = options->initialHeapSize < MIN_HEAP_SIZE ? MIN_HEAP_SIZE : options->initialHeapSize;
+    jlong initialHeapSize = options->initialHeapSize;
+    if (initialHeapSize <= 0) {
+        initialHeapSize = DEFAULT_INITIAL_HEAP_SIZE;
+    }
+    if (initialHeapSize < MIN_HEAP_SIZE) {
+        initialHeapSize = MIN_HEAP_SIZE;
+    }
     size_t now = GC_get_heap_size();
     if (initialHeapSize > now) {
         GC_expand_hp(initialHeapSize - now);

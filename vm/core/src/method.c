@@ -654,7 +654,7 @@ static jint callIntMethod(Env* env, CallInfo* callInfo) {
 }
 
 static jboolean callBooleanMethod(Env* env, CallInfo* callInfo) {
-    return callIntMethod(env, callInfo) == 0 ? FALSE : TRUE;
+    return ((jboolean) callIntMethod(env, callInfo)) == 0 ? FALSE : TRUE;
 }
 
 static jbyte callByteMethod(Env* env, CallInfo* callInfo) {

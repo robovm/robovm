@@ -43,7 +43,7 @@ import org.robovm.apple.corelocation.*;
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIResponder/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+    /*<implements>*/implements UIAccessibility/*</implements>*/ {
 
     /*<ptr>*/public static class UIResponderPtr extends Ptr<UIResponder, UIResponderPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UIResponder.class); }/*</bind>*/
@@ -103,6 +103,94 @@ import org.robovm.apple.corelocation.*;
      */
     @Property(selector = "setUserActivity:")
     public native void setUserActivity(NSUserActivity v);
+    @Property(selector = "isAccessibilityElement")
+    public native boolean isAccessibilityElement();
+    @Property(selector = "setIsAccessibilityElement:")
+    public native void setIsAccessibilityElement(boolean v);
+    @Property(selector = "accessibilityLabel")
+    public native String getAccessibilityLabel();
+    @Property(selector = "setAccessibilityLabel:")
+    public native void setAccessibilityLabel(String v);
+    @Property(selector = "accessibilityHint")
+    public native String getAccessibilityHint();
+    @Property(selector = "setAccessibilityHint:")
+    public native void setAccessibilityHint(String v);
+    @Property(selector = "accessibilityValue")
+    public native String getAccessibilityValue();
+    @Property(selector = "setAccessibilityValue:")
+    public native void setAccessibilityValue(String v);
+    @Property(selector = "accessibilityTraits")
+    public native UIAccessibilityTraits getAccessibilityTraits();
+    @Property(selector = "setAccessibilityTraits:")
+    public native void setAccessibilityTraits(UIAccessibilityTraits v);
+    @Property(selector = "accessibilityFrame")
+    public native @ByVal CGRect getAccessibilityFrame();
+    @Property(selector = "setAccessibilityFrame:")
+    public native void setAccessibilityFrame(@ByVal CGRect v);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Property(selector = "accessibilityPath")
+    public native UIBezierPath getAccessibilityPath();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Property(selector = "setAccessibilityPath:")
+    public native void setAccessibilityPath(UIBezierPath v);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "accessibilityActivationPoint")
+    public native @ByVal CGPoint getAccessibilityActivationPoint();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "setAccessibilityActivationPoint:")
+    public native void setAccessibilityActivationPoint(@ByVal CGPoint v);
+    @Property(selector = "accessibilityLanguage")
+    public native String getAccessibilityLanguage();
+    @Property(selector = "setAccessibilityLanguage:")
+    public native void setAccessibilityLanguage(String v);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "accessibilityElementsHidden")
+    public native boolean areAccessibilityElementsHidden();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "setAccessibilityElementsHidden:")
+    public native void setAreAccessibilityElementsHidden(boolean v);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "accessibilityViewIsModal")
+    public native boolean isAccessibilityViewModal();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "setAccessibilityViewIsModal:")
+    public native void setAccessibilityViewModal(boolean v);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @Property(selector = "shouldGroupAccessibilityChildren")
+    public native boolean shouldGroupAccessibilityChildren();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @Property(selector = "setShouldGroupAccessibilityChildren:")
+    public native void setShouldGroupAccessibilityChildren(boolean v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "accessibilityNavigationStyle")
+    public native UIAccessibilityNavigationStyle getAccessibilityNavigationStyle();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setAccessibilityNavigationStyle:")
+    public native void setAccessibilityNavigationStyle(UIAccessibilityNavigationStyle v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

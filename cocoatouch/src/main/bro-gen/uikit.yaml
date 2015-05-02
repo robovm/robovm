@@ -1510,6 +1510,7 @@ classes:
             '-setAngle:magnitude:':
                 trim_after_first_colon: true
     UIImage: # DONE
+        protocols: [UIAccessibility, UIAccessibilityIdentification]
         properties:
             'images':
                 type: NSArray<UIImage>
@@ -2127,6 +2128,7 @@ classes:
             '-init':
                 exclude: true
     UIResponder: # DONE
+        protocols: [UIAccessibility]
         properties:
             'keyCommands':
                 type: NSArray<UIKeyCommand>
@@ -4077,8 +4079,10 @@ protocols:
     # Informal protocols (categories)
     UIAccessibility: # DONE
         properties:
-            'isAccessibilityElement':
-                name: accessibilityElement
+            'accessibilityElementsHidden':
+                name: areAccessibilityElementsHidden
+            'accessibilityViewIsModal':
+                name: accessibilityViewModal
     UIAccessibilityAction: # DONE
         properties:
             'accessibilityCustomActions':

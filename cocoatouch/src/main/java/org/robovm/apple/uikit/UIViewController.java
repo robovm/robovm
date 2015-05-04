@@ -417,6 +417,9 @@ import org.robovm.apple.mediaplayer.MPMoviePlayerViewController;
         org.robovm.apple.mediaplayer.UIViewControllerExtensions.dismissMoviePlayerViewController(this);
     }
     
+    
+    @Method(selector = "awakeFromNib")
+    public native void awakeFromNib();
     /*<methods>*/
     /**
      * @since Available in iOS 8.0 and later.

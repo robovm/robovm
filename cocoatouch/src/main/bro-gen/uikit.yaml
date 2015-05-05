@@ -4079,8 +4079,11 @@ protocols:
     # Informal protocols (categories)
     UIAccessibility: # DONE
         properties:
+            'isAccessibilityElement':
+                name: accessibilityElement
             'accessibilityElementsHidden':
-                name: areAccessibilityElementsHidden
+                name: accessibilityElementsHidden
+                getter: areAccessibilityElementsHidden
             'accessibilityViewIsModal':
                 name: accessibilityViewModal
     UIAccessibilityAction: # DONE

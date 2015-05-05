@@ -52,7 +52,7 @@ import org.robovm.apple.corelocation.*;
     @NotImplemented("isAccessibilityElement")
     public boolean isAccessibilityElement() { return false; }
     @NotImplemented("setIsAccessibilityElement:")
-    public void setIsAccessibilityElement(boolean v) {}
+    public void setAccessibilityElement(boolean v) {}
     @NotImplemented("accessibilityLabel")
     public String getAccessibilityLabel() { return null; }
     @NotImplemented("setAccessibilityLabel:")
@@ -106,7 +106,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 5.0 and later.
      */
     @NotImplemented("setAccessibilityElementsHidden:")
-    public void setAreAccessibilityElementsHidden(boolean v) {}
+    public void setAccessibilityElementsHidden(boolean v) {}
     /**
      * @since Available in iOS 5.0 and later.
      */

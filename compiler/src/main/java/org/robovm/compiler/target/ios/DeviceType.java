@@ -38,6 +38,7 @@ import org.robovm.compiler.util.Executor;
  */
 public class DeviceType implements Comparable<DeviceType> {
     public static final String PREFIX = "com.apple.CoreSimulator.SimDeviceType.";
+    public static final String PREFERRED_DEVICE_NAME = PREFIX + "iPhone-6";
 
     public static enum DeviceFamily {
         iPhone,
@@ -65,7 +66,7 @@ public class DeviceType implements Comparable<DeviceType> {
     public Set<Arch> getArchs() {
         return Collections.unmodifiableSet(archs);
     }
-    
+
     /**
      * @return id as understood by ios-sim, concatentation of type and sdk
      *         version
@@ -133,7 +134,7 @@ public class DeviceType implements Comparable<DeviceType> {
             throw new RuntimeException(e);
         }
     }
-    
+
     @Override
     public int compareTo(DeviceType that) {
         int c = this.sdk.compareTo(that.sdk);
@@ -145,12 +146,12 @@ public class DeviceType implements Comparable<DeviceType> {
         }
         return c;
     }
-    
-    private static List<DeviceType> filter(List<DeviceType> deviceTypes, Arch arch, 
+
+    private static List<DeviceType> filter(List<DeviceType> deviceTypes, Arch arch,
             DeviceFamily family, String deviceName, String sdkVersion) {
-        
+
         deviceName = deviceName == null ? null : deviceName.toLowerCase();
-        
+
         List<DeviceType> result = new ArrayList<>();
         for (DeviceType type : deviceTypes) {
             if (arch == null || type.getArchs().contains(arch)) {
@@ -165,7 +166,7 @@ public class DeviceType implements Comparable<DeviceType> {
         }
         return result;
     }
-    
+
     public static List<String> getSimpleDeviceTypeIds() {
         List<String> result = new ArrayList<>();
         for (DeviceType type : listDeviceTypes()) {
@@ -210,18 +211,19 @@ public class DeviceType implements Comparable<DeviceType> {
         if (deviceName == null && family == null) {
             family = DeviceFamily.iPhone;
         }
-        
+
         DeviceType best = null;
         for (DeviceType type : filter(listDeviceTypes(), arch, family, deviceName, sdkVersion)) {
             if (best == null) {
                 best = type;
-            } else if (type.getSdk().compareTo(best.getSdk()) > 0) {
+            } else if (type.getSdk().compareTo(best.getSdk()) > 0 ||
+                    type.getSdk().compareTo(best.getSdk()) == 0 && type.getDeviceName().equals(PREFERRED_DEVICE_NAME)) {
                 best = type;
             }
         }
         if (best == null) {
-            throw new IllegalArgumentException("Unable to find a matching device " 
-                    + "[arch=" + arch + ", family=" + family 
+            throw new IllegalArgumentException("Unable to find a matching device "
+                    + "[arch=" + arch + ", family=" + family
                     + ", name=" + deviceName + ", sdk=" + sdkVersion + "]");
         }
         return best;

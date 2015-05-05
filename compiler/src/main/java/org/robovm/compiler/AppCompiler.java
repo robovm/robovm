@@ -52,7 +52,6 @@ import org.robovm.compiler.clazz.Dependency;
 import org.robovm.compiler.clazz.Path;
 import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
-import org.robovm.compiler.config.Config.Home;
 import org.robovm.compiler.config.Config.TargetType;
 import org.robovm.compiler.config.OS;
 import org.robovm.compiler.config.Resource;
@@ -543,7 +542,7 @@ public class AppCompiler {
                 } else if ("-sdk".equals(args[i])) {
                     builder.iosSdkVersion(args[++i]);
                 } else if ("-printdevicetypes".equals(args[i])) {
-                    printDeviceTypesAndExit(Home.find());
+                    printDeviceTypesAndExit();
                 } else if ("-devicetype".equals(args[i])) {
                     builder.iosDeviceType(args[++i]);
                 } else if ("-createipa".equals(args[i])) {
@@ -638,7 +637,7 @@ public class AppCompiler {
                             deviceName = parts[0].trim();
                             sdkVersion = parts.length > 1 ? parts[1].trim() : null;
                         }
-                        DeviceType type = DeviceType.getBestDeviceType(compiler.config.getHome(),
+                        DeviceType type = DeviceType.getBestDeviceType(
                                 compiler.config.getArch(), null, deviceName, sdkVersion);
                         simParams.setDeviceType(type);
                     }
@@ -731,8 +730,8 @@ public class AppCompiler {
         }
     }
 
-    private static void printDeviceTypesAndExit(Home home) throws IOException {
-        List<DeviceType> types = DeviceType.listDeviceTypes(home);
+    private static void printDeviceTypesAndExit() throws IOException {
+        List<DeviceType> types = DeviceType.listDeviceTypes();
         for (DeviceType type : types) {
             System.out.println(type.getSimpleDeviceTypeId());
         }

@@ -69,25 +69,25 @@ import org.robovm.apple.dispatch.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     
-    public long[] getIndexes() {
+    public int[] getIndexes() {
         int n = (int) getLength();
         MachineSizedUIntPtr p = Struct.allocate(MachineSizedUIntPtr.class, n);
         getIndexes(p);
-        return p.toLongArray(n);
+        return p.toIntArray(n);
     }
     
     /* UIKit extensions */
-    public long getSection() {
-        return NSIndexPathExtensions.getSection(this);
+    public int getSection() {
+        return (int) NSIndexPathExtensions.getSection(this);
     }
-    public long getRow() {
-        return NSIndexPathExtensions.getRow(this);
+    public int getRow() {
+        return (int) NSIndexPathExtensions.getRow(this);
     }
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public long getItem() {
-        return NSIndexPathExtensions.getItem(this);
+    public int getItem() {
+        return (int) NSIndexPathExtensions.getItem(this);
     }
     public static NSIndexPath createWithRow(@MachineSizedSInt long row, @MachineSizedSInt long section) {
         return NSIndexPathExtensions.createIndexPathForRowInSection(row, section);

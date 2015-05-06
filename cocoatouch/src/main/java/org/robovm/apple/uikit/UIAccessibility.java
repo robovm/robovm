@@ -209,7 +209,7 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "isAccessibilityElement")
     boolean isAccessibilityElement();
     @Property(selector = "setIsAccessibilityElement:")
-    void setIsAccessibilityElement(boolean v);
+    void setAccessibilityElement(boolean v);
     @Property(selector = "accessibilityLabel")
     String getAccessibilityLabel();
     @Property(selector = "setAccessibilityLabel:")
@@ -263,7 +263,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "setAccessibilityElementsHidden:")
-    void setAreAccessibilityElementsHidden(boolean v);
+    void setAccessibilityElementsHidden(boolean v);
     /**
      * @since Available in iOS 5.0 and later.
      */

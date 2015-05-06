@@ -755,7 +755,7 @@ public class ClassCompiler {
                 
                 createLookupFunction(method);
             }
-            if (needsClassInitWrapper(method)) {
+            if (method.isStatic() && !name.equals("<clinit>")) {
                 String fnName = method.isSynchronized() 
                         ? Symbols.synchronizedWrapperSymbol(method) 
                         : Symbols.methodSymbol(method);
@@ -856,26 +856,6 @@ public class ClassCompiler {
             }
         }
         clazz.saveClazzInfo();
-    }
-
-    private boolean needsClassInitWrapper(SootMethod method) {
-        if (!method.isStatic()) {
-            return false;
-        }
-        if ((method.getModifiers() & 0x1000 /*ACC_SYNTHETIC*/) > 0) {
-            /*
-             * For some lambdas the Java 8 compiler generates static synthetic
-             * private methods for the lambda implementation. The generated
-             * inner class for the lambda will call the generated method by
-             * calling the clinit wrapper function for that method. We have to
-             * make sure that these methods generated for lambdas get clinit
-             * wrappers even if they are private. See #972.
-             */
-            if (method.getName().matches("lambda\\$\\d+")) {
-                return true;
-            }
-        }
-        return !method.isPrivate() && !method.getName().equals("<clinit>");
     }
 
     private static void addDependencyIfNeeded(Clazz clazz, soot.Type type) {

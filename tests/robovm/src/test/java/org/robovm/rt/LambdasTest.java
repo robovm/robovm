@@ -28,20 +28,42 @@ public class LambdasTest {
 
     @Test
     public void testSimple() throws Exception {
-        assertEquals("foo", run(() -> "foo"));
+        assertEquals("foo", runCallable(() -> "foo"));
     }
 
     @Test
     public void testAccessPrivateInstanceMethod() throws Exception {
-        assertEquals("foo", run(() -> privateInstanceMethod(() -> "foo")));
+        assertEquals("foo", runCallable(() -> privateInstanceMethod(() -> "foo")));
+    }
+
+    @Test
+    public void testAccessPrivateInstanceMethodReference() throws Exception {
+        assertEquals("foo", runCallable(this::privateInstanceMethod));
     }
 
     @Test
     public void testAccessPrivateClassMethod() throws Exception {
-        assertEquals("foo", run(() -> privateClassMethod(() -> "foo")));
+        assertEquals("foo", runCallable(() -> privateClassMethod(() -> "foo")));
     }
 
-    private <T> T run(Callable<T> callable) throws Exception {
+    @Test
+    public void testAccessPrivateClassMethodReference() throws Exception {
+        assertEquals("foo", runCallable(LambdasTest::privateClassMethod));
+    }
+
+    @Test
+    public void testAccessVarInSurroundingScope() throws Exception {
+        StringBuilder sb = new StringBuilder();
+        runRunnable(() -> sb.append("foo"));
+        runRunnable(() -> sb.append("bar"));
+        assertEquals("foobar", sb.toString());
+    }
+
+    private void runRunnable(Runnable r) throws Exception {
+        r.run();
+    }
+
+    private <T> T runCallable(Callable<T> callable) throws Exception {
         return callable.call();
     }
 
@@ -51,5 +73,13 @@ public class LambdasTest {
 
     private static <T> T privateClassMethod(Callable<T> callable) throws Exception {
         return callable.call();
+    }
+
+    private String privateInstanceMethod() throws Exception {
+        return "foo";
+    }
+
+    private static String privateClassMethod() throws Exception {
+        return "foo";
     }
 }

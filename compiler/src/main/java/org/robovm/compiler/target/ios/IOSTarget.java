@@ -569,7 +569,9 @@ public class IOSTarget extends AbstractTarget {
     }
 
     private File createPartialInfoPlistFile(File f) throws IOException {
-        return File.createTempFile(f.getName() + "_", ".plist", partialPListDir);
+        File tmpFile = File.createTempFile(f.getName() + "_", ".plist", partialPListDir);
+        tmpFile.delete();
+        return tmpFile;
     }
 
     protected File getAppDir() {

@@ -137,21 +137,21 @@ import org.robovm.apple.coremidi.*;
      * @throws OSStatusException 
      * @since Available in iOS 2.0 and later.
      */
-    public AudioQueue createInput(AudioStreamBasicDescription format, InputCallback callback) throws OSStatusException {
+    public static AudioQueue createInput(AudioStreamBasicDescription format, InputCallback callback) throws OSStatusException {
         return createInput(format, callback, null, (String)null);
     }
     /**
      * @throws OSStatusException 
      * @since Available in iOS 2.0 and later.
      */
-    public AudioQueue createInput(AudioStreamBasicDescription format, InputCallback callback, NSRunLoop callbackRunLoop, NSRunLoopMode callbackRunLoopMode) throws OSStatusException {
+    public static AudioQueue createInput(AudioStreamBasicDescription format, InputCallback callback, NSRunLoop callbackRunLoop, NSRunLoopMode callbackRunLoopMode) throws OSStatusException {
         return createInput(format, callback, callbackRunLoop, callbackRunLoopMode.value());
     }
     /**
      * @throws OSStatusException 
      * @since Available in iOS 2.0 and later.
      */
-    public AudioQueue createInput(AudioStreamBasicDescription format, InputCallback callback, NSRunLoop callbackRunLoop, String callbackRunLoopMode) throws OSStatusException {
+    public static AudioQueue createInput(AudioStreamBasicDescription format, InputCallback callback, NSRunLoop callbackRunLoop, String callbackRunLoopMode) throws OSStatusException {
         if (callback == null) {
             throw new NullPointerException("callback");
         }

@@ -73,6 +73,7 @@ import org.robovm.compiler.target.ios.IOSTarget;
 import org.robovm.compiler.target.ios.InfoPList;
 import org.robovm.compiler.target.ios.ProvisioningProfile;
 import org.robovm.compiler.target.ios.SigningIdentity;
+import org.robovm.compiler.util.DigestUtil;
 import org.robovm.compiler.util.io.RamDiskTools;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
@@ -92,6 +93,14 @@ import org.simpleframework.xml.stream.OutputNode;
  */
 @Root
 public class Config {
+
+    /**
+     * The max file name length of files stored in the cache. OS X has a limit
+     * of 255 characters. Class names are very unlikely to be this long but some
+     * JVM language compilers (e.g. the Scala compiler) are known to generate
+     * very long class names for auto-generated classes. See #955.
+     */
+    private static final int MAX_FILE_NAME_LENGTH = 255;
 
     public enum Cacerts {
         full
@@ -495,49 +504,53 @@ public class Config {
         }
     }
 
+    static String getFileName(Clazz clazz, String ext) {
+        return getFileName(clazz.getInternalName(), ext, MAX_FILE_NAME_LENGTH);
+    }
+
+    static String getFileName(String internalName, String ext, int maxFileNameLength) {
+        String packagePath = internalName.substring(0, internalName.lastIndexOf('/') + 1);
+        String className = internalName.substring(internalName.lastIndexOf('/') + 1);
+        String suffix = ext.startsWith(".") ? ext : "." + ext;
+
+        int length = className.length() + suffix.length();
+        if (length > maxFileNameLength) {
+            String sha1 = DigestUtil.sha1(className);
+            className = className.substring(0, Math.max(0, maxFileNameLength - suffix.length() - sha1.length())) + sha1;
+        }
+        return packagePath.replace('/', File.separatorChar) + className + suffix;
+    }
+
     public File getLlFile(Clazz clazz) {
-        String baseName = clazz.getInternalName().replace('/', File.separatorChar);
-        return new File(getCacheDir(clazz.getPath()), baseName + ".class.ll");
+        return new File(getCacheDir(clazz.getPath()), getFileName(clazz, "class.ll"));
     }
 
     public File getCFile(Clazz clazz) {
-        String baseName = clazz.getInternalName().replace('/', File.separatorChar);
-        return new File(getCacheDir(clazz.getPath()), baseName + ".class.c");
+        return new File(getCacheDir(clazz.getPath()), getFileName(clazz, "class.c"));
     }
 
     public File getBcFile(Clazz clazz) {
-        String baseName = clazz.getInternalName().replace('/', File.separatorChar);
-        return new File(getCacheDir(clazz.getPath()), baseName + ".class.bc");
+        return new File(getCacheDir(clazz.getPath()), getFileName(clazz, "class.bc"));
     }
 
     public File getSFile(Clazz clazz) {
-        String baseName = clazz.getInternalName().replace('/', File.separatorChar);
-        return new File(getCacheDir(clazz.getPath()), baseName + ".class.s");
+        return new File(getCacheDir(clazz.getPath()), getFileName(clazz, "class.s"));
     }
 
     public File getOFile(Clazz clazz) {
-        String baseName = clazz.getInternalName().replace('/', File.separatorChar);
-        return new File(getCacheDir(clazz.getPath()), baseName + ".class.o");
+        return new File(getCacheDir(clazz.getPath()), getFileName(clazz, "class.o"));
     }
 
     public File getLinesOFile(Clazz clazz) {
-        String baseName = clazz.getInternalName().replace('/', File.separatorChar);
-        return new File(getCacheDir(clazz.getPath()), baseName + ".class.lines.o");
+        return new File(getCacheDir(clazz.getPath()), getFileName(clazz, "class.lines.o"));
     }
 
     public File getLinesLlFile(Clazz clazz) {
-        String baseName = clazz.getInternalName().replace('/', File.separatorChar);
-        return new File(getCacheDir(clazz.getPath()), baseName + ".class.lines.ll");
-    }
-
-    public File getDepsFile(Clazz clazz) {
-        String baseName = clazz.getInternalName().replace('/', File.separatorChar);
-        return new File(getCacheDir(clazz.getPath()), baseName + ".class.deps");
+        return new File(getCacheDir(clazz.getPath()), getFileName(clazz, "class.lines.ll"));
     }
 
     public File getInfoFile(Clazz clazz) {
-        String baseName = clazz.getInternalName().replace('/', File.separatorChar);
-        return new File(getCacheDir(clazz.getPath()), baseName + ".class.info");
+        return new File(getCacheDir(clazz.getPath()), getFileName(clazz, "class.info"));
     }
 
     public File getCacheDir(Path path) {
@@ -699,7 +712,7 @@ public class Config {
     private static Config clone(Config config) throws IOException {
         Config clone = new Config();
         for (Field f : Config.class.getDeclaredFields()) {
-            if (!Modifier.isTransient(f.getModifiers())) {
+            if (!Modifier.isStatic(f.getModifiers()) && !Modifier.isTransient(f.getModifiers())) {
                 f.setAccessible(true);
                 try {
                     Object o = f.get(config);

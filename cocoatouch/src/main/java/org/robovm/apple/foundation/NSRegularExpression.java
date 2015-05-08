@@ -58,6 +58,7 @@ import org.robovm.apple.dispatch.*;
        if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
        initObject(handle);
     }
+    public NSRegularExpression(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "pattern")
@@ -92,6 +93,8 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "escapedTemplateForString:")
     public static native String getEscapedTemplate(String string);
     @Method(selector = "encodeWithCoder:")
-    public native void encode(NSCoder aCoder);
+    public native void encode(NSCoder coder);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     /*</methods>*/
 }

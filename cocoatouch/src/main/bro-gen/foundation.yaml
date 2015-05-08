@@ -520,29 +520,45 @@ classes:
             '-containsValueForKey:':
                 name: containsValue
             '-(decode[a-zA-Z0-9]+)ForKey:':
-                name: '#{g[0]}'
+                name: '#{g[0]}0'
+                visibility: protected
             '-decodeBytesForKey:returnedLength:':
-                name: decodeBytes
+                name: decodeBytes0
+                visibility: protected
+                return_type: BytePtr
             '-decodeBytesWithReturnedLength:':
-                name: decodeBytes
+                name: decodeBytes0
+                visibility: protected
+                return_type: BytePtr
             '-decodeObjectOfClass:forKey:':
-                name: decodeObject
+                name: decodeObject0
+                visibility: protected # reordering parameters
                 parameters:
                     aClass:
                         type: 'Class<? extends NSObject>'
             '-decodeObjectOfClasses:forKey:':
-                name: decodeObject
+                name: decodeObject0
+                visibility: protected # reordering parameters
                 parameters:
                     classes:
                         type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<ObjCClass>'
             '-(encode[a-zA-Z0-9]+):forKey:':
-                name: '#{g[0]}'
+                name: '#{g[0]}0'
+                visibility: protected # reordering parameters
             '-encode[a-zA-Z0-9]+Object:':
                 trim_after_first_colon: true
-            '-encodeBytes:length:':
-                trim_after_first_colon: true
-            '-encodeBytes:length:forKey:':
-                trim_after_first_colon: true
+            '-(encodeBytes):length:':
+                name: '#{g[0]}0'
+                visibility: protected
+                parameters:
+                    byteaddr:
+                        type: '@Pointer long'
+            '-(encodeBytes):length:forKey:':
+                name: '#{g[0]}0'
+                visibility: protected # reordering parameters
+                parameters:
+                    bytesp:
+                        type: '@Pointer long'
             '-encodeObject:':
                 trim_after_first_colon: true
             '-versionForClassName:':
@@ -3744,9 +3760,12 @@ protocols:
     NSCoding: # DONE
         methods:
             '-initWithCoder:':
-                exclude: true
+                name: init
             '-encodeWithCoder:':
                 name: encode
+                parameters:
+                    aCoder:
+                        name: coder
 #    NSCopying: {}
     NSDecimalNumberBehaviors: # DONE
         methods:

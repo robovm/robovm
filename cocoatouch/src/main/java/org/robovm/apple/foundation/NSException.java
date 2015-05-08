@@ -48,6 +48,7 @@ import org.robovm.apple.security.*;
     /*<constructors>*/
     protected NSException(SkipInit skipInit) { super(skipInit); }
     public NSException(String aName, String aReason, NSDictionary<?, ?> aUserInfo) { super((SkipInit) null); initObject(init(aName, aReason, aUserInfo)); }
+    public NSException(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "name")
@@ -127,6 +128,8 @@ import org.robovm.apple.security.*;
     @Method(selector = "raise")
     public native void raise();
     @Method(selector = "encodeWithCoder:")
-    public native void encode(NSCoder aCoder);
+    public native void encode(NSCoder coder);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     /*</methods>*/
 }

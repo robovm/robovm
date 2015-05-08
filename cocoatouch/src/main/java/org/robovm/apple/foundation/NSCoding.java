@@ -51,10 +51,8 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*/
     
     /*</properties>*/
-    /*<methods>*/
     @Method(selector = "encodeWithCoder:")
-    void encode(NSCoder aCoder);
-    /*</methods>*/
+    void encode(NSCoder coder);
     /*<adapter>*/
     /*</adapter>*/
 }

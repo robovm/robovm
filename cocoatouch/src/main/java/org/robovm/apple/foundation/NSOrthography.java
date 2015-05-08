@@ -129,6 +129,6 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "dominantLanguageForScript:")
     public native String getDominantLanguageForScript(String script);
     @Method(selector = "encodeWithCoder:")
-    public native void encode(NSCoder aCoder);
+    public native void encode(NSCoder coder);
     /*</methods>*/
 }

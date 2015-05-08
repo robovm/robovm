@@ -173,6 +173,6 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "keyForFileWrapper:")
     public native String getKeyForFileWrapper(NSFileWrapper child);
     @Method(selector = "encodeWithCoder:")
-    public native void encode(NSCoder aCoder);
+    public native void encode(NSCoder coder);
     /*</methods>*/
 }

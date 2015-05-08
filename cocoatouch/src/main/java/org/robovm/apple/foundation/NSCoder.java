@@ -71,25 +71,25 @@ import org.robovm.apple.dispatch.*;
     
     /* UIKit extensions */
     
-    public void encodeCGPoint(CGPoint point, String key) {
+    public void encodeCGPoint(String key, CGPoint point) {
         org.robovm.apple.uikit.NSCoderExtensions.encodeCGPoint(this, point, key);
     }
-    public void encodeCGSize(CGSize size, String key) {
+    public void encodeCGSize(String key, CGSize size) {
         org.robovm.apple.uikit.NSCoderExtensions.encodeCGSize(this, size, key);
     }
-    public void encodeCGRect(CGRect rect, String key) {
+    public void encodeCGRect(String key, CGRect rect) {
         org.robovm.apple.uikit.NSCoderExtensions.encodeCGRect(this, rect, key);
     }
-    public void encodeCGAffineTransform(CGAffineTransform transform, String key) {
+    public void encodeCGAffineTransform(String key, CGAffineTransform transform) {
         org.robovm.apple.uikit.NSCoderExtensions.encodeCGAffineTransform(this, transform, key);
     }
-    public void encodeUIEdgeInsets(UIEdgeInsets insets, String key) {
+    public void encodeUIEdgeInsets(String key, UIEdgeInsets insets) {
         org.robovm.apple.uikit.NSCoderExtensions.encodeUIEdgeInsets(this, insets, key);
     }
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public void encodeUIOffset(UIOffset offset, String key) {
+    public void encodeUIOffset(String key, UIOffset offset) {
         org.robovm.apple.uikit.NSCoderExtensions.encodeUIOffset(this, offset, key);
     }
     public CGPoint decodeCGPoint(String key) {
@@ -118,7 +118,7 @@ import org.robovm.apple.dispatch.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public void encodeCMTime(CMTime time, String key) {
+    public void encodeCMTime(String key, CMTime time) {
         org.robovm.apple.avfoundation.NSCoderExtensions.encodeCMTime(this, time, key);
     }
     /**
@@ -130,7 +130,7 @@ import org.robovm.apple.dispatch.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public void encodeCMTimeRange(CMTimeRange timeRange, String key) {
+    public void encodeCMTimeRange(String key, CMTimeRange timeRange) {
         org.robovm.apple.avfoundation.NSCoderExtensions.encodeCMTimeRange(this, timeRange, key);
     }
     /**
@@ -142,7 +142,7 @@ import org.robovm.apple.dispatch.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public void encodeCMTimeMapping(CMTimeMapping timeMapping, String key) {
+    public void encodeCMTimeMapping(String key, CMTimeMapping timeMapping) {
         org.robovm.apple.avfoundation.NSCoderExtensions.encodeCMTimeMapping(this, timeMapping, key);
     }
     /**
@@ -152,6 +152,84 @@ import org.robovm.apple.dispatch.*;
         return org.robovm.apple.avfoundation.NSCoderExtensions.decodeCMTimeMapping(this, key);
     }
     
+    public void encodeBytes(byte[] bytes) {
+        encodeBytes0(VM.getArrayValuesAddress(bytes), bytes.length);
+    }
+    public byte[] decodeBytes() {
+        MachineSizedUIntPtr lengthPtr = new MachineSizedUIntPtr();
+        BytePtr bytePtr = decodeBytes0(lengthPtr);
+        return bytePtr.toByteArray((int)lengthPtr.get());
+    }
+    public void encodeObject(String key, NSObject value) {
+        encodeObject0(value, key);
+    }
+    public void encodeConditionalObject(String key, NSObject value) {
+        encodeConditionalObject0(value, key);
+    }
+    public void encodeBoolean(String key, boolean value) {
+        encodeBool0(value, key);
+    }
+    public void encodeInteger(String key, int value) {
+        encodeInt320(value, key);
+    }
+    public void encodeLong(String key, long value) {
+        encodeInt640(value, key);
+    }
+    public void encodeFloat(String key, float value) {
+        encodeFloat0(value, key);
+    }
+    public void encodeDouble(String key, double value) {
+        encodeDouble0(value, key);
+    }
+    public void encodeBytes(String key, byte[] bytes) {
+        encodeBytes0(VM.getArrayValuesAddress(bytes), bytes.length, key);
+    }
+    public NSObject decodeObject(String key) {
+        return decodeObject0(key);
+    }
+    public boolean decodeBoolean(String key) {
+        return decodeBool0(key);
+    }
+    public int decodeInteger(String key) {
+        return decodeInt320(key);
+    }
+    public long decodeLong(String key) {
+        return decodeInt640(key);
+    }
+    public float decodeFloat(String key) {
+        return decodeFloat0(key);
+    }
+    public double decodeDouble(String key) {
+        return decodeDouble0(key);
+    }
+    public byte[] decodeBytes(String key) {
+        MachineSizedUIntPtr lengthPtr = new MachineSizedUIntPtr();
+        BytePtr bytesPtr = decodeBytes0(key, lengthPtr);
+        return bytesPtr.toByteArray((int)lengthPtr.get());
+    }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public NSObject decodeObject(String key, Class<? extends NSObject> clazz) {
+        return decodeObject0(clazz, key);
+    }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public NSObject decodeObject(String key, List<ObjCClass> clazzes) {
+        return decodeObject0(clazzes, key);
+    }
+    
+    public void encodeString(String key, String value) {
+        encodeObject(key, value == null ? null : new NSString(value));
+    }
+    public String decodeString(String key) {
+        NSObject value = decodeObject(key);
+        if (value instanceof NSString) {
+            return ((NSString)value).toString();
+        }
+        return null;
+    }
     /*<methods>*/
     @Method(selector = "encodeDataObject:")
     public native void encodeDataObject(NSData data);
@@ -170,75 +248,75 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "encodeConditionalObject:")
     public native void encodeConditionalObject(NSObject object);
     @Method(selector = "encodeBytes:length:")
-    public native void encodeBytes(VoidPtr byteaddr, @MachineSizedUInt long length);
+    protected native void encodeBytes0(@Pointer long byteaddr, @MachineSizedUInt long length);
     @Method(selector = "decodeObject")
     public native NSObject decodeObject();
     @Method(selector = "decodeBytesWithReturnedLength:")
-    public native VoidPtr decodeBytes(MachineSizedUIntPtr lengthp);
+    protected native BytePtr decodeBytes0(MachineSizedUIntPtr lengthp);
     @Method(selector = "setObjectZone:")
     public native void setObjectZone(NSZone zone);
     @Method(selector = "objectZone")
     public native NSZone getObjectZone();
     @Method(selector = "encodeObject:forKey:")
-    public native void encodeObject(NSObject objv, String key);
+    protected native void encodeObject0(NSObject objv, String key);
     @Method(selector = "encodeConditionalObject:forKey:")
-    public native void encodeConditionalObject(NSObject objv, String key);
+    protected native void encodeConditionalObject0(NSObject objv, String key);
     @Method(selector = "encodeBool:forKey:")
-    public native void encodeBool(boolean boolv, String key);
+    protected native void encodeBool0(boolean boolv, String key);
     @Method(selector = "encodeInt:forKey:")
-    public native void encodeInt(int intv, String key);
+    protected native void encodeInt0(int intv, String key);
     @Method(selector = "encodeInt32:forKey:")
-    public native void encodeInt32(int intv, String key);
+    protected native void encodeInt320(int intv, String key);
     @Method(selector = "encodeInt64:forKey:")
-    public native void encodeInt64(long intv, String key);
+    protected native void encodeInt640(long intv, String key);
     @Method(selector = "encodeFloat:forKey:")
-    public native void encodeFloat(float realv, String key);
+    protected native void encodeFloat0(float realv, String key);
     @Method(selector = "encodeDouble:forKey:")
-    public native void encodeDouble(double realv, String key);
+    protected native void encodeDouble0(double realv, String key);
     @Method(selector = "encodeBytes:length:forKey:")
-    public native void encodeBytes(BytePtr bytesp, @MachineSizedUInt long lenv, String key);
+    protected native void encodeBytes0(@Pointer long bytesp, @MachineSizedUInt long lenv, String key);
     @Method(selector = "containsValueForKey:")
     public native boolean containsValue(String key);
     @Method(selector = "decodeObjectForKey:")
-    public native NSObject decodeObject(String key);
+    protected native NSObject decodeObject0(String key);
     @Method(selector = "decodeBoolForKey:")
-    public native boolean decodeBool(String key);
+    protected native boolean decodeBool0(String key);
     @Method(selector = "decodeIntForKey:")
-    public native int decodeInt(String key);
+    protected native int decodeInt0(String key);
     @Method(selector = "decodeInt32ForKey:")
-    public native int decodeInt32(String key);
+    protected native int decodeInt320(String key);
     @Method(selector = "decodeInt64ForKey:")
-    public native long decodeInt64(String key);
+    protected native long decodeInt640(String key);
     @Method(selector = "decodeFloatForKey:")
-    public native float decodeFloat(String key);
+    protected native float decodeFloat0(String key);
     @Method(selector = "decodeDoubleForKey:")
-    public native double decodeDouble(String key);
+    protected native double decodeDouble0(String key);
     @Method(selector = "decodeBytesForKey:returnedLength:")
-    public native BytePtr decodeBytes(String key, MachineSizedUIntPtr lengthp);
+    protected native BytePtr decodeBytes0(String key, MachineSizedUIntPtr lengthp);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "encodeInteger:forKey:")
-    public native void encodeInteger(@MachineSizedSInt long intv, String key);
+    protected native void encodeInteger0(@MachineSizedSInt long intv, String key);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "decodeIntegerForKey:")
-    public native @MachineSizedSInt long decodeInteger(String key);
+    protected native @MachineSizedSInt long decodeInteger0(String key);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "decodeObjectOfClass:forKey:")
-    public native NSObject decodeObject(Class<? extends NSObject> aClass, String key);
+    protected native NSObject decodeObject0(Class<? extends NSObject> aClass, String key);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "decodeObjectOfClasses:forKey:")
-    public native NSObject decodeObject(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<ObjCClass> classes, String key);
+    protected native NSObject decodeObject0(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<ObjCClass> classes, String key);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "decodePropertyListForKey:")
-    public native NSObject decodePropertyList(String key);
+    protected native NSObject decodePropertyList0(String key);
     /*</methods>*/
 }

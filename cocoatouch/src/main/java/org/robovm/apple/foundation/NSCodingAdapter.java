@@ -48,13 +48,18 @@ import org.robovm.apple.dispatch.*;
     /*<bind>*/
     /*</bind>*/
     /*<constants>*//*</constants>*/
+    public NSCodingAdapter() {}
+    public NSCodingAdapter(NSCoder coder) {
+        super((SkipInit)null);
+        initObject(init(coder));
+    }
     /*<constructors>*//*</constructors>*/
+    @Method(selector = "initWithCoder:")
+    private native @Pointer long init(NSCoder coder);
     /*<properties>*/
     
     /*</properties>*/
     /*<members>*//*</members>*/
-    /*<methods>*/
     @NotImplemented("encodeWithCoder:")
     public void encode(NSCoder aCoder) {}
-    /*</methods>*/
 }

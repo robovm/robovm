@@ -359,5 +359,23 @@ public class ConfigTest {
         assertNotSame(config.getTarget(), config2.getTarget());
         assertNotSame(config.getClazzes(), config2.getClazzes());
     }
-    
+
+    @Test
+    public void testGetFileName() throws Exception {
+        assertEquals("201a6b3053cc1422d2c3670b62616221d2290929.class.o", Config.getFileName("Foo", "class.o", 0));
+        assertEquals("201a6b3053cc1422d2c3670b62616221d2290929.class.o", Config.getFileName("Foo", "class.o", 1));
+        assertEquals("201a6b3053cc1422d2c3670b62616221d2290929.class.o", Config.getFileName("Foo", "class.o", 10));
+        assertEquals("Foo.class.o", Config.getFileName("Foo", "class.o", 11));
+
+        assertEquals("com/example/201a6b3053cc1422d2c3670b62616221d2290929.class.o",
+                Config.getFileName("com/example/Foo", "class.o", 0));
+        assertEquals("com/example/201a6b3053cc1422d2c3670b62616221d2290929.class.o",
+                Config.getFileName("com/example/Foo", "class.o", 1));
+        assertEquals("com/example/201a6b3053cc1422d2c3670b62616221d2290929.class.o",
+                Config.getFileName("com/example/Foo", "class.o", 10));
+        assertEquals("com/example/Foo.class.o", Config.getFileName("com/example/Foo", "class.o", 11));
+
+        assertEquals("com/example/AB9ca44297c0e0d22df654119dce73ee52d3d51c71.class.o",
+                Config.getFileName("com/example/ABCDEFGIHJABCDEFGIHJABCDEFGIHJABCDEFGIHJABCDEFGIHJ", "class.o", 50));
+    }
 }

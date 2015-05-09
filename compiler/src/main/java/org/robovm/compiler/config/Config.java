@@ -211,8 +211,8 @@ public class Config {
         this.plugins.addAll(0, Arrays.asList(
                 new InterfaceBuilderClassesPlugin(),
                 new ObjCProtocolProxyPlugin(),
-                new ObjCBlockPlugin(),
                 new ObjCMemberPlugin(),
+                new ObjCBlockPlugin(),
                 new AnnotationImplPlugin(),
                 new LambdaPlugin()
                 ));

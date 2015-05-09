@@ -34,10 +34,12 @@ import org.robovm.compiler.CompilerException;
 import org.robovm.compiler.MarshalerLookup.MarshalSite;
 import org.robovm.compiler.MarshalerLookup.MarshalerMethod;
 import org.robovm.compiler.ModuleBuilder;
+import org.robovm.compiler.Types;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.plugin.AbstractCompilerPlugin;
 import org.robovm.compiler.plugin.CompilerPlugin;
+import org.robovm.compiler.util.generic.SootMethodType;
 
 import soot.Body;
 import soot.BooleanType;
@@ -71,6 +73,7 @@ import soot.jimple.Stmt;
 import soot.jimple.StringConstant;
 import soot.tagkit.AnnotationStringElem;
 import soot.tagkit.AnnotationTag;
+import soot.tagkit.SignatureTag;
 import soot.util.Chain;
 
 /**
@@ -170,7 +173,37 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         SootMethod m = new SootMethod((isCallback ? "$cb$" : "$m$") + selectorName.replace(':', '$'),
                 paramTypes, method.getReturnType(), STATIC | PRIVATE | (isCallback ? 0 : NATIVE));
         copyAnnotations(annotatedMethod, m, extensions);
+        
+        createGenericSignatureForMsgSend(annotatedMethod, m, paramTypes, extensions);
+
         return m;
+    }
+
+    private void createGenericSignatureForMsgSend(SootMethod annotatedMethod, SootMethod m, List<Type> paramTypes, boolean extensions) {
+        SignatureTag tag = (SignatureTag) annotatedMethod.getTag(SignatureTag.class.getSimpleName());
+        if (tag != null) {
+            String signature = null;
+            if (extensions) {
+                // We need to insert a Selector as parameter 2.
+                SootMethodType type = new SootMethodType(annotatedMethod);
+                StringBuilder sb = new StringBuilder("(");
+                org.robovm.compiler.util.generic.Type[] genericParameterTypes = type.getGenericParameterTypes();
+                sb.append(genericParameterTypes[0].toGenericSignature());
+                sb.append(Types.getDescriptor(org_robovm_objc_Selector.getType()));
+                for (int i = 1; i < genericParameterTypes.length; i++) {
+                    sb.append(genericParameterTypes[i].toGenericSignature());
+                }
+                sb.append(")");
+                sb.append(type.getGenericReturnType().toGenericSignature());
+                signature = sb.toString();
+            } else {
+                // For non extensions we just need to prepend the receiver type
+                // and Selector to the generic signature.
+                signature = "(" + Types.getDescriptor(paramTypes.get(0)) + Types.getDescriptor(paramTypes.get(1))
+                        + tag.getSignature().substring(1);
+            }
+            m.addTag(new SignatureTag(signature));
+        }
     }
 
     private static void copyAnnotations(SootMethod fromMethod, SootMethod toMethod, boolean extensions) {
@@ -198,6 +231,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         SootMethod m = new SootMethod("$m$super$" + selectorName.replace(':', '$'),
                 paramTypes, method.getReturnType(), STATIC | PRIVATE | NATIVE);
         copyAnnotations(method, m, false);
+        createGenericSignatureForMsgSend(method, m, paramTypes, false);
         return m;
     }
 

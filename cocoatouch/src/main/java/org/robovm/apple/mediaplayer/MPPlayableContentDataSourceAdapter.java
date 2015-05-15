@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,12 +50,12 @@ import org.robovm.apple.coregraphics.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("beginLoadingChildItemsAtIndexPath:completionHandler:")
-    public void beginLoadingChildItems(NSIndexPath indexPath, @Block VoidBlock1<NSError> completionHandler) { throw new UnsupportedOperationException(); }
+    public void beginLoadingChildItems(NSIndexPath indexPath, @Block VoidBlock1<NSError> completionHandler) {}
     @NotImplemented("childItemsDisplayPlaybackProgressAtIndexPath:")
-    public boolean childItemsDisplayPlaybackProgress(NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+    public boolean childItemsDisplayPlaybackProgress(NSIndexPath indexPath) { return false; }
     @NotImplemented("numberOfChildItemsAtIndexPath:")
-    public @MachineSizedSInt long getNumberOfChildItems(NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+    public @MachineSizedSInt long getNumberOfChildItems(NSIndexPath indexPath) { return 0; }
     @NotImplemented("contentItemAtIndexPath:")
-    public MPContentItem getContentItem(NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+    public MPContentItem getContentItem(NSIndexPath indexPath) { return null; }
     /*</methods>*/
 }

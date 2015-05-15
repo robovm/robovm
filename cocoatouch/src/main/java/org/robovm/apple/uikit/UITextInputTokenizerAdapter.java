@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,12 +54,12 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("rangeEnclosingPosition:withGranularity:inDirection:")
-    public UITextRange getRangeEnclosingPosition(UITextPosition position, UITextGranularity granularity, UITextDirection direction) { throw new UnsupportedOperationException(); }
+    public UITextRange getRangeEnclosingPosition(UITextPosition position, UITextGranularity granularity, UITextDirection direction) { return null; }
     @NotImplemented("isPosition:atBoundary:inDirection:")
-    public boolean isPositionAtBoundary(UITextPosition position, UITextGranularity granularity, UITextDirection direction) { throw new UnsupportedOperationException(); }
+    public boolean isPositionAtBoundary(UITextPosition position, UITextGranularity granularity, UITextDirection direction) { return false; }
     @NotImplemented("positionFromPosition:toBoundary:inDirection:")
-    public UITextPosition getPosition(UITextPosition position, UITextGranularity granularity, UITextDirection direction) { throw new UnsupportedOperationException(); }
+    public UITextPosition getPosition(UITextPosition position, UITextGranularity granularity, UITextDirection direction) { return null; }
     @NotImplemented("isPosition:withinTextUnit:inDirection:")
-    public boolean isPositionWithinTextUnit(UITextPosition position, UITextGranularity granularity, UITextDirection direction) { throw new UnsupportedOperationException(); }
+    public boolean isPositionWithinTextUnit(UITextPosition position, UITextGranularity granularity, UITextDirection direction) { return false; }
     /*</methods>*/
 }

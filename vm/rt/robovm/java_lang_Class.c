@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian Mobile AB
+ * Copyright (C) 2012 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -281,13 +281,6 @@ ObjectArray* Java_java_lang_Class_getDeclaredAnnotations0(Env* env, Class* clazz
     return rvmAttributeGetClassRuntimeVisibleAnnotations(env, clazz);
 }
 
-static jboolean endsWith(const char *str, const char *suffix) {
-    size_t lenStr = strlen(str);
-    size_t lenSuffix = strlen(suffix);
-    if (lenSuffix > lenStr) return FALSE;
-    return strncmp(str + lenStr - lenSuffix, suffix, lenSuffix) == 0;
-}
-
 Class* Java_java_lang_Class_classForName(Env* env, Class* cls, Object* className, jboolean initializeBoolean,
             ClassLoader* classLoader) {
 
@@ -299,19 +292,16 @@ Class* Java_java_lang_Class_classForName(Env* env, Class* cls, Object* className
     if (!classNameUTF) return NULL;
     Class* clazz = rvmFindClassUsingLoader(env, classNameUTF, classLoader);
     if (!clazz) {
-        // FIXME: Temp fix to prevent warnings from the ObjC bridge about missing XXX$Callbacks classes
-        if (!endsWith(classNameUTF, "$Callbacks")) {
-            char* p = classNameUTF;
-            while (*p != '\0') {
-                if (*p == '/') *p = '.';
-                p++;
-            }
-            WARNF("Class.forName() failed to load '%s'. "
-                  "Use the -forcelinkclasses command line option "
-                  "or add <forceLinkClasses><pattern>%s</pattern></forceLinkClasses> "
-                  "to your robovm.xml file to link it in.",
-                  classNameUTF, classNameUTF);
+        char* p = classNameUTF;
+        while (*p != '\0') {
+            if (*p == '/') *p = '.';
+            p++;
         }
+        WARNF("Class.forName() failed to load '%s'. "
+              "Use the -forcelinkclasses command line option "
+              "or add <forceLinkClasses><pattern>%s</pattern></forceLinkClasses> "
+              "to your robovm.xml file to link it in.",
+              classNameUTF, classNameUTF);
         return NULL;
     }
     if (initializeBoolean) {

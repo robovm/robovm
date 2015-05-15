@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -71,7 +71,7 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFAllocatorGetDefault", optional=true)
     public static native CFAllocator getDefault();
     @Bridge(symbol="CFAllocatorCreate", optional=true)
-    public native CFAllocator create(CFAllocatorContext context);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFAllocator create(CFAllocatorContext context);
     @Bridge(symbol="CFAllocatorAllocate", optional=true)
     public native VoidPtr allocate(@MachineSizedSInt long size, @MachineSizedSInt long hint);
     @Bridge(symbol="CFAllocatorReallocate", optional=true)

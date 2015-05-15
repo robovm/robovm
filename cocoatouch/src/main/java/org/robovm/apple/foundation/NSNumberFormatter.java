@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,6 +35,7 @@ import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
+import org.robovm.apple.coretext.CTAttributedStringAttributes;
 
 /*<javadoc>*/
 
@@ -51,6 +52,270 @@ import org.robovm.apple.dispatch.*;
     public NSNumberFormatter() {}
     protected NSNumberFormatter(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
+    public NSAttributedStringAttributes getTextAttributesForNegativeValues() {
+        NSDictionary<NSString, NSObject> dict = getTextAttributesDictionaryForNegativeValues();
+        if (dict == null) {
+            return null;
+        }
+        return new NSAttributedStringAttributes(dict);
+    }
+    public CMTextMarkupAttributes getTextMarkupAttributesForNegativeValues() {
+        NSDictionary<NSString, NSObject> dict = getTextAttributesDictionaryForNegativeValues();
+        if (dict == null) {
+            return null;
+        }
+        return new CMTextMarkupAttributes(dict.as(CFDictionary.class));
+    }
+    public CTAttributedStringAttributes getCoreTextAttributesForNegativeValues() {
+        NSDictionary<NSString, NSObject> dict = getTextAttributesDictionaryForNegativeValues();
+        if (dict == null) {
+            return null;
+        }
+        return new CTAttributedStringAttributes(dict.as(CFDictionary.class));
+    }
+    public void setTextAttributesForNegativeValues(NSAttributedStringAttributes v) {
+        if (v == null) {
+            setTextAttributesDictionaryForNegativeValues(null);
+        } else {
+            setTextAttributesDictionaryForNegativeValues(v.getDictionary());
+        }
+    }
+    public void setTextMarkupAttributesForNegativeValues(CMTextMarkupAttributes v) {
+        if (v == null) {
+            setTextAttributesDictionaryForNegativeValues(null);
+        } else {
+            setTextAttributesDictionaryForNegativeValues(v.getDictionary().as(NSDictionary.class));
+        }
+    }
+    public void setCoreTextAttributesForNegativeValues(CTAttributedStringAttributes v) {
+        if (v == null) {
+            setTextAttributesDictionaryForNegativeValues(null);
+        } else {
+            setTextAttributesDictionaryForNegativeValues(v.getDictionary().as(NSDictionary.class));
+        }
+    }
+    
+    public NSAttributedStringAttributes getTextAttributesForPositiveValues() {
+        NSDictionary<NSString, NSObject> dict = getTextAttributesDictionaryForPositiveValues();
+        if (dict == null) return null;
+        return new NSAttributedStringAttributes(dict);
+    }
+    public CMTextMarkupAttributes getTextMarkupAttributesForPositiveValues() {
+        NSDictionary<NSString, NSObject> dict = getTextAttributesDictionaryForPositiveValues();
+        if (dict == null) return null;
+        return new CMTextMarkupAttributes(dict.as(CFDictionary.class));
+    }
+    public CTAttributedStringAttributes getCoreTextAttributesForPositiveValues() {
+        NSDictionary<NSString, NSObject> dict = getTextAttributesDictionaryForPositiveValues();
+        if (dict == null) return null;
+        return new CTAttributedStringAttributes(dict.as(CFDictionary.class));
+    }
+    public void setTextAttributesForPositiveValues(NSAttributedStringAttributes v) {
+        if (v == null) {
+            setTextAttributesDictionaryForPositiveValues(null);
+        } else {
+            setTextAttributesDictionaryForPositiveValues(v.getDictionary());
+        }
+    }
+    public void setTextMarkupAttributesForPositiveValues(CMTextMarkupAttributes v) {
+        if (v == null) {
+            setTextAttributesDictionaryForPositiveValues(null);
+        } else {
+            setTextAttributesDictionaryForPositiveValues(v.getDictionary().as(NSDictionary.class));
+        }
+    }
+    public void setCoreTextAttributesForPositiveValues(CTAttributedStringAttributes v) {
+        if (v == null) {
+            setTextAttributesDictionaryForPositiveValues(null);
+        } else {
+            setTextAttributesDictionaryForPositiveValues(v.getDictionary().as(NSDictionary.class));
+        }
+    }
+    
+    public NSAttributedStringAttributes getTextAttributesForZero() {
+        NSDictionary<NSString, NSObject> dict = getTextAttributesDictionaryForZero();
+        if (dict == null) return null;
+        return new NSAttributedStringAttributes(dict);
+    }
+    public CMTextMarkupAttributes getTextMarkupAttributesForZero() {
+        NSDictionary<NSString, NSObject> dict = getTextAttributesDictionaryForZero();
+        if (dict == null) return null;
+        return new CMTextMarkupAttributes(dict.as(CFDictionary.class));
+    }
+    public CTAttributedStringAttributes getCoreTextAttributesForZero() {
+        NSDictionary<NSString, NSObject> dict = getTextAttributesDictionaryForZero();
+        if (dict == null) return null;
+        return new CTAttributedStringAttributes(dict.as(CFDictionary.class));
+    }
+    public void setTextAttributesForZero(NSAttributedStringAttributes v) {
+        if (v == null) {
+            setTextAttributesDictionaryForZero(null);
+        } else {
+            setTextAttributesDictionaryForZero(v.getDictionary());
+        }
+    }
+    public void setTextMarkupAttributesForZero(CMTextMarkupAttributes v) {
+        if (v == null) {
+            setTextAttributesDictionaryForZero(null);
+        } else {
+            setTextAttributesDictionaryForZero(v.getDictionary().as(NSDictionary.class));
+        }
+    }
+    public void setCoreTextAttributesForZero(CTAttributedStringAttributes v) {
+        if (v == null) {
+            setTextAttributesDictionaryForZero(null);
+        } else {
+            setTextAttributesDictionaryForZero(v.getDictionary().as(NSDictionary.class));
+        }
+    }
+    
+    public NSAttributedStringAttributes getTextAttributesForNull() {
+        NSDictionary<NSString, NSObject> dict = getTextAttributesDictionaryForNull();
+        if (dict == null) return null;
+        return new NSAttributedStringAttributes(dict);
+    }
+    public CMTextMarkupAttributes getTextMarkupAttributesForNull() {
+        NSDictionary<NSString, NSObject> dict = getTextAttributesDictionaryForNull();
+        if (dict == null) return null;
+        return new CMTextMarkupAttributes(dict.as(CFDictionary.class));
+    }
+    public CTAttributedStringAttributes getCoreTextAttributesForNull() {
+        NSDictionary<NSString, NSObject> dict = getTextAttributesDictionaryForNull();
+        if (dict == null) return null;
+        return new CTAttributedStringAttributes(dict.as(CFDictionary.class));
+    }
+    public void setTextAttributesForNull(NSAttributedStringAttributes v) {
+        if (v == null) {
+            setTextAttributesDictionaryForNull(null);
+        } else {
+            setTextAttributesDictionaryForNull(v.getDictionary());
+        }
+    }
+    public void setTextMarkupAttributesForNull(CMTextMarkupAttributes v) {
+        if (v == null) {
+            setTextAttributesDictionaryForNull(null);
+        } else {
+            setTextAttributesDictionaryForNull(v.getDictionary().as(NSDictionary.class));
+        }
+    }
+    public void setCoreTextAttributesForNull(CTAttributedStringAttributes v) {
+        if (v == null) {
+            setTextAttributesDictionaryForNull(null);
+        } else {
+            setTextAttributesDictionaryForNull(v.getDictionary().as(NSDictionary.class));
+        }
+    }
+    
+    public NSAttributedStringAttributes getTextAttributesForNaN() {
+        NSDictionary<NSString, NSObject> dict = getTextAttributesDictionaryForNaN();
+        if (dict == null) return null;
+        return new NSAttributedStringAttributes(dict);
+    }
+    public CMTextMarkupAttributes getTextMarkupAttributesForNaN() {
+        NSDictionary<NSString, NSObject> dict = getTextAttributesDictionaryForNaN();
+        if (dict == null) return null;
+        return new CMTextMarkupAttributes(dict.as(CFDictionary.class));
+    }
+    public CTAttributedStringAttributes getCoreTextAttributesForNaN() {
+        NSDictionary<NSString, NSObject> dict = getTextAttributesDictionaryForNaN();
+        if (dict == null) return null;
+        return new CTAttributedStringAttributes(dict.as(CFDictionary.class));
+    }
+    public void setTextAttributesForNaN(NSAttributedStringAttributes v) {
+        if (v == null) {
+            setTextAttributesDictionaryForNaN(null);
+        } else {
+            setTextAttributesDictionaryForNaN(v.getDictionary());
+        }
+    }
+    public void setTextMarkupAttributesForNaN(CMTextMarkupAttributes v) {
+        if (v == null) {
+            setTextAttributesDictionaryForNaN(null);
+        } else {
+            setTextAttributesDictionaryForNaN(v.getDictionary().as(NSDictionary.class));
+        }
+    }
+    public void setCoreTextAttributesForNaN(CTAttributedStringAttributes v) {
+        if (v == null) {
+            setTextAttributesDictionaryForNaN(null);
+        } else {
+            setTextAttributesDictionaryForNaN(v.getDictionary().as(NSDictionary.class));
+        }
+    }
+    
+    public NSAttributedStringAttributes getTextAttributesForPositiveInfinity() {
+        NSDictionary<NSString, NSObject> dict = getTextAttributesDictionaryForPositiveInfinity();
+        if (dict == null) return null;
+        return new NSAttributedStringAttributes(dict);
+    }
+    public CMTextMarkupAttributes getTextMarkupAttributesForPositiveInfinity() {
+        NSDictionary<NSString, NSObject> dict = getTextAttributesDictionaryForPositiveInfinity();
+        if (dict == null) return null;
+        return new CMTextMarkupAttributes(dict.as(CFDictionary.class));
+    }
+    public CTAttributedStringAttributes getCoreTextAttributesForPositiveInfinity() {
+        NSDictionary<NSString, NSObject> dict = getTextAttributesDictionaryForPositiveInfinity();
+        if (dict == null) return null;
+        return new CTAttributedStringAttributes(dict.as(CFDictionary.class));
+    }
+    public void setTextAttributesForPositiveInfinity(NSAttributedStringAttributes v) {
+        if (v == null) {
+            setTextAttributesDictionaryForPositiveInfinity(null);
+        } else {
+            setTextAttributesDictionaryForPositiveInfinity(v.getDictionary());
+        }
+    }
+    public void setTextMarkupAttributesForPositiveInfinity(CMTextMarkupAttributes v) {
+        if (v == null) {
+            setTextAttributesDictionaryForPositiveInfinity(null);
+        } else {
+            setTextAttributesDictionaryForPositiveInfinity(v.getDictionary().as(NSDictionary.class));
+        }
+    }
+    public void setCoreTextAttributesForPositiveInfinity(CTAttributedStringAttributes v) {
+        if (v == null) {
+            setTextAttributesDictionaryForPositiveInfinity(null);
+        } else {
+            setTextAttributesDictionaryForPositiveInfinity(v.getDictionary().as(NSDictionary.class));
+        }
+    }
+    
+    public NSAttributedStringAttributes getTextAttributesForNegativeInfinity() {
+        NSDictionary<NSString, NSObject> dict = getTextAttributesDictionaryForNegativeInfinity();
+        if (dict == null) return null;
+        return new NSAttributedStringAttributes(dict);
+    }
+    public CMTextMarkupAttributes getTextMarkupAttributesForNegativeInfinity() {
+        NSDictionary<NSString, NSObject> dict = getTextAttributesDictionaryForNegativeInfinity();
+        if (dict == null) return null;
+        return new CMTextMarkupAttributes(dict.as(CFDictionary.class));
+    }
+    public CTAttributedStringAttributes getCoreTextAttributesForNegativeInfinity() {
+        NSDictionary<NSString, NSObject> dict = getTextAttributesDictionaryForNegativeInfinity();
+        if (dict == null) return null;
+        return new CTAttributedStringAttributes(dict.as(CFDictionary.class));
+    }
+    public void setTextAttributesForNegativeInfinity(NSAttributedStringAttributes v) {
+        if (v == null) {
+            setTextAttributesDictionaryForNegativeInfinity(null);
+        } else {
+            setTextAttributesDictionaryForNegativeInfinity(v.getDictionary());
+        }
+    }
+    public void setTextMarkupAttributesForNegativeInfinity(CMTextMarkupAttributes v) {
+        if (v == null) {
+            setTextAttributesDictionaryForNegativeInfinity(null);
+        } else {
+            setTextAttributesDictionaryForNegativeInfinity(v.getDictionary().as(NSDictionary.class));
+        }
+    }
+    public void setCoreTextAttributesForNegativeInfinity(CTAttributedStringAttributes v) {
+        if (v == null) {
+            setTextAttributesDictionaryForNegativeInfinity(null);
+        } else {
+            setTextAttributesDictionaryForNegativeInfinity(v.getDictionary().as(NSDictionary.class));
+        }
+    }
     /*<properties>*/
     /**
      * @since Available in iOS 8.0 and later.
@@ -83,17 +348,17 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "setNegativeFormat:")
     public native void setNegativeFormat(String v);
     @Property(selector = "textAttributesForNegativeValues")
-    public native NSAttributedStringAttributes getTextAttributesForNegativeValues();
+    public native NSDictionary<NSString, NSObject> getTextAttributesDictionaryForNegativeValues();
     @Property(selector = "setTextAttributesForNegativeValues:")
-    public native void setTextAttributesForNegativeValues(NSAttributedStringAttributes v);
+    public native void setTextAttributesDictionaryForNegativeValues(NSDictionary<NSString, NSObject> v);
     @Property(selector = "positiveFormat")
     public native String getPositiveFormat();
     @Property(selector = "setPositiveFormat:")
     public native void setPositiveFormat(String v);
     @Property(selector = "textAttributesForPositiveValues")
-    public native NSAttributedStringAttributes getTextAttributesForPositiveValues();
+    public native NSDictionary<NSString, NSObject> getTextAttributesDictionaryForPositiveValues();
     @Property(selector = "setTextAttributesForPositiveValues:")
-    public native void setTextAttributesForPositiveValues(NSAttributedStringAttributes v);
+    public native void setTextAttributesDictionaryForPositiveValues(NSDictionary<NSString, NSObject> v);
     @Property(selector = "allowsFloats")
     public native boolean allowsFloats();
     @Property(selector = "setAllowsFloats:")
@@ -123,41 +388,41 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "setZeroSymbol:")
     public native void setZeroSymbol(String v);
     @Property(selector = "textAttributesForZero")
-    public native NSAttributedStringAttributes getTextAttributesForZero();
+    public native NSDictionary<NSString, NSObject> getTextAttributesDictionaryForZero();
     @Property(selector = "setTextAttributesForZero:")
-    public native void setTextAttributesForZero(NSAttributedStringAttributes v);
+    public native void setTextAttributesDictionaryForZero(NSDictionary<NSString, NSObject> v);
     @Property(selector = "nilSymbol")
     public native String getNullSymbol();
     @Property(selector = "setNilSymbol:")
     public native void setNullSymbol(String v);
     @Property(selector = "textAttributesForNil")
-    public native NSAttributedStringAttributes getTextAttributesForNull();
+    public native NSDictionary<NSString, NSObject> getTextAttributesDictionaryForNull();
     @Property(selector = "setTextAttributesForNil:")
-    public native void setTextAttributesForNull(NSAttributedStringAttributes v);
+    public native void setTextAttributesDictionaryForNull(NSDictionary<NSString, NSObject> v);
     @Property(selector = "notANumberSymbol")
     public native String getNaNSymbol();
     @Property(selector = "setNotANumberSymbol:")
     public native void setNaNSymbol(String v);
     @Property(selector = "textAttributesForNotANumber")
-    public native NSAttributedStringAttributes getTextAttributesForNaN();
+    public native NSDictionary<NSString, NSObject> getTextAttributesDictionaryForNaN();
     @Property(selector = "setTextAttributesForNotANumber:")
-    public native void setTextAttributesForNaN(NSAttributedStringAttributes v);
+    public native void setTextAttributesDictionaryForNaN(NSDictionary<NSString, NSObject> v);
     @Property(selector = "positiveInfinitySymbol")
     public native String getPositiveInfinitySymbol();
     @Property(selector = "setPositiveInfinitySymbol:")
     public native void setPositiveInfinitySymbol(String v);
     @Property(selector = "textAttributesForPositiveInfinity")
-    public native NSAttributedStringAttributes getTextAttributesForPositiveInfinity();
+    public native NSDictionary<NSString, NSObject> getTextAttributesDictionaryForPositiveInfinity();
     @Property(selector = "setTextAttributesForPositiveInfinity:")
-    public native void setTextAttributesForPositiveInfinity(NSAttributedStringAttributes v);
+    public native void setTextAttributesDictionaryForPositiveInfinity(NSDictionary<NSString, NSObject> v);
     @Property(selector = "negativeInfinitySymbol")
     public native String getNegativeInfinitySymbol();
     @Property(selector = "setNegativeInfinitySymbol:")
     public native void setNegativeInfinitySymbol(String v);
     @Property(selector = "textAttributesForNegativeInfinity")
-    public native NSAttributedStringAttributes getTextAttributesForNegativeInfinity();
+    public native NSDictionary<NSString, NSObject> getTextAttributesDictionaryForNegativeInfinity();
     @Property(selector = "setTextAttributesForNegativeInfinity:")
-    public native void setTextAttributesForNegativeInfinity(NSAttributedStringAttributes v);
+    public native void setTextAttributesDictionaryForNegativeInfinity(NSDictionary<NSString, NSObject> v);
     @Property(selector = "positivePrefix")
     public native String getPositivePrefix();
     @Property(selector = "setPositivePrefix:")

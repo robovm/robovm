@@ -28,7 +28,7 @@ private_typedefs:
 enums:
     MIDINetworkConnectionPolicy: { first: MIDINetworkConnectionPolicy_NoOne, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     MIDIError: { first: kMIDIInvalidClient }
-    MIDIObjectType: { first: kMIDIObjectType_Other, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler }
+    MIDIObjectType: { first: kMIDIObjectType_Other, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler, ignore: ExternalMask }
     MIDINotificationMessageID: { first: kMIDIMsgSetupChanged, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler }
     MIDITransformType: { first: kMIDITransform_None, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     MIDITransformControlType: { first: kMIDIControlType_7Bit, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
@@ -74,6 +74,7 @@ classes:
    
     MIDIObject:
         extends: NativeObject
+        annotations: ['@Marshaler(CFString.AsStringMarshaler.class)']
         add_ptr: true
     MIDIClient:
         extends: MIDIObject

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,7 +40,9 @@ public enum /*<name>*/NEVPNIKEv2EncryptionAlgorithm/*</name>*/ implements Valued
     DES(1L),
     _3DES(2L),
     AES128(3L),
-    AES256(4L);
+    AES256(4L),
+    AES128GCM(5L),
+    AES256GCM(6L);
     /*</values>*/
 
     /*<bind>*/

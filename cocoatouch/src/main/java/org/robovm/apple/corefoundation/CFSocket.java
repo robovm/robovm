@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,6 +37,22 @@ import org.robovm.apple.foundation.*;
     extends /*<extends>*/CFType/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public interface CFSocketCallback {
+        void invoke(CFSocket socket, CFSocketCallBackType callBackType, CFData address, VoidPtr data);
+    }
+    
+    private static final java.util.concurrent.atomic.AtomicLong refconId = new java.util.concurrent.atomic.AtomicLong();
+    private static final LongMap<CFSocketCallback> callbacks = new LongMap<>();
+    private static final java.lang.reflect.Method cbInvoke;
+    
+    static {
+        try {
+            cbInvoke = CFSocket.class.getDeclaredMethod("cbInvoke", CFSocket.class, CFSocketCallBackType.class, CFData.class, VoidPtr.class, long.class);
+        } catch (Throwable e) {
+            throw new Error(e);
+        }
+    }
+    
     /*<ptr>*/public static class CFSocketPtr extends Ptr<CFSocket, CFSocketPtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(CFSocket.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -45,17 +61,94 @@ import org.robovm.apple.foundation.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    @Callback
+    private static void cbInvoke(CFSocket socket, CFSocketCallBackType callBackType, CFData address, VoidPtr data, @Pointer long info) {
+        CFSocketCallback callback = null;
+        synchronized (callbacks) {
+            callback = callbacks.get(info);
+        }
+        callback.invoke(socket, callBackType, address, data);
+    }
+    
+    public static CFSocket create(int protocolFamily, int socketType, int protocol, CFSocketCallBackType callBackTypes, CFSocketCallback callback) {
+        return create(null, protocolFamily, socketType, protocol, callBackTypes, callback);
+    }
+    public static CFSocket create(CFAllocator allocator, int protocolFamily, int socketType, int protocol, CFSocketCallBackType callBackTypes, CFSocketCallback callback) {
+        long refconId = CFSocket.refconId.getAndIncrement();
+        CFSocketContext context = new CFSocketContext();
+        context.setInfo(refconId);
+        CFSocket result = create(allocator, protocolFamily, socketType, protocol, callBackTypes, new FunctionPtr(cbInvoke), context);
+        if (result != null) {
+            synchronized (callbacks) {
+                callbacks.put(refconId, callback);
+            }
+        }
+        return result;
+    }
+    public static CFSocket create(int sock, CFSocketCallBackType callBackTypes, CFSocketCallback callback) {
+        return create(null, sock, callBackTypes, callback);
+    }
+    public static CFSocket create(CFAllocator allocator, int sock, CFSocketCallBackType callBackTypes, CFSocketCallback callback) {
+        long refconId = CFSocket.refconId.getAndIncrement();
+        CFSocketContext context = new CFSocketContext();
+        context.setInfo(refconId);
+        CFSocket result = create(allocator, sock, callBackTypes, new FunctionPtr(cbInvoke), context);
+        if (result != null) {
+            synchronized (callbacks) {
+                callbacks.put(refconId, callback);
+            }
+        }
+        return result;
+    }
+    public static CFSocket create(CFSocketSignature signature, CFSocketCallBackType callBackTypes, CFSocketCallback callback) {
+        return create(null, signature, callBackTypes, callback);
+    }
+    public static CFSocket create(CFAllocator allocator, CFSocketSignature signature, CFSocketCallBackType callBackTypes, CFSocketCallback callback) {
+        long refconId = CFSocket.refconId.getAndIncrement();
+        CFSocketContext context = new CFSocketContext();
+        context.setInfo(refconId);
+        CFSocket result = create(allocator, signature, callBackTypes, new FunctionPtr(cbInvoke), context);
+        if (result != null) {
+            synchronized (callbacks) {
+                callbacks.put(refconId, callback);
+            }
+        }
+        return result;
+    }
+    public static CFSocket createConnectedToSocketSignature(CFSocketSignature signature, CFSocketCallBackType callBackTypes, CFSocketCallback callback, double timeout) {
+        return createConnectedToSocketSignature(null, signature, callBackTypes, callback, timeout);
+    }
+    public static CFSocket createConnectedToSocketSignature(CFAllocator allocator, CFSocketSignature signature, CFSocketCallBackType callBackTypes, CFSocketCallback callback, double timeout) {
+        long refconId = CFSocket.refconId.getAndIncrement();
+        CFSocketContext context = new CFSocketContext();
+        context.setInfo(refconId);
+        CFSocket result = createConnectedToSocketSignature(allocator, signature, callBackTypes, new FunctionPtr(cbInvoke), context, timeout);
+        if (result != null) {
+            synchronized (callbacks) {
+                callbacks.put(refconId, callback);
+            }
+        }
+        return result;
+    }
+    
+    
+    public CFRunLoopSource createRunLoopSource(@MachineSizedSInt long order) {
+        return createRunLoopSource(null, this, order);
+    }
+    public CFRunLoopSource createRunLoopSource(CFAllocator allocator, @MachineSizedSInt long order) {
+        return createRunLoopSource(allocator, this, order);
+    }
     /*<methods>*/
     @Bridge(symbol="CFSocketGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFSocketCreate", optional=true)
-    public static native CFSocket create(CFAllocator allocator, int protocolFamily, int socketType, int protocol, CFSocketCallBackType callBackTypes, FunctionPtr callout, CFSocketContext context);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFSocket create(CFAllocator allocator, int protocolFamily, int socketType, int protocol, CFSocketCallBackType callBackTypes, FunctionPtr callout, CFSocketContext context);
     @Bridge(symbol="CFSocketCreateWithNative", optional=true)
-    public static native CFSocket createWithNative(CFAllocator allocator, int sock, CFSocketCallBackType callBackTypes, FunctionPtr callout, CFSocketContext context);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFSocket create(CFAllocator allocator, int sock, CFSocketCallBackType callBackTypes, FunctionPtr callout, CFSocketContext context);
     @Bridge(symbol="CFSocketCreateWithSocketSignature", optional=true)
-    public static native CFSocket createWithSocketSignature(CFAllocator allocator, CFSocketSignature signature, CFSocketCallBackType callBackTypes, FunctionPtr callout, CFSocketContext context);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFSocket create(CFAllocator allocator, CFSocketSignature signature, CFSocketCallBackType callBackTypes, FunctionPtr callout, CFSocketContext context);
     @Bridge(symbol="CFSocketCreateConnectedToSocketSignature", optional=true)
-    public static native CFSocket createConnectedToSocketSignature(CFAllocator allocator, CFSocketSignature signature, CFSocketCallBackType callBackTypes, FunctionPtr callout, CFSocketContext context, double timeout);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFSocket createConnectedToSocketSignature(CFAllocator allocator, CFSocketSignature signature, CFSocketCallBackType callBackTypes, FunctionPtr callout, CFSocketContext context, double timeout);
     @Bridge(symbol="CFSocketSetAddress", optional=true)
     public native CFSocketError setAddress(CFData address);
     @Bridge(symbol="CFSocketConnectToAddress", optional=true)
@@ -65,33 +158,31 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFSocketIsValid", optional=true)
     public native boolean isValid();
     @Bridge(symbol="CFSocketCopyAddress", optional=true)
-    public native CFData copyAddress();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFData getAddress();
     @Bridge(symbol="CFSocketCopyPeerAddress", optional=true)
-    public native CFData copyPeerAddress();
-    @Bridge(symbol="CFSocketGetContext", optional=true)
-    public native void getContext(CFSocketContext context);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFData getPeerAddress();
     @Bridge(symbol="CFSocketGetNative", optional=true)
     public native int getNative();
     @Bridge(symbol="CFSocketCreateRunLoopSource", optional=true)
-    public static native CFRunLoopSource createRunLoopSource(CFAllocator allocator, CFSocket s, @MachineSizedSInt long order);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFRunLoopSource createRunLoopSource(CFAllocator allocator, CFSocket s, @MachineSizedSInt long order);
     @Bridge(symbol="CFSocketGetSocketFlags", optional=true)
     public native CFSocketFlags getSocketFlags();
     @Bridge(symbol="CFSocketSetSocketFlags", optional=true)
     public native void setSocketFlags(CFSocketFlags flags);
     @Bridge(symbol="CFSocketDisableCallBacks", optional=true)
-    public native void disableCallBacks(CFSocketCallBackType callBackTypes);
+    public native void disableCallBacks(@MachineSizedUInt long callBackTypes);
     @Bridge(symbol="CFSocketEnableCallBacks", optional=true)
-    public native void enableCallBacks(CFSocketCallBackType callBackTypes);
+    public native void enableCallBacks(@MachineSizedUInt long callBackTypes);
     @Bridge(symbol="CFSocketSendData", optional=true)
     public native CFSocketError sendData(CFData address, CFData data, double timeout);
     @Bridge(symbol="CFSocketRegisterValue", optional=true)
     public static native CFSocketError registerValue(CFSocketSignature nameServerSignature, double timeout, String name, CFType value);
     @Bridge(symbol="CFSocketCopyRegisteredValue", optional=true)
-    public static native CFSocketError copyRegisteredValue(CFSocketSignature nameServerSignature, double timeout, String name, CFType.CFTypePtr value, CFData.CFDataPtr nameServerAddress);
+    public static native CFSocketError getRegisteredValue(CFSocketSignature nameServerSignature, double timeout, String name, CFType.CFTypePtr value, CFData.CFDataPtr nameServerAddress);
     @Bridge(symbol="CFSocketRegisterSocketSignature", optional=true)
     public static native CFSocketError registerSocketSignature(CFSocketSignature nameServerSignature, double timeout, String name, CFSocketSignature signature);
     @Bridge(symbol="CFSocketCopyRegisteredSocketSignature", optional=true)
-    public static native CFSocketError copyRegisteredSocketSignature(CFSocketSignature nameServerSignature, double timeout, String name, CFSocketSignature signature, CFData.CFDataPtr nameServerAddress);
+    public static native CFSocketError getRegisteredSocketSignature(CFSocketSignature nameServerSignature, double timeout, String name, CFSocketSignature signature, CFData.CFDataPtr nameServerAddress);
     @Bridge(symbol="CFSocketUnregister", optional=true)
     public static native CFSocketError unregister(CFSocketSignature nameServerSignature, double timeout, String name);
     @Bridge(symbol="CFSocketSetDefaultNameRegistryPortNumber", optional=true)

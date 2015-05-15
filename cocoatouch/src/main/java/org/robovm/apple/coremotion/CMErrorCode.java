@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,7 +43,11 @@ public enum /*<name>*/CMErrorCode/*</name>*/ implements NSErrorCode {
     MotionActivityNotAvailable(104L),
     MotionActivityNotAuthorized(105L),
     MotionActivityNotEntitled(106L),
-    InvalidParameter(107L);
+    InvalidParameter(107L),
+    InvalidAction(108L),
+    NotAvailable(109L),
+    NotEntitled(110L),
+    NotAuthorized(111L);
     /*</values>*/
 
     /*<bind>*/

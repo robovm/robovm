@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,6 +36,7 @@ import org.robovm.apple.coremedia.*;
 import org.robovm.apple.corevideo.*;
 import org.robovm.apple.audiotoolbox.*;
 import org.robovm.apple.mediatoolbox.*;
+import org.robovm.apple.audiounit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -60,21 +61,21 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 5.0 and later.
      */
     @NotImplemented("videoComposition:shouldContinueValidatingAfterFindingInvalidValueForKey:")
-    public boolean shouldContinueValidatingAfterFindingInvalidValue(AVVideoComposition videoComposition, String key) { throw new UnsupportedOperationException(); }
+    public boolean shouldContinueValidatingAfterFindingInvalidValue(AVVideoComposition videoComposition, String key) { return false; }
     /**
      * @since Available in iOS 5.0 and later.
      */
     @NotImplemented("videoComposition:shouldContinueValidatingAfterFindingEmptyTimeRange:")
-    public boolean shouldContinueValidatingAfterFindingEmptyTimeRange(AVVideoComposition videoComposition, @ByVal CMTimeRange timeRange) { throw new UnsupportedOperationException(); }
+    public boolean shouldContinueValidatingAfterFindingEmptyTimeRange(AVVideoComposition videoComposition, @ByVal CMTimeRange timeRange) { return false; }
     /**
      * @since Available in iOS 5.0 and later.
      */
     @NotImplemented("videoComposition:shouldContinueValidatingAfterFindingInvalidTimeRangeInInstruction:")
-    public boolean shouldContinueValidatingAfterFindingInvalidTimeRange(AVVideoComposition videoComposition, AVVideoCompositionInstruction videoCompositionInstruction) { throw new UnsupportedOperationException(); }
+    public boolean shouldContinueValidatingAfterFindingInvalidTimeRange(AVVideoComposition videoComposition, AVVideoCompositionInstruction videoCompositionInstruction) { return false; }
     /**
      * @since Available in iOS 5.0 and later.
      */
     @NotImplemented("videoComposition:shouldContinueValidatingAfterFindingInvalidTrackIDInInstruction:layerInstruction:asset:")
-    public boolean shouldContinueValidatingAfterFindingInvalidTrackID(AVVideoComposition videoComposition, AVVideoCompositionInstruction videoCompositionInstruction, AVVideoCompositionLayerInstruction layerInstruction, AVAsset asset) { throw new UnsupportedOperationException(); }
+    public boolean shouldContinueValidatingAfterFindingInvalidTrackID(AVVideoComposition videoComposition, AVVideoCompositionInstruction videoCompositionInstruction, AVVideoCompositionLayerInstruction layerInstruction, AVAsset asset) { return false; }
     /*</methods>*/
 }

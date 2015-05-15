@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,8 +30,10 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -48,23 +50,23 @@ import org.robovm.apple.coremedia.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public ExtendedAudioFormatInfo() {}
-    public ExtendedAudioFormatInfo(AudioStreamBasicDescription mASBD, VoidPtr mMagicCookie, int mMagicCookieSize, AudioClassDescription mClassDescription) {
-        this.setMASBD(mASBD);
-        this.setMMagicCookie(mMagicCookie);
-        this.setMMagicCookieSize(mMagicCookieSize);
-        this.setMClassDescription(mClassDescription);
+    public ExtendedAudioFormatInfo(AudioStreamBasicDescription ASBD, VoidPtr magicCookie, int magicCookieSize, AudioClassDescription classDescription) {
+        this.setASBD(ASBD);
+        this.setMagicCookie(magicCookie);
+        this.setMagicCookieSize(magicCookieSize);
+        this.setClassDescription(classDescription);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native @ByVal AudioStreamBasicDescription getMASBD();
-    @StructMember(0) public native ExtendedAudioFormatInfo setMASBD(@ByVal AudioStreamBasicDescription mASBD);
-    @StructMember(1) public native VoidPtr getMMagicCookie();
-    @StructMember(1) public native ExtendedAudioFormatInfo setMMagicCookie(VoidPtr mMagicCookie);
-    @StructMember(2) public native int getMMagicCookieSize();
-    @StructMember(2) public native ExtendedAudioFormatInfo setMMagicCookieSize(int mMagicCookieSize);
-    @StructMember(3) public native @ByVal AudioClassDescription getMClassDescription();
-    @StructMember(3) public native ExtendedAudioFormatInfo setMClassDescription(@ByVal AudioClassDescription mClassDescription);
+    @StructMember(0) public native @ByVal AudioStreamBasicDescription getASBD();
+    @StructMember(0) public native ExtendedAudioFormatInfo setASBD(@ByVal AudioStreamBasicDescription ASBD);
+    @StructMember(1) public native VoidPtr getMagicCookie();
+    @StructMember(1) public native ExtendedAudioFormatInfo setMagicCookie(VoidPtr magicCookie);
+    @StructMember(2) public native int getMagicCookieSize();
+    @StructMember(2) public native ExtendedAudioFormatInfo setMagicCookieSize(int magicCookieSize);
+    @StructMember(3) public native @ByVal AudioClassDescription getClassDescription();
+    @StructMember(3) public native ExtendedAudioFormatInfo setClassDescription(@ByVal AudioClassDescription classDescription);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

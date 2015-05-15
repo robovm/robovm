@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian Mobile AB
+ * Copyright (C) 2012 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -125,7 +125,7 @@ jboolean rvmInitMethods(Env* env) {
     if (!empty_java_lang_StackTraceElement_array) {
         return FALSE;
     }
-    if (!rvmAddObjectGCRoot(env, (Object*) empty_java_lang_StackTraceElement_array)) {
+    if (!rvmAddGlobalRef(env, (Object*) empty_java_lang_StackTraceElement_array)) {
         return FALSE;
     }
 
@@ -190,7 +190,7 @@ Method* rvmFindMethodAtAddress(Env* env, void* address) {
     return NULL;
 }
 
-static jboolean getCallingMethodIterator(Env* env, void* pc, ProxyMethod* proxyMethod, void* data) {
+static jboolean getCallingMethodIterator(Env* env, void* pc, void* fp, ProxyMethod* proxyMethod, void* data) {
     Method** result = data;
 
     Method* method = rvmFindMethodAtAddress(env, pc);
@@ -207,7 +207,7 @@ Method* rvmGetCallingMethod(Env* env) {
     return result;
 }
 
-static jboolean captureCallStackCountFramesIterator(Env* env, void* pc, ProxyMethod* proxyMethod, void* data) {
+static jboolean captureCallStackCountFramesIterator(Env* env, void* pc, void* fp, ProxyMethod* proxyMethod, void* data) {
     jint* countPtr = (jint*) data;
     *countPtr += 1;
     return *countPtr < MAX_CALL_STACK_LENGTH ? TRUE : FALSE;
@@ -218,10 +218,11 @@ typedef struct {
     jint maxLength;
 } CaptureCallStackArgs;
 
-static jboolean captureCallStackIterator(Env* env, void* pc, ProxyMethod* proxyMethod, void* _args) {
+static jboolean captureCallStackIterator(Env* env, void* pc, void* fp, ProxyMethod* proxyMethod, void* _args) {
     CaptureCallStackArgs* args =  (CaptureCallStackArgs*) _args;
     CallStack* data = args->data;
     data->frames[data->length].pc = pc;
+    data->frames[data->length].fp = fp;
     data->frames[data->length].method = (Method*) proxyMethod;
     data->length++;
     return data->length < args->maxLength ? TRUE : FALSE;
@@ -292,26 +293,6 @@ CallStack* rvmCaptureCallStackForThread(Env* env, Thread* thread) {
     return copy;
 }
 
-CallStackFrame* rvmResolveCallStackFrame(Env* env, CallStackFrame* frame) {
-    if (frame->pc == NULL && frame->method == NULL) {
-        // We've already tried to resolve this frame but 
-        // it doesn't correspond to any method
-        return NULL;
-    }
-    if (frame->method != NULL) {
-        // We've already resolved this frame successfully or
-        // the method is a ProxyMethod so no call to rvmFindMethodAtAddress()
-        // is required
-        return frame;
-    }
-    frame->method = rvmFindMethodAtAddress(env, frame->pc);
-    if (!frame->method) {
-        frame->pc = NULL;
-        return NULL;
-    }
-    return frame;
-}
-
 static inline jint getLineTableEntryB(uint8_t* table, jint index) {
     return table[index];
 }
@@ -373,6 +354,27 @@ static jint getLineNumber(CallStackFrame* frame) {
     return firstLineNumber + getLineTableEntry(lineOffsets, lineOffsetSize, index);
 }
 
+CallStackFrame* rvmResolveCallStackFrame(Env* env, CallStackFrame* frame) {
+    if (frame->pc == NULL && frame->method == NULL) {
+        // We've already tried to resolve this frame but 
+        // it doesn't correspond to any method
+        return NULL;
+    }
+    if (frame->method != NULL) {
+        // We've already resolved this frame successfully or
+        // the method is a ProxyMethod so no call to rvmFindMethodAtAddress()
+        // is required
+        return frame;
+    }
+    frame->method = rvmFindMethodAtAddress(env, frame->pc);
+    if (!frame->method) {
+        frame->pc = NULL;
+        return NULL;
+    }
+    frame->lineNumber = METHOD_IS_NATIVE(frame->method) ? -2 : getLineNumber(frame);
+    return frame;
+}
+
 ObjectArray* rvmCallStackToStackTraceElements(Env* env, CallStack* callStack, jint first) {
     if (!callStack || callStack->length == 0) {
         return empty_java_lang_StackTraceElement_array;
@@ -406,7 +408,7 @@ ObjectArray* rvmCallStackToStackTraceElements(Env* env, CallStack* callStack, ji
             if (rvmExceptionOccurred(env)) {
                 return NULL;
             }
-            args[3].i = METHOD_IS_NATIVE(m) ? -2 : getLineNumber(frame);
+            args[3].i = frame->lineNumber;
             array->values[i] = rvmNewObjectA(env, java_lang_StackTraceElement, 
                 java_lang_StackTraceElement_constructor, args);
             if (!array->values[i]) return NULL;
@@ -637,62 +639,6 @@ static Object* callObjectMethod(Env* env, CallInfo* callInfo) {
     return result;
 }
 
-static jboolean callBooleanMethod(Env* env, CallInfo* callInfo) {
-    jboolean result = FALSE;
-    jboolean (*f)(CallInfo*) = (jboolean (*)(CallInfo*)) _call0;
-    rvmPushGatewayFrame(env);
-    TrycatchContext tc = {0};
-    tc.sel = CATCH_ALL_SEL;
-    if (!rvmTrycatchEnter(env, &tc)) {
-        result = f(callInfo);
-    }
-    rvmTrycatchLeave(env);
-    rvmPopGatewayFrame(env);
-    return result;
-}
-
-static jbyte callByteMethod(Env* env, CallInfo* callInfo) {
-    jbyte result = 0;
-    jbyte (*f)(CallInfo*) = (jbyte (*)(CallInfo*)) _call0;
-    rvmPushGatewayFrame(env);
-    TrycatchContext tc = {0};
-    tc.sel = CATCH_ALL_SEL;
-    if (!rvmTrycatchEnter(env, &tc)) {
-        result = f(callInfo);
-    }
-    rvmTrycatchLeave(env);
-    rvmPopGatewayFrame(env);
-    return result;
-}
-
-static jchar callCharMethod(Env* env, CallInfo* callInfo) {
-    jchar result = 0;
-    jchar (*f)(CallInfo*) = (jchar (*)(CallInfo*)) _call0;
-    rvmPushGatewayFrame(env);
-    TrycatchContext tc = {0};
-    tc.sel = CATCH_ALL_SEL;
-    if (!rvmTrycatchEnter(env, &tc)) {
-        result = f(callInfo);
-    }
-    rvmTrycatchLeave(env);
-    rvmPopGatewayFrame(env);
-    return result;
-}
-
-static jshort callShortMethod(Env* env, CallInfo* callInfo) {
-    jshort result = 0;
-    jshort (*f)(CallInfo*) = (jshort (*)(CallInfo*)) _call0;
-    rvmPushGatewayFrame(env);
-    TrycatchContext tc = {0};
-    tc.sel = CATCH_ALL_SEL;
-    if (!rvmTrycatchEnter(env, &tc)) {
-        result = f(callInfo);
-    }
-    rvmTrycatchLeave(env);
-    rvmPopGatewayFrame(env);
-    return result;
-}
-
 static jint callIntMethod(Env* env, CallInfo* callInfo) {
     jint result = 0;
     jint (*f)(CallInfo*) = (jint (*)(CallInfo*)) _call0;
@@ -705,6 +651,22 @@ static jint callIntMethod(Env* env, CallInfo* callInfo) {
     rvmTrycatchLeave(env);
     rvmPopGatewayFrame(env);
     return result;
+}
+
+static jboolean callBooleanMethod(Env* env, CallInfo* callInfo) {
+    return ((jboolean) callIntMethod(env, callInfo)) == 0 ? FALSE : TRUE;
+}
+
+static jbyte callByteMethod(Env* env, CallInfo* callInfo) {
+    return (jbyte) callIntMethod(env, callInfo);
+}
+
+static jchar callCharMethod(Env* env, CallInfo* callInfo) {
+    return (jchar) callIntMethod(env, callInfo);
+}
+
+static jshort callShortMethod(Env* env, CallInfo* callInfo) {
+    return (jshort) callIntMethod(env, callInfo);
 }
 
 static jlong callLongMethod(Env* env, CallInfo* callInfo) {

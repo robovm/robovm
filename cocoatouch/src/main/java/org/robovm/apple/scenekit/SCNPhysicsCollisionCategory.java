@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,9 @@ import org.robovm.apple.opengles.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 8.0 and later.
+ */
 /*</javadoc>*/
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/SCNPhysicsCollisionCategory/*</name>*/ extends Bits</*<name>*/SCNPhysicsCollisionCategory/*</name>*/> {
@@ -45,7 +47,7 @@ public final class /*<name>*/SCNPhysicsCollisionCategory/*</name>*/ extends Bits
     public static final SCNPhysicsCollisionCategory None = new SCNPhysicsCollisionCategory(0L);
     public static final SCNPhysicsCollisionCategory Default = new SCNPhysicsCollisionCategory(1L);
     public static final SCNPhysicsCollisionCategory Static = new SCNPhysicsCollisionCategory(2L);
-    public static final SCNPhysicsCollisionCategory All = new SCNPhysicsCollisionCategory(-1L);
+    public static final SCNPhysicsCollisionCategory All = new SCNPhysicsCollisionCategory(Bro.IS_32BIT ? 0xffffffffL : 0xffffffffffffffffL);
     /*</values>*/
 
     /*<bind>*/

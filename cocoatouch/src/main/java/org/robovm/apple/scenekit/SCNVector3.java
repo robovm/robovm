@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -65,6 +65,9 @@ import org.robovm.apple.opengles.*;
     @StructMember(2) public native SCNVector3 setZ(float z);
     /*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @GlobalValue(symbol="SCNVector3Zero", optional=true)
     public static native @ByVal SCNVector3 Zero();
     

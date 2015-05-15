@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ import org.robovm.apple.imageio.*;
 @Marshaler(CIDetectorType.Marshaler.class)
 /*<annotations>*/@Library("CoreImage")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CIDetectorType/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
     
     public static class Marshaler {
@@ -111,7 +111,7 @@ import org.robovm.apple.imageio.*;
     @GlobalValue(symbol="CIDetectorTypeRectangle", optional=true)
     protected static native NSString RectangleValue();
     /**
-     * @since Available in iOS 6.0 and later.
+     * @since Available in iOS 8.0 and later.
      */
     @GlobalValue(symbol="CIDetectorTypeQRCode", optional=true)
     protected static native NSString QRCodeValue();

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -84,11 +84,11 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "initWithFrame:collectionViewLayout:")
     protected native @Pointer long init(@ByVal CGRect frame, UICollectionViewLayout layout);
     @Method(selector = "registerClass:forCellWithReuseIdentifier:")
-    public native void registerReusableCellClass(Class<?> cellClass, String identifier);
+    public native void registerReusableCellClass(Class<? extends UICollectionViewCell> cellClass, String identifier);
     @Method(selector = "registerNib:forCellWithReuseIdentifier:")
     public native void registerReusableCellNib(UINib nib, String identifier);
     @Method(selector = "registerClass:forSupplementaryViewOfKind:withReuseIdentifier:")
-    public native void registerReusableSupplementaryViewClass(Class<?> viewClass, UICollectionElementKind elementKind, String identifier);
+    public native void registerReusableSupplementaryViewClass(Class<? extends UICollectionReusableView> viewClass, UICollectionElementKind elementKind, String identifier);
     @Method(selector = "registerNib:forSupplementaryViewOfKind:withReuseIdentifier:")
     public native void registerReusableSupplementaryViewNib(UINib nib, UICollectionElementKind kind, String identifier);
     @Method(selector = "dequeueReusableCellWithReuseIdentifier:forIndexPath:")

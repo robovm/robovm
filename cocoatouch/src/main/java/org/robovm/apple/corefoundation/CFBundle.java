@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,6 +37,30 @@ import org.robovm.apple.foundation.*;
     extends /*<extends>*/CFType/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<?> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return o.toList(CFBundle.class);
+        }
+        @MarshalsPointer
+        public static long toNative(List<? extends CFType> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray o = null;
+            if (l instanceof CFArray) {
+                o = (CFArray) l;
+            } else {
+                o = CFArray.create((List<? extends CFType>) l);
+            }
+            return CFType.Marshaler.toNative(o, flags);
+        }
+    }
+    
     /*<ptr>*/public static class CFBundlePtr extends Ptr<CFBundle, CFBundlePtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(CFBundle.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -49,17 +73,17 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFBundleGetMainBundle", optional=true)
     public static native CFBundle getMainBundle();
     @Bridge(symbol="CFBundleGetBundleWithIdentifier", optional=true)
-    public static native CFBundle getBundleWithIdentifier(String bundleID);
+    public static native CFBundle getBundle(String bundleID);
     @Bridge(symbol="CFBundleGetAllBundles", optional=true)
-    public static native CFArray getAllBundles();
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFBundle.AsListMarshaler.class) List<CFBundle> getAllBundles();
     @Bridge(symbol="CFBundleGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFBundleCreate", optional=true)
-    public static native CFBundle create(CFAllocator allocator, CFURL bundleURL);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFBundle create(CFAllocator allocator, CFURL bundleURL);
     @Bridge(symbol="CFBundleCreateBundlesFromDirectory", optional=true)
-    public static native CFArray createBundlesFromDirectory(CFAllocator allocator, CFURL directoryURL, String bundleType);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFBundle.AsListMarshaler.class) List<CFBundle> createBundlesFromDirectory(CFAllocator allocator, CFURL directoryURL, String bundleType);
     @Bridge(symbol="CFBundleCopyBundleURL", optional=true)
-    public native CFURL copyBundleURL();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFURL getBundleURL();
     @Bridge(symbol="CFBundleGetValueForInfoDictionaryKey", optional=true)
     public native CFType getValueForInfoDictionaryKey(String key);
     @Bridge(symbol="CFBundleGetInfoDictionary", optional=true)
@@ -75,57 +99,57 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFBundleGetDevelopmentRegion", optional=true)
     public native String getDevelopmentRegion();
     @Bridge(symbol="CFBundleCopySupportFilesDirectoryURL", optional=true)
-    public native CFURL copySupportFilesDirectoryURL();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFURL getSupportFilesDirectoryURL();
     @Bridge(symbol="CFBundleCopyResourcesDirectoryURL", optional=true)
-    public native CFURL copyResourcesDirectoryURL();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFURL getResourcesDirectoryURL();
     @Bridge(symbol="CFBundleCopyPrivateFrameworksURL", optional=true)
-    public native CFURL copyPrivateFrameworksURL();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFURL getPrivateFrameworksURL();
     @Bridge(symbol="CFBundleCopySharedFrameworksURL", optional=true)
-    public native CFURL copySharedFrameworksURL();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFURL getSharedFrameworksURL();
     @Bridge(symbol="CFBundleCopySharedSupportURL", optional=true)
-    public native CFURL copySharedSupportURL();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFURL getSharedSupportURL();
     @Bridge(symbol="CFBundleCopyBuiltInPlugInsURL", optional=true)
-    public native CFURL copyBuiltInPlugInsURL();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFURL getBuiltInPlugInsURL();
     @Bridge(symbol="CFBundleCopyInfoDictionaryInDirectory", optional=true)
-    public static native CFDictionary copyInfoDictionaryInDirectory(CFURL bundleURL);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFDictionary getInfoDictionaryInDirectory(CFURL bundleURL);
     @Bridge(symbol="CFBundleGetPackageInfoInDirectory", optional=true)
     public static native boolean getPackageInfoInDirectory(CFURL url, IntPtr packageType, IntPtr packageCreator);
     @Bridge(symbol="CFBundleCopyResourceURL", optional=true)
-    public native CFURL copyResourceURL(String resourceName, String resourceType, String subDirName);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFURL getResourceURL(String resourceName, String resourceType, String subDirName);
     @Bridge(symbol="CFBundleCopyResourceURLsOfType", optional=true)
-    public native CFArray copyResourceURLsOfType(String resourceType, String subDirName);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFArray getResourceURLsOfType(String resourceType, String subDirName);
     @Bridge(symbol="CFBundleCopyLocalizedString", optional=true)
-    public native String copyLocalizedString(String key, String value, String tableName);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getLocalizedString(String key, String value, String tableName);
     @Bridge(symbol="CFBundleCopyResourceURLInDirectory", optional=true)
-    public static native CFURL copyResourceURLInDirectory(CFURL bundleURL, String resourceName, String resourceType, String subDirName);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFURL getResourceURLInDirectory(CFURL bundleURL, String resourceName, String resourceType, String subDirName);
     @Bridge(symbol="CFBundleCopyResourceURLsOfTypeInDirectory", optional=true)
-    public static native CFArray copyResourceURLsOfTypeInDirectory(CFURL bundleURL, String resourceType, String subDirName);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFArray getResourceURLsOfTypeInDirectory(CFURL bundleURL, String resourceType, String subDirName);
     @Bridge(symbol="CFBundleCopyBundleLocalizations", optional=true)
-    public native CFArray copyBundleLocalizations();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFArray getBundleLocalizations();
     @Bridge(symbol="CFBundleCopyPreferredLocalizationsFromArray", optional=true)
-    public static native CFArray copyPreferredLocalizationsFromArray(CFArray locArray);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFArray getPreferredLocalizationsFromArray(CFArray locArray);
     @Bridge(symbol="CFBundleCopyLocalizationsForPreferences", optional=true)
-    public static native CFArray copyLocalizationsForPreferences(CFArray locArray, CFArray prefArray);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFArray getLocalizationsForPreferences(CFArray locArray, CFArray prefArray);
     @Bridge(symbol="CFBundleCopyResourceURLForLocalization", optional=true)
-    public native CFURL copyResourceURLForLocalization(String resourceName, String resourceType, String subDirName, String localizationName);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFURL getResourceURLForLocalization(String resourceName, String resourceType, String subDirName, String localizationName);
     @Bridge(symbol="CFBundleCopyResourceURLsOfTypeForLocalization", optional=true)
-    public native CFArray copyResourceURLsOfTypeForLocalization(String resourceType, String subDirName, String localizationName);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFArray getResourceURLsOfTypeForLocalization(String resourceType, String subDirName, String localizationName);
     @Bridge(symbol="CFBundleCopyInfoDictionaryForURL", optional=true)
-    public static native CFDictionary copyInfoDictionaryForURL(CFURL url);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFDictionary getInfoDictionaryForURL(CFURL url);
     @Bridge(symbol="CFBundleCopyLocalizationsForURL", optional=true)
-    public static native CFArray copyLocalizationsForURL(CFURL url);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFArray getLocalizationsForURL(CFURL url);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFBundleCopyExecutableArchitecturesForURL", optional=true)
-    public static native CFArray copyExecutableArchitecturesForURL(CFURL url);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFArray getExecutableArchitecturesForURL(CFURL url);
     @Bridge(symbol="CFBundleCopyExecutableURL", optional=true)
-    public native CFURL copyExecutableURL();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFURL getExecutableURL();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFBundleCopyExecutableArchitectures", optional=true)
-    public native CFArray copyExecutableArchitectures();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFArray getExecutableArchitectures();
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -151,14 +175,14 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFBundleGetDataPointersForNames", optional=true)
     public native void getDataPointersForNames(CFArray symbolNames, VoidPtr.VoidPtrPtr stbl);
     @Bridge(symbol="CFBundleCopyAuxiliaryExecutableURL", optional=true)
-    public native CFURL copyAuxiliaryExecutableURL(String executableName);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFURL getAuxiliaryExecutableURL(String executableName);
     @Bridge(symbol="CFBundleGetPlugIn", optional=true)
     public native CFPlugIn getPlugIn();
     @Bridge(symbol="CFBundleOpenBundleResourceMap", optional=true)
-    public native short openBundleResourceMap();
+    public native int openBundleResourceMap();
     @Bridge(symbol="CFBundleOpenBundleResourceFiles", optional=true)
-    public native int openBundleResourceFiles(ShortPtr refNum, ShortPtr localizedRefNum);
+    public native int openBundleResourceFiles(IntPtr refNum, IntPtr localizedRefNum);
     @Bridge(symbol="CFBundleCloseBundleResourceMap", optional=true)
-    public native void closeBundleResourceMap(short refNum);
+    public native void closeBundleResourceMap(int refNum);
     /*</methods>*/
 }

@@ -16,13 +16,8 @@ enums:
     CLRegionState: {}
 
 classes:
-    CoreLocation:
-        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
-
     CLError:
         extends: NSError
-    CLErrorUserInfoKey:
-        extends: NSErrorUserInfoKey
 
     # Structs
     CLLocationCoordinate2D: {}
@@ -119,6 +114,7 @@ classes:
             '-allowDeferredLocationUpdatesUntilTraveled:timeout:':
                 name: allowDeferredLocationUpdatesUntil
     CLPlacemark: # DONE
+        skip_def_constructor: true
         properties:
             'areasOfInterest':
                 type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
@@ -201,11 +197,11 @@ values:
     kCLErrorDomain:
         class: CLError
         name: getClassDomain
-    kCLErrorUserInfo(.*):
-        class: CLErrorUserInfoKey
-        name: '#{g[0]}Value'
+    kCLErrorUserInfo(.*)Key:
+        enum: CLErrorUserInfoKey
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        extends: NSErrorUserInfoKey
 
     kCLLocationAccuracy(.*):
         class: CLLocationAccuracy

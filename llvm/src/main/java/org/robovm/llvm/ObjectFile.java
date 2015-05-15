@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 Trillian Mobile AB
+ * Copyright (C) 2013 RoboVM AB
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -33,9 +33,11 @@ import org.robovm.llvm.binding.SymbolIteratorRef;
  * 
  */
 public class ObjectFile implements AutoCloseable {
-    protected ObjectFileRef ref;
+    private final File file;
+    private ObjectFileRef ref;
 
-    private ObjectFile(ObjectFileRef objectFileRef) {
+    private ObjectFile(File file, ObjectFileRef objectFileRef) {
+        this.file = file;
         this.ref = objectFileRef;
     }
     
@@ -45,10 +47,15 @@ public class ObjectFile implements AutoCloseable {
         }
     }
     
+    protected ObjectFileRef getRef() {
+        checkDisposed();
+        return ref;
+    }
+    
     public List<Symbol> getSymbols() {
         List<Symbol> result = new ArrayList<>();
-        SymbolIteratorRef it = LLVM.GetSymbols(ref);
-        while (!LLVM.IsSymbolIteratorAtEnd(ref, it)) {
+        SymbolIteratorRef it = LLVM.GetSymbols(getRef());
+        while (!LLVM.IsSymbolIteratorAtEnd(getRef(), it)) {
             String name = LLVM.GetSymbolName(it);
             long address = LLVM.GetSymbolAddress(it);
             long size = LLVM.GetSymbolSize(it);
@@ -59,11 +66,15 @@ public class ObjectFile implements AutoCloseable {
         return result;
     }
     
+    public SectionIterator getSectionIterator() {
+        return new SectionIterator(this, LLVM.GetSections(getRef()));
+    }
+
     public List<LineInfo> getLineInfos(Symbol symbol) {
         List<LineInfo> result = new ArrayList<>();
         IntOut sizeOut = new IntOut();
         LongArrayOut out = new LongArrayOut();
-        LLVM.GetLineInfoForAddressRange(ref, symbol.getAddress(), symbol.getSize(), sizeOut, out);
+        LLVM.GetLineInfoForAddressRange(getRef(), symbol.getAddress(), symbol.getSize(), sizeOut, out);
         int size = sizeOut.getValue();
         if (size > 0) {
             LongArray values = out.getValue();
@@ -79,8 +90,7 @@ public class ObjectFile implements AutoCloseable {
     }
     
     public synchronized void dispose() {
-        checkDisposed();
-        LLVM.DisposeObjectFile(ref);
+        LLVM.DisposeObjectFile(getRef());
         ref = null;
     }
 
@@ -93,8 +103,14 @@ public class ObjectFile implements AutoCloseable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + ((file == null) ? 0 : file.hashCode());
         result = prime * result + ((ref == null) ? 0 : ref.hashCode());
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ObjectFile [file=" + file + "]";
     }
 
     @Override
@@ -109,6 +125,13 @@ public class ObjectFile implements AutoCloseable {
             return false;
         }
         ObjectFile other = (ObjectFile) obj;
+        if (file == null) {
+            if (other.file != null) {
+                return false;
+            }
+        } else if (!file.equals(other.file)) {
+            return false;
+        }
         if (ref == null) {
             if (other.ref != null) {
                 return false;
@@ -131,6 +154,6 @@ public class ObjectFile implements AutoCloseable {
         if (ref == null) {
             throw new LlvmException("Failed to create memory buffer from " + file.getAbsolutePath());
         }
-        return new ObjectFile(ref);
+        return new ObjectFile(file, ref);
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,8 +30,10 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -48,41 +50,41 @@ import org.robovm.apple.coremedia.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public CAFInstrumentChunk() {}
-    public CAFInstrumentChunk(float mBaseNote, byte mMIDILowNote, byte mMIDIHighNote, byte mMIDILowVelocity, byte mMIDIHighVelocity, float mdBGain, int mStartRegionID, int mSustainRegionID, int mReleaseRegionID, int mInstrumentID) {
-        this.setMBaseNote(mBaseNote);
-        this.setMMIDILowNote(mMIDILowNote);
-        this.setMMIDIHighNote(mMIDIHighNote);
-        this.setMMIDILowVelocity(mMIDILowVelocity);
-        this.setMMIDIHighVelocity(mMIDIHighVelocity);
-        this.setMdBGain(mdBGain);
-        this.setMStartRegionID(mStartRegionID);
-        this.setMSustainRegionID(mSustainRegionID);
-        this.setMReleaseRegionID(mReleaseRegionID);
-        this.setMInstrumentID(mInstrumentID);
+    public CAFInstrumentChunk(float baseNote, byte MIDILowNote, byte MIDIHighNote, byte MIDILowVelocity, byte MIDIHighVelocity, float dBGain, int startRegionID, int sustainRegionID, int releaseRegionID, int instrumentID) {
+        this.setBaseNote(baseNote);
+        this.setMIDILowNote(MIDILowNote);
+        this.setMIDIHighNote(MIDIHighNote);
+        this.setMIDILowVelocity(MIDILowVelocity);
+        this.setMIDIHighVelocity(MIDIHighVelocity);
+        this.setDBGain(dBGain);
+        this.setStartRegionID(startRegionID);
+        this.setSustainRegionID(sustainRegionID);
+        this.setReleaseRegionID(releaseRegionID);
+        this.setInstrumentID(instrumentID);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native float getMBaseNote();
-    @StructMember(0) public native CAFInstrumentChunk setMBaseNote(float mBaseNote);
-    @StructMember(1) public native byte getMMIDILowNote();
-    @StructMember(1) public native CAFInstrumentChunk setMMIDILowNote(byte mMIDILowNote);
-    @StructMember(2) public native byte getMMIDIHighNote();
-    @StructMember(2) public native CAFInstrumentChunk setMMIDIHighNote(byte mMIDIHighNote);
-    @StructMember(3) public native byte getMMIDILowVelocity();
-    @StructMember(3) public native CAFInstrumentChunk setMMIDILowVelocity(byte mMIDILowVelocity);
-    @StructMember(4) public native byte getMMIDIHighVelocity();
-    @StructMember(4) public native CAFInstrumentChunk setMMIDIHighVelocity(byte mMIDIHighVelocity);
-    @StructMember(5) public native float getMdBGain();
-    @StructMember(5) public native CAFInstrumentChunk setMdBGain(float mdBGain);
-    @StructMember(6) public native int getMStartRegionID();
-    @StructMember(6) public native CAFInstrumentChunk setMStartRegionID(int mStartRegionID);
-    @StructMember(7) public native int getMSustainRegionID();
-    @StructMember(7) public native CAFInstrumentChunk setMSustainRegionID(int mSustainRegionID);
-    @StructMember(8) public native int getMReleaseRegionID();
-    @StructMember(8) public native CAFInstrumentChunk setMReleaseRegionID(int mReleaseRegionID);
-    @StructMember(9) public native int getMInstrumentID();
-    @StructMember(9) public native CAFInstrumentChunk setMInstrumentID(int mInstrumentID);
+    @StructMember(0) public native float getBaseNote();
+    @StructMember(0) public native CAFInstrumentChunk setBaseNote(float baseNote);
+    @StructMember(1) public native byte getMIDILowNote();
+    @StructMember(1) public native CAFInstrumentChunk setMIDILowNote(byte MIDILowNote);
+    @StructMember(2) public native byte getMIDIHighNote();
+    @StructMember(2) public native CAFInstrumentChunk setMIDIHighNote(byte MIDIHighNote);
+    @StructMember(3) public native byte getMIDILowVelocity();
+    @StructMember(3) public native CAFInstrumentChunk setMIDILowVelocity(byte MIDILowVelocity);
+    @StructMember(4) public native byte getMIDIHighVelocity();
+    @StructMember(4) public native CAFInstrumentChunk setMIDIHighVelocity(byte MIDIHighVelocity);
+    @StructMember(5) public native float getDBGain();
+    @StructMember(5) public native CAFInstrumentChunk setDBGain(float dBGain);
+    @StructMember(6) public native int getStartRegionID();
+    @StructMember(6) public native CAFInstrumentChunk setStartRegionID(int startRegionID);
+    @StructMember(7) public native int getSustainRegionID();
+    @StructMember(7) public native CAFInstrumentChunk setSustainRegionID(int sustainRegionID);
+    @StructMember(8) public native int getReleaseRegionID();
+    @StructMember(8) public native CAFInstrumentChunk setReleaseRegionID(int releaseRegionID);
+    @StructMember(9) public native int getInstrumentID();
+    @StructMember(9) public native CAFInstrumentChunk setInstrumentID(int instrumentID);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

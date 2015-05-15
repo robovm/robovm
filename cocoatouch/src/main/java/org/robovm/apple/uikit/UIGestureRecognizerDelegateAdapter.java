@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,20 +54,20 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("gestureRecognizerShouldBegin:")
-    public boolean shouldBegin(UIGestureRecognizer gestureRecognizer) { throw new UnsupportedOperationException(); }
+    public boolean shouldBegin(UIGestureRecognizer gestureRecognizer) { return false; }
     @NotImplemented("gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:")
-    public boolean shouldRecognizeSimultaneously(UIGestureRecognizer gestureRecognizer, UIGestureRecognizer otherGestureRecognizer) { throw new UnsupportedOperationException(); }
+    public boolean shouldRecognizeSimultaneously(UIGestureRecognizer gestureRecognizer, UIGestureRecognizer otherGestureRecognizer) { return false; }
     /**
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("gestureRecognizer:shouldRequireFailureOfGestureRecognizer:")
-    public boolean shouldRequireFailure(UIGestureRecognizer gestureRecognizer, UIGestureRecognizer otherGestureRecognizer) { throw new UnsupportedOperationException(); }
+    public boolean shouldRequireFailure(UIGestureRecognizer gestureRecognizer, UIGestureRecognizer otherGestureRecognizer) { return false; }
     /**
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("gestureRecognizer:shouldBeRequiredToFailByGestureRecognizer:")
-    public boolean shouldBeRequiredToFail(UIGestureRecognizer gestureRecognizer, UIGestureRecognizer otherGestureRecognizer) { throw new UnsupportedOperationException(); }
+    public boolean shouldBeRequiredToFail(UIGestureRecognizer gestureRecognizer, UIGestureRecognizer otherGestureRecognizer) { return false; }
     @NotImplemented("gestureRecognizer:shouldReceiveTouch:")
-    public boolean shouldReceiveTouch(UIGestureRecognizer gestureRecognizer, UITouch touch) { throw new UnsupportedOperationException(); }
+    public boolean shouldReceiveTouch(UIGestureRecognizer gestureRecognizer, UITouch touch) { return false; }
     /*</methods>*/
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,136 +33,136 @@ import org.robovm.apple.corefoundation.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/AudioChannelLayoutTag/*</name>*/ implements ValuedEnum {
+/*<annotations>*//*</annotations>*/
+public final class /*<name>*/AudioChannelLayoutTag/*</name>*/ extends Bits</*<name>*/AudioChannelLayoutTag/*</name>*/> {
     /*<values>*/
-    UseChannelDescriptions(0L),
-    UseChannelBitmap(65536L),
-    Mono(6553601L),
-    Stereo(6619138L),
-    StereoHeadphones(6684674L),
-    MatrixStereo(6750210L),
-    MidSide(6815746L),
-    XY(6881282L),
-    Binaural(6946818L),
-    Ambisonic_B_Format(7012356L),
-    Quadraphonic(7077892L),
-    Pentagonal(7143429L),
-    Hexagonal(7208966L),
-    Octagonal(7274504L),
-    Cube(7340040L),
-    MPEG_1_0(6553601L),
-    MPEG_2_0(6619138L),
-    MPEG_3_0_A(7405571L),
-    MPEG_3_0_B(7471107L),
-    MPEG_4_0_A(7536644L),
-    MPEG_4_0_B(7602180L),
-    MPEG_5_0_A(7667717L),
-    MPEG_5_0_B(7733253L),
-    MPEG_5_0_C(7798789L),
-    MPEG_5_0_D(7864325L),
-    MPEG_5_1_A(7929862L),
-    MPEG_5_1_B(7995398L),
-    MPEG_5_1_C(8060934L),
-    MPEG_5_1_D(8126470L),
-    MPEG_6_1_A(8192007L),
-    MPEG_7_1_A(8257544L),
-    MPEG_7_1_B(8323080L),
-    MPEG_7_1_C(8388616L),
-    Emagic_Default_7_1(8454152L),
-    SMPTE_DTV(8519688L),
-    ITU_1_0(6553601L),
-    ITU_2_0(6619138L),
-    ITU_2_1(8585219L),
-    ITU_2_2(8650756L),
-    ITU_3_0(7405571L),
-    ITU_3_1(7536644L),
-    ITU_3_2(7667717L),
-    ITU_3_2_1(7929862L),
-    ITU_3_4_1(8388616L),
-    DVD_0(6553601L),
-    DVD_1(6619138L),
-    DVD_2(8585219L),
-    DVD_3(8650756L),
-    DVD_4(8716291L),
-    DVD_5(8781828L),
-    DVD_6(8847365L),
-    DVD_7(7405571L),
-    DVD_8(7536644L),
-    DVD_9(7667717L),
-    DVD_10(8912900L),
-    DVD_11(8978437L),
-    DVD_12(7929862L),
-    DVD_13(7536644L),
-    DVD_14(7667717L),
-    DVD_15(8912900L),
-    DVD_16(8978437L),
-    DVD_17(7929862L),
-    DVD_18(9043973L),
-    DVD_19(7733253L),
-    DVD_20(7995398L),
-    AudioUnit_4(7077892L),
-    AudioUnit_5(7143429L),
-    AudioUnit_6(7208966L),
-    AudioUnit_8(7274504L),
-    AudioUnit_5_0(7733253L),
-    AudioUnit_6_0(9109510L),
-    AudioUnit_7_0(9175047L),
-    AudioUnit_7_0_Front(9699335L),
-    AudioUnit_5_1(7929862L),
-    AudioUnit_6_1(8192007L),
-    AudioUnit_7_1(8388616L),
-    AudioUnit_7_1_Front(8257544L),
-    AAC_3_0(7471107L),
-    AAC_Quadraphonic(7077892L),
-    AAC_4_0(7602180L),
-    AAC_5_0(7864325L),
-    AAC_5_1(8126470L),
-    AAC_6_0(9240582L),
-    AAC_6_1(9306119L),
-    AAC_7_0(9371655L),
-    AAC_7_1(8323080L),
-    AAC_7_1_B(11993096L),
-    AAC_7_1_C(12058632L),
-    AAC_Octagonal(9437192L),
-    TMH_10_2_std(9502736L),
-    TMH_10_2_full(9568277L),
-    AC3_1_0_1(9764866L),
-    AC3_3_0(9830403L),
-    AC3_3_1(9895940L),
-    AC3_3_0_1(9961476L),
-    AC3_2_1_1(10027012L),
-    AC3_3_1_1(10092549L),
-    EAC_6_0_A(10158086L),
-    EAC_7_0_A(10223623L),
-    EAC3_6_1_A(10289159L),
-    EAC3_6_1_B(10354695L),
-    EAC3_6_1_C(10420231L),
-    EAC3_7_1_A(10485768L),
-    EAC3_7_1_B(10551304L),
-    EAC3_7_1_C(10616840L),
-    EAC3_7_1_D(10682376L),
-    EAC3_7_1_E(10747912L),
-    EAC3_7_1_F(10813448L),
-    EAC3_7_1_G(10878984L),
-    EAC3_7_1_H(10944520L),
-    DTS_3_1(11010052L),
-    DTS_4_1(11075589L),
-    DTS_6_0_A(11141126L),
-    DTS_6_0_B(11206662L),
-    DTS_6_0_C(11272198L),
-    DTS_6_1_A(11337735L),
-    DTS_6_1_B(11403271L),
-    DTS_6_1_C(11468807L),
-    DTS_7_0(11534343L),
-    DTS_7_1(11599880L),
-    DTS_8_0_A(11665416L),
-    DTS_8_0_B(11730952L),
-    DTS_8_1_A(11796489L),
-    DTS_8_1_B(11862025L),
-    DTS_6_1_D(11927559L),
-    DiscreteInOrder(9633792L),
-    Unknown(-65536L);
+    public static final AudioChannelLayoutTag UseChannelDescriptions = new AudioChannelLayoutTag(0L);
+    public static final AudioChannelLayoutTag UseChannelBitmap = new AudioChannelLayoutTag(65536L);
+    public static final AudioChannelLayoutTag Mono = new AudioChannelLayoutTag(6553601L);
+    public static final AudioChannelLayoutTag Stereo = new AudioChannelLayoutTag(6619138L);
+    public static final AudioChannelLayoutTag StereoHeadphones = new AudioChannelLayoutTag(6684674L);
+    public static final AudioChannelLayoutTag MatrixStereo = new AudioChannelLayoutTag(6750210L);
+    public static final AudioChannelLayoutTag MidSide = new AudioChannelLayoutTag(6815746L);
+    public static final AudioChannelLayoutTag XY = new AudioChannelLayoutTag(6881282L);
+    public static final AudioChannelLayoutTag Binaural = new AudioChannelLayoutTag(6946818L);
+    public static final AudioChannelLayoutTag Ambisonic_B_Format = new AudioChannelLayoutTag(7012356L);
+    public static final AudioChannelLayoutTag Quadraphonic = new AudioChannelLayoutTag(7077892L);
+    public static final AudioChannelLayoutTag Pentagonal = new AudioChannelLayoutTag(7143429L);
+    public static final AudioChannelLayoutTag Hexagonal = new AudioChannelLayoutTag(7208966L);
+    public static final AudioChannelLayoutTag Octagonal = new AudioChannelLayoutTag(7274504L);
+    public static final AudioChannelLayoutTag Cube = new AudioChannelLayoutTag(7340040L);
+    public static final AudioChannelLayoutTag MPEG_1_0 = new AudioChannelLayoutTag(6553601L);
+    public static final AudioChannelLayoutTag MPEG_2_0 = new AudioChannelLayoutTag(6619138L);
+    public static final AudioChannelLayoutTag MPEG_3_0_A = new AudioChannelLayoutTag(7405571L);
+    public static final AudioChannelLayoutTag MPEG_3_0_B = new AudioChannelLayoutTag(7471107L);
+    public static final AudioChannelLayoutTag MPEG_4_0_A = new AudioChannelLayoutTag(7536644L);
+    public static final AudioChannelLayoutTag MPEG_4_0_B = new AudioChannelLayoutTag(7602180L);
+    public static final AudioChannelLayoutTag MPEG_5_0_A = new AudioChannelLayoutTag(7667717L);
+    public static final AudioChannelLayoutTag MPEG_5_0_B = new AudioChannelLayoutTag(7733253L);
+    public static final AudioChannelLayoutTag MPEG_5_0_C = new AudioChannelLayoutTag(7798789L);
+    public static final AudioChannelLayoutTag MPEG_5_0_D = new AudioChannelLayoutTag(7864325L);
+    public static final AudioChannelLayoutTag MPEG_5_1_A = new AudioChannelLayoutTag(7929862L);
+    public static final AudioChannelLayoutTag MPEG_5_1_B = new AudioChannelLayoutTag(7995398L);
+    public static final AudioChannelLayoutTag MPEG_5_1_C = new AudioChannelLayoutTag(8060934L);
+    public static final AudioChannelLayoutTag MPEG_5_1_D = new AudioChannelLayoutTag(8126470L);
+    public static final AudioChannelLayoutTag MPEG_6_1_A = new AudioChannelLayoutTag(8192007L);
+    public static final AudioChannelLayoutTag MPEG_7_1_A = new AudioChannelLayoutTag(8257544L);
+    public static final AudioChannelLayoutTag MPEG_7_1_B = new AudioChannelLayoutTag(8323080L);
+    public static final AudioChannelLayoutTag MPEG_7_1_C = new AudioChannelLayoutTag(8388616L);
+    public static final AudioChannelLayoutTag Emagic_Default_7_1 = new AudioChannelLayoutTag(8454152L);
+    public static final AudioChannelLayoutTag SMPTE_DTV = new AudioChannelLayoutTag(8519688L);
+    public static final AudioChannelLayoutTag ITU_1_0 = new AudioChannelLayoutTag(6553601L);
+    public static final AudioChannelLayoutTag ITU_2_0 = new AudioChannelLayoutTag(6619138L);
+    public static final AudioChannelLayoutTag ITU_2_1 = new AudioChannelLayoutTag(8585219L);
+    public static final AudioChannelLayoutTag ITU_2_2 = new AudioChannelLayoutTag(8650756L);
+    public static final AudioChannelLayoutTag ITU_3_0 = new AudioChannelLayoutTag(7405571L);
+    public static final AudioChannelLayoutTag ITU_3_1 = new AudioChannelLayoutTag(7536644L);
+    public static final AudioChannelLayoutTag ITU_3_2 = new AudioChannelLayoutTag(7667717L);
+    public static final AudioChannelLayoutTag ITU_3_2_1 = new AudioChannelLayoutTag(7929862L);
+    public static final AudioChannelLayoutTag ITU_3_4_1 = new AudioChannelLayoutTag(8388616L);
+    public static final AudioChannelLayoutTag DVD_0 = new AudioChannelLayoutTag(6553601L);
+    public static final AudioChannelLayoutTag DVD_1 = new AudioChannelLayoutTag(6619138L);
+    public static final AudioChannelLayoutTag DVD_2 = new AudioChannelLayoutTag(8585219L);
+    public static final AudioChannelLayoutTag DVD_3 = new AudioChannelLayoutTag(8650756L);
+    public static final AudioChannelLayoutTag DVD_4 = new AudioChannelLayoutTag(8716291L);
+    public static final AudioChannelLayoutTag DVD_5 = new AudioChannelLayoutTag(8781828L);
+    public static final AudioChannelLayoutTag DVD_6 = new AudioChannelLayoutTag(8847365L);
+    public static final AudioChannelLayoutTag DVD_7 = new AudioChannelLayoutTag(7405571L);
+    public static final AudioChannelLayoutTag DVD_8 = new AudioChannelLayoutTag(7536644L);
+    public static final AudioChannelLayoutTag DVD_9 = new AudioChannelLayoutTag(7667717L);
+    public static final AudioChannelLayoutTag DVD_10 = new AudioChannelLayoutTag(8912900L);
+    public static final AudioChannelLayoutTag DVD_11 = new AudioChannelLayoutTag(8978437L);
+    public static final AudioChannelLayoutTag DVD_12 = new AudioChannelLayoutTag(7929862L);
+    public static final AudioChannelLayoutTag DVD_13 = new AudioChannelLayoutTag(7536644L);
+    public static final AudioChannelLayoutTag DVD_14 = new AudioChannelLayoutTag(7667717L);
+    public static final AudioChannelLayoutTag DVD_15 = new AudioChannelLayoutTag(8912900L);
+    public static final AudioChannelLayoutTag DVD_16 = new AudioChannelLayoutTag(8978437L);
+    public static final AudioChannelLayoutTag DVD_17 = new AudioChannelLayoutTag(7929862L);
+    public static final AudioChannelLayoutTag DVD_18 = new AudioChannelLayoutTag(9043973L);
+    public static final AudioChannelLayoutTag DVD_19 = new AudioChannelLayoutTag(7733253L);
+    public static final AudioChannelLayoutTag DVD_20 = new AudioChannelLayoutTag(7995398L);
+    public static final AudioChannelLayoutTag AudioUnit_4 = new AudioChannelLayoutTag(7077892L);
+    public static final AudioChannelLayoutTag AudioUnit_5 = new AudioChannelLayoutTag(7143429L);
+    public static final AudioChannelLayoutTag AudioUnit_6 = new AudioChannelLayoutTag(7208966L);
+    public static final AudioChannelLayoutTag AudioUnit_8 = new AudioChannelLayoutTag(7274504L);
+    public static final AudioChannelLayoutTag AudioUnit_5_0 = new AudioChannelLayoutTag(7733253L);
+    public static final AudioChannelLayoutTag AudioUnit_6_0 = new AudioChannelLayoutTag(9109510L);
+    public static final AudioChannelLayoutTag AudioUnit_7_0 = new AudioChannelLayoutTag(9175047L);
+    public static final AudioChannelLayoutTag AudioUnit_7_0_Front = new AudioChannelLayoutTag(9699335L);
+    public static final AudioChannelLayoutTag AudioUnit_5_1 = new AudioChannelLayoutTag(7929862L);
+    public static final AudioChannelLayoutTag AudioUnit_6_1 = new AudioChannelLayoutTag(8192007L);
+    public static final AudioChannelLayoutTag AudioUnit_7_1 = new AudioChannelLayoutTag(8388616L);
+    public static final AudioChannelLayoutTag AudioUnit_7_1_Front = new AudioChannelLayoutTag(8257544L);
+    public static final AudioChannelLayoutTag AAC_3_0 = new AudioChannelLayoutTag(7471107L);
+    public static final AudioChannelLayoutTag AAC_Quadraphonic = new AudioChannelLayoutTag(7077892L);
+    public static final AudioChannelLayoutTag AAC_4_0 = new AudioChannelLayoutTag(7602180L);
+    public static final AudioChannelLayoutTag AAC_5_0 = new AudioChannelLayoutTag(7864325L);
+    public static final AudioChannelLayoutTag AAC_5_1 = new AudioChannelLayoutTag(8126470L);
+    public static final AudioChannelLayoutTag AAC_6_0 = new AudioChannelLayoutTag(9240582L);
+    public static final AudioChannelLayoutTag AAC_6_1 = new AudioChannelLayoutTag(9306119L);
+    public static final AudioChannelLayoutTag AAC_7_0 = new AudioChannelLayoutTag(9371655L);
+    public static final AudioChannelLayoutTag AAC_7_1 = new AudioChannelLayoutTag(8323080L);
+    public static final AudioChannelLayoutTag AAC_7_1_B = new AudioChannelLayoutTag(11993096L);
+    public static final AudioChannelLayoutTag AAC_7_1_C = new AudioChannelLayoutTag(12058632L);
+    public static final AudioChannelLayoutTag AAC_Octagonal = new AudioChannelLayoutTag(9437192L);
+    public static final AudioChannelLayoutTag TMH_10_2_std = new AudioChannelLayoutTag(9502736L);
+    public static final AudioChannelLayoutTag TMH_10_2_full = new AudioChannelLayoutTag(9568277L);
+    public static final AudioChannelLayoutTag AC3_1_0_1 = new AudioChannelLayoutTag(9764866L);
+    public static final AudioChannelLayoutTag AC3_3_0 = new AudioChannelLayoutTag(9830403L);
+    public static final AudioChannelLayoutTag AC3_3_1 = new AudioChannelLayoutTag(9895940L);
+    public static final AudioChannelLayoutTag AC3_3_0_1 = new AudioChannelLayoutTag(9961476L);
+    public static final AudioChannelLayoutTag AC3_2_1_1 = new AudioChannelLayoutTag(10027012L);
+    public static final AudioChannelLayoutTag AC3_3_1_1 = new AudioChannelLayoutTag(10092549L);
+    public static final AudioChannelLayoutTag EAC_6_0_A = new AudioChannelLayoutTag(10158086L);
+    public static final AudioChannelLayoutTag EAC_7_0_A = new AudioChannelLayoutTag(10223623L);
+    public static final AudioChannelLayoutTag EAC3_6_1_A = new AudioChannelLayoutTag(10289159L);
+    public static final AudioChannelLayoutTag EAC3_6_1_B = new AudioChannelLayoutTag(10354695L);
+    public static final AudioChannelLayoutTag EAC3_6_1_C = new AudioChannelLayoutTag(10420231L);
+    public static final AudioChannelLayoutTag EAC3_7_1_A = new AudioChannelLayoutTag(10485768L);
+    public static final AudioChannelLayoutTag EAC3_7_1_B = new AudioChannelLayoutTag(10551304L);
+    public static final AudioChannelLayoutTag EAC3_7_1_C = new AudioChannelLayoutTag(10616840L);
+    public static final AudioChannelLayoutTag EAC3_7_1_D = new AudioChannelLayoutTag(10682376L);
+    public static final AudioChannelLayoutTag EAC3_7_1_E = new AudioChannelLayoutTag(10747912L);
+    public static final AudioChannelLayoutTag EAC3_7_1_F = new AudioChannelLayoutTag(10813448L);
+    public static final AudioChannelLayoutTag EAC3_7_1_G = new AudioChannelLayoutTag(10878984L);
+    public static final AudioChannelLayoutTag EAC3_7_1_H = new AudioChannelLayoutTag(10944520L);
+    public static final AudioChannelLayoutTag DTS_3_1 = new AudioChannelLayoutTag(11010052L);
+    public static final AudioChannelLayoutTag DTS_4_1 = new AudioChannelLayoutTag(11075589L);
+    public static final AudioChannelLayoutTag DTS_6_0_A = new AudioChannelLayoutTag(11141126L);
+    public static final AudioChannelLayoutTag DTS_6_0_B = new AudioChannelLayoutTag(11206662L);
+    public static final AudioChannelLayoutTag DTS_6_0_C = new AudioChannelLayoutTag(11272198L);
+    public static final AudioChannelLayoutTag DTS_6_1_A = new AudioChannelLayoutTag(11337735L);
+    public static final AudioChannelLayoutTag DTS_6_1_B = new AudioChannelLayoutTag(11403271L);
+    public static final AudioChannelLayoutTag DTS_6_1_C = new AudioChannelLayoutTag(11468807L);
+    public static final AudioChannelLayoutTag DTS_7_0 = new AudioChannelLayoutTag(11534343L);
+    public static final AudioChannelLayoutTag DTS_7_1 = new AudioChannelLayoutTag(11599880L);
+    public static final AudioChannelLayoutTag DTS_8_0_A = new AudioChannelLayoutTag(11665416L);
+    public static final AudioChannelLayoutTag DTS_8_0_B = new AudioChannelLayoutTag(11730952L);
+    public static final AudioChannelLayoutTag DTS_8_1_A = new AudioChannelLayoutTag(11796489L);
+    public static final AudioChannelLayoutTag DTS_8_1_B = new AudioChannelLayoutTag(11862025L);
+    public static final AudioChannelLayoutTag DTS_6_1_D = new AudioChannelLayoutTag(11927559L);
+    public static final AudioChannelLayoutTag DiscreteInOrder = new AudioChannelLayoutTag(9633792L);
+    public static final AudioChannelLayoutTag Unknown = new AudioChannelLayoutTag(-65536L);
     /*</values>*/
 
     /*<bind>*/
@@ -170,17 +170,17 @@ public enum /*<name>*/AudioChannelLayoutTag/*</name>*/ implements ValuedEnum {
     /*<constants>*//*</constants>*/
     /*<methods>*//*</methods>*/
 
-    private final long n;
+    private static final /*<name>*/AudioChannelLayoutTag/*</name>*/[] values = _values(/*<name>*/AudioChannelLayoutTag/*</name>*/.class);
 
-    private /*<name>*/AudioChannelLayoutTag/*</name>*/(long n) { this.n = n; }
-    public long value() { return n; }
-    public static /*<name>*/AudioChannelLayoutTag/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AudioChannelLayoutTag/*</name>*/ v : values()) {
-            if (v.n == n) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AudioChannelLayoutTag/*</name>*/.class.getName());
+    public /*<name>*/AudioChannelLayoutTag/*</name>*/(long value) { super(value); }
+    private /*<name>*/AudioChannelLayoutTag/*</name>*/(long value, long mask) { super(value, mask); }
+    protected /*<name>*/AudioChannelLayoutTag/*</name>*/ wrap(long value, long mask) {
+        return new /*<name>*/AudioChannelLayoutTag/*</name>*/(value, mask);
+    }
+    protected /*<name>*/AudioChannelLayoutTag/*</name>*/[] _values() {
+        return values;
+    }
+    public static /*<name>*/AudioChannelLayoutTag/*</name>*/[] values() {
+        return values.clone();
     }
 }

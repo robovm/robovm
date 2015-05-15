@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,7 +51,13 @@ import org.robovm.apple.accounts.*;
     /*<members>*//*</members>*/
     @Override
     public SKErrorCode getErrorCode() {
-        return SKErrorCode.valueOf(getCode());
+        SKErrorCode code = null;
+        try {
+            code = SKErrorCode.valueOf(getCode());
+        } catch (IllegalArgumentException e) {
+            // ignore
+        }
+        return code;
     }
     /*<methods>*/
     /**

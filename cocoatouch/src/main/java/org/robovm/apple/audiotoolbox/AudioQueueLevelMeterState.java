@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,8 +30,10 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -48,17 +50,17 @@ import org.robovm.apple.coremedia.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public AudioQueueLevelMeterState() {}
-    public AudioQueueLevelMeterState(float mAveragePower, float mPeakPower) {
-        this.setMAveragePower(mAveragePower);
-        this.setMPeakPower(mPeakPower);
+    public AudioQueueLevelMeterState(float averagePower, float peakPower) {
+        this.setAveragePower(averagePower);
+        this.setPeakPower(peakPower);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native float getMAveragePower();
-    @StructMember(0) public native AudioQueueLevelMeterState setMAveragePower(float mAveragePower);
-    @StructMember(1) public native float getMPeakPower();
-    @StructMember(1) public native AudioQueueLevelMeterState setMPeakPower(float mPeakPower);
+    @StructMember(0) public native float getAveragePower();
+    @StructMember(0) public native AudioQueueLevelMeterState setAveragePower(float averagePower);
+    @StructMember(1) public native float getPeakPower();
+    @StructMember(1) public native AudioQueueLevelMeterState setPeakPower(float peakPower);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

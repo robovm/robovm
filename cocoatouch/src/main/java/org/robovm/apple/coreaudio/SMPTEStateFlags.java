@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,11 +33,12 @@ import org.robovm.apple.corefoundation.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/SMPTEStateFlags/*</name>*/ implements ValuedEnum {
+/*<annotations>*//*</annotations>*/
+public final class /*<name>*/SMPTEStateFlags/*</name>*/ extends Bits</*<name>*/SMPTEStateFlags/*</name>*/> {
     /*<values>*/
-    Valid(1L),
-    Running(2L);
+    public static final SMPTEStateFlags None = new SMPTEStateFlags(0L);
+    public static final SMPTEStateFlags Valid = new SMPTEStateFlags(1L);
+    public static final SMPTEStateFlags Running = new SMPTEStateFlags(2L);
     /*</values>*/
 
     /*<bind>*/
@@ -45,17 +46,17 @@ public enum /*<name>*/SMPTEStateFlags/*</name>*/ implements ValuedEnum {
     /*<constants>*//*</constants>*/
     /*<methods>*//*</methods>*/
 
-    private final long n;
+    private static final /*<name>*/SMPTEStateFlags/*</name>*/[] values = _values(/*<name>*/SMPTEStateFlags/*</name>*/.class);
 
-    private /*<name>*/SMPTEStateFlags/*</name>*/(long n) { this.n = n; }
-    public long value() { return n; }
-    public static /*<name>*/SMPTEStateFlags/*</name>*/ valueOf(long n) {
-        for (/*<name>*/SMPTEStateFlags/*</name>*/ v : values()) {
-            if (v.n == n) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/SMPTEStateFlags/*</name>*/.class.getName());
+    public /*<name>*/SMPTEStateFlags/*</name>*/(long value) { super(value); }
+    private /*<name>*/SMPTEStateFlags/*</name>*/(long value, long mask) { super(value, mask); }
+    protected /*<name>*/SMPTEStateFlags/*</name>*/ wrap(long value, long mask) {
+        return new /*<name>*/SMPTEStateFlags/*</name>*/(value, mask);
+    }
+    protected /*<name>*/SMPTEStateFlags/*</name>*/[] _values() {
+        return values;
+    }
+    public static /*<name>*/SMPTEStateFlags/*</name>*/[] values() {
+        return values.clone();
     }
 }

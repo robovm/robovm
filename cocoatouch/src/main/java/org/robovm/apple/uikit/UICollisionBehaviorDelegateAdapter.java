@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,12 +54,12 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("collisionBehavior:beganContactForItem:withItem:atPoint:")
-    public void beganContact(UICollisionBehavior behavior, UIDynamicItem item1, UIDynamicItem item2, @ByVal CGPoint p) { throw new UnsupportedOperationException(); }
+    public void beganContact(UICollisionBehavior behavior, UIDynamicItem item1, UIDynamicItem item2, @ByVal CGPoint p) {}
     @NotImplemented("collisionBehavior:endedContactForItem:withItem:")
-    public void endedContact(UICollisionBehavior behavior, UIDynamicItem item1, UIDynamicItem item2) { throw new UnsupportedOperationException(); }
+    public void endedContact(UICollisionBehavior behavior, UIDynamicItem item1, UIDynamicItem item2) {}
     @NotImplemented("collisionBehavior:beganContactForItem:withBoundaryIdentifier:atPoint:")
-    public void beganBoundaryContact(UICollisionBehavior behavior, UIDynamicItem item, NSObject identifier, @ByVal CGPoint p) { throw new UnsupportedOperationException(); }
+    public void beganBoundaryContact(UICollisionBehavior behavior, UIDynamicItem item, NSObject identifier, @ByVal CGPoint p) {}
     @NotImplemented("collisionBehavior:endedContactForItem:withBoundaryIdentifier:")
-    public void endedBoundaryContact(UICollisionBehavior behavior, UIDynamicItem item, NSObject identifier) { throw new UnsupportedOperationException(); }
+    public void endedBoundaryContact(UICollisionBehavior behavior, UIDynamicItem item, NSObject identifier) {}
     /*</methods>*/
 }

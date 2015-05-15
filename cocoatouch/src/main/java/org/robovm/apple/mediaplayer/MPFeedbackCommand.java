@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,6 +57,16 @@ import org.robovm.apple.coregraphics.*;
     public native String getLocalizedTitle();
     @Property(selector = "setLocalizedTitle:")
     public native void setLocalizedTitle(String v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "localizedShortTitle")
+    public native String getLocalizedShortTitle();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setLocalizedShortTitle:")
+    public native void setLocalizedShortTitle(String v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

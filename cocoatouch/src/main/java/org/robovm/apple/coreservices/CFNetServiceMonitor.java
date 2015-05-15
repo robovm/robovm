@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,9 +43,9 @@ import org.robovm.apple.corefoundation.*;
         void invoke(CFNetServiceMonitor monitor, CFNetService service, CFNetServiceMonitorType infoType, CFData data, CFStreamError error);
     }
     
-    private static java.util.concurrent.atomic.AtomicLong refconId = new java.util.concurrent.atomic.AtomicLong();
+    private static final java.util.concurrent.atomic.AtomicLong refconId = new java.util.concurrent.atomic.AtomicLong();
     private long localRefconId;
-    private static Map<Long, ClientCallback> callbacks = new HashMap<Long, ClientCallback>();
+    private static final LongMap<ClientCallback> callbacks = new LongMap<>();
     private static final java.lang.reflect.Method cbInvoke;
     
     static {
@@ -86,17 +86,18 @@ import org.robovm.apple.corefoundation.*;
         if (service != null) service.localRefconId = refconId;
         return service;
     }
+    
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public boolean start(CFNetServiceMonitorType recordType) {
-        return start(recordType, null);
+    public void scheduleInRunLoop(CFRunLoop runLoop, CFRunLoopMode runLoopMode) {
+        scheduleInRunLoop(runLoop, runLoopMode.value());
     }
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public void stop() {
-        stop(null);
+    public void unscheduleFromRunLoop(CFRunLoop runLoop, CFRunLoopMode runLoopMode) {
+        unscheduleFromRunLoop(runLoop, runLoopMode.value());
     }
     /*<methods>*/
     /**
@@ -108,7 +109,7 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFNetServiceMonitorCreate", optional=true)
-    protected static native CFNetServiceMonitor create(CFAllocator alloc, CFNetService theService, FunctionPtr clientCB, CFNetServiceClientContext clientContext);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFNetServiceMonitor create(CFAllocator alloc, CFNetService theService, FunctionPtr clientCB, CFNetServiceClientContext clientContext);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -117,22 +118,39 @@ import org.robovm.apple.corefoundation.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
+    public boolean start(CFNetServiceMonitorType recordType) throws CFStreamErrorException {
+       CFStreamError.CFStreamErrorPtr ptr = new CFStreamError.CFStreamErrorPtr();
+       boolean result = start(recordType, ptr);
+       if (ptr.get() != null) { throw new CFStreamErrorException(ptr.get()); }
+       return result;
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CFNetServiceMonitorStart", optional=true)
-    protected native boolean start(CFNetServiceMonitorType recordType, CFStreamError.CFStreamErrorPtr error);
+    private native boolean start(CFNetServiceMonitorType recordType, CFStreamError.CFStreamErrorPtr error);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public void stop() throws CFStreamErrorException {
+       CFStreamError.CFStreamErrorPtr ptr = new CFStreamError.CFStreamErrorPtr();
+       stop(ptr);
+       if (ptr.get() != null) { throw new CFStreamErrorException(ptr.get()); }
+    }
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFNetServiceMonitorStop", optional=true)
-    protected native void stop(CFStreamError.CFStreamErrorPtr error);
+    private native void stop(CFStreamError.CFStreamErrorPtr error);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFNetServiceMonitorScheduleWithRunLoop", optional=true)
-    public native void schedule(CFRunLoop runLoop, CFString runLoopMode);
+    public native void scheduleInRunLoop(CFRunLoop runLoop, String runLoopMode);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFNetServiceMonitorUnscheduleFromRunLoop", optional=true)
-    public native void unschedule(CFRunLoop runLoop, CFString runLoopMode);
+    public native void unscheduleFromRunLoop(CFRunLoop runLoop, String runLoopMode);
     /*</methods>*/
 }

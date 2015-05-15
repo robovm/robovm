@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,21 +48,18 @@ import org.robovm.rt.bro.ptr.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-
     /**
      * @since Available in iOS 4.0 and later.
      */
     public void apply(long iterations, VoidBlock1<Long> block) {
         apply(iterations, this, block);
     }
-
     /**
      * @since Available in iOS 4.0 and later.
      */
     public void after(long delay, java.util.concurrent.TimeUnit unit, Runnable block) {
         after(Dispatch.time(Dispatch.TIME_NOW, unit.toNanos(delay)), this, block);
     }
-
     /**
      * Submits the specified {@link Runnable} on this {@link DispatchQueue} at
      * the specified time.
@@ -77,7 +74,6 @@ import org.robovm.rt.bro.ptr.*;
         timespec ts = new timespec(ms / 1000, (ms % 1000) * 1000);
         after(Dispatch.walltime(ts, 0), this, block);
     }
-
     /*<methods>*/
     /**
      * @since Available in iOS 4.0 and later.
@@ -102,21 +98,9 @@ import org.robovm.rt.bro.ptr.*;
     private static native void apply(@MachineSizedUInt long iterations, DispatchQueue queue, @Block("(@MachineSizedUInt)") VoidBlock1<Long> block);
     /**
      * @since Available in iOS 4.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    @Bridge(symbol="dispatch_get_current_queue", optional=true)
-    public static native DispatchQueue getCurrentQueue();
-    /**
-     * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="dispatch_get_global_queue", optional=true)
     public static native DispatchQueue getGlobalQueue(@MachineSizedSInt long identifier, @MachineSizedUInt long flags);
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @Bridge(symbol="dispatch_queue_attr_make_with_qos_class", optional=true)
-    public static native DispatchQueueAttr attrMakeWithQosClass(DispatchQueueAttr attr, int qos_class, int relative_priority);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -127,11 +111,6 @@ import org.robovm.rt.bro.ptr.*;
      */
     @Bridge(symbol="dispatch_queue_get_label", optional=true)
     public native @org.robovm.rt.bro.annotation.Marshaler(StringMarshalers.AsUtf8ZMarshaler.class) String getLabel();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @Bridge(symbol="dispatch_queue_get_qos_class", optional=true)
-    public native int getQosClass(IntPtr relative_priority_ptr);
     /**
      * @since Available in iOS 4.0 and later.
      */

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -98,7 +98,7 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "compare:")
     public native NSComparisonResult compare(NSNumber otherNumber);
     @Method(selector = "isEqualToNumber:")
-    public native boolean isEqualTo(NSNumber number);
+    public native boolean equalsTo(NSNumber number);
     @Method(selector = "descriptionWithLocale:")
     public native String toString(NSLocale locale);
     @Method(selector = "numberWithChar:")

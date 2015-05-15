@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,8 +53,14 @@ import org.robovm.apple.opengles.*;
     SCNScene getScene();
     @Property(selector = "setScene:")
     void setScene(SCNScene v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "sceneTime")
     double getSceneTime();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "setSceneTime:")
     void setSceneTime(double v);
     @Property(selector = "delegate")
@@ -81,12 +87,24 @@ import org.robovm.apple.opengles.*;
     boolean isJitteringEnabled();
     @Property(selector = "setJitteringEnabled:")
     void setJitteringEnabled(boolean v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "showsStatistics")
     boolean showsStatistics();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "setShowsStatistics:")
     void setShowsStatistics(boolean v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "overlaySKScene")
     SKScene getOverlaySKScene();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "setOverlaySKScene:")
     void setOverlaySKScene(SKScene v);
     @Property(selector = "context")
@@ -95,14 +113,29 @@ import org.robovm.apple.opengles.*;
     /*<methods>*/
     @Method(selector = "hitTest:options:")
     NSArray<SCNHitTestResult> hitTest(@ByVal CGPoint thePoint, SCNHitTestOptions options);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "isNodeInsideFrustum:withPointOfView:")
     boolean isNodeInsideFrustum(SCNNode node, SCNNode pointOfView);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "projectPoint:")
     @ByVal SCNVector3 projectPoint(@ByVal SCNVector3 point);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "unprojectPoint:")
     @ByVal SCNVector3 unprojectPoint(@ByVal SCNVector3 point);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "prepareObject:shouldAbortBlock:")
     boolean prepareObject(NSObject object, @Block Block0<Boolean> block);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "prepareObjects:withCompletionHandler:")
     void prepareObjects(NSArray<?> objects, @Block VoidBooleanBlock completionHandler);
     /*</methods>*/

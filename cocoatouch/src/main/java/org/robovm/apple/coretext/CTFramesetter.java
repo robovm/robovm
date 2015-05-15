@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,12 +56,12 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTFramesetterCreateWithAttributedString", optional=true)
-    public static native CTFramesetter create(NSAttributedString string);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CTFramesetter create(NSAttributedString string);
     /**
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTFramesetterCreateFrame", optional=true)
-    public native CTFrame createFrame(@ByVal CFRange stringRange, CGPath path, CTFrameAttributes frameAttributes);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CTFrame createFrame(@ByVal CFRange stringRange, CGPath path, CTFrameAttributes frameAttributes);
     /**
      * @since Available in iOS 3.2 and later.
      */

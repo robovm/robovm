@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,22 +46,6 @@ import org.robovm.apple.coregraphics.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    /**
-     * 
-     * @param isrc
-     * @param options
-     * @return
-     * @since Available in iOS 7.0 and later.
-     * @throws NSErrorException
-     */
-    public boolean copyImageSource(CGImageSource isrc, CGImageDestinationCopySourceOptions options) throws NSErrorException {
-        CFError.CFErrorPtr err = new CFError.CFErrorPtr();
-        boolean result = copyImageSource(isrc, options, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get().as(NSError.class));
-        }
-        return result;
-    }
     /*<methods>*/
     /**
      * @since Available in iOS 4.0 and later.
@@ -77,17 +61,17 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CGImageDestinationCreateWithDataConsumer", optional=true)
-    public static native CGImageDestination create(CGDataConsumer consumer, String type, @MachineSizedUInt long count, NSDictionary<?, ?> options);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImageDestination create(CGDataConsumer consumer, String type, @MachineSizedUInt long count, NSDictionary<?, ?> options);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CGImageDestinationCreateWithData", optional=true)
-    public static native CGImageDestination create(NSData data, String type, @MachineSizedUInt long count, NSDictionary<?, ?> options);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImageDestination create(NSData data, String type, @MachineSizedUInt long count, NSDictionary<?, ?> options);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CGImageDestinationCreateWithURL", optional=true)
-    public static native CGImageDestination create(NSURL url, String type, @MachineSizedUInt long count, NSDictionary<?, ?> options);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImageDestination create(NSURL url, String type, @MachineSizedUInt long count, NSDictionary<?, ?> options);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -111,7 +95,16 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
+    public boolean copyImageSource(CGImageSource isrc, CGImageDestinationCopySourceOptions options) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = copyImageSource(isrc, options, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Bridge(symbol="CGImageDestinationCopyImageSource", optional=true)
-    protected native boolean copyImageSource(CGImageSource isrc, CGImageDestinationCopySourceOptions options, CFError.CFErrorPtr err);
+    private native boolean copyImageSource(CGImageSource isrc, CGImageDestinationCopySourceOptions options, NSError.NSErrorPtr error);
     /*</methods>*/
 }

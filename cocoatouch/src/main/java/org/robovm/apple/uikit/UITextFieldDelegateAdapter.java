@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,18 +54,18 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("textFieldShouldBeginEditing:")
-    public boolean shouldBeginEditing(UITextField textField) { throw new UnsupportedOperationException(); }
+    public boolean shouldBeginEditing(UITextField textField) { return true; }
     @NotImplemented("textFieldDidBeginEditing:")
-    public void didBeginEditing(UITextField textField) { throw new UnsupportedOperationException(); }
+    public void didBeginEditing(UITextField textField) {}
     @NotImplemented("textFieldShouldEndEditing:")
-    public boolean shouldEndEditing(UITextField textField) { throw new UnsupportedOperationException(); }
+    public boolean shouldEndEditing(UITextField textField) { return true; }
     @NotImplemented("textFieldDidEndEditing:")
-    public void didEndEditing(UITextField textField) { throw new UnsupportedOperationException(); }
+    public void didEndEditing(UITextField textField) {}
     @NotImplemented("textField:shouldChangeCharactersInRange:replacementString:")
-    public boolean shouldChangeCharacters(UITextField textField, @ByVal NSRange range, String string) { throw new UnsupportedOperationException(); }
+    public boolean shouldChangeCharacters(UITextField textField, @ByVal NSRange range, String string) { return true; }
     @NotImplemented("textFieldShouldClear:")
-    public boolean shouldClear(UITextField textField) { throw new UnsupportedOperationException(); }
+    public boolean shouldClear(UITextField textField) { return true; }
     @NotImplemented("textFieldShouldReturn:")
-    public boolean shouldReturn(UITextField textField) { throw new UnsupportedOperationException(); }
+    public boolean shouldReturn(UITextField textField) { return true; }
     /*</methods>*/
 }

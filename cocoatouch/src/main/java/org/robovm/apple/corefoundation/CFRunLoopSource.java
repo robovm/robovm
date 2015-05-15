@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -58,7 +58,7 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFRunLoopSourceGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFRunLoopSourceCreate", optional=true)
-    protected static native CFRunLoopSource create(CFAllocator allocator, @MachineSizedSInt long order, CFRunLoopSourceContext context);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFRunLoopSource create(CFAllocator allocator, @MachineSizedSInt long order, CFRunLoopSourceContext context);
     @Bridge(symbol="CFRunLoopSourceGetOrder", optional=true)
     public native @MachineSizedSInt long getOrder();
     @Bridge(symbol="CFRunLoopSourceInvalidate", optional=true)

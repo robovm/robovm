@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -59,7 +59,6 @@ import org.robovm.apple.foundation.*;
         }
         return VM.getLong(VM.getObjectAddress(bytes) + EFFECTIVE_DIRECT_ADDRESS_OFFSET);
     }
-    
     /*<bind>*/static { Bro.bind(CFData.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
@@ -71,7 +70,7 @@ import org.robovm.apple.foundation.*;
         if (bytes == null) {
             throw new NullPointerException("bytes");
         }
-        return create(null, VM.getArrayValuesAddress(bytes), bytes.length);
+        return create((CFAllocator)null, VM.getArrayValuesAddress(bytes), bytes.length);
     }
     public static CFData create(ByteBuffer bytes) {
         if (bytes == null) {
@@ -81,8 +80,8 @@ import org.robovm.apple.foundation.*;
         CFData result = create(null, handle, bytes.remaining(), null);
         return result;
     }
-    public static CFData create(CFData theData) {
-        return create(null, theData);
+    public static CFData createCopy(CFData theData) {
+        return createCopy(null, theData);
     }
     public ByteBuffer asByteBuffer() {
         return VM.newDirectByteBuffer(getBytePtr(), getLength());
@@ -98,11 +97,11 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFDataGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFDataCreate", optional=true)
-    protected static native CFData create(CFAllocator allocator, @Pointer long bytes, @MachineSizedSInt long length);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFData create(CFAllocator allocator, @Pointer long bytes, @MachineSizedSInt long length);
     @Bridge(symbol="CFDataCreateWithBytesNoCopy", optional=true)
-    protected static native CFData create(CFAllocator allocator, @Pointer long bytes, @MachineSizedSInt long length, CFAllocator bytesDeallocator);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFData create(CFAllocator allocator, @Pointer long bytes, @MachineSizedSInt long length, CFAllocator bytesDeallocator);
     @Bridge(symbol="CFDataCreateCopy", optional=true)
-    protected static native CFData create(CFAllocator allocator, CFData theData);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFData createCopy(CFAllocator allocator, CFData theData);
     @Bridge(symbol="CFDataGetLength", optional=true)
     public native @MachineSizedSInt long getLength();
     @Bridge(symbol="CFDataGetBytePtr", optional=true)

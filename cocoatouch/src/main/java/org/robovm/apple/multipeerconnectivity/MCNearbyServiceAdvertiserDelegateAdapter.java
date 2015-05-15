@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,8 +50,8 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("advertiser:didReceiveInvitationFromPeer:withContext:invitationHandler:")
-    public void didReceiveInvitation(MCNearbyServiceAdvertiser advertiser, MCPeerID peerID, NSData context, @Block VoidBlock2<Boolean, MCSession> invitationHandler) { throw new UnsupportedOperationException(); }
+    public void didReceiveInvitation(MCNearbyServiceAdvertiser advertiser, MCPeerID peerID, NSData context, @Block VoidBlock2<Boolean, MCSession> invitationHandler) {}
     @NotImplemented("advertiser:didNotStartAdvertisingPeer:")
-    public void didNotStart(MCNearbyServiceAdvertiser advertiser, NSError error) { throw new UnsupportedOperationException(); }
+    public void didNotStart(MCNearbyServiceAdvertiser advertiser, NSError error) {}
     /*</methods>*/
 }

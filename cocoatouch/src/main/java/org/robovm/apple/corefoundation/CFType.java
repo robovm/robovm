@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,8 +56,14 @@ import org.robovm.apple.foundation.*;
             }
             long typeId = getTypeID(handle);
             Class<? extends CFType> cfTypeClass = allCFTypeClasses.get(typeId);
-            if (cfTypeClass != null) {
-                cls = cfTypeClass;
+            if (cfTypeClass != null && cfTypeClass != cls) {
+                if (cls.isAssignableFrom(cfTypeClass)) {
+                    /*
+                     * Only use cfTypeClass if it's a subclass of the expected
+                     * type (cls).
+                     */
+                    cls = cfTypeClass;
+                }
             }
             CFType o = (CFType) NativeObject.Marshaler.toObject(cls, handle, flags);
             if (retain) {
@@ -78,6 +84,30 @@ import org.robovm.apple.foundation.*;
         }
     }
     
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<?> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return o.toList(CFType.class);
+        }
+        @MarshalsPointer
+        public static long toNative(List<? extends CFType> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray o = null;
+            if (l instanceof CFArray) {
+                o = (CFArray) l;
+            } else {
+                o = CFArray.create((List<? extends CFType>) l);
+            }
+            return CFType.Marshaler.toNative(o, flags);
+        }
+    }
+    
     /**
      * Marshaler used for create and copy methods which have already retained
      * the object they return.
@@ -87,9 +117,13 @@ import org.robovm.apple.foundation.*;
         public static CFType toObject(Class<? extends CFType> cls, long handle, long flags) {
             return Marshaler.toObject(cls, handle, flags, false);
         }
+        @MarshalsPointer
+        public static long toNative(CFType o, long flags) {
+            return Marshaler.toNative(o, flags);
+        }
     }
 
-    private static final Map<Long, Class<? extends CFType>> allCFTypeClasses = new HashMap<>();
+    private static final LongMap<Class<? extends CFType>> allCFTypeClasses = new LongMap<>();
     private static final int ABSTRACT = 0x00000400;
     
     static {
@@ -101,11 +135,12 @@ import org.robovm.apple.foundation.*;
         for (Class<? extends CFType> cls : classes) {
             if (cls != cfTypeClass && (cls.getModifiers() & ABSTRACT) == 0) {
                 try {
-                    java.lang.reflect.Method m = cls.getMethod("getClassTypeID", emptyArgs);
+                    java.lang.reflect.Method m = cls.getDeclaredMethod("getClassTypeID", emptyArgs);
+                    m.setAccessible(true);
                     Long typeId = (Long) m.invoke(null);
                     allCFTypeClasses.put(typeId, cls);
                 } catch (Throwable e) {
-                	// Ignore, because several of Apple's CFType subclasses don't contain a getClassTypeID() method.
+                    // Ignore, because several of Apple's CFType subclasses don't contain a getClassTypeID() method.
                 }
             }
         }
@@ -195,7 +230,7 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFHash", optional=true)
     public native @MachineSizedUInt long hash();
     @Bridge(symbol="CFCopyDescription", optional=true)
-    protected native CFString getDescription();
+    protected native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFString getDescription();
     @Bridge(symbol="CFGetAllocator", optional=true)
     public native CFAllocator getAllocator();
     @Bridge(symbol="CFMakeCollectable", optional=true)

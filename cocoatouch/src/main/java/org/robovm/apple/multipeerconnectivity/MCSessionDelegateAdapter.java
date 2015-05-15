@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,16 +50,16 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("session:peer:didChangeState:")
-    public void didChangeState(MCSession session, MCPeerID peerID, MCSessionState state) { throw new UnsupportedOperationException(); }
+    public void didChangeState(MCSession session, MCPeerID peerID, MCSessionState state) {}
     @NotImplemented("session:didReceiveData:fromPeer:")
-    public void didReceiveData(MCSession session, NSData data, MCPeerID peerID) { throw new UnsupportedOperationException(); }
+    public void didReceiveData(MCSession session, NSData data, MCPeerID peerID) {}
     @NotImplemented("session:didReceiveStream:withName:fromPeer:")
-    public void didReceiveStream(MCSession session, NSInputStream stream, String streamName, MCPeerID peerID) { throw new UnsupportedOperationException(); }
+    public void didReceiveStream(MCSession session, NSInputStream stream, String streamName, MCPeerID peerID) {}
     @NotImplemented("session:didStartReceivingResourceWithName:fromPeer:withProgress:")
-    public void didStartReceivingResource(MCSession session, String resourceName, MCPeerID peerID, NSProgress progress) { throw new UnsupportedOperationException(); }
+    public void didStartReceivingResource(MCSession session, String resourceName, MCPeerID peerID, NSProgress progress) {}
     @NotImplemented("session:didFinishReceivingResourceWithName:fromPeer:atURL:withError:")
-    public void didFinishReceivingResource(MCSession session, String resourceName, MCPeerID peerID, NSURL localURL, NSError error) { throw new UnsupportedOperationException(); }
+    public void didFinishReceivingResource(MCSession session, String resourceName, MCPeerID peerID, NSURL localURL, NSError error) {}
     @NotImplemented("session:didReceiveCertificate:fromPeer:certificateHandler:")
-    public void didReceiveCertificate(MCSession session, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<SecIdentity> certificate, MCPeerID peerID, @Block VoidBooleanBlock certificateHandler) { throw new UnsupportedOperationException(); }
+    public void didReceiveCertificate(MCSession session, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<SecIdentity> certificate, MCPeerID peerID, @Block VoidBooleanBlock certificateHandler) {}
     /*</methods>*/
 }

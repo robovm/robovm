@@ -56,9 +56,6 @@ classes:
     SCNError:
         extends: NSError
         
-    SCNErrorUserInfoKey:
-        extends: NSErrorUserInfoKey
-        
     SCNGeometrySourceSemantic:
         extends: SCNProgramSemantic
     SCNRenderingTransform:
@@ -221,9 +218,9 @@ classes:
             'string':
                 type: NSAttributedString
             'truncationMode':
-                type: String # CATruncationMode TODO
+                type: CATextTruncationMode
             'alignmentMode':
-                type: String # CAAlignmentMode TODO
+                type: CATextAlignmentMode
         methods:
             '+textWithString:extrusionDepth:':
                 name: create
@@ -564,7 +561,7 @@ classes:
                         type: SCNSceneSourceOptions
             '+sceneWithURL:options:error:':
                 name: create
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
                 parameters:
                     options:
                         type: SCNSceneSourceOptions
@@ -593,15 +590,21 @@ classes:
                         type: '@Block VoidBlock4<Float, SCNSceneSourceStatus, NSError, BooleanPtr>'
             '-sceneWithOptions:error:':
                 name: newScene
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
                 parameters:
                     options:
                         type: SCNSceneSourceOptions
             '-entryWithIdentifier:withClass:':
                 name: getEntryWithIdentifier
+                parameters:
+                    entryClass:
+                        type: 'Class<? extends NSObject>'
             '-identifiersOfEntriesWithClass:':
                 name: getIdentifiersOfEntriesWithClass
                 return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                parameters:
+                    entryClass:
+                        type: 'Class<? extends NSObject>'
             '-entriesPassingTest:':
                 name: getEntriesPassingTest
             '+sceneSourceWith.*':
@@ -781,7 +784,7 @@ protocols:
     SCNTechniqueSupport: {} # DONE
 
 functions:
-    SCNExportJavaScriptModule: {exclude: true} # TODO
+    SCNExportJavaScriptModule: {exclude: true} # TODO when JavascriptCore is bound
     
     SCNVector3EqualToVector3:
         class: SCNVector3
@@ -890,7 +893,8 @@ values:
         name: '#{g[0]}Value'
         type: NSString
         visibility: protected
-    SCNSceneExportDestinationURL: { exclude: true } # TODO
+    SCNSceneExportDestinationURL: # not available on iOS
+        exclude: true
 
     # SCNSceneRenderer
     SCNHitTest(.*Key):
@@ -931,10 +935,10 @@ values:
         type: NSString
         visibility: protected
     SCN(DetailedErrors)Key:
-        class: SCNErrorUserInfoKey
-        name: '#{g[0]}Value'
+        enum: SCNErrorUserInfoKey
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        extends: NSErrorUserInfoKey
 
     # SCNShadable
     SCNShaderModifierEntryPoint(.*):

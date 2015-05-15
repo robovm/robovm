@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,8 +30,10 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -48,20 +50,49 @@ import org.robovm.apple.coremedia.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public AudioFileRegionList() {}
-    public AudioFileRegionList(int mSMPTE_TimeType, int mNumberRegions, AudioFileRegion mRegions) {
-        this.setMSMPTE_TimeType(mSMPTE_TimeType);
-        this.setMNumberRegions(mNumberRegions);
-        this.setMRegions(mRegions);
+    public AudioFileRegionList(CAFSMPTETimeType SMPTETimeType) {
+        this.setSMPTETimeType(SMPTETimeType);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
+    public int getRegionCount() {
+        return getNumberRegions();
+    }
+    
+    public AudioFileRegion getRegion(int index) {
+        if (index >= getRegionCount()) {
+            throw new ArrayIndexOutOfBoundsException(index);
+        }
+        return getRegions0().next(index).get();
+    }
+    public AudioFileRegionList setRegion(int index, AudioFileRegion value) {
+        if (index >= getRegionCount()) {
+            throw new ArrayIndexOutOfBoundsException(index);
+        }
+        getRegions0().next(index).set(value);
+        return this;
+    }
+    public AudioFileRegion[] getRegions() {
+        int count = getRegionCount();
+        AudioFileRegion[] array = new AudioFileRegion[count];
+        AudioFileRegion.AudioFileRegionPtr ptr = getRegions0();
+        for (int i = 0; i < count; i++) {
+            array[i] = ptr.next(i).get();
+        }
+        return array;
+    }
+    public AudioFileRegionList setRegions(AudioFileRegion[] regions) {
+        this.setNumberRegions(regions.length);
+        getRegions0().set(regions);
+        return this;
+    }
     /*<members>*/
-    @StructMember(0) public native int getMSMPTE_TimeType();
-    @StructMember(0) public native AudioFileRegionList setMSMPTE_TimeType(int mSMPTE_TimeType);
-    @StructMember(1) public native int getMNumberRegions();
-    @StructMember(1) public native AudioFileRegionList setMNumberRegions(int mNumberRegions);
-    @StructMember(2) public native @Array({1}) AudioFileRegion getMRegions();
-    @StructMember(2) public native AudioFileRegionList setMRegions(@Array({1}) AudioFileRegion mRegions);
+    @StructMember(0) public native CAFSMPTETimeType getSMPTETimeType();
+    @StructMember(0) public native AudioFileRegionList setSMPTETimeType(CAFSMPTETimeType SMPTETimeType);
+    @StructMember(1) protected native int getNumberRegions();
+    @StructMember(1) protected native AudioFileRegionList setNumberRegions(int numberRegions);
+    @StructMember(2) protected native AudioFileRegion.AudioFileRegionPtr getRegions0();
+    @StructMember(2) protected native AudioFileRegionList setRegions0(AudioFileRegion.AudioFileRegionPtr regions0);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian Mobile AB
+ * Copyright (C) 2012 RoboVM AB
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -26,6 +26,12 @@ public class ErrorOutputStream extends LoggerOutputStream {
     }
     @Override
     protected void log(byte[] message, int off, int length) {
-        logger.error(new String(message, off, length).replace("%", "%%"));
+        String msg = new String(message, off, length).replace("%", "%%");
+        String msgToLower = msg.toLowerCase();
+        if (msgToLower.contains("warning")) {
+            logger.warn(msg);
+        } else {
+            logger.error(msg);
+        }
     }
 }

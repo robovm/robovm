@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -77,6 +77,16 @@ import org.robovm.apple.foundation.*;
      */
     @Property(selector = "setServerCertificateCommonName:")
     public native void setServerCertificateCommonName(String v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "certificateType")
+    public native NEVPNIKEv2CertificateType getCertificateType();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setCertificateType:")
+    public native void setCertificateType(NEVPNIKEv2CertificateType v);
     /**
      * @since Available in iOS 8.0 and later.
      */

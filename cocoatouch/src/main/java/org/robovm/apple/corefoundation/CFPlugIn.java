@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,7 +51,7 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFPlugInGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFPlugInCreate", optional=true)
-    protected static native CFPlugIn create(CFAllocator allocator, CFURL plugInURL);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFPlugIn create(CFAllocator allocator, CFURL plugInURL);
     @Bridge(symbol="CFPlugInGetBundle", optional=true)
     public native CFBundle getBundle();
     @Bridge(symbol="CFPlugInSetLoadOnDemand", optional=true)

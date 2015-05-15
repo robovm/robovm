@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,12 +38,15 @@ import org.robovm.apple.opengles.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(SCNErrorUserInfoKey.Marshaler.class)
 /*<annotations>*/@Library("SceneKit")/*</annotations>*/
+@Marshaler(/*<name>*/SCNErrorUserInfoKey/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SCNErrorUserInfoKey/*</name>*/ 
-    extends /*<extends>*/NSErrorUserInfoKey/*</extends>*/ 
+    extends /*<extends>*/NSErrorUserInfoKey/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/SCNErrorUserInfoKey/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static SCNErrorUserInfoKey toObject(Class<SCNErrorUserInfoKey> cls, long handle, long flags) {
@@ -61,28 +64,46 @@ import org.robovm.apple.opengles.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(SCNErrorUserInfoKey.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    public static final SCNErrorUserInfoKey DetailedErrors = new SCNErrorUserInfoKey("DetailedErrorsValue");
-    
-    private static SCNErrorUserInfoKey[] values = new SCNErrorUserInfoKey[] {DetailedErrors};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private SCNErrorUserInfoKey(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<SCNErrorUserInfoKey> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<SCNErrorUserInfoKey> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(SCNErrorUserInfoKey.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<SCNErrorUserInfoKey> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (SCNErrorUserInfoKey i : l) {
+                array.add(i.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*</marshalers>*/
+
+    /*<constants>*/
+    public static final SCNErrorUserInfoKey DetailedErrors = new SCNErrorUserInfoKey("DetailedErrors");
+    /*</constants>*/
+    
+    private static /*<name>*/SCNErrorUserInfoKey/*</name>*/[] values = new /*<name>*/SCNErrorUserInfoKey/*</name>*/[] {/*<value_list>*/DetailedErrors/*</value_list>*/};
+    
+    /*<name>*/SCNErrorUserInfoKey/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static SCNErrorUserInfoKey valueOf(NSString value) {
-        for (SCNErrorUserInfoKey v : values) {
+    public static /*<name>*/SCNErrorUserInfoKey/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/SCNErrorUserInfoKey/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -90,8 +111,16 @@ import org.robovm.apple.opengles.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/SCNErrorUserInfoKey/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    @GlobalValue(symbol="SCNDetailedErrorsKey", optional=true)
-    protected static native NSString DetailedErrorsValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("SceneKit")/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        @GlobalValue(symbol="SCNDetailedErrorsKey", optional=true)
+        public static native NSString DetailedErrors();
+        /*</values>*/
+    }
 }

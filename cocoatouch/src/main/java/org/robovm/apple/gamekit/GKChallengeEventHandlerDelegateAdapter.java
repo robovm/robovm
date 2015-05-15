@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,18 +49,18 @@ import org.robovm.apple.uikit.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("localPlayerDidSelectChallenge:")
-    public void localPlayerDidSelectChallenge(GKChallenge challenge) { throw new UnsupportedOperationException(); }
+    public void localPlayerDidSelectChallenge(GKChallenge challenge) {}
     @NotImplemented("shouldShowBannerForLocallyReceivedChallenge:")
-    public boolean shouldShowBannerForLocallyReceivedChallenge(GKChallenge challenge) { throw new UnsupportedOperationException(); }
+    public boolean shouldShowBannerForLocallyReceivedChallenge(GKChallenge challenge) { return false; }
     @NotImplemented("localPlayerDidReceiveChallenge:")
-    public void localPlayerDidReceiveChallenge(GKChallenge challenge) { throw new UnsupportedOperationException(); }
+    public void localPlayerDidReceiveChallenge(GKChallenge challenge) {}
     @NotImplemented("shouldShowBannerForLocallyCompletedChallenge:")
-    public boolean shouldShowBannerForLocallyCompletedChallenge(GKChallenge challenge) { throw new UnsupportedOperationException(); }
+    public boolean shouldShowBannerForLocallyCompletedChallenge(GKChallenge challenge) { return false; }
     @NotImplemented("localPlayerDidCompleteChallenge:")
-    public void localPlayerDidCompleteChallenge(GKChallenge challenge) { throw new UnsupportedOperationException(); }
+    public void localPlayerDidCompleteChallenge(GKChallenge challenge) {}
     @NotImplemented("shouldShowBannerForRemotelyCompletedChallenge:")
-    public boolean shouldShowBannerForRemotelyCompletedChallenge(GKChallenge challenge) { throw new UnsupportedOperationException(); }
+    public boolean shouldShowBannerForRemotelyCompletedChallenge(GKChallenge challenge) { return false; }
     @NotImplemented("remotePlayerDidCompleteChallenge:")
-    public void remotePlayerDidCompleteChallenge(GKChallenge challenge) { throw new UnsupportedOperationException(); }
+    public void remotePlayerDidCompleteChallenge(GKChallenge challenge) {}
     /*</methods>*/
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,58 +33,97 @@ import org.robovm.apple.corefoundation.*;
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("CFNetwork")/*</annotations>*/
+@Marshaler(/*<name>*/CFProxyType/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CFProxyType/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<CFString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(CFProxyType.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    static { Bro.bind(/*<name>*/CFProxyType/*</name>*/.class); }
+
+    /*<marshalers>*/
+    public static class Marshaler {
+        @MarshalsPointer
+        public static CFProxyType toObject(Class<CFProxyType> cls, long handle, long flags) {
+            CFString o = (CFString) CFType.Marshaler.toObject(CFString.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return CFProxyType.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(CFProxyType o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return CFType.Marshaler.toNative(o.value(), flags);
+        }
+    }
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CFProxyType> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CFProxyType> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(CFProxyType.valueOf(o.get(i, CFString.class)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CFProxyType> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray array = CFMutableArray.create();
+            for (CFProxyType i : l) {
+                array.add(i.value());
+            }
+            return CFType.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static CFProxyType None = new CFProxyType("NoneValue");
+    public static final CFProxyType None = new CFProxyType("None");
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static CFProxyType HTTP = new CFProxyType("HTTPValue");
+    public static final CFProxyType HTTP = new CFProxyType("HTTP");
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static CFProxyType HTTPS = new CFProxyType("HTTPSValue");
+    public static final CFProxyType HTTPS = new CFProxyType("HTTPS");
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static CFProxyType SOCKS = new CFProxyType("SOCKSValue");
+    public static final CFProxyType SOCKS = new CFProxyType("SOCKS");
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static CFProxyType FTP = new CFProxyType("FTPValue");
+    public static final CFProxyType FTP = new CFProxyType("FTP");
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static CFProxyType AutoConfigurationURL = new CFProxyType("AutoConfigurationURLValue");
+    public static final CFProxyType AutoConfigurationURL = new CFProxyType("AutoConfigurationURL");
     /**
      * @since Available in iOS 3.0 and later.
      */
-    public static CFProxyType AutoConfigurationJavaScript = new CFProxyType("AutoConfigurationJavaScriptValue");
-    private static CFProxyType[] values = new CFProxyType[] {None, HTTP, HTTPS, SOCKS, FTP, AutoConfigurationURL, AutoConfigurationJavaScript};
+    public static final CFProxyType AutoConfigurationJavaScript = new CFProxyType("AutoConfigurationJavaScript");
+    /*</constants>*/
     
-    private final LazyGlobalValue<CFString> lazyGlobalValue;
+    private static /*<name>*/CFProxyType/*</name>*/[] values = new /*<name>*/CFProxyType/*</name>*/[] {/*<value_list>*/None, HTTP, HTTPS, SOCKS, FTP, AutoConfigurationURL, AutoConfigurationJavaScript/*</value_list>*/};
     
-    private CFProxyType(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public CFString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/CFProxyType/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static CFProxyType valueOf(CFString value) {
-        for (CFProxyType v : values) {
+    public static /*<name>*/CFProxyType/*</name>*/ valueOf(/*<type>*/CFString/*</type>*/ value) {
+        for (/*<name>*/CFProxyType/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -92,41 +131,49 @@ import org.robovm.apple.corefoundation.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/CFProxyType/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCFProxyTypeNone", optional=true)
-    protected static native CFString NoneValue();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCFProxyTypeHTTP", optional=true)
-    protected static native CFString HTTPValue();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCFProxyTypeHTTPS", optional=true)
-    protected static native CFString HTTPSValue();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCFProxyTypeSOCKS", optional=true)
-    protected static native CFString SOCKSValue();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCFProxyTypeFTP", optional=true)
-    protected static native CFString FTPValue();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCFProxyTypeAutoConfigurationURL", optional=true)
-    protected static native CFString AutoConfigurationURLValue();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="kCFProxyTypeAutoConfigurationJavaScript", optional=true)
-    protected static native CFString AutoConfigurationJavaScriptValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("CFNetwork")/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCFProxyTypeNone", optional=true)
+        public static native CFString None();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCFProxyTypeHTTP", optional=true)
+        public static native CFString HTTP();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCFProxyTypeHTTPS", optional=true)
+        public static native CFString HTTPS();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCFProxyTypeSOCKS", optional=true)
+        public static native CFString SOCKS();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCFProxyTypeFTP", optional=true)
+        public static native CFString FTP();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCFProxyTypeAutoConfigurationURL", optional=true)
+        public static native CFString AutoConfigurationURL();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="kCFProxyTypeAutoConfigurationJavaScript", optional=true)
+        public static native CFString AutoConfigurationJavaScript();
+        /*</values>*/
+    }
 }

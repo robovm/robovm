@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian Mobile AB
+ * Copyright (C) 2012 RoboVM AB
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -227,6 +227,6 @@ public class FunctionBuilder {
     
     public static Function callback(SootMethod method, FunctionType functionType) {
         return new FunctionBuilder(callbackSymbol(method), functionType)
-                .linkage(external).attribs(noinline, optsize).build();
+                .linkage(internal).attribs(noinline, optsize).build();
     }
 }

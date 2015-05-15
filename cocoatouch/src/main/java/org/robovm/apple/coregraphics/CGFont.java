@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,7 +50,6 @@ import org.robovm.apple.uikit.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    
     public int[] getGlyphAdvances(char[] glyphs) {
         if (glyphs == null) {
             throw new NullPointerException("glyphs");
@@ -64,7 +63,6 @@ import org.robovm.apple.uikit.*;
         }
         return null;
     }
-    
     public CGRect[] getGlyphBBoxes(char[] glyphs) {
         if (glyphs == null) {
             throw new NullPointerException("glyphs");
@@ -77,7 +75,6 @@ import org.robovm.apple.uikit.*;
         }
         return null;
     }
-    
     /*<methods>*/
     /**
      * @since Available in iOS 2.0 and later.
@@ -157,22 +154,32 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
+    @Bridge(symbol="CGFontCopyVariationAxes", optional=true)
+    public native @org.robovm.rt.bro.annotation.Marshaler(CGFontVariationAxis.AsListMarshaler.class) List<CGFontVariationAxis> getVariationAxes();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Bridge(symbol="CGFontCopyVariations", optional=true)
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFDictionary.AsStringMapMarshaler.class) Map<String, NSNumber> getVariations();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGFontGetGlyphAdvances", optional=true)
-    protected native boolean getGlyphAdvances(ShortPtr glyphs, @MachineSizedUInt long count, IntPtr advances);
+    private native boolean getGlyphAdvances(ShortPtr glyphs, @MachineSizedUInt long count, IntPtr advances);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGFontGetGlyphBBoxes", optional=true)
-    protected native boolean getGlyphBBoxes(ShortPtr glyphs, @MachineSizedUInt long count, CGRect bboxes);
+    private native boolean getGlyphBBoxes(ShortPtr glyphs, @MachineSizedUInt long count, CGRect bboxes);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGFontGetGlyphWithGlyphName", optional=true)
-    public native char getGlyphWithGlyphName(String name);
+    public native char getGlyphForName(String name);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGFontCopyGlyphNameForGlyph", optional=true)
-    public native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getGlyphNameForGlyph(char glyph);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getNameForGlyph(char glyph);
     /*</methods>*/
 }

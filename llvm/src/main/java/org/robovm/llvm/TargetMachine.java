@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 Trillian Mobile AB
+ * Copyright (C) 2013 RoboVM AB
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -109,7 +109,7 @@ public class TargetMachine implements AutoCloseable {
         checkDisposed();
         module.checkDisposed();
         StringOut ErrorMessage = new StringOut();
-        if (LLVM.TargetMachineEmitToOutputStream(ref, module.ref, out, fileType, ErrorMessage)) {
+        if (LLVM.TargetMachineEmitToOutputStream(ref, module.getRef(), out, fileType, ErrorMessage)) {
             // Returns true on failure!
             throw new LlvmException(ErrorMessage.getValue().trim());
         }
@@ -119,7 +119,7 @@ public class TargetMachine implements AutoCloseable {
         checkDisposed();
         module.checkDisposed();
         StringOut ErrorMessage = new StringOut();
-        if (LLVM.TargetMachineEmitToFile(ref, module.ref, outFile.getAbsolutePath(), fileType, ErrorMessage)) {
+        if (LLVM.TargetMachineEmitToFile(ref, module.getRef(), outFile.getAbsolutePath(), fileType, ErrorMessage)) {
             // Returns true on failure!
             throw new LlvmException(ErrorMessage.getValue().trim());
         }

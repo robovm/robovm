@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,14 +55,14 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("unarchiver:cannotDecodeObjectOfClassName:originalClasses:")
-    public Class<?> cannotDecodeObjectOfClassName(NSKeyedUnarchiver unarchiver, String name, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> classNames) { throw new UnsupportedOperationException(); }
+    public Class<? extends NSObject> cannotDecodeObjectOfClassName(NSKeyedUnarchiver unarchiver, String name, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> classNames) { return null; }
     @NotImplemented("unarchiver:didDecodeObject:")
-    public NSObject didDecodeObject(NSKeyedUnarchiver unarchiver, NSObject object) { throw new UnsupportedOperationException(); }
+    public NSObject didDecodeObject(NSKeyedUnarchiver unarchiver, NSObject object) { return null; }
     @NotImplemented("unarchiver:willReplaceObject:withObject:")
-    public void willReplaceObject(NSKeyedUnarchiver unarchiver, NSObject object, NSObject newObject) { throw new UnsupportedOperationException(); }
+    public void willReplaceObject(NSKeyedUnarchiver unarchiver, NSObject object, NSObject newObject) {}
     @NotImplemented("unarchiverWillFinish:")
-    public void willFinish(NSKeyedUnarchiver unarchiver) { throw new UnsupportedOperationException(); }
+    public void willFinish(NSKeyedUnarchiver unarchiver) {}
     @NotImplemented("unarchiverDidFinish:")
-    public void didFinish(NSKeyedUnarchiver unarchiver) { throw new UnsupportedOperationException(); }
+    public void didFinish(NSKeyedUnarchiver unarchiver) {}
     /*</methods>*/
 }

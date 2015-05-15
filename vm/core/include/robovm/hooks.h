@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2014 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,20 +16,23 @@
 #ifndef ROBOVM_HOOKS_H
 #define ROBOVM_HOOKS_H
 
-void _rvmHookBeforeAppEntryPoint(Env* env, Class* clazz, Method* method, ObjectArray* args);
+void _rvmHookBeforeAppEntryPoint(Env* env, char* mainClass);
 void _rvmHookBeforeMainThreadAttached(Env* env);
 void _rvmHookThreadCreated(Env* env, JavaThread* threadObj);
 void _rvmHookThreadAttached(Env* env, JavaThread* threadObj, Thread* thread);
 void _rvmHookThreadStarting(Env* env, JavaThread* threadObj, Thread* thread);
 void _rvmHookThreadDetaching(Env* env, JavaThread* threadObj, Thread* thread, Object* throwable);
-jboolean _rvmHookSetupTCPChannel();
-jboolean _rvmHookHandshake();
+void _rvmHookClassLoaded(Env* env, Class* clazz, void* classInfo);
+void _rvmHookExceptionRaised(Env* env, Object* throwable, jboolean isCaught);
+jboolean _rvmHookSetupTCPChannel(Options* options);
+jboolean _rvmHookHandshake(Options* options);
+void _rvmHookInstrumented(DebugEnv* debugEnv, jint lineNumber, jint lineNumberOffset, jbyte* bptable, void* pc);
 
 void rvmHookWaitForAttach(Options* options);
 void rvmHookDebuggerAttached(Options* options);
-static inline void rvmHookBeforeAppEntryPoint(Env* env, Class* clazz, Method* method, ObjectArray* args) {
+static inline void rvmHookBeforeAppEntryPoint(Env* env, char* mainClass) {
     if (env->vm->options->enableHooks) {
-        _rvmHookBeforeAppEntryPoint(env, clazz, method, args);
+        _rvmHookBeforeAppEntryPoint(env, mainClass);
     }
 }
 static inline void rvmHookBeforeMainThreadAttached(Env* env) {
@@ -57,18 +60,34 @@ static inline void rvmHookThreadDetaching(Env* env, JavaThread* threadObj, Threa
         _rvmHookThreadDetaching(env, threadObj, thread, throwable);
     }
 }
+static inline void rvmHookClassLoaded(Env* env, Class* clazz, void* classInfo) {
+    if (env->vm->options->enableHooks) {
+        _rvmHookClassLoaded(env, clazz, classInfo);
+    }
+}
+static inline void rvmHookExceptionRaised(Env* env, Object* throwable, jboolean isCaught) {
+    if(env->vm->options->enableHooks) {
+        _rvmHookExceptionRaised(env, throwable, isCaught);
+    }
+}
 static inline jboolean rvmHookSetupTCPChannel(Options* options) {
     if(options->enableHooks) {
-        return _rvmHookSetupTCPChannel();
+        return _rvmHookSetupTCPChannel(options);
     } else {
         return TRUE;
     }
 }
 static inline jboolean rvmHookHandshake(Options* options) {
     if(options->enableHooks) {
-        return _rvmHookHandshake();
+        return _rvmHookHandshake(options);
     } else {
         return FALSE;
+    }
+}
+
+static inline void rvmHookInstrumented(DebugEnv* env, jint lineNumber, jint lineNumberOffset, jbyte* bptable, void* pc) {
+    if (env->env.vm->options->enableHooks) {
+        _rvmHookInstrumented(env, lineNumber, lineNumberOffset, bptable, pc);
     }
 }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian Mobile AB
+ * Copyright (C) 2012 RoboVM AB
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -57,13 +57,13 @@ public class FunctionDeclaration {
         sb.append(name);
         sb.append("\"(");
         for (int i = 0; i < parameterTypes.length; i++) {
-            if (type.isVarargs() || i > 0) {
+            if (i > 0) {
                 sb.append(", ");
             }
             sb.append(parameterTypes[i].toString());
         }
         if (type.isVarargs()) {
-            sb.append("...");
+            sb.append(", ...");
         }
         sb.append(")");
         return sb.toString();

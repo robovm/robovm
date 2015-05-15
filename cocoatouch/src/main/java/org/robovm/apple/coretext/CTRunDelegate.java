@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,7 +42,7 @@ import org.robovm.apple.coregraphics.*;
     /*<ptr>*//*</ptr>*/
     
     private static java.util.concurrent.atomic.AtomicLong refconId = new java.util.concurrent.atomic.AtomicLong();
-    private static Map<Long, CTRunDelegate> runCallbacks = new HashMap<Long, CTRunDelegate>();
+    private static LongMap<CTRunDelegate> runCallbacks = new LongMap<>();
     
     private static final java.lang.reflect.Method cbGetAscent;
     private static final java.lang.reflect.Method cbGetDescent;

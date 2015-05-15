@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian Mobile AB
+ * Copyright (C) 2012 RoboVM AB
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -36,9 +36,22 @@ public class ArrayType extends AggregateType {
         this.elementType = elementType;
     }
 
+    public Type getElementType() {
+        return elementType;
+    }
+    
+    public long getSize() {
+        return size;
+    }
+    
     @Override
     public Type getTypeAt(int index) {
         return elementType;
+    }
+    
+    @Override
+    public int getTypeCount() {
+        return (int) size;
     }
     
     @Override

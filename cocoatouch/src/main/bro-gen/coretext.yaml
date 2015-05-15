@@ -8,20 +8,20 @@ headers:
     - /System/Library/Frameworks/CoreText.framework/Headers/CTDefines.h
 typedefs: {}
 private_typedefs:
-    "__CFString **": "NSString.NSStringPtr"
-    "__CFString *": String
-    "__CFAttributedString *": NSAttributedString
-    "__CFData *": NSData
-    "__CFURL *": NSURL
-    "__CFCharacterSet *": NSCharacterSet
+    '__CFString **': NSString.NSStringPtr
+    '__CFString *': String
+    '__CFAttributedString *': NSAttributedString
+    '__CFData *': NSData
+    '__CFURL *': NSURL
+    '__CFCharacterSet *': NSCharacterSet
     
 enums:
     CTFontOptions: { bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
     CTFontUIFontType: { marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     CTFontTableTag: { first: kCTFontTableBASE, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     CTFontTableOptions: { bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
-    CTFontCollectionCopyOptions: { bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
-    CTFontOrientation: { marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    CTFontCollectionCopyOptions: { first: kCTFontCollectionCopyDefaultOptions, skip_none: true, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
+    CTFontOrientation: { marshaler: ValuedEnum.AsMachineSizedUIntMarshaler, prefix: kCTFont, suffix: Orientation, ignore: kCTFontOrientation.* }
     CTFontFormat: { marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     CTFontPriority: { first: kCTFontPrioritySystem, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     CTFontDescriptorMatchingState: { marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
@@ -30,17 +30,21 @@ enums:
     CTFontManagerRegistrationError: { first: kCTFontManagerErrorFileNotFound }
     CTFontManagerUnregistrationError: { first: kCTFontManagerErrorNotRegistered }
     CTFontSymbolicTraits: { bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
-    CTFontStylisticClass: { marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    CTFontStylisticClass: {}
     CTFrameProgression: { marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     CTFramePathFillRule: { marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
-    CTCharacterCollection: { marshaler: ValuedEnum.AsUnsignedShortMarshaler }
+    CTCharacterCollection: { marshaler: ValuedEnum.AsUnsignedShortMarshaler, ignore: kCTCharacterCollection.*, prefix: kCT, suffix: CharacterCollection }
     CTLineBoundsOptions: { bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
-    CTTextAlignment: { marshaler: ValuedEnum.AsUnsignedByteMarshaler }
+    CTTextAlignment: { marshaler: ValuedEnum.AsUnsignedByteMarshaler, ignore: kCTTextAlignment.*, prefix: kCT, suffix: TextAlignment }
     CTLineBreakMode: { marshaler: ValuedEnum.AsUnsignedByteMarshaler }
     CTWritingDirection: { marshaler: ValuedEnum.AsSignedByteMarshaler }
-    CTParagraphStyleSpecifier: { marshaler: ValuedEnum.AsMachineSizedUIntMarshaler } 
+    CTWritingDirectionModifier: { first: kCTWritingDirectionEmbedding }
+    CTParagraphStyleSpecifier: { marshaler: ValuedEnum.AsMachineSizedUIntMarshaler, ignore: Count } 
     CTLineTruncationType: { marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     CTRunStatus: { bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
+    CTRubyAlignment: { marshaler: ValuedEnum.AsUnsignedByteMarshaler }
+    CTRubyOverhang: { marshaler: ValuedEnum.AsUnsignedByteMarshaler }
+    CTRubyPosition: { marshaler: ValuedEnum.AsUnsignedByteMarshaler }
     CTUnderlineStyle: { bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
     CTUnderlinePattern: { first: kCTUnderlinePatternSolid, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
     
@@ -76,6 +80,9 @@ classes:
     __CTRun:
         name: CTRun
         extends: CFType
+    __CTRubyAnnotation:
+        name: CTRubyAnnotation
+        extends: CFType
     __CTRunDelegate:
         name: CTRunDelegateIntern
         visibility: ''
@@ -92,6 +99,9 @@ classes:
         visibility: ''
     CTParagraphStyleSetting: {}
 
+    CTFontManagerError:
+        extends: NSError
+
 protocols: {}
 
 functions:
@@ -99,92 +109,103 @@ functions:
         class: CTRunDelegateIntern
         name: getClassTypeID
     (CT.*)GetTypeID:
-        class: "#{g[0]}"
+        class: '#{g[0]}'
         name: getClassTypeID
 
     # CTFontCollection
     CTFontCollectionCreate(MatchingFontDescriptors):
         class: CTFontCollection
-        name: "get#{g[0]}"
-        return_type: "@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<CTFontDescriptor>"
+        name: 'get#{g[0]}'
+        return_type: List<CTFontDescriptor>
+        return_marshaler: CTFontDescriptor.AsListMarshaler
     CTFontCollectionCreate(MatchingFontDescriptors)SortedWithCallback:
         class: CTFontCollection
-        name: "get#{g[0]}Sorted"
-        return_type: "@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<CTFontDescriptor>"
+        name: 'get#{g[0]}Sorted'
+        return_type: List<CTFontDescriptor>
+        return_marshaler: CTFontDescriptor.AsListMarshaler
         visibility: protected
         parameters:
             refCon:
-                type: "@Pointer long"
+                type: '@Pointer long'
     CTFontCollection(CreateFromAvailableFonts):
         class: CTFontCollection
-        name: "#{g[0]}"
+        name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             options:
                 type: CTFontCollectionOptions
     CTFontCollection(Create)WithFontDescriptors:
         class: CTFontCollection
-        name: "#{g[0]}"
+        name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             queryDescriptors:
-                type: "@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<CTFontDescriptor>"
+                type: List<CTFontDescriptor>
+                marshaler: CTFontDescriptor.AsListMarshaler
             options:
                 type: CTFontCollectionOptions
     CTFontCollection(CreateCopy)WithFontDescriptors:
         class: CTFontCollection
-        name: "#{g[0]}"
+        name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             queryDescriptors:
-                type: "@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<CTFontDescriptor>"
+                type: List<CTFontDescriptor>
+                marshaler: CTFontDescriptor.AsListMarshaler
             options:
                 type: CTFontCollectionOptions
     CTFontCollection(.*):
         class: CTFontCollection
-        name: "#{g[0]}"
+        name: '#{g[0]}'
 
     # CTFontDescriptor
     CTFontDescriptor(CreateCopy)WithAttributes:
         class: CTFontDescriptor
-        name: "#{g[0]}"
+        name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             attributes:
                 type: CTFontAttributes
-    CTFontDescriptor(CreateCopy)WithFeature:  # TODO wrap
-        class: CTFontDescriptor
-        name: "#{g[0]}"
-        visibility: protected
-    CTFontDescriptor(CreateCopy)WithVariation: # TODO wrap
-        class: CTFontDescriptor
-        name: "#{g[0]}"
+    CTFontDescriptor(CreateCopy)WithFeature:  
+        exclude: true # TODO need SFNTTypes support
+    CTFontDescriptor(CreateCopy)WithVariation:
+        exclude: true # TODO need SFNTTypes support
     CTFontDescriptor(CreateCopy).*:
         class: CTFontDescriptor
-        name: "#{g[0]}"
+        name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
     CTFontDescriptor(Create)WithAttributes:
         class: CTFontDescriptor
-        name: "#{g[0]}"
+        name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             attributes:
                 type: CTFontAttributes
     CTFontDescriptorCreate(MatchingFontDescriptor.*):
         class: CTFontDescriptor
-        name: "get#{g[0]}"
+        name: 'create#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
         visibility: protected
     CTFontDescriptor(Create).*:
         class: CTFontDescriptor
-        name: "#{g[0]}"
+        name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
     CTFontDescriptorCopy(Attributes):
         class: CTFontDescriptor
-        name: "get#{g[0]}"
+        name: 'get#{g[0]}'
         return_type: CTFontAttributes
     CTFontDescriptorCopy(Attribute):
         class: CTFontDescriptor
-        name: "get#{g[0]}"
+        name: 'get#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             attribute:
                 type: CTFontAttribute
     CTFontDescriptorCopy(LocalizedAttribute):
         class: CTFontDescriptor
-        name: "get#{g[0]}"
+        name: 'get#{g[0]}'
         visibility: protected
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             attribute:
                 type: CTFontAttribute
@@ -192,356 +213,679 @@ functions:
                 type: CFString.CFStringPtr
     CTFontDescriptor(MatchFontDescriptors)WithProgressHandler:
         class: CTFontDescriptor
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         visibility: protected
     CTFontDescriptor(.*):
         class: CTFontDescriptor
-        name: "#{g[0]}"
+        name: '#{g[0]}'
 
     # CTFontManager
     CTFontManager(CreateFontDescriptors)FromURL:
         class: CTFontManager
-        name: "#{g[0]}0"
-        return_type: "@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<CTFontDescriptor>"
+        name: '#{g[0]}'
+        return_type: List<CTFontDescriptor>
+        return_marshaler: CTFontDescriptor.AsListMarshaler
     CTFontManager(CreateFontDescriptor)FromData:
         class: CTFontManager
-        name: "#{g[0]}"
+        name: '#{g[0]}'
     CTFontManager(.*egisterFonts)ForURL:
         class: CTFontManager
-        name: "#{g[0]}"
-        visibility: protected
+        name: '#{g[0]}'
+        throws: NSErrorException
     CTFontManager(.*egisterGraphicsFont):
         class: CTFontManager
-        name: "#{g[0]}"
-        visibility: protected
+        name: '#{g[0]}'
+        throws: NSErrorException
     CTFontManager(.*egisterFonts)ForURLs:
         class: CTFontManager
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         visibility: protected
         parameters:
             fontURLs:
-                type: "NSArray<NSURL>"
+                type: 'NSArray<NSURL>'
             errors:
-                type: "NSArray.NSArrayPtr"
+                type: NSArray.NSArrayPtr
     CTFontManager(.*):
         class: CTFontManager
-        name: "#{g[0]}"
+        name: '#{g[0]}'
 
     # CTFont
     CTFont(CreateCopy).*:
         class: CTFont
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         static: true
+        return_marshaler: CFType.NoRetainMarshaler
     CTFont(CreatePath)ForGlyph:
         class: CTFont
-        name: "#{g[0]}"
+        name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
+    CTFont(CreateUIFont)ForLanguage:
+        class: CTFont
+        name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
     CTFont(Create).*:
         class: CTFont
-        name: "#{g[0]}"
-    CTFontCopy(Attribute): # TODO wrap
+        name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
+    CTFontCopy(Attribute):
         class: CTFont
-        name: "get#{g[0]}"
+        name: 'get#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
+        parameters:
+            attribute:
+                type: CTFontAttribute
     CTFontCopy(Traits):
         class: CTFont
-        name: "get#{g[0]}"
+        name: 'get#{g[0]}'
         return_type: CTFontTraits
-    CTFontCopy(LocalizedName|Name):
+    CTFontCopy(Name):
         class: CTFont
-        name: "get#{g[0]}"
+        name: 'get#{g[0]}'
+        return_marshaler: CFString.AsStringNoRetainMarshaler
+        parameters:
+            nameKey:
+                type: CTFontNameKey
+    CTFontCopy(LocalizedName):
+        class: CTFont
+        name: 'get#{g[0]}'
+        return_marshaler: CFString.AsStringNoRetainMarshaler
         visibility: protected
         parameters:
             nameKey:
-                type: CFString
+                type: CTFontNameKey
             actualLanguage:
                 type: CFString.CFStringPtr
     CTFontCopy(SupportedLanguages):
         class: CTFont
-        name: "get#{g[0]}"
-        return_type: "@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String>"
+        name: 'get#{g[0]}'
+        return_type: List<String>
+        return_marshaler: CFArray.AsStringListMarshaler
+    CTFontCopy(Table):
+        class: CTFont
+        name: 'get#{g[0]}'
+        return_marshaler: NSObject.NoRetainMarshaler
     CTFont(GetGlyphs)ForCharacters:
         class: CTFont
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         visibility: protected
         parameters:
             characters:
                 type: ShortPtr
     CTFont(GetGlyph)WithName:
         class: CTFont
-        name: "#{g[0]}"
+        name: '#{g[0]}'
     CTFont(GetBoundingRects)ForGlyphs:
         class: CTFont
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         visibility: protected
+        parameters:
+            boundingRects:
+                type: CGRect.CGRectPtr
     CTFont(GetOpticalBounds)ForGlyphs:
         class: CTFont
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         visibility: protected
+        parameters:
+            boundingRects:
+                type: CGRect.CGRectPtr
     CTFont(GetAdvances)ForGlyphs:
         class: CTFont
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         visibility: protected
+        parameters:
+            advances:
+                type: CGSize.CGSizePtr
     CTFont(GetVerticalTranslations)ForGlyphs:
         class: CTFont
-        name: "#{g[0]}"
+        name: '#{g[0]}'
+        visibility: protected
+        parameters:
+            translations:
+                type: CGSize.CGSizePtr
+    CTFontCopy(Features): # TODO wrap when SFNTTypes are bound
+        class: CTFont
+        name: 'get#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
+        visibility: protected
+    CTFontCopy(FeatureSettings): # TODO wrap when SFNTTypes are bound
+        class: CTFont
+        name: 'get#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
+        visibility: protected
+    CTFontCopy(GraphicsFont):
+        class: CTFont
+        name: 'get#{g[0]}'
+        visibility: protected
+        return_marshaler: CFType.NoRetainMarshaler
+    CTFont(DrawGlyphs):
+        class: CTFont
+        name: '#{g[0]}'
+        visibility: protected
+    CTFont(GetLigatureCaretPositions):
+        class: CTFont
+        name: '#{g[0]}'
         visibility: protected
     CTFontCopy(VariationAxes):
         class: CTFont
-        name: "get#{g[0]}"
-        return_type: "@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<CTFontVariationAxes>"
+        name: 'get#{g[0]}'
+        return_type: List<CTFontVariationAxes>
+        return_marshaler: CTFontVariationAxes.AsListMarshaler
     CTFontCopy(DefaultCascadeList)ForLanguages:
         class: CTFont
-        name: "get#{g[0]}"
+        name: 'get#{g[0]}'
+        return_type: List<CTFontDescriptor>
+        return_marshaler: CTFontDescriptor.AsListMarshaler
         parameters:
             languagePrefList:
-                type: "@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String>"
+                type: List<String>
+                marshaler: CFArray.AsStringListMarshaler
+    CTFontCopy(PostScriptName|FamilyName|FullName|DisplayName):
+        class: CTFont
+        name: 'get#{g[0]}'
+        return_marshaler: CFString.AsStringNoRetainMarshaler
+    CTFontCopy(Variation):
+        class: CTFont
+        name: 'get#{g[0]}'
+        return_type: 'Map<String, NSNumber>'
+        return_marshaler: CFDictionary.AsStringMapMarshaler
+    CTFontCopy(AvailableTables):
+        class: CTFont
+        name: 'get#{g[0]}'
+        return_type: List<CTFontTableTag>
+        return_marshaler: CTFontTableTag.AsListMarshaler
     CTFontCopy(.*):
         class: CTFont
-        name: "get#{g[0]}"
+        name: 'get#{g[0]}'
+    CTFont(GetStringEncoding):
+        class: CTFont
+        name: '#{g[0]}'
+        return_marshaler: CFStringEncodings
     CTFont(.*):
         class: CTFont
-        name: "#{g[0]}"
+        name: '#{g[0]}'
 
     # CTFramesetter
     CTFramesetter(Create)WithAttributedString:
         class: CTFramesetter
-        name: "#{g[0]}"
+        name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
     CTFramesetter(CreateFrame):
         class: CTFramesetter
-        name: "#{g[0]}"
+        name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             frameAttributes:
                 type: CTFrameAttributes
     CTFramesetter(SuggestFrameSize)WithConstraints:
         class: CTFramesetter
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         parameters:
             frameAttributes:
                 type: CTFrameAttributes
     CTFramesetter(.*):
         class: CTFramesetter
-        name: "#{g[0]}"
+        name: '#{g[0]}'
 
     # CTFrame
     CTFrame(GetFrameAttributes):
         class: CTFrame
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         return_type: CTFrameAttributes
     CTFrame(GetLines):
         class: CTFrame
-        name: "#{g[0]}"
-        return_type: "@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<CTLine>"
+        name: '#{g[0]}'
+        return_type: List<CTLine>
+        return_marshaler: CTLine.AsListMarshaler
+    CTFrame(GetLineOrigins):
+        class: CTFrame
+        name: '#{g[0]}'
+        visibility: protected
     CTFrame(.*):
         class: CTFrame
-        name: "#{g[0]}"
+        name: '#{g[0]}'
 
     # CTGlyphInfo
     CTGlyphInfo(Create).*:
         class: CTGlyphInfo
-        name: "#{g[0]}"
+        name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
     CTGlyphInfo(.*):
         class: CTGlyphInfo
-        name: "#{g[0]}"
+        name: '#{g[0]}'
 
     # CTLine
     CTLine(Create)WithAttributedString:
         class: CTLine
-        name: "#{g[0]}"
+        name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
     CTLine(GetGlyphRuns):
         class: CTLine
-        name: "#{g[0]}0"
-        visibility: protected
+        name: '#{g[0]}'
+        return_type: List<CTRun>
+        return_marshaler: CTRun.AsListMarshaler
     CTLine(GetPenOffset)ForFlush:
         class: CTLine
-        name: "#{g[0]}"
+        name: '#{g[0]}'
     CTLine(GetTypographicBounds):
         class: CTLine
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         visibility: protected
     CTLine(GetBounds)WithOptions:
         class: CTLine
-        name: "#{g[0]}"
+        name: '#{g[0]}'
     CTLine(GetStringIndex)ForPosition:
         class: CTLine
-        name: "#{g[0]}"
+        name: '#{g[0]}'
     CTLine(GetOffset)ForStringIndex:
         class: CTLine
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         visibility: protected
+    CTLine(Create.*Line):
+        class: CTLine
+        name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
     CTLine(.*):
         class: CTLine
-        name: "#{g[0]}"
+        name: '#{g[0]}'
 
     # CTParagraphStyle
-    CTParagraphStyle(.*):  # TODO wrap
+    CTParagraphStyle(CreateCopy):
         class: CTParagraphStyle
-        name: "#{g[0]}"
+        name: '#{g[0]}'
+        static: true
+        return_marshaler: CFType.NoRetainMarshaler
+    CTParagraphStyle(Create):
+        class: CTParagraphStyle
+        name: '#{g[0]}'
+        visibility: protected
+        return_marshaler: CFType.NoRetainMarshaler
+    CTParagraphStyle(GetValueForSpecifier):
+        class: CTParagraphStyle
+        name: '#{g[0]}'
+        visibility: protected
+    CTParagraphStyle(.*):
+        class: CTParagraphStyle
+        name: '#{g[0]}'
+
+    # CTRubyAnnotation
+    CTRubyAnnotation(Create):
+        class: CTRubyAnnotation
+        name: '#{g[0]}'
+        visibility: private
+        parameters:
+            text:
+                type: CFString.CFStringPtr
+    CTRubyAnnotation(CreateCopy):
+        class: CTRubyAnnotation
+        name: '#{g[0]}'
+        static: true
+    CTRubyAnnotation(.*):
+        class: CTRubyAnnotation
+        name: '#{g[0]}'
 
     # CTRunDelegate
     CTRunDelegate(Create):
         class: CTRunDelegateIntern
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         visibility: protected
         parameters:
             refCon:
-                type: "@Pointer long"
+                type: '@Pointer long'
     CTRunDelegate(GetRefCon):
         class: CTRunDelegateIntern
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         visibility: protected
-        return_type: "@Pointer long"
+        return_type: '@Pointer long'
     CTRunDelegate(.*):
         class: CTRunDelegateIntern
-        name: "#{g[0]}"
+        name: '#{g[0]}'
 
     # CTRun
-    CTRun(GetAttributes): # TODO wrap
+    CTRun(GetAttributes):
         class: CTRun
-        name: "#{g[0]}"
+        name: getAttributesDictionary
+        return_type: 'NSDictionary<NSString, NSObject>'
     CTRunGet.*Ptr:
         exclude: true
     CTRun(GetGlyphs):
         class: CTRun
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         visibility: protected
     CTRun(GetPositions):
         class: CTRun
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         visibility: protected
     CTRun(GetAdvances):
         class: CTRun
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         visibility: protected
     CTRun(GetStringIndices):
         class: CTRun
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         visibility: protected
         parameters:
             buffer:
                 type: LongPtr
     CTRun(GetTypographicBounds):
         class: CTRun
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         visibility: protected
     CTRun(.*):
         class: CTRun
-        name: "#{g[0]}"
+        name: '#{g[0]}'
 
     # CTTextTab
     CTTextTab(Create):
         class: CTTextTab
-        name: "#{g[0]}"
+        name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             options:
                 type: CTTextTabOptions
     CTTextTab(GetOptions):
         class: CTTextTab
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         return_type: CTTextTabOptions
     CTTextTab(.*):
         class: CTTextTab
-        name: "#{g[0]}"
+        name: '#{g[0]}'
 
     # CTTypesetter
     CTTypesetter(CreateLine).*:
         class: CTTypesetter
-        name: "#{g[0]}"
+        name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
     CTTypesetter(Create)WithAttributedStringAndOptions:
         class: CTTypesetter
-        name: "#{g[0]}"
+        name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             options:
                 type: CTTypesetterOptions
     CTTypesetter(Create).*:
         class: CTTypesetter
-        name: "#{g[0]}"
+        name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
     CTTypesetter(SuggestLineBreak).*:
         class: CTTypesetter
-        name: "#{g[0]}"
+        name: '#{g[0]}'
     CTTypesetter(SuggestClusterBreak).*:
         class: CTTypesetter
-        name: "#{g[0]}"
+        name: '#{g[0]}'
     CTTypesetter(.*):
         class: CTTypesetter
-        name: "#{g[0]}"
+        name: '#{g[0]}'
+
+    CTGetCoreTextVersion:
+        class: CoreTextVersionNumber
+        name: getVersion
 
     # Make sure we don't miss any functions if new ones are introduced in a later version
-    (CT.*):
+    (k?CT.*):
         class: CoreText
-        name: "Function__#{g[0]}"
+        name: 'Function__#{g[0]}'
 
 values:
+    kCTFontManagerErrorDomain:
+        class: CTFontManagerError
+        name: getClassDomain
+    kCTFontManagerError(FontURLs)Key:
+        enum: CTFontManagerErrorUserInfoKey
+        name: '#{g[0]}'
+        type: NSString
+        extends: NSErrorUserInfoKey
+
+    # CTFont
     kCTFont(.*)Attribute:
-        class: CTFontAttribute
-        name: "#{g[0]}Value"
+        dictionary: CTFontAttributes
+        enum: CTFontAttribute
+        name: '#{g[0]}'
         type: CFString
-        visibility: protected
+        methods:
+            URL:
+                type: NSURL
+            Name:
+                type: String
+            DisplayName:
+                type: String
+            StyleName:
+                type: String
+            Traits:
+                type: CTFontTraits
+            Variation:
+                name: VariationAxes
+                type: CTFontVariationAxes
+            Size:
+                type: float
+            Matrix:
+                type: CGAffineTransform
+            CascadeList:
+                type: List<CTFontDescriptor>
+            CharacterSet:
+                type: NSCharacterSet
+            Languages:
+                type: List<String>
+            BaselineAdjust:
+                type: float
+            MacintoshEncodings:
+                type: long
+            #kCTFontFeaturesAttribute # TODO need SFNTTypes support
+            #kCTFontFeatureSettingsAttribute # TODO need SFNTTypes support
+            FixedAdvance:
+                type: float
+            Orientation:
+                type: CTFontOrientation
+            Format:
+                type: CTFontFormat
+            RegistrationScope:
+                type: CTFontManagerScope
+            Priority:
+                type: CTFontPriority
+            Enabled:
+                type: boolean
+            Downloadable:
+                type: boolean
+            Downloaded:
+                type: boolean
     kCTFont(.*Trait):
-        class: CTFontTraits
-        name: "#{g[0]}"
+        dictionary: CTFontTraits
+        name: '#{g[0]}'
         type: CFString
-        visibility: protected
-    kCTFontVariationAxis(.*Key):
-        class: CTFontVariationAxes
-        name: "#{g[0]}"
+        methods:
+            SymbolicTrait:
+                type: CTFontSymbolicTraits
+            WeightTrait:
+                type: float
+            WidthTrait:
+                type: float
+            SlantTrait:
+                type: float
+    kCTFontVariationAxis(.*)Key:
+        dictionary: CTFontVariationAxes
+        name: '#{g[0]}'
         type: CFString
-        visibility: protected
-    kCTFontFeatureSelector(.*)Key:
-        class: CoreText # TODO
-        name: "CTFontFeatureSelector#{g[0]}Key"
-    kCTFontFeatureType(.*)Key:
-        class: CoreText # TODO
-        name: "CTFontFeatureType#{g[0]}Key"
+        methods:
+            Identifier:
+                type: long
+            MinimumValue:
+                type: double
+            MaximumValue:
+                type: double
+            DefaultValue:
+                type: double
+            Name:
+                name: LocalizedName
+                type: String
     kCTFont(.*)NameKey:
-        class: CTFontNameKey
-        name: "#{g[0]}Value"
+        enum: CTFontNameKey
+        name: '#{g[0]}'
         type: CFString
-        visibility: protected
+    kCTFontFeatureSelector(.*)Key: # TODO need SFNTTypes support
+        exclude: true
+    kCTFontFeatureType(.*)Key: # TODO need SFNTTypes support
+        exclude: true 
+    kCTFontOpenTypeFeatureTag: # TODO need SFNTTypes support
+        exclude: true
+    kCTFontOpenTypeFeatureValue: # TODO need SFNTTypes support
+        exclude: true
 
+    # CTFontDescriptor
     kCTFontDescriptorMatching(.*):
-        class: CTFontDescriptorProgressData
-        name: "#{g[0]}"
+        dictionary: CTFontDescriptorProgressData
+        name: '#{g[0]}'
         type: CFString
-        visibility: protected
+        mutable: false
+        methods:
+            SourceDescriptor:
+                type: CTFontDescriptor
+            Descriptors:
+                type: List<CTFontDescriptor>
+            Result:
+                type: List<CTFontDescriptor>
+            Percentage:
+                type: double
+            CurrentAssetSize:
+                type: long
+            TotalDownloadedSize:
+                type: long
+            TotalAssetSize:
+                type: long
+            Error:
+                type: NSError
 
+    # CTFontCollection
     kCTFontCollection(.*)Option:
-        class: CTFontCollectionOptions
-        name: "#{g[0]}"
+        dictionary: CTFontCollectionOptions
+        name: '#{g[0]}'
         type: CFString
-        visibility: protected
-        
+        methods:
+            RemoveDuplicates:
+                name: removesDuplicates
+                type: boolean
+
+    # CTFontManager
+    kCTFontManager(RegisteredFontsChangedNotification):
+        class: CTFontManager
+        name: '#{g[0]}'
+        type: NSString
+
+    # CTFrame
     kCTFrame(Path)ClippingPathAttributeName:
-        class: CTFrameClippingPath
-        name: "#{g[0]}"
+        dictionary: CTFrameClippingPath
+        name: '#{g[0]}'
         type: CFString
-        visibility: protected
+        methods:
+            Path:
+                type: CGPath
     kCTFrame(.*)AttributeName:
-        class: CTFrameAttributes
-        name: "#{g[0]}"
+        dictionary: CTFrameAttributes
+        name: '#{g[0]}'
         type: CFString
-        visibility: protected
+        methods:
+            Progression:
+                type: CTFrameProgression
+            PathFillRule:
+                type: CTFramePathFillRule
+            PathWidth:
+                type: double
+            ClippingPaths:
+                type: List<CTFrameClippingPath>
 
-    kCTTabColumn(.*):
-        class: CTTextTabOptions
-        name: "#{g[0]}"
+    # CTTextTab
+    kCTTabColumn(.*)Name:
+        dictionary: CTTextTabOptions
+        name: '#{g[0]}'
         type: CFString
-        visibility: protected
+        methods:
+            TerminatorsAttribute:
+                name: TerminatingCharacter
+                type: NSCharacterSet
 
+    # CTTypesetter
     kCTTypesetterOption(.*):
-        class: CTTypesetterOptions
-        name: "#{g[0]}"
+        dictionary: CTTypesetterOptions
+        name: '#{g[0]}'
         type: CFString
-        visibility: protected
-      
+        methods:
+            DisableBidiProcessing:
+                name: BidiProcessingDisabled
+                type: boolean
+            ForcedEmbeddingLevel:
+                name: EmbeddingLevel
+                type: int
+                default: -1
+
+    # CTAttributedStringAttributes
+    kCT(.*)AttributeName:
+        dictionary: CTAttributedStringAttributes
+        enum: CTAttributedStringAttribute
+        name: '#{g[0]}'
+        type: CFString
+        constructor_visibility: public
+        methods:
+            Font:
+                type: CTFont
+            ForegroundColorFromContext:
+                name: usesForegroundColorFromContext
+                type: boolean
+            Kern:
+                type: float
+            Ligature:
+                type: int
+            ForegroundColor:
+                type: CGColor
+            ParagraphStyle:
+                type: CTParagraphStyle
+            StrokeWidth:
+                type: double
+            StrokeColor:
+                type: CGColor
+            UnderlineStyle:
+                type: CTUnderlineStyle
+            Superscript:
+                type: int
+            UnderlineColor:
+                type: CGColor
+            VerticalForms:
+                name: usesVerticalForms
+                type: boolean
+            GlyphInfo:
+                type: CTGlyphInfo
+          #  CharacterShape:  # TODO need SFNTTypes support
+            Language:
+                type: String
+            #RunDelegate:  TODO
+            #    type: CTRunDelegate
+            BaselineClass:
+                type: CTBaselineClass
+           # BaselineInfo:
+           # BaselineReferenceInfo: TODO
+           # WritingDirection: TODO
+            RubyAnnotation:
+                type: CTRubyAnnotation
+    kCTBaselineClass(.*):
+        enum: CTBaselineClass
+        name: '#{g[0]}'
+        type: CFString
+    kCTBaseline(.*)Font: # TODO
+        exclude: true
+
     # Make sure we don't miss any values if new ones are introduced in a later version
-    (CT.*):
+    (k?CT.*):
         class: CoreText
-        name: "Value__#{g[0]}"
-    (kCT.*):
-        class: CoreText
-        name: "Value__#{g[0]}"
+        name: 'Value__#{g[0]}'
 
 constants:
+    kCTVersionNumber(.*):
+        class: CoreTextVersionNumber
+        name: 'Version#{g[0]}'
+        
+    kCTFontClassMaskShift:
+        exclude: true
+    kCTRunDelegate(.*Version.*):
+        exclude: true
+
     # Make sure we don't miss any constants if new ones are introduced in a later version
-    (CT):
+    (k?CT.*):
         class: CoreText
-        name: "Constant__#{g[0]}"
+        name: 'Constant__#{g[0]}'

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,17 +54,17 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("animationControllerForPresentedController:presentingController:sourceController:")
-    public UIViewControllerAnimatedTransitioning getAnimationControllerForPresentedController(UIViewController presented, UIViewController presenting, UIViewController source) { throw new UnsupportedOperationException(); }
+    public UIViewControllerAnimatedTransitioning getAnimationControllerForPresentedController(UIViewController presented, UIViewController presenting, UIViewController source) { return null; }
     @NotImplemented("animationControllerForDismissedController:")
-    public UIViewControllerAnimatedTransitioning getAnimationControllerForDismissedController(UIViewController dismissed) { throw new UnsupportedOperationException(); }
+    public UIViewControllerAnimatedTransitioning getAnimationControllerForDismissedController(UIViewController dismissed) { return null; }
     @NotImplemented("interactionControllerForPresentation:")
-    public UIViewControllerInteractiveTransitioning getInteractionControllerForPresentation(UIViewControllerAnimatedTransitioning animator) { throw new UnsupportedOperationException(); }
+    public UIViewControllerInteractiveTransitioning getInteractionControllerForPresentation(UIViewControllerAnimatedTransitioning animator) { return null; }
     @NotImplemented("interactionControllerForDismissal:")
-    public UIViewControllerInteractiveTransitioning getInteractionControllerForDismissal(UIViewControllerAnimatedTransitioning animator) { throw new UnsupportedOperationException(); }
+    public UIViewControllerInteractiveTransitioning getInteractionControllerForDismissal(UIViewControllerAnimatedTransitioning animator) { return null; }
     /**
      * @since Available in iOS 8.0 and later.
      */
     @NotImplemented("presentationControllerForPresentedViewController:presentingViewController:sourceViewController:")
-    public UIPresentationController getPresentationControllerForPresentedViewController(UIViewController presented, UIViewController presenting, UIViewController source) { throw new UnsupportedOperationException(); }
+    public UIPresentationController getPresentationControllerForPresentedViewController(UIViewController presented, UIViewController presenting, UIViewController source) { return null; }
     /*</methods>*/
 }

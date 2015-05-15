@@ -33,14 +33,12 @@ enums:
     CKRecordZoneCapabilities: {}
     CKReferenceAction: {}
     CKSubscriptionType: {}
-    CKSubscriptionOptions: {}
+    CKSubscriptionOptions: { prefix: CKSubscriptionOptionsFires }
     CKRecordSavePolicy: {}
 
 classes:
     CKError:
         extends: NSError
-    CKErrorUserInfoKey:
-        extends: NSErrorUserInfoKey
 
     CKAsset: # DONE
         methods:
@@ -384,8 +382,11 @@ classes:
         methods:
             '-init':
                 exclude: true
-            '-init.*':
+            '-initWithNotificationIDsToMarkRead:':
                 name: init
+                parameters:
+                    notificationIDs:
+                        type: NSArray<CKNotificationID>
     CKModifyBadgeOperation: # DONE
         methods:
             '-init':
@@ -415,17 +416,20 @@ values:
         name: getClassDomain
     
     CK(PartialErrorsByItemID)Key:
-        class: CKErrorUserInfoKey
-        name: '#{g[0]}Value'
-        visibility: protected
+        enum: CKErrorUserInfoKey
+        name: '#{g[0]}'
+        type: NSString
+        extends: NSErrorUserInfoKey
     CKError(RetryAfter)Key:
-        class: CKErrorUserInfoKey
-        name: '#{g[0]}Value'
-        visibility: protected
+        enum: CKErrorUserInfoKey
+        name: '#{g[0]}'
+        type: NSString
+        extends: NSErrorUserInfoKey
     CKRecordChangedError(.*)Key:
-        class: CKErrorUserInfoKey
-        name: '#{g[0]}Value'
-        visibility: protected
+        enum: CKErrorUserInfoKey
+        name: '#{g[0]}'
+        type: NSString
+        extends: NSErrorUserInfoKey
 
     # CKContainer
     CKOwnerDefaultName:

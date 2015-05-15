@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,13 +49,13 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*/
     @NotImplemented("coordinate")
-    public @ByVal CLLocationCoordinate2D getCoordinate() { throw new UnsupportedOperationException(); }
+    public @ByVal CLLocationCoordinate2D getCoordinate() { return null; }
     @NotImplemented("setCoordinate:")
-    public void setCoordinate(@ByVal CLLocationCoordinate2D v) { throw new UnsupportedOperationException(); }
+    public void setCoordinate(@ByVal CLLocationCoordinate2D v) {}
     @NotImplemented("title")
-    public String getTitle() { throw new UnsupportedOperationException(); }
+    public String getTitle() { return null; }
     @NotImplemented("subtitle")
-    public String getSubtitle() { throw new UnsupportedOperationException(); }
+    public String getSubtitle() { return null; }
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

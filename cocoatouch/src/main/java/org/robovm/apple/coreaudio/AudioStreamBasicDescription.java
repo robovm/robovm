@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,38 +44,37 @@ import org.robovm.apple.corefoundation.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public AudioStreamBasicDescription() {}
-    public AudioStreamBasicDescription(double mSampleRate, AudioFormat mFormatID, int mFormatFlags, int mBytesPerPacket, int mFramesPerPacket, int mBytesPerFrame, int mChannelsPerFrame, int mBitsPerChannel, int mReserved) {
-        this.setMSampleRate(mSampleRate);
-        this.setMFormatID(mFormatID);
-        this.setMFormatFlags(mFormatFlags);
-        this.setMBytesPerPacket(mBytesPerPacket);
-        this.setMFramesPerPacket(mFramesPerPacket);
-        this.setMBytesPerFrame(mBytesPerFrame);
-        this.setMChannelsPerFrame(mChannelsPerFrame);
-        this.setMBitsPerChannel(mBitsPerChannel);
-        this.setMReserved(mReserved);
+    public AudioStreamBasicDescription(double sampleRate, AudioFormat format, AudioFormatFlags formatFlags, int bytesPerPacket, int framesPerPacket, int bytesPerFrame, int channelsPerFrame, int bitsPerChannel) {
+        this.setSampleRate(sampleRate);
+        this.setFormat(format);
+        this.setFormatFlags(formatFlags);
+        this.setBytesPerPacket(bytesPerPacket);
+        this.setFramesPerPacket(framesPerPacket);
+        this.setBytesPerFrame(bytesPerFrame);
+        this.setChannelsPerFrame(channelsPerFrame);
+        this.setBitsPerChannel(bitsPerChannel);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native double getMSampleRate();
-    @StructMember(0) public native AudioStreamBasicDescription setMSampleRate(double mSampleRate);
-    @StructMember(1) public native AudioFormat getMFormatID();
-    @StructMember(1) public native AudioStreamBasicDescription setMFormatID(AudioFormat mFormatID);
-    @StructMember(2) public native int getMFormatFlags();
-    @StructMember(2) public native AudioStreamBasicDescription setMFormatFlags(int mFormatFlags);
-    @StructMember(3) public native int getMBytesPerPacket();
-    @StructMember(3) public native AudioStreamBasicDescription setMBytesPerPacket(int mBytesPerPacket);
-    @StructMember(4) public native int getMFramesPerPacket();
-    @StructMember(4) public native AudioStreamBasicDescription setMFramesPerPacket(int mFramesPerPacket);
-    @StructMember(5) public native int getMBytesPerFrame();
-    @StructMember(5) public native AudioStreamBasicDescription setMBytesPerFrame(int mBytesPerFrame);
-    @StructMember(6) public native int getMChannelsPerFrame();
-    @StructMember(6) public native AudioStreamBasicDescription setMChannelsPerFrame(int mChannelsPerFrame);
-    @StructMember(7) public native int getMBitsPerChannel();
-    @StructMember(7) public native AudioStreamBasicDescription setMBitsPerChannel(int mBitsPerChannel);
-    @StructMember(8) public native int getMReserved();
-    @StructMember(8) public native AudioStreamBasicDescription setMReserved(int mReserved);
+    @StructMember(0) public native double getSampleRate();
+    @StructMember(0) public native AudioStreamBasicDescription setSampleRate(double sampleRate);
+    @StructMember(1) public native AudioFormat getFormat();
+    @StructMember(1) public native AudioStreamBasicDescription setFormat(AudioFormat format);
+    @StructMember(2) public native AudioFormatFlags getFormatFlags();
+    @StructMember(2) public native AudioStreamBasicDescription setFormatFlags(AudioFormatFlags formatFlags);
+    @StructMember(3) public native int getBytesPerPacket();
+    @StructMember(3) public native AudioStreamBasicDescription setBytesPerPacket(int bytesPerPacket);
+    @StructMember(4) public native int getFramesPerPacket();
+    @StructMember(4) public native AudioStreamBasicDescription setFramesPerPacket(int framesPerPacket);
+    @StructMember(5) public native int getBytesPerFrame();
+    @StructMember(5) public native AudioStreamBasicDescription setBytesPerFrame(int bytesPerFrame);
+    @StructMember(6) public native int getChannelsPerFrame();
+    @StructMember(6) public native AudioStreamBasicDescription setChannelsPerFrame(int channelsPerFrame);
+    @StructMember(7) public native int getBitsPerChannel();
+    @StructMember(7) public native AudioStreamBasicDescription setBitsPerChannel(int bitsPerChannel);
+    @StructMember(8) private native int getReserved();
+    @StructMember(8) private native AudioStreamBasicDescription setReserved(int reserved);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

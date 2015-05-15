@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,17 +55,26 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CFURLEnumeratorCreateForDirectoryURL", optional=true)
-    public static native CFURLEnumerator createForDirectoryURL(CFAllocator alloc, CFURL directoryURL, CFURLEnumeratorOptions option, CFArray propertyKeys);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFURLEnumerator createForDirectoryURL(CFAllocator alloc, CFURL directoryURL, CFURLEnumeratorOptions option, CFArray propertyKeys);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CFURLEnumeratorCreateForMountedVolumes", optional=true)
-    public static native CFURLEnumerator createForMountedVolumes(CFAllocator alloc, CFURLEnumeratorOptions option, CFArray propertyKeys);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFURLEnumerator createForMountedVolumes(CFAllocator alloc, CFURLEnumeratorOptions option, CFArray propertyKeys);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public CFURLEnumeratorResult getNextURL(CFURL.CFURLPtr url) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       CFURLEnumeratorResult result = getNextURL(url, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CFURLEnumeratorGetNextURL", optional=true)
-    public native CFURLEnumeratorResult getNextURL(CFURL.CFURLPtr url, CFError.CFErrorPtr error);
+    private native CFURLEnumeratorResult getNextURL(CFURL.CFURLPtr url, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 4.0 and later.
      */

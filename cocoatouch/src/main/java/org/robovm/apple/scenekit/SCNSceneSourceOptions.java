@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ import org.robovm.apple.opengles.*;
 @Marshaler(SCNSceneSourceOptions.Marshaler.class)
 /*<annotations>*/@Library("SceneKit")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SCNSceneSourceOptions/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     public static class Marshaler {
@@ -160,31 +160,6 @@ import org.robovm.apple.opengles.*;
         data.put(StrictConformanceKey(), NSNumber.valueOf(strict));
         return this;
     }
-    public double getUnitToMetersConversionScale() {
-        if (data.containsKey(ConvertUnitsToMetersKey())) {
-            NSNumber val = (NSNumber) data.get(ConvertUnitsToMetersKey());
-            return val.doubleValue();
-        }
-        return -1;
-    }
-    public SCNSceneSourceOptions setUnitToMetersConversionScale(double scale) {
-        if (scale == -1) 
-            data.remove(ConvertUnitsToMetersKey());
-        else
-            data.put(ConvertUnitsToMetersKey(), NSNumber.valueOf(scale));
-        return this;
-    }
-    public boolean isConvertingToYUp() {
-        if (data.containsKey(ConvertToYUpKey())) {
-            NSNumber val = (NSNumber) data.get(ConvertToYUpKey());
-            return val.booleanValue();
-        }
-        return false;
-    }
-    public SCNSceneSourceOptions setConvertToYUp(boolean convert) {
-        data.put(ConvertToYUpKey(), NSNumber.valueOf(convert));
-        return this;
-    }
     public SCNSceneSourceAnimationImportPolicy getAnimationImportPolicy() {
         if (data.containsKey(AnimationImportPolicyKey())) {
             NSString val = (NSString) data.get(AnimationImportPolicyKey());
@@ -211,10 +186,9 @@ import org.robovm.apple.opengles.*;
     protected static native NSString OverrideAssetURLsKey();
     @GlobalValue(symbol="SCNSceneSourceStrictConformanceKey", optional=true)
     protected static native NSString StrictConformanceKey();
-    @GlobalValue(symbol="SCNSceneSourceConvertUnitsToMetersKey", optional=true)
-    protected static native NSString ConvertUnitsToMetersKey();
-    @GlobalValue(symbol="SCNSceneSourceConvertToYUpKey", optional=true)
-    protected static native NSString ConvertToYUpKey();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @GlobalValue(symbol="SCNSceneSourceAnimationImportPolicyKey", optional=true)
     protected static native NSString AnimationImportPolicyKey();
     /*</methods>*/

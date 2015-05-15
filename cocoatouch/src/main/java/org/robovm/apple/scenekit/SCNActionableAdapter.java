@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,21 +54,45 @@ import org.robovm.apple.opengles.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @NotImplemented("runAction:")
-    public void runAction(SCNAction action) { throw new UnsupportedOperationException(); }
+    public void runAction(SCNAction action) {}
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @NotImplemented("runAction:completionHandler:")
-    public void runAction(SCNAction action, @Block Runnable block) { throw new UnsupportedOperationException(); }
+    public void runAction(SCNAction action, @Block Runnable block) {}
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @NotImplemented("runAction:forKey:")
-    public void runAction(SCNAction action, String key) { throw new UnsupportedOperationException(); }
+    public void runAction(SCNAction action, String key) {}
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @NotImplemented("runAction:forKey:completionHandler:")
-    public void runAction(SCNAction action, String key, @Block Runnable block) { throw new UnsupportedOperationException(); }
+    public void runAction(SCNAction action, String key, @Block Runnable block) {}
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @NotImplemented("hasActions")
-    public boolean hasActions() { throw new UnsupportedOperationException(); }
+    public boolean hasActions() { return false; }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @NotImplemented("actionForKey:")
-    public SCNAction getAction(String key) { throw new UnsupportedOperationException(); }
+    public SCNAction getAction(String key) { return null; }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @NotImplemented("removeActionForKey:")
-    public void removeAction(String key) { throw new UnsupportedOperationException(); }
+    public void removeAction(String key) {}
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @NotImplemented("removeAllActions")
-    public void removeAllActions() { throw new UnsupportedOperationException(); }
+    public void removeAllActions() {}
     /*</methods>*/
 }

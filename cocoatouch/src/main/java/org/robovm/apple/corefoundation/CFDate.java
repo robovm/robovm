@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,7 +62,7 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFDateGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFDateCreate", optional=true)
-    protected static native CFDate create(CFAllocator allocator, double at);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFDate create(CFAllocator allocator, double at);
     @Bridge(symbol="CFDateGetAbsoluteTime", optional=true)
     public native double getAbsoluteTime();
     @Bridge(symbol="CFDateGetTimeIntervalSinceDate", optional=true)

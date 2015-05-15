@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,38 +54,38 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("containerView")
-    public UIView getContainerView() { throw new UnsupportedOperationException(); }
+    public UIView getContainerView() { return null; }
     @NotImplemented("isAnimated")
-    public boolean isAnimated() { throw new UnsupportedOperationException(); }
+    public boolean isAnimated() { return false; }
     @NotImplemented("isInteractive")
-    public boolean isInteractive() { throw new UnsupportedOperationException(); }
+    public boolean isInteractive() { return false; }
     @NotImplemented("transitionWasCancelled")
-    public boolean transitionWasCancelled() { throw new UnsupportedOperationException(); }
+    public boolean transitionWasCancelled() { return false; }
     @NotImplemented("presentationStyle")
-    public UIModalPresentationStyle getPresentationStyle() { throw new UnsupportedOperationException(); }
+    public UIModalPresentationStyle getPresentationStyle() { return null; }
     @NotImplemented("updateInteractiveTransition:")
-    public void updateInteractiveTransition(@MachineSizedFloat double percentComplete) { throw new UnsupportedOperationException(); }
+    public void updateInteractiveTransition(@MachineSizedFloat double percentComplete) {}
     @NotImplemented("finishInteractiveTransition")
-    public void finishInteractiveTransition() { throw new UnsupportedOperationException(); }
+    public void finishInteractiveTransition() {}
     @NotImplemented("cancelInteractiveTransition")
-    public void cancelInteractiveTransition() { throw new UnsupportedOperationException(); }
+    public void cancelInteractiveTransition() {}
     @NotImplemented("completeTransition:")
-    public void completeTransition(boolean didComplete) { throw new UnsupportedOperationException(); }
+    public void completeTransition(boolean didComplete) {}
     @NotImplemented("viewControllerForKey:")
-    public UIViewController getViewController(UITransitionContextViewControllerType key) { throw new UnsupportedOperationException(); }
+    public UIViewController getViewController(UITransitionContextViewControllerType key) { return null; }
     /**
      * @since Available in iOS 8.0 and later.
      */
     @NotImplemented("viewForKey:")
-    public UIView getView(UITransitionContextViewType key) { throw new UnsupportedOperationException(); }
+    public UIView getView(UITransitionContextViewType key) { return null; }
     /**
      * @since Available in iOS 8.0 and later.
      */
     @NotImplemented("targetTransform")
-    public @ByVal CGAffineTransform getTargetTransform() { throw new UnsupportedOperationException(); }
+    public @ByVal CGAffineTransform getTargetTransform() { return null; }
     @NotImplemented("initialFrameForViewController:")
-    public @ByVal CGRect getInitialFrame(UIViewController vc) { throw new UnsupportedOperationException(); }
+    public @ByVal CGRect getInitialFrame(UIViewController vc) { return null; }
     @NotImplemented("finalFrameForViewController:")
-    public @ByVal CGRect getFinalFrame(UIViewController vc) { throw new UnsupportedOperationException(); }
+    public @ByVal CGRect getFinalFrame(UIViewController vc) { return null; }
     /*</methods>*/
 }

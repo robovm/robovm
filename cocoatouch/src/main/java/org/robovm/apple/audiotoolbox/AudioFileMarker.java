@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,8 +30,10 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -48,32 +50,31 @@ import org.robovm.apple.coremedia.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public AudioFileMarker() {}
-    public AudioFileMarker(double mFramePosition, CFString mName, int mMarkerID, AudioFileSMPTETime mSMPTETime, int mType, short mReserved, short mChannel) {
-        this.setMFramePosition(mFramePosition);
-        this.setMName(mName);
-        this.setMMarkerID(mMarkerID);
-        this.setMSMPTETime(mSMPTETime);
-        this.setMType(mType);
-        this.setMReserved(mReserved);
-        this.setMChannel(mChannel);
+    public AudioFileMarker(double framePosition, String name, int markerID, AudioFileSMPTETime SMPTETime, AudioFileMarkerType type, short channel) {
+        this.setFramePosition(framePosition);
+        this.setName(name);
+        this.setMarkerID(markerID);
+        this.setSMPTETime(SMPTETime);
+        this.setType(type);
+        this.setChannel(channel);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native double getMFramePosition();
-    @StructMember(0) public native AudioFileMarker setMFramePosition(double mFramePosition);
-    @StructMember(1) public native CFString getMName();
-    @StructMember(1) public native AudioFileMarker setMName(CFString mName);
-    @StructMember(2) public native int getMMarkerID();
-    @StructMember(2) public native AudioFileMarker setMMarkerID(int mMarkerID);
-    @StructMember(3) public native @ByVal AudioFileSMPTETime getMSMPTETime();
-    @StructMember(3) public native AudioFileMarker setMSMPTETime(@ByVal AudioFileSMPTETime mSMPTETime);
-    @StructMember(4) public native int getMType();
-    @StructMember(4) public native AudioFileMarker setMType(int mType);
-    @StructMember(5) public native short getMReserved();
-    @StructMember(5) public native AudioFileMarker setMReserved(short mReserved);
-    @StructMember(6) public native short getMChannel();
-    @StructMember(6) public native AudioFileMarker setMChannel(short mChannel);
+    @StructMember(0) public native double getFramePosition();
+    @StructMember(0) public native AudioFileMarker setFramePosition(double framePosition);
+    @StructMember(1) public native String getName();
+    @StructMember(1) public native AudioFileMarker setName(String name);
+    @StructMember(2) public native int getMarkerID();
+    @StructMember(2) public native AudioFileMarker setMarkerID(int markerID);
+    @StructMember(3) public native @ByVal AudioFileSMPTETime getSMPTETime();
+    @StructMember(3) public native AudioFileMarker setSMPTETime(@ByVal AudioFileSMPTETime SMPTETime);
+    @StructMember(4) public native AudioFileMarkerType getType();
+    @StructMember(4) public native AudioFileMarker setType(AudioFileMarkerType type);
+    @StructMember(5) private native short getReserved();
+    @StructMember(5) private native AudioFileMarker setReserved(short reserved);
+    @StructMember(6) public native short getChannel();
+    @StructMember(6) public native AudioFileMarker setChannel(short channel);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,8 +54,8 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("dynamicAnimatorWillResume:")
-    public void willResume(UIDynamicAnimator animator) { throw new UnsupportedOperationException(); }
+    public void willResume(UIDynamicAnimator animator) {}
     @NotImplemented("dynamicAnimatorDidPause:")
-    public void didPause(UIDynamicAnimator animator) { throw new UnsupportedOperationException(); }
+    public void didPause(UIDynamicAnimator animator) {}
     /*</methods>*/
 }

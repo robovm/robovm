@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,8 +30,10 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -48,23 +50,23 @@ import org.robovm.apple.coremedia.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public AudioBalanceFade() {}
-    public AudioBalanceFade(float mLeftRightBalance, float mBackFrontFade, int mType, AudioChannelLayout mChannelLayout) {
-        this.setMLeftRightBalance(mLeftRightBalance);
-        this.setMBackFrontFade(mBackFrontFade);
-        this.setMType(mType);
-        this.setMChannelLayout(mChannelLayout);
+    public AudioBalanceFade(float leftRightBalance, float backFrontFade, AudioBalanceFadeType type, AudioChannelLayout channelLayout) {
+        this.setLeftRightBalance(leftRightBalance);
+        this.setBackFrontFade(backFrontFade);
+        this.setType(type);
+        this.setChannelLayout(channelLayout);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native float getMLeftRightBalance();
-    @StructMember(0) public native AudioBalanceFade setMLeftRightBalance(float mLeftRightBalance);
-    @StructMember(1) public native float getMBackFrontFade();
-    @StructMember(1) public native AudioBalanceFade setMBackFrontFade(float mBackFrontFade);
-    @StructMember(2) public native int getMType();
-    @StructMember(2) public native AudioBalanceFade setMType(int mType);
-    @StructMember(3) public native AudioChannelLayout getMChannelLayout();
-    @StructMember(3) public native AudioBalanceFade setMChannelLayout(AudioChannelLayout mChannelLayout);
+    @StructMember(0) public native float getLeftRightBalance();
+    @StructMember(0) public native AudioBalanceFade setLeftRightBalance(float leftRightBalance);
+    @StructMember(1) public native float getBackFrontFade();
+    @StructMember(1) public native AudioBalanceFade setBackFrontFade(float backFrontFade);
+    @StructMember(2) public native AudioBalanceFadeType getType();
+    @StructMember(2) public native AudioBalanceFade setType(AudioBalanceFadeType type);
+    @StructMember(3) public native AudioChannelLayout getChannelLayout();
+    @StructMember(3) public native AudioBalanceFade setChannelLayout(AudioChannelLayout channelLayout);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

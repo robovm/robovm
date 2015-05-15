@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,14 +46,12 @@ import org.robovm.apple.uikit.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    
     public static CGDataProvider create(File file) {
         if (file == null) {
             throw new NullPointerException("file");
         }
-        return createWithFilename(VM.getStringUTFChars(file.getAbsolutePath()));
+        return create(VM.getStringUTFChars(file.getAbsolutePath()));
     }
-    
     /*<methods>*/
     /**
      * @since Available in iOS 2.0 and later.
@@ -74,11 +72,11 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGDataProviderCreateWithFilename", optional=true)
-    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGDataProvider createWithFilename(@Pointer long filename);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGDataProvider create(@Pointer long filename);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGDataProviderCopyData", optional=true)
-    public native NSData getData();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSObject.NoRetainMarshaler.class) NSData getData();
     /*</methods>*/
 }

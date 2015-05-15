@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -85,10 +85,10 @@ import org.robovm.apple.coregraphics.*;
         }
         return null;
     }
-    public MPMediaPlaylistAttributes getPlaylistAttributesLegacy() {
+    public MPMediaPlaylistAttribute getPlaylistAttributesLegacy() {
         NSNumber val = (NSNumber) getValue(MPMediaPlaylistProperty.PlaylistAttributes);
         if (val != null) {
-            return new MPMediaPlaylistAttributes(val.intValue());
+            return new MPMediaPlaylistAttribute(val.intValue());
         }
         return null;
     }

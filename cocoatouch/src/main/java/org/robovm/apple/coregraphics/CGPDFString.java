@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,19 +33,37 @@ import org.robovm.apple.uikit.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
+/*<annotations>*/@Library("CoreGraphics")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CGPDFString/*</name>*/ 
     extends /*<extends>*/NativeObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class CGPDFStringPtr extends Ptr<CGPDFString, CGPDFStringPtr> {}/*</ptr>*/
-    /*<bind>*/
-    /*</bind>*/
+    /*<bind>*/static { Bro.bind(CGPDFString.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     protected CGPDFString() {}
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    /*<methods>*//*</methods>*/
+    /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Bridge(symbol="CGPDFStringGetLength", optional=true)
+    public native @MachineSizedUInt long length();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Bridge(symbol="CGPDFStringCopyTextString", optional=true)
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getTextString();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Bridge(symbol="CGPDFStringCopyDate", optional=true)
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSObject.NoRetainMarshaler.class) NSDate getDate();
+    /*</methods>*/
+    public String toString() {
+        return getTextString();
+    }
 }

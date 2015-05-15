@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,11 +48,16 @@ import org.robovm.apple.corefoundation.*;
      * 
      * @param value
      * @param label
-     * @return the identifier of this value.
+     * @return the id of the added value.
      */
     public int addValueAndLabel(CFType value, String label) {
         IntPtr ptr = new IntPtr();
         addValueAndLabel(value, new CFString(label), ptr);
+        return ptr.get();
+    }
+    protected int addValueAndLabel(CFType value, CFString label) {
+        IntPtr ptr = new IntPtr();
+        addValueAndLabel(value, label, ptr);
         return ptr.get();
     }
     /**
@@ -60,7 +65,7 @@ import org.robovm.apple.corefoundation.*;
      * @param value
      * @param label
      * @param index
-     * @return the identifier of this value.
+     * @return the id of the inserted value.
      */
     public int insertValueAndLabel(CFType value, String label, @MachineSizedSInt long index) {
         IntPtr ptr = new IntPtr();
@@ -70,22 +75,11 @@ import org.robovm.apple.corefoundation.*;
     public boolean replaceLabel(String label, @MachineSizedSInt long index) {
         return replaceLabel(new CFString(label), index);
     }
-    
-    /**
-     * @param value
-     * @param label
-     * @return the id of the added value.
-     */
-    protected int addValueAndLabel(CFType value, CFString label) {
-        IntPtr ptr = new IntPtr();
-        addValueAndLabel(value, label, ptr);
-        return ptr.get();
-    }
     /*<methods>*/
     @Bridge(symbol="ABMultiValueCreateMutable", optional=true)
-    public static native ABMutableMultiValue create(ABPropertyType type);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) ABMutableMultiValue create(ABPropertyType type);
     @Bridge(symbol="ABMultiValueCreateMutableCopy", optional=true)
-    public static native ABMutableMultiValue create(ABMultiValue multiValue);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) ABMutableMultiValue create(ABMultiValue multiValue);
     @Bridge(symbol="ABMultiValueAddValueAndLabel", optional=true)
     protected native boolean addValueAndLabel(CFType value, CFString label, IntPtr outIdentifier);
     @Bridge(symbol="ABMultiValueInsertValueAndLabelAtIndex", optional=true)

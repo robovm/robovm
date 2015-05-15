@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,16 +44,13 @@ public class ABPersonDate {
         this.date = date;
         this.label = label.value();
     }
-    protected ABPersonDate(CFDate date, CFString label) {
-        this.date = date.as(NSDate.class);
+    protected ABPersonDate(NSDate date, CFString label) {
+        this.date = date;
         this.label = label;
     }
     
     public NSDate getDate() {
         return date;
-    }
-    protected CFDate getDate0() {
-        return date.as(CFDate.class);
     }
     
     public String getLabel() {

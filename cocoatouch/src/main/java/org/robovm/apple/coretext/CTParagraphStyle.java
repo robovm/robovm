@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,6 +46,111 @@ import org.robovm.apple.coregraphics.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
+    public static CTParagraphStyle create(CTParagraphStyleSettings settings) {
+        CTParagraphStyleSetting setting = null;
+        int count = 0;
+        if (settings != null) {
+            setting = Struct.allocate(CTParagraphStyleSetting.class);
+            count = settings.getSettings().size();
+            setting.update(settings.getSettings().values().toArray(new CTParagraphStyleSetting[count]));
+        }
+        return create(setting, count);
+    }
+    
+
+    public CTTextAlignment getAlignment() {
+        BytePtr ptr = new BytePtr();
+        getValueForSpecifier(CTParagraphStyleSpecifier.Alignment, BytePtr.sizeOf(), ptr.as(VoidPtr.class));
+        return CTTextAlignment.valueOf(ptr.get());
+    }
+    public CTLineBreakMode getLineBreakMode() {
+        BytePtr ptr = new BytePtr();
+        getValueForSpecifier(CTParagraphStyleSpecifier.LineBreakMode, BytePtr.sizeOf(), ptr.as(VoidPtr.class));
+        return CTLineBreakMode.valueOf(ptr.get());
+    }
+    public CTWritingDirection getBaseWritingDirection() {
+        BytePtr ptr = new BytePtr();
+        getValueForSpecifier(CTParagraphStyleSpecifier.BaseWritingDirection, BytePtr.sizeOf(), ptr.as(VoidPtr.class));
+        return CTWritingDirection.valueOf(ptr.get());
+    }
+    public double getFirstLineHeadIndent() {
+        MachineSizedFloatPtr ptr = new MachineSizedFloatPtr();
+        getValueForSpecifier(CTParagraphStyleSpecifier.FirstLineHeadIndent, MachineSizedFloatPtr.sizeOf(), ptr.as(VoidPtr.class));
+        return ptr.get();
+    }
+    public double getHeadIndent() {
+        MachineSizedFloatPtr ptr = new MachineSizedFloatPtr();
+        getValueForSpecifier(CTParagraphStyleSpecifier.HeadIndent, MachineSizedFloatPtr.sizeOf(), ptr.as(VoidPtr.class));
+        return ptr.get();
+    }
+    public double getTailIndent() {
+        MachineSizedFloatPtr ptr = new MachineSizedFloatPtr();
+        getValueForSpecifier(CTParagraphStyleSpecifier.TailIndent, MachineSizedFloatPtr.sizeOf(), ptr.as(VoidPtr.class));
+        return ptr.get();
+    }
+    public double getDefaultTabInterval() {
+        MachineSizedFloatPtr ptr = new MachineSizedFloatPtr();
+        getValueForSpecifier(CTParagraphStyleSpecifier.DefaultTabInterval, MachineSizedFloatPtr.sizeOf(), ptr.as(VoidPtr.class));
+        return ptr.get();
+    }
+    public double getLineHeightMultiple() {
+        MachineSizedFloatPtr ptr = new MachineSizedFloatPtr();
+        getValueForSpecifier(CTParagraphStyleSpecifier.LineHeightMultiple, MachineSizedFloatPtr.sizeOf(), ptr.as(VoidPtr.class));
+        return ptr.get();
+    }
+    public double getMaximumLineHeight() {
+        MachineSizedFloatPtr ptr = new MachineSizedFloatPtr();
+        getValueForSpecifier(CTParagraphStyleSpecifier.MaximumLineHeight, MachineSizedFloatPtr.sizeOf(), ptr.as(VoidPtr.class));
+        return ptr.get();
+    }
+    public double getMinimumLineHeight() {
+        MachineSizedFloatPtr ptr = new MachineSizedFloatPtr();
+        getValueForSpecifier(CTParagraphStyleSpecifier.MinimumLineHeight, MachineSizedFloatPtr.sizeOf(), ptr.as(VoidPtr.class));
+        return ptr.get();
+    }
+    public double getLineSpacing() {
+        MachineSizedFloatPtr ptr = new MachineSizedFloatPtr();
+        getValueForSpecifier(CTParagraphStyleSpecifier.LineSpacing, MachineSizedFloatPtr.sizeOf(), ptr.as(VoidPtr.class));
+        return ptr.get();
+    }
+    public double getParagraphSpacing() {
+        MachineSizedFloatPtr ptr = new MachineSizedFloatPtr();
+        getValueForSpecifier(CTParagraphStyleSpecifier.ParagraphSpacing, MachineSizedFloatPtr.sizeOf(), ptr.as(VoidPtr.class));
+        return ptr.get();
+    }
+    public double getParagraphSpacingBefore() {
+        MachineSizedFloatPtr ptr = new MachineSizedFloatPtr();
+        getValueForSpecifier(CTParagraphStyleSpecifier.ParagraphSpacingBefore, MachineSizedFloatPtr.sizeOf(), ptr.as(VoidPtr.class));
+        return ptr.get();
+    }
+    public double getMaximumLineSpacing() {
+        MachineSizedFloatPtr ptr = new MachineSizedFloatPtr();
+        getValueForSpecifier(CTParagraphStyleSpecifier.MaximumLineSpacing, MachineSizedFloatPtr.sizeOf(), ptr.as(VoidPtr.class));
+        return ptr.get();
+    }
+    public double getMinimumLineSpacing() {
+        MachineSizedFloatPtr ptr = new MachineSizedFloatPtr();
+        getValueForSpecifier(CTParagraphStyleSpecifier.MinimumLineSpacing, MachineSizedFloatPtr.sizeOf(), ptr.as(VoidPtr.class));
+        return ptr.get();
+    }
+    public double getLineSpacingAdjustment() {
+        MachineSizedFloatPtr ptr = new MachineSizedFloatPtr();
+        getValueForSpecifier(CTParagraphStyleSpecifier.LineSpacingAdjustment, MachineSizedFloatPtr.sizeOf(), ptr.as(VoidPtr.class));
+        return ptr.get();
+    }
+    public List<CTTextTab> getTabStops() {
+        CFArray.CFArrayPtr ptr = new CFArray.CFArrayPtr();
+        getValueForSpecifier(CTParagraphStyleSpecifier.TabStops, CFArray.CFArrayPtr.sizeOf(), ptr.as(VoidPtr.class));
+        return ptr.get().toList(CTTextTab.class);
+    }
+    public CTLineBoundsOptions getLineBoundsOptions() {
+        LongPtr ptr = new LongPtr();
+        getValueForSpecifier(CTParagraphStyleSpecifier.LineBoundsOptions, LongPtr.sizeOf(), ptr.as(VoidPtr.class));
+        return new CTLineBoundsOptions(ptr.get());
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 3.2 and later.
@@ -56,16 +161,16 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTParagraphStyleCreate", optional=true)
-    public static native CTParagraphStyle create(CTParagraphStyleSetting settings, @MachineSizedUInt long settingCount);
+    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CTParagraphStyle create(CTParagraphStyleSetting settings, @MachineSizedUInt long settingCount);
     /**
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTParagraphStyleCreateCopy", optional=true)
-    public native CTParagraphStyle createCopy();
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CTParagraphStyle createCopy(CTParagraphStyle paragraphStyle);
     /**
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTParagraphStyleGetValueForSpecifier", optional=true)
-    public native boolean getValueForSpecifier(CTParagraphStyleSpecifier spec, @MachineSizedUInt long valueBufferSize, VoidPtr valueBuffer);
+    protected native boolean getValueForSpecifier(CTParagraphStyleSpecifier spec, @MachineSizedUInt long valueBufferSize, VoidPtr valueBuffer);
     /*</methods>*/
 }

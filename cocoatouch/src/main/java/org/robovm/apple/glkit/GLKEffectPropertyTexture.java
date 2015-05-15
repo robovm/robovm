@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,9 +53,9 @@ import org.robovm.apple.dispatch.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "enabled")
-    public native byte getEnabled();
+    public native boolean isEnabled();
     @Property(selector = "setEnabled:")
-    public native void setEnabled(byte v);
+    public native void setEnabled(boolean v);
     @Property(selector = "name")
     public native int getName();
     @Property(selector = "setName:")

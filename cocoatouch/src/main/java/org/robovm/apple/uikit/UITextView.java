@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,6 +34,8 @@ import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
 import org.robovm.apple.corelocation.*;
 /*</imports>*/
+import org.robovm.apple.corefoundation.CFDictionary;
+import org.robovm.apple.coremedia.CMTextMarkupAttributes;
 
 /*<javadoc>*/
 /**
@@ -87,6 +89,115 @@ import org.robovm.apple.corelocation.*;
         super(frame);
     }
     
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public NSAttributedStringAttributes getLinkTextAttributes() {
+        NSDictionary<NSString, NSObject> dict = getLinkTextAttributesDictionary();
+        if (dict == null) return null;
+        return new NSAttributedStringAttributes(dict);
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public CMTextMarkupAttributes getLinkTextMarkupAttributes() {
+        NSDictionary<NSString, NSObject> dict = getLinkTextAttributesDictionary();
+        if (dict == null) return null;
+        return new CMTextMarkupAttributes(dict.as(CFDictionary.class));
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public CTAttributedStringAttributes getLinkCoreTextAttributes() {
+        NSDictionary<NSString, NSObject> dict = getLinkTextAttributesDictionary();
+        if (dict == null) return null;
+        return new CTAttributedStringAttributes(dict.as(CFDictionary.class));
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public void setLinkTextAttributes(NSAttributedStringAttributes v) {
+        if (v == null) {
+            setLinkTextAttributesDictionary(null);
+        } else {
+            setLinkTextAttributesDictionary(v.getDictionary());
+        }
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public void setLinkTextMarkupAttributes(CMTextMarkupAttributes v) {
+        if (v == null) {
+            setLinkTextAttributesDictionary(null);
+        } else {
+            setLinkTextAttributesDictionary(v.getDictionary().as(NSDictionary.class));
+        }
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public void setLinkCoreTextAttributes(CTAttributedStringAttributes v) {
+        if (v == null) {
+            setLinkTextAttributesDictionary(null);
+        } else {
+            setLinkTextAttributesDictionary(v.getDictionary().as(NSDictionary.class));
+        }
+    }
+    
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public NSAttributedStringAttributes getTypingAttributes() {
+        NSDictionary<NSString, NSObject> dict = getTypingAttributesDictionary();
+        if (dict == null) return null;
+        return new NSAttributedStringAttributes(dict);
+    }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public CMTextMarkupAttributes getTypingTextMarkupAttributes() {
+        NSDictionary<NSString, NSObject> dict = getTypingAttributesDictionary();
+        if (dict == null) return null;
+        return new CMTextMarkupAttributes(dict.as(CFDictionary.class));
+    }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public CTAttributedStringAttributes getTypingCoreTextAttributes() {
+        NSDictionary<NSString, NSObject> dict = getTypingAttributesDictionary();
+        if (dict == null) return null;
+        return new CTAttributedStringAttributes(dict.as(CFDictionary.class));
+    }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public void setTypingAttributes(NSAttributedStringAttributes v) {
+        if (v == null) {
+            setTypingAttributesDictionary(null);
+        } else {
+            setTypingAttributesDictionary(v.getDictionary());
+        }
+    }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public void setTypingTextMarkupAttributes(CMTextMarkupAttributes v) {
+        if (v == null) {
+            setTypingAttributesDictionary(null);
+        } else {
+            setTypingAttributesDictionary(v.getDictionary().as(NSDictionary.class));
+        }
+    }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public void setTypingCoreTextAttributes(CTAttributedStringAttributes v) {
+        if (v == null) {
+            setTypingAttributesDictionary(null);
+        } else {
+            setTypingAttributesDictionary(v.getDictionary().as(NSDictionary.class));
+        }
+    }
     /*<properties>*/
     @Property(selector = "delegate")
     public native UITextViewDelegate getDelegate();
@@ -160,12 +271,12 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "typingAttributes")
-    public native NSAttributedStringAttributes getTypingAttributes();
+    public native NSDictionary<NSString, NSObject> getTypingAttributesDictionary();
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "setTypingAttributes:")
-    public native void setTypingAttributes(NSAttributedStringAttributes v);
+    public native void setTypingAttributesDictionary(NSDictionary<NSString, NSObject> v);
     @Property(selector = "inputView")
     public native UIView getInputView();
     @Property(selector = "setInputView:")
@@ -213,12 +324,12 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "linkTextAttributes")
-    public native NSAttributedStringAttributes getLinkTextAttributes();
+    public native NSDictionary<NSString, NSObject> getLinkTextAttributesDictionary();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "setLinkTextAttributes:")
-    public native void setLinkTextAttributes(NSAttributedStringAttributes v);
+    public native void setLinkTextAttributesDictionary(NSDictionary<NSString, NSObject> v);
     @Property(selector = "selectedTextRange")
     public native UITextRange getSelectedTextRange();
     @Property(selector = "setSelectedTextRange:")

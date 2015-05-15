@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian Mobile AB
+ * Copyright (C) 2012 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,6 +38,8 @@ extern void gcAddRoot(void* ptr);
 extern void gcAddRoots(void* start, void* end);
 extern uint32_t gcNewDirectBitmapKind(size_t bitmap);
 extern void* gcAllocate(size_t size);
+extern void* gcAllocateUncollectable(size_t size);
+extern void gcFree(void* ptr);
 extern void* allocateMemoryOfKind(Env* env, size_t size, uint32_t kind);
 extern void registerCleanupHandler(Env* env, Object* object, CleanupHandler handler);
 
@@ -57,7 +59,7 @@ extern void unwindBacktrace(void* fp, jboolean (*it)(UnwindContext*, void*), voi
 extern void* unwindGetIP(UnwindContext* context);
 extern jint unwindRaiseException(Env* env);
 extern jint unwindReraiseException(Env* env, void* exInfo);
-extern void unwindIterateCallStack(Env* env, void* fp, jboolean (*iterator)(Env*, void*, ProxyMethod*, void*), void* data);
+extern void unwindIterateCallStack(Env* env, void* fp, jboolean (*iterator)(Env*, void*, void*, ProxyMethod*, void*), void* data);
 
 /* method.c */
 extern void captureCallStack(Env* env, Frame* fp, CallStack* data, jint maxLength);

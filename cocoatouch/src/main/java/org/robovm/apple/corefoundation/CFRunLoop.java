@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -101,7 +101,7 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFRunLoopGetMain", optional=true)
     public static native CFRunLoop getMain();
     @Bridge(symbol="CFRunLoopCopyCurrentMode", optional=true)
-    public native String getCurrentMode();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getCurrentMode();
     @Bridge(symbol="CFRunLoopCopyAllModes", optional=true)
     public native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String> getAllModes();
     @Bridge(symbol="CFRunLoopAddCommonMode", optional=true)

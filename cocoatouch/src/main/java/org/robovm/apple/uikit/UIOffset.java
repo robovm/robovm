@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,11 +61,17 @@ import org.robovm.apple.corelocation.*;
     @StructMember(1) public native UIOffset setVertical(@MachineSizedFloat double vertical);
     /*</members>*/
     
+    public boolean equalsTo(UIOffset other) {
+        return getHorizontal() == other.getHorizontal() && getVertical() == other.getVertical();
+    }
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof UIOffset && equalsTo((UIOffset)obj);
+    }
     @Override
     public String toString() {
         return toString(this);
     }
-    
     /*<methods>*/
     @GlobalValue(symbol="UIOffsetZero", optional=true)
     public static native @ByVal UIOffset Zero();

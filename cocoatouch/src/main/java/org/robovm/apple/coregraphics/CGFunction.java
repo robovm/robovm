@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,7 +54,7 @@ import org.robovm.apple.uikit.*;
     /*<constants>*//*</constants>*/
     
     private static java.util.concurrent.atomic.AtomicLong infoId = new java.util.concurrent.atomic.AtomicLong();
-    private static Map<Long, Info> infos = new HashMap<Long, Info>();
+    private static final LongMap<Info> infos = new LongMap<>();
     private static final java.lang.reflect.Method cbEvaluate;
     private static final java.lang.reflect.Method cbReleaseInfo;
     
@@ -72,20 +72,16 @@ import org.robovm.apple.uikit.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    
     public static CGFunction create(long domainDimension, double[] domain, long rangeDimension, double[] range, Evaluate evaluate) {
         return create(domainDimension, domain, domain != null ? domain.length : 0, 
                 rangeDimension, range, range != null ? range.length : 0, evaluate);
     }
-
     public static CGFunction create(long domainDimension, float[] domain, long rangeDimension, float[] range, Evaluate evaluate) {
         return create(domainDimension, domain, domain != null ? domain.length : 0, 
                 rangeDimension, range, range != null ? range.length : 0, evaluate);
     }
-
     private static CGFunction create(long domainDimension, Object domain, int domainLength, 
             long rangeDimension, Object range, int rangeLength, Evaluate evaluate) {
-        
         if (domain != null && domainLength != 2 * domainDimension) {
             throw new IllegalArgumentException("domain.length != 2 * domainDimension");
         }
@@ -152,7 +148,6 @@ import org.robovm.apple.uikit.*;
             infos.remove(infoId);
         }
     }
-    
     /*<methods>*/
     /**
      * @since Available in iOS 2.0 and later.
@@ -163,6 +158,6 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGFunctionCreate", optional=true)
-    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGFunction create(@Pointer long info, @MachineSizedUInt long domainDimension, MachineSizedFloatPtr domain, @MachineSizedUInt long rangeDimension, MachineSizedFloatPtr range, CGFunctionCallbacks callbacks);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGFunction create(@Pointer long info, @MachineSizedUInt long domainDimension, MachineSizedFloatPtr domain, @MachineSizedUInt long rangeDimension, MachineSizedFloatPtr range, CGFunctionCallbacks callbacks);
     /*</methods>*/
 }

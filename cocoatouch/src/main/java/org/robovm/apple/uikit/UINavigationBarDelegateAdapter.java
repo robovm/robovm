@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,12 +54,12 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("navigationBar:shouldPushItem:")
-    public boolean shouldPushItem(UINavigationBar navigationBar, UINavigationItem item) { throw new UnsupportedOperationException(); }
+    public boolean shouldPushItem(UINavigationBar navigationBar, UINavigationItem item) { return false; }
     @NotImplemented("navigationBar:didPushItem:")
-    public void didPushItem(UINavigationBar navigationBar, UINavigationItem item) { throw new UnsupportedOperationException(); }
+    public void didPushItem(UINavigationBar navigationBar, UINavigationItem item) {}
     @NotImplemented("navigationBar:shouldPopItem:")
-    public boolean shouldPopItem(UINavigationBar navigationBar, UINavigationItem item) { throw new UnsupportedOperationException(); }
+    public boolean shouldPopItem(UINavigationBar navigationBar, UINavigationItem item) { return false; }
     @NotImplemented("navigationBar:didPopItem:")
-    public void didPopItem(UINavigationBar navigationBar, UINavigationItem item) { throw new UnsupportedOperationException(); }
+    public void didPopItem(UINavigationBar navigationBar, UINavigationItem item) {}
     /*</methods>*/
 }

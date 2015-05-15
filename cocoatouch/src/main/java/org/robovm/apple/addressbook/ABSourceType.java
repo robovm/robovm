@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,15 +34,15 @@ import org.robovm.apple.corefoundation.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/ABSourceType/*</name>*/ implements ValuedEnum {
+public final class /*<name>*/ABSourceType/*</name>*/ extends Bits</*<name>*/ABSourceType/*</name>*/> {
     /*<values>*/
-    Local(0L),
-    Exchange(1L),
-    ExchangeGAL(16777217L),
-    MobileMe(2L),
-    LDAP(16777219L),
-    CardDAV(4L),
-    CardDAVSearch(16777220L);
+    public static final ABSourceType Local = new ABSourceType(0L);
+    public static final ABSourceType Exchange = new ABSourceType(1L);
+    public static final ABSourceType ExchangeGAL = new ABSourceType(16777217L);
+    public static final ABSourceType MobileMe = new ABSourceType(2L);
+    public static final ABSourceType LDAP = new ABSourceType(16777219L);
+    public static final ABSourceType CardDAV = new ABSourceType(4L);
+    public static final ABSourceType CardDAVSearch = new ABSourceType(16777220L);
     /*</values>*/
 
     /*<bind>*/
@@ -50,17 +50,17 @@ public enum /*<name>*/ABSourceType/*</name>*/ implements ValuedEnum {
     /*<constants>*//*</constants>*/
     /*<methods>*//*</methods>*/
 
-    private final long n;
+    private static final /*<name>*/ABSourceType/*</name>*/[] values = _values(/*<name>*/ABSourceType/*</name>*/.class);
 
-    private /*<name>*/ABSourceType/*</name>*/(long n) { this.n = n; }
-    public long value() { return n; }
-    public static /*<name>*/ABSourceType/*</name>*/ valueOf(long n) {
-        for (/*<name>*/ABSourceType/*</name>*/ v : values()) {
-            if (v.n == n) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/ABSourceType/*</name>*/.class.getName());
+    public /*<name>*/ABSourceType/*</name>*/(long value) { super(value); }
+    private /*<name>*/ABSourceType/*</name>*/(long value, long mask) { super(value, mask); }
+    protected /*<name>*/ABSourceType/*</name>*/ wrap(long value, long mask) {
+        return new /*<name>*/ABSourceType/*</name>*/(value, mask);
+    }
+    protected /*<name>*/ABSourceType/*</name>*/[] _values() {
+        return values;
+    }
+    public static /*<name>*/ABSourceType/*</name>*/[] values() {
+        return values.clone();
     }
 }

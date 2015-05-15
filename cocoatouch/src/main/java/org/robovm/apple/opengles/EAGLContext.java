@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,8 +43,8 @@ import org.robovm.apple.foundation.*;
     /*<constructors>*/
     public EAGLContext() {}
     protected EAGLContext(SkipInit skipInit) { super(skipInit); }
-    public EAGLContext(EAGLRenderingAPI api) { super((SkipInit) null); initObject(initWithAPI$(api)); }
-    public EAGLContext(EAGLRenderingAPI api, EAGLSharegroup sharegroup) { super((SkipInit) null); initObject(initWithAPI$sharegroup$(api, sharegroup)); }
+    public EAGLContext(EAGLRenderingAPI api) { super((SkipInit) null); initObject(init(api)); }
+    public EAGLContext(EAGLRenderingAPI api, EAGLSharegroup sharegroup) { super((SkipInit) null); initObject(init(api, sharegroup)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "API")
@@ -75,15 +75,15 @@ import org.robovm.apple.foundation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithAPI:")
-    protected native @Pointer long initWithAPI$(EAGLRenderingAPI api);
+    protected native @Pointer long init(EAGLRenderingAPI api);
     @Method(selector = "initWithAPI:sharegroup:")
-    protected native @Pointer long initWithAPI$sharegroup$(EAGLRenderingAPI api, EAGLSharegroup sharegroup);
+    protected native @Pointer long init(EAGLRenderingAPI api, EAGLSharegroup sharegroup);
     @Method(selector = "setCurrentContext:")
     public static native boolean setCurrentContext(EAGLContext context);
     @Method(selector = "currentContext")
     public static native EAGLContext getCurrentContext();
     @Method(selector = "renderbufferStorage:fromDrawable:")
-    public native boolean renderBufferStorage(@MachineSizedUInt long target, EAGLDrawable drawable);
+    public native boolean renderbufferStorage(@MachineSizedUInt long target, EAGLDrawable drawable);
     @Method(selector = "presentRenderbuffer:")
     public native boolean presentRenderbuffer(@MachineSizedUInt long target);
     /*</methods>*/

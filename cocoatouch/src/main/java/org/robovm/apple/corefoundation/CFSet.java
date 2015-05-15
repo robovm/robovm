@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -85,9 +85,6 @@ import org.robovm.apple.foundation.NSObject.NSObjectPtr;
     public boolean contains(NativeObject value) {
         return containsValue(value.as(VoidPtr.class));
     }
-    public @MachineSizedSInt long size() {
-        return getCount();
-    }
     
     public void add(NativeObject value) {
         throw new UnsupportedOperationException("CFSet is immutable. Use CFMutableSet instead!");
@@ -107,11 +104,11 @@ import org.robovm.apple.foundation.NSObject.NSObjectPtr;
     @Bridge(symbol="CFSetGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFSetCreate", optional=true)
-    protected static native CFSet create(CFAllocator allocator, VoidPtr.VoidPtrPtr values, @MachineSizedSInt long numValues, CFSetCallBacks callBacks);
+    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFSet create(CFAllocator allocator, VoidPtr.VoidPtrPtr values, @MachineSizedSInt long numValues, CFSetCallBacks callBacks);
     @Bridge(symbol="CFSetCreateCopy", optional=true)
-    protected static native CFSet createCopy(CFAllocator allocator, CFSet theSet);
+    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFSet createCopy(CFAllocator allocator, CFSet theSet);
     @Bridge(symbol="CFSetGetCount", optional=true)
-    protected native @MachineSizedSInt long getCount();
+    public native @MachineSizedSInt long size();
     @Bridge(symbol="CFSetGetCountOfValue", optional=true)
     protected native @MachineSizedSInt long getCountOfValue(VoidPtr value);
     @Bridge(symbol="CFSetContainsValue", optional=true)

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,7 +45,10 @@ public enum /*<name>*/NEVPNIKEv2DiffieHellmanGroup/*</name>*/ implements ValuedE
     _15(15L),
     _16(16L),
     _17(17L),
-    _18(18L);
+    _18(18L),
+    _19(19L),
+    _20(20L),
+    _21(21L);
     /*</values>*/
 
     /*<bind>*/

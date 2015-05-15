@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,20 +44,20 @@ import org.robovm.apple.corefoundation.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public AudioStreamPacketDescription() {}
-    public AudioStreamPacketDescription(long mStartOffset, int mVariableFramesInPacket, int mDataByteSize) {
-        this.setMStartOffset(mStartOffset);
-        this.setMVariableFramesInPacket(mVariableFramesInPacket);
-        this.setMDataByteSize(mDataByteSize);
+    public AudioStreamPacketDescription(long startOffset, int variableFramesInPacket, int dataByteSize) {
+        this.setStartOffset(startOffset);
+        this.setVariableFramesInPacket(variableFramesInPacket);
+        this.setDataByteSize(dataByteSize);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native long getMStartOffset();
-    @StructMember(0) public native AudioStreamPacketDescription setMStartOffset(long mStartOffset);
-    @StructMember(1) public native int getMVariableFramesInPacket();
-    @StructMember(1) public native AudioStreamPacketDescription setMVariableFramesInPacket(int mVariableFramesInPacket);
-    @StructMember(2) public native int getMDataByteSize();
-    @StructMember(2) public native AudioStreamPacketDescription setMDataByteSize(int mDataByteSize);
+    @StructMember(0) public native long getStartOffset();
+    @StructMember(0) public native AudioStreamPacketDescription setStartOffset(long startOffset);
+    @StructMember(1) public native int getVariableFramesInPacket();
+    @StructMember(1) public native AudioStreamPacketDescription setVariableFramesInPacket(int variableFramesInPacket);
+    @StructMember(2) public native int getDataByteSize();
+    @StructMember(2) public native AudioStreamPacketDescription setDataByteSize(int dataByteSize);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

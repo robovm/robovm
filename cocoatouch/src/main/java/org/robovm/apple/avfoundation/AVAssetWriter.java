@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,6 +36,7 @@ import org.robovm.apple.coremedia.*;
 import org.robovm.apple.corevideo.*;
 import org.robovm.apple.audiotoolbox.*;
 import org.robovm.apple.mediatoolbox.*;
+import org.robovm.apple.audiounit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -54,20 +55,14 @@ import org.robovm.apple.mediatoolbox.*;
     /*<constructors>*/
     public AVAssetWriter() {}
     protected AVAssetWriter(SkipInit skipInit) { super(skipInit); }
-    /*</constructors>*/
-    /**
-     * 
-     * @param outputURL
-     * @param outputFileType
-     * @throws NSErrorException
-     */
     public AVAssetWriter(NSURL outputURL, String outputFileType) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        initObject(init(outputURL, outputFileType, err));
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
+       super((SkipInit) null);
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       long handle = init(outputURL, outputFileType, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       initObject(handle);
     }
+    /*</constructors>*/
     /*<properties>*/
     @Property(selector = "outputURL")
     public native NSURL getOutputURL();
@@ -130,25 +125,9 @@ import org.robovm.apple.mediatoolbox.*;
     public boolean canApplyOutputSettings(AVPixelBufferAttributes outputSettings, AVMediaType mediaType) {
         return canApplyOutputSettings(outputSettings.getDictionary().as(NSDictionary.class), mediaType);
     }
-    /**
-     * 
-     * @param outputURL
-     * @param outputFileType
-     * @return
-     * @throws NSErrorException
-     */
-    public AVAssetWriter create(NSURL outputURL, String outputFileType) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        AVAssetWriter result = create(outputURL, outputFileType, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-   
     /*<methods>*/
     @Method(selector = "initWithURL:fileType:error:")
-    protected native @Pointer long init(NSURL outputURL, String outputFileType, NSError.NSErrorPtr outError);
+    private native @Pointer long init(NSURL outputURL, String outputFileType, NSError.NSErrorPtr outError);
     @Method(selector = "canApplyOutputSettings:forMediaType:")
     protected native boolean canApplyOutputSettings(NSDictionary<NSString, NSObject> outputSettings, AVMediaType mediaType);
     @Method(selector = "canAddInput:")
@@ -175,8 +154,14 @@ import org.robovm.apple.mediatoolbox.*;
      */
     @Method(selector = "finishWritingWithCompletionHandler:")
     public native void finishWriting(@Block Runnable handler);
+    public static AVAssetWriter create(NSURL outputURL, String outputFileType) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       AVAssetWriter result = create(outputURL, outputFileType, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "assetWriterWithURL:fileType:error:")
-    protected static native AVAssetWriter create(NSURL outputURL, String outputFileType, NSError.NSErrorPtr outError);
+    private static native AVAssetWriter create(NSURL outputURL, String outputFileType, NSError.NSErrorPtr outError);
     /**
      * @since Available in iOS 7.0 and later.
      */

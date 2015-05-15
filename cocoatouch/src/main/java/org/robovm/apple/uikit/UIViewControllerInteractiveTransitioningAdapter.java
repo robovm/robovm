@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,10 +54,10 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("startInteractiveTransition:")
-    public void startInteractiveTransition(UIViewControllerContextTransitioning transitionContext) { throw new UnsupportedOperationException(); }
+    public void startInteractiveTransition(UIViewControllerContextTransitioning transitionContext) {}
     @NotImplemented("completionSpeed")
-    public @MachineSizedFloat double getCompletionSpeed() { throw new UnsupportedOperationException(); }
+    public @MachineSizedFloat double getCompletionSpeed() { return 0; }
     @NotImplemented("completionCurve")
-    public UIViewAnimationCurve getCompletionCurve() { throw new UnsupportedOperationException(); }
+    public UIViewAnimationCurve getCompletionCurve() { return null; }
     /*</methods>*/
 }

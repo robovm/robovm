@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian Mobile AB
+ * Copyright (C) 2012 RoboVM AB
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -56,6 +56,8 @@ public class Functions {
     public static final FunctionRef BC_THROW = new FunctionRef("_bcThrow", new FunctionType(VOID, ENV_PTR, OBJECT_PTR));
     public static final FunctionRef BC_THROW_IF_EXCEPTION_OCCURRED = new FunctionRef("_bcThrowIfExceptionOccurred", new FunctionType(VOID, ENV_PTR));
     public static final FunctionRef BC_THROW_UNSATISIFED_LINK_ERROR = new FunctionRef("_bcThrowUnsatisfiedLinkError", new FunctionType(VOID, ENV_PTR, I8_PTR));
+    public static final FunctionRef BC_THROW_UNSATISIFED_LINK_ERROR_BRIDGE_NOT_BOUND = new FunctionRef("_bcThrowUnsatisfiedLinkErrorBridgeNotBound", new FunctionType(VOID, ENV_PTR, I8_PTR, I8_PTR, I8_PTR));
+    public static final FunctionRef BC_THROW_UNSATISIFED_LINK_ERROR_OPTIONAL_BRIDGE_NOT_BOUND = new FunctionRef("_bcThrowUnsatisfiedLinkErrorOptionalBridgeNotBound", new FunctionType(VOID, ENV_PTR, I8_PTR, I8_PTR, I8_PTR));
     public static final FunctionRef BC_THROW_NO_CLASS_DEF_FOUND_ERROR = new FunctionRef("_bcThrowNoClassDefFoundError", new FunctionType(VOID, ENV_PTR, I8_PTR));
     public static final FunctionRef BC_THROW_NO_SUCH_FIELD_ERROR = new FunctionRef("_bcThrowNoSuchFieldError", new FunctionType(VOID, ENV_PTR, I8_PTR));
     public static final FunctionRef BC_THROW_NO_SUCH_METHOD_ERROR = new FunctionRef("_bcThrowNoSuchMethodError", new FunctionType(VOID, ENV_PTR, I8_PTR));
@@ -97,6 +99,7 @@ public class Functions {
     public static final FunctionRef BC_ABSTRACT_METHOD_CALLED = new FunctionRef("_bcAbstractMethodCalled", new FunctionType(VOID, ENV_PTR, OBJECT_PTR));
     public static final FunctionRef BC_NON_PUBLIC_METHOD_CALLED = new FunctionRef("_bcNonPublicMethodCalled", new FunctionType(VOID, ENV_PTR, OBJECT_PTR));
     public static final FunctionRef BC_COPY_STRUCT = new FunctionRef("_bcCopyStruct", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I32));
+    public static final FunctionRef BC_HOOK_INSTRUMENTED = new FunctionRef("_bcHookInstrumented", new FunctionType(VOID, ENV_PTR, I32, I32, I8_PTR, I8_PTR));
 
     public static final FunctionRef LLVM_FRAMEADDRESS = new FunctionRef("llvm.frameaddress", new FunctionType(I8_PTR, I32));
     public static final FunctionRef LLVM_MEMCPY = new FunctionRef("llvm.memcpy.p0i8.p0i8.i32", new FunctionType(VOID, I8_PTR, I8_PTR, I32, I32, I1));
@@ -154,6 +157,7 @@ public class Functions {
     public static final FunctionRef MONITOREXIT = new FunctionRef("monitorexit", new FunctionType(VOID, ENV_PTR, OBJECT_PTR));
     public static final FunctionRef PUSH_NATIVE_FRAME = new FunctionRef("pushNativeFrame", new FunctionType(VOID, ENV_PTR));
     public static final FunctionRef POP_NATIVE_FRAME = new FunctionRef("popNativeFrame", new FunctionType(VOID, ENV_PTR));
+    public static final FunctionRef GETPC = new FunctionRef("getpc", new FunctionType(I8_PTR));
 
     public static FunctionRef getArrayLoad(soot.Type sootType) {
         if (sootType.equals(soot.BooleanType.v())) {

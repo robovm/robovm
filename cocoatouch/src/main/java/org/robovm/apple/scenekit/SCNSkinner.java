@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,9 @@ import org.robovm.apple.opengles.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 8.0 and later.
+ */
 /*</javadoc>*/
 /*<annotations>*/@Library("SceneKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SCNSkinner/*</name>*/ 
@@ -56,25 +58,52 @@ import org.robovm.apple.opengles.*;
     public native SCNNode getSkeleton();
     @Property(selector = "setSkeleton:")
     public native void setSkeleton(SCNNode v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "baseGeometry")
     public native SCNGeometry getBaseGeometry();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "setBaseGeometry:")
     public native void setBaseGeometry(SCNGeometry v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "baseGeometryBindTransform")
     public native @ByVal SCNMatrix4 getBaseGeometryBindTransform();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "setBaseGeometryBindTransform:")
     public native void setBaseGeometryBindTransform(@ByVal SCNMatrix4 v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "boneInverseBindTransforms")
     public native @org.robovm.rt.bro.annotation.Marshaler(SCNMatrix4.AsListMarshaler.class) List<SCNMatrix4> getBoneInverseBindTransforms();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "bones")
     public native NSArray<SCNNode> getBones();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "boneWeights")
     public native SCNGeometrySource getBoneWeights();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "boneIndices")
     public native SCNGeometrySource getBoneIndices();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "skinnerWithBaseGeometry:bones:boneInverseBindTransforms:boneWeights:boneIndices:")
     public static native SCNSkinner create(SCNGeometry baseGeometry, NSArray<SCNNode> bones, @org.robovm.rt.bro.annotation.Marshaler(SCNMatrix4.AsListMarshaler.class) List<SCNMatrix4> boneInverseBindTransforms, SCNGeometrySource boneWeights, SCNGeometrySource boneIndices);
     /*</methods>*/

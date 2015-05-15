@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian Mobile AB
+ * Copyright (C) 2012 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -321,13 +321,7 @@ jint rvmGetStringLength(Env* env, Object* str) {
 jchar* rvmGetStringChars(Env* env, Object* str) {
     CharArray* value = (CharArray*) rvmGetObjectInstanceFieldValue(env, str, stringValueField);
     jint offset = rvmGetIntInstanceFieldValue(env, str, stringOffsetField);
-    jint count = rvmGetIntInstanceFieldValue(env, str, stringCountField);
-
-    jchar* result = rvmAllocateMemoryAtomic(env, sizeof(jchar) * count);
-    if (!result) return NULL;
-
-    memcpy(result, value->values + offset, sizeof(jchar) * count);
-    return result;
+    return value->values + offset;
 }
 
 jint rvmGetStringUTFLength(Env* env, Object* str) {

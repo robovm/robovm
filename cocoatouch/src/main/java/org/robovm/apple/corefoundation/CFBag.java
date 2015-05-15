@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,9 +54,9 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFBagGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFBagCreate", optional=true)
-    protected static native CFBag create(CFAllocator allocator, VoidPtr.VoidPtrPtr values, @MachineSizedSInt long numValues, CFBagCallBacks callBacks);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFBag create(CFAllocator allocator, VoidPtr.VoidPtrPtr values, @MachineSizedSInt long numValues, CFBagCallBacks callBacks);
     @Bridge(symbol="CFBagCreateCopy", optional=true)
-    protected static native CFBag createCopy(CFAllocator allocator, CFBag theBag);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFBag createCopy(CFAllocator allocator, CFBag theBag);
     @Bridge(symbol="CFBagGetCount", optional=true)
     protected native @MachineSizedSInt long getCount();
     @Bridge(symbol="CFBagGetCountOfValue", optional=true)

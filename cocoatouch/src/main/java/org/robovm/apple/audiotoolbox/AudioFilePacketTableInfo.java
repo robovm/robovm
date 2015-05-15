@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,8 +30,10 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -48,20 +50,20 @@ import org.robovm.apple.coremedia.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public AudioFilePacketTableInfo() {}
-    public AudioFilePacketTableInfo(long mNumberValidFrames, int mPrimingFrames, int mRemainderFrames) {
-        this.setMNumberValidFrames(mNumberValidFrames);
-        this.setMPrimingFrames(mPrimingFrames);
-        this.setMRemainderFrames(mRemainderFrames);
+    public AudioFilePacketTableInfo(long numberValidFrames, int primingFrames, int remainderFrames) {
+        this.setNumberValidFrames(numberValidFrames);
+        this.setPrimingFrames(primingFrames);
+        this.setRemainderFrames(remainderFrames);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native long getMNumberValidFrames();
-    @StructMember(0) public native AudioFilePacketTableInfo setMNumberValidFrames(long mNumberValidFrames);
-    @StructMember(1) public native int getMPrimingFrames();
-    @StructMember(1) public native AudioFilePacketTableInfo setMPrimingFrames(int mPrimingFrames);
-    @StructMember(2) public native int getMRemainderFrames();
-    @StructMember(2) public native AudioFilePacketTableInfo setMRemainderFrames(int mRemainderFrames);
+    @StructMember(0) public native long getNumberValidFrames();
+    @StructMember(0) public native AudioFilePacketTableInfo setNumberValidFrames(long numberValidFrames);
+    @StructMember(1) public native int getPrimingFrames();
+    @StructMember(1) public native AudioFilePacketTableInfo setPrimingFrames(int primingFrames);
+    @StructMember(2) public native int getRemainderFrames();
+    @StructMember(2) public native AudioFilePacketTableInfo setRemainderFrames(int remainderFrames);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

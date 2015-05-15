@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,43 +50,43 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*/
     @NotImplemented("autocapitalizationType")
-    public UITextAutocapitalizationType getAutocapitalizationType() { throw new UnsupportedOperationException(); }
+    public UITextAutocapitalizationType getAutocapitalizationType() { return null; }
     @NotImplemented("setAutocapitalizationType:")
-    public void setAutocapitalizationType(UITextAutocapitalizationType v) { throw new UnsupportedOperationException(); }
+    public void setAutocapitalizationType(UITextAutocapitalizationType v) {}
     @NotImplemented("autocorrectionType")
-    public UITextAutocorrectionType getAutocorrectionType() { throw new UnsupportedOperationException(); }
+    public UITextAutocorrectionType getAutocorrectionType() { return null; }
     @NotImplemented("setAutocorrectionType:")
-    public void setAutocorrectionType(UITextAutocorrectionType v) { throw new UnsupportedOperationException(); }
+    public void setAutocorrectionType(UITextAutocorrectionType v) {}
     /**
      * @since Available in iOS 5.0 and later.
      */
     @NotImplemented("spellCheckingType")
-    public UITextSpellCheckingType getSpellCheckingType() { throw new UnsupportedOperationException(); }
+    public UITextSpellCheckingType getSpellCheckingType() { return null; }
     /**
      * @since Available in iOS 5.0 and later.
      */
     @NotImplemented("setSpellCheckingType:")
-    public void setSpellCheckingType(UITextSpellCheckingType v) { throw new UnsupportedOperationException(); }
+    public void setSpellCheckingType(UITextSpellCheckingType v) {}
     @NotImplemented("keyboardType")
-    public UIKeyboardType getKeyboardType() { throw new UnsupportedOperationException(); }
+    public UIKeyboardType getKeyboardType() { return null; }
     @NotImplemented("setKeyboardType:")
-    public void setKeyboardType(UIKeyboardType v) { throw new UnsupportedOperationException(); }
+    public void setKeyboardType(UIKeyboardType v) {}
     @NotImplemented("keyboardAppearance")
-    public UIKeyboardAppearance getKeyboardAppearance() { throw new UnsupportedOperationException(); }
+    public UIKeyboardAppearance getKeyboardAppearance() { return null; }
     @NotImplemented("setKeyboardAppearance:")
-    public void setKeyboardAppearance(UIKeyboardAppearance v) { throw new UnsupportedOperationException(); }
+    public void setKeyboardAppearance(UIKeyboardAppearance v) {}
     @NotImplemented("returnKeyType")
-    public UIReturnKeyType getReturnKeyType() { throw new UnsupportedOperationException(); }
+    public UIReturnKeyType getReturnKeyType() { return null; }
     @NotImplemented("setReturnKeyType:")
-    public void setReturnKeyType(UIReturnKeyType v) { throw new UnsupportedOperationException(); }
+    public void setReturnKeyType(UIReturnKeyType v) {}
     @NotImplemented("enablesReturnKeyAutomatically")
-    public boolean enablesReturnKeyAutomatically() { throw new UnsupportedOperationException(); }
+    public boolean enablesReturnKeyAutomatically() { return false; }
     @NotImplemented("setEnablesReturnKeyAutomatically:")
-    public void setEnablesReturnKeyAutomatically(boolean v) { throw new UnsupportedOperationException(); }
+    public void setEnablesReturnKeyAutomatically(boolean v) {}
     @NotImplemented("isSecureTextEntry")
-    public boolean isSecureTextEntry() { throw new UnsupportedOperationException(); }
+    public boolean isSecureTextEntry() { return false; }
     @NotImplemented("setSecureTextEntry:")
-    public void setSecureTextEntry(boolean v) { throw new UnsupportedOperationException(); }
+    public void setSecureTextEntry(boolean v) {}
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

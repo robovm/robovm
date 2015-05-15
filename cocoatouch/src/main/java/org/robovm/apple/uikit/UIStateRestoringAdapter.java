@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,17 +50,17 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*/
     @NotImplemented("restorationParent")
-    public UIStateRestoring getRestorationParent() { throw new UnsupportedOperationException(); }
+    public UIStateRestoring getRestorationParent() { return null; }
     @NotImplemented("objectRestorationClass")
-    public Class<?> getObjectRestorationClass() { throw new UnsupportedOperationException(); }
+    public Class<?> getObjectRestorationClass() { return null; }
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("encodeRestorableStateWithCoder:")
-    public void encodeRestorableState(NSCoder coder) { throw new UnsupportedOperationException(); }
+    public void encodeRestorableState(NSCoder coder) {}
     @NotImplemented("decodeRestorableStateWithCoder:")
-    public void decodeRestorableState(NSCoder coder) { throw new UnsupportedOperationException(); }
+    public void decodeRestorableState(NSCoder coder) {}
     @NotImplemented("applicationFinishedRestoringState")
-    public void applicationFinishedRestoringState() { throw new UnsupportedOperationException(); }
+    public void applicationFinishedRestoringState() {}
     /*</methods>*/
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,19 +53,19 @@ import org.robovm.apple.avkit.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("interstitialAdDidUnload:")
-    public void didUnload(ADInterstitialAd interstitialAd) { throw new UnsupportedOperationException(); }
+    public void didUnload(ADInterstitialAd interstitialAd) {}
     @NotImplemented("interstitialAd:didFailWithError:")
-    public void didFail(ADInterstitialAd interstitialAd, NSError error) { throw new UnsupportedOperationException(); }
+    public void didFail(ADInterstitialAd interstitialAd, NSError error) {}
     /**
      * @since Available in iOS 5.0 and later.
      */
     @NotImplemented("interstitialAdWillLoad:")
-    public void willLoad(ADInterstitialAd interstitialAd) { throw new UnsupportedOperationException(); }
+    public void willLoad(ADInterstitialAd interstitialAd) {}
     @NotImplemented("interstitialAdDidLoad:")
-    public void didLoad(ADInterstitialAd interstitialAd) { throw new UnsupportedOperationException(); }
+    public void didLoad(ADInterstitialAd interstitialAd) {}
     @NotImplemented("interstitialAdActionShouldBegin:willLeaveApplication:")
-    public boolean actionShouldBegin(ADInterstitialAd interstitialAd, boolean willLeave) { throw new UnsupportedOperationException(); }
+    public boolean actionShouldBegin(ADInterstitialAd interstitialAd, boolean willLeave) { return false; }
     @NotImplemented("interstitialAdActionDidFinish:")
-    public void actionDidFinish(ADInterstitialAd interstitialAd) { throw new UnsupportedOperationException(); }
+    public void actionDidFinish(ADInterstitialAd interstitialAd) {}
     /*</methods>*/
 }

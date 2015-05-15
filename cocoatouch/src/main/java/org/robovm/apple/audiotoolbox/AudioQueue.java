@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,8 +30,10 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -41,7 +43,36 @@ import org.robovm.apple.coremedia.*;
     extends /*<extends>*/NativeObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public interface PropertyListener {
+        void onChange(AudioQueue queue, AudioQueueProperty id);
+    }
+    public interface InputCallback {
+        void onInput(AudioQueue queue, long buffer, AudioTimeStamp startTime, AudioStreamPacketDescription[] packetDescs);
+    }
+    public interface OutputCallback {
+        void onOutput(AudioQueue queue, long buffer);
+    }
+    
     /*<ptr>*/public static class AudioQueuePtr extends Ptr<AudioQueue, AudioQueuePtr> {}/*</ptr>*/
+    
+    private static java.util.concurrent.atomic.AtomicLong callbackId = new java.util.concurrent.atomic.AtomicLong();
+    
+    private static final LongMap<PropertyListener> propertyListeners = new LongMap<>();
+    private static final java.lang.reflect.Method cbPropertyChanged;
+    private static final LongMap<InputCallback> inputCallbacks = new LongMap<>();
+    private static final java.lang.reflect.Method cbInput;
+    private static final LongMap<OutputCallback> outputCallbacks = new LongMap<>();
+    private static final java.lang.reflect.Method cbOutput;
+    
+    static {
+        try {
+            cbPropertyChanged = AudioQueue.class.getDeclaredMethod("cbPropertyChanged", Long.TYPE, AudioQueue.class, AudioQueueProperty.class);
+            cbInput = AudioQueue.class.getDeclaredMethod("cbInput", Long.TYPE, AudioQueue.class, Long.TYPE, AudioTimeStamp.class, Integer.TYPE, AudioStreamPacketDescription.class);
+            cbOutput = AudioQueue.class.getDeclaredMethod("cbOutput", Long.TYPE, AudioQueue.class, Long.TYPE);
+        } catch (Throwable e) {
+            throw new Error(e);
+        }
+    }
     /*<bind>*/static { Bro.bind(AudioQueue.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
@@ -49,166 +80,575 @@ import org.robovm.apple.coremedia.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    @Callback
+    private static void cbPropertyChanged(@Pointer long userData, AudioQueue queue, AudioQueueProperty id) {
+        synchronized (propertyListeners) {
+            propertyListeners.get(userData).onChange(queue, id);
+        }
+    }
+    @Callback
+    private static void cbInput(@Pointer long userData, AudioQueue queue, @Pointer long buffer, AudioTimeStamp startTime, int numberPacketDescs, AudioStreamPacketDescription packetDescs) {
+        synchronized (inputCallbacks) {
+            inputCallbacks.get(userData).onInput(queue, buffer, startTime, packetDescs.toArray(numberPacketDescs));
+        }
+    }
+    @Callback
+    private static void cbOutput(@Pointer long userData, AudioQueue queue, @Pointer long buffer) {
+        synchronized (outputCallbacks) {
+            outputCallbacks.get(userData).onOutput(queue, buffer);
+        }
+    }
+    
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public static AudioQueue createOutput(AudioStreamBasicDescription format, OutputCallback callback) throws OSStatusException {
+        return createOutput(format, callback, null, (String)null);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public static AudioQueue createOutput(AudioStreamBasicDescription format, OutputCallback callback, NSRunLoop callbackRunLoop, NSRunLoopMode callbackRunLoopMode) throws OSStatusException {
+        return createOutput(format, callback, callbackRunLoop, callbackRunLoopMode.value());
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public static AudioQueue createOutput(AudioStreamBasicDescription format, OutputCallback callback, NSRunLoop callbackRunLoop, String callbackRunLoopMode) throws OSStatusException {
+        if (callback == null) {
+            throw new NullPointerException("callback");
+        }
+        long cid = callbackId.getAndIncrement();
+        
+        AudioQueue.AudioQueuePtr ptr = new AudioQueue.AudioQueuePtr();
+        OSStatus status = createOutput0(format, new FunctionPtr(cbOutput), cid, callbackRunLoop, callbackRunLoopMode, 0, ptr);
+        if (OSStatusException.throwIfNecessary(status)) {
+            synchronized (outputCallbacks) {
+                outputCallbacks.put(cid, callback);
+            }
+            return ptr.get();
+        }
+        return null;
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public static AudioQueue createInput(AudioStreamBasicDescription format, InputCallback callback) throws OSStatusException {
+        return createInput(format, callback, null, (String)null);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public static AudioQueue createInput(AudioStreamBasicDescription format, InputCallback callback, NSRunLoop callbackRunLoop, NSRunLoopMode callbackRunLoopMode) throws OSStatusException {
+        return createInput(format, callback, callbackRunLoop, callbackRunLoopMode.value());
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public static AudioQueue createInput(AudioStreamBasicDescription format, InputCallback callback, NSRunLoop callbackRunLoop, String callbackRunLoopMode) throws OSStatusException {
+        if (callback == null) {
+            throw new NullPointerException("callback");
+        }
+        long cid = callbackId.getAndIncrement();
+        
+        AudioQueue.AudioQueuePtr ptr = new AudioQueue.AudioQueuePtr();
+        OSStatus status = createInput0(format, new FunctionPtr(cbInput), cid, callbackRunLoop, callbackRunLoopMode, 0, ptr);
+        if (OSStatusException.throwIfNecessary(status)) {
+            synchronized (inputCallbacks) {
+                inputCallbacks.put(cid, callback);
+            }
+            return ptr.get();
+        }
+        return null;
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public void dispose(boolean immediate) throws OSStatusException {
+        OSStatus status = dispose0(immediate);
+        OSStatusException.throwIfNecessary(status);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public AudioQueueBuffer allocateBuffer(int bufferByteSize) throws OSStatusException {
+        AudioQueueBuffer.AudioQueueBufferPtr ptr = new AudioQueueBuffer.AudioQueueBufferPtr();
+        OSStatus status = allocateBuffer0(bufferByteSize, ptr);
+        OSStatusException.throwIfNecessary(status);
+        return ptr.get();
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public AudioQueueBuffer allocateBuffer(int bufferByteSize, int numberPacketDescriptions) throws OSStatusException {
+        AudioQueueBuffer.AudioQueueBufferPtr ptr = new AudioQueueBuffer.AudioQueueBufferPtr();
+        OSStatus status = allocateBuffer0(bufferByteSize, numberPacketDescriptions, ptr);
+        OSStatusException.throwIfNecessary(status);
+        return ptr.get();
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public void freeBuffer(AudioQueueBuffer buffer) throws OSStatusException {
+        freeBuffer(buffer.getHandle());
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public void freeBuffer(long buffer) throws OSStatusException {
+        OSStatus status = freeBuffer0(buffer);
+        OSStatusException.throwIfNecessary(status);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public void enqueueBuffer(AudioQueueBuffer buffer, AudioStreamPacketDescription[] packetDescs) throws OSStatusException {
+        enqueueBuffer(buffer.getHandle(), packetDescs);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public void enqueueBuffer(long buffer, AudioStreamPacketDescription[] packetDescs) throws OSStatusException {
+        AudioStreamPacketDescription.AudioStreamPacketDescriptionPtr ptr = null;
+        if (packetDescs != null) {
+            ptr = new AudioStreamPacketDescription.AudioStreamPacketDescriptionPtr();
+            ptr.set(packetDescs);
+        }
+        OSStatus status = enqueueBuffer0(buffer, packetDescs != null ? packetDescs.length : 0, ptr);
+        OSStatusException.throwIfNecessary(status);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public AudioTimeStamp enqueueBuffer(AudioQueueBuffer buffer, AudioStreamPacketDescription[] packetDescs, int trimFramesAtStart, int trimFramesAtEnd, AudioQueueParameterEvent[] paramValues, AudioTimeStamp startTime) throws OSStatusException {
+        return enqueueBuffer(buffer.getHandle(), packetDescs, trimFramesAtStart, trimFramesAtEnd, paramValues, startTime);
+    }   
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public AudioTimeStamp enqueueBuffer(long buffer, AudioStreamPacketDescription[] packetDescs, int trimFramesAtStart, int trimFramesAtEnd, AudioQueueParameterEvent[] paramValues, AudioTimeStamp startTime) throws OSStatusException {
+        AudioTimeStamp.AudioTimeStampPtr ptr = new AudioTimeStamp.AudioTimeStampPtr();
+        
+        AudioStreamPacketDescription.AudioStreamPacketDescriptionPtr packetDescsPtr = new AudioStreamPacketDescription.AudioStreamPacketDescriptionPtr();
+        packetDescsPtr.set(packetDescs);
+        AudioQueueParameterEvent.AudioQueueParameterEventPtr paramValuesPtr = new AudioQueueParameterEvent.AudioQueueParameterEventPtr();
+        paramValuesPtr.set(paramValues);
+        
+        OSStatus status = enqueueBuffer0(buffer, packetDescs.length, packetDescsPtr, trimFramesAtStart, trimFramesAtEnd, paramValues.length, paramValuesPtr, startTime, ptr);
+        OSStatusException.throwIfNecessary(status);
+        return ptr.get();
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public void start() throws OSStatusException {
+        start(null);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public void start(AudioTimeStamp startTime) throws OSStatusException {
+        OSStatus status = start0(startTime);
+        OSStatusException.throwIfNecessary(status);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public int prime(int numberOfFramesToPrepare) throws OSStatusException {
+        IntPtr ptr = new IntPtr();
+        OSStatus status = prime0(numberOfFramesToPrepare, ptr);
+        OSStatusException.throwIfNecessary(status);
+        return ptr.get();
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public void stop(boolean immediate) throws OSStatusException {
+        OSStatus status = stop0(immediate);
+        OSStatusException.throwIfNecessary(status);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public void pause() throws OSStatusException {
+        OSStatus status = pause0();
+        OSStatusException.throwIfNecessary(status);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public void flush() throws OSStatusException {
+        OSStatus status = flush0();
+        OSStatusException.throwIfNecessary(status);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public void reset() throws OSStatusException {
+        OSStatus status = reset0();
+        OSStatusException.throwIfNecessary(status);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public float getParameter(AudioQueueParam param) throws OSStatusException {
+        FloatPtr ptr = new FloatPtr();
+        OSStatus status = getParameter0(param, ptr);
+        OSStatusException.throwIfNecessary(status);
+        return ptr.get();
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public void setParameter(AudioQueueParam param, float value) throws OSStatusException {
+        OSStatus status = setParameter0(param, value);
+        OSStatusException.throwIfNecessary(status);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public int getPropertySize(AudioQueueProperty id) throws OSStatusException {
+        IntPtr ptr = new IntPtr();
+        OSStatus status = getPropertySize0(id, ptr);
+        OSStatusException.throwIfNecessary(status);
+        return ptr.get();
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public <T extends Struct<T>> T getProperty(AudioQueueProperty id, Class<T> type) throws OSStatusException {
+        T data = Struct.allocate(type);
+        IntPtr dataSize = new IntPtr(Struct.sizeOf(data));
+        OSStatus status = getProperty0(id, data.as(VoidPtr.class), dataSize);
+        OSStatusException.throwIfNecessary(status);
+        return data;
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public <T extends Struct<T>> void setProperty(AudioQueueProperty id, T data) throws OSStatusException {
+        OSStatus status = setProperty0(id, data == null ? null : data.as(VoidPtr.class), data == null ? 0 : Struct.sizeOf(data));
+        OSStatusException.throwIfNecessary(status);
+    }
+    public int getPropertyAsInt(AudioQueueProperty id) throws OSStatusException {
+        IntPtr ptr = getProperty(id, IntPtr.class);
+        return ptr.get();
+    }
+    public long getPropertyAsLong(AudioQueueProperty id) throws OSStatusException {
+        LongPtr ptr = getProperty(id, LongPtr.class);
+        return ptr.get();
+    }
+    public float getPropertyAsFloat(AudioQueueProperty id) throws OSStatusException {
+        FloatPtr ptr = getProperty(id, FloatPtr.class);
+        return ptr.get();
+    }
+    public double getPropertyAsDouble(AudioQueueProperty id) throws OSStatusException {
+        DoublePtr ptr = getProperty(id, DoublePtr.class);
+        return ptr.get();
+    }
+    public void setProperty(AudioQueueProperty id, int value) throws OSStatusException {
+        setProperty(id, new IntPtr(value));
+    }
+    public void setProperty(AudioQueueProperty id, long value) throws OSStatusException {
+        setProperty(id, new LongPtr(value));
+    }
+    public void setProperty(AudioQueueProperty id, float value) throws OSStatusException {
+        setProperty(id, new FloatPtr(value));
+    }
+    public void setProperty(AudioQueueProperty id, double value) throws OSStatusException {
+        setProperty(id, new DoublePtr(value));
+    }
+    
+    /* Convenience methods for getting/setting properties */
+    public boolean isRunning() throws OSStatusException {
+        int result = getPropertyAsInt(AudioQueueProperty.IsRunning);
+        return result != 0;
+    }
+    
+    /* End: Convenience methods for getting/setting properties */
+    
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public void addPropertyListener(AudioQueueProperty id, PropertyListener listener) throws OSStatusException {
+        long cid = callbackId.getAndIncrement();
+        
+        OSStatus status = addPropertyListener0(id, new FunctionPtr(cbPropertyChanged), cid);
+        if (OSStatusException.throwIfNecessary(status)) {
+            synchronized (propertyListeners) {
+                propertyListeners.put(cid, listener);
+            }
+        }
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public void removePropertyListener(AudioQueueProperty id, PropertyListener listener) throws OSStatusException {
+        synchronized (propertyListeners) {
+            for (Iterator<LongMap.Entry<PropertyListener>> it = propertyListeners.entries().iterator(); it.hasNext();) {
+                LongMap.Entry<PropertyListener> entry = it.next();
+                if (entry.value == listener) {
+                    OSStatus status = removePropertyListener0(id, new FunctionPtr(cbPropertyChanged), entry.key);
+                    OSStatusException.throwIfNecessary(status);
+                }
+            }
+        }
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public AudioQueueTimeline createTimeline() throws OSStatusException {
+        AudioQueueTimeline.AudioQueueTimelinePtr ptr = new AudioQueueTimeline.AudioQueueTimelinePtr();
+        OSStatus status = createTimeline0(ptr);
+        OSStatusException.throwIfNecessary(status);
+        return ptr.get();
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public void disposeTimeline(AudioQueueTimeline timeline) throws OSStatusException {
+        OSStatus status = disposeTimeline0(timeline);
+        OSStatusException.throwIfNecessary(status);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public AudioTimeStamp getCurrentTime(AudioQueueTimeline timeline) throws OSStatusException {
+        AudioTimeStamp.AudioTimeStampPtr ptr = new AudioTimeStamp.AudioTimeStampPtr();
+        OSStatus status = getCurrentTime0(timeline, ptr, null);
+        OSStatusException.throwIfNecessary(status);
+        return ptr.get();
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public AudioTimeStamp getCurrentDeviceTime() throws OSStatusException {
+        AudioTimeStamp.AudioTimeStampPtr ptr = new AudioTimeStamp.AudioTimeStampPtr();
+        OSStatus status = getCurrentDeviceTime0(ptr);
+        OSStatusException.throwIfNecessary(status);
+        return ptr.get();
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public AudioTimeStamp translateDeviceTime(AudioTimeStamp time) throws OSStatusException {
+        AudioTimeStamp.AudioTimeStampPtr ptr = new AudioTimeStamp.AudioTimeStampPtr();
+        OSStatus status = translateDeviceTime0(time, ptr);
+        OSStatusException.throwIfNecessary(status);
+        return ptr.get();
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public AudioTimeStamp getNearestDeviceStartTime(AudioTimeStamp requestedStartTime) throws OSStatusException {
+        OSStatus status = getNearestDeviceStartTime0(requestedStartTime, 0);
+        OSStatusException.throwIfNecessary(status);
+        return requestedStartTime;
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public void setOfflineRenderFormat(AudioStreamBasicDescription format, AudioChannelLayout layout) throws OSStatusException {
+        OSStatus status = setOfflineRenderFormat0(format, layout);
+        OSStatusException.throwIfNecessary(status);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public AudioQueueBuffer offlineRender(AudioTimeStamp timestamp, AudioQueueBuffer buffer, int numberFrames) throws OSStatusException {
+        OSStatus status = offlineRender0(timestamp, buffer, numberFrames);
+        OSStatusException.throwIfNecessary(status);
+        return buffer;
+    }
+
+    
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 6.0 and later.
+     */
+    public AudioQueueProcessingTap createProcessingTap(AudioQueueProcessingTap.ProcessingTapCallback callback, AudioQueueProcessingTapFlags flags) throws OSStatusException {
+        return AudioQueueProcessingTap.create(this, callback, flags);
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioQueueNewOutput", optional=true)
-    public static native AudioQueueError newOutput(AudioStreamBasicDescription inFormat, FunctionPtr inCallbackProc, VoidPtr inUserData, CFRunLoop inCallbackRunLoop, CFString inCallbackRunLoopMode, int inFlags, AudioQueue.AudioQueuePtr outAQ);
+    protected static native OSStatus createOutput0(AudioStreamBasicDescription inFormat, FunctionPtr inCallbackProc, @Pointer long inUserData, NSRunLoop inCallbackRunLoop, String inCallbackRunLoopMode, int inFlags, AudioQueue.AudioQueuePtr outAQ);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioQueueNewInput", optional=true)
-    public static native AudioQueueError newInput(AudioStreamBasicDescription inFormat, FunctionPtr inCallbackProc, VoidPtr inUserData, CFRunLoop inCallbackRunLoop, CFString inCallbackRunLoopMode, int inFlags, AudioQueue.AudioQueuePtr outAQ);
+    protected static native OSStatus createInput0(AudioStreamBasicDescription inFormat, FunctionPtr inCallbackProc, @Pointer long inUserData, NSRunLoop inCallbackRunLoop, String inCallbackRunLoopMode, int inFlags, AudioQueue.AudioQueuePtr outAQ);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Bridge(symbol="AudioQueueDispose", optional=true)
+    protected native OSStatus dispose0(boolean inImmediate);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioQueueAllocateBuffer", optional=true)
-    public native AudioQueueError allocateBuffer(int inBufferByteSize, AudioQueueBuffer.AudioQueueBufferPtr outBuffer);
+    protected native OSStatus allocateBuffer0(int inBufferByteSize, AudioQueueBuffer.AudioQueueBufferPtr outBuffer);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioQueueAllocateBufferWithPacketDescriptions", optional=true)
-    public native AudioQueueError allocateBufferWithPacketDescriptions(int inBufferByteSize, int inNumberPacketDescriptions, AudioQueueBuffer.AudioQueueBufferPtr outBuffer);
+    protected native OSStatus allocateBuffer0(int inBufferByteSize, int inNumberPacketDescriptions, AudioQueueBuffer.AudioQueueBufferPtr outBuffer);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioQueueFreeBuffer", optional=true)
-    public native AudioQueueError freeBuffer(AudioQueueBuffer inBuffer);
+    protected native OSStatus freeBuffer0(@Pointer long inBuffer);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioQueueEnqueueBuffer", optional=true)
-    public native AudioQueueError enqueueBuffer(AudioQueueBuffer inBuffer, int inNumPacketDescs, AudioStreamPacketDescription inPacketDescs);
+    protected native OSStatus enqueueBuffer0(@Pointer long inBuffer, int inNumPacketDescs, AudioStreamPacketDescription.AudioStreamPacketDescriptionPtr inPacketDescs);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioQueueEnqueueBufferWithParameters", optional=true)
-    public native AudioQueueError enqueueBufferWithParameters(AudioQueueBuffer inBuffer, int inNumPacketDescs, AudioStreamPacketDescription inPacketDescs, int inTrimFramesAtStart, int inTrimFramesAtEnd, int inNumParamValues, AudioQueueParameterEvent inParamValues, AudioTimeStamp inStartTime, AudioTimeStamp outActualStartTime);
+    protected native OSStatus enqueueBuffer0(@Pointer long inBuffer, int inNumPacketDescs, AudioStreamPacketDescription.AudioStreamPacketDescriptionPtr inPacketDescs, int inTrimFramesAtStart, int inTrimFramesAtEnd, int inNumParamValues, AudioQueueParameterEvent.AudioQueueParameterEventPtr inParamValues, AudioTimeStamp inStartTime, AudioTimeStamp.AudioTimeStampPtr outActualStartTime);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioQueueStart", optional=true)
-    public native AudioQueueError start(AudioTimeStamp inStartTime);
+    protected native OSStatus start0(AudioTimeStamp inStartTime);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioQueuePrime", optional=true)
-    public native AudioQueueError prime(int inNumberOfFramesToPrepare, IntPtr outNumberOfFramesPrepared);
+    protected native OSStatus prime0(int inNumberOfFramesToPrepare, IntPtr outNumberOfFramesPrepared);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioQueueStop", optional=true)
-    public native AudioQueueError stop(boolean inImmediate);
+    protected native OSStatus stop0(boolean inImmediate);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioQueuePause", optional=true)
-    public native AudioQueueError pause();
+    protected native OSStatus pause0();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioQueueFlush", optional=true)
-    public native AudioQueueError flush();
+    protected native OSStatus flush0();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioQueueReset", optional=true)
-    public native AudioQueueError reset();
+    protected native OSStatus reset0();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioQueueGetParameter", optional=true)
-    public native AudioQueueError getParameter(int inParamID, FloatPtr outValue);
+    protected native OSStatus getParameter0(AudioQueueParam inParamID, FloatPtr outValue);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioQueueSetParameter", optional=true)
-    public native AudioQueueError setParameter(int inParamID, float inValue);
+    protected native OSStatus setParameter0(AudioQueueParam inParamID, float inValue);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioQueueGetProperty", optional=true)
-    public native AudioQueueError getProperty(int inID, VoidPtr outData, IntPtr ioDataSize);
+    protected native OSStatus getProperty0(AudioQueueProperty inID, VoidPtr outData, IntPtr ioDataSize);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioQueueSetProperty", optional=true)
-    public native AudioQueueError setProperty(int inID, VoidPtr inData, int inDataSize);
+    protected native OSStatus setProperty0(AudioQueueProperty inID, VoidPtr inData, int inDataSize);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioQueueGetPropertySize", optional=true)
-    public native AudioQueueError getPropertySize(int inID, IntPtr outDataSize);
+    protected native OSStatus getPropertySize0(AudioQueueProperty inID, IntPtr outDataSize);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioQueueAddPropertyListener", optional=true)
-    public native AudioQueueError addPropertyListener(int inID, FunctionPtr inProc, VoidPtr inUserData);
+    protected native OSStatus addPropertyListener0(AudioQueueProperty inID, FunctionPtr inProc, @Pointer long inUserData);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioQueueRemovePropertyListener", optional=true)
-    public native AudioQueueError removePropertyListener(int inID, FunctionPtr inProc, VoidPtr inUserData);
+    protected native OSStatus removePropertyListener0(AudioQueueProperty inID, FunctionPtr inProc, @Pointer long inUserData);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioQueueCreateTimeline", optional=true)
-    public native AudioQueueError createTimeline(AudioQueueTimeline.AudioQueueTimelinePtr outTimeline);
+    protected native OSStatus createTimeline0(AudioQueueTimeline.AudioQueueTimelinePtr outTimeline);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioQueueDisposeTimeline", optional=true)
-    public native AudioQueueError disposeTimeline(AudioQueueTimeline inTimeline);
+    protected native OSStatus disposeTimeline0(AudioQueueTimeline inTimeline);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioQueueGetCurrentTime", optional=true)
-    public native AudioQueueError getCurrentTime(AudioQueueTimeline inTimeline, AudioTimeStamp outTimeStamp, BooleanPtr outTimelineDiscontinuity);
+    protected native OSStatus getCurrentTime0(AudioQueueTimeline inTimeline, AudioTimeStamp.AudioTimeStampPtr outTimeStamp, BooleanPtr outTimelineDiscontinuity);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioQueueDeviceGetCurrentTime", optional=true)
-    public native AudioQueueError deviceGetCurrentTime(AudioTimeStamp outTimeStamp);
+    protected native OSStatus getCurrentDeviceTime0(AudioTimeStamp.AudioTimeStampPtr outTimeStamp);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioQueueDeviceTranslateTime", optional=true)
-    public native AudioQueueError deviceTranslateTime(AudioTimeStamp inTime, AudioTimeStamp outTime);
+    protected native OSStatus translateDeviceTime0(AudioTimeStamp inTime, AudioTimeStamp.AudioTimeStampPtr outTime);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioQueueDeviceGetNearestStartTime", optional=true)
-    public native AudioQueueError deviceGetNearestStartTime(AudioTimeStamp ioRequestedStartTime, int inFlags);
+    protected native OSStatus getNearestDeviceStartTime0(AudioTimeStamp ioRequestedStartTime, int inFlags);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioQueueSetOfflineRenderFormat", optional=true)
-    public native AudioQueueError setOfflineRenderFormat(AudioStreamBasicDescription inFormat, AudioChannelLayout inLayout);
+    protected native OSStatus setOfflineRenderFormat0(AudioStreamBasicDescription inFormat, AudioChannelLayout inLayout);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioQueueOfflineRender", optional=true)
-    public native AudioQueueError offlineRender(AudioTimeStamp inTimestamp, AudioQueueBuffer ioBuffer, int inNumberFrames);
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @Bridge(symbol="AudioQueueProcessingTapNew", optional=true)
-    public native AudioQueueError processingTapNew(FunctionPtr inCallback, VoidPtr inClientData, int inFlags, IntPtr outMaxFrames, AudioStreamBasicDescription outProcessingFormat, AudioQueueProcessingTap.AudioQueueProcessingTapPtr outAQTap);
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @Bridge(symbol="AudioQueueProcessingTapDispose", optional=true)
-    public static native AudioQueueError processingTapDispose(AudioQueueProcessingTap inAQTap);
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @Bridge(symbol="AudioQueueProcessingTapGetSourceAudio", optional=true)
-    public static native AudioQueueError processingTapGetSourceAudio(AudioQueueProcessingTap inAQTap, int inNumberFrames, AudioTimeStamp ioTimeStamp, IntPtr outFlags, IntPtr outNumberFrames, AudioBufferList ioData);
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @Bridge(symbol="AudioQueueProcessingTapGetQueueTime", optional=true)
-    public static native AudioQueueError processingTapGetQueueTime(AudioQueueProcessingTap inAQTap, DoublePtr outQueueSampleTime, IntPtr outQueueFrameCount);
+    protected native OSStatus offlineRender0(AudioTimeStamp inTimestamp, AudioQueueBuffer ioBuffer, int inNumberFrames);
     /*</methods>*/
 }

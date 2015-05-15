@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian Mobile AB
+ * Copyright (C) 2012 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -796,11 +796,11 @@ jboolean rvmInitAttributes(Env* env) {
     if (!array_java_lang_Class) return FALSE;
     emptyExceptionTypes = rvmNewObjectArray(env, 0, NULL, array_java_lang_Class, NULL);
     if (!emptyExceptionTypes) return FALSE;
-    if (!rvmAddObjectGCRoot(env, (Object*) emptyExceptionTypes)) return FALSE;
+    if (!rvmAddGlobalRef(env, (Object*) emptyExceptionTypes)) return FALSE;
 
     emptyAnnotations = rvmNewObjectArray(env, 0, NULL, array_of_java_lang_annotation_Annotation, NULL);
     if (!emptyAnnotations) return FALSE;
-    if (!rvmAddObjectGCRoot(env, (Object*) emptyAnnotations)) return FALSE;
+    if (!rvmAddGlobalRef(env, (Object*) emptyAnnotations)) return FALSE;
 
     return TRUE;
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian Mobile AB
+ * Copyright (C) 2012 RoboVM AB
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -33,6 +33,10 @@ public class BasicBlock {
     BasicBlock(Function function, Label label) {
         this.function = function;
         this.label = label;
+    }
+    
+    public BasicBlockRef ref() {
+        return new BasicBlockRef(function, label);
     }
     
     public String getName() {

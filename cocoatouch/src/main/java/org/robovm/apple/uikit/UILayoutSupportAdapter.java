@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,7 +50,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*/
     @NotImplemented("length")
-    public @MachineSizedFloat double getLength() { throw new UnsupportedOperationException(); }
+    public @MachineSizedFloat double getLength() { return 0; }
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

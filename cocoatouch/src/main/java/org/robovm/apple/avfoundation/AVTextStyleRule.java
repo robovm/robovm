@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,6 +36,7 @@ import org.robovm.apple.coremedia.*;
 import org.robovm.apple.corevideo.*;
 import org.robovm.apple.audiotoolbox.*;
 import org.robovm.apple.mediatoolbox.*;
+import org.robovm.apple.audiounit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -54,28 +55,28 @@ import org.robovm.apple.mediatoolbox.*;
     /*<constructors>*/
     public AVTextStyleRule() {}
     protected AVTextStyleRule(SkipInit skipInit) { super(skipInit); }
-    public AVTextStyleRule(NSDictionary<NSString, ?> textMarkupAttributes) { super((SkipInit) null); initObject(init(textMarkupAttributes)); }
-    public AVTextStyleRule(NSDictionary<NSString, ?> textMarkupAttributes, String textSelector) { super((SkipInit) null); initObject(init(textMarkupAttributes, textSelector)); }
+    public AVTextStyleRule(CMTextMarkupAttributes textMarkupAttributes) { super((SkipInit) null); initObject(init(textMarkupAttributes)); }
+    public AVTextStyleRule(CMTextMarkupAttributes textMarkupAttributes, String textSelector) { super((SkipInit) null); initObject(init(textMarkupAttributes, textSelector)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "textMarkupAttributes")
-    public native NSDictionary<NSString, ?> getTextMarkupAttributes();
+    public native CMTextMarkupAttributes getTextMarkupAttributes();
     @Property(selector = "textSelector")
     public native String getTextSelector();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithTextMarkupAttributes:")
-    protected native @Pointer long init(NSDictionary<NSString, ?> textMarkupAttributes);
+    protected native @Pointer long init(CMTextMarkupAttributes textMarkupAttributes);
     @Method(selector = "initWithTextMarkupAttributes:textSelector:")
-    protected native @Pointer long init(NSDictionary<NSString, ?> textMarkupAttributes, String textSelector);
+    protected native @Pointer long init(CMTextMarkupAttributes textMarkupAttributes, String textSelector);
     @Method(selector = "propertyListForTextStyleRules:")
-    public static native NSObject createPropertyList(NSArray<AVTextStyleRule> textStyleRules);
+    public static native NSPropertyList createPropertyList(NSArray<AVTextStyleRule> textStyleRules);
     @Method(selector = "textStyleRulesFromPropertyList:")
-    public static native NSArray<AVTextStyleRule> createTextStyleRulesArray(NSObject plist);
+    public static native NSArray<AVTextStyleRule> createTextStyleRulesArray(NSPropertyList plist);
     @Method(selector = "textStyleRuleWithTextMarkupAttributes:")
-    public static native AVTextStyleRule create(NSDictionary<NSString, ?> textMarkupAttributes);
+    public static native AVTextStyleRule create(CMTextMarkupAttributes textMarkupAttributes);
     @Method(selector = "textStyleRuleWithTextMarkupAttributes:textSelector:")
-    public static native AVTextStyleRule create(NSDictionary<NSString, ?> textMarkupAttributes, String textSelector);
+    public static native AVTextStyleRule create(CMTextMarkupAttributes textMarkupAttributes, String textSelector);
     /*</methods>*/
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,32 +34,80 @@ import org.robovm.apple.addressbook.*;
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("PassKit")/*</annotations>*/
+@Marshaler(/*<name>*/PKRemovedPassInfo/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/PKRemovedPassInfo/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(PKRemovedPassInfo.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected PKRemovedPassInfo (NSDictionary<NSString, NSObject> data) {
-        this.data = data;
+    /*<marshalers>*/
+    public static class Marshaler {
+        @MarshalsPointer
+        public static PKRemovedPassInfo toObject(Class<PKRemovedPassInfo> cls, long handle, long flags) {
+            NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return new PKRemovedPassInfo(o);
+        }
+        @MarshalsPointer
+        public static long toNative(PKRemovedPassInfo o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(o.data, flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<PKRemovedPassInfo> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<PKRemovedPassInfo> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new PKRemovedPassInfo(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<PKRemovedPassInfo> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (PKRemovedPassInfo i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    PKRemovedPassInfo(NSDictionary<NSString, NSObject> data) {
+        super(data);
+    }
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
+    }
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
     }
     
+
     /**
      * @since Available in iOS 6.0 and later.
      */
     public String getPassTypeIdentifier() {
-        if (data.containsKey(PassTypeIdentifierKey())) {
-            NSString val = (NSString)data.get(PassTypeIdentifierKey());
+        if (has(Keys.PassTypeIdentifier())) {
+            NSString val = (NSString) get(Keys.PassTypeIdentifier());
             return val.toString();
         }
         return null;
@@ -68,28 +116,28 @@ import org.robovm.apple.addressbook.*;
      * @since Available in iOS 6.0 and later.
      */
     public String getSerialNumber() {
-        if (data.containsKey(SerialNumberKey())) {
-            NSString val = (NSString)data.get(SerialNumberKey());
+        if (has(Keys.SerialNumber())) {
+            NSString val = (NSString) get(Keys.SerialNumber());
             return val.toString();
         }
         return null;
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="PKPassLibraryPassTypeIdentifierUserInfoKey", optional=true)
-    protected static native NSString PassTypeIdentifierKey();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="PKPassLibrarySerialNumberUserInfoKey", optional=true)
-    protected static native NSString SerialNumberKey();
     /*</methods>*/
     
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    /*<keys>*/
+    @Library("PassKit")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        @GlobalValue(symbol="PKPassLibraryPassTypeIdentifierUserInfoKey", optional=true)
+        public static native NSString PassTypeIdentifier();
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        @GlobalValue(symbol="PKPassLibrarySerialNumberUserInfoKey", optional=true)
+        public static native NSString SerialNumber();
     }
+    /*</keys>*/
 }

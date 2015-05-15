@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian Mobile AB
+ * Copyright (C) 2012 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,6 +46,7 @@ extern char** _bcBootclasspath;
 extern char** _bcClasspath;
 extern void* _bcBootClassesHash;
 extern void* _bcClassesHash;
+extern void* _bcRuntimeData;
 static Class* loadBootClass(Env*, const char*, ClassLoader*);
 static Class* loadUserClass(Env*, const char*, ClassLoader*);
 static void classInitialized(Env*, Class*);
@@ -76,9 +77,9 @@ int main(int argc, char* argv[]) {
     options.exceptionMatch = exceptionMatch;
     options.dynamicJNI = _bcDynamicJNI;
     options.staticLibs = _bcStaticLibs;
+    options.runtimeData = &_bcRuntimeData;
     options.listBootClasses = listBootClasses;
     options.listUserClasses = listUserClasses;
-    options.waitForAttach = FALSE;
     if (!rvmInitOptions(argc, argv, &options, FALSE)) {
         fprintf(stderr, "rvmInitOptions(...) failed!\n");
         return 1;
@@ -283,6 +284,7 @@ static Class* createClass(Env* env, ClassInfoHeader* header, ClassLoader* classL
             return NULL;
         }
         header->clazz = clazz;
+        rvmHookClassLoaded(env, clazz, (void*)header);
     }
 
     rvmReleaseClassLock(env);
@@ -685,6 +687,24 @@ void _bcThrowUnsatisfiedLinkError(Env* env, char* msg) {
     LEAVEV;
 }
 
+void _bcThrowUnsatisfiedLinkErrorBridgeNotBound(Env* env, const char* className,
+                                                const char* methodName, const char* methodDesc) {
+    ENTER;
+    rvmThrowNewf(env, java_lang_UnsatisfiedLinkError,
+                 "@Bridge method %s.%s%s not bound",
+                 className, methodName, methodDesc);
+    LEAVEV;
+}
+
+void _bcThrowUnsatisfiedLinkErrorOptionalBridgeNotBound(Env* env, const char* className,
+                                                const char* methodName, const char* methodDesc) {
+    ENTER;
+    rvmThrowNewf(env, java_lang_UnsatisfiedLinkError,
+                 "Optional @Bridge method %s.%s%s not bound",
+                 className, methodName, methodDesc);
+    LEAVEV;
+}
+
 void _bcThrowNoClassDefFoundError(Env* env, char* msg) {
     ENTER;
     rvmThrowNoClassDefFoundError(env, msg);
@@ -958,7 +978,11 @@ void* _bcResolveNative(Env* env, Class* clazz, char* name, char* desc, char* sho
 Env* _bcAttachThreadFromCallback(void) {
     Env* env = rvmGetEnv();
     if (!env) {
-        // This thread has never been attached. Attach once.
+        // This thread has never been attached or it has been
+        // attached, then detached in the TLS destructor. In the
+        // latter case, we are getting called back by native code
+        // e.g. an auto-release pool, that is triggered after
+        // the TLS destructor.
         if (rvmAttachCurrentThreadAsDaemon(vm, &env, NULL, NULL) != JNI_OK) {
             rvmAbort("Failed to attach thread in callback");
         }
@@ -967,11 +991,33 @@ Env* _bcAttachThreadFromCallback(void) {
 }
 
 void _bcDetachThreadFromCallback(Env* env) {
-    // Do nothing. The thread will be detached when it terminates.
+    if(rvmHasThreadBeenDetached()) {
+        // this can only ever be called after
+        // the TLS destructor for this thread
+        // has been called. It happens when
+        // an auto-release pool calls back
+        // into our Java code. In that case
+        // bcAttachThreadFromCallback must
+        // reattach the thread first.
+        rvmDetachCurrentThread(vm, TRUE, TRUE);
+    }
 }
 
 void* _bcCopyStruct(Env* env, void* src, jint size) {
     ENTER;
     void* result = rvmCopyMemory(env, src, size);
     LEAVE(result);
+}
+
+void _bcHookInstrumented(DebugEnv* debugEnv, jint lineNumber, jint lineNumberOffset, jbyte* bptable, void* pc) {
+    Env* env = (Env*) debugEnv;
+    // Temporarily clear any exception that has been thrown. Could be the case if we are called from a catch block.
+    Object* throwable = rvmExceptionClear(env);
+    // We cannot use ENTER/LEAVEV as it will raise any exception thrown in here. We just want the code to 
+    // proceed normally after we return.
+    rvmPushGatewayFrame(env);
+    rvmHookInstrumented(debugEnv, lineNumber, lineNumberOffset, bptable, pc);
+    rvmPopGatewayFrame(env);
+    // Restore the exception if one had been thrown when this function was called.
+    env->throwable = throwable;
 }

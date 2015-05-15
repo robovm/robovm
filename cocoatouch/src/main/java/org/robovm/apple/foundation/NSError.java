@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,7 +57,7 @@ import org.robovm.apple.dispatch.*;
             if (nsErrorClass != null) {
                 cls = nsErrorClass;
             }
-            NSError o = (NSError) ObjCObject.toObjCObject(cls, handle, true);
+            NSError o = (NSError) ObjCObject.toObjCObject(cls, handle, 0, true);
             return o;
         }
         @MarshalsPointer
@@ -105,7 +105,7 @@ import org.robovm.apple.dispatch.*;
     private static final Selector domain = Selector.register("domain");
     protected static String domain(long handle) {
         long h = ObjCRuntime.ptr_objc_msgSend(handle, domain.getHandle());
-        NSString s = ObjCObject.toObjCObject(NSString.class, h);
+        NSString s = ObjCObject.toObjCObject(NSString.class, h, 0);
         return s.toString();
     }
     
@@ -137,7 +137,13 @@ import org.robovm.apple.dispatch.*;
     }
     
     public NSErrorCode getErrorCode() {
-        return NSCocoaErrorCode.valueOf(getCode());
+        NSErrorCode code = null;
+        try {
+            code = NSCocoaErrorCode.valueOf(getCode());
+        } catch (IllegalArgumentException e) {
+            // ignore
+        }
+        return code;
     }
     /*<methods>*/
     @Method(selector = "initWithDomain:code:userInfo:")

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,8 +55,8 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("metadataQuery:replacementObjectForResultObject:")
-    public NSObject getReplacementObject(NSMetadataQuery query, NSMetadataItem result) { throw new UnsupportedOperationException(); }
+    public NSObject getReplacementObject(NSMetadataQuery query, NSMetadataItem result) { return null; }
     @NotImplemented("metadataQuery:replacementValueForAttribute:value:")
-    public NSObject getReplacementValue(NSMetadataQuery query, NSMetadataItemAttribute attribute, NSObject attrValue) { throw new UnsupportedOperationException(); }
+    public NSObject getReplacementValue(NSMetadataQuery query, NSMetadataItemAttribute attribute, NSObject attrValue) { return null; }
     /*</methods>*/
 }

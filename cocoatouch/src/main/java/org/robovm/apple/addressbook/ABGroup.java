@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ import org.robovm.apple.corefoundation.*;
     public static class AsListMarshaler {
         @MarshalsPointer
         public static List<ABGroup> toObject(Class<? extends CFType> cls, long handle, long flags) {
-            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            CFArray o = (CFArray) CFType.Marshaler.toObject(CFArray.class, handle, flags);
             if (o == null) {
                 return null;
             }
@@ -72,63 +72,50 @@ import org.robovm.apple.corefoundation.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     public String getName() {
-        CFString val = (CFString)getValue(ABGroupProperty.Name);
+        CFString val = getValue(ABGroupProperty.Name, CFString.class);
         if (val != null) return val.toString();
         return null;
     }
     public ABGroup setName(String name) throws NSErrorException {
-        setValue(ABGroupProperty.Name, new CFString(name));
+        if (name == null) {
+            setValue(ABGroupProperty.Name, null);
+        } else {
+            setValue(ABGroupProperty.Name, new CFString(name));
+        }
         return this;
-    }
-    
-    /**
-     * 
-     * @param person
-     * @return
-     * @throws NSErrorException
-     */
-    public boolean addMember(ABPerson member) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = addMember(member, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @param member
-     * @return
-     * @throws NSErrorException
-     */
-    public boolean removeMember(ABPerson member) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = removeMember(member, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
     }
     /*<methods>*/
     @Bridge(symbol="ABGroupCreate", optional=true)
-    public static native ABGroup create();
+    public static native @org.robovm.rt.bro.annotation.Marshaler(ABRecord.NoRetainMarshaler.class) ABGroup create();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="ABGroupCreateInSource", optional=true)
-    public static native ABGroup create(ABSource source);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(ABRecord.NoRetainMarshaler.class) ABGroup create(ABSource source);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="ABGroupCopySource", optional=true)
-    public native ABSource source();
+    public native @org.robovm.rt.bro.annotation.Marshaler(ABRecord.NoRetainMarshaler.class) ABSource getSource();
     @Bridge(symbol="ABGroupCopyArrayOfAllMembers", optional=true)
     public native @org.robovm.rt.bro.annotation.Marshaler(ABPerson.AsListMarshaler.class) List<ABPerson> getAllMembers();
     @Bridge(symbol="ABGroupCopyArrayOfAllMembersWithSortOrdering", optional=true)
     public native @org.robovm.rt.bro.annotation.Marshaler(ABPerson.AsListMarshaler.class) List<ABPerson> getAllMembers(ABPersonSortOrdering sortOrdering);
+    public boolean addMember(ABPerson person) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = addMember(person, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Bridge(symbol="ABGroupAddMember", optional=true)
-    protected native boolean addMember(ABPerson person, NSError.NSErrorPtr error);
+    private native boolean addMember(ABPerson person, NSError.NSErrorPtr error);
+    public boolean removeMember(ABPerson member) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = removeMember(member, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Bridge(symbol="ABGroupRemoveMember", optional=true)
-    protected native boolean removeMember(ABPerson member, NSError.NSErrorPtr error);
+    private native boolean removeMember(ABPerson member, NSError.NSErrorPtr error);
     /*</methods>*/
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,32 +43,31 @@ import org.robovm.apple.dispatch.*;
 public final class /*<name>*/NSDataWritingOptions/*</name>*/ extends Bits</*<name>*/NSDataWritingOptions/*</name>*/> {
     /*<values>*/
     public static final NSDataWritingOptions None = new NSDataWritingOptions(0L);
-    public static final NSDataWritingOptions DataWritingAtomic = new NSDataWritingOptions(1L);
+    public static final NSDataWritingOptions Atomic = new NSDataWritingOptions(1L);
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public static final NSDataWritingOptions DataWritingWithoutOverwriting = new NSDataWritingOptions(2L);
+    public static final NSDataWritingOptions WithoutOverwriting = new NSDataWritingOptions(2L);
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSDataWritingOptions DataWritingFileProtectionNone = new NSDataWritingOptions(268435456L);
+    public static final NSDataWritingOptions FileProtectionNone = new NSDataWritingOptions(268435456L);
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSDataWritingOptions DataWritingFileProtectionComplete = new NSDataWritingOptions(536870912L);
+    public static final NSDataWritingOptions FileProtectionComplete = new NSDataWritingOptions(536870912L);
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final NSDataWritingOptions DataWritingFileProtectionCompleteUnlessOpen = new NSDataWritingOptions(805306368L);
+    public static final NSDataWritingOptions FileProtectionCompleteUnlessOpen = new NSDataWritingOptions(805306368L);
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final NSDataWritingOptions DataWritingFileProtectionCompleteUntilFirstUserAuthentication = new NSDataWritingOptions(1073741824L);
+    public static final NSDataWritingOptions FileProtectionCompleteUntilFirstUserAuthentication = new NSDataWritingOptions(1073741824L);
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSDataWritingOptions DataWritingFileProtectionMask = new NSDataWritingOptions(-268435456L);
-    public static final NSDataWritingOptions AtomicWrite = new NSDataWritingOptions(1L);
+    public static final NSDataWritingOptions FileProtectionMask = new NSDataWritingOptions(4026531840L);
     /*</values>*/
 
     private static final /*<name>*/NSDataWritingOptions/*</name>*/[] values = _values(/*<name>*/NSDataWritingOptions/*</name>*/.class);

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,6 +46,19 @@ import org.robovm.apple.coregraphics.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
+    public CGPoint[] getLineOrigins(CFRange range) {
+        if (range == null) throw new NullPointerException("range");
+        int size = range.getLength() == 0 ? getLines().size() : (int)range.getLength();
+        if (size == 0) {
+            return new CGPoint[0];
+        }
+        CGPoint array = Struct.allocate(CGPoint.class, size);
+        getLineOrigins(range, array);
+        return array.toArray(size);
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 3.2 and later.
@@ -76,12 +89,12 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTFrameGetLines", optional=true)
-    public native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<CTLine> getLines();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CTLine.AsListMarshaler.class) List<CTLine> getLines();
     /**
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTFrameGetLineOrigins", optional=true)
-    public native void getLineOrigins(@ByVal CFRange range, CGPoint origins);
+    protected native void getLineOrigins(@ByVal CFRange range, CGPoint origins);
     /**
      * @since Available in iOS 3.2 and later.
      */

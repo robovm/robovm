@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2014 RoboVM AB
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -138,10 +138,7 @@ public class ObjCBlockPlugin extends AbstractCompilerPlugin {
         if (!sootClass.isInterface()) {
             Map<String, Integer> blockTypeIds = new HashMap<>();
             for (SootMethod method : sootClass.getMethods()) {
-                if (method.isNative() 
-                    && (hasBridgeAnnotation(method)
-                        || hasAnnotation(method, ObjCMemberPlugin.METHOD)
-                        || hasAnnotation(method, ObjCMemberPlugin.PROPERTY))
+                if (method.isNative() && hasBridgeAnnotation(method)
                     || hasCallbackAnnotation(method)) {
                     
                     int[] indexes = getBlockParameterIndexes(method);

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -75,7 +75,7 @@ import org.robovm.apple.uikit.*;
     
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof CGAffineTransform && equalToTransform(this, (CGAffineTransform) obj);
+        return obj instanceof CGAffineTransform && equalsTo(this, (CGAffineTransform) obj);
     }
     
     @Override
@@ -109,43 +109,64 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 2.0 and later.
      */
     public boolean isIdentity() { return isIdentity(this); }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGAffineTransformIsIdentity", optional=true)
     private static native boolean isIdentity(@ByVal CGAffineTransform t);
     /**
      * @since Available in iOS 2.0 and later.
      */
     public CGAffineTransform translate(@MachineSizedFloat double tx, @MachineSizedFloat double ty) { return translate(this, tx, ty); }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGAffineTransformTranslate", optional=true)
     private static native @ByVal CGAffineTransform translate(@ByVal CGAffineTransform t, @MachineSizedFloat double tx, @MachineSizedFloat double ty);
     /**
      * @since Available in iOS 2.0 and later.
      */
     public CGAffineTransform scale(@MachineSizedFloat double sx, @MachineSizedFloat double sy) { return scale(this, sx, sy); }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGAffineTransformScale", optional=true)
     private static native @ByVal CGAffineTransform scale(@ByVal CGAffineTransform t, @MachineSizedFloat double sx, @MachineSizedFloat double sy);
     /**
      * @since Available in iOS 2.0 and later.
      */
     public CGAffineTransform rotate(@MachineSizedFloat double angle) { return rotate(this, angle); }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGAffineTransformRotate", optional=true)
     private static native @ByVal CGAffineTransform rotate(@ByVal CGAffineTransform t, @MachineSizedFloat double angle);
     /**
      * @since Available in iOS 2.0 and later.
      */
     public CGAffineTransform invert() { return invert(this); }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGAffineTransformInvert", optional=true)
     private static native @ByVal CGAffineTransform invert(@ByVal CGAffineTransform t);
     /**
      * @since Available in iOS 2.0 and later.
      */
     public CGAffineTransform concat(CGAffineTransform t2) { return concat(this, t2); }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGAffineTransformConcat", optional=true)
     private static native @ByVal CGAffineTransform concat(@ByVal CGAffineTransform t1, @ByVal CGAffineTransform t2);
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public boolean equalToTransform(CGAffineTransform t2) { return equalToTransform(this, t2); }
+    public boolean equalsTo(CGAffineTransform t2) { return equalsTo(this, t2); }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGAffineTransformEqualToTransform", optional=true)
-    private static native boolean equalToTransform(@ByVal CGAffineTransform t1, @ByVal CGAffineTransform t2);
+    private static native boolean equalsTo(@ByVal CGAffineTransform t1, @ByVal CGAffineTransform t2);
     /*</methods>*/
 }

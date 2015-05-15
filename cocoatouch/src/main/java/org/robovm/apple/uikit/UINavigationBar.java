@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,6 +34,8 @@ import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
 import org.robovm.apple.corelocation.*;
 /*</imports>*/
+import org.robovm.apple.corefoundation.CFDictionary;
+import org.robovm.apple.coremedia.CMTextMarkupAttributes;
 
 /*<javadoc>*/
 /**
@@ -57,6 +59,60 @@ import org.robovm.apple.corelocation.*;
         super(frame);
     }
     
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public NSAttributedStringAttributes getTitleTextAttributes() {
+        NSDictionary<NSString, NSObject> dict = getTitleTextAttributesDictionary();
+        if (dict == null) return null;
+        return new NSAttributedStringAttributes(dict);
+    }
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public CMTextMarkupAttributes getTitleTextMarkupAttributes() {
+        NSDictionary<NSString, NSObject> dict = getTitleTextAttributesDictionary();
+        if (dict == null) return null;
+        return new CMTextMarkupAttributes(dict.as(CFDictionary.class));
+    }
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public CTAttributedStringAttributes getTitleCoreTextAttributes() {
+        NSDictionary<NSString, NSObject> dict = getTitleTextAttributesDictionary();
+        if (dict == null) return null;
+        return new CTAttributedStringAttributes(dict.as(CFDictionary.class));
+    }
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public void setTitleTextAttributes(NSAttributedStringAttributes v) {
+        if (v == null) {
+            setTitleTextAttributesDictionary(null);
+        } else {
+            setTitleTextAttributesDictionary(v.getDictionary());
+        }
+    }
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public void setTitleTextMarkupAttributes(CMTextMarkupAttributes v) {
+        if (v == null) {
+            setTitleTextAttributesDictionary(null);
+        } else {
+            setTitleTextAttributesDictionary(v.getDictionary().as(NSDictionary.class));
+        }
+    }
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public void setTitleCoreTextAttributes(CTAttributedStringAttributes v) {
+        if (v == null) {
+            setTitleTextAttributesDictionary(null);
+        } else {
+            setTitleTextAttributesDictionary(v.getDictionary().as(NSDictionary.class));
+        }
+    }
     /*<properties>*/
     @Property(selector = "barStyle")
     public native UIBarStyle getBarStyle();
@@ -112,12 +168,12 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "titleTextAttributes")
-    public native NSAttributedStringAttributes getTitleTextAttributes();
+    public native NSDictionary<NSString, NSObject> getTitleTextAttributesDictionary();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "setTitleTextAttributes:")
-    public native void setTitleTextAttributes(NSAttributedStringAttributes v);
+    public native void setTitleTextAttributesDictionary(NSDictionary<NSString, NSObject> v);
     /**
      * @since Available in iOS 7.0 and later.
      */

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ import org.robovm.apple.foundation.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("CoreFoundation")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CFPreferences/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/
@@ -132,7 +132,7 @@ import org.robovm.apple.foundation.*;
     }
     /*<methods>*/
     @Bridge(symbol="CFPreferencesCopyAppValue", optional=true)
-    protected static native CFType getAppValue(String key, String applicationID);
+    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFType getAppValue(String key, String applicationID);
     @Bridge(symbol="CFPreferencesGetAppBooleanValue", optional=true)
     protected static native boolean getAppBooleanValue(String key, String applicationID, BooleanPtr keyExistsAndHasValidFormat);
     @Bridge(symbol="CFPreferencesGetAppIntegerValue", optional=true)
@@ -146,7 +146,7 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFPreferencesAppSynchronize", optional=true)
     protected static native boolean appSynchronize(String applicationID);
     @Bridge(symbol="CFPreferencesCopyValue", optional=true)
-    protected static native CFType getValue(String key, String applicationID, String userName, String hostName);
+    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFType getValue(String key, String applicationID, String userName, String hostName);
     @Bridge(symbol="CFPreferencesCopyMultiple", optional=true)
     protected static native @org.robovm.rt.bro.annotation.Marshaler(CFDictionary.AsStringMapMarshaler.class) Map<String, ?> getMultiple(@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String> keysToFetch, String applicationID, String userName, String hostName);
     @Bridge(symbol="CFPreferencesSetValue", optional=true)

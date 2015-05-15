@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,7 +55,6 @@ import org.robovm.apple.uikit.*;
         first.update(rects);
         addRects(first, rects.length);
     }
-    
     public void addLines(CGPoint[] points) {
         if (points == null) {
             throw new NullPointerException("points");
@@ -64,7 +63,6 @@ import org.robovm.apple.uikit.*;
         first.update(points);
         addLines(first, points.length);
     }
-    
     public void clipToRects(CGRect[] rects) {
         if (rects == null) {
             throw new NullPointerException("rects");
@@ -73,7 +71,6 @@ import org.robovm.apple.uikit.*;
         first.update(rects);
         clipToRects(first, rects.length);
     }
-    
     public void fillRects(CGRect[] rects) {
         if (rects == null) {
             throw new NullPointerException("rects");
@@ -82,39 +79,30 @@ import org.robovm.apple.uikit.*;
         first.update(rects);
         fillRects(first, rects.length);
     }
-    
     public void setFillColor(double[] components) {
         setFillColor(VM.getArrayValuesAddress(CoreGraphics.toMachineSizedFloatArray(components)));
     }
-    
     public void setFillColor(float[] components) {
         setFillColor(VM.getArrayValuesAddress(CoreGraphics.toMachineSizedFloatArray(components)));
     }
-    
     public void setStrokeColor(double[] components) {
         setStrokeColor(VM.getArrayValuesAddress(CoreGraphics.toMachineSizedFloatArray(components)));
     }
-    
     public void setStrokeColor(float[] components) {
         setStrokeColor(VM.getArrayValuesAddress(CoreGraphics.toMachineSizedFloatArray(components)));
     }
-    
     public void setFillPattern(CGPattern pattern, double[] components) {
         setFillPattern(pattern, VM.getArrayValuesAddress(CoreGraphics.toMachineSizedFloatArray(components)));
     }
-    
     public void setFillPattern(CGPattern pattern, float[] components) {
         setFillPattern(pattern, VM.getArrayValuesAddress(CoreGraphics.toMachineSizedFloatArray(components)));
     }
-    
     public void setStrokePattern(CGPattern pattern, double[] components) {
         setStrokePattern(pattern, VM.getArrayValuesAddress(CoreGraphics.toMachineSizedFloatArray(components)));
     }
-    
     public void setStrokePattern(CGPattern pattern, float[] components) {
         setStrokePattern(pattern, VM.getArrayValuesAddress(CoreGraphics.toMachineSizedFloatArray(components)));
     }
-    
     public void setLineDash(double phase, double[] lengths) {
         if (lengths == null) {
             setLineDash(phase, 0, 0);
@@ -122,7 +110,6 @@ import org.robovm.apple.uikit.*;
             setLineDash(phase, VM.getArrayValuesAddress(CoreGraphics.toMachineSizedFloatArray(lengths)), lengths.length);
         }
     }
-    
     public void setLineDash(double phase, float[] lengths, long count) {
         if (lengths == null) {
             setLineDash(phase, 0, 0);
@@ -130,7 +117,6 @@ import org.robovm.apple.uikit.*;
             setLineDash(phase, VM.getArrayValuesAddress(CoreGraphics.toMachineSizedFloatArray(lengths)), lengths.length);
         }
     }
-    
     public void strokeLineSegments(CGPoint[] points) {
         if (points == null) {
             throw new NullPointerException("points");
@@ -139,34 +125,48 @@ import org.robovm.apple.uikit.*;
         first.update(points);
         strokeLineSegments(first, points.length);
     }
-
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
     @Deprecated
     public void selectFont(String name, double size, CGTextEncoding textEncoding) {
         selectFont(VM.getStringUTFChars(name), size, textEncoding);
     }
-    
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
     @Deprecated
     public void showText(String string) {
         byte[] bytes = string.getBytes();
         showText(VM.getArrayValuesAddress(bytes), bytes.length);
     }
-    
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
     @Deprecated
     public void showTextAtPoint(double x, double y, String string) {
         byte[] bytes = string.getBytes();
         showTextAtPoint(x, y, VM.getArrayValuesAddress(bytes), bytes.length);
     }
-
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
     @Deprecated
     public void showGlyphs(char[] glyphs) {
         showGlyphs(VM.getArrayValuesAddress(glyphs), glyphs.length);
     }
-    
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
     @Deprecated
     public void showGlyphsAtPoint(double x, double y, char[] glyphs) {
         showGlyphsAtPoint(x, y, VM.getArrayValuesAddress(glyphs), glyphs.length);
     }
-    
     public void showGlyphsAtPositions(char[] glyphs, CGPoint[] positions, long count) {
         if (glyphs.length != positions.length) {
             throw new IllegalArgumentException("glyphs.length != positions.length");
@@ -175,7 +175,10 @@ import org.robovm.apple.uikit.*;
         first.update(positions);
         showGlyphsAtPositions(VM.getArrayValuesAddress(glyphs), first, glyphs.length);
     }
-
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
     @Deprecated
     public void showGlyphsWithAdvances(char[] glyphs, CGSize[] advances) {
         if (glyphs.length != advances.length) {
@@ -184,9 +187,7 @@ import org.robovm.apple.uikit.*;
         CGSize first = Struct.allocate(CGSize.class, advances.length);
         first.update(advances);
         showGlyphsWithAdvances(VM.getArrayValuesAddress(glyphs), first, glyphs.length);
-    }
-
-    
+    }    
     /*<methods>*/
     /**
      * @since Available in iOS 2.0 and later.
@@ -252,7 +253,7 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGContextSetLineDash", optional=true)
-    protected native void setLineDash(@MachineSizedFloat double phase, @Pointer long lengths, @MachineSizedUInt long count);
+    private native void setLineDash(@MachineSizedFloat double phase, @Pointer long lengths, @MachineSizedUInt long count);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -307,12 +308,12 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGContextAddRects", optional=true)
-    protected native void addRects(CGRect rects, @MachineSizedUInt long count);
+    private native void addRects(CGRect rects, @MachineSizedUInt long count);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGContextAddLines", optional=true)
-    protected native void addLines(CGPoint points, @MachineSizedUInt long count);
+    private native void addLines(CGPoint points, @MachineSizedUInt long count);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -392,7 +393,7 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGContextFillRects", optional=true)
-    protected native void fillRects(CGRect rects, @MachineSizedUInt long count);
+    private native void fillRects(CGRect rects, @MachineSizedUInt long count);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -402,7 +403,7 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGContextStrokeRectWithWidth", optional=true)
-    public native void strokeRectWithWidth(@ByVal CGRect rect, @MachineSizedFloat double width);
+    public native void strokeRect(@ByVal CGRect rect, @MachineSizedFloat double width);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -422,7 +423,7 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGContextStrokeLineSegments", optional=true)
-    protected native void strokeLineSegments(CGPoint points, @MachineSizedUInt long count);
+    private native void strokeLineSegments(CGPoint points, @MachineSizedUInt long count);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -452,17 +453,17 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGContextClipToRects", optional=true)
-    protected native void clipToRects(CGRect rects, @MachineSizedUInt long count);
+    private native void clipToRects(CGRect rects, @MachineSizedUInt long count);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGContextSetFillColorWithColor", optional=true)
-    public native void setFillColorWithColor(CGColor color);
+    public native void setFillColor(CGColor color);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGContextSetStrokeColorWithColor", optional=true)
-    public native void setStrokeColorWithColor(CGColor color);
+    public native void setStrokeColor(CGColor color);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -477,22 +478,22 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGContextSetFillColor", optional=true)
-    protected native void setFillColor(@Pointer long components);
+    private native void setFillColor(@Pointer long components);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGContextSetStrokeColor", optional=true)
-    protected native void setStrokeColor(@Pointer long components);
+    private native void setStrokeColor(@Pointer long components);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGContextSetFillPattern", optional=true)
-    protected native void setFillPattern(CGPattern pattern, @Pointer long components);
+    private native void setFillPattern(CGPattern pattern, @Pointer long components);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGContextSetStrokePattern", optional=true)
-    protected native void setStrokePattern(CGPattern pattern, @Pointer long components);
+    private native void setStrokePattern(CGPattern pattern, @Pointer long components);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -557,7 +558,7 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGContextSetShadowWithColor", optional=true)
-    public native void setShadowWithColor(@ByVal CGSize offset, @MachineSizedFloat double blur, CGColor color);
+    public native void setShadow(@ByVal CGSize offset, @MachineSizedFloat double blur, CGColor color);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -622,7 +623,7 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGContextShowGlyphsAtPositions", optional=true)
-    protected native void showGlyphsAtPositions(@Pointer long glyphs, CGPoint positions, @MachineSizedUInt long count);
+    private native void showGlyphsAtPositions(@Pointer long glyphs, CGPoint positions, @MachineSizedUInt long count);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -697,7 +698,7 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGContextBeginTransparencyLayerWithRect", optional=true)
-    public native void beginTransparencyLayerWithRect(@ByVal CGRect rect, NSDictionary<?, ?> auxiliaryInfo);
+    public native void beginTransparencyLayer(@ByVal CGRect rect, NSDictionary<?, ?> auxiliaryInfo);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -744,42 +745,42 @@ import org.robovm.apple.uikit.*;
      */
     @Deprecated
     @Bridge(symbol="CGContextSelectFont", optional=true)
-    protected native void selectFont(@Pointer long name, @MachineSizedFloat double size, CGTextEncoding textEncoding);
+    private native void selectFont(@Pointer long name, @MachineSizedFloat double size, CGTextEncoding textEncoding);
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @Bridge(symbol="CGContextShowText", optional=true)
-    protected native void showText(@Pointer long string, @MachineSizedUInt long length);
+    private native void showText(@Pointer long string, @MachineSizedUInt long length);
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @Bridge(symbol="CGContextShowTextAtPoint", optional=true)
-    protected native void showTextAtPoint(@MachineSizedFloat double x, @MachineSizedFloat double y, @Pointer long string, @MachineSizedUInt long length);
+    private native void showTextAtPoint(@MachineSizedFloat double x, @MachineSizedFloat double y, @Pointer long string, @MachineSizedUInt long length);
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @Bridge(symbol="CGContextShowGlyphs", optional=true)
-    protected native void showGlyphs(@Pointer long g, @MachineSizedUInt long count);
+    private native void showGlyphs(@Pointer long g, @MachineSizedUInt long count);
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @Bridge(symbol="CGContextShowGlyphsAtPoint", optional=true)
-    protected native void showGlyphsAtPoint(@MachineSizedFloat double x, @MachineSizedFloat double y, @Pointer long glyphs, @MachineSizedUInt long count);
+    private native void showGlyphsAtPoint(@MachineSizedFloat double x, @MachineSizedFloat double y, @Pointer long glyphs, @MachineSizedUInt long count);
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @Bridge(symbol="CGContextShowGlyphsWithAdvances", optional=true)
-    protected native void showGlyphsWithAdvances(@Pointer long glyphs, CGSize advances, @MachineSizedUInt long count);
+    private native void showGlyphsWithAdvances(@Pointer long glyphs, CGSize advances, @MachineSizedUInt long count);
     /**
      * @since Available in iOS 2.0 and later.
      */

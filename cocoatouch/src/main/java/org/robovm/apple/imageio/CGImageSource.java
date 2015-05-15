@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,17 +61,17 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CGImageSourceCreateWithDataProvider", optional=true)
-    public static native CGImageSource create(CGDataProvider provider, CGImageSourceOptions options);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImageSource create(CGDataProvider provider, CGImageSourceOptions options);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CGImageSourceCreateWithData", optional=true)
-    public static native CGImageSource create(NSData data, CGImageSourceOptions options);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImageSource create(NSData data, CGImageSourceOptions options);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CGImageSourceCreateWithURL", optional=true)
-    public static native CGImageSource create(NSURL url, CGImageSourceOptions options);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImageSource create(NSURL url, CGImageSourceOptions options);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -96,27 +96,27 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 7.0 and later.
      */
     @Bridge(symbol="CGImageSourceCopyMetadataAtIndex", optional=true)
-    public native CGImageMetadata getMetadata(@MachineSizedUInt long index, CGImageSourceOptions options);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImageMetadata getMetadata(@MachineSizedUInt long index, CGImageSourceOptions options);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CGImageSourceCreateImageAtIndex", optional=true)
-    public native CGImage createImage(@MachineSizedUInt long index, CGImageSourceOptions options);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage createImage(@MachineSizedUInt long index, CGImageSourceOptions options);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Bridge(symbol="CGImageSourceRemoveCacheAtIndex", optional=true)
-    public native void removeCache(@MachineSizedUInt long index);
+    public native void removeCacheAtIndex(@MachineSizedUInt long index);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CGImageSourceCreateThumbnailAtIndex", optional=true)
-    public native CGImage createThumbnail(@MachineSizedUInt long index, CGImageSourceOptions options);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage createThumbnail(@MachineSizedUInt long index, CGImageSourceOptions options);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CGImageSourceCreateIncremental", optional=true)
-    public static native CGImageSource createIncremental(CGImageSourceOptions options);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImageSource createIncremental(CGImageSourceOptions options);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -136,6 +136,6 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CGImageSourceGetStatusAtIndex", optional=true)
-    public native CGImageSourceStatus getStatus(@MachineSizedUInt long index);
+    public native CGImageSourceStatus getStatusAtIndex(@MachineSizedUInt long index);
     /*</methods>*/
 }

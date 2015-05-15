@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,57 +49,141 @@ import org.robovm.apple.audiotoolbox.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    public CMTextDisplayFlag getDisplayFlags() {
-        IntPtr ptr = new IntPtr();
-        getDisplayFlags(ptr);
-        return new CMTextDisplayFlag(ptr.get());
+    public static CMTextFormatDescription create(CMMediaType mediaType, CMTextFormatType mediaSubtype, CMTextFormatDescriptionExtension extensions) throws OSStatusException {
+        CMFormatDescriptionPtr ptr = new CMFormatDescriptionPtr();
+        OSStatus status = create0(null, mediaType, (int)mediaSubtype.value(), extensions.getDictionary(), ptr);
+        if (OSStatusException.throwIfNecessary(status)) {
+            return ptr.get().as(CMTextFormatDescription.class);
+        }
+        return null;
     }
     
-    public CMTextJustification getHorizontalJustification() {
+    public CMTextFormatDescriptionExtension getExtensions() {
+        return new CMTextFormatDescriptionExtension(getExtensionDictionary());
+    }
+    public CMTextFormatType getTextFormatType() {
+        return CMTextFormatType.valueOf(getMediaSubType());
+    }
+    
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 8.0 and later.
+     */
+    public static CMTextFormatDescription createFromBigEndianTextDescriptionData(BytePtr textDescriptionData, @MachineSizedUInt long textDescriptionSize, String textDescriptionFlavor, CMMediaType mediaType) throws OSStatusException {
+        CMTextFormatDescription.CMTextFormatDescriptionPtr ptr = new CMTextFormatDescription.CMTextFormatDescriptionPtr();
+        OSStatus status = createFromBigEndianTextDescriptionData0(null, textDescriptionData, textDescriptionSize, textDescriptionFlavor, mediaType, ptr);
+        OSStatusException.throwIfNecessary(status);
+        return ptr.get();
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 8.0 and later.
+     */
+    public static CMTextFormatDescription createFromBigEndianTextDescriptionBlockBuffer(CMBlockBuffer textDescriptionBlockBuffer, String textDescriptionFlavor, CMMediaType mediaType) throws OSStatusException {
+        CMTextFormatDescription.CMTextFormatDescriptionPtr ptr = new CMTextFormatDescription.CMTextFormatDescriptionPtr();
+        OSStatus status = createFromBigEndianTextDescriptionBlockBuffer0(null, textDescriptionBlockBuffer, textDescriptionFlavor, mediaType, ptr);
+        OSStatusException.throwIfNecessary(status);
+        return ptr.get();
+    }
+
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 4.0 and later.
+     */
+    public CMTextDisplayFlags getDisplayFlags() throws OSStatusException {
+        IntPtr ptr = new IntPtr();
+        OSStatus status = getDisplayFlags0(ptr);
+        OSStatusException.throwIfNecessary(status);
+        return new CMTextDisplayFlags(ptr.get());
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 4.0 and later.
+     */
+    public CMTextJustification getHorizontalJustification() throws OSStatusException {
         BytePtr ptr = new BytePtr();
-        getJustification(ptr, null);
+        OSStatus status = getJustification0(ptr, null);
+        OSStatusException.throwIfNecessary(status);
         return CMTextJustification.valueOf(ptr.get());
     }
-    
-    public CMTextJustification getVerticalJustification() {
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 4.0 and later.
+     */
+    public CMTextJustification getVerticalJustification() throws OSStatusException {
         BytePtr ptr = new BytePtr();
-        getJustification(null, ptr);
+        OSStatus status = getJustification0(null, ptr);
+        OSStatusException.throwIfNecessary(status);
         return CMTextJustification.valueOf(ptr.get());
     } 
-    
-    public @ByVal CGRect getDefaultTextBox(boolean originIsAtTopLeft, @MachineSizedFloat double heightOfTextTrack) {
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 4.0 and later.
+     */
+    public @ByVal CGRect getDefaultTextBox(boolean originIsAtTopLeft, @MachineSizedFloat double heightOfTextTrack) throws OSStatusException {
         CGRect.CGRectPtr ptr = new CGRect.CGRectPtr();
-        getDefaultTextBox(originIsAtTopLeft, heightOfTextTrack, ptr);
+        OSStatus status = getDefaultTextBox0(originIsAtTopLeft, heightOfTextTrack, ptr);
+        OSStatusException.throwIfNecessary(status);
         return ptr.get();
     }
-    
-    public short getDefaultStyleLocalFontID() {
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 4.0 and later.
+     */
+    public short getDefaultStyleLocalFontID() throws OSStatusException {
         ShortPtr ptr = new ShortPtr();
-        getDefaultStyle(ptr, null, null, null, null, null);
+        OSStatus status = getDefaultStyle0(ptr, null, null, null, null, null);
+        OSStatusException.throwIfNecessary(status);
         return ptr.get();
     }
-    
-    public boolean isDefaultStyleBold() {
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 4.0 and later.
+     */
+    public boolean isDefaultStyleBold() throws OSStatusException {
         BooleanPtr ptr = new BooleanPtr();
-        getDefaultStyle(null, ptr, null, null, null, null);
+        OSStatus status = getDefaultStyle0(null, ptr, null, null, null, null);
+        OSStatusException.throwIfNecessary(status);
         return ptr.get();
     }
-    
-    public boolean isDefaultStyleItalic() {
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 4.0 and later.
+     */
+    public boolean isDefaultStyleItalic() throws OSStatusException {
         BooleanPtr ptr = new BooleanPtr();
-        getDefaultStyle(null, null, ptr, null, null, null);
+        OSStatus status = getDefaultStyle0(null, null, ptr, null, null, null);
+        OSStatusException.throwIfNecessary(status);
         return ptr.get();
     }
-    
-    public boolean isDefaultStyleUnderline() {
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 4.0 and later.
+     */
+    public boolean isDefaultStyleUnderline() throws OSStatusException {
         BooleanPtr ptr = new BooleanPtr();
-        getDefaultStyle(null, null, null, ptr, null, null);
+        OSStatus status = getDefaultStyle0(null, null, null, ptr, null, null);
+        OSStatusException.throwIfNecessary(status);
         return ptr.get();
     }
-    
-    public @MachineSizedFloat double getDefaultStyleFontSize() {
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 4.0 and later.
+     */
+    public @MachineSizedFloat double getDefaultStyleFontSize() throws OSStatusException {
         MachineSizedFloatPtr ptr = new MachineSizedFloatPtr();
-        getDefaultStyle(null, null, null, null, ptr, null);
+        OSStatus status = getDefaultStyle0(null, null, null, null, ptr, null);
+        OSStatusException.throwIfNecessary(status);
+        return ptr.get();
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 8.0 and later.
+     */
+    public CMBlockBuffer copyAsBigEndianTextDescriptionBlockBuffer(String textDescriptionFlavor) throws OSStatusException {
+        CMBlockBuffer.CMBlockBufferPtr ptr = new CMBlockBuffer.CMBlockBufferPtr();
+        OSStatus status = copyAsBigEndianTextDescriptionBlockBuffer0(null, this, textDescriptionFlavor, ptr);
+        OSStatusException.throwIfNecessary(status);
         return ptr.get();
     }
     /*<methods>*/
@@ -107,41 +191,41 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMTextFormatDescriptionGetDisplayFlags", optional=true)
-    protected native int getDisplayFlags(IntPtr outDisplayFlags);
+    protected native OSStatus getDisplayFlags0(IntPtr outDisplayFlags);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMTextFormatDescriptionGetJustification", optional=true)
-    protected native int getJustification(BytePtr outHorizontalJust, BytePtr outVerticalJust);
+    protected native OSStatus getJustification0(BytePtr outHorizontalJust, BytePtr outVerticalJust);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMTextFormatDescriptionGetDefaultTextBox", optional=true)
-    protected native int getDefaultTextBox(boolean originIsAtTopLeft, @MachineSizedFloat double heightOfTextTrack, CGRect.CGRectPtr outDefaultTextBox);
+    protected native OSStatus getDefaultTextBox0(boolean originIsAtTopLeft, @MachineSizedFloat double heightOfTextTrack, CGRect.CGRectPtr outDefaultTextBox);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMTextFormatDescriptionGetDefaultStyle", optional=true)
-    protected native int getDefaultStyle(ShortPtr outLocalFontID, BooleanPtr outBold, BooleanPtr outItalic, BooleanPtr outUnderline, MachineSizedFloatPtr outFontSize, MachineSizedFloatPtr outColorComponents);
+    protected native OSStatus getDefaultStyle0(ShortPtr outLocalFontID, BooleanPtr outBold, BooleanPtr outItalic, BooleanPtr outUnderline, MachineSizedFloatPtr outFontSize, MachineSizedFloatPtr outColorComponents);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMTextFormatDescriptionGetFontName", optional=true)
-    protected native int getFontName(short localFontID, CFString.CFStringPtr outFontName);
+    protected native OSStatus getFontName0(short localFontID, CFString.CFStringPtr outFontName);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Bridge(symbol="CMTextFormatDescriptionCreateFromBigEndianTextDescriptionData", optional=true)
-    public static native int createFromBigEndianTextDescriptionData(CFAllocator allocator, BytePtr textDescriptionData, @MachineSizedUInt long textDescriptionSize, String textDescriptionFlavor, CMMediaType mediaType, CMTextFormatDescription.CMTextFormatDescriptionPtr textFormatDescriptionOut);
+    private static native OSStatus createFromBigEndianTextDescriptionData0(CFAllocator allocator, BytePtr textDescriptionData, @MachineSizedUInt long textDescriptionSize, String textDescriptionFlavor, CMMediaType mediaType, CMTextFormatDescription.CMTextFormatDescriptionPtr textFormatDescriptionOut);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Bridge(symbol="CMTextFormatDescriptionCreateFromBigEndianTextDescriptionBlockBuffer", optional=true)
-    public static native int createFromBigEndianTextDescriptionBlockBuffer(CFAllocator allocator, CMBlockBuffer textDescriptionBlockBuffer, String textDescriptionFlavor, CMMediaType mediaType, CMTextFormatDescription.CMTextFormatDescriptionPtr textFormatDescriptionOut);
+    private static native OSStatus createFromBigEndianTextDescriptionBlockBuffer0(CFAllocator allocator, CMBlockBuffer textDescriptionBlockBuffer, String textDescriptionFlavor, CMMediaType mediaType, CMTextFormatDescription.CMTextFormatDescriptionPtr textFormatDescriptionOut);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Bridge(symbol="CMTextFormatDescriptionCopyAsBigEndianTextDescriptionBlockBuffer", optional=true)
-    public static native int copyAsBigEndianTextDescriptionBlockBuffer(CFAllocator allocator, CMTextFormatDescription textFormatDescription, String textDescriptionFlavor, CMBlockBuffer.CMBlockBufferPtr textDescriptionBlockBufferOut);
+    private static native OSStatus copyAsBigEndianTextDescriptionBlockBuffer0(CFAllocator allocator, CMTextFormatDescription textFormatDescription, String textDescriptionFlavor, CMBlockBuffer.CMBlockBufferPtr textDescriptionBlockBufferOut);
     /*</methods>*/
 }

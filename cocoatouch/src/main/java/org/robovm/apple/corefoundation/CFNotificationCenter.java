@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ import org.robovm.apple.foundation.*;
         void invoke(CFNotificationCenter center, CFType observer, String name, CFType object, NSDictionary<NSString, ?> userInfo);
     }
     
-    private static final Map<Long, NotificationCallback> callbacks = new HashMap<>();
+    private static final LongMap<NotificationCallback> callbacks = new LongMap<>();
     private static final java.lang.reflect.Method cbNotification;
     
     static {

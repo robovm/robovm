@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,12 +33,13 @@ import org.robovm.apple.coregraphics.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CTFontDescriptorProgressData.Marshaler.class)
 /*<annotations>*/@Library("CoreText")/*</annotations>*/
+@Marshaler(/*<name>*/CTFontDescriptorProgressData/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CTFontDescriptorProgressData/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CFDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CTFontDescriptorProgressData toObject(Class<CTFontDescriptorProgressData> cls, long handle, long flags) {
@@ -56,25 +57,57 @@ import org.robovm.apple.coregraphics.*;
             return CFType.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private CFDictionary data;
-    
-    protected CTFontDescriptorProgressData(CFDictionary data) {
-        this.data = data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CTFontDescriptorProgressData> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CTFontDescriptorProgressData> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new CTFontDescriptorProgressData(o.get(i, CFDictionary.class)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CTFontDescriptorProgressData> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray array = CFMutableArray.create();
+            for (CTFontDescriptorProgressData i : l) {
+                array.add(i.getDictionary());
+            }
+            return CFType.Marshaler.toNative(array, flags);
+        }
     }
-    /*<bind>*/static { Bro.bind(CTFontDescriptorProgressData.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    CTFontDescriptorProgressData(CFDictionary data) {
+        super(data);
+    }
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(CFString key) {
+        return data.containsKey(key);
+    }
+    public <T extends NativeObject> T get(CFString key, Class<T> type) {
+        if (has(key)) {
+            return data.get(key, type);
+        }
+        return null;
+    }
+    
+
     /**
      * @since Available in iOS 6.0 and later.
      */
     public CTFontDescriptor getSourceDescriptor() {
-        if (data.containsKey(SourceDescriptor())) {
-            CTFontDescriptor val = data.get(SourceDescriptor(), CTFontDescriptor.class);
+        if (has(Keys.SourceDescriptor())) {
+            CTFontDescriptor val = get(Keys.SourceDescriptor(), CTFontDescriptor.class);
             return val;
         }
         return null;
@@ -83,28 +116,28 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 6.0 and later.
      */
     public List<CTFontDescriptor> getDescriptors() {
-        if (data.containsKey(Descriptors())) {
-            CFArray val = data.get(Descriptors(), CFArray.class);
+        if (has(Keys.Descriptors())) {
+            CFArray val = get(Keys.Descriptors(), CFArray.class);
             return val.toList(CTFontDescriptor.class);
         }
-        return new ArrayList<>();
+        return null;
     }
     /**
      * @since Available in iOS 6.0 and later.
      */
     public List<CTFontDescriptor> getResult() {
-        if (data.containsKey(Result())) {
-            CFArray val = data.get(Result(), CFArray.class);
+        if (has(Keys.Result())) {
+            CFArray val = get(Keys.Result(), CFArray.class);
             return val.toList(CTFontDescriptor.class);
         }
-        return new ArrayList<>();
+        return null;
     }
     /**
      * @since Available in iOS 6.0 and later.
      */
     public double getPercentage() {
-        if (data.containsKey(Percentage())) {
-            CFNumber val = data.get(Percentage(), CFNumber.class);
+        if (has(Keys.Percentage())) {
+            CFNumber val = get(Keys.Percentage(), CFNumber.class);
             return val.doubleValue();
         }
         return 0;
@@ -113,8 +146,8 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 6.0 and later.
      */
     public long getCurrentAssetSize() {
-        if (data.containsKey(CurrentAssetSize())) {
-            CFNumber val = data.get(CurrentAssetSize(), CFNumber.class);
+        if (has(Keys.CurrentAssetSize())) {
+            CFNumber val = get(Keys.CurrentAssetSize(), CFNumber.class);
             return val.longValue();
         }
         return 0;
@@ -123,8 +156,8 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 6.0 and later.
      */
     public long getTotalDownloadedSize() {
-        if (data.containsKey(TotalDownloadedSize())) {
-            CFNumber val = data.get(TotalDownloadedSize(), CFNumber.class);
+        if (has(Keys.TotalDownloadedSize())) {
+            CFNumber val = get(Keys.TotalDownloadedSize(), CFNumber.class);
             return val.longValue();
         }
         return 0;
@@ -133,8 +166,8 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 6.0 and later.
      */
     public long getTotalAssetSize() {
-        if (data.containsKey(TotalAssetSize())) {
-            CFNumber val = data.get(TotalAssetSize(), CFNumber.class);
+        if (has(Keys.TotalAssetSize())) {
+            CFNumber val = get(Keys.TotalAssetSize(), CFNumber.class);
             return val.longValue();
         }
         return 0;
@@ -142,57 +175,59 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public CFError getError() {
-        if (data.containsKey(Error())) {
-            CFError val = data.get(Error(), CFError.class);
+    public NSError getError() {
+        if (has(Keys.Error())) {
+            NSError val = get(Keys.Error(), NSError.class);
             return val;
         }
         return null;
     }
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="kCTFontDescriptorMatchingSourceDescriptor", optional=true)
-    protected static native CFString SourceDescriptor();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="kCTFontDescriptorMatchingDescriptors", optional=true)
-    protected static native CFString Descriptors();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="kCTFontDescriptorMatchingResult", optional=true)
-    protected static native CFString Result();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="kCTFontDescriptorMatchingPercentage", optional=true)
-    protected static native CFString Percentage();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="kCTFontDescriptorMatchingCurrentAssetSize", optional=true)
-    protected static native CFString CurrentAssetSize();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="kCTFontDescriptorMatchingTotalDownloadedSize", optional=true)
-    protected static native CFString TotalDownloadedSize();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="kCTFontDescriptorMatchingTotalAssetSize", optional=true)
-    protected static native CFString TotalAssetSize();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="kCTFontDescriptorMatchingError", optional=true)
-    protected static native CFString Error();
     /*</methods>*/
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    
+    /*<keys>*/
+    @Library("CoreText")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        @GlobalValue(symbol="kCTFontDescriptorMatchingSourceDescriptor", optional=true)
+        public static native CFString SourceDescriptor();
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        @GlobalValue(symbol="kCTFontDescriptorMatchingDescriptors", optional=true)
+        public static native CFString Descriptors();
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        @GlobalValue(symbol="kCTFontDescriptorMatchingResult", optional=true)
+        public static native CFString Result();
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        @GlobalValue(symbol="kCTFontDescriptorMatchingPercentage", optional=true)
+        public static native CFString Percentage();
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        @GlobalValue(symbol="kCTFontDescriptorMatchingCurrentAssetSize", optional=true)
+        public static native CFString CurrentAssetSize();
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        @GlobalValue(symbol="kCTFontDescriptorMatchingTotalDownloadedSize", optional=true)
+        public static native CFString TotalDownloadedSize();
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        @GlobalValue(symbol="kCTFontDescriptorMatchingTotalAssetSize", optional=true)
+        public static native CFString TotalAssetSize();
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        @GlobalValue(symbol="kCTFontDescriptorMatchingError", optional=true)
+        public static native CFString Error();
     }
+    /*</keys>*/
 }

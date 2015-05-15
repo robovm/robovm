@@ -1,5 +1,5 @@
 package: org.robovm.apple.avfoundation
-include: [foundation.yaml, dispatch.yaml, coreanimation.yaml, corefoundation.yaml, coregraphics.yaml, coreaudio.yaml, coremedia.yaml, corevideo.yaml, audiotoolbox.yaml, mediatoolbox.yaml ]
+include: [foundation.yaml, dispatch.yaml, coreanimation.yaml, corefoundation.yaml, coregraphics.yaml, coreaudio.yaml, coremedia.yaml, corevideo.yaml, audiotoolbox.yaml, mediatoolbox.yaml, audiounit.yaml ]
 library: AVFoundation
 framework: AVFoundation
 clang_args: ['-x', 'objective-c']
@@ -13,7 +13,7 @@ typedefs:
     'void (^)(CMSampleBufferRef, AVCaptureBracketedStillImageSettings *, NSError *)': '@Block VoidBlock3<CMSampleBuffer, AVCaptureBracketedStillImageSettings, NSError>'
     
 enums:
-    AVAssetReferenceRestrictions: { first: AVAssetReferenceRestrictionForbidNone, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    AVAssetReferenceRestrictions: { first: AVAssetReferenceRestrictionForbidNone }
     AVAssetExportSessionStatus: { first: AVAssetExportSessionStatusUnknown }
     AVAssetImageGeneratorResult: { first: AVAssetImageGeneratorSucceeded }
     AVAssetReaderStatus: { first: AVAssetReaderStatusUnknown }
@@ -22,16 +22,16 @@ enums:
     AVAudioCommonFormat: { suffix: Format }
     AVAudioEnvironmentDistanceAttenuationModel: {}
     AVAudioPlayerNodeBufferOptions: {}
-    AVAudioSessionInterruptionOptions: { prefix: AVAudioSessionInterruptionOption, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
-    AVAudioSessionSetActiveOptions: { prefix: AVAudioSessionSetActiveOption, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    AVAudioSessionInterruptionOptions: { prefix: AVAudioSessionInterruptionOption }
+    AVAudioSessionSetActiveOptions: { prefix: AVAudioSessionSetActiveOption }
     AVAudioSessionPortOverride: { marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     AVAudioSessionRouteChangeReason: { marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
-    AVAudioSessionCategoryOptions: { marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    AVAudioSessionCategoryOptions: {}
     AVAudioSessionInterruptionType: { marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
-    AVAudioSessionErrorCode: {}
-    AVAudioSessionInterruptionFlag: { first: AVAudioSessionInterruptionFlags_ShouldResume, prefix: AVAudioSessionInterruptionFlags_, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
+    AVAudioSessionErrorCode: { prefix: AVAudioSessionErrorCode, AVAudioSessionErrorInsufficientPriority: InsufficientPriority }
+    AVAudioSessionInterruptionFlags: { first: AVAudioSessionInterruptionFlags_ShouldResume, prefix: AVAudioSessionInterruptionFlags_, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
     AVAudioSessionRecordPermission: {}
-    AVAudioSessionSetActiveFlag: { first: AVAudioSessionSetActiveFlags_NotifyOthersOnDeactivation, prefix: AVAudioSessionSetActiveFlags_, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
+    AVAudioSessionSetActiveFlags: { first: AVAudioSessionSetActiveFlags_NotifyOthersOnDeactivation, prefix: AVAudioSessionSetActiveFlags_, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
     AVAudioSessionSilenceSecondaryAudioHintType: {}
     AVAudioQuality: { first: AVAudioQualityMin }
     AVAudioUnitReverbPreset: {}
@@ -95,8 +95,6 @@ classes:
     
     AVError:
         extends: NSError
-    AVErrorUserInfoKey:
-        extends: NSErrorUserInfoKey
     
     AVMetadataIdentifierCommon:
         extends: AVMetadataIdentifier
@@ -243,7 +241,8 @@ classes:
                 name: init
             '-copyCGImageAtTime:actualTime:error:':
                 name: getCGImageAtTime
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
+                return_marshaler: CFType.NoRetainMarshaler
             '-generateCGImagesAsynchronouslyForTimes:completionHandler:':
                 name: generateCGImagesAsynchronously
                 parameters:
@@ -260,14 +259,14 @@ classes:
         methods:
             '-initWithAsset:error:':
                 name: init
-                constructor: false # throws NSErrorException
+                throws: NSErrorException
             '-canAddOutput:':
                 trim_after_first_colon: true
             '-addOutput:':
                 trim_after_first_colon: true
             '+assetReaderWithAsset:error:':
                 name: create
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
     AVAssetReaderAudioMixOutput: # DONE
         properties:
             'audioTracks':
@@ -298,6 +297,7 @@ classes:
         methods:
             '-copyNextSampleBuffer':
                 name: getNextSampleBuffer
+                return_marshaler: CFType.NoRetainMarshaler
             '-resetForReadingTimeRanges:':
                 trim_after_first_colon: true
                 parameters:
@@ -378,7 +378,7 @@ classes:
                 name: finishLoading
             '-streamingContentKeyRequestDataForApp:contentIdentifier:options:error:':
                 name: getStreamingContentKeyRequestData
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
                 parameters:
                     options:
                         type: 'NSDictionary<NSString, ?>'
@@ -439,7 +439,7 @@ classes:
         methods:
             '-initWithURL:fileType:error:':
                 name: init
-                constructor: false # throws NSErrorException
+                throws: NSErrorException
             '-canApplyOutputSettings:forMediaType:':
                 trim_after_first_colon: true
                 visibility: protected # can be either AVAudioSettings or AVVideoSettings
@@ -460,7 +460,7 @@ classes:
                 name: finishWriting
             '+assetWriterWithURL:fileType:error:':
                 name: create
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-canAddInputGroup:':
                 trim_after_first_colon: true
             '-addInputGroup:':
@@ -614,7 +614,7 @@ classes:
                 trim_after_first_colon: true
             '-startAndReturnError:':
                 name: start
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
     AVAudioEnvironmentDistanceAttenuationParameters: {} # DONE
     AVAudioEnvironmentNode: # DONE
         methods:
@@ -629,19 +629,19 @@ classes:
         methods:
             '-init.*':
                 name: init
-                constructor: false # throws NSErrorException
+                throws: NSErrorException
                 parameters:
                     settings:
                         type: AVAudioSettings
             '-readIntoBuffer:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-readIntoBuffer:frameCount:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-writeFromBuffer:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
     AVAudioFormat: # DONE
         properties:
             'settings':
@@ -710,7 +710,7 @@ classes:
         methods:
             '-init.*':
                 name: init
-                constructor: false # throws NSErrorException
+                throws: NSErrorException
             '-playAtTime:':
                 trim_after_first_colon: true
             '-peakPowerForChannel:':
@@ -744,7 +744,7 @@ classes:
         methods:
             '-initWithURL:settings:error:':
                 name: init
-                constructor: false # throws NSErrorException
+                throws: NSErrorException
                 parameters:
                     settings:
                         type: AVAudioSettings
@@ -777,10 +777,10 @@ classes:
         methods:
             '-setActive:.*':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-setCategory:.*':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
                 parameters:
                     category:
                         type: AVAudioSessionCategory
@@ -793,43 +793,43 @@ classes:
                         type: '@Block VoidBooleanBlock'
             '-setMode:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
                 parameters:
                     mode:
                         type: AVAudioSessionMode
             '-overrideOutputAudioPort:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-setPreferredInput:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '+sharedInstance':
                 return_type: AVAudioSession
                 property: true
             '-setPreferredSampleRate:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-setPreferredIOBufferDuration:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-setPreferredInputNumberOfChannels:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-setPreferredOutputNumberOfChannels:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-setInputGain:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-setInputDataSource:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-setOutputDataSource:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-setPreferredHardwareSampleRate:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
     AVAudioSessionChannelDescription: {} # DONE
     AVAudioSessionDataSourceDescription: # DONE
         properties:
@@ -844,7 +844,7 @@ classes:
         methods:
             '-setPreferredPolarPattern:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
                 parameters:
                     pattern:
                         type: AVAudioSessionPolarPattern
@@ -859,7 +859,7 @@ classes:
         methods:
             '-setPreferredDataSource:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
     AVAudioSessionRouteDescription: # DONE
         properties:
             'inputs':
@@ -882,7 +882,7 @@ classes:
         methods:
             '-loadAudioUnitPresetAtURL:error:':
                 name: loadAudioUnitPreset
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
     AVAudioUnitDelay: {} # DONE
     AVAudioUnitDistortion: # DONE
         methods:
@@ -938,13 +938,13 @@ classes:
         methods:
             '-loadSoundBankInstrumentAtURL:program:bankMSB:bankLSB:error:':
                 name: loadSoundBankInstrument
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-loadInstrumentAtURL:error:':
                 name: loadInstrument
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-loadAudioFilesAtURLs:error:':
                 name: loadAudioFiles
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
                 parameters:
                     audioFiles:
                         type: NSArray<NSURL>
@@ -1002,7 +1002,7 @@ classes:
                         type: AVMediaType
             '-lockForConfiguration:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-supportsAVCaptureSessionPreset:':
                 trim_after_first_colon: true
                 parameters:
@@ -1030,7 +1030,7 @@ classes:
                 trim_after_first_colon: true
             '-setTorchModeOnWithLevel:error:':
                 name: setTorchModeOn
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-isFocusModeSupported:':
                 trim_after_first_colon: true
             '-setFocusModeLockedWithLensPosition:completionHandler:':
@@ -1078,11 +1078,11 @@ classes:
         methods:
             '-initWithDevice:error:':
                 name: init
-                constructor: false # throws NSErrorException
+                throws: NSErrorException
             '+deviceInputWithDevice:error:':
                 name: create
                 return_type: AVCaptureDeviceInput
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
     AVCaptureDeviceInputSource: {} # DONE
     AVCaptureFileOutput: # DONE
         methods:
@@ -1349,7 +1349,7 @@ classes:
         methods:
             '-statusOfValueForKey:error:':
                 name: getStatusOfValue
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
                 parameters:
                     key:
                         type: AVMetadataKey
@@ -1432,7 +1432,7 @@ classes:
         methods:
             '-init.*':
                 name: init
-                constructor: false
+                throws: NSErrorException
             '-play:':
                 trim_after_first_colon: true
     AVMutableAudioMix: # DONE
@@ -1464,7 +1464,7 @@ classes:
                 name: create
             '-insertTimeRange:ofAsset:atTime:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-insertEmptyTimeRange:':
                 trim_after_first_colon: true
             '-removeTimeRange:':
@@ -1487,10 +1487,10 @@ classes:
         methods:
             '-insertTimeRange:ofTrack:atTime:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-insertTimeRanges:ofTracks:atTime:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
                 parameters:
                     timeRanges:
                         type: '@org.robovm.rt.bro.annotation.Marshaler(CMTimeRange.AsValuedListMarshaler.class) List<CMTimeRange>'
@@ -1504,7 +1504,7 @@ classes:
                 trim_after_first_colon: true
             '-validateTrackSegments:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
                 parameters:
                     trackSegments:
                         type: NSArray<AVCompositionTrackSegment>
@@ -1740,6 +1740,7 @@ classes:
                 trim_after_first_colon: true
             '-copyPixelBufferForItemTime:itemTimeForDisplay:':
                 name: getPixelBufferForItemTime
+                return_marshaler: CFType.NoRetainMarshaler
             '-setDelegate:queue:':
                 trim_after_first_colon: true
             '-requestNotificationOfMediaDataChangeWithAdvanceInterval:':
@@ -1826,31 +1827,35 @@ classes:
     AVTextStyleRule: # DONE
         properties:
             'textMarkupAttributes':
-                type: "NSDictionary<NSString, ?>"
+                type: CMTextMarkupAttributes
         methods:
             '-init.*':
                 name: init
                 parameters:
                     textMarkupAttributes:
-                        type: "NSDictionary<NSString, ?>"
+                        type: CMTextMarkupAttributes
             '+propertyListForTextStyleRules:':
                 name: createPropertyList
+                return_type: NSPropertyList
                 parameters:
                     textStyleRules:
                         type: NSArray<AVTextStyleRule>
             '+textStyleRulesFromPropertyList:':
                 name: createTextStyleRulesArray
                 return_type: NSArray<AVTextStyleRule>
+                parameters:
+                    plist:
+                        type: NSPropertyList
             '+textStyleRuleWithTextMarkupAttributes:':
                 name: create
                 parameters:
                     textMarkupAttributes:
-                        type: "NSDictionary<NSString, ?>"
+                        type: CMTextMarkupAttributes
             '+textStyleRuleWithTextMarkupAttributes:textSelector:':
                 name: create
                 parameters:
                     textMarkupAttributes:
-                        type: "NSDictionary<NSString, ?>"
+                        type: CMTextMarkupAttributes
     AVTimedMetadataGroup: # DONE
         properties:
             'items':
@@ -1865,6 +1870,7 @@ classes:
                 name: init
             '-copyFormatDescription':
                 name: getFormatDescription
+                return_marshaler: CFType.NoRetainMarshaler
     AVURLAsset: # DONE
         methods:
             '-initWithURL:options:':
@@ -1945,7 +1951,10 @@ classes:
                         type: CGRect.CGRectPtr
                     timeRange:
                         type: CMTimeRange.CMTimeRangePtr
-    AVVideoCompositionRenderContext: {} # DONE
+    AVVideoCompositionRenderContext: # DONE
+        methods:
+            '-newPixelBuffer':
+                return_marshaler: CFType.NoRetainMarshaler
 
 protocols:
     AVAssetResourceLoaderDelegate: # DONE
@@ -2009,7 +2018,7 @@ protocols:
                 name: endInterruption
                 parameters:
                     flags:
-                        type: AVAudioSessionInterruptionFlag
+                        type: AVAudioSessionInterruptionFlags
             '-inputIsAvailableChanged:':
                 name: inputAvailabilityChanged
     AVCaptureAudioDataOutputSampleBufferDelegate: # DONE
@@ -2116,13 +2125,12 @@ functions:
 values:
     AVFoundationErrorDomain:
         class: AVError
-        name: getClassDomain
-        
+        name: getClassDomain     
     AVError(.*)Key:
-        class: AVErrorUserInfoKey
-        name: '#{g[0]}Value'
+        enum: AVErrorUserInfoKey
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        extends: NSErrorUserInfoKey
 
     AV(CoreAnimationBeginTimeAtZero):
         class: AVFoundation

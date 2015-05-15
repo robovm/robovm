@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,16 +36,20 @@ import org.robovm.apple.coremedia.*;
 import org.robovm.apple.corevideo.*;
 import org.robovm.apple.audiotoolbox.*;
 import org.robovm.apple.mediatoolbox.*;
+import org.robovm.apple.audiounit.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(AVErrorUserInfoKey.Marshaler.class)
 /*<annotations>*/@Library("AVFoundation")/*</annotations>*/
+@Marshaler(/*<name>*/AVErrorUserInfoKey/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/AVErrorUserInfoKey/*</name>*/ 
-    extends /*<extends>*/NSErrorUserInfoKey/*</extends>*/ 
+    extends /*<extends>*/NSErrorUserInfoKey/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/AVErrorUserInfoKey/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static AVErrorUserInfoKey toObject(Class<AVErrorUserInfoKey> cls, long handle, long flags) {
@@ -63,68 +67,85 @@ import org.robovm.apple.mediatoolbox.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(AVErrorUserInfoKey.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<AVErrorUserInfoKey> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<AVErrorUserInfoKey> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(AVErrorUserInfoKey.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<AVErrorUserInfoKey> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (AVErrorUserInfoKey i : l) {
+                array.add(i.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final AVErrorUserInfoKey Device = new AVErrorUserInfoKey("DeviceValue");
+    public static final AVErrorUserInfoKey Device = new AVErrorUserInfoKey("Device");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final AVErrorUserInfoKey Time = new AVErrorUserInfoKey("TimeValue");
+    public static final AVErrorUserInfoKey Time = new AVErrorUserInfoKey("Time");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final AVErrorUserInfoKey FileSize = new AVErrorUserInfoKey("FileSizeValue");
+    public static final AVErrorUserInfoKey FileSize = new AVErrorUserInfoKey("FileSize");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final AVErrorUserInfoKey PID = new AVErrorUserInfoKey("PIDValue");
+    public static final AVErrorUserInfoKey PID = new AVErrorUserInfoKey("PID");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final AVErrorUserInfoKey RecordingSuccessfullyFinished = new AVErrorUserInfoKey("RecordingSuccessfullyFinishedValue");
+    public static final AVErrorUserInfoKey RecordingSuccessfullyFinished = new AVErrorUserInfoKey("RecordingSuccessfullyFinished");
     /**
      * @since Available in iOS 4.3 and later.
      */
-    public static final AVErrorUserInfoKey MediaType = new AVErrorUserInfoKey("MediaTypeValue");
+    public static final AVErrorUserInfoKey MediaType = new AVErrorUserInfoKey("MediaType");
     /**
      * @since Available in iOS 4.3 and later.
      */
-    public static final AVErrorUserInfoKey MediaSubType = new AVErrorUserInfoKey("MediaSubTypeValue");
+    public static final AVErrorUserInfoKey MediaSubType = new AVErrorUserInfoKey("MediaSubType");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final AVErrorUserInfoKey PresentationTimeStamp = new AVErrorUserInfoKey("PresentationTimeStampValue");
+    public static final AVErrorUserInfoKey PresentationTimeStamp = new AVErrorUserInfoKey("PresentationTimeStamp");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final AVErrorUserInfoKey PersistentTrackID = new AVErrorUserInfoKey("PersistentTrackIDValue");
+    public static final AVErrorUserInfoKey PersistentTrackID = new AVErrorUserInfoKey("PersistentTrackID");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final AVErrorUserInfoKey FileType = new AVErrorUserInfoKey("FileTypeValue");
+    public static final AVErrorUserInfoKey FileType = new AVErrorUserInfoKey("FileType");
+    /*</constants>*/
     
-    private static AVErrorUserInfoKey[] values = new AVErrorUserInfoKey[] {Device, Time, FileSize, PID, RecordingSuccessfullyFinished, 
-        MediaType, MediaSubType, PresentationTimeStamp, PersistentTrackID, FileType};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    private static /*<name>*/AVErrorUserInfoKey/*</name>*/[] values = new /*<name>*/AVErrorUserInfoKey/*</name>*/[] {/*<value_list>*/Device, Time, FileSize, PID, RecordingSuccessfullyFinished, MediaType, MediaSubType, PresentationTimeStamp, PersistentTrackID, FileType/*</value_list>*/};
     
-    private AVErrorUserInfoKey(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/AVErrorUserInfoKey/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static AVErrorUserInfoKey valueOf(NSString value) {
-        for (AVErrorUserInfoKey v : values) {
+    public static /*<name>*/AVErrorUserInfoKey/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/AVErrorUserInfoKey/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -132,56 +153,64 @@ import org.robovm.apple.mediatoolbox.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/AVErrorUserInfoKey/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="AVErrorDeviceKey", optional=true)
-    protected static native NSString DeviceValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="AVErrorTimeKey", optional=true)
-    protected static native NSString TimeValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="AVErrorFileSizeKey", optional=true)
-    protected static native NSString FileSizeValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="AVErrorPIDKey", optional=true)
-    protected static native NSString PIDValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="AVErrorRecordingSuccessfullyFinishedKey", optional=true)
-    protected static native NSString RecordingSuccessfullyFinishedValue();
-    /**
-     * @since Available in iOS 4.3 and later.
-     */
-    @GlobalValue(symbol="AVErrorMediaTypeKey", optional=true)
-    protected static native NSString MediaTypeValue();
-    /**
-     * @since Available in iOS 4.3 and later.
-     */
-    @GlobalValue(symbol="AVErrorMediaSubTypeKey", optional=true)
-    protected static native NSString MediaSubTypeValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="AVErrorPresentationTimeStampKey", optional=true)
-    protected static native NSString PresentationTimeStampValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="AVErrorPersistentTrackIDKey", optional=true)
-    protected static native NSString PersistentTrackIDValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="AVErrorFileTypeKey", optional=true)
-    protected static native NSString FileTypeValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("AVFoundation")/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="AVErrorDeviceKey", optional=true)
+        public static native NSString Device();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="AVErrorTimeKey", optional=true)
+        public static native NSString Time();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="AVErrorFileSizeKey", optional=true)
+        public static native NSString FileSize();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="AVErrorPIDKey", optional=true)
+        public static native NSString PID();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="AVErrorRecordingSuccessfullyFinishedKey", optional=true)
+        public static native NSString RecordingSuccessfullyFinished();
+        /**
+         * @since Available in iOS 4.3 and later.
+         */
+        @GlobalValue(symbol="AVErrorMediaTypeKey", optional=true)
+        public static native NSString MediaType();
+        /**
+         * @since Available in iOS 4.3 and later.
+         */
+        @GlobalValue(symbol="AVErrorMediaSubTypeKey", optional=true)
+        public static native NSString MediaSubType();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="AVErrorPresentationTimeStampKey", optional=true)
+        public static native NSString PresentationTimeStamp();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="AVErrorPersistentTrackIDKey", optional=true)
+        public static native NSString PersistentTrackID();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="AVErrorFileTypeKey", optional=true)
+        public static native NSString FileType();
+        /*</values>*/
+    }
 }

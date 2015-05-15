@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -64,22 +64,21 @@ import org.robovm.apple.foundation.*;
         getTimeRangeOfUnit(unit, at, new DoublePtr(), ptr);
         return ptr.get();
     }
-    
     /*<methods>*/
     @Bridge(symbol="CFCalendarGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFCalendarCopyCurrent", optional=true)
-    public static native CFCalendar getCurrent();
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFCalendar getCurrent();
     @Bridge(symbol="CFCalendarCreateWithIdentifier", optional=true)
-    protected static native CFCalendar create(CFAllocator allocator, CFCalendarIdentifier identifier);
+    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFCalendar create(CFAllocator allocator, CFCalendarIdentifier identifier);
     @Bridge(symbol="CFCalendarGetIdentifier", optional=true)
     public native CFCalendarIdentifier getIdentifier();
     @Bridge(symbol="CFCalendarCopyLocale", optional=true)
-    public native CFLocale getLocale();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFLocale getLocale();
     @Bridge(symbol="CFCalendarSetLocale", optional=true)
     public native void setLocale(CFLocale locale);
     @Bridge(symbol="CFCalendarCopyTimeZone", optional=true)
-    public native CFTimeZone getTimeZone();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFTimeZone getTimeZone();
     @Bridge(symbol="CFCalendarSetTimeZone", optional=true)
     public native void setTimeZone(CFTimeZone tz);
     @Bridge(symbol="CFCalendarGetFirstWeekday", optional=true)

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,8 +46,8 @@ import org.robovm.apple.corefoundation.*;
         void externalChange(ABAddressBook addressBook, NSDictionary<?, ?> info);
     }
     
-    private static java.util.concurrent.atomic.AtomicLong changeCallbackId = new java.util.concurrent.atomic.AtomicLong();
-    private static Map<Long, ExternalChangeCallback> externalChangeCallbacks = new HashMap<Long, ExternalChangeCallback>();
+    private static final java.util.concurrent.atomic.AtomicLong changeCallbackId = new java.util.concurrent.atomic.AtomicLong();
+    private static final LongMap<ExternalChangeCallback> externalChangeCallbacks = new LongMap<>();
     private static final java.lang.reflect.Method cbExternalChange;
     
     static {
@@ -71,45 +71,6 @@ import org.robovm.apple.corefoundation.*;
         callback.externalChange(addressBook, info);
     }
     
-    /**
-    * @since Available in iOS 6.0 and later.
-    */
-    public static ABAddressBook create(NSDictionary<NSString, ?> options) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        ABAddressBook result = create(options, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    
-    public boolean save() throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = save(err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    
-    public boolean addRecord(ABRecord record) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = addRecord(record, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    
-    public boolean removeRecord(ABRecord record) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = removeRecord(record, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    
     public void registerExternalChangeCallback(ExternalChangeCallback callback) {
         long refconId = ABAddressBook.changeCallbackId.getAndIncrement();
         registerExternalChangeCallback(new FunctionPtr(cbExternalChange), refconId);
@@ -120,9 +81,9 @@ import org.robovm.apple.corefoundation.*;
     public void unregisterExternalChangeCallback(ExternalChangeCallback callback) {
         long refconId = 0;
         synchronized (externalChangeCallbacks) {
-            for (Map.Entry<Long, ExternalChangeCallback> entry : externalChangeCallbacks.entrySet()) {
-                if (entry.getValue() == callback) {
-                    refconId = entry.getKey();
+            for (LongMap.Entry<ExternalChangeCallback> entry : externalChangeCallbacks.entries()) {
+                if (entry.value == callback) {
+                    refconId = entry.key;
                     externalChangeCallbacks.remove(refconId);
                     break;
                 }
@@ -143,8 +104,17 @@ import org.robovm.apple.corefoundation.*;
     /**
      * @since Available in iOS 6.0 and later.
      */
+    public static ABAddressBook create(NSDictionary<NSString, ?> options) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       ABAddressBook result = create(options, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Bridge(symbol="ABAddressBookCreateWithOptions", optional=true)
-    protected static native ABAddressBook create(NSDictionary<NSString, ?> options, NSError.NSErrorPtr error);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) ABAddressBook create(NSDictionary<NSString, ?> options, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 6.0.
@@ -157,16 +127,34 @@ import org.robovm.apple.corefoundation.*;
      */
     @Bridge(symbol="ABAddressBookRequestAccessWithCompletion", optional=true)
     public native void requestAccess(@Block RequestAccessCompletionHandler completion);
+    public boolean save() throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = save(ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Bridge(symbol="ABAddressBookSave", optional=true)
-    protected native boolean save(NSError.NSErrorPtr error);
+    private native boolean save(NSError.NSErrorPtr error);
     @Bridge(symbol="ABAddressBookHasUnsavedChanges", optional=true)
     public native boolean hasUnsavedChanges();
+    public boolean addRecord(ABRecord record) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = addRecord(record, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Bridge(symbol="ABAddressBookAddRecord", optional=true)
-    protected native boolean addRecord(ABRecord record, NSError.NSErrorPtr error);
+    private native boolean addRecord(ABRecord record, NSError.NSErrorPtr error);
+    public boolean removeRecord(ABRecord record) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = removeRecord(record, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Bridge(symbol="ABAddressBookRemoveRecord", optional=true)
-    protected native boolean removeRecord(ABRecord record, NSError.NSErrorPtr error);
+    private native boolean removeRecord(ABRecord record, NSError.NSErrorPtr error);
     @Bridge(symbol="ABAddressBookCopyLocalizedLabel", optional=true)
-    public static native String getLocalizedLabel(String label);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getLocalizedLabel(String label);
     @Bridge(symbol="ABAddressBookRegisterExternalChangeCallback", optional=true)
     protected native void registerExternalChangeCallback(FunctionPtr callback, @Pointer long context);
     @Bridge(symbol="ABAddressBookUnregisterExternalChangeCallback", optional=true)
@@ -177,7 +165,7 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="ABAddressBookCopyDefaultSource", optional=true)
-    public native ABSource getDefaultSource();
+    public native @org.robovm.rt.bro.annotation.Marshaler(ABRecord.NoRetainMarshaler.class) ABSource getDefaultSource();
     /**
      * @since Available in iOS 4.0 and later.
      */

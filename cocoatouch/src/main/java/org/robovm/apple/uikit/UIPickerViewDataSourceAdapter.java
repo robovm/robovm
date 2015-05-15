@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,8 +54,8 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("numberOfComponentsInPickerView:")
-    public @MachineSizedSInt long getNumberOfComponents(UIPickerView pickerView) { throw new UnsupportedOperationException(); }
+    public @MachineSizedSInt long getNumberOfComponents(UIPickerView pickerView) { return 0; }
     @NotImplemented("pickerView:numberOfRowsInComponent:")
-    public @MachineSizedSInt long getNumberOfRows(UIPickerView pickerView, @MachineSizedSInt long component) { throw new UnsupportedOperationException(); }
+    public @MachineSizedSInt long getNumberOfRows(UIPickerView pickerView, @MachineSizedSInt long component) { return 0; }
     /*</methods>*/
 }

@@ -1,24 +1,42 @@
 package: org.robovm.apple.security
-include: [dispatch.yaml, corefoundation.yaml]
+include: [dispatch.yaml, foundation.yaml, corefoundation.yaml]
 clang_args: ['-x', 'objective-c']
 library: Security
 framework: Security
 headers:
     - /System/Library/Frameworks/Security.framework/Headers/Security.h
     - /System/Library/Frameworks/Security.framework/Headers/SecureTransport.h
+typedefs:
+    'void (^)(CFErrorRef)': '@Block VoidBlock1<NSError>'
+private_typedefs:
+    '__CFString *': String
+    '__CFString **': NSString.NSStringPtr
+    '__CFData *': NSData
+    '__CFURL *': NSURL
+    '__CFDictionary *': 'NSDictionary<?, ?>'
+    '__CFArray *': NSArray<?>
+    '__CFError *': NSError
+    '__CFDate *': NSDate
 enums:
-    SSLAuthenticate: { first: kNeverAuthenticate }
+    SSLAuthenticate: { first: kNeverAuthenticate, suffix: Authenticate }
     SSLClientCertificateState: { first: kSSLClientCertNone }
-    SSLConnectionType: { first: kSSLStreamType }
+    SSLConnectionType: { first: kSSLStreamType, suffix: Type }
+    SSLErrorCode: { first: errSSLProtocol }
     SSLProtocol: { first: kSSLProtocolUnknown }
-    SSLProtocolSide: { first: kSSLServerSide }
+    SSLProtocolSide: { first: kSSLServerSide, suffix: Side }
     SSLSessionOption: { first: kSSLSessionOptionBreakOnServerAuth }
     SSLSessionState: { first: kSSLIdle }
     SSLCipherSuite: { first: SSL_NULL_WITH_NULL_NULL }
+    SecAccessControlCreateFlags: { prefix: kSecAccessControl }
     SecPadding: { first: kSecPaddingNone }
     SecTrustResultType: { first: kSecTrustResultInvalid }
-    SecRevocation: { first: kSecRevocationOCSPMethod }
+    SecRevocationPolicyFlags: { first: kSecRevocationOCSPMethod, bits: true }
+    SecErrorCode: { first: errSecSuccess }
+
 classes:
+    __SecAccessControl:
+        name: SecAccessControl
+        extends: CFType
     __SecCertificate:
         name: SecCertificate
         extends: CFType
@@ -38,79 +56,672 @@ classes:
         name: SecRandom
     SSLContext:
         extends: CFType
+
 functions:
-    Sec(Certificate|Identity|Key|Policy|Trust)GetTypeID:
-        class: "Sec#{g[0]}"
+    Sec(AccessControl|Certificate|Identity|Key|Policy|Trust)GetTypeID:
+        class: 'Sec#{g[0]}'
         name: getClassTypeID
-    SecPolicy(CreateRevocation):
-        class: SecPolicy
-        name: "#{g[0]}"
+
+    # SecAccessControl
+    SecAccessControl(Create)WithFlags:
+        class: SecAccessControl
+        name: '#{g[0]}'
+        throws: NSErrorException
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
-            revocationFlags:
-                type: SecRevocation
-    Sec(Certificate|Identity|Key|Policy|Random|Trust)(.*):
-        class: "Sec#{g[0]}"
-        name: "#{g[1]}"
-    SecItem(.*):
-        class: SecItem
-        name: "#{g[0]}"
+            protection:
+                type: SecAttrAccessible
+
+    # SecCertificate
+    SecCertificate(Create).*:
+        class: SecCertificate
+        name: '#{g[0]}'
+    SecCertificateCopy(Data):
+        class: SecCertificate
+        name: 'get#{g[0]}'
+        return_marshaler: NSObject.NoRetainMarshaler
+    SecCertificateCopy(SubjectSummary):
+        class: SecCertificate
+        name: 'get#{g[0]}'
+        return_marshaler: CFString.AsStringNoRetainMarshaler
+    SecCertificate(.*):
+        class: SecCertificate
+        name: '#{g[0]}'
+
+    # SecIdentity
+    SecIdentityCopy(.*):
+        class: SecIdentity
+        name: 'get#{g[0]}0'
+        visibility: protected
+    SecIdentity(.*):
+        class: SecIdentity
+        name: '#{g[0]}'
+
+    # SecImportExport
     SecPKCS12Import:
         class: SecImportExport
-        name: importPKCS12
+        name: importPKCS120
+        visibility: protected
+        parameters:
+            options:
+                type: SecImportExportOptions
+            items:
+                type: CFArray.CFArrayPtr
+
+    # SecItem
+    SecItemCopy(Matching):
+        class: SecItem
+        name: 'get#{g[0]}0'
+        visibility: protected
+        parameters:
+            query:
+                type: SecQuery
+    SecItem(Add):
+        class: SecItem
+        name: '#{g[0]}0'
+        visibility: protected
+        parameters:
+            attributes:
+                type: SecAttributes
+    SecItem(Update|Delete):
+        class: SecItem
+        name: '#{g[0]}0'
+        visibility: protected
+        parameters:
+            query:
+                type: SecQuery
+            attributesToUpdate:
+                type: SecAttributes
+    SecItem(.*):
+        class: SecItem
+        name: '#{g[0]}'
+
+    # SecKey
+    SecKey(GeneratePair):
+        class: SecKey
+        name: '#{g[0]}0'
+        visibility: protected
+        parameters:
+            parameters:
+                type: SecKeyParameters
+    SecKey(RawSign):
+        class: SecKey
+        name: '#{g[0]}0'
+        visibility: protected
+        parameters:
+            dataToSign:
+                type: '@Pointer long'
+    SecKey(RawVerify):
+        class: SecKey
+        name: '#{g[0]}0'
+        visibility: protected
+        parameters:
+            signedData:
+                type: '@Pointer long'
+            sig:
+                type: '@Pointer long'
+    SecKey(Encrypt):
+        class: SecKey
+        name: '#{g[0]}0'
+        visibility: protected
+        parameters:
+            plainText:
+                type: '@Pointer long'
+    SecKey(Decrypt):
+        class: SecKey
+        name: '#{g[0]}0'
+        visibility: protected
+        parameters:
+            cipherText:
+                type: '@Pointer long'
+    SecKey(.*):
+        class: SecKey
+        name: '#{g[0]}'
+
+    # SecPolicy
+    SecPolicy(Create)WithProperties:
+        class: SecPolicy
+        name: '#{g[0]}'
+        parameters:
+            policyIdentifier:
+                type: SecPolicyIdentifier
+            properties:
+                type: SecPolicyProperties
+    SecPolicy(CreateRevocation):
+        class: SecPolicy
+        name: '#{g[0]}'
+        parameters:
+            revocationFlags:
+                type: SecRevocationPolicyFlags
+    SecPolicyCopy(Properties):
+        class: SecPolicy
+        name: 'get#{g[0]}'
+        return_type: SecPolicyProperties
+    SecPolicy(.*):
+        class: SecPolicy
+        name: '#{g[0]}'
+ 
+    # SecRandom
+    SecRandomCopy(Bytes):
+        class: SecRandom
+        name: 'get#{g[0]}'
+        visibility: protected
+        parameters:
+            bytes:
+                type: '@Pointer long'
+    SecRandom(.*):
+        class: SecRandom
+        name: '#{g[0]}'
+
+    # SecSharedCredential
+    Sec(AddSharedWebCredential):
+        class: SecSharedCredential
+        name: '#{g[0]}'
+    Sec(RequestSharedWebCredential):
+        class: SecSharedCredential
+        name: '#{g[0]}0'
+        visibility: protected
+        parameters:
+            completionHandler:
+                type: '@Block VoidBlock2<CFArray, NSError>' # TODO marshal CFArray parameter to List<SecCredential>
+    Sec(CreateSharedWebCredentialPassword):
+        class: SecSharedCredential
+        name: '#{g[0]}'
+        return_marshaler: CFString.AsStringNoRetainMarshaler
+
+    # SecTrust
+    SecTrust(Create)WithCertificates:
+        class: SecTrust
+        name: '#{g[0]}0'
+        visibility: protected
+    SecTrust(SetPolicies):
+        class: SecTrust
+        name: '#{g[0]}0'
+        visibility: protected
+    SecTrustCopy(Policies):
+        class: SecTrust
+        name: 'get#{g[0]}0'
+        visibility: protected
+        parameters:
+            policies:
+                type: CFArray.CFArrayPtr
+    SecTrustGet(NetworkFetchAllowed):
+        class: SecTrust
+        name: 'is#{g[0]}0'
+        visibility: protected
+    SecTrust(SetAnchorCertificates):
+        class: SecTrust
+        name: '#{g[0]}0'
+        visibility: protected
+        parameters:
+            anchorCertificates:
+                type: List<SecCertificate>
+                marshaler: CFArray.AsListMarshaler
+    SecTrustCopy(CustomAnchorCertificates):
+        class: SecTrust
+        name: 'get#{g[0]}0'
+        visibility: protected
+        parameters:
+            anchors:
+                type: CFArray.CFArrayPtr
+    SecTrustCopy(PublicKey):
+        class: SecTrust
+        name: 'get#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
+    SecTrustCopy(Exceptions):
+        class: SecTrust
+        name: 'get#{g[0]}'
+        return_marshaler: NSObject.NoRetainMarshaler
+    SecTrustCopy(Properties):
+        class: SecTrust
+        name: 'get#{g[0]}'
+        return_type: SecTrustProperties
+    SecTrustCopy(Result):
+        class: SecTrust
+        name: 'get#{g[0]}'
+        return_type: SecTrustResult
+    SecTrust(GetCertificate)AtIndex:
+        class: SecTrust
+        name: '#{g[0]}'
+    SecTrust(Evaluate|EvaluateAsync|GetTrustResult|SetOCSPResponse|SetVerifyDate|SetAnchorCertificatesOnly|SetAnchorCertificates|SetNetworkFetchAllowed):
+        class: SecTrust
+        name: '#{g[0]}0'
+        visibility: protected
+    SecTrust(.*):
+        class: SecTrust
+        name: '#{g[0]}'
+
     (Sec.*):
-        name: "#{g[0]}"
+        name: '#{g[0]}'
+
+    # SSLContext
     SSLContextGetTypeID:
         class: SSLContext
         name: getClassTypeID
+    SSL(Create)Context:
+        class: SSLContext
+        name: '#{g[0]}0'
+        return_marshaler: CFType.NoRetainMarshaler
+        visibility: protected
     SSLClose:
         class: SSLContext
-        name: closeContext
+        name: closeContext0
+        visibility: protected
+    SSL(GetSessionOption|GetSessionState|GetMaxDatagramRecordSize|GetBufferedReadSize|GetDatagramWriteSize):
+        class: SSLContext
+        name: '#{g[0]}0'
+        visibility: protected
+    SSL(SetIOFuncs):
+        class: SSLContext
+        name: setIOFunctions0
+        visibility: protected
+    SSLSetProtocolVersionMin:
+        class: SSLContext
+        name: setMinProtocolVersion0
+        visibility: protected
+    SSLGetProtocolVersionMin:
+        class: SSLContext
+        name: getMinProtocolVersion0
+        visibility: protected
+    SSLSetProtocolVersionMax:
+        class: SSLContext
+        name: setMaxProtocolVersion0
+        visibility: protected
+    SSLGetProtocolVersionMax:
+        class: SSLContext
+        name: getMaxProtocolVersion0
+        visibility: protected
+    SSL(SetCertificate|SetEncryptionCertificate):
+        class: SSLContext
+        name: '#{g[0]}0'
+        visibility: protected
+        parameters:
+            certRefs:
+                type: CFArray
+    SSL(GetPeerDomainNameLength|GetPeerDomainName|GetNegotiatedProtocolVersion|GetClientCertificateState):
+        class: SSLContext
+        name: '#{g[0]}0'
+        visibility: protected
+    SSL(GetNumberSupportedCiphers|GetSupportedCiphers|GetNumberEnabledCiphers|GetEnabledCiphers|GetNegotiatedCipher):
+        class: SSLContext
+        name: '#{g[0]}0'
+        visibility: protected
+    SSL(SetEnabledCiphers):
+        class: SSLContext
+        name: '#{g[0]}0'
+        visibility: protected
+        parameters:
+            ciphers:
+                type: '@Pointer long'
+    SSL(Write):
+        class: SSLContext
+        name: '#{g[0]}0'
+        visibility: protected
+        parameters:
+            data:
+                type: '@Pointer long'
+    SSL(Read):
+        class: SSLContext
+        name: '#{g[0]}0'
+        visibility: protected
+        parameters:
+            data:
+                type: BytePtr
+    SSL(GetConnection):
+        class: SSLContext
+        name: '#{g[0]}0'
+        visibility: protected
+    SSLCopy(PeerTrust):
+        class: SSLContext
+        name: 'get#{g[0]}0'
+        visibility: protected
+    SSL(AddDistinguishedName):
+        class: SSLContext
+        name: '#{g[0]}0'
+        visibility: protected
+        parameters:
+            derDN:
+                type: '@Pointer long'
+    SSLCopy(DistinguishedNames):
+        class: SSLContext
+        name: 'get#{g[0]}0'
+        visibility: protected
+        parameters:
+            names:
+                type: NSArray.NSArrayPtr<NSData>
+    SSL(SetPeerID|SetPeerDomainName):
+        class: SSLContext
+        name: '#{g[0]}0'
+        visibility: protected
+        parameters:
+            peerID:
+                type: '@Pointer long'
+            peerName:
+                type: '@Pointer long'
+    SSL(GetPeerID):
+        class: SSLContext
+        name: '#{g[0]}0'
+        visibility: protected
+        parameters:
+            peerID:
+                type: BytePtr.BytePtrPtr
+    SSL(SetDatagramHelloCookie):
+        class: SSLContext
+        name: '#{g[0]}0'
+        visibility: protected
+        parameters:
+            cookie:
+                type: '@Pointer long'    
     SSL(.*):
         class: SSLContext
-        name: "#{g[0]}"
+        name: '#{g[0]}0'
+        visibility: protected
+
 values:
-    kSec(Certificate|Identity|Key|Random|Policy|Trust)(.*):
-        class: "Sec#{g[0]}"
-        readonly: true
-        name: "#{g[1]}"
-    kSec((Class|Attr|Match|Return|Value|UseItemList).*):
-        class: SecItem
-        readonly: true
-        name: "Key#{g[0]}"
-    kSec((Class|Attr|Match|Return|Value|UseItemList).*):
-        class: SecItem
-        readonly: true
-        name: "#{g[0]}"
-    kSec(PropertyType.*):
-        class: SecCertificate
-        readonly: true
-        name: "#{g[0]}"
-    kSec((Private|Public)KeyAttrs):
-        class: SecKey
-        readonly: true
-        name: "#{g[0]}"
-    kSecImport(Item.*):
-        class: SecImportExport
-        readonly: true
-        name: "Key#{g[0]}"
+    # SecImportExport 
+    kSecImportItem(.*):
+        dictionary: SecImportItem
+        name: '#{g[0]}'
+        mutable: false
+        type: CFString
+        methods:
+            Label:
+                type: String
+            KeyID:
+                type: NSData
+            Trust:
+                type: SecTrust
+            CertChain:
+                type: List<SecCertificate>
+            Identity:
+                type: SecIdentity
     kSecImportExport(.*):
-        class: SecImportExport
-        readonly: true
-        name: "Key#{g[0]}"
+        dictionary: SecImportExportOptions
+        name: '#{g[0]}'
+        type: CFString
+        methods:
+            Passphrase:
+                type: String
+
+    # SecItem
+    kSecClass(.+):
+        enum: SecClass
+        name: '#{g[0]}'
+        type: CFType
+    kSecMatchLimit(.+):
+        enum: SecMatchLimit
+        name: '#{g[0]}'
+        type: CFType
+    kSecMatch(.*):
+        dictionary: SecMatch
+        name: '#{g[0]}'
+        type: CFType
+        methods:
+            Policy:
+                type: SecPolicy
+            Issuers:
+                type: NSArray<NSData>
+            EmailAddressIfPresent:
+                type: String
+            SubjectContains:
+                type: String
+            CaseInsensitive:
+                type: boolean
+            TrustedOnly:
+                type: boolean
+            ValidOnDate:
+                type: NSDate
+            Limit:
+                type: SecMatchLimit
+            #ItemList TODO
+            #SearchList TODO
+    kSecReturn(.*):
+        dictionary: SecReturn
+        name: '#{g[0]}'
+        type: CFType
+        methods:
+            Data:
+                name: shouldReturnData
+                type: boolean
+            Attributes:
+                name: shouldReturnAttributes
+                type: boolean
+            Ref:
+                name: shouldReturnReference
+                type: boolean
+            PersistentRef:
+                name: shouldReturnPersistent
+                type: boolean
+    kSecValue(.*): 
+        dictionary: SecValue
+        name: '#{g[0]}'
+        type: CFType
+        methods: 
+            Data:
+                type: NSData
+            Ref:
+                type: CFType
+            PersistentRef:
+                type: NSData
+    kSecAttrAccessible(.+):
+        enum: SecAttrAccessible
+        name: '#{g[0]}'
+        type: CFType
+    kSecAttrProtocol(.+):
+        enum: SecAttrProtocol
+        name: '#{g[0]}'
+        type: CFType
+    kSecAttrAuthenticationType(.+):
+        enum: SecAttrAuthenticationType
+        name: '#{g[0]}'
+        type: CFType
+    kSecAttrKeyClass(.+):
+        enum: SecAttrKeyClass
+        name: '#{g[0]}'
+        type: CFType
+    kSecAttrKeyType(.+):
+        enum: SecAttrKeyType
+        name: '#{g[0]}'
+        type: CFType
+    kSec(Class):
+        dictionary: SecQuery
+        name: '#{g[0]}'
+        type: CFType
+        methods:
+            Class:
+                name: ClassType
+                type: SecClass
+    kSecAttrSynchronizableAny:
+        exclude: true
+    kSecAttr(.*):
+        dictionary: SecAttributes
+        name: '#{g[0]}'
+        type: CFType
+        methods:
+            Accessible:
+                type: SecAttrAccessible
+            AccessControl:
+                type: SecAccessControl
+            AccessGroup:
+                type: String
+            Synchronizable:
+                type: boolean
+            CreationDate:
+                type: NSDate # read-only
+            ModificationDate:
+                type: NSDate # read-only
+            Description:
+                type: String
+            Comment:
+                type: String
+            Creator:
+                type: long
+            Type:
+                type: long
+            Label:
+                type: String
+            IsInvisible:
+                type: boolean
+            IsNegative:
+                type: boolean
+            Account:
+                type: String
+            Service:
+                type: String
+            Generic:
+                type: NSData
+            SecurityDomain:
+                type: String
+            Server:
+                type: String
+            Protocol:
+                type: SecAttrProtocol
+            AuthenticationType:
+                type: SecAttrAuthenticationType
+            Port:
+                type: int
+            Path:
+                type: String
+            Subject: 
+                type: NSData # read-only
+            Issuer:
+                type: NSData # read-only
+            SerialNumber:
+                type: NSData # read-only
+            SubjectKeyID:
+                type: NSData # read-only
+            PublicKeyHash:
+                type: NSData # read-only
+            CertificateType:
+                type: long # read-only
+            CertificateEncoding:
+                type: long # read-only
+            KeyClass:
+                type: SecAttrKeyClass # read-only
+            ApplicationLabel:
+                type: String
+            IsPermanent:
+                type: boolean
+            ApplicationTag:
+                type: NSData
+            KeyType:
+                type: SecAttrKeyType
+            KeySizeInBits:
+                type: long
+            EffectiveKeySize:
+                type: int
+            CanEncrypt:
+                type: boolean
+            CanDecrypt:
+                type: boolean
+            CanDerive:
+                type: boolean
+            CanSign:
+                type: boolean
+            CanVerify:
+                type: boolean
+            CanWrap:
+                type: boolean
+            CanUnwrap:
+                type: boolean
+            UseItemList:
+                name: ItemList
+                type: List<CFType>
+            UseOperationPrompt:
+                name: OperationPrompt
+                type: String
+            UseNoAuthenticationUI:
+                name: usesNoAuthenticationUI
+                type: boolean
+    kSec(UseItemList|UseOperationPrompt|UseNoAuthenticationUI):
+        dictionary: SecAttributes
+        name: '#{g[0]}'
+        type: CFType
+
+    # SecKey
+    kSec(Private|Public)KeyAttrs:
+        dictionary: SecKeyParameters
+        name: '#{g[0]}Attributes'
+        type: CFType
+        methods:
+            PrivateAttributes:
+                type: SecAttributes
+            PublicAttributes:
+                type: SecAttributes
+
+    # SecPolicy
+    kSecPolicy(Oid|Name|Client|RevocationFlags):
+        dictionary: SecPolicyProperties
+        name: '#{g[0]}'
+        type: CFType
+        methods:
+            Oid:
+                type: String
+            Name:
+                type: String
+            Client:
+                type: boolean
+            RevocationFlags:
+                type: SecRevocationPolicyFlags
+    kSecPolicy(.*):
+        enum: SecPolicyIdentifier
+        name: '#{g[0]}'
+        type: CFType
+    
+    # SecRandom
+    kSecRandom(Default):
+        class: SecRandom
+        name: 'get#{g[0]}'
+
+    # SecSharedCredential
+    kSecShared(Password):
+        dictionary: SecCredential
+        name: '#{g[0]}'
+        type: CFType
+        mutable: false
+        methods:
+            Password:
+                type: String
+
+    # SecTrust
+    kSecPropertyType(Title|Error):
+        dictionary: SecTrustProperties
+        name: '#{g[0]}'
+        type: CFType
+        mutable: false
+        methods:
+            Title:
+                type: String
+            Error:
+                type: String
+    kSecTrust(.*):
+        dictionary: SecTrustResult
+        name: '#{g[0]}'
+        type: CFType
+        mutable: false
+        methods:
+            EvaluationDate:
+                type: NSDate
+            ExtendedValidation:
+                type: boolean
+            OrganizationName:
+                type: String
+            ResultValue:
+                type: SecTrustResultType
+            RevocationChecked:
+                type: boolean
+            RevocationValidUntilDate:
+                type: NSDate
+
     (kSec.*):
-        name: "#{g[0]}"
+        name: '#{g[0]}'
     (kSSL.*):
         class: SSLContext
-        name: "#{g[0]}"
+        name: '#{g[0]}'
+
 constants:
-    errSSL(.*):
-        class: SSLErrorCode
-        name: "#{g[0]}"
-    errSec(.*):
-        class: SecErrorCode
-        name: "#{g[0]}"
     (kSec.*):
-        name: "#{g[0]}"
+        name: '#{g[0]}'
     (kSSL.*):
         class: SSLContext
-        name: "#{g[0]}"
+        name: '#{g[0]}'

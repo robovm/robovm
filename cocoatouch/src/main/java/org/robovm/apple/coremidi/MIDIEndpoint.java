@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ import org.robovm.apple.corefoundation.*;
 
     /*<ptr>*/public static class MIDIEndpointPtr extends Ptr<MIDIEndpoint, MIDIEndpointPtr> {}/*</ptr>*/
     private static java.util.concurrent.atomic.AtomicLong refconId = new java.util.concurrent.atomic.AtomicLong();
-    private static Map<Long, MIDIReadProc> readProcs = new HashMap<Long, MIDIReadProc>();
+    private static LongMap<MIDIReadProc> readProcs = new LongMap<>();
     private static final java.lang.reflect.Method cbReadProc;
     
     static {
@@ -51,9 +51,7 @@ import org.robovm.apple.corefoundation.*;
     }
     /*<bind>*/static { Bro.bind(MIDIEndpoint.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*/
-    protected MIDIEndpoint() {}
-    /*</constructors>*/
+    /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     @Callback

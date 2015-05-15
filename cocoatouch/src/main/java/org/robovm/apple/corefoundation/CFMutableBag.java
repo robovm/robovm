@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,18 +46,18 @@ import org.robovm.apple.foundation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Bridge(symbol="CFBagCreateMutable", optional=true)
-    protected static native CFMutableBag createMutable(CFAllocator allocator, @MachineSizedSInt long capacity, CFBagCallBacks callBacks);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFMutableBag create(CFAllocator allocator, @MachineSizedSInt long capacity, CFBagCallBacks callBacks);
     @Bridge(symbol="CFBagCreateMutableCopy", optional=true)
-    protected static native CFMutableBag createMutableCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFBag theBag);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFMutableBag createCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFBag theBag);
     @Bridge(symbol="CFBagAddValue", optional=true)
-    protected native void addValue(VoidPtr value);
+    private native void addValue(VoidPtr value);
     @Bridge(symbol="CFBagReplaceValue", optional=true)
-    protected native void replaceValue(VoidPtr value);
+    private native void replaceValue(VoidPtr value);
     @Bridge(symbol="CFBagSetValue", optional=true)
-    protected native void setValue(VoidPtr value);
+    private native void setValue(VoidPtr value);
     @Bridge(symbol="CFBagRemoveValue", optional=true)
-    protected native void removeValue(VoidPtr value);
+    private native void removeValue(VoidPtr value);
     @Bridge(symbol="CFBagRemoveAllValues", optional=true)
-    protected native void removeAllValues();
+    private native void removeAllValues();
     /*</methods>*/
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,16 +48,16 @@ import org.robovm.apple.foundation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("accessoryDidUpdateName:")
-    public void didUpdateName(HMAccessory accessory) { throw new UnsupportedOperationException(); }
+    public void didUpdateName(HMAccessory accessory) {}
     @NotImplemented("accessory:didUpdateNameForService:")
-    public void didUpdateServiceName(HMAccessory accessory, HMService service) { throw new UnsupportedOperationException(); }
+    public void didUpdateServiceName(HMAccessory accessory, HMService service) {}
     @NotImplemented("accessory:didUpdateAssociatedServiceTypeForService:")
-    public void didUpdateAssociatedServiceType(HMAccessory accessory, HMService service) { throw new UnsupportedOperationException(); }
+    public void didUpdateAssociatedServiceType(HMAccessory accessory, HMService service) {}
     @NotImplemented("accessoryDidUpdateServices:")
-    public void didUpdateServices(HMAccessory accessory) { throw new UnsupportedOperationException(); }
+    public void didUpdateServices(HMAccessory accessory) {}
     @NotImplemented("accessoryDidUpdateReachability:")
-    public void didUpdateReachability(HMAccessory accessory) { throw new UnsupportedOperationException(); }
+    public void didUpdateReachability(HMAccessory accessory) {}
     @NotImplemented("accessory:service:didUpdateValueForCharacteristic:")
-    public void didUpdateCharacteristicValue(HMAccessory accessory, HMService service, HMCharacteristic characteristic) { throw new UnsupportedOperationException(); }
+    public void didUpdateCharacteristicValue(HMAccessory accessory, HMService service, HMCharacteristic characteristic) {}
     /*</methods>*/
 }

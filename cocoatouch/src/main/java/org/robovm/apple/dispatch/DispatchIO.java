@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -58,12 +58,12 @@ import org.robovm.rt.bro.ptr.*;
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="dispatch_io_create_with_path", optional=true)
-    public static native DispatchIO createWithPath(@MachineSizedUInt long type, BytePtr path, int oflag, short mode, DispatchQueue queue, @Block VoidBlock1<Integer> cleanup_handler);
+    public static native DispatchIO create(@MachineSizedUInt long type, @org.robovm.rt.bro.annotation.Marshaler(StringMarshalers.AsUtf8ZMarshaler.class) String path, int oflag, short mode, DispatchQueue queue, @Block VoidBlock1<Integer> cleanup_handler);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="dispatch_io_create_with_io", optional=true)
-    public static native DispatchIO createWithIo(@MachineSizedUInt long type, DispatchIO io, DispatchQueue queue, @Block VoidBlock1<Integer> cleanup_handler);
+    public static native DispatchIO create(@MachineSizedUInt long type, DispatchIO io, DispatchQueue queue, @Block VoidBlock1<Integer> cleanup_handler);
     /**
      * @since Available in iOS 5.0 and later.
      */

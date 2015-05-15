@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,9 +44,9 @@ import org.robovm.apple.foundation.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*/
     @NotImplemented("drawableProperties")
-    public EAGLDrawableProperties getDrawableProperties() { throw new UnsupportedOperationException(); }
+    public EAGLDrawableProperties getDrawableProperties() { return null; }
     @NotImplemented("setDrawableProperties:")
-    public void setDrawableProperties(EAGLDrawableProperties v) { throw new UnsupportedOperationException(); }
+    public void setDrawableProperties(EAGLDrawableProperties v) {}
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,11 +53,11 @@ import org.robovm.apple.accounts.*;
      * @since Available in iOS 3.0 and later.
      */
     @NotImplemented("requestDidFinish:")
-    public void didFinish(SKRequest request) { throw new UnsupportedOperationException(); }
+    public void didFinish(SKRequest request) {}
     /**
      * @since Available in iOS 3.0 and later.
      */
     @NotImplemented("request:didFailWithError:")
-    public void didFail(SKRequest request, NSError error) { throw new UnsupportedOperationException(); }
+    public void didFail(SKRequest request, NSError error) {}
     /*</methods>*/
 }

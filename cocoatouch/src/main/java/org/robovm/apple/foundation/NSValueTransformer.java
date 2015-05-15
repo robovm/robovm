@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -72,8 +72,8 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "valueTransformerNames")
     public static native NSArray<NSValueTransformer> getValueTransformers();
     @Method(selector = "transformedValueClass")
-    public static native Class<?> getTransformedValueClass();
+    public static native Class<? extends NSObject> getTransformedValueClass();
     @Method(selector = "allowsReverseTransformation")
-    public static native boolean allowsReverseTransformation();
+    public static native boolean isAllowsReverseTransformation();
     /*</methods>*/
 }

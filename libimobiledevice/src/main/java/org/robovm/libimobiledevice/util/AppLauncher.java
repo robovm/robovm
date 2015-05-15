@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 Trillian Mobile AB
+ * Copyright (C) 2013 RoboVM AB
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -706,7 +706,15 @@ public class AppLauncher {
                 log("Debug server port: " + debugService.getPort());
                 if (localPort != -1) {
                     String exe = ((NSDictionary) PropertyListParser.parse(new File(localAppPath, "Info.plist"))).objectForKey("CFBundleExecutable").toString();
-                    log("launchios " + new File(localAppPath, exe).getAbsolutePath() + " " + appPath + " " + localPort);
+                    log("launchios \"" + new File(localAppPath, exe).getAbsolutePath() + "\" \"" + appPath + "\" " + localPort);
+                    StringBuilder argsString = new StringBuilder();
+                    for (String arg : args) {
+                        if (argsString.length() > 0) {
+                            argsString.append(' ');
+                        }
+                        argsString.append(arg);
+                    }
+                    log("process launch -- " + argsString);
                 }
             }
     
@@ -783,7 +791,11 @@ public class AppLauncher {
                         return exitCode;
                     } else if (payload.charAt(0) == 'O') {
                         // Console output encoded as hex.
-                        stdout.write(fromHex(payload.substring(1)));
+                        byte[] data = fromHex(payload.substring(1));
+                        if (appLauncherCallback != null) {
+                            data = appLauncherCallback.filterOutput(data);
+                        }
+                        stdout.write(data);
                     } else if (payload.charAt(0) == 'T') {
                         // Signal received. Just continue.
                         // The Continue packet looks like this (thread 0x2403 was interrupted by signal 0x0b):
@@ -896,8 +908,12 @@ public class AppLauncher {
                                     return exitCode;
                                 } else if (message[1] == 'O') {
                                     // Console output encoded as hex.
-                                    if(!nextPacketIsData) {
-                                        stdout.write(fromHex(message, 2, message.length - 2 - 3));
+                                    if (!nextPacketIsData) {
+                                        byte[] data = fromHex(message, 2, message.length - 2 - 3);
+                                        if (appLauncherCallback != null) {
+                                            data = appLauncherCallback.filterOutput(data);
+                                        }
+                                        stdout.write(data);
                                     } else {
                                         nextPacketIsData = false;
                                     }

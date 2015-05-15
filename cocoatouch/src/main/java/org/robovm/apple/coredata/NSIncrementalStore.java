@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,96 +50,45 @@ import org.robovm.apple.foundation.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
-    /**
-     * 
-     * @return
-     * @throws NSErrorException
-     */
-    public boolean loadMetadata() throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = loadMetadata(err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @param request
-     * @param context
-     * @return
-     * @throws NSErrorException
-     */
-    public NSObject executeRequest(NSPersistentStoreRequest request, NSManagedObjectContext context) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        NSObject result = executeRequest(request, context, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @param objectID
-     * @param context
-     * @return
-     * @throws NSErrorException
-     */
-    public NSIncrementalStoreNode newValuesForObjectID(NSManagedObjectID objectID, NSManagedObjectContext context) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        NSIncrementalStoreNode result = newValuesForObjectID(objectID, context, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @param relationship
-     * @param objectID
-     * @param context
-     * @return
-     * @throws NSErrorException
-     */
-    public NSObject newValueForRelationship(NSRelationshipDescription relationship, NSManagedObjectID objectID, NSManagedObjectContext context) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        NSObject result = newValueForRelationship(relationship, objectID, context, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @param array
-     * @return
-     * @throws NSErrorException
-     */
-    public NSArray<NSManagedObjectID> obtainPermanentIDsForObjects(NSArray<NSManagedObject> array) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        NSArray<NSManagedObjectID> result = obtainPermanentIDsForObjects(array, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
     /*<methods>*/
-    @Method(selector = "loadMetadata:")
-    protected native boolean loadMetadata(NSError.NSErrorPtr error);
+    public NSObject executeRequest(NSPersistentStoreRequest request, NSManagedObjectContext context) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       NSObject result = executeRequest(request, context, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "executeRequest:withContext:error:")
-    protected native NSObject executeRequest(NSPersistentStoreRequest request, NSManagedObjectContext context, NSError.NSErrorPtr error);
+    private native NSObject executeRequest(NSPersistentStoreRequest request, NSManagedObjectContext context, NSError.NSErrorPtr error);
+    public NSIncrementalStoreNode newValuesForObjectID(NSManagedObjectID objectID, NSManagedObjectContext context) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       NSIncrementalStoreNode result = newValuesForObjectID(objectID, context, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "newValuesForObjectWithID:withContext:error:")
-    protected native NSIncrementalStoreNode newValuesForObjectID(NSManagedObjectID objectID, NSManagedObjectContext context, NSError.NSErrorPtr error);
+    private native @org.robovm.rt.bro.annotation.Marshaler(NSObject.NoRetainMarshaler.class) NSIncrementalStoreNode newValuesForObjectID(NSManagedObjectID objectID, NSManagedObjectContext context, NSError.NSErrorPtr error);
+    public NSObject newValueForRelationship(NSRelationshipDescription relationship, NSManagedObjectID objectID, NSManagedObjectContext context) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       NSObject result = newValueForRelationship(relationship, objectID, context, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "newValueForRelationship:forObjectWithID:withContext:error:")
-    protected native NSObject newValueForRelationship(NSRelationshipDescription relationship, NSManagedObjectID objectID, NSManagedObjectContext context, NSError.NSErrorPtr error);
+    private native @org.robovm.rt.bro.annotation.Marshaler(NSObject.NoRetainMarshaler.class) NSObject newValueForRelationship(NSRelationshipDescription relationship, NSManagedObjectID objectID, NSManagedObjectContext context, NSError.NSErrorPtr error);
+    public NSArray<NSManagedObjectID> obtainPermanentIDsForObjects(NSArray<NSManagedObject> array) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       NSArray<NSManagedObjectID> result = obtainPermanentIDsForObjects(array, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "obtainPermanentIDsForObjects:error:")
-    protected native NSArray<NSManagedObjectID> obtainPermanentIDsForObjects(NSArray<NSManagedObject> array, NSError.NSErrorPtr error);
+    private native NSArray<NSManagedObjectID> obtainPermanentIDsForObjects(NSArray<NSManagedObject> array, NSError.NSErrorPtr error);
     @Method(selector = "managedObjectContextDidRegisterObjectsWithIDs:")
     public native void didRegisterObjects(NSArray<NSManagedObjectID> objectIDs);
     @Method(selector = "managedObjectContextDidUnregisterObjectsWithIDs:")
     public native void didUnregisterObjects(NSArray<NSManagedObjectID> objectIDs);
     @Method(selector = "newObjectIDForEntity:referenceObject:")
-    public native NSManagedObjectID newObjectIDForEntity(NSEntityDescription entity, NSObject data);
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSObject.NoRetainMarshaler.class) NSManagedObjectID newObjectIDForEntity(NSEntityDescription entity, NSObject data);
     @Method(selector = "referenceObjectForObjectID:")
     public native NSObject getReferenceObjectForID(NSManagedObjectID objectID);
     @Method(selector = "identifierForNewStoreAtURL:")

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,8 +30,10 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -48,17 +50,15 @@ import org.robovm.apple.coremedia.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public CAFPeakChunk() {}
-    public CAFPeakChunk(int mEditCount, CAFPositionPeak mPeaks) {
-        this.setMEditCount(mEditCount);
-        this.setMPeaks(mPeaks);
+    public CAFPeakChunk(int editCount) {
+        this.setEditCount(editCount);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native int getMEditCount();
-    @StructMember(0) public native CAFPeakChunk setMEditCount(int mEditCount);
-    @StructMember(1) public native @Array({1}) CAFPositionPeak getMPeaks();
-    @StructMember(1) public native CAFPeakChunk setMPeaks(@Array({1}) CAFPositionPeak mPeaks);
+    @StructMember(0) public native int getEditCount();
+    @StructMember(0) public native CAFPeakChunk setEditCount(int editCount);
     /*</members>*/
+    @StructMember(1) public native CAFPositionPeak.CAFPositionPeakPtr getPeaks();
     /*<methods>*//*</methods>*/
 }

@@ -15,9 +15,6 @@ enums:
     CMMotionActivityConfidence: {}
         
 classes:
-    CoreMotion:
-        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
-
     CMError:
         extends: NSError
 
@@ -121,7 +118,7 @@ protocols: {}
 
 functions:
     # Make sure we don't miss any functions if new ones are introduced in a later version
-    (CM.*):
+    (k?CM.*):
         class: CoreMotion
         name: 'Function__#{g[0]}'
 
@@ -131,12 +128,12 @@ values:
         name: getClassDomain
    
     # Make sure we don't miss any values if new ones are introduced in a later version
-    (CM.*):
+    (k?CM.*):
         class: CoreMotion
         name: 'Value__#{g[0]}'
 
 constants:
     # Make sure we don't miss any constants if new ones are introduced in a later version
-    (CM.*):
+    (k?CM.*):
         class: CoreMotion
         name: 'Constant__#{g[0]}'

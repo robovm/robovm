@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,7 +46,7 @@ public enum /*<name>*/PHCollectionListSubtype/*</name>*/ implements ValuedEnum {
     RegularFolder(100L),
     SmartFolderEvents(200L),
     SmartFolderFaces(201L),
-    Any(2147483647L);
+    Any(Bro.IS_32BIT ? 0x7fffffffL : 0x7fffffffffffffffL);
     /*</values>*/
 
     /*<bind>*/

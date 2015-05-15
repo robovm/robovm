@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,6 +36,7 @@ import org.robovm.apple.coremedia.*;
 import org.robovm.apple.corevideo.*;
 import org.robovm.apple.audiotoolbox.*;
 import org.robovm.apple.mediatoolbox.*;
+import org.robovm.apple.audiounit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -69,7 +70,7 @@ import org.robovm.apple.mediatoolbox.*;
     @Method(selector = "hasNewPixelBufferForItemTime:")
     public native boolean hasNewPixelBufferForItemTime(@ByVal CMTime itemTime);
     @Method(selector = "copyPixelBufferForItemTime:itemTimeForDisplay:")
-    public native CVPixelBuffer getPixelBufferForItemTime(@ByVal CMTime itemTime, CMTime outItemTimeForDisplay);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CVPixelBuffer getPixelBufferForItemTime(@ByVal CMTime itemTime, CMTime outItemTimeForDisplay);
     @Method(selector = "setDelegate:queue:")
     public native void setDelegate(AVPlayerItemOutputPullDelegate delegate, DispatchQueue delegateQueue);
     @Method(selector = "requestNotificationOfMediaDataChangeWithAdvanceInterval:")

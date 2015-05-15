@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -69,6 +69,11 @@ import org.robovm.apple.accounts.*;
      */
     @Property(selector = "applicationUsername")
     public native String getApplicationUsername();
+    /**
+     * @since Available in iOS 8.3 and later.
+     */
+    @Property(selector = "simulatesAskToBuyInSandbox")
+    public native boolean simulatesAskToBuyInSandbox();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -76,6 +81,6 @@ import org.robovm.apple.accounts.*;
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "paymentWithProduct:")
-    public static native SKPayment createFromProduct(SKProduct product);
+    public static native SKPayment create(SKProduct product);
     /*</methods>*/
 }

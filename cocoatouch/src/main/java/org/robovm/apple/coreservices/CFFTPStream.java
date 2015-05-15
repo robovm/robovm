@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ import org.robovm.apple.corefoundation.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("CFNetwork")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CFFTPStream/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/
@@ -47,7 +47,7 @@ import org.robovm.apple.corefoundation.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static CFReadStream createReadStream(NSURL ftpURL) {
+    public static NSInputStream createReadStream(NSURL ftpURL) {
         return createReadStream(null, ftpURL);
     }
     /**
@@ -62,7 +62,7 @@ import org.robovm.apple.corefoundation.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static CFWriteStream createWriteStream(NSURL ftpURL) {
+    public static NSOutputStream createWriteStream(NSURL ftpURL) {
         return createWriteStream(null, ftpURL);
     }
     /*<methods>*/
@@ -70,16 +70,16 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFReadStreamCreateWithFTPURL", optional=true)
-    protected static native CFReadStream createReadStream(CFAllocator alloc, NSURL ftpURL);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(NSObject.NoRetainMarshaler.class) NSInputStream createReadStream(CFAllocator alloc, NSURL ftpURL);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFFTPCreateParsedResourceListing", optional=true)
-    protected static native @MachineSizedSInt long createParsedResourceListing(CFAllocator alloc, @Pointer long buffer, @MachineSizedSInt long bufferLength, NSDictionary.NSDictionaryPtr parsed);
+    private static native @MachineSizedSInt long createParsedResourceListing(CFAllocator alloc, @Pointer long buffer, @MachineSizedSInt long bufferLength, NSDictionary.NSDictionaryPtr parsed);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFWriteStreamCreateWithFTPURL", optional=true)
-    protected static native CFWriteStream createWriteStream(CFAllocator alloc, NSURL ftpURL);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(NSObject.NoRetainMarshaler.class) NSOutputStream createWriteStream(CFAllocator alloc, NSURL ftpURL);
     /*</methods>*/
 }

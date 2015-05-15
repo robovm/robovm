@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,6 +53,8 @@ import org.robovm.apple.dispatch.*;
     extends /*<extends>*/ObjCObject/*</extends>*/ 
     /*<implements>*/implements NSObjectProtocol/*</implements>*/ {
 
+    public static final int FLAG_NO_RETAIN = 0x1;
+    
     protected static class SkipInit {}
 
     /*<ptr>*/public static class NSObjectPtr extends Ptr<NSObject, NSObjectPtr> {}/*</ptr>*/
@@ -60,7 +62,10 @@ import org.robovm.apple.dispatch.*;
     public static class Marshaler {
         @MarshalsPointer
         public static NSObject toObject(Class<? extends NSObject> cls, long handle, long flags) {
-            NSObject o = ObjCObject.toObjCObject(cls, handle);
+            return toObject(cls, handle, flags, true);
+        }
+        static NSObject toObject(Class<? extends NSObject> cls, long handle, long flags, boolean retain) {
+            NSObject o = ObjCObject.toObjCObject(cls, handle, retain ? 0 : FLAG_NO_RETAIN);
             return o;
         }
         @MarshalsPointer
@@ -85,6 +90,21 @@ import org.robovm.apple.dispatch.*;
         }
     }
     
+    /**
+     * Marshaler used for factory methods which have already retained the object
+     * they return.
+     */
+    public static class NoRetainMarshaler {
+        @MarshalsPointer
+        public static NSObject toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            return Marshaler.toObject(cls, handle, flags, false);
+        }
+        @MarshalsPointer
+        public static long toNative(NSObject o, long flags) {
+            return Marshaler.toNative(o, flags);
+        }
+    }
+    
     /*<bind>*/static { ObjCRuntime.bind(NSObject.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     private NSKeyValueCoder keyValueCoder;
@@ -106,7 +126,7 @@ import org.robovm.apple.dispatch.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "classForCoder")
-    public native Class<?> getClassForCoder();
+    public native Class<? extends NSObject> getClassForCoder();
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -117,14 +137,16 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "setObservationInfo:")
     public native void setObservationInfo(VoidPtr v);
     @Property(selector = "classForKeyedArchiver")
-    public native Class<?> getClassForKeyedArchiver();
+    public native Class<? extends NSObject> getClassForKeyedArchiver();
     /*</properties>*/
     /*<members>*//*</members>*/
     
     @Override
-    protected void afterMarshaled() {
-        super.afterMarshaled();
-        retain(getHandle());
+    protected void afterMarshaled(int flags) {
+        super.afterMarshaled(flags);
+        if ((flags & FLAG_NO_RETAIN) == 0) {
+            retain(getHandle());
+        }
     }
     
     protected long alloc() {
@@ -210,10 +232,12 @@ import org.robovm.apple.dispatch.*;
     public native boolean conformsToProtocol(ObjCProtocol aProtocol);
     @Method(selector = "respondsToSelector:")
     public native boolean respondsToSelector(Selector aSelector);
+    @Method(selector = "init")
+    private native @Pointer long init();
     @Method(selector = "retain")
-    public native NSObject retain();
+    public final native NSObject retain();
     @Method(selector = "release")
-    public native void release();
+    public final native void release();
     @Method(selector = "autorelease")
     public native NSObject autorelease();
     @Method(selector = "retainCount")
@@ -367,8 +391,6 @@ import org.robovm.apple.dispatch.*;
         didChangeValues(changeKind, indexes, key);
     }
     /*<methods>*/
-    @Method(selector = "init")
-    private native @Pointer long init();
     @Method(selector = "copy")
     public native NSObject copy();
     @Method(selector = "mutableCopy")

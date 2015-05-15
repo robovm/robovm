@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,25 +49,23 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFURLGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFURLCreateWithBytes", optional=true)
-    public static native CFURL createWithBytes(CFAllocator allocator, BytePtr URLBytes, @MachineSizedSInt long length, int encoding, CFURL baseURL);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFURL create(CFAllocator allocator, BytePtr URLBytes, @MachineSizedSInt long length, CFStringEncodings encoding, CFURL baseURL);
     @Bridge(symbol="CFURLCreateData", optional=true)
-    public static native CFData createData(CFAllocator allocator, CFURL url, int encoding, boolean escapeWhitespace);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFData asData(CFAllocator allocator, CFURL url, CFStringEncodings encoding, boolean escapeWhitespace);
     @Bridge(symbol="CFURLCreateWithString", optional=true)
-    public static native CFURL createWithString(CFAllocator allocator, String URLString, CFURL baseURL);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFURL create(CFAllocator allocator, String URLString, CFURL baseURL);
     @Bridge(symbol="CFURLCreateAbsoluteURLWithBytes", optional=true)
-    public static native CFURL createAbsoluteURLWithBytes(CFAllocator alloc, BytePtr relativeURLBytes, @MachineSizedSInt long length, int encoding, CFURL baseURL, boolean useCompatibilityMode);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFURL create(CFAllocator alloc, BytePtr relativeURLBytes, @MachineSizedSInt long length, CFStringEncodings encoding, CFURL baseURL, boolean useCompatibilityMode);
     @Bridge(symbol="CFURLCreateWithFileSystemPath", optional=true)
-    public static native CFURL createWithFileSystemPath(CFAllocator allocator, String filePath, CFURLPathStyle pathStyle, boolean isDirectory);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFURL createWithFileSystemPath(CFAllocator allocator, String filePath, CFURLPathStyle pathStyle, boolean isDirectory);
     @Bridge(symbol="CFURLCreateFromFileSystemRepresentation", optional=true)
-    public static native CFURL createFromFileSystemRepresentation(CFAllocator allocator, BytePtr buffer, @MachineSizedSInt long bufLen, boolean isDirectory);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFURL createFromFileSystemRepresentation(CFAllocator allocator, BytePtr buffer, @MachineSizedSInt long bufLen, boolean isDirectory);
     @Bridge(symbol="CFURLCreateWithFileSystemPathRelativeToBase", optional=true)
-    public static native CFURL createWithFileSystemPathRelativeToBase(CFAllocator allocator, String filePath, CFURLPathStyle pathStyle, boolean isDirectory, CFURL baseURL);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFURL createWithFileSystemPathRelativeToBase(CFAllocator allocator, String filePath, CFURLPathStyle pathStyle, boolean isDirectory, CFURL baseURL);
     @Bridge(symbol="CFURLCreateFromFileSystemRepresentationRelativeToBase", optional=true)
-    public static native CFURL createFromFileSystemRepresentationRelativeToBase(CFAllocator allocator, BytePtr buffer, @MachineSizedSInt long bufLen, boolean isDirectory, CFURL baseURL);
-    @Bridge(symbol="CFURLGetFileSystemRepresentation", optional=true)
-    public native boolean getFileSystemRepresentation(boolean resolveAgainstBase, BytePtr buffer, @MachineSizedSInt long maxBufLen);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFURL createFromFileSystemRepresentationRelativeToBase(CFAllocator allocator, BytePtr buffer, @MachineSizedSInt long bufLen, boolean isDirectory, CFURL baseURL);
     @Bridge(symbol="CFURLCopyAbsoluteURL", optional=true)
-    public native CFURL copyAbsoluteURL();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFURL getAbsoluteURL();
     @Bridge(symbol="CFURLGetString", optional=true)
     public native String getString();
     @Bridge(symbol="CFURLGetBaseURL", optional=true)
@@ -75,55 +73,51 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFURLCanBeDecomposed", optional=true)
     public native boolean canBeDecomposed();
     @Bridge(symbol="CFURLCopyScheme", optional=true)
-    public native String copyScheme();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getScheme();
     @Bridge(symbol="CFURLCopyNetLocation", optional=true)
-    public native String copyNetLocation();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getNetLocation();
     @Bridge(symbol="CFURLCopyPath", optional=true)
-    public native String copyPath();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getPath();
     @Bridge(symbol="CFURLCopyStrictPath", optional=true)
-    public native String copyStrictPath(BooleanPtr isAbsolute);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getStrictPath(BooleanPtr isAbsolute);
     @Bridge(symbol="CFURLCopyFileSystemPath", optional=true)
-    public native String copyFileSystemPath(CFURLPathStyle pathStyle);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getFileSystemPath(CFURLPathStyle pathStyle);
     @Bridge(symbol="CFURLHasDirectoryPath", optional=true)
     public native boolean hasDirectoryPath();
     @Bridge(symbol="CFURLCopyResourceSpecifier", optional=true)
-    public native String copyResourceSpecifier();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getResourceSpecifier();
     @Bridge(symbol="CFURLCopyHostName", optional=true)
-    public native String copyHostName();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getHostName();
     @Bridge(symbol="CFURLGetPortNumber", optional=true)
     public native int getPortNumber();
     @Bridge(symbol="CFURLCopyUserName", optional=true)
-    public native String copyUserName();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getUserName();
     @Bridge(symbol="CFURLCopyPassword", optional=true)
-    public native String copyPassword();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getPassword();
     @Bridge(symbol="CFURLCopyParameterString", optional=true)
-    public native String copyParameterString(String charactersToLeaveEscaped);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getParameterString(String charactersToLeaveEscaped);
     @Bridge(symbol="CFURLCopyQueryString", optional=true)
-    public native String copyQueryString(String charactersToLeaveEscaped);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getQueryString(String charactersToLeaveEscaped);
     @Bridge(symbol="CFURLCopyFragment", optional=true)
-    public native String copyFragment(String charactersToLeaveEscaped);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getFragment(String charactersToLeaveEscaped);
     @Bridge(symbol="CFURLCopyLastPathComponent", optional=true)
-    public native String copyLastPathComponent();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getLastPathComponent();
     @Bridge(symbol="CFURLCopyPathExtension", optional=true)
-    public native String copyPathExtension();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getPathExtension();
     @Bridge(symbol="CFURLCreateCopyAppendingPathComponent", optional=true)
-    public static native CFURL createCopyAppendingPathComponent(CFAllocator allocator, CFURL url, String pathComponent, boolean isDirectory);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFURL createCopyByAppendingPathComponent(CFAllocator allocator, CFURL url, String pathComponent, boolean isDirectory);
     @Bridge(symbol="CFURLCreateCopyDeletingLastPathComponent", optional=true)
-    public static native CFURL createCopyDeletingLastPathComponent(CFAllocator allocator, CFURL url);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFURL createCopyByDeletingLastPathComponent(CFAllocator allocator, CFURL url);
     @Bridge(symbol="CFURLCreateCopyAppendingPathExtension", optional=true)
-    public static native CFURL createCopyAppendingPathExtension(CFAllocator allocator, CFURL url, String extension);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFURL createCopyByAppendingPathExtension(CFAllocator allocator, CFURL url, String extension);
     @Bridge(symbol="CFURLCreateCopyDeletingPathExtension", optional=true)
-    public static native CFURL createCopyDeletingPathExtension(CFAllocator allocator, CFURL url);
-    @Bridge(symbol="CFURLGetBytes", optional=true)
-    public native @MachineSizedSInt long getBytes(BytePtr buffer, @MachineSizedSInt long bufferLength);
-    @Bridge(symbol="CFURLGetByteRangeForComponent", optional=true)
-    public native @ByVal CFRange getByteRangeForComponent(CFURLComponentType component, CFRange rangeIncludingSeparators);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFURL createCopyByDeletingPathExtension(CFAllocator allocator, CFURL url);
     @Bridge(symbol="CFURLCreateStringByReplacingPercentEscapes", optional=true)
-    public static native String createStringByReplacingPercentEscapes(CFAllocator allocator, String originalString, String charactersToLeaveEscaped);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String decodeURLString(CFAllocator allocator, String originalString, String charactersToLeaveEscaped);
     @Bridge(symbol="CFURLCreateStringByReplacingPercentEscapesUsingEncoding", optional=true)
-    public static native String createStringByReplacingPercentEscapesUsingEncoding(CFAllocator allocator, String origString, String charsToLeaveEscaped, int encoding);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String decodeURLString(CFAllocator allocator, String origString, String charsToLeaveEscaped, CFStringEncodings encoding);
     @Bridge(symbol="CFURLCreateStringByAddingPercentEscapes", optional=true)
-    public static native String createStringByAddingPercentEscapes(CFAllocator allocator, String originalString, String charactersToLeaveUnescaped, String legalURLCharactersToBeEscaped, int encoding);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String encodeURLString(CFAllocator allocator, String originalString, String charactersToLeaveUnescaped, String legalURLCharactersToBeEscaped, CFStringEncodings encoding);
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -132,33 +126,87 @@ import org.robovm.apple.foundation.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
+    public static CFURL createFileReferenceURL(CFAllocator allocator, CFURL url) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       CFURL result = createFileReferenceURL(allocator, url, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="CFURLCreateFileReferenceURL", optional=true)
-    public static native CFURL createFileReferenceURL(CFAllocator allocator, CFURL url, CFError.CFErrorPtr error);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFURL createFileReferenceURL(CFAllocator allocator, CFURL url, NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static CFURL createFilePathURL(CFAllocator allocator, CFURL url) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       CFURL result = createFilePathURL(allocator, url, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CFURLCreateFilePathURL", optional=true)
-    public static native CFURL createFilePathURL(CFAllocator allocator, CFURL url, CFError.CFErrorPtr error);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFURL createFilePathURL(CFAllocator allocator, CFURL url, NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public boolean getResourceValue(String key, VoidPtr propertyValueTypeRefPtr) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = getResourceValue(key, propertyValueTypeRefPtr, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CFURLCopyResourcePropertyForKey", optional=true)
-    public native boolean copyResourcePropertyForKey(String key, VoidPtr propertyValueTypeRefPtr, CFError.CFErrorPtr error);
+    private native boolean getResourceValue(String key, VoidPtr propertyValueTypeRefPtr, NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public CFDictionary getResourceValues(CFArray keys) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       CFDictionary result = getResourceValues(keys, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CFURLCopyResourcePropertiesForKeys", optional=true)
-    public native CFDictionary copyResourcePropertiesForKeys(CFArray keys, CFError.CFErrorPtr error);
+    private native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFDictionary getResourceValues(CFArray keys, NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public boolean setResourceValue(String key, CFType propertyValue) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = setResourceValue(key, propertyValue, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CFURLSetResourcePropertyForKey", optional=true)
-    public native boolean setResourcePropertyForKey(String key, CFType propertyValue, CFError.CFErrorPtr error);
+    private native boolean setResourceValue(String key, CFType propertyValue, NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public boolean setResourceValues(CFDictionary keyedPropertyValues) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = setResourceValues(keyedPropertyValues, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CFURLSetResourcePropertiesForKeys", optional=true)
-    public native boolean setResourcePropertiesForKeys(CFDictionary keyedPropertyValues, CFError.CFErrorPtr error);
+    private native boolean setResourceValues(CFDictionary keyedPropertyValues, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -172,43 +220,17 @@ import org.robovm.apple.foundation.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    @Bridge(symbol="CFURLSetTemporaryResourcePropertyForKey", optional=true)
-    public native void setTemporaryResourcePropertyForKey(String key, CFType propertyValue);
+    public boolean isResourceReachable() throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = isResourceReachable(ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CFURLResourceIsReachable", optional=true)
-    public native boolean resourceIsReachable(CFError.CFErrorPtr error);
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Bridge(symbol="CFURLCreateBookmarkData", optional=true)
-    public static native CFData createBookmarkData(CFAllocator allocator, CFURL url, CFURLBookmarkCreationOptions options, CFArray resourcePropertiesToInclude, CFURL relativeToURL, CFError.CFErrorPtr error);
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Bridge(symbol="CFURLCreateByResolvingBookmarkData", optional=true)
-    public static native CFURL createByResolvingBookmarkData(CFAllocator allocator, CFData bookmark, CFURLBookmarkResolutionOptions options, CFURL relativeToURL, CFArray resourcePropertiesToInclude, BooleanPtr isStale, CFError.CFErrorPtr error);
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Bridge(symbol="CFURLCreateResourcePropertiesForKeysFromBookmarkData", optional=true)
-    public static native CFDictionary createResourcePropertiesForKeysFromBookmarkData(CFAllocator allocator, CFArray resourcePropertiesToReturn, CFData bookmark);
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Bridge(symbol="CFURLCreateResourcePropertyForKeyFromBookmarkData", optional=true)
-    public static native CFType createResourcePropertyForKeyFromBookmarkData(CFAllocator allocator, String resourcePropertyKey, CFData bookmark);
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @Bridge(symbol="CFURLCreateBookmarkDataFromFile", optional=true)
-    public static native CFData createBookmarkDataFromFile(CFAllocator allocator, CFURL fileURL, CFError.CFErrorPtr errorRef);
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @Bridge(symbol="CFURLWriteBookmarkDataToFile", optional=true)
-    public static native boolean writeBookmarkDataToFile(CFData bookmarkRef, CFURL fileURL, @MachineSizedUInt long options, CFError.CFErrorPtr errorRef);
+    private native boolean isResourceReachable(NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 8.0 and later.
      */
@@ -220,37 +242,9 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFURLStopAccessingSecurityScopedResource", optional=true)
     public native void stopAccessingSecurityScopedResource();
     /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     */
-    @Deprecated
-    @Bridge(symbol="CFURLCreateDataAndPropertiesFromResource", optional=true)
-    public static native boolean createDataAndPropertiesFromResource(CFAllocator alloc, CFURL url, CFData.CFDataPtr resourceData, CFDictionary.CFDictionaryPtr properties, CFArray desiredProperties, IntPtr errorCode);
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     */
-    @Deprecated
-    @Bridge(symbol="CFURLWriteDataAndPropertiesToResource", optional=true)
-    public native boolean writeDataAndPropertiesToResource(CFData dataToWrite, CFDictionary propertiesToWrite, IntPtr errorCode);
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     */
-    @Deprecated
-    @Bridge(symbol="CFURLDestroyResource", optional=true)
-    public native boolean destroyResource(IntPtr errorCode);
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     */
-    @Deprecated
-    @Bridge(symbol="CFURLCreatePropertyFromResource", optional=true)
-    public static native CFType createPropertyFromResource(CFAllocator alloc, CFURL url, String property, IntPtr errorCode);
-    /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="CFCopyHomeDirectoryURL", optional=true)
-    public static native CFURL copyHomeDirectoryURL();
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFURL getHomeDirectoryURL();
     /*</methods>*/
 }

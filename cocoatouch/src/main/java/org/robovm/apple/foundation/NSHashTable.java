@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -112,6 +112,7 @@ import org.robovm.apple.foundation.NSSet.SetAdapter;
     public NSHashTable() {}
     protected NSHashTable(SkipInit skipInit) { super(skipInit); }
     public NSHashTable(NSHashTableOptions options, @MachineSizedUInt long initialCapacity) { super((SkipInit) null); initObject(init(options, initialCapacity)); }
+    public NSHashTable(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     
     private static void checkNull(Object o) {
@@ -153,11 +154,11 @@ import org.robovm.apple.foundation.NSSet.SetAdapter;
     }
     
     @Override
-    protected void afterMarshaled() {
+    protected void afterMarshaled(int flags) {
         if (adapter == null) {
             adapter = createAdapter();
         }
-        super.afterMarshaled();
+        super.afterMarshaled(flags);
     }
     
     public boolean add(T e) {
@@ -218,7 +219,7 @@ import org.robovm.apple.foundation.NSSet.SetAdapter;
     @Method(selector = "intersectsHashTable:")
     public native boolean intersects(NSHashTable<T> other);
     @Method(selector = "isEqualToHashTable:")
-    public native boolean isEqualTo(NSHashTable<T> other);
+    public native boolean equalsTo(NSHashTable<T> other);
     @Method(selector = "isSubsetOfHashTable:")
     public native boolean isSubsetOf(NSHashTable<T> other);
     @Method(selector = "intersectHashTable:")
@@ -228,6 +229,8 @@ import org.robovm.apple.foundation.NSSet.SetAdapter;
     @Method(selector = "minusHashTable:")
     public native void minus(NSHashTable<T> other);
     @Method(selector = "encodeWithCoder:")
-    public native void encode(NSCoder aCoder);
+    public native void encode(NSCoder coder);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     /*</methods>*/
 }

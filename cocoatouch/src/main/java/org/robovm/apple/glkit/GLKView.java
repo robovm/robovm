@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,7 +50,7 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public GLKView() {}
     protected GLKView(SkipInit skipInit) { super(skipInit); }
-    public GLKView(@ByVal CGRect frame, EAGLContext context) { super((SkipInit) null); initObject(initWithFrame$context$(frame, context)); }
+    public GLKView(@ByVal CGRect frame, EAGLContext context) { super((SkipInit) null); initObject(init(frame, context)); }
     /*</constructors>*/
 
     public GLKView(CGRect frame) {
@@ -89,14 +89,14 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "snapshot")
     public native UIImage getSnapshot();
     @Property(selector = "enableSetNeedsDisplay")
-    public native boolean isEnableSetNeedsDisplay();
+    public native boolean enablesSetNeedsDisplay();
     @Property(selector = "setEnableSetNeedsDisplay:")
-    public native void setEnableSetNeedsDisplay(boolean v);
+    public native void setEnablesSetNeedsDisplay(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithFrame:context:")
-    protected native @Pointer long initWithFrame$context$(@ByVal CGRect frame, EAGLContext context);
+    protected native @Pointer long init(@ByVal CGRect frame, EAGLContext context);
     @Method(selector = "bindDrawable")
     public native void bindDrawable();
     @Method(selector = "deleteDrawable")

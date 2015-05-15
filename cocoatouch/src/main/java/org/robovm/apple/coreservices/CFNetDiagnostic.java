@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,7 +48,7 @@ import org.robovm.apple.corefoundation.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static CFNetDiagnostic create(CFReadStream readStream, CFWriteStream writeStream) {
+    public static CFNetDiagnostic create(NSInputStream readStream, NSOutputStream writeStream) {
         return create(null, readStream, writeStream);
     }
     /**
@@ -78,12 +78,12 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFNetDiagnosticCreateWithStreams", optional=true)
-    protected static native CFNetDiagnostic create(CFAllocator alloc, CFReadStream readStream, CFWriteStream writeStream);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFNetDiagnostic create(CFAllocator alloc, NSInputStream readStream, NSOutputStream writeStream);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFNetDiagnosticCreateWithURL", optional=true)
-    protected static native CFNetDiagnostic create(CFAllocator alloc, NSURL url);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFNetDiagnostic create(CFAllocator alloc, NSURL url);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -98,6 +98,6 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFNetDiagnosticCopyNetworkStatusPassively", optional=true)
-    protected native CFNetDiagnosticStatus getNetworkStatusPassively(NSString.NSStringPtr description);
+    private native CFNetDiagnosticStatus getNetworkStatusPassively(NSString.NSStringPtr description);
     /*</methods>*/
 }

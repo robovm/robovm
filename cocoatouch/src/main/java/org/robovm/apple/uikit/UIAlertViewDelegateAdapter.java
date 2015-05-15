@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,18 +54,18 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("alertView:clickedButtonAtIndex:")
-    public void clicked(UIAlertView alertView, @MachineSizedSInt long buttonIndex) { throw new UnsupportedOperationException(); }
+    public void clicked(UIAlertView alertView, @MachineSizedSInt long buttonIndex) {}
     @NotImplemented("alertViewCancel:")
-    public void cancel(UIAlertView alertView) { throw new UnsupportedOperationException(); }
+    public void cancel(UIAlertView alertView) {}
     @NotImplemented("willPresentAlertView:")
-    public void willPresent(UIAlertView alertView) { throw new UnsupportedOperationException(); }
+    public void willPresent(UIAlertView alertView) {}
     @NotImplemented("didPresentAlertView:")
-    public void didPresent(UIAlertView alertView) { throw new UnsupportedOperationException(); }
+    public void didPresent(UIAlertView alertView) {}
     @NotImplemented("alertView:willDismissWithButtonIndex:")
-    public void willDismiss(UIAlertView alertView, @MachineSizedSInt long buttonIndex) { throw new UnsupportedOperationException(); }
+    public void willDismiss(UIAlertView alertView, @MachineSizedSInt long buttonIndex) {}
     @NotImplemented("alertView:didDismissWithButtonIndex:")
-    public void didDismiss(UIAlertView alertView, @MachineSizedSInt long buttonIndex) { throw new UnsupportedOperationException(); }
+    public void didDismiss(UIAlertView alertView, @MachineSizedSInt long buttonIndex) {}
     @NotImplemented("alertViewShouldEnableFirstOtherButton:")
-    public boolean shouldEnableFirstOtherButton(UIAlertView alertView) { throw new UnsupportedOperationException(); }
+    public boolean shouldEnableFirstOtherButton(UIAlertView alertView) { return false; }
     /*</methods>*/
 }

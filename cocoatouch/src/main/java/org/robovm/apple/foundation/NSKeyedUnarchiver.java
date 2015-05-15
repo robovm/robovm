@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -73,9 +73,9 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "finishDecoding")
     public native void finishDecoding();
     @Method(selector = "setClass:forClassName:")
-    public native void setClassForClassName(Class<?> cls, String codedName);
+    public native void setClassForClassName(Class<? extends NSObject> cls, String codedName);
     @Method(selector = "classForClassName:")
-    public native Class<?> getClassForClassName(String codedName);
+    public native Class<? extends NSObject> getClassForClassName(String codedName);
     /**
      * @since Available in iOS 6.0 and later.
      */
@@ -86,8 +86,8 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "unarchiveObjectWithFile:")
     private static native NSObject unarchiveObject(String path);
     @Method(selector = "setClass:forClassName:")
-    public static native void setDefaultClassForClassName(Class<?> cls, String codedName);
+    public static native void setDefaultClassForClassName(Class<? extends NSObject> cls, String codedName);
     @Method(selector = "classForClassName:")
-    public static native Class<?> getDefaultClassForClassName(String codedName);
+    public static native Class<? extends NSObject> getDefaultClassForClassName(String codedName);
     /*</methods>*/
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,10 +50,10 @@ import org.robovm.apple.uikit.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("calendarChooserSelectionDidChange:")
-    public void didChangeSelection(EKCalendarChooser calendarChooser) { throw new UnsupportedOperationException(); }
+    public void didChangeSelection(EKCalendarChooser calendarChooser) {}
     @NotImplemented("calendarChooserDidFinish:")
-    public void didFinish(EKCalendarChooser calendarChooser) { throw new UnsupportedOperationException(); }
+    public void didFinish(EKCalendarChooser calendarChooser) {}
     @NotImplemented("calendarChooserDidCancel:")
-    public void didCancel(EKCalendarChooser calendarChooser) { throw new UnsupportedOperationException(); }
+    public void didCancel(EKCalendarChooser calendarChooser) {}
     /*</methods>*/
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,8 +30,10 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -40,15 +42,15 @@ import org.robovm.apple.coremedia.*;
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/AudioConverterProperty/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    PropertyMinimumInputBufferSize(1835623027L),
-    PropertyMinimumOutputBufferSize(1836016243L),
-    PropertyMaximumInputBufferSize(2020172403L),
-    PropertyMaximumInputPacketSize(2020175987L),
-    PropertyMaximumOutputPacketSize(2020569203L),
-    PropertyCalculateInputBufferSize(1667850867L),
-    PropertyCalculateOutputBufferSize(1668244083L),
-    PropertyInputCodecParameters(1768121456L),
-    PropertyOutputCodecParameters(1868784752L),
+    MinimumInputBufferSize(1835623027L),
+    MinimumOutputBufferSize(1836016243L),
+    MaximumInputBufferSize(2020172403L),
+    MaximumInputPacketSize(2020175987L),
+    MaximumOutputPacketSize(2020569203L),
+    CalculateInputBufferSize(1667850867L),
+    CalculateOutputBufferSize(1668244083L),
+    InputCodecParameters(1768121456L),
+    OutputCodecParameters(1868784752L),
     SampleRateConverterAlgorithm(1936876393L),
     SampleRateConverterComplexity(1936876385L),
     SampleRateConverterQuality(1936876401L),
@@ -70,9 +72,10 @@ public enum /*<name>*/AudioConverterProperty/*</name>*/ implements ValuedEnum {
     AvailableEncodeChannelLayoutTags(1634034540L),
     CurrentOutputStreamDescription(1633906532L),
     CurrentInputStreamDescription(1633904996L),
-    PropertySettings(1633906803L),
-    PropertyBitDepthHint(1633903204L),
-    PropertyFormatList(1718383476L);
+    Settings(1633906803L),
+    BitDepthHint(1633903204L),
+    FormatList(1718383476L),
+    CanResumeFromInterruption(1668441705L);
     /*</values>*/
 
     /*<bind>*/

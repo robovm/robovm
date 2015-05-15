@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,6 +55,12 @@ import org.robovm.apple.dispatch.*;
     public native void setLabel(String v);
     /*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * @since Available in iOS 8.3 and later.
+     */
+    public void setVertexBytes(byte[] bytes, @MachineSizedUInt long index) {
+        setVertexBytes(VM.getArrayValuesAddress(bytes), bytes.length, index);
+    }
     public void setVertexBuffers(MTLBuffer[] buffers, long[] offsets, @ByVal NSRange range) {
         MTLBuffer.MTLBufferPtr bptr = new MTLBuffer.MTLBufferPtr();
         bptr.set(buffers);
@@ -111,8 +117,18 @@ import org.robovm.apple.dispatch.*;
     /*<methods>*/
     @Method(selector = "setRenderPipelineState:")
     public native void setRenderPipelineState(MTLRenderPipelineState pipelineState);
+    /**
+     * @since Available in iOS 8.3 and later.
+     */
+    @Method(selector = "setVertexBytes:length:atIndex:")
+    protected native void setVertexBytes(@Pointer long bytes, @MachineSizedUInt long length, @MachineSizedUInt long index);
     @Method(selector = "setVertexBuffer:offset:atIndex:")
     public native void setVertexBuffer(MTLBuffer buffer, @MachineSizedUInt long offset, @MachineSizedUInt long index);
+    /**
+     * @since Available in iOS 8.3 and later.
+     */
+    @Method(selector = "setVertexBufferOffset:atIndex:")
+    public native void setVertexBufferOffset(@MachineSizedUInt long offset, @MachineSizedUInt long index);
     @Method(selector = "setVertexBuffers:offsets:withRange:")
     protected native void setVertexBuffers(MTLBuffer.MTLBufferPtr buffers, MachineSizedUIntPtr offsets, @ByVal NSRange range);
     @Method(selector = "setVertexTexture:atIndex:")
@@ -139,8 +155,18 @@ import org.robovm.apple.dispatch.*;
     public native void setScissorRect(@ByVal MTLScissorRect rect);
     @Method(selector = "setTriangleFillMode:")
     public native void setTriangleFillMode(MTLTriangleFillMode fillMode);
+    /**
+     * @since Available in iOS 8.3 and later.
+     */
+    @Method(selector = "setFragmentBytes:length:atIndex:")
+    public native void setFragmentBytes$length$atIndex$(VoidPtr bytes, @MachineSizedUInt long length, @MachineSizedUInt long index);
     @Method(selector = "setFragmentBuffer:offset:atIndex:")
     public native void setFragmentBuffer(MTLBuffer buffer, @MachineSizedUInt long offset, @MachineSizedUInt long index);
+    /**
+     * @since Available in iOS 8.3 and later.
+     */
+    @Method(selector = "setFragmentBufferOffset:atIndex:")
+    public native void setFragmentBufferOffset$atIndex$(@MachineSizedUInt long offset, @MachineSizedUInt long index);
     @Method(selector = "setFragmentBuffers:offsets:withRange:")
     protected native void setFragmentBuffers(MTLBuffer.MTLBufferPtr buffers, MachineSizedUIntPtr offset, @ByVal NSRange range);
     @Method(selector = "setFragmentTexture:atIndex:")

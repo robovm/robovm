@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian Mobile AB
+ * Copyright (C) 2012 RoboVM AB
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -38,6 +38,11 @@ public class StructureType extends AggregateType {
     @Override
     public Type getTypeAt(int index) {
         return types[index];
+    }
+    
+    @Override
+    public int getTypeCount() {
+        return types.length;
     }
     
     @Override

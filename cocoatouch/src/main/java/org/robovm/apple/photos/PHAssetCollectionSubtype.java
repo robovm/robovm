@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -58,7 +58,7 @@ public enum /*<name>*/PHAssetCollectionSubtype/*</name>*/ implements ValuedEnum 
     SmartAlbumBursts(207L),
     SmartAlbumSlomoVideos(208L),
     SmartAlbumUserLibrary(209L),
-    Any(2147483647L);
+    Any(Bro.IS_32BIT ? 0x7fffffffL : 0x7fffffffffffffffL);
     /*</values>*/
 
     /*<bind>*/

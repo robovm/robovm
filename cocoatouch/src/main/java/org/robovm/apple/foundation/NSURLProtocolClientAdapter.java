@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,20 +55,20 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("URLProtocol:wasRedirectedToRequest:redirectResponse:")
-    public void wasRedirectedToRequest(NSURLProtocol protocol, NSURLRequest request, NSURLResponse redirectResponse) { throw new UnsupportedOperationException(); }
+    public void wasRedirectedToRequest(NSURLProtocol protocol, NSURLRequest request, NSURLResponse redirectResponse) {}
     @NotImplemented("URLProtocol:cachedResponseIsValid:")
-    public void cachedResponseIsValid(NSURLProtocol protocol, NSCachedURLResponse cachedResponse) { throw new UnsupportedOperationException(); }
+    public void cachedResponseIsValid(NSURLProtocol protocol, NSCachedURLResponse cachedResponse) {}
     @NotImplemented("URLProtocol:didReceiveResponse:cacheStoragePolicy:")
-    public void didReceiveResponse(NSURLProtocol protocol, NSURLResponse response, NSURLCacheStoragePolicy policy) { throw new UnsupportedOperationException(); }
+    public void didReceiveResponse(NSURLProtocol protocol, NSURLResponse response, NSURLCacheStoragePolicy policy) {}
     @NotImplemented("URLProtocol:didLoadData:")
-    public void didLoadData(NSURLProtocol protocol, NSData data) { throw new UnsupportedOperationException(); }
+    public void didLoadData(NSURLProtocol protocol, NSData data) {}
     @NotImplemented("URLProtocolDidFinishLoading:")
-    public void didFinishLoading(NSURLProtocol protocol) { throw new UnsupportedOperationException(); }
+    public void didFinishLoading(NSURLProtocol protocol) {}
     @NotImplemented("URLProtocol:didFailWithError:")
-    public void didFail(NSURLProtocol protocol, NSError error) { throw new UnsupportedOperationException(); }
+    public void didFail(NSURLProtocol protocol, NSError error) {}
     @NotImplemented("URLProtocol:didReceiveAuthenticationChallenge:")
-    public void didReceiveAuthenticationChallenge(NSURLProtocol protocol, NSURLAuthenticationChallenge challenge) { throw new UnsupportedOperationException(); }
+    public void didReceiveAuthenticationChallenge(NSURLProtocol protocol, NSURLAuthenticationChallenge challenge) {}
     @NotImplemented("URLProtocol:didCancelAuthenticationChallenge:")
-    public void didCancelAuthenticationChallenge(NSURLProtocol protocol, NSURLAuthenticationChallenge challenge) { throw new UnsupportedOperationException(); }
+    public void didCancelAuthenticationChallenge(NSURLProtocol protocol, NSURLAuthenticationChallenge challenge) {}
     /*</methods>*/
 }

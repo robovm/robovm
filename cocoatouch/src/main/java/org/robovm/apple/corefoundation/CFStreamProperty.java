@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,12 +32,15 @@ import org.robovm.apple.foundation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CFStreamProperty.Marshaler.class)
 /*<annotations>*/@Library("CoreFoundation")/*</annotations>*/
+@Marshaler(/*<name>*/CFStreamProperty/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CFStreamProperty/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<CFString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/CFStreamProperty/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CFStreamProperty toObject(Class<CFStreamProperty> cls, long handle, long flags) {
@@ -55,34 +58,50 @@ import org.robovm.apple.foundation.*;
             return CFType.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(CFStreamProperty.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    public static final CFStreamProperty DataWritter = new CFStreamProperty("DataWrittenValue");
-    public static final CFStreamProperty AppendToFile = new CFStreamProperty("AppendToFileValue");
-    public static final CFStreamProperty FileCurrentOffset = new CFStreamProperty("FileCurrentOffsetValue");
-    public static final CFStreamProperty SocketNativeHandle = new CFStreamProperty("SocketNativeHandleValue");
-    public static final CFStreamProperty SocketRemoteHostName = new CFStreamProperty("SocketRemoteHostNameValue");
-    public static final CFStreamProperty SocketRemotePortNumber = new CFStreamProperty("SocketRemotePortNumberValue");
-    
-    private static CFStreamProperty[] values = new CFStreamProperty[] {DataWritter, AppendToFile, FileCurrentOffset, 
-        SocketNativeHandle, SocketRemoteHostName, SocketRemotePortNumber};
-    private final LazyGlobalValue<CFString> lazyGlobalValue;
-    
-    private CFStreamProperty(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CFStreamProperty> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CFStreamProperty> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(CFStreamProperty.valueOf(o.get(i, CFString.class)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CFStreamProperty> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray array = CFMutableArray.create();
+            for (CFStreamProperty i : l) {
+                array.add(i.value());
+            }
+            return CFType.Marshaler.toNative(array, flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public CFString value() {
-        return lazyGlobalValue.value();
+    /*</marshalers>*/
+
+    /*<constants>*/
+    public static final CFStreamProperty DataWritten = new CFStreamProperty("DataWritten");
+    public static final CFStreamProperty AppendToFile = new CFStreamProperty("AppendToFile");
+    public static final CFStreamProperty FileCurrentOffset = new CFStreamProperty("FileCurrentOffset");
+    public static final CFStreamProperty SocketNativeHandle = new CFStreamProperty("SocketNativeHandle");
+    public static final CFStreamProperty SocketRemoteHostName = new CFStreamProperty("SocketRemoteHostName");
+    public static final CFStreamProperty SocketRemotePortNumber = new CFStreamProperty("SocketRemotePortNumber");
+    /*</constants>*/
+    
+    private static /*<name>*/CFStreamProperty/*</name>*/[] values = new /*<name>*/CFStreamProperty/*</name>*/[] {/*<value_list>*/DataWritten, AppendToFile, FileCurrentOffset, SocketNativeHandle, SocketRemoteHostName, SocketRemotePortNumber/*</value_list>*/};
+    
+    /*<name>*/CFStreamProperty/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static CFStreamProperty valueOf(CFString value) {
-        for (CFStreamProperty v : values) {
+    public static /*<name>*/CFStreamProperty/*</name>*/ valueOf(/*<type>*/CFString/*</type>*/ value) {
+        for (/*<name>*/CFStreamProperty/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -90,18 +109,26 @@ import org.robovm.apple.foundation.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/CFStreamProperty/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    @GlobalValue(symbol="kCFStreamPropertyDataWritten", optional=true)
-    protected static native String DataWrittenValue();
-    @GlobalValue(symbol="kCFStreamPropertyAppendToFile", optional=true)
-    protected static native String AppendToFileValue();
-    @GlobalValue(symbol="kCFStreamPropertyFileCurrentOffset", optional=true)
-    protected static native String FileCurrentOffsetValue();
-    @GlobalValue(symbol="kCFStreamPropertySocketNativeHandle", optional=true)
-    protected static native String SocketNativeHandleValue();
-    @GlobalValue(symbol="kCFStreamPropertySocketRemoteHostName", optional=true)
-    protected static native String SocketRemoteHostNameValue();
-    @GlobalValue(symbol="kCFStreamPropertySocketRemotePortNumber", optional=true)
-    protected static native String SocketRemotePortNumberValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("CoreFoundation")/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        @GlobalValue(symbol="kCFStreamPropertyDataWritten", optional=true)
+        public static native CFString DataWritten();
+        @GlobalValue(symbol="kCFStreamPropertyAppendToFile", optional=true)
+        public static native CFString AppendToFile();
+        @GlobalValue(symbol="kCFStreamPropertyFileCurrentOffset", optional=true)
+        public static native CFString FileCurrentOffset();
+        @GlobalValue(symbol="kCFStreamPropertySocketNativeHandle", optional=true)
+        public static native CFString SocketNativeHandle();
+        @GlobalValue(symbol="kCFStreamPropertySocketRemoteHostName", optional=true)
+        public static native CFString SocketRemoteHostName();
+        @GlobalValue(symbol="kCFStreamPropertySocketRemotePortNumber", optional=true)
+        public static native CFString SocketRemotePortNumber();
+        /*</values>*/
+    }
 }

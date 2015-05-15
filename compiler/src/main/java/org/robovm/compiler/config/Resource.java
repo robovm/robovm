@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 Trillian Mobile AB
+ * Copyright (C) 2013 RoboVM AB
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -29,36 +29,48 @@ import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 
 /**
- * Specifies resources needed by the application the compiler produces. A resource can be 
- * specified using a single {@link File}:
- * <pre>&lt;resource&gt;path/to/the/resource.txt&lt;/resource&gt;</pre>
- * If the path specifies a directory the directory including its contents (except for the default
- * excludes, see below) will be copied. If the path specifies a file, that file will be copied.
+ * Specifies resources needed by the application the compiler produces. A
+ * resource can be specified using a single {@link File}:
+ * 
+ * <pre>
+ * &lt;resource&gt;path/to/the/resource.txt&lt;/resource&gt;
+ * </pre>
+ * 
+ * If the path specifies a directory the directory including its contents
+ * (except for the default excludes, see below) will be copied. If the path
+ * specifies a file, that file will be copied.
  * <p>
- * A resource be also be specified with a base directory, a target path and include and exclude
- * filters (similar to Maven's &lt;resource&gt; element):
- * <pre>&lt;resource&gt;
- *  &lt;targetPath&gt;data&lt;/targetPath&gt;
- *  &lt;directory&gt;resources&lt;/directory&gt;
- *  &lt;includes&gt;
- *    &lt;include&gt;**&#47;*&lt;/include&gt;
- *  &lt;/includes&gt;
- *  &lt;excludes&gt;
- *    &lt;exclude&gt;**&#47;*.bak&lt;/exclude&gt;
- *  &lt;/excludes&gt;
- *  &lt;flatten&gt;false&lt;/flatten&gt;
- *  &lt;ignoreDefaultExcludes&gt;false&lt;/ignoreDefaultExcludes&gt;
- *  &lt;skipPngCrush&gt;false&lt;/skipPngCrush&gt;
- *&lt;/resource&gt;</pre>
- * Each element represents a property in this class. Please see the documentation for each 
- * property's getter method for more information.
+ * A resource be also be specified with a base directory, a target path and
+ * include and exclude filters (similar to Maven's &lt;resource&gt; element):
+ * 
+ * <pre>
+ * &lt;resource&gt;
+ *   &lt;targetPath&gt;data&lt;/targetPath&gt;
+ *   &lt;directory&gt;resources&lt;/directory&gt;
+ *   &lt;includes&gt;
+ *     &lt;include&gt;**&#47;*&lt;/include&gt;
+ *   &lt;/includes&gt;
+ *   &lt;excludes&gt;
+ *     &lt;exclude&gt;**&#47;*.bak&lt;/exclude&gt;
+ *   &lt;/excludes&gt;
+ *   &lt;flatten&gt;false&lt;/flatten&gt;
+ *   &lt;ignoreDefaultExcludes&gt;false&lt;/ignoreDefaultExcludes&gt;
+ *   &lt;skipPngCrush&gt;false&lt;/skipPngCrush&gt;
+ * &lt;/resource&gt;
+ * </pre>
+ * 
+ * Each element represents a property in this class. Please see the
+ * documentation for each property's getter method for more information.
  * </p>
  * <p>
- * The current {@link Target} may transform and rename a resource while being copied (e.g. running
- * {@code pngcrush} or converting {@code xib} files to {@code nib} files).
+ * The current {@link Target} may transform and rename a resource while being
+ * copied (e.g. running {@code pngcrush} or converting {@code xib} files to
+ * {@code nib} files).
  * </p>
  * <h2><a name="defexcludes">Default excludes</a></h2>
- * <p>(The same as those used by ANT 1.9)</p>
+ * <p>
+ * (The same as those used by ANT 1.9)
+ * </p>
  * <p>
  * Miscellaneous typical temporary files:
  * <ul>
@@ -67,7 +79,7 @@ import org.simpleframework.xml.ElementList;
  * <li>**&#47;.#*</li>
  * <li>**&#47;%*%</li>
  * <li>**&#47;._*</li>
- *  </ul>
+ * </ul>
  * CVS:
  * <ul>
  * <li>**&#47;CVS</li>
@@ -118,19 +130,27 @@ import org.simpleframework.xml.ElementList;
  * </p>
  */
 public class Resource {
-    
+
     /**
-     * Interface used by {@link Resource#walk(Walker, File)} to walk the paths matched by a 
-     * {@link Resource}.
+     * Interface used by {@link Resource#walk(Walker, File)} to walk the paths
+     * matched by a {@link Resource}.
      */
     public interface Walker {
         /**
-         * Processes the specified file. This typically copies the file to the destination directory
-         * possibly renaming/transforming the file in some way in the process.
+         * Processes the specified folder. This typically does nothing but
+         * return {@code true} to signal that the files in the folder should be
+         * processed using {@link #processFile(Resource, File, File)}.
          */
-        void process(Resource resource, File file, File destDir) throws IOException;
+        boolean processDir(Resource resource, File dir, File destDir) throws IOException;
+
+        /**
+         * Processes the specified file. This typically copies the file to the
+         * destination directory possibly renaming/transforming the file in some
+         * way in the process.
+         */
+        void processFile(Resource resource, File file, File destDir) throws IOException;
     }
-    
+
     private static final AntPathMatcher MATCH_ALL_MATCHER = new AntPathMatcher("**/*");
     private static final String[] DEFAULTEXCLUDES = {
         // Miscellaneous typical temporary files
@@ -180,11 +200,11 @@ public class Resource {
         "**/.DS_Store"
     };
     private static final List<AntPathMatcher> DEFAULTEXCLUDESMATCHERS;
-    
+
     static {
         DEFAULTEXCLUDESMATCHERS = toAntPathMatchers(Arrays.asList(DEFAULTEXCLUDES));
     }
-    
+
     @Element(required = false)
     private String targetPath;
     @Element(required = false)
@@ -202,11 +222,12 @@ public class Resource {
 
     @Element(required = false)
     private File path;
-    
+
     protected Resource() {}
-    
+
     /**
-     * Creates a new simple {@link Resource} which will copy the specified file or directory.
+     * Creates a new simple {@link Resource} which will copy the specified file
+     * or directory.
      * 
      * @param path the {@link File} which will be copied.
      */
@@ -215,8 +236,8 @@ public class Resource {
     }
 
     /**
-     * Creates a new {@link Resource} which will copy all files in the specified base directory
-     * to the specified target path in the application directory.
+     * Creates a new {@link Resource} which will copy all files in the specified
+     * base directory to the specified target path in the application directory.
      * 
      * @param directory the base directory.
      * @param targetPath the target path.
@@ -225,92 +246,94 @@ public class Resource {
         this.directory = directory;
         this.targetPath = targetPath;
     }
-    
+
     /**
-     * Returns the path which will be copied for simple {@link Resource}s or {@code null} if this
-     * isn't a simple {@link Resource}.
+     * Returns the path which will be copied for simple {@link Resource}s or
+     * {@code null} if this isn't a simple {@link Resource}.
      * 
      * @return the path.
      */
     public File getPath() {
         return path;
     }
-    
+
     /**
-     * Returns the target path relative to the application directory (i.e. app bundle directory for
-     * iOS apps) where paths matching this {@link Resource} will be copied. If not specified paths
-     * will be copied directly to the application directory.
+     * Returns the target path relative to the application directory (i.e. app
+     * bundle directory for iOS apps) where paths matching this {@link Resource}
+     * will be copied. If not specified paths will be copied directly to the
+     * application directory.
      * 
      * @return the target path or {@code null} if not specified.
      */
     public String getTargetPath() {
         return targetPath;
     }
-    
+
     /**
-     * Returns the base directory containing the files and directories copied by the 
-     * {@link Resource}.
+     * Returns the base directory containing the files and directories copied by
+     * the {@link Resource}.
      * 
      * @return the base directory.
      */
     public File getDirectory() {
         return directory;
     }
-    
+
     /**
-     * Returns a list of Ant-style patterns (using **, *, ? as wildcards) matching files which will
-     * be included when copying this {@link Resource}.
+     * Returns a list of Ant-style patterns (using **, *, ? as wildcards)
+     * matching files which will be included when copying this {@link Resource}.
      * 
      * @return the include patterns.
      * @see AntPathMatcher
      */
     public List<String> getIncludes() {
-        return includes != null ? Collections.unmodifiableList(includes) : Collections.<String>emptyList();
+        return includes != null ? Collections.unmodifiableList(includes) : Collections.<String> emptyList();
     }
-    
+
     /**
      * Adds include patterns.
      * 
      * @return {@code this}
      * @see #getIncludes()
      */
-    public Resource include(String ... patterns) {
+    public Resource include(String... patterns) {
         if (includes == null) {
             includes = new ArrayList<String>();
         }
         includes.addAll(Arrays.asList(patterns));
         return this;
     }
-    
+
     /**
-     * Returns a list of Ant-style patterns (using **, *, ? as wildcards) matching files which will
-     * be excluded when copying this {@link Resource}.
+     * Returns a list of Ant-style patterns (using **, *, ? as wildcards)
+     * matching files which will be excluded when copying this {@link Resource}.
      * 
      * @return the exclude patterns.
      * @see AntPathMatcher
      */
     public List<String> getExcludes() {
-        return excludes != null ? Collections.unmodifiableList(excludes) : Collections.<String>emptyList();
+        return excludes != null ? Collections.unmodifiableList(excludes) : Collections.<String> emptyList();
     }
-    
+
     /**
      * Adds exclude patterns.
      * 
      * @return {@code this}
      * @see #getExcludes()
      */
-    public Resource exclude(String ... patterns) {
+    public Resource exclude(String... patterns) {
         if (excludes == null) {
             excludes = new ArrayList<String>();
         }
         excludes.addAll(Arrays.asList(patterns));
         return this;
     }
-    
+
     /**
-     * Returns <code>true</code> if the files matched by this {@link Resource} should be copied
-     * directly into the application directory without preserving the directory structure of the
-     * source directory. The default is <code>false</code>.
+     * Returns <code>true</code> if the files matched by this {@link Resource}
+     * should be copied directly into the application directory without
+     * preserving the directory structure of the source directory. The default
+     * is <code>false</code>.
      * 
      * @return <code>true</code> if the directory structure should be flattened.
      */
@@ -331,16 +354,17 @@ public class Resource {
     }
 
     /**
-     * Returns <code>true</code> if the <a href="#defexcludes">default excludes</a> should be 
-     * ignored and copied for this {@link Resource}. The default is <code>false</code>, i.e. don't
-     * copy files matching the default excludes.
+     * Returns <code>true</code> if the <a href="#defexcludes">default
+     * excludes</a> should be ignored and copied for this {@link Resource}. The
+     * default is <code>false</code>, i.e. don't copy files matching the default
+     * excludes.
      * 
      * @return <code>true</code> if default excludes should be ignored.
      */
     public boolean isIgnoreDefaultExcludes() {
         return ignoreDefaultExcludes == null ? false : ignoreDefaultExcludes.booleanValue();
     }
-    
+
     /**
      * Sets the {@code ignoreDefaultExcludes} property and returns {@code this}.
      * 
@@ -352,18 +376,19 @@ public class Resource {
         this.ignoreDefaultExcludes = b;
         return this;
     }
-    
+
     /**
-     * Returns <code>true</code> if {@code pngcrush} should not be called for PNG files matching
-     * this {@link Resource} when targeting iOS. The default is <code>false</code>, i.e. 
-     * {@code pngcrush} WILL be called for PNG files.
+     * Returns <code>true</code> if {@code pngcrush} should not be called for
+     * PNG files matching this {@link Resource} when targeting iOS. The default
+     * is <code>false</code>, i.e. {@code pngcrush} WILL be called for PNG
+     * files.
      * 
      * @return <code>true</code> if {@code pngcrush} should not be called.
      */
     public boolean isSkipPngCrush() {
         return skipPngCrush == null ? false : skipPngCrush.booleanValue();
     }
-    
+
     /**
      * Sets the {@code skipPngCrush} property and returns {@code this}.
      * 
@@ -375,14 +400,18 @@ public class Resource {
         this.skipPngCrush = b;
         return this;
     }
-    
+
+    public void walk(Walker walker) throws IOException {
+        walk(walker, new File("."));
+    }
+
     public void walk(Walker walker, File destDir) throws IOException {
         if (targetPath != null && targetPath.trim().length() > 0) {
             destDir = new File(destDir, targetPath);
         }
         if (path != null) {
-            // Walk path and all its descendants (if a directory) including everything except the 
-            // default excludes.
+            // Walk path and all its descendants (if a directory) including
+            // everything except the default excludes.
             walk(walker, path.getParentFile(), path.getName(), destDir,
                     Collections.singletonList(MATCH_ALL_MATCHER), DEFAULTEXCLUDESMATCHERS);
         } else {
@@ -407,16 +436,16 @@ public class Resource {
             }
         }
     }
-    
-    private void walk(Walker walker, File baseDir, String path, File destDir, 
+
+    private void walk(Walker walker, File baseDir, String path, File destDir,
             List<AntPathMatcher> inc, List<AntPathMatcher> exc) throws IOException {
-        
+
         File f = new File(baseDir, path);
         // Always descend into directories unless explicitly excluded.
         if ((f.isDirectory() || matches(path, inc)) && !matches(path, exc)) {
             if (f.isFile()) {
-                walker.process(this, f, destDir);
-            } else if (f.isDirectory()) {
+                walker.processFile(this, f, destDir);
+            } else if (f.isDirectory() && walker.processDir(this, f, destDir)) {
                 File newDestDir = destDir;
                 if (!isFlatten()) {
                     newDestDir = new File(destDir, f.getName());
@@ -446,7 +475,7 @@ public class Resource {
         }
         return false;
     }
-    
+
     @Override
     public int hashCode() {
         final int prime = 31;

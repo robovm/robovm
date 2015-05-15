@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -88,7 +88,22 @@ import org.robovm.apple.audiotoolbox.*;
     @StructMember(1) public native @ByVal CMTime getDuration();
     @StructMember(1) public native CMTimeRange setDuration(@ByVal CMTime duration);
     /*</members>*/
+    @Override
+    public String toString() {
+        return getDescription(null, this);
+    }
     /*<methods>*/
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="kCMTimeRangeZero", optional=true)
+    public static native @ByVal CMTimeRange Zero();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="kCMTimeRangeInvalid", optional=true)
+    public static native @ByVal CMTimeRange Invalid();
+    
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -98,36 +113,54 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 4.0 and later.
      */
     public CMTimeRange union(CMTimeRange range2) { return union(this, range2); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="CMTimeRangeGetUnion", optional=true)
     private static native @ByVal CMTimeRange union(@ByVal CMTimeRange range1, @ByVal CMTimeRange range2);
     /**
      * @since Available in iOS 4.0 and later.
      */
     public CMTimeRange intersection(CMTimeRange range2) { return intersection(this, range2); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="CMTimeRangeGetIntersection", optional=true)
     private static native @ByVal CMTimeRange intersection(@ByVal CMTimeRange range1, @ByVal CMTimeRange range2);
     /**
      * @since Available in iOS 4.0 and later.
      */
     public boolean equals(CMTimeRange range2) { return equals(this, range2); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="CMTimeRangeEqual", optional=true)
     private static native boolean equals(@ByVal CMTimeRange range1, @ByVal CMTimeRange range2);
     /**
      * @since Available in iOS 4.0 and later.
      */
     public boolean containsTime(CMTime time) { return containsTime(this, time); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="CMTimeRangeContainsTime", optional=true)
     private static native boolean containsTime(@ByVal CMTimeRange range, @ByVal CMTime time);
     /**
      * @since Available in iOS 4.0 and later.
      */
     public boolean containsTimeRange(CMTimeRange range2) { return containsTimeRange(this, range2); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="CMTimeRangeContainsTimeRange", optional=true)
     private static native boolean containsTimeRange(@ByVal CMTimeRange range1, @ByVal CMTimeRange range2);
     /**
      * @since Available in iOS 4.0 and later.
      */
     public CMTime getEnd() { return getEnd(this); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="CMTimeRangeGetEnd", optional=true)
     private static native @ByVal CMTime getEnd(@ByVal CMTimeRange range);
     /**
@@ -138,9 +171,12 @@ import org.robovm.apple.audiotoolbox.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public NSDictionary<?, ?> copyAsDictionary(CFAllocator allocator) { return copyAsDictionary(this, allocator); }
+    public NSDictionary<?, ?> asDictionary(CFAllocator allocator) { return asDictionary(this, allocator); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="CMTimeRangeCopyAsDictionary", optional=true)
-    private static native NSDictionary<?, ?> copyAsDictionary(@ByVal CMTimeRange range, CFAllocator allocator);
+    private static native NSDictionary<?, ?> asDictionary(@ByVal CMTimeRange range, CFAllocator allocator);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -150,11 +186,14 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMTimeRangeCopyDescription", optional=true)
-    public static native String copyDescription(CFAllocator allocator, @ByVal CMTimeRange range);
+    private static native String getDescription(CFAllocator allocator, @ByVal CMTimeRange range);
     /**
      * @since Available in iOS 4.0 and later.
      */
     public void show() { show(this); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="CMTimeRangeShow", optional=true)
     private static native void show(@ByVal CMTimeRange range);
     /*</methods>*/

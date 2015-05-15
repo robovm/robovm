@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,6 +34,8 @@ import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
 import org.robovm.apple.corelocation.*;
 /*</imports>*/
+import org.robovm.apple.corefoundation.CFDictionary;
+import org.robovm.apple.coremedia.CMTextMarkupAttributes;
 
 /*<javadoc>*/
 /**
@@ -256,6 +258,60 @@ import org.robovm.apple.corelocation.*;
     public native void setSecureTextEntry(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public void setScopeBarButtonTitleTextAttributes(NSAttributedStringAttributes attributes, UIControlState state) {
+        if (attributes == null) {
+            setScopeBarButtonTitleTextAttributesDictionary(null, state);
+        } else {
+            setScopeBarButtonTitleTextAttributesDictionary(attributes.getDictionary(), state);
+        }
+    }
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public void setScopeBarButtonTitleTextMarkupAttributes(CMTextMarkupAttributes attributes, UIControlState state) {
+        if (attributes == null) {
+            setScopeBarButtonTitleTextAttributesDictionary(null, state);
+        } else {
+            setScopeBarButtonTitleTextAttributesDictionary(attributes.getDictionary().as(NSDictionary.class), state);
+        }
+    }
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public void setScopeBarButtonTitleCoreTextAttributes(CTAttributedStringAttributes attributes, UIControlState state) {
+        if (attributes == null) {
+            setScopeBarButtonTitleTextAttributesDictionary(null, state);
+        } else {
+            setScopeBarButtonTitleTextAttributesDictionary(attributes.getDictionary().as(NSDictionary.class), state);
+        }
+    }
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public NSAttributedStringAttributes getScopeBarButtonTitleTextAttributes(UIControlState state) {
+        NSDictionary<NSString, NSObject> dict = getScopeBarButtonTitleTextAttributesDictionary(state);
+        if (dict == null) return null;
+        return new NSAttributedStringAttributes(dict);
+    }
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public CMTextMarkupAttributes getScopeBarButtonTitleTextMarkupAttributes(UIControlState state) {
+        NSDictionary<NSString, NSObject> dict = getScopeBarButtonTitleTextAttributesDictionary(state);
+        if (dict == null) return null;
+        return new CMTextMarkupAttributes(dict.as(CFDictionary.class));
+    }
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public CTAttributedStringAttributes getScopeBarButtonTitleCoreTextAttributes(UIControlState state) {
+        NSDictionary<NSString, NSObject> dict = getScopeBarButtonTitleTextAttributesDictionary(state);
+        if (dict == null) return null;
+        return new CTAttributedStringAttributes(dict.as(CFDictionary.class));
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 3.0 and later.
@@ -316,12 +372,12 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "setScopeBarButtonTitleTextAttributes:forState:")
-    public native void setScopeBarButtonTitleTextAttributes(NSAttributedStringAttributes attributes, UIControlState state);
+    public native void setScopeBarButtonTitleTextAttributesDictionary(NSDictionary<NSString, NSObject> attributes, UIControlState state);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "scopeBarButtonTitleTextAttributesForState:")
-    public native NSAttributedStringAttributes getScopeBarButtonTitleTextAttributes(UIControlState state);
+    public native NSDictionary<NSString, NSObject> getScopeBarButtonTitleTextAttributesDictionary(UIControlState state);
     /**
      * @since Available in iOS 5.0 and later.
      */

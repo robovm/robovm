@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -105,7 +105,7 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "compare:")
     public native NSComparisonResult compare(NSDate other);
     @Method(selector = "isEqualToDate:")
-    public native boolean isEqualTo(NSDate otherDate);
+    public native boolean equalsTo(NSDate otherDate);
     @Method(selector = "descriptionWithLocale:")
     public native String toString(NSLocale locale);
     @Method(selector = "initWithTimeIntervalSince1970:")

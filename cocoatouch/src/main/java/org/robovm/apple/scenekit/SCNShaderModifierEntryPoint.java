@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ import org.robovm.apple.opengles.*;
 @Marshaler(SCNShaderModifierEntryPoint.Marshaler.class)
 /*<annotations>*/@Library("SceneKit")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SCNShaderModifierEntryPoint/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     public static class Marshaler {
@@ -123,12 +123,24 @@ import org.robovm.apple.opengles.*;
             + /*<name>*/SCNShaderModifierEntryPoint/*</name>*/.class.getName());
     }
     /*<methods>*/
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @GlobalValue(symbol="SCNShaderModifierEntryPointGeometry", optional=true)
     protected static native NSString GeometryValue();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @GlobalValue(symbol="SCNShaderModifierEntryPointSurface", optional=true)
     protected static native NSString SurfaceValue();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @GlobalValue(symbol="SCNShaderModifierEntryPointLightingModel", optional=true)
     protected static native NSString LightingModelValue();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @GlobalValue(symbol="SCNShaderModifierEntryPointFragment", optional=true)
     protected static native NSString FragmentValue();
     /*</methods>*/

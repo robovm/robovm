@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,6 +30,8 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.coregraphics.*;
 /*</imports>*/
+import org.robovm.apple.uikit.NSAttributedStringAttributes;
+import org.robovm.apple.coremedia.CMTextMarkupAttributes;
 
 /*<javadoc>*/
 /*</javadoc>*/
@@ -38,6 +40,30 @@ import org.robovm.apple.coregraphics.*;
     extends /*<extends>*/CFType/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<?> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return o.toList(CTRun.class);
+        }
+        @MarshalsPointer
+        public static long toNative(List<? extends CFType> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray o = null;
+            if (l instanceof CFArray) {
+                o = (CFArray) l;
+            } else {
+                o = CFArray.create((List<? extends CFType>) l);
+            }
+            return CFType.Marshaler.toNative(o, flags);
+        }
+    }
+    
     /*<ptr>*/public static class CTRunPtr extends Ptr<CTRun, CTRunPtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(CTRun.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -46,6 +72,22 @@ import org.robovm.apple.coregraphics.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    public NSAttributedStringAttributes getAttributes() {
+        NSDictionary<NSString, NSObject> dict = getAttributesDictionary();
+        if (dict == null) return null;
+        return new NSAttributedStringAttributes(dict);
+    }
+    public CMTextMarkupAttributes getTextMarkupAttributes() {
+        NSDictionary<NSString, NSObject> dict = getAttributesDictionary();
+        if (dict == null) return null;
+        return new CMTextMarkupAttributes(getAttributesDictionary().as(CFDictionary.class));
+    }
+    public CTAttributedStringAttributes getCoreTextAttributes() {
+        NSDictionary<NSString, NSObject> dict = getAttributesDictionary();
+        if (dict == null) return null;
+        return new CTAttributedStringAttributes(getAttributesDictionary().as(CFDictionary.class));
+    }
+    
     /**
      * @since Available in iOS 3.2 and later.
      */
@@ -123,7 +165,7 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTRunGetAttributes", optional=true)
-    public native CFDictionary getAttributes();
+    public native NSDictionary<NSString, NSObject> getAttributesDictionary();
     /**
      * @since Available in iOS 3.2 and later.
      */

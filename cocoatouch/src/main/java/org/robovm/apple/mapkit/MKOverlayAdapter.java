@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,18 +49,18 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*/
     @NotImplemented("coordinate")
-    public @ByVal CLLocationCoordinate2D getCoordinate() { throw new UnsupportedOperationException(); }
+    public @ByVal CLLocationCoordinate2D getCoordinate() { return null; }
     @NotImplemented("boundingMapRect")
-    public @ByVal MKMapRect getBoundingMapRect() { throw new UnsupportedOperationException(); }
+    public @ByVal MKMapRect getBoundingMapRect() { return null; }
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("intersectsMapRect:")
-    public boolean intersects(@ByVal MKMapRect mapRect) { throw new UnsupportedOperationException(); }
+    public boolean intersects(@ByVal MKMapRect mapRect) { return false; }
     /**
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("canReplaceMapContent")
-    public boolean canReplaceMapContent() { throw new UnsupportedOperationException(); }
+    public boolean canReplaceMapContent() { return false; }
     /*</methods>*/
 }

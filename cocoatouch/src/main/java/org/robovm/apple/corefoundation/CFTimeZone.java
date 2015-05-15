@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -75,25 +75,25 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFTimeZoneGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFTimeZoneCopySystem", optional=true)
-    public static native CFTimeZone getSystem();
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFTimeZone getSystem();
     @Bridge(symbol="CFTimeZoneResetSystem", optional=true)
     public static native void resetSystem();
     @Bridge(symbol="CFTimeZoneCopyDefault", optional=true)
-    public static native CFTimeZone getDefault();
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFTimeZone getDefault();
     @Bridge(symbol="CFTimeZoneSetDefault", optional=true)
     public static native void setDefault(CFTimeZone tz);
     @Bridge(symbol="CFTimeZoneCopyKnownNames", optional=true)
-    public static native CFArray getKnownNames();
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String> getKnownNames();
     @Bridge(symbol="CFTimeZoneCopyAbbreviationDictionary", optional=true)
-    public static native CFDictionary getAbbreviationDictionary();
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFDictionary getAbbreviationDictionary();
     @Bridge(symbol="CFTimeZoneSetAbbreviationDictionary", optional=true)
     public static native void setAbbreviationDictionary(CFDictionary dict);
     @Bridge(symbol="CFTimeZoneCreate", optional=true)
-    protected static native CFTimeZone create(CFAllocator allocator, String name, CFData data);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFTimeZone create(CFAllocator allocator, String name, CFData data);
     @Bridge(symbol="CFTimeZoneCreateWithTimeIntervalFromGMT", optional=true)
-    protected static native CFTimeZone create(CFAllocator allocator, double ti);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFTimeZone create(CFAllocator allocator, double ti);
     @Bridge(symbol="CFTimeZoneCreateWithName", optional=true)
-    protected static native CFTimeZone create(CFAllocator allocator, String name, boolean tryAbbrev);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFTimeZone create(CFAllocator allocator, String name, boolean tryAbbrev);
     @Bridge(symbol="CFTimeZoneGetName", optional=true)
     public native String getName();
     @Bridge(symbol="CFTimeZoneGetData", optional=true)
@@ -101,7 +101,7 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFTimeZoneGetSecondsFromGMT", optional=true)
     public native double getSecondsFromGMT(double at);
     @Bridge(symbol="CFTimeZoneCopyAbbreviation", optional=true)
-    public native String getAbbreviation(double at);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getAbbreviation(double at);
     @Bridge(symbol="CFTimeZoneIsDaylightSavingTime", optional=true)
     public native boolean isDaylightSavingTime(double at);
     /**
@@ -118,6 +118,6 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFTimeZoneCopyLocalizedName", optional=true)
-    public native String getLocalizedName(CFTimeZoneNameStyle style, CFLocale locale);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getLocalizedName(CFTimeZoneNameStyle style, CFLocale locale);
     /*</methods>*/
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -71,7 +71,7 @@ import org.robovm.apple.uikit.*;
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof CGSize && equalToSize(this, (CGSize) obj);
+        return obj instanceof CGSize && equalsTo(this, (CGSize) obj);
     }
     
     @Override
@@ -89,13 +89,19 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public boolean equalToSize(CGSize size2) { return equalToSize(this, size2); }
+    public boolean equalsTo(CGSize size2) { return equalsTo(this, size2); }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGSizeEqualToSize", optional=true)
-    private static native boolean equalToSize(@ByVal CGSize size1, @ByVal CGSize size2);
+    private static native boolean equalsTo(@ByVal CGSize size1, @ByVal CGSize size2);
     /**
      * @since Available in iOS 2.0 and later.
      */
     public NSDictionary<NSString, NSNumber> toDictionary() { return toDictionary(this); }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGSizeCreateDictionaryRepresentation", optional=true)
     private static native NSDictionary<NSString, NSNumber> toDictionary(@ByVal CGSize size);
     /**
@@ -107,6 +113,9 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 2.0 and later.
      */
     public CGSize apply(CGAffineTransform t) { return apply(this, t); }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGSizeApplyAffineTransform", optional=true)
     private static native @ByVal CGSize apply(@ByVal CGSize size, @ByVal CGAffineTransform t);
     /*</methods>*/

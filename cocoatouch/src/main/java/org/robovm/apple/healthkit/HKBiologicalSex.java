@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,16 +30,24 @@ import org.robovm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
-/**
- * @since Available in iOS 8.0 and later.
- */
+
 /*</javadoc>*/
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/HKBiologicalSex/*</name>*/ implements ValuedEnum {
     /*<values>*/
     NotSet(0L),
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     Female(1L),
-    Male(2L);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    Male(2L),
+    /**
+     * @since Available in iOS 8.2 and later.
+     */
+    Other(3L);
     /*</values>*/
 
     /*<bind>*/

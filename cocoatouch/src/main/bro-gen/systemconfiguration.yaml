@@ -14,15 +14,13 @@ private_typedefs:
     '__CFURL *': NSURL
     '__CFDictionary *': 'NSDictionary<?, ?>'
     '__CFArray *': 'NSArray<?>'
+    '__CFError *': NSError
     
 enums:
     SCStatusCode: { first: kSCStatusOK }
     SCNetworkReachabilityFlags: { first: kSCNetworkReachabilityFlagsTransientConnection, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
         
 classes:
-    SystemConfiguration:
-        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
-
     __SCNetworkReachability:
         name: SCNetworkReachability
         extends: CFType
@@ -42,7 +40,8 @@ functions:
     SCNetworkReachability(Create).*:
         class: SCNetworkReachability
         name: '#{g[0]}'
-        visibility: protected
+        visibility: private
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             address:
                 type: 'Struct<?>'
@@ -91,27 +90,18 @@ functions:
                 type: SCStatusCode
 
     # Make sure we don't miss any functions if new ones are introduced in a later version
-    (kSC.*):
-        class: SystemConfiguration
-        name: 'Function__#{g[0]}'
-    (SC.*):
+    (k?SC.*):
         class: SystemConfiguration
         name: 'Function__#{g[0]}'
 
 values:
     # Make sure we don't miss any values if new ones are introduced in a later version
-    #(kSC.*):
-    #    class: SystemConfiguration
-    #    name: 'Value__#{g[0]}'
-    #(SC.*):
+    #(k?SC.*):
     #    class: SystemConfiguration
     #    name: 'Value__#{g[0]}'
 
 constants:
     # Make sure we don't miss any constants if new ones are introduced in a later version
-    #(kSC.*):
-    #    class: SystemConfiguration
-    #    name: 'Constant__#{g[0]}'
-    #(SC.*):
+    #(k?SC.*):
     #    class: SystemConfiguration
     #    name: 'Constant__#{g[0]}'

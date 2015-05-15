@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,8 +49,14 @@ import org.robovm.apple.opengles.*;
     /*</bind>*/
     /*<constants>*//*</constants>*/
     /*<properties>*/
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "shaderModifiers")
     @org.robovm.rt.bro.annotation.Marshaler(SCNShaderModifierEntryPoint.AsStringMapMarshaler.class) Map<SCNShaderModifierEntryPoint, String> getShaderModifiers();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "setShaderModifiers:")
     void setShaderModifiers(@org.robovm.rt.bro.annotation.Marshaler(SCNShaderModifierEntryPoint.AsStringMapMarshaler.class) Map<SCNShaderModifierEntryPoint, String> v);
     @Property(selector = "program")
@@ -59,8 +65,14 @@ import org.robovm.apple.opengles.*;
     void setProgram(SCNProgram v);
     /*</properties>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "handleBindingOfSymbol:usingBlock:")
     void handleBindingOfSymbol(String symbol, @Block VoidBlock4<Integer, Integer, SCNNode, SCNRenderer> block);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "handleUnbindingOfSymbol:usingBlock:")
     void handleUnbindingOfSymbol(String symbol, @Block VoidBlock4<Integer, Integer, SCNNode, SCNRenderer> block);
     /*</methods>*/

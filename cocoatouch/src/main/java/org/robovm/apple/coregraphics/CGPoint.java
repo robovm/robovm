@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -71,7 +71,7 @@ import org.robovm.apple.uikit.*;
     
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof CGPoint && equalToPoint(this, (CGPoint) obj);
+        return obj instanceof CGPoint && equalsTo(this, (CGPoint) obj);
     }
     
     @Override
@@ -88,13 +88,19 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public boolean equalToPoint(CGPoint point2) { return equalToPoint(this, point2); }
+    public boolean equalsTo(CGPoint point2) { return equalsTo(this, point2); }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGPointEqualToPoint", optional=true)
-    private static native boolean equalToPoint(@ByVal CGPoint point1, @ByVal CGPoint point2);
+    private static native boolean equalsTo(@ByVal CGPoint point1, @ByVal CGPoint point2);
     /**
      * @since Available in iOS 2.0 and later.
      */
     public NSDictionary<NSString, NSNumber> toDictionary() { return toDictionary(this); }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGPointCreateDictionaryRepresentation", optional=true)
     private static native NSDictionary<NSString, NSNumber> toDictionary(@ByVal CGPoint point);
     /**
@@ -106,6 +112,9 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 2.0 and later.
      */
     public CGPoint apply(CGAffineTransform t) { return apply(this, t); }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGPointApplyAffineTransform", optional=true)
     private static native @ByVal CGPoint apply(@ByVal CGPoint point, @ByVal CGAffineTransform t);
     /*</methods>*/

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,12 +53,12 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 5.0 and later.
      */
     @NotImplemented("accessibilityIdentifier")
-    public String getAccessibilityIdentifier() { throw new UnsupportedOperationException(); }
+    public String getAccessibilityIdentifier() { return null; }
     /**
      * @since Available in iOS 5.0 and later.
      */
     @NotImplemented("setAccessibilityIdentifier:")
-    public void setAccessibilityIdentifier(String v) { throw new UnsupportedOperationException(); }
+    public void setAccessibilityIdentifier(String v) {}
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

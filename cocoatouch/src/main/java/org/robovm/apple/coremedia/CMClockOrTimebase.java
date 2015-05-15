@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,19 +49,30 @@ import org.robovm.apple.audiotoolbox.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    public @ByVal CMTime getAnchorTime() {
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 6.0 and later.
+     */
+    public CMTime getAnchorTime() throws OSStatusException {
         CMTime.CMTimePtr ptr = new CMTime.CMTimePtr();
-        getRelativeRateAndAnchorTime(this, null, ptr, null);
+        OSStatus status = getRelativeRateAndAnchorTime0(this, null, ptr, null);
+        OSStatusException.throwIfNecessary(status);
         return ptr.get();
     }
-    
-    public @ByVal CMTime getRelativeAnchorTime() {
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 6.0 and later.
+     */
+    public CMTime getRelativeAnchorTime() throws OSStatusException {
         CMTime.CMTimePtr ptr = new CMTime.CMTimePtr();
-        getRelativeRateAndAnchorTime(this, null, null, ptr);
+        OSStatus status = getRelativeRateAndAnchorTime0(this, null, null, ptr);
+        OSStatusException.throwIfNecessary(status);
         return ptr.get();
     }
-    
-    public @ByVal CMTime convertTime(@ByVal CMTime time, CMClockOrTimebase toClockOrTimebase) {
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public CMTime convertTime(CMTime time, CMClockOrTimebase toClockOrTimebase) {
         return convertTime(time, this, toClockOrTimebase);
     }
     /*<methods>*/
@@ -74,12 +85,12 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="CMSyncGetRelativeRateAndAnchorTime", optional=true)
-    protected native int getRelativeRateAndAnchorTime(CMClockOrTimebase relativeToClockOrTimebase, DoublePtr outRelativeRate, CMTime.CMTimePtr outOfClockOrTimebaseAnchorTime, CMTime.CMTimePtr outRelativeToClockOrTimebaseAnchorTime);
+    protected native OSStatus getRelativeRateAndAnchorTime0(CMClockOrTimebase relativeToClockOrTimebase, DoublePtr outRelativeRate, CMTime.CMTimePtr outOfClockOrTimebaseAnchorTime, CMTime.CMTimePtr outRelativeToClockOrTimebaseAnchorTime);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="CMSyncConvertTime", optional=true)
-    protected static native @ByVal CMTime convertTime(@ByVal CMTime time, CMClockOrTimebase fromClockOrTimebase, CMClockOrTimebase toClockOrTimebase);
+    public static native @ByVal CMTime convertTime(@ByVal CMTime time, CMClockOrTimebase fromClockOrTimebase, CMClockOrTimebase toClockOrTimebase);
     /**
      * @since Available in iOS 6.0 and later.
      */

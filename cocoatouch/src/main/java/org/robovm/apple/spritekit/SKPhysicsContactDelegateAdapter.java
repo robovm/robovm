@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,8 +56,8 @@ import org.robovm.apple.scenekit.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("didBeginContact:")
-    public void didBeginContact(SKPhysicsContact contact) { throw new UnsupportedOperationException(); }
+    public void didBeginContact(SKPhysicsContact contact) {}
     @NotImplemented("didEndContact:")
-    public void didEndContact(SKPhysicsContact contact) { throw new UnsupportedOperationException(); }
+    public void didEndContact(SKPhysicsContact contact) {}
     /*</methods>*/
 }

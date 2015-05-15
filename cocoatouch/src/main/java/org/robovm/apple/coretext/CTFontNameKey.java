@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,102 +34,149 @@ import org.robovm.apple.coregraphics.*;
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("CoreText")/*</annotations>*/
+@Marshaler(/*<name>*/CTFontNameKey/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CTFontNameKey/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<CFString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(CTFontNameKey.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    public static final CTFontNameKey Copyright = new CTFontNameKey("CopyrightValue");
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    public static final CTFontNameKey Family = new CTFontNameKey("FamilyValue");
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    public static final CTFontNameKey SubFamily = new CTFontNameKey("SubFamilyValue");
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    public static final CTFontNameKey Style = new CTFontNameKey("StyleValue");
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    public static final CTFontNameKey Unique = new CTFontNameKey("UniqueValue");
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    public static final CTFontNameKey Full = new CTFontNameKey("FullValue");
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    public static final CTFontNameKey Version = new CTFontNameKey("VersionValue");
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    public static final CTFontNameKey PostScript = new CTFontNameKey("PostScriptValue");
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    public static final CTFontNameKey Trademark = new CTFontNameKey("TrademarkValue");
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    public static final CTFontNameKey Manufacturer = new CTFontNameKey("ManufacturerValue");
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    public static final CTFontNameKey Designer = new CTFontNameKey("DesignerValue");
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    public static final CTFontNameKey Description = new CTFontNameKey("DescriptionValue");
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    public static final CTFontNameKey VendorURL = new CTFontNameKey("VendorURLValue");
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    public static final CTFontNameKey DesignerURL = new CTFontNameKey("DesignerURLValue");
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    public static final CTFontNameKey License = new CTFontNameKey("LicenseValue");
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    public static final CTFontNameKey LicenseURL = new CTFontNameKey("LicenseURLValue");
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    public static final CTFontNameKey SampleText = new CTFontNameKey("SampleTextValue");
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    public static final CTFontNameKey PostScriptCID = new CTFontNameKey("PostScriptCIDValue");
-    private static CTFontNameKey[] values = new CTFontNameKey[]{Copyright, Family, SubFamily, Style, Unique, Full, Version, PostScript, Trademark, Manufacturer, Designer, 
-        Description, VendorURL, DesignerURL, License, LicenseURL, SampleText, PostScriptCID};
-    private final LazyGlobalValue<CFString> lazyGlobalValue;
-    
-    private CTFontNameKey(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    static { Bro.bind(/*<name>*/CTFontNameKey/*</name>*/.class); }
+
+    /*<marshalers>*/
+    public static class Marshaler {
+        @MarshalsPointer
+        public static CTFontNameKey toObject(Class<CTFontNameKey> cls, long handle, long flags) {
+            CFString o = (CFString) CFType.Marshaler.toObject(CFString.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return CTFontNameKey.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(CTFontNameKey o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return CFType.Marshaler.toNative(o.value(), flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public CFString value() {
-        return lazyGlobalValue.value();
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CTFontNameKey> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CTFontNameKey> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(CTFontNameKey.valueOf(o.get(i, CFString.class)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CTFontNameKey> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray array = CFMutableArray.create();
+            for (CTFontNameKey i : l) {
+                array.add(i.value());
+            }
+            return CFType.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
+    public static final CTFontNameKey Copyright = new CTFontNameKey("Copyright");
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
+    public static final CTFontNameKey Family = new CTFontNameKey("Family");
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
+    public static final CTFontNameKey SubFamily = new CTFontNameKey("SubFamily");
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
+    public static final CTFontNameKey Style = new CTFontNameKey("Style");
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
+    public static final CTFontNameKey Unique = new CTFontNameKey("Unique");
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
+    public static final CTFontNameKey Full = new CTFontNameKey("Full");
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
+    public static final CTFontNameKey Version = new CTFontNameKey("Version");
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
+    public static final CTFontNameKey PostScript = new CTFontNameKey("PostScript");
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
+    public static final CTFontNameKey Trademark = new CTFontNameKey("Trademark");
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
+    public static final CTFontNameKey Manufacturer = new CTFontNameKey("Manufacturer");
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
+    public static final CTFontNameKey Designer = new CTFontNameKey("Designer");
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
+    public static final CTFontNameKey Description = new CTFontNameKey("Description");
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
+    public static final CTFontNameKey VendorURL = new CTFontNameKey("VendorURL");
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
+    public static final CTFontNameKey DesignerURL = new CTFontNameKey("DesignerURL");
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
+    public static final CTFontNameKey License = new CTFontNameKey("License");
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
+    public static final CTFontNameKey LicenseURL = new CTFontNameKey("LicenseURL");
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
+    public static final CTFontNameKey SampleText = new CTFontNameKey("SampleText");
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
+    public static final CTFontNameKey PostScriptCID = new CTFontNameKey("PostScriptCID");
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
+    public static final CTFontNameKey FeatureType = new CTFontNameKey("FeatureType");
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
+    public static final CTFontNameKey FeatureSelector = new CTFontNameKey("FeatureSelector");
+    /*</constants>*/
+    
+    private static /*<name>*/CTFontNameKey/*</name>*/[] values = new /*<name>*/CTFontNameKey/*</name>*/[] {/*<value_list>*/Copyright, Family, SubFamily, Style, Unique, Full, Version, PostScript, Trademark, Manufacturer, Designer, Description, VendorURL, DesignerURL, License, LicenseURL, SampleText, PostScriptCID, FeatureType, FeatureSelector/*</value_list>*/};
+    
+    /*<name>*/CTFontNameKey/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static CTFontNameKey valueOf(NSString value) {
-        for (CTFontNameKey v : values) {
+    public static /*<name>*/CTFontNameKey/*</name>*/ valueOf(/*<type>*/CFString/*</type>*/ value) {
+        for (/*<name>*/CTFontNameKey/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -137,96 +184,114 @@ import org.robovm.apple.coregraphics.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/CTFontNameKey/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @GlobalValue(symbol="kCTFontCopyrightNameKey", optional=true)
-    protected static native CFString CopyrightValue();
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @GlobalValue(symbol="kCTFontFamilyNameKey", optional=true)
-    protected static native CFString FamilyValue();
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @GlobalValue(symbol="kCTFontSubFamilyNameKey", optional=true)
-    protected static native CFString SubFamilyValue();
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @GlobalValue(symbol="kCTFontStyleNameKey", optional=true)
-    protected static native CFString StyleValue();
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @GlobalValue(symbol="kCTFontUniqueNameKey", optional=true)
-    protected static native CFString UniqueValue();
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @GlobalValue(symbol="kCTFontFullNameKey", optional=true)
-    protected static native CFString FullValue();
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @GlobalValue(symbol="kCTFontVersionNameKey", optional=true)
-    protected static native CFString VersionValue();
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @GlobalValue(symbol="kCTFontPostScriptNameKey", optional=true)
-    protected static native CFString PostScriptValue();
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @GlobalValue(symbol="kCTFontTrademarkNameKey", optional=true)
-    protected static native CFString TrademarkValue();
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @GlobalValue(symbol="kCTFontManufacturerNameKey", optional=true)
-    protected static native CFString ManufacturerValue();
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @GlobalValue(symbol="kCTFontDesignerNameKey", optional=true)
-    protected static native CFString DesignerValue();
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @GlobalValue(symbol="kCTFontDescriptionNameKey", optional=true)
-    protected static native CFString DescriptionValue();
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @GlobalValue(symbol="kCTFontVendorURLNameKey", optional=true)
-    protected static native CFString VendorURLValue();
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @GlobalValue(symbol="kCTFontDesignerURLNameKey", optional=true)
-    protected static native CFString DesignerURLValue();
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @GlobalValue(symbol="kCTFontLicenseNameKey", optional=true)
-    protected static native CFString LicenseValue();
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @GlobalValue(symbol="kCTFontLicenseURLNameKey", optional=true)
-    protected static native CFString LicenseURLValue();
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @GlobalValue(symbol="kCTFontSampleTextNameKey", optional=true)
-    protected static native CFString SampleTextValue();
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @GlobalValue(symbol="kCTFontPostScriptCIDNameKey", optional=true)
-    protected static native CFString PostScriptCIDValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("CoreText")/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 3.2 and later.
+         */
+        @GlobalValue(symbol="kCTFontCopyrightNameKey", optional=true)
+        public static native CFString Copyright();
+        /**
+         * @since Available in iOS 3.2 and later.
+         */
+        @GlobalValue(symbol="kCTFontFamilyNameKey", optional=true)
+        public static native CFString Family();
+        /**
+         * @since Available in iOS 3.2 and later.
+         */
+        @GlobalValue(symbol="kCTFontSubFamilyNameKey", optional=true)
+        public static native CFString SubFamily();
+        /**
+         * @since Available in iOS 3.2 and later.
+         */
+        @GlobalValue(symbol="kCTFontStyleNameKey", optional=true)
+        public static native CFString Style();
+        /**
+         * @since Available in iOS 3.2 and later.
+         */
+        @GlobalValue(symbol="kCTFontUniqueNameKey", optional=true)
+        public static native CFString Unique();
+        /**
+         * @since Available in iOS 3.2 and later.
+         */
+        @GlobalValue(symbol="kCTFontFullNameKey", optional=true)
+        public static native CFString Full();
+        /**
+         * @since Available in iOS 3.2 and later.
+         */
+        @GlobalValue(symbol="kCTFontVersionNameKey", optional=true)
+        public static native CFString Version();
+        /**
+         * @since Available in iOS 3.2 and later.
+         */
+        @GlobalValue(symbol="kCTFontPostScriptNameKey", optional=true)
+        public static native CFString PostScript();
+        /**
+         * @since Available in iOS 3.2 and later.
+         */
+        @GlobalValue(symbol="kCTFontTrademarkNameKey", optional=true)
+        public static native CFString Trademark();
+        /**
+         * @since Available in iOS 3.2 and later.
+         */
+        @GlobalValue(symbol="kCTFontManufacturerNameKey", optional=true)
+        public static native CFString Manufacturer();
+        /**
+         * @since Available in iOS 3.2 and later.
+         */
+        @GlobalValue(symbol="kCTFontDesignerNameKey", optional=true)
+        public static native CFString Designer();
+        /**
+         * @since Available in iOS 3.2 and later.
+         */
+        @GlobalValue(symbol="kCTFontDescriptionNameKey", optional=true)
+        public static native CFString Description();
+        /**
+         * @since Available in iOS 3.2 and later.
+         */
+        @GlobalValue(symbol="kCTFontVendorURLNameKey", optional=true)
+        public static native CFString VendorURL();
+        /**
+         * @since Available in iOS 3.2 and later.
+         */
+        @GlobalValue(symbol="kCTFontDesignerURLNameKey", optional=true)
+        public static native CFString DesignerURL();
+        /**
+         * @since Available in iOS 3.2 and later.
+         */
+        @GlobalValue(symbol="kCTFontLicenseNameKey", optional=true)
+        public static native CFString License();
+        /**
+         * @since Available in iOS 3.2 and later.
+         */
+        @GlobalValue(symbol="kCTFontLicenseURLNameKey", optional=true)
+        public static native CFString LicenseURL();
+        /**
+         * @since Available in iOS 3.2 and later.
+         */
+        @GlobalValue(symbol="kCTFontSampleTextNameKey", optional=true)
+        public static native CFString SampleText();
+        /**
+         * @since Available in iOS 3.2 and later.
+         */
+        @GlobalValue(symbol="kCTFontPostScriptCIDNameKey", optional=true)
+        public static native CFString PostScriptCID();
+        /**
+         * @since Available in iOS 3.2 and later.
+         */
+        @GlobalValue(symbol="kCTFontFeatureTypeNameKey", optional=true)
+        public static native CFString FeatureType();
+        /**
+         * @since Available in iOS 3.2 and later.
+         */
+        @GlobalValue(symbol="kCTFontFeatureSelectorNameKey", optional=true)
+        public static native CFString FeatureSelector();
+        /*</values>*/
+    }
 }

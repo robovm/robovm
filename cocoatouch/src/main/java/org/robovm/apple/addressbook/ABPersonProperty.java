@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,7 +53,7 @@ import org.robovm.apple.corefoundation.*;
     public static final ABPersonProperty Organization = new ABPersonProperty("OrganizationValue");
     public static final ABPersonProperty JobTitle = new ABPersonProperty("JobTitleValue");
     public static final ABPersonProperty Department = new ABPersonProperty("DepartmentValue");
-    public static final ABPersonProperty Email = new ABPersonProperty("DepartmentValue");
+    public static final ABPersonProperty Email = new ABPersonProperty("EmailValue");
     public static final ABPersonProperty Birthday = new ABPersonProperty("BirthdayValue");
     public static final ABPersonProperty Note = new ABPersonProperty("NoteValue");
     public static final ABPersonProperty CreationDate = new ABPersonProperty("CreationDateValue");

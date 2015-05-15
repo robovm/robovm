@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,9 +40,6 @@ import org.robovm.apple.foundation.*;
     /*<ptr>*/public static class CFBooleanPtr extends Ptr<CFBoolean, CFBooleanPtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(CFBoolean.class); }/*</bind>*/
     
-    public static final CFBoolean TRUE = True();
-    public static final CFBoolean FALSE = False();
-    
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     protected CFBoolean() {}
@@ -50,13 +47,13 @@ import org.robovm.apple.foundation.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     public static CFBoolean valueOf(boolean b) {
-        return b ? TRUE : FALSE;
+        return b ? True() : False();
     }
     /*<methods>*/
     @GlobalValue(symbol="kCFBooleanTrue", optional=true)
-    private static native CFBoolean True();
+    public static native CFBoolean True();
     @GlobalValue(symbol="kCFBooleanFalse", optional=true)
-    private static native CFBoolean False();
+    public static native CFBoolean False();
     
     @Bridge(symbol="CFBooleanGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();

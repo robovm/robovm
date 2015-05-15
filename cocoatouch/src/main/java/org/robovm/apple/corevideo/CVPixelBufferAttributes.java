@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,12 +36,13 @@ import org.robovm.apple.metal.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CVPixelBufferAttributes.Marshaler.class)
 /*<annotations>*/@Library("CoreVideo")/*</annotations>*/
+@Marshaler(/*<name>*/CVPixelBufferAttributes/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CVPixelBufferAttributes/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CVBufferAttributes/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CVPixelBufferAttributes toObject(Class<CVPixelBufferAttributes> cls, long handle, long flags) {
@@ -59,71 +60,62 @@ import org.robovm.apple.metal.*;
             return CFType.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    protected CFDictionary data;
-    
-    protected CVPixelBufferAttributes(CFDictionary data) {
-        this.data = data;
-    }
-    public CVPixelBufferAttributes() {
-        data = CFMutableDictionary.create();
-    }
-    /*<bind>*/static { Bro.bind(CVPixelBufferAttributes.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public CFDictionary getDictionary() {
-        return data;
-    }
-    
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public List<CVPixelFormatType> getPixelFormatTypes() {
-        if (data.containsKey(PixelFormatTypeKey())) {
-            CFType val = data.get(PixelFormatTypeKey(), CFType.class);
-            List<CVPixelFormatType> list = new ArrayList<>();
-            if (val.getClass() == CFNumber.class || CFNumber.class.isAssignableFrom(val.getClass())) {
-                CFNumber num = (CFNumber)val;
-                list.add(CVPixelFormatType.valueOf(num.longValue()));
-                return list;
-            } else if (val.getClass() == CFArray.class || CFArray.class.isAssignableFrom(val.getClass())) {
-                CFArray arr = (CFArray)val;
-                for (int i = 0; i < arr.size(); i++) {
-                    list.add(CVPixelFormatType.valueOf(arr.get(i, CFNumber.class).longValue()));
-                }
-                return list;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CVPixelBufferAttributes> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
             }
+            List<CVPixelBufferAttributes> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new CVPixelBufferAttributes(o.get(i, CFDictionary.class)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CVPixelBufferAttributes> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray array = CFMutableArray.create();
+            for (CVPixelBufferAttributes i : l) {
+                array.add(i.getDictionary());
+            }
+            return CFType.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    CVPixelBufferAttributes(CFDictionary data) {
+        super(data);
+    }
+    public CVPixelBufferAttributes() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(CVPixelBufferAttribute key) {
+        return data.containsKey(key.value());
+    }
+    public <T extends NativeObject> T get(CVPixelBufferAttribute key, Class<T> type) {
+        if (has(key)) {
+            return data.get(key.value(), type);
         }
         return null;
     }
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public CVPixelBufferAttributes setPixelFormatType(CVPixelFormatType type) {
-        data.put(PixelFormatTypeKey(), CFNumber.valueOf(type.value()));
+    public CVPixelBufferAttributes set(CVPixelBufferAttribute key, NativeObject value) {
+        data.put(key.value(), value);
         return this;
     }
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public CVPixelBufferAttributes setPixelFormatTypes(List<CVPixelFormatType> types) {
-        CFArray array = CFMutableArray.create();
-        for (CVPixelFormatType i : types) {
-            array.add(CFNumber.valueOf(i.value()));
-        }
-        data.put(PixelFormatTypeKey(), array);
-        return this;
-    }
+    
+
     /**
      * @since Available in iOS 4.0 and later.
      */
     public CFAllocator getMemoryAllocator() {
-        if (data.containsKey(MemoryAllocatorKey())) {
-            CFAllocator val = data.get(MemoryAllocatorKey(), CFAllocator.class);
+        if (has(CVPixelBufferAttribute.MemoryAllocator)) {
+            CFAllocator val = get(CVPixelBufferAttribute.MemoryAllocator, CFAllocator.class);
             return val;
         }
         return null;
@@ -131,16 +123,16 @@ import org.robovm.apple.metal.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public CVPixelBufferAttributes setMemoryAllocator(CFAllocator allocator) {
-        data.put(MemoryAllocatorKey(), allocator);
+    public CVPixelBufferAttributes setMemoryAllocator(CFAllocator memoryAllocator) {
+        set(CVPixelBufferAttribute.MemoryAllocator, memoryAllocator);
         return this;
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     public long getWidth() {
-        if (data.containsKey(WidthKey())) {
-            CFNumber val = data.get(WidthKey(), CFNumber.class);
+        if (has(CVPixelBufferAttribute.Width)) {
+            CFNumber val = get(CVPixelBufferAttribute.Width, CFNumber.class);
             return val.longValue();
         }
         return 0;
@@ -149,15 +141,15 @@ import org.robovm.apple.metal.*;
      * @since Available in iOS 4.0 and later.
      */
     public CVPixelBufferAttributes setWidth(long width) {
-        data.put(WidthKey(), CFNumber.valueOf(width));
+        set(CVPixelBufferAttribute.Width, CFNumber.valueOf(width));
         return this;
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     public long getHeight() {
-        if (data.containsKey(HeightKey())) {
-            CFNumber val = data.get(HeightKey(), CFNumber.class);
+        if (has(CVPixelBufferAttribute.Height)) {
+            CFNumber val = get(CVPixelBufferAttribute.Height, CFNumber.class);
             return val.longValue();
         }
         return 0;
@@ -166,15 +158,15 @@ import org.robovm.apple.metal.*;
      * @since Available in iOS 4.0 and later.
      */
     public CVPixelBufferAttributes setHeight(long height) {
-        data.put(HeightKey(), CFNumber.valueOf(height));
+        set(CVPixelBufferAttribute.Height, CFNumber.valueOf(height));
         return this;
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     public long getExtendedPixelsLeft() {
-        if (data.containsKey(ExtendedPixelsLeftKey())) {
-            CFNumber val = data.get(ExtendedPixelsLeftKey(), CFNumber.class);
+        if (has(CVPixelBufferAttribute.ExtendedPixelsLeft)) {
+            CFNumber val = get(CVPixelBufferAttribute.ExtendedPixelsLeft, CFNumber.class);
             return val.longValue();
         }
         return 0;
@@ -182,16 +174,16 @@ import org.robovm.apple.metal.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public CVPixelBufferAttributes setExtendedPixelsLeft(long pixels) {
-        data.put(ExtendedPixelsLeftKey(), CFNumber.valueOf(pixels));
+    public CVPixelBufferAttributes setExtendedPixelsLeft(long extendedPixelsLeft) {
+        set(CVPixelBufferAttribute.ExtendedPixelsLeft, CFNumber.valueOf(extendedPixelsLeft));
         return this;
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     public long getExtendedPixelsTop() {
-        if (data.containsKey(ExtendedPixelsTopKey())) {
-            CFNumber val = data.get(ExtendedPixelsTopKey(), CFNumber.class);
+        if (has(CVPixelBufferAttribute.ExtendedPixelsTop)) {
+            CFNumber val = get(CVPixelBufferAttribute.ExtendedPixelsTop, CFNumber.class);
             return val.longValue();
         }
         return 0;
@@ -199,16 +191,16 @@ import org.robovm.apple.metal.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public CVPixelBufferAttributes setExtendedPixelsTop(long pixels) {
-        data.put(ExtendedPixelsTopKey(), CFNumber.valueOf(pixels));
+    public CVPixelBufferAttributes setExtendedPixelsTop(long extendedPixelsTop) {
+        set(CVPixelBufferAttribute.ExtendedPixelsTop, CFNumber.valueOf(extendedPixelsTop));
         return this;
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     public long getExtendedPixelsRight() {
-        if (data.containsKey(ExtendedPixelsRightKey())) {
-            CFNumber val = data.get(ExtendedPixelsRightKey(), CFNumber.class);
+        if (has(CVPixelBufferAttribute.ExtendedPixelsRight)) {
+            CFNumber val = get(CVPixelBufferAttribute.ExtendedPixelsRight, CFNumber.class);
             return val.longValue();
         }
         return 0;
@@ -216,16 +208,16 @@ import org.robovm.apple.metal.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public CVPixelBufferAttributes setExtendedPixelsRight(long pixels) {
-        data.put(ExtendedPixelsRightKey(), CFNumber.valueOf(pixels));
+    public CVPixelBufferAttributes setExtendedPixelsRight(long extendedPixelsRight) {
+        set(CVPixelBufferAttribute.ExtendedPixelsRight, CFNumber.valueOf(extendedPixelsRight));
         return this;
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     public long getExtendedPixelsBottom() {
-        if (data.containsKey(ExtendedPixelsBottomKey())) {
-            CFNumber val = data.get(ExtendedPixelsBottomKey(), CFNumber.class);
+        if (has(CVPixelBufferAttribute.ExtendedPixelsBottom)) {
+            CFNumber val = get(CVPixelBufferAttribute.ExtendedPixelsBottom, CFNumber.class);
             return val.longValue();
         }
         return 0;
@@ -233,16 +225,16 @@ import org.robovm.apple.metal.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public CVPixelBufferAttributes setExtendedPixelsBottom(long pixels) {
-        data.put(ExtendedPixelsBottomKey(), CFNumber.valueOf(pixels));
+    public CVPixelBufferAttributes setExtendedPixelsBottom(long extendedPixelsBottom) {
+        set(CVPixelBufferAttribute.ExtendedPixelsBottom, CFNumber.valueOf(extendedPixelsBottom));
         return this;
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     public long getBytesPerRowAlignment() {
-        if (data.containsKey(BytesPerRowAlignmentKey())) {
-            CFNumber val = data.get(BytesPerRowAlignmentKey(), CFNumber.class);
+        if (has(CVPixelBufferAttribute.BytesPerRowAlignment)) {
+            CFNumber val = get(CVPixelBufferAttribute.BytesPerRowAlignment, CFNumber.class);
             return val.longValue();
         }
         return 0;
@@ -250,16 +242,16 @@ import org.robovm.apple.metal.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public CVPixelBufferAttributes setBytesPerRowAlignment(long alignment) {
-        data.put(BytesPerRowAlignmentKey(), CFNumber.valueOf(alignment));
+    public CVPixelBufferAttributes setBytesPerRowAlignment(long bytesPerRowAlignment) {
+        set(CVPixelBufferAttribute.BytesPerRowAlignment, CFNumber.valueOf(bytesPerRowAlignment));
         return this;
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     public boolean isCompatibleWithCGBitmapContext() {
-        if (data.containsKey(CGBitmapContextCompatibilityKey())) {
-            CFBoolean val = data.get(CGBitmapContextCompatibilityKey(), CFBoolean.class);
+        if (has(CVPixelBufferAttribute.CGBitmapContextCompatibility)) {
+            CFBoolean val = get(CVPixelBufferAttribute.CGBitmapContextCompatibility, CFBoolean.class);
             return val.booleanValue();
         }
         return false;
@@ -267,16 +259,16 @@ import org.robovm.apple.metal.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public CVPixelBufferAttributes setCompatibleWithCGBitmapContext(boolean compatible) {
-        data.put(CGBitmapContextCompatibilityKey(), CFBoolean.valueOf(compatible));
+    public CVPixelBufferAttributes setCompatibleWithCGBitmapContext(boolean compatibleWithCGBitmapContext) {
+        set(CVPixelBufferAttribute.CGBitmapContextCompatibility, CFBoolean.valueOf(compatibleWithCGBitmapContext));
         return this;
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     public boolean isCompatibleWithCGImage() {
-        if (data.containsKey(CGImageCompatibilityKey())) {
-            CFBoolean val = data.get(CGImageCompatibilityKey(), CFBoolean.class);
+        if (has(CVPixelBufferAttribute.CGImageCompatibility)) {
+            CFBoolean val = get(CVPixelBufferAttribute.CGImageCompatibility, CFBoolean.class);
             return val.booleanValue();
         }
         return false;
@@ -284,16 +276,16 @@ import org.robovm.apple.metal.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public CVPixelBufferAttributes setCompatibleWithCGImage(boolean compatible) {
-        data.put(CGImageCompatibilityKey(), CFBoolean.valueOf(compatible));
+    public CVPixelBufferAttributes setCompatibleWithCGImage(boolean compatibleWithCGImage) {
+        set(CVPixelBufferAttribute.CGImageCompatibility, CFBoolean.valueOf(compatibleWithCGImage));
         return this;
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     public boolean isCompatibleWithOpenGL() {
-        if (data.containsKey(OpenGLCompatibilityKey())) {
-            CFBoolean val = data.get(OpenGLCompatibilityKey(), CFBoolean.class);
+        if (has(CVPixelBufferAttribute.OpenGLCompatibility)) {
+            CFBoolean val = get(CVPixelBufferAttribute.OpenGLCompatibility, CFBoolean.class);
             return val.booleanValue();
         }
         return false;
@@ -301,16 +293,16 @@ import org.robovm.apple.metal.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public CVPixelBufferAttributes setCompatibleWithOpenGL(boolean compatible) {
-        data.put(OpenGLCompatibilityKey(), CFBoolean.valueOf(compatible));
+    public CVPixelBufferAttributes setCompatibleWithOpenGL(boolean compatibleWithOpenGL) {
+        set(CVPixelBufferAttribute.OpenGLCompatibility, CFBoolean.valueOf(compatibleWithOpenGL));
         return this;
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     public long getPlaneAlignment() {
-        if (data.containsKey(PlaneAlignmentKey())) {
-            CFNumber val = data.get(PlaneAlignmentKey(), CFNumber.class);
+        if (has(CVPixelBufferAttribute.PlaneAlignment)) {
+            CFNumber val = get(CVPixelBufferAttribute.PlaneAlignment, CFNumber.class);
             return val.longValue();
         }
         return 0;
@@ -318,16 +310,16 @@ import org.robovm.apple.metal.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public CVPixelBufferAttributes setPlaneAlignment(long alignment) {
-        data.put(PlaneAlignmentKey(), CFNumber.valueOf(alignment));
+    public CVPixelBufferAttributes setPlaneAlignment(long planeAlignment) {
+        set(CVPixelBufferAttribute.PlaneAlignment, CFNumber.valueOf(planeAlignment));
         return this;
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public CFDictionary getIOSurfaceProperties() {
-        if (data.containsKey(IOSurfacePropertiesKey())) {
-            CFDictionary val = data.get(IOSurfacePropertiesKey(), CFDictionary.class);
+    public NSDictionary<NSString, NSObject> getIOSurfaceProperties() {
+        if (has(CVPixelBufferAttribute.IOSurfaceProperties)) {
+            NSDictionary<NSString, NSObject> val = get(CVPixelBufferAttribute.IOSurfaceProperties, NSDictionary.class);
             return val;
         }
         return null;
@@ -335,16 +327,16 @@ import org.robovm.apple.metal.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public CVPixelBufferAttributes setIOSurfaceProperties(CFDictionary properties) {
-        data.put(IOSurfacePropertiesKey(), properties);
+    public CVPixelBufferAttributes setIOSurfaceProperties(NSDictionary<NSString, NSObject> iOSurfaceProperties) {
+        set(CVPixelBufferAttribute.IOSurfaceProperties, iOSurfaceProperties);
         return this;
     }
     /**
      * @since Available in iOS 6.0 and later.
      */
     public boolean isCompatibleWithOpenGLES() {
-        if (data.containsKey(OpenGLESCompatibilityKey())) {
-            CFBoolean val = data.get(OpenGLESCompatibilityKey(), CFBoolean.class);
+        if (has(CVPixelBufferAttribute.OpenGLESCompatibility)) {
+            CFBoolean val = get(CVPixelBufferAttribute.OpenGLESCompatibility, CFBoolean.class);
             return val.booleanValue();
         }
         return false;
@@ -352,16 +344,16 @@ import org.robovm.apple.metal.*;
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public CVPixelBufferAttributes setCompatibleWithOpenGLES(boolean compatible) {
-        data.put(OpenGLESCompatibilityKey(), CFBoolean.valueOf(compatible));
+    public CVPixelBufferAttributes setCompatibleWithOpenGLES(boolean compatibleWithOpenGLES) {
+        set(CVPixelBufferAttribute.OpenGLESCompatibility, CFBoolean.valueOf(compatibleWithOpenGLES));
         return this;
     }
     /**
      * @since Available in iOS 8.0 and later.
      */
     public boolean isCompatibleWithMetal() {
-        if (data.containsKey(MetalCompatibilityKey())) {
-            CFBoolean val = data.get(MetalCompatibilityKey(), CFBoolean.class);
+        if (has(CVPixelBufferAttribute.MetalCompatibility)) {
+            CFBoolean val = get(CVPixelBufferAttribute.MetalCompatibility, CFBoolean.class);
             return val.booleanValue();
         }
         return false;
@@ -369,95 +361,52 @@ import org.robovm.apple.metal.*;
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public CVPixelBufferAttributes setCompatibleWithMetal(boolean compatible) {
-        data.put(MetalCompatibilityKey(), CFBoolean.valueOf(compatible));
+    public CVPixelBufferAttributes setCompatibleWithMetal(boolean compatibleWithMetal) {
+        set(CVPixelBufferAttribute.MetalCompatibility, CFBoolean.valueOf(compatibleWithMetal));
         return this;
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCVPixelBufferPixelFormatTypeKey", optional=true)
-    protected static native CFString PixelFormatTypeKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCVPixelBufferMemoryAllocatorKey", optional=true)
-    protected static native CFString MemoryAllocatorKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCVPixelBufferWidthKey", optional=true)
-    protected static native CFString WidthKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCVPixelBufferHeightKey", optional=true)
-    protected static native CFString HeightKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCVPixelBufferExtendedPixelsLeftKey", optional=true)
-    protected static native CFString ExtendedPixelsLeftKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCVPixelBufferExtendedPixelsTopKey", optional=true)
-    protected static native CFString ExtendedPixelsTopKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCVPixelBufferExtendedPixelsRightKey", optional=true)
-    protected static native CFString ExtendedPixelsRightKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCVPixelBufferExtendedPixelsBottomKey", optional=true)
-    protected static native CFString ExtendedPixelsBottomKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCVPixelBufferBytesPerRowAlignmentKey", optional=true)
-    protected static native CFString BytesPerRowAlignmentKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCVPixelBufferCGBitmapContextCompatibilityKey", optional=true)
-    protected static native CFString CGBitmapContextCompatibilityKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCVPixelBufferCGImageCompatibilityKey", optional=true)
-    protected static native CFString CGImageCompatibilityKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCVPixelBufferOpenGLCompatibilityKey", optional=true)
-    protected static native CFString OpenGLCompatibilityKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCVPixelBufferPlaneAlignmentKey", optional=true)
-    protected static native CFString PlaneAlignmentKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCVPixelBufferIOSurfacePropertiesKey", optional=true)
-    protected static native CFString IOSurfacePropertiesKey();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="kCVPixelBufferOpenGLESCompatibilityKey", optional=true)
-    protected static native CFString OpenGLESCompatibilityKey();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="kCVPixelBufferMetalCompatibilityKey", optional=true)
-    protected static native CFString MetalCompatibilityKey();
     /*</methods>*/
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
-    }
+    
+    /**
+    * @since Available in iOS 4.0 and later.
+    */
+    public List<CVPixelFormatType> getPixelFormatTypes() {
+       if (has(CVPixelBufferAttribute.PixelFormatType)) {
+           CFType val = get(CVPixelBufferAttribute.PixelFormatType, CFType.class);
+           List<CVPixelFormatType> list = new ArrayList<>();
+           if (val.getClass() == CFNumber.class || CFNumber.class.isAssignableFrom(val.getClass())) {
+               CFNumber num = (CFNumber)val;
+               list.add(CVPixelFormatType.valueOf(num.longValue()));
+               return list;
+           } else if (val.getClass() == CFArray.class || CFArray.class.isAssignableFrom(val.getClass())) {
+               CFArray arr = (CFArray)val;
+               for (int i = 0; i < arr.size(); i++) {
+                   list.add(CVPixelFormatType.valueOf(arr.get(i, CFNumber.class).longValue()));
+               }
+               return list;
+           }
+       }
+       return null;
+   }
+   /**
+    * @since Available in iOS 4.0 and later.
+    */
+   public CVPixelBufferAttributes setPixelFormatType(CVPixelFormatType type) {
+       set(CVPixelBufferAttribute.PixelFormatType, CFNumber.valueOf(type.value()));
+       return this;
+   }
+   /**
+    * @since Available in iOS 4.0 and later.
+    */
+   public CVPixelBufferAttributes setPixelFormatTypes(List<CVPixelFormatType> types) {
+       CFArray array = CFMutableArray.create();
+       for (CVPixelFormatType i : types) {
+           array.add(CFNumber.valueOf(i.value()));
+       }
+       set(CVPixelBufferAttribute.PixelFormatType, array);
+       return this;
+   }
+    
+    /*<keys>*/
+    /*</keys>*/
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,17 +45,17 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*/
     @NotImplemented("label")
-    public String getLabel() { throw new UnsupportedOperationException(); }
+    public String getLabel() { return null; }
     @NotImplemented("setLabel:")
-    public void setLabel(String v) { throw new UnsupportedOperationException(); }
+    public void setLabel(String v) {}
     @NotImplemented("device")
-    public MTLDevice getDevice() { throw new UnsupportedOperationException(); }
+    public MTLDevice getDevice() { return null; }
     @NotImplemented("cpuCacheMode")
-    public MTLCPUCacheMode getCpuCacheMode() { throw new UnsupportedOperationException(); }
+    public MTLCPUCacheMode getCpuCacheMode() { return null; }
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("setPurgeableState:")
-    public MTLPurgeableState setPurgeableState(MTLPurgeableState state) { throw new UnsupportedOperationException(); }
+    public MTLPurgeableState setPurgeableState(MTLPurgeableState state) { return null; }
     /*</methods>*/
 }

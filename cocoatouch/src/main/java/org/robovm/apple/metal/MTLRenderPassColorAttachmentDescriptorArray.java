@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,6 +55,6 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "objectAtIndexedSubscript:")
     public native MTLRenderPassColorAttachmentDescriptor get(@MachineSizedUInt long attachmentIndex);
     @Method(selector = "setObject:atIndexedSubscript:")
-    public native void insert(MTLRenderPassColorAttachmentDescriptor attachment, @MachineSizedUInt long attachmentIndex);
+    public native void set(MTLRenderPassColorAttachmentDescriptor attachment, @MachineSizedUInt long attachmentIndex);
     /*</methods>*/
 }

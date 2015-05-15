@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,16 +54,16 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("actionSheet:clickedButtonAtIndex:")
-    public void clicked(UIActionSheet actionSheet, @MachineSizedSInt long buttonIndex) { throw new UnsupportedOperationException(); }
+    public void clicked(UIActionSheet actionSheet, @MachineSizedSInt long buttonIndex) {}
     @NotImplemented("actionSheetCancel:")
-    public void cancel(UIActionSheet actionSheet) { throw new UnsupportedOperationException(); }
+    public void cancel(UIActionSheet actionSheet) {}
     @NotImplemented("willPresentActionSheet:")
-    public void willPresent(UIActionSheet actionSheet) { throw new UnsupportedOperationException(); }
+    public void willPresent(UIActionSheet actionSheet) {}
     @NotImplemented("didPresentActionSheet:")
-    public void didPresent(UIActionSheet actionSheet) { throw new UnsupportedOperationException(); }
+    public void didPresent(UIActionSheet actionSheet) {}
     @NotImplemented("actionSheet:willDismissWithButtonIndex:")
-    public void willDismiss(UIActionSheet actionSheet, @MachineSizedSInt long buttonIndex) { throw new UnsupportedOperationException(); }
+    public void willDismiss(UIActionSheet actionSheet, @MachineSizedSInt long buttonIndex) {}
     @NotImplemented("actionSheet:didDismissWithButtonIndex:")
-    public void didDismiss(UIActionSheet actionSheet, @MachineSizedSInt long buttonIndex) { throw new UnsupportedOperationException(); }
+    public void didDismiss(UIActionSheet actionSheet, @MachineSizedSInt long buttonIndex) {}
     /*</methods>*/
 }

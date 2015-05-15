@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian Mobile AB
+ * Copyright (C) 2012 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,13 @@
 package org.robovm.objc;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.robovm.objc.annotation.BindSelector;
 import org.robovm.objc.annotation.CustomClass;
 import org.robovm.objc.annotation.NativeClass;
-import org.robovm.objc.annotation.NotImplemented;
 import org.robovm.objc.annotation.TypeEncoding;
 import org.robovm.rt.VM;
 import org.robovm.rt.bro.annotation.Callback;
@@ -43,6 +39,7 @@ public final class ObjCClass extends ObjCObject {
     static final Map<String, Class<? extends ObjCObject>> allObjCProxyClasses = new HashMap<>();
 
     private static final int ACC_SYNTHETIC = 0x1000;
+    private static final String CUSTOM_CLASS_NAME_PREFIX = "j_";
     
     static {
         ObjCRuntime.bind();
@@ -246,9 +243,10 @@ public final class ObjCClass extends ObjCObject {
         String name = type.getName();
         if (customClassAnno != null && customClassAnno.value().length() > 0) {
             name = customClassAnno.value();
-        } else if (name.indexOf('.') == -1) {
-            name = "." + name;
+        } else {
+            name = CUSTOM_CLASS_NAME_PREFIX + name;
         }
+        name = name.replace('.', '_');
         return name;
     }
     
@@ -294,96 +292,27 @@ public final class ObjCClass extends ObjCObject {
                 throw new ObjCClassNotFoundException("Failed to add method " + selName + " to custom Objective-C class for Java class: " + type);
             }
         }
-        ObjCRuntime.objc_registerClassPair(handle);
+        ObjCObject.ObjectOwnershipHelper.registerClass(handle);
+        ObjCRuntime.objc_registerClassPair(handle);                                  
         return new ObjCClass(handle, type, name, true);
     }
     
     private static Map<String, Method> getCallbacks(Class<?> type) {
-        Map<String, Method> notImplemented = new HashMap<String, Method>();
-        findNotImplemented(type, notImplemented);
         Map<String, Method> callbacks = new HashMap<String, Method>();
-        findCallbacksOnClasses(type, callbacks);
-        findCallbacksOnInterfaces(type, callbacks);
-        // Remove callbacks which have a corresponding @NotImplemented method
-        callbacks.keySet().removeAll(notImplemented.keySet());
+        findCallbacks(type, callbacks);
         return callbacks;
     }
 
-    private static void findNotImplemented(Class<?> type, Map<String, Method> result) {
-        Class<?> superclass = type.getSuperclass();
-        if (superclass != null) {
-            findNotImplemented(superclass, result);
-        }
-        for (Method m : type.getDeclaredMethods()) {
-            NotImplemented ni = m.getAnnotation(NotImplemented.class);
-            if (ni != null) {
-                result.put(ni.value(), m);
-            } else {
-                BindSelector bs = m.getAnnotation(BindSelector.class);
-                if (bs != null) {
-                    result.remove(bs.value());
-                } else {
-                    String mName = m.getName();
-                    Class<?>[] mParamTypes = m.getParameterTypes();
-                    for (Iterator<Entry<String, Method>> it = result.entrySet().iterator(); it.hasNext();) {
-                        Entry<String, Method> entry = it.next();
-                        Method m2 = entry.getValue();
-                        if (m2.getName().equals(mName) && Arrays.equals(m2.getParameterTypes(), mParamTypes)) {
-                            it.remove();
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
     private static void findCallbacks(Class<?> type, Map<String, Method> result) {
-        ArrayList<Class<?>> classes = new ArrayList<Class<?>>();
-        if (!type.isInterface()) {
-            // No need to search interfaces since interfaces cannot have 
-            // static methods and callbacks must be static.
-            classes.add(type);
-        } else {
-            Class<?> objCProxy = allObjCProxyClasses.get(type.getName());
-            if (objCProxy != null) {
-                classes.add(objCProxy);
-            }
-        }
-        try {
-            classes.add(Class.forName(type.getName() + "$Callbacks", true, type.getClassLoader()));
-        } catch (ClassNotFoundException ignored) {}
-        for (Class<?> c : classes) {
-            for (Method m : c.getDeclaredMethods()) {
-                if (m.getAnnotation(Callback.class) != null) {
-                    BindSelector bindSelector = m.getAnnotation(BindSelector.class);
-                    if (bindSelector != null) {
-                        if (!result.containsKey(bindSelector.value())) {
-                            result.put(bindSelector.value(), m);
-                        }
+        for (Method m : type.getDeclaredMethods()) {
+            if (m.getAnnotation(Callback.class) != null) {
+                BindSelector bindSelector = m.getAnnotation(BindSelector.class);
+                if (bindSelector != null) {
+                    if (!result.containsKey(bindSelector.value())) {
+                        result.put(bindSelector.value(), m);
                     }
                 }
             }
-        }
-    }
-
-    private static void findCallbacksOnClasses(Class<?> type, Map<String, Method> result) {
-        Class<?> superclass = type.getSuperclass();
-        if (superclass != null) {
-            findCallbacks(type, result);
-            findCallbacksOnClasses(superclass, result);
-        }
-    }
-    
-    private static void findCallbacksOnInterfaces(Class<?> type, Map<String, Method> result) {
-        if (type.isInterface()) {
-            findCallbacks(type, result);
-        }
-        for (Class<?> iface : type.getInterfaces()) {
-            findCallbacksOnInterfaces(iface, result);
-        }
-        Class<?> superclass = type.getSuperclass();
-        if (superclass != null) {
-            findCallbacksOnInterfaces(superclass, result);
         }
     }
 }

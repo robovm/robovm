@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ import org.robovm.apple.corefoundation.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public MIDIIOErrorNotification() {}
-    public MIDIIOErrorNotification(MIDINotificationMessageID messageID, int messageSize, MIDIDevice driverDevice, int errorCode) {
+    public MIDIIOErrorNotification(MIDINotificationMessageID messageID, int messageSize, MIDIDevice driverDevice, OSStatus errorCode) {
         this.setMessageID(messageID);
         this.setMessageSize(messageSize);
         this.setDriverDevice(driverDevice);
@@ -59,8 +59,8 @@ import org.robovm.apple.corefoundation.*;
     @StructMember(1) public native MIDIIOErrorNotification setMessageSize(int messageSize);
     @StructMember(2) public native MIDIDevice getDriverDevice();
     @StructMember(2) public native MIDIIOErrorNotification setDriverDevice(MIDIDevice driverDevice);
-    @StructMember(3) public native int getErrorCode();
-    @StructMember(3) public native MIDIIOErrorNotification setErrorCode(int errorCode);
+    @StructMember(3) public native OSStatus getErrorCode();
+    @StructMember(3) public native MIDIIOErrorNotification setErrorCode(OSStatus errorCode);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 Trillian Mobile AB
+ * Copyright (C) 2013 RoboVM AB
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,7 +23,7 @@ import org.robovm.llvm.binding.LLVM;
  * 
  */
 public class Context implements AutoCloseable {
-    protected ContextRef ref;
+    private ContextRef ref;
 
     public Context() {
         ref = LLVM.ContextCreate();
@@ -42,9 +42,13 @@ public class Context implements AutoCloseable {
         }
     }
     
-    public synchronized void dispose() {
+    protected ContextRef getRef() {
         checkDisposed();
-        LLVM.ContextDispose(ref);
+        return ref;
+    }
+
+    public synchronized void dispose() {
+        LLVM.ContextDispose(getRef());
         ref = null;
     }
 

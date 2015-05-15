@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,8 +54,8 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("imagePickerController:didFinishPickingMediaWithInfo:")
-    public void didFinishPickingMedia(UIImagePickerController picker, UIImagePickerControllerEditingInfo info) { throw new UnsupportedOperationException(); }
+    public void didFinishPickingMedia(UIImagePickerController picker, UIImagePickerControllerEditingInfo info) {}
     @NotImplemented("imagePickerControllerDidCancel:")
-    public void didCancel(UIImagePickerController picker) { throw new UnsupportedOperationException(); }
+    public void didCancel(UIImagePickerController picker) {}
     /*</methods>*/
 }

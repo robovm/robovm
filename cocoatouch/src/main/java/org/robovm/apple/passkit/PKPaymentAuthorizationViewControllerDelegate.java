@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,6 +51,11 @@ import org.robovm.apple.addressbook.*;
     void didAuthorizePayment(PKPaymentAuthorizationViewController controller, PKPayment payment, @Block VoidBlock1<PKPaymentAuthorizationStatus> completion);
     @Method(selector = "paymentAuthorizationViewControllerDidFinish:")
     void didFinish(PKPaymentAuthorizationViewController controller);
+    /**
+     * @since Available in iOS 8.3 and later.
+     */
+    @Method(selector = "paymentAuthorizationViewControllerWillAuthorizePayment:")
+    void willAuthorizePayment(PKPaymentAuthorizationViewController controller);
     @Method(selector = "paymentAuthorizationViewController:didSelectShippingMethod:completion:")
     void didSelectShippingMethod(PKPaymentAuthorizationViewController controller, PKShippingMethod shippingMethod, @Block VoidBlock2<PKPaymentAuthorizationStatus, NSArray<PKPaymentSummaryItem>> completion);
     @Method(selector = "paymentAuthorizationViewController:didSelectShippingAddress:completion:")

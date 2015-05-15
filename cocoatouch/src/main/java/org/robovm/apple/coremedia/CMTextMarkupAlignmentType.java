@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,12 +38,13 @@ import org.robovm.apple.audiotoolbox.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CMTextMarkupAlignmentType.Marshaler.class)
 /*<annotations>*/@Library("CoreMedia")/*</annotations>*/
+@Marshaler(/*<name>*/CMTextMarkupAlignmentType/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CMTextMarkupAlignmentType/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<CFString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
-    
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CMTextMarkupAlignmentType toObject(Class<CMTextMarkupAlignmentType> cls, long handle, long flags) {
@@ -61,47 +62,64 @@ import org.robovm.apple.audiotoolbox.*;
             return CFType.Marshaler.toNative(o.value(), flags);
         }
     }
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CMTextMarkupAlignmentType> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CMTextMarkupAlignmentType> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(CMTextMarkupAlignmentType.valueOf(o.get(i, CFString.class)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CMTextMarkupAlignmentType> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray array = CFMutableArray.create();
+            for (CMTextMarkupAlignmentType i : l) {
+                array.add(i.value());
+            }
+            return CFType.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(CMTextMarkupAlignmentType.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    /*<constants>*/
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public static final CMTextMarkupAlignmentType Start = new CMTextMarkupAlignmentType("StartValue");
+    public static final CMTextMarkupAlignmentType Start = new CMTextMarkupAlignmentType("Start");
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public static final CMTextMarkupAlignmentType Middle = new CMTextMarkupAlignmentType("MiddleValue");
+    public static final CMTextMarkupAlignmentType Middle = new CMTextMarkupAlignmentType("Middle");
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public static final CMTextMarkupAlignmentType End = new CMTextMarkupAlignmentType("EndValue");
+    public static final CMTextMarkupAlignmentType End = new CMTextMarkupAlignmentType("End");
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public static final CMTextMarkupAlignmentType Left = new CMTextMarkupAlignmentType("LeftValue");
+    public static final CMTextMarkupAlignmentType Left = new CMTextMarkupAlignmentType("Left");
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public static final CMTextMarkupAlignmentType Right = new CMTextMarkupAlignmentType("RightValue");
+    public static final CMTextMarkupAlignmentType Right = new CMTextMarkupAlignmentType("Right");
+    /*</constants>*/
     
-    private static final CMTextMarkupAlignmentType[] values = new CMTextMarkupAlignmentType[] {Start, Middle, End, Left, Right};
-    private final LazyGlobalValue<CFString> lazyGlobalValue;
+    private static /*<name>*/CMTextMarkupAlignmentType/*</name>*/[] values = new /*<name>*/CMTextMarkupAlignmentType/*</name>*/[] {/*<value_list>*/Start, Middle, End, Left, Right/*</value_list>*/};
     
-    private CMTextMarkupAlignmentType(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public CFString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/CMTextMarkupAlignmentType/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static CMTextMarkupAlignmentType valueOf(CFString value) {
-        for (CMTextMarkupAlignmentType v : values) {
+    public static /*<name>*/CMTextMarkupAlignmentType/*</name>*/ valueOf(/*<type>*/CFString/*</type>*/ value) {
+        for (/*<name>*/CMTextMarkupAlignmentType/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -109,31 +127,39 @@ import org.robovm.apple.audiotoolbox.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/CMTextMarkupAlignmentType/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="kCMTextMarkupAlignmentType_Start", optional=true)
-    protected static native CFString StartValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="kCMTextMarkupAlignmentType_Middle", optional=true)
-    protected static native CFString MiddleValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="kCMTextMarkupAlignmentType_End", optional=true)
-    protected static native CFString EndValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="kCMTextMarkupAlignmentType_Left", optional=true)
-    protected static native CFString LeftValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="kCMTextMarkupAlignmentType_Right", optional=true)
-    protected static native CFString RightValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("CoreMedia")/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="kCMTextMarkupAlignmentType_Start", optional=true)
+        public static native CFString Start();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="kCMTextMarkupAlignmentType_Middle", optional=true)
+        public static native CFString Middle();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="kCMTextMarkupAlignmentType_End", optional=true)
+        public static native CFString End();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="kCMTextMarkupAlignmentType_Left", optional=true)
+        public static native CFString Left();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="kCMTextMarkupAlignmentType_Right", optional=true)
+        public static native CFString Right();
+        /*</values>*/
+    }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,8 +30,10 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -48,14 +50,14 @@ import org.robovm.apple.coremedia.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public CAFUMIDChunk() {}
-    public CAFUMIDChunk(ByteBuffer mBytes) {
-        this.setMBytes(mBytes);
+    public CAFUMIDChunk(ByteBuffer bytes) {
+        this.setBytes(bytes);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native @Array({64}) ByteBuffer getMBytes();
-    @StructMember(0) public native CAFUMIDChunk setMBytes(@Array({64}) ByteBuffer mBytes);
+    @StructMember(0) public native @Array({64}) ByteBuffer getBytes();
+    @StructMember(0) public native CAFUMIDChunk setBytes(@Array({64}) ByteBuffer bytes);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

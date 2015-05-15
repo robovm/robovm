@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,14 +54,14 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("willPresentSearchController:")
-    public void willPresent(UISearchController searchController) { throw new UnsupportedOperationException(); }
+    public void willPresent(UISearchController searchController) {}
     @NotImplemented("didPresentSearchController:")
-    public void didPresent(UISearchController searchController) { throw new UnsupportedOperationException(); }
+    public void didPresent(UISearchController searchController) {}
     @NotImplemented("willDismissSearchController:")
-    public void willDismiss(UISearchController searchController) { throw new UnsupportedOperationException(); }
+    public void willDismiss(UISearchController searchController) {}
     @NotImplemented("didDismissSearchController:")
-    public void didDismiss(UISearchController searchController) { throw new UnsupportedOperationException(); }
+    public void didDismiss(UISearchController searchController) {}
     @NotImplemented("presentSearchController:")
-    public void present(UISearchController searchController) { throw new UnsupportedOperationException(); }
+    public void present(UISearchController searchController) {}
     /*</methods>*/
 }

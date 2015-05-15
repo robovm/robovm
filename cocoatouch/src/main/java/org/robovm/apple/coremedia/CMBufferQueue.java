@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,16 +55,16 @@ import org.robovm.apple.audiotoolbox.*;
         void validate(CMBufferQueue bufferQueue, CMBuffer buffer);
     }
     public interface ForEachCallback {
-        CMBufferQueueError invoke(CMBuffer buffer);
+        void invoke(CMBuffer buffer) throws OSStatusException;
     }
     
     private static java.util.concurrent.atomic.AtomicLong refconId = new java.util.concurrent.atomic.AtomicLong();
     private static java.util.concurrent.atomic.AtomicLong triggerId = new java.util.concurrent.atomic.AtomicLong();
-    private static Map<Long, CMBufferQueueCallbacks> bufferQueueCallbacks = new HashMap<Long, CMBufferQueueCallbacks>();
-    private static Map<Long, ResetCallback> resetCallbacks = new HashMap<Long, ResetCallback>();
-    private static Map<Long, TriggerCallback> triggerCallbacks = new HashMap<Long, TriggerCallback>();
-    private static Map<Long, ValidationCallback> validationCallbacks = new HashMap<Long, ValidationCallback>();
-    private static Map<Long, ForEachCallback> forEachCallbacks = new HashMap<Long, ForEachCallback>();
+    private static final LongMap<CMBufferQueueCallbacks> bufferQueueCallbacks = new LongMap<>();
+    private static final LongMap<ResetCallback> resetCallbacks = new LongMap<>();
+    private static final LongMap<TriggerCallback> triggerCallbacks = new LongMap<>();
+    private static final LongMap<ValidationCallback> validationCallbacks = new LongMap<>();
+    private static final LongMap<ForEachCallback> forEachCallbacks = new LongMap<>();
     private static final java.lang.reflect.Method cbGetDecodeTimeStamp;
     private static final java.lang.reflect.Method cbGetPresentationTimeStamp;
     private static final java.lang.reflect.Method cbGetDuration;
@@ -172,15 +172,23 @@ import org.robovm.apple.audiotoolbox.*;
         callback.validate(bufferQueue, (CMBuffer)buffer);
     }
     @Callback
-    private static void cbForEach(CFType buffer, @Pointer long refcon) {
-        ForEachCallback callback = null;
+    private static OSStatus cbForEach(CFType buffer, @Pointer long refcon) {
         synchronized (forEachCallbacks) {
-            callback = forEachCallbacks.get(refcon);
+            try {
+                forEachCallbacks.get(refcon).invoke((CMBuffer)buffer);
+            } catch (OSStatusException e) {
+                return e.getStatus();
+            }
+            return OSStatus.NO_ERR;
         }
-        callback.invoke((CMBuffer)buffer);
     }
     
-    public static CMBufferQueue create(@MachineSizedSInt long capacity, CMBufferQueueCallbacks callback) {
+    
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 4.0 and later.
+     */
+    public static CMBufferQueue create(@MachineSizedSInt long capacity, CMBufferQueueCallbacks callback) throws OSStatusException {
         long refconId = CMBufferQueue.refconId.getAndIncrement();
         CMBufferCallbacksStruct callbacks = new CMBufferCallbacksStruct();
         callbacks.setRefcon(refconId);
@@ -191,8 +199,8 @@ import org.robovm.apple.audiotoolbox.*;
         callbacks.setCompare(new FunctionPtr(cbCompare));
         callbacks.setGetSize(new FunctionPtr(cbGetSize));
         CMBufferQueuePtr ptr = new CMBufferQueuePtr();
-        CMBufferQueueError err = create(null, capacity, callbacks, ptr);
-        if (err == CMBufferQueueError.No) {
+        OSStatus status = create0(null, capacity, callbacks, ptr);
+        if (OSStatusException.throwIfNecessary(status)) {
             synchronized (bufferQueueCallbacks) {
                 bufferQueueCallbacks.put(refconId, callback);
             }
@@ -200,57 +208,101 @@ import org.robovm.apple.audiotoolbox.*;
         }
         return null;
     }
-    
-    public CMBufferQueueError reset(ResetCallback callback) {
-        long refconId = CMBufferQueue.refconId.get();
-        CMBufferQueueError error = reset(new FunctionPtr(cbReset), refconId);
-        synchronized (resetCallbacks) {
-            resetCallbacks.put(refconId, callback);
-        }
-        return error;
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 4.0 and later.
+     */
+    public void markEndOfData() throws OSStatusException {
+        OSStatus status = markEndOfData0();
+        OSStatusException.throwIfNecessary(status);
     }
-    
-    public CMBufferQueueError installTrigger(TriggerCallback callback, CMBufferQueueTriggerCondition triggerCondition, @ByVal CMTime triggerTime) {
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 4.0 and later.
+     */
+    public void reset() throws OSStatusException {
+        OSStatus status = reset0();
+        OSStatusException.throwIfNecessary(status);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 4.0 and later.
+     */
+    public void reset(ResetCallback callback) throws OSStatusException {
+        long refconId = CMBufferQueue.refconId.get();
+        OSStatus status = reset0(new FunctionPtr(cbReset), refconId);
+        if (OSStatusException.throwIfNecessary(status)) {
+            synchronized (resetCallbacks) {
+                resetCallbacks.put(refconId, callback);
+            }
+        }
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 4.0 and later.
+     */
+    public void installTrigger(TriggerCallback callback, CMBufferQueueTriggerCondition triggerCondition, @ByVal CMTime triggerTime) throws OSStatusException {
         long refconId = CMBufferQueue.triggerId.getAndIncrement();
-        CMBufferQueueError error = installTrigger(new FunctionPtr(cbTrigger), refconId, triggerCondition, triggerTime, null);
-        synchronized (triggerCallbacks) {
-            triggerCallbacks.put(refconId, callback);
+        OSStatus status = installTrigger0(new FunctionPtr(cbTrigger), refconId, triggerCondition, triggerTime, null);
+        if (OSStatusException.throwIfNecessary(status)) {
+            synchronized (triggerCallbacks) {
+                triggerCallbacks.put(refconId, callback);
+            }
         }
-        return error;
     }
-    
-    public CMBufferQueueError installTrigger(TriggerCallback callback, CMBufferQueueTriggerCondition triggerCondition, @MachineSizedSInt long triggerThreshold) {
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 4.0 and later.
+     */
+    public void installTrigger(TriggerCallback callback, CMBufferQueueTriggerCondition triggerCondition, @MachineSizedSInt long triggerThreshold) throws OSStatusException {
         long refconId = CMBufferQueue.triggerId.getAndIncrement();
-        CMBufferQueueError error = installTrigger(new FunctionPtr(cbTrigger), refconId, triggerCondition, triggerThreshold, null);
-        synchronized (triggerCallbacks) {
-            triggerCallbacks.put(refconId, callback);
+        OSStatus status = installTrigger0(new FunctionPtr(cbTrigger), refconId, triggerCondition, triggerThreshold, null);
+        if (OSStatusException.throwIfNecessary(status)) {
+            synchronized (triggerCallbacks) {
+                triggerCallbacks.put(refconId, callback);
+            }
         }
-        return error;
     }
-    
-    public CMBufferQueueError callForEachBuffer(ForEachCallback callback) {
-        long refconId = CMBufferQueue.refconId.get();
-        CMBufferQueueError error = callForEachBuffer(new FunctionPtr(cbReset), refconId);
-        synchronized (forEachCallbacks) {
-            forEachCallbacks.put(refconId, callback);
-        }
-        return error;
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 4.0 and later.
+     */
+    public void removeTrigger(CMBufferQueueTriggerToken triggerToken) throws OSStatusException {
+        OSStatus status = removeTrigger0(triggerToken);
+        OSStatusException.throwIfNecessary(status);
     }
-    
-    public CMBufferQueueError setValidationCallback(ValidationCallback callback) {
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 4.0 and later.
+     */
+    public void callForEachBuffer(ForEachCallback callback) throws OSStatusException {
         long refconId = CMBufferQueue.refconId.get();
-        CMBufferQueueError error = setValidationCallback(new FunctionPtr(cbValidate), refconId);
-        synchronized (validationCallbacks) {
-            validationCallbacks.put(refconId, callback);
+        OSStatus status = callForEachBuffer0(new FunctionPtr(cbReset), refconId);
+        if (OSStatusException.throwIfNecessary(status)) {
+            synchronized (forEachCallbacks) {
+                forEachCallbacks.put(refconId, callback);
+            }
         }
-        return error;
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 4.0 and later.
+     */
+    public void setValidationCallback(ValidationCallback callback) throws OSStatusException {
+        long refconId = CMBufferQueue.refconId.get();
+        OSStatus status = setValidationCallback0(new FunctionPtr(cbValidate), refconId);
+        if (OSStatusException.throwIfNecessary(status)) {
+            synchronized (validationCallbacks) {
+                validationCallbacks.put(refconId, callback);
+            }
+        }
     }
     /*<methods>*/
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMBufferQueueCreate", optional=true)
-    protected static native CMBufferQueueError create(CFAllocator allocator, @MachineSizedSInt long capacity, CMBufferCallbacksStruct callbacks, CMBufferQueue.CMBufferQueuePtr queueOut);
+    protected static native OSStatus create0(CFAllocator allocator, @MachineSizedSInt long capacity, CMBufferCallbacksStruct callbacks, CMBufferQueue.CMBufferQueuePtr queueOut);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -260,7 +312,7 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMBufferQueueEnqueue", optional=true)
-    public native CMBufferQueueError enqueue(CFType buf);
+    protected native OSStatus enqueue0(CFType buf);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -285,7 +337,7 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMBufferQueueMarkEndOfData", optional=true)
-    public native CMBufferQueueError markEndOfData();
+    protected native OSStatus markEndOfData0();
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -300,12 +352,12 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMBufferQueueReset", optional=true)
-    public native CMBufferQueueError reset();
+    protected native OSStatus reset0();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMBufferQueueResetWithCallback", optional=true)
-    protected native CMBufferQueueError reset(FunctionPtr callback, @Pointer long refcon);
+    protected native OSStatus reset0(FunctionPtr callback, @Pointer long refcon);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -355,31 +407,31 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMBufferQueueInstallTrigger", optional=true)
-    protected native CMBufferQueueError installTrigger(FunctionPtr triggerCallback, @Pointer long triggerRefcon, CMBufferQueueTriggerCondition triggerCondition, @ByVal CMTime triggerTime, CMBufferQueueTriggerToken.CMBufferQueueTriggerTokenPtr triggerTokenOut);
+    protected native OSStatus installTrigger0(FunctionPtr triggerCallback, @Pointer long triggerRefcon, CMBufferQueueTriggerCondition triggerCondition, @ByVal CMTime triggerTime, CMBufferQueueTriggerToken.CMBufferQueueTriggerTokenPtr triggerTokenOut);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMBufferQueueInstallTriggerWithIntegerThreshold", optional=true)
-    protected native CMBufferQueueError installTrigger(FunctionPtr triggerCallback, @Pointer long triggerRefcon, CMBufferQueueTriggerCondition triggerCondition, @MachineSizedSInt long triggerThreshold, CMBufferQueueTriggerToken.CMBufferQueueTriggerTokenPtr triggerTokenOut);
+    protected native OSStatus installTrigger0(FunctionPtr triggerCallback, @Pointer long triggerRefcon, CMBufferQueueTriggerCondition triggerCondition, @MachineSizedSInt long triggerThreshold, CMBufferQueueTriggerToken.CMBufferQueueTriggerTokenPtr triggerTokenOut);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMBufferQueueRemoveTrigger", optional=true)
-    public native CMBufferQueueError removeTrigger(CMBufferQueueTriggerToken triggerToken);
+    protected native OSStatus removeTrigger0(CMBufferQueueTriggerToken triggerToken);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMBufferQueueTestTrigger", optional=true)
-    public native boolean testTrigger(CMBufferQueueTriggerToken triggerToken);
+    protected native boolean testTrigger0(CMBufferQueueTriggerToken triggerToken);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMBufferQueueCallForEachBuffer", optional=true)
-    protected native CMBufferQueueError callForEachBuffer(FunctionPtr callback, @Pointer long refcon);
+    protected native OSStatus callForEachBuffer0(FunctionPtr callback, @Pointer long refcon);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMBufferQueueSetValidationCallback", optional=true)
-    protected native CMBufferQueueError setValidationCallback(FunctionPtr validationCallback, @Pointer long validationRefCon);
+    protected native OSStatus setValidationCallback0(FunctionPtr validationCallback, @Pointer long validationRefCon);
     /*</methods>*/
 }

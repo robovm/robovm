@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,6 +36,7 @@ import org.robovm.apple.coremedia.*;
 import org.robovm.apple.corevideo.*;
 import org.robovm.apple.audiotoolbox.*;
 import org.robovm.apple.mediatoolbox.*;
+import org.robovm.apple.audiounit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -70,57 +71,30 @@ import org.robovm.apple.mediatoolbox.*;
     public native void setGlobalTuning(float v);
     /*</properties>*/
     /*<members>*//*</members>*/
-    /**
-     * 
-     * @param bankURL
-     * @param program
-     * @param bankMSB
-     * @param bankLSB
-     * @return
-     * @throws NSErrorException
-     */
-    public boolean loadSoundBankInstrument(NSURL bankURL, byte program, byte bankMSB, byte bankLSB) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = loadSoundBankInstrument(bankURL, program, bankMSB, bankLSB, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @param instrumentURL
-     * @return
-     * @throws NSErrorException
-     */
-    public boolean loadInstrument(NSURL instrumentURL) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = loadInstrument(instrumentURL, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @param audioFiles
-     * @return
-     * @throws NSErrorException
-     */
-    public boolean loadAudioFiles(NSArray<NSURL> audioFiles) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = loadAudioFiles(audioFiles, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
     /*<methods>*/
+    public boolean loadSoundBankInstrument(NSURL bankURL, byte program, byte bankMSB, byte bankLSB) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = loadSoundBankInstrument(bankURL, program, bankMSB, bankLSB, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "loadSoundBankInstrumentAtURL:program:bankMSB:bankLSB:error:")
-    protected native boolean loadSoundBankInstrument(NSURL bankURL, byte program, byte bankMSB, byte bankLSB, NSError.NSErrorPtr outError);
+    private native boolean loadSoundBankInstrument(NSURL bankURL, byte program, byte bankMSB, byte bankLSB, NSError.NSErrorPtr outError);
+    public boolean loadInstrument(NSURL instrumentURL) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = loadInstrument(instrumentURL, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "loadInstrumentAtURL:error:")
-    protected native boolean loadInstrument(NSURL instrumentURL, NSError.NSErrorPtr outError);
+    private native boolean loadInstrument(NSURL instrumentURL, NSError.NSErrorPtr outError);
+    public boolean loadAudioFiles(NSArray<NSURL> audioFiles) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = loadAudioFiles(audioFiles, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "loadAudioFilesAtURLs:error:")
-    protected native boolean loadAudioFiles(NSArray<NSURL> audioFiles, NSError.NSErrorPtr outError);
+    private native boolean loadAudioFiles(NSArray<NSURL> audioFiles, NSError.NSErrorPtr outError);
     /*</methods>*/
 }

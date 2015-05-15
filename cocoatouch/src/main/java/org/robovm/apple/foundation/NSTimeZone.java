@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -114,7 +114,7 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "nextDaylightSavingTimeTransitionAfterDate:")
     public native NSDate getNextDaylightSavingTimeTransitionAfterDate(NSDate aDate);
     @Method(selector = "isEqualToTimeZone:")
-    public native boolean isEqualTo(NSTimeZone aTimeZone);
+    public native boolean equalsTo(NSTimeZone aTimeZone);
     /**
      * @since Available in iOS 2.0 and later.
      */

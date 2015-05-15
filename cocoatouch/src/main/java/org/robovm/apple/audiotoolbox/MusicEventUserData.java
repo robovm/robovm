@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,8 +30,10 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -48,17 +50,25 @@ import org.robovm.apple.coremedia.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public MusicEventUserData() {}
-    public MusicEventUserData(int length, ByteBuffer data) {
-        this.setLength(length);
-        this.setData(data);
-    }
+    
     /*</constructors>*/
     /*<properties>*//*</properties>*/
+    public byte[] getData() {
+        return getData0().toByteArray(getLength0());
+    }
+    public ByteBuffer getDataAsByteBuffer() {
+        return getData0().asByteBuffer(getLength0());
+    }
+    public MusicEventUserData setData(byte[] data) {
+        setData0(VM.getArrayValuesAddress(data));
+        setLength0(data.length);
+        return this;
+    }
     /*<members>*/
-    @StructMember(0) public native int getLength();
-    @StructMember(0) public native MusicEventUserData setLength(int length);
-    @StructMember(1) public native @Array({1}) ByteBuffer getData();
-    @StructMember(1) public native MusicEventUserData setData(@Array({1}) ByteBuffer data);
+    @StructMember(0) protected native int getLength0();
+    @StructMember(0) protected native MusicEventUserData setLength0(int length0);
     /*</members>*/
+    @StructMember(1) protected native BytePtr getData0();
+    @StructMember(1) protected native MusicEventUserData setData0(@Pointer long data0);
     /*<methods>*//*</methods>*/
 }

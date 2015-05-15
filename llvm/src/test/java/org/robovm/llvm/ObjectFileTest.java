@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2014 RoboVM AB
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,6 +23,7 @@ import java.io.FileOutputStream;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
@@ -56,6 +57,34 @@ public class ObjectFileTest {
         }
     }
 
+    @Test
+    public void testReadSections() throws Exception {
+        try (Context context = new Context()) {
+            try (TargetMachine tm = Target.getTarget("x86").createTargetMachine("i386-unknown-macosx")) {
+                Module module = Module.parseIR(context, "define external i32 @foo() {\n ret i32 5\n }\n", "foo.c");
+                File oFile = File.createTempFile(getClass().getSimpleName(), ".o");
+                try (FileOutputStream out = new FileOutputStream(oFile)) {
+                    tm.emit(module, out, CodeGenFileType.ObjectFile);
+                }
+                try (ObjectFile objectFile = ObjectFile.load(oFile)) {
+                    TreeSet<String> sections = new TreeSet<>();
+                    for (SectionIterator it = objectFile.getSectionIterator(); it.hasNext(); it.next()) {
+                        sections.add(it.getName());
+                        byte[] contents = new byte[(int) it.getSize()];
+                        assertEquals(it.getSize(), it.copyContents(contents));
+                        long sum = 0;
+                        for (int i = 0; i < contents.length; i++) {
+                            sum += contents[i];
+                        }
+                        assertTrue(sum != 0);
+                        
+                    }
+                    assertTrue(sections.contains("__text"));
+                }
+            }
+        }
+    }
+    
     @Test
     @Ignore
     public void testMemoryLeaks() throws Exception {

@@ -8,9 +8,10 @@ headers:
 typedefs: {}
     
 enums:
-    NEVPNErrorCode: { first: NEVPNErrorConfigurationInvalid }
+    NEVPNErrorCode: { first: NEVPNErrorConfigurationInvalid, prefix: NEVPNError }
     NEVPNStatus: {}
     NEVPNIKEAuthenticationMethod: {}
+    NEVPNIKEv2CertificateType: {}
     NEVPNIKEv2EncryptionAlgorithm: {}
     NEVPNIKEv2IntegrityAlgorithm: {}
     NEVPNIKEv2DeadPeerDetectionRate: {}
@@ -51,7 +52,7 @@ classes:
         methods:
             '-startVPNTunnelAndReturnError:':
                 name: startVPNTunnel
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
     NEVPNManager: # DONE
         properties:
             'onDemandRules':

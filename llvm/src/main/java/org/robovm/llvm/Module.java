@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 Trillian Mobile AB
+ * Copyright (C) 2013 RoboVM AB
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,18 +18,21 @@ package org.robovm.llvm;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.robovm.llvm.binding.LLVM;
 import org.robovm.llvm.binding.MemoryBufferRef;
 import org.robovm.llvm.binding.ModuleRef;
 import org.robovm.llvm.binding.ModuleRefOut;
 import org.robovm.llvm.binding.StringOut;
+import org.robovm.llvm.binding.ValueRef;
 
 /**
  * 
  */
 public class Module implements AutoCloseable {
-    protected ModuleRef ref;
+    private ModuleRef ref;
 
     private Module(ModuleRef moduleRef) {
         this.ref = moduleRef;
@@ -40,10 +43,14 @@ public class Module implements AutoCloseable {
             throw new LlvmException("Already disposed");
         }
     }
-    
-    public synchronized void dispose() {
+
+    protected ModuleRef getRef() {
         checkDisposed();
-        LLVM.DisposeModule(ref);
+        return ref;
+    }
+
+    public synchronized void dispose() {
+        LLVM.DisposeModule(getRef());
         ref = null;
     }
 
@@ -53,14 +60,32 @@ public class Module implements AutoCloseable {
     }
 
     public Type getTypeByName(String name) {
-        checkDisposed();
-        return new Type(LLVM.GetTypeByName(ref, name));
+        return new Type(LLVM.GetTypeByName(getRef(), name));
+    }
+
+    public Function getFunctionByName(String name) {
+        ValueRef fref = LLVM.GetNamedFunction(getRef(), name);
+        return fref != null ? new Function(fref) : null;
+    }
+    
+    public Function[] getFunctions() {
+        List<Function> result = new ArrayList<>();
+        for (ValueRef fref = LLVM.GetFirstFunction(getRef()); fref != null; fref = LLVM.GetNextFunction(fref)) {
+            result.add(new Function(fref));
+        }
+        return result.toArray(new Function[result.size()]);
     }
     
     public void writeBitcode(File file) {
-        checkDisposed();
-        if (LLVM.WriteBitcodeToFile(ref, file.getAbsolutePath()) != 0) {
+        if (LLVM.WriteBitcodeToFile(getRef(), file.getAbsolutePath()) != 0) {
             throw new LlvmException("Write failed");
+        }
+    }
+    
+    public void link(Module other) {
+        StringOut errorMessage = new StringOut();
+        if (LLVM.LinkModules(getRef(), other.getRef(), 0, errorMessage)) {
+            throw new LlvmException(errorMessage.getValue().trim());
         }
     }
     
@@ -112,8 +137,17 @@ public class Module implements AutoCloseable {
         StringOut errorMessage = new StringOut();
         // LLVMParseIRInContext() takes ownership of the MemoryBuffer so there's no need for us
         // to dispose of it
-        if (!LLVM.ParseIRInContext(context.ref, memoryBufferRef, moduleRefOut, errorMessage)) {
+        if (!LLVM.ParseIRInContext(context.getRef(), memoryBufferRef, moduleRefOut, errorMessage)) {
             return new Module(moduleRefOut.getValue());
+        }
+        throw new LlvmException(errorMessage.getValue().trim());
+    }
+
+    public static Module parseClangString(Context context, String buffer, String fileName, String triple) {
+        StringOut errorMessage = new StringOut();
+        ModuleRef ref = LLVM.ClangCompileFile(context.getRef(), buffer, fileName, triple, errorMessage);
+        if (ref != null) {
+            return new Module(ref);
         }
         throw new LlvmException(errorMessage.getValue().trim());
     }

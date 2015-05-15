@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,10 +55,13 @@ import org.robovm.apple.opengles.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("getBoundingBoxMin:max:")
-    public boolean getBoundingBox(SCNVector3.SCNVector3Ptr min, SCNVector3.SCNVector3Ptr max) { throw new UnsupportedOperationException(); }
+    public boolean getBoundingBox(SCNVector3.SCNVector3Ptr min, SCNVector3.SCNVector3Ptr max) { return false; }
     @NotImplemented("getBoundingSphereCenter:radius:")
-    public boolean getBoundingSphere(SCNVector3.SCNVector3Ptr center, MachineSizedFloatPtr radius) { throw new UnsupportedOperationException(); }
+    public boolean getBoundingSphere(SCNVector3.SCNVector3Ptr center, MachineSizedFloatPtr radius) { return false; }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @NotImplemented("setBoundingBoxMin:max:")
-    public void setBoundingBox(SCNVector3.SCNVector3Ptr min, SCNVector3.SCNVector3Ptr max) { throw new UnsupportedOperationException(); }
+    public void setBoundingBox(SCNVector3.SCNVector3Ptr min, SCNVector3.SCNVector3Ptr max) {}
     /*</methods>*/
 }

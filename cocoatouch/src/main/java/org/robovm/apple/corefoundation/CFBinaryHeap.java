@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,6 +45,43 @@ import org.robovm.apple.foundation.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    public static CFBinaryHeap create(long capacity) {
+        return create(null, capacity);
+    }
+    public static CFBinaryHeap create(CFAllocator allocator, long capacity) {
+        return create(allocator, capacity, getCopyStringCallBacks(), new CFBinaryHeapCompareContext());
+    }
+    public static CFBinaryHeap createCopy(long capacity, CFBinaryHeap heap) {
+        return createCopy(null, capacity, heap);
+    }
+    public long count(CFType value) {
+        return count(value.as(VoidPtr.class));
+    }
+    public long count(NSObject value) {
+        return count(value.as(VoidPtr.class));
+    }
+    public long count(Struct<?> value) {
+        return count(value.as(VoidPtr.class));
+    }
+    public boolean contains(CFType value) {
+        return contains(value.as(VoidPtr.class));
+    }
+    public boolean contains(NSObject value) {
+        return contains(value.as(VoidPtr.class));
+    }
+    public boolean contains(Struct<?> value) {
+        return contains(value.as(VoidPtr.class));
+    }
+    public void add(CFType value) {
+        add(value.as(VoidPtr.class));
+    }
+    public void add(NSObject value) {
+        add(value.as(VoidPtr.class));
+    }
+    public void add(Struct<?> value) {
+        add(value.as(VoidPtr.class));
+    }
+
     /*<methods>*/
     @GlobalValue(symbol="kCFStringBinaryHeapCallBacks", optional=true)
     public static native @ByVal CFBinaryHeapCallBacks getCopyStringCallBacks();
@@ -52,28 +89,26 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFBinaryHeapGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFBinaryHeapCreate", optional=true)
-    public static native CFBinaryHeap create(CFAllocator allocator, @MachineSizedSInt long capacity, CFBinaryHeapCallBacks callBacks, CFBinaryHeapCompareContext compareContext);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFBinaryHeap create(CFAllocator allocator, @MachineSizedSInt long capacity, CFBinaryHeapCallBacks callBacks, CFBinaryHeapCompareContext compareContext);
     @Bridge(symbol="CFBinaryHeapCreateCopy", optional=true)
-    public static native CFBinaryHeap createCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFBinaryHeap heap);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFBinaryHeap createCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFBinaryHeap heap);
     @Bridge(symbol="CFBinaryHeapGetCount", optional=true)
-    public native @MachineSizedSInt long getCount();
+    public native @MachineSizedSInt long size();
     @Bridge(symbol="CFBinaryHeapGetCountOfValue", optional=true)
-    public native @MachineSizedSInt long getCountOfValue(VoidPtr value);
+    private native @MachineSizedSInt long count(VoidPtr value);
     @Bridge(symbol="CFBinaryHeapContainsValue", optional=true)
-    public native boolean containsValue(VoidPtr value);
+    private native boolean contains(VoidPtr value);
     @Bridge(symbol="CFBinaryHeapGetMinimum", optional=true)
     public native VoidPtr getMinimum();
     @Bridge(symbol="CFBinaryHeapGetMinimumIfPresent", optional=true)
-    public native boolean getMinimumIfPresent(VoidPtr.VoidPtrPtr value);
+    private native boolean getMinimumIfPresent(VoidPtr.VoidPtrPtr value);
     @Bridge(symbol="CFBinaryHeapGetValues", optional=true)
-    public native void getValues(VoidPtr.VoidPtrPtr values);
-    @Bridge(symbol="CFBinaryHeapApplyFunction", optional=true)
-    public native void applyFunction(FunctionPtr applier, VoidPtr context);
+    private native void getValues(VoidPtr.VoidPtrPtr values);
     @Bridge(symbol="CFBinaryHeapAddValue", optional=true)
-    public native void addValue(VoidPtr value);
+    private native void add(VoidPtr value);
     @Bridge(symbol="CFBinaryHeapRemoveMinimumValue", optional=true)
-    public native void removeMinimumValue();
+    public native void removeMinimum();
     @Bridge(symbol="CFBinaryHeapRemoveAllValues", optional=true)
-    public native void removeAllValues();
+    public native void clear();
     /*</methods>*/
 }

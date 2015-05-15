@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,16 +37,11 @@ import org.robovm.apple.coregraphics.*;
 /*<annotations>*/@Marshaler(ValuedEnum.AsUnsignedByteMarshaler.class)/*</annotations>*/
 public enum /*<name>*/CTTextAlignment/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    TextAlignmentLeft(0L),
-    TextAlignmentRight(1L),
-    TextAlignmentCenter(2L),
-    TextAlignmentJustified(3L),
-    TextAlignmentNatural(4L),
-    LeftTextAlignment(0L),
-    RightTextAlignment(1L),
-    CenterTextAlignment(2L),
-    JustifiedTextAlignment(3L),
-    NaturalTextAlignment(4L);
+    Left(0L),
+    Right(1L),
+    Center(2L),
+    Justified(3L),
+    Natural(4L);
     /*</values>*/
 
     /*<bind>*/

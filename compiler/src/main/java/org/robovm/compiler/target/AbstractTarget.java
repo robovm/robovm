@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian Mobile AB
+ * Copyright (C) 2012 RoboVM AB
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -25,9 +25,12 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
@@ -120,11 +123,6 @@ public abstract class AbstractTarget implements Target {
             if (config.isSkipInstall()) {
                 exportedSymbols.add("catch_exception_raise");
             }
-            if (config.isDebug()) {
-                // Keep lookup and eval functions 
-                exportedSymbols.add("*lookup?");
-                exportedSymbols.add("rvmEvalAll");
-            }
             exportedSymbols.addAll(config.getExportedSymbols());
             for (int i = 0; i < exportedSymbols.size(); i++) {
                 // On Darwin symbols are always prefixed with a '_'. We'll prepend
@@ -162,7 +160,7 @@ public abstract class AbstractTarget implements Target {
                 String p = lib.getValue();
                 if (p.endsWith(".o")) {
                     objectFiles.add(new File(p));
-                } else if(p.endsWith(".a")) {
+                } else if (p.endsWith(".a")) {
                     // .a file
                     if (config.getOs().getFamily() == OS.Family.darwin) {
                         if (lib.isForce()) {
@@ -178,6 +176,8 @@ public abstract class AbstractTarget implements Target {
                             libs.add("-Wl,--no-whole-archive");
                         }
                     }
+                } else if (p.endsWith(".dylib") || p.endsWith(".so")) {
+                    libs.add(new File(p).getAbsolutePath());
                 } else {
                     // link via -l if suffix is omitted
                     libs.add("-l" + p);
@@ -185,6 +185,18 @@ public abstract class AbstractTarget implements Target {
             }
         }
      
+        if (config.getOs() == OS.macosx) {
+            if (!config.getFrameworks().contains("CoreServices")) {
+                libs.add("-framework");
+                libs.add("CoreServices");
+            }
+        } else if (config.getOs() == OS.ios) {
+            if (!config.getFrameworks().contains("MobileCoreServices")) {
+                libs.add("-framework");
+                libs.add("MobileCoreServices");
+            }
+        }
+        
         doBuild(outFile, ccArgs, objectFiles, libs);
     }
     
@@ -198,7 +210,11 @@ public abstract class AbstractTarget implements Target {
         for (Resource res : config.getResources()) {
             res.walk(new Walker() {
                 @Override
-                public void process(Resource resource, File file, File destDir)
+                public boolean processDir(Resource resource, File dir, File destDir) throws IOException {
+                    return AbstractTarget.this.processDir(resource, dir, destDir);
+                }
+                @Override
+                public void processFile(Resource resource, File file, File destDir)
                         throws IOException {
                     
                     copyFile(resource, file, destDir);
@@ -206,7 +222,11 @@ public abstract class AbstractTarget implements Target {
             }, destDir);
         }
     }
-    
+
+    protected boolean processDir(Resource resource, File dir, File destDir) throws IOException {
+        return true;
+    }
+
     protected void copyFile(Resource resource, File file, File destDir) throws IOException {
         config.getLogger().debug("Copying resource %s to %s", file, destDir);
         FileUtils.copyFileToDirectory(file, destDir, true);
@@ -252,6 +272,11 @@ public abstract class AbstractTarget implements Target {
             launchParameters.setArguments(args);
         }
 
+        Map<String, String> env = new HashMap<>(launchParameters.getEnvironment() != null 
+                ? launchParameters.getEnvironment() : Collections.<String, String>emptyMap());
+        env.put("ROBOVM_LAUNCH_MODE", config.isDebug() ? "debug" : "release");
+        launchParameters.setEnvironment(env);
+        
         return doLaunch(launchParameters);
     }
     

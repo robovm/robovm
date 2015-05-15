@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,6 +34,8 @@ import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
 import org.robovm.apple.corelocation.*;
 /*</imports>*/
+import org.robovm.apple.corefoundation.CFDictionary;
+import org.robovm.apple.coremedia.CMTextMarkupAttributes;
 
 /*<javadoc>*/
 /**
@@ -83,6 +85,114 @@ import org.robovm.apple.corelocation.*;
         super(frame);
     }
     
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public NSAttributedStringAttributes getDefaultTextAttributes() {
+        NSDictionary<NSString, NSObject> dict = getDefaultTextAttributesDictionary();
+        if (dict == null) return null;
+        return new NSAttributedStringAttributes(dict);
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public CMTextMarkupAttributes getDefaultTextMarkupAttributes() {
+        NSDictionary<NSString, NSObject> dict = getDefaultTextAttributesDictionary();
+        if (dict == null) return null;
+        return new CMTextMarkupAttributes(dict.as(CFDictionary.class));
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public CTAttributedStringAttributes getDefaultCoreTextAttributes() {
+        NSDictionary<NSString, NSObject> dict = getDefaultTextAttributesDictionary();
+        if (dict == null) return null;
+        return new CTAttributedStringAttributes(dict.as(CFDictionary.class));
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public void setDefaultTextAttributes(NSAttributedStringAttributes v) {
+        if (v == null) {
+            setDefaultTextAttributesDictionary(null);
+        } else {
+            setDefaultTextAttributesDictionary(v.getDictionary());
+        }
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public void setDefaultTextMarkupAttributes(CMTextMarkupAttributes v) {
+        if (v == null) {
+            setDefaultTextAttributesDictionary(null);
+        } else {
+            setDefaultTextAttributesDictionary(v.getDictionary().as(NSDictionary.class));
+        }
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public void setDefaultCoreTextAttributes(CTAttributedStringAttributes v) {
+        if (v == null) {
+            setDefaultTextAttributesDictionary(null);
+        } else {
+            setDefaultTextAttributesDictionary(v.getDictionary().as(NSDictionary.class));
+        }
+    }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public NSAttributedStringAttributes getTypingAttributes() {
+        NSDictionary<NSString, NSObject> dict = getTypingAttributesDictionary();
+        if (dict == null) return null;
+        return new NSAttributedStringAttributes(dict);
+    }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public CMTextMarkupAttributes getTypingTextMarkupAttributes() {
+        NSDictionary<NSString, NSObject> dict = getTypingAttributesDictionary();
+        if (dict == null) return null;
+        return new CMTextMarkupAttributes(dict.as(CFDictionary.class));
+    }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public CTAttributedStringAttributes getTypingCoreTextAttributes() {
+        NSDictionary<NSString, NSObject> dict = getTypingAttributesDictionary();
+        if (dict == null) return null;
+        return new CTAttributedStringAttributes(dict.as(CFDictionary.class));
+    }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public void setTypingAttributes(NSAttributedStringAttributes v) {
+        if (v == null) {
+            setTypingAttributesDictionary(null);
+        } else {
+            setTypingAttributesDictionary(v.getDictionary());
+        }
+    }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public void setTypingTextMarkupAttributes(CMTextMarkupAttributes v) {
+        if (v == null) {
+            setTypingAttributesDictionary(null);
+        } else {
+            setTypingAttributesDictionary(v.getDictionary().as(NSDictionary.class));
+        }
+    }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public void setTypingCoreTextAttributes(CTAttributedStringAttributes v) {
+        if (v == null) {
+            setTypingAttributesDictionary(null);
+        } else {
+            setTypingAttributesDictionary(v.getDictionary().as(NSDictionary.class));
+        }
+    }
     /*<properties>*/
     @Property(selector = "text")
     public native String getText();
@@ -118,12 +228,12 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "defaultTextAttributes")
-    public native NSAttributedStringAttributes getDefaultTextAttributes();
+    public native NSDictionary<NSString, NSObject> getDefaultTextAttributesDictionary();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "setDefaultTextAttributes:")
-    public native void setDefaultTextAttributes(NSAttributedStringAttributes v);
+    public native void setDefaultTextAttributesDictionary(NSDictionary<NSString, NSObject> v);
     @Property(selector = "placeholder")
     public native String getPlaceholder();
     @Property(selector = "setPlaceholder:")
@@ -178,12 +288,12 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "typingAttributes")
-    public native NSAttributedStringAttributes getTypingAttributes();
+    public native NSDictionary<NSString, NSObject> getTypingAttributesDictionary();
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "setTypingAttributes:")
-    public native void setTypingAttributes(NSAttributedStringAttributes v);
+    public native void setTypingAttributesDictionary(NSDictionary<NSString, NSObject> v);
     @Property(selector = "clearButtonMode")
     public native UITextFieldViewMode getClearButtonMode();
     @Property(selector = "setClearButtonMode:")

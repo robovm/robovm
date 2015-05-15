@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ import org.robovm.apple.opengles.*;
 @Marshaler(SCNSceneSourceAnimationImportPolicy.Marshaler.class)
 /*<annotations>*/@Library("SceneKit")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SCNSceneSourceAnimationImportPolicy/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     public static class Marshaler {
@@ -95,12 +95,24 @@ import org.robovm.apple.opengles.*;
             + /*<name>*/SCNSceneSourceAnimationImportPolicy/*</name>*/.class.getName());
     }
     /*<methods>*/
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @GlobalValue(symbol="SCNSceneSourceAnimationImportPolicyPlay", optional=true)
     protected static native NSString PlayValue();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @GlobalValue(symbol="SCNSceneSourceAnimationImportPolicyPlayRepeatedly", optional=true)
     protected static native NSString PlayRepeatedlyValue();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @GlobalValue(symbol="SCNSceneSourceAnimationImportPolicyDoNotPlay", optional=true)
     protected static native NSString DoNotPlayValue();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @GlobalValue(symbol="SCNSceneSourceAnimationImportPolicyPlayUsingSceneTimeBase", optional=true)
     protected static native NSString PlayUsingSceneTimeBaseValue();
     /*</methods>*/

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2014 RoboVM AB
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -42,7 +42,11 @@ public class Symbols {
      * to a method.
      */
     public static final String INTERNAL_SYMBOL_PREFIX = "[j]";
-
+    /**
+     * Prefix used for C functions.
+     */
+    public static final String C_SYMBOL_PREFIX = "_j_";
+    
     public static String methodSymbol(SootMethod method) {
         return methodSymbol(method, null);
     }
@@ -70,6 +74,30 @@ public class Symbols {
 
     public static String bridgePtrSymbol(SootMethod method) {
         return methodSymbol(method, "bridgeptr");
+    }
+
+    public static boolean isCallbackCSymbol(String symbol) {
+        return symbol.startsWith(C_SYMBOL_PREFIX) && symbol.endsWith("callback");
+    }
+
+    public static String callbackCSymbol(SootMethod method) {
+        return cMethodSymbol(method, "callback");
+    }
+
+    public static boolean isCallbackInnerCSymbol(String symbol) {
+        return symbol.startsWith(C_SYMBOL_PREFIX) && symbol.endsWith("callbackinner");
+    }
+
+    public static String callbackInnerCSymbol(SootMethod method) {
+        return cMethodSymbol(method, "callbackinner");
+    }
+
+    public static boolean isBridgeCSymbol(String symbol) {
+        return symbol.startsWith(C_SYMBOL_PREFIX) && symbol.endsWith("bridge");
+    }
+    
+    public static String bridgeCSymbol(SootMethod method) {
+        return cMethodSymbol(method, "bridge");
     }
 
     public static String globalValuePtrSymbol(SootMethod method) {
@@ -108,6 +136,36 @@ public class Symbols {
         return sb.toString();
     }
 
+    private static String cMethodSymbol(SootMethod method, String type) {
+        return cMethodSymbol(method.makeRef(), type);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static String cMethodSymbol(SootMethodRef methodRef, String type) {
+        return cMethodSymbol(getInternalName(methodRef.declaringClass()), methodRef.name(), 
+                methodRef.parameterTypes(), methodRef.returnType(), type);
+    }
+
+    private static String cMethodSymbol(String owner, String name, List<soot.Type> parameterTypes, soot.Type returnType, String type) {
+        return cMethodSymbol(owner, name, getDescriptor(parameterTypes, returnType), type);
+    }
+
+    private static String cMethodSymbol(String owner, String name, String desc, String type) {
+        StringBuilder sb = new StringBuilder(C_SYMBOL_PREFIX);
+        sb.append(Mangler.mangleNativeString(owner));
+        sb.append("_");
+        sb.append(Mangler.mangleNativeString(name));
+        sb.append("__");
+        sb.append(Mangler.mangleNativeString(desc.substring(1, desc.lastIndexOf(')'))));
+        sb.append("__");
+        sb.append(Mangler.mangleNativeString(desc.substring(desc.lastIndexOf(')') + 1)));
+        if (type != null) {
+            sb.append("__");
+            sb.append(type);
+        }
+        return sb.toString();
+    }
+    
     public static String linetableSymbol(String owner, String name, String desc) {
         return methodSymbol(owner, name, desc, "linetable");
     }

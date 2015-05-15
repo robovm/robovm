@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -177,6 +177,7 @@ import org.robovm.apple.foundation.NSObject.SkipInit;
     public NSMapTable() {}
     protected NSMapTable(SkipInit skipInit) { super(skipInit); }
     public NSMapTable(NSMapTableOptions keyOptions, NSMapTableOptions valueOptions, @MachineSizedUInt long initialCapacity) { super((SkipInit) null); initObject(init(keyOptions, valueOptions, initialCapacity)); }
+    public NSMapTable(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "count")
@@ -285,6 +286,8 @@ import org.robovm.apple.foundation.NSObject.SkipInit;
     @Method(selector = "dictionaryRepresentation")
     public native NSDictionary<K, V> asDictionary();
     @Method(selector = "encodeWithCoder:")
-    public native void encode(NSCoder aCoder);
+    public native void encode(NSCoder coder);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     /*</methods>*/
 }

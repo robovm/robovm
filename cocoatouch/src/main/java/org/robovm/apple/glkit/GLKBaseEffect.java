@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,17 +53,17 @@ import org.robovm.apple.dispatch.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "colorMaterialEnabled")
-    public native byte getColorMaterialEnabled();
+    public native boolean isColorMaterialEnabled();
     @Property(selector = "setColorMaterialEnabled:")
-    public native void setColorMaterialEnabled(byte v);
+    public native void setColorMaterialEnabled(boolean v);
     @Property(selector = "lightModelTwoSided")
-    public native byte getLightModelTwoSided();
+    public native boolean isLightModelTwoSided();
     @Property(selector = "setLightModelTwoSided:")
-    public native void setLightModelTwoSided(byte v);
+    public native void setLightModelTwoSided(boolean v);
     @Property(selector = "useConstantColor")
-    public native byte getUseConstantColor();
+    public native boolean usesConstantColor();
     @Property(selector = "setUseConstantColor:")
-    public native void setUseConstantColor(byte v);
+    public native void setUsesConstantColor(boolean v);
     @Property(selector = "transform")
     public native GLKEffectPropertyTransform getTransform();
     @Property(selector = "light0")
@@ -87,9 +87,9 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "texture2d1")
     public native GLKEffectPropertyTexture getTexture2d1();
     @Property(selector = "textureOrder")
-    public native NSArray<?> getTextureOrder();
+    public native NSArray<GLKEffectPropertyTexture> getTextureOrder();
     @Property(selector = "setTextureOrder:")
-    public native void setTextureOrder(NSArray<?> v);
+    public native void setTextureOrder(NSArray<GLKEffectPropertyTexture> v);
     @Property(selector = "constantColor")
     public native @ByVal GLKVector4 getConstantColor();
     @Property(selector = "setConstantColor:")

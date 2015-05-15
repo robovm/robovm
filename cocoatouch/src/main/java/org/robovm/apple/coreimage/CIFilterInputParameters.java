@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,14 +36,14 @@ import org.robovm.apple.imageio.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CIFilterInputParameters.Marshaler.class)
 /*<annotations>*/@Library("CoreImage")/*</annotations>*/
+@Marshaler(/*<name>*/CIFilterInputParameters/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CIFilterInputParameters/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
-    
+
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static CIFilterInputParameters toObject(Class<CIFilterInputParameters> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -60,33 +60,62 @@ import org.robovm.apple.imageio.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CIFilterInputParameters> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CIFilterInputParameters> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new CIFilterInputParameters(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CIFilterInputParameters> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (CIFilterInputParameters i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
 
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected CIFilterInputParameters(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
+    /*<constructors>*/
+    CIFilterInputParameters(NSDictionary<NSString, NSObject> data) {
+        super(data);
     }
-    public CIFilterInputParameters() {
-        this.data = new NSMutableDictionary<>();
+    public CIFilterInputParameters() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
     }
-    /*<bind>*/static { Bro.bind(CIFilterInputParameters.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
+    }
+    public CIFilterInputParameters set(NSString key, NSObject value) {
+        data.put(key, value);
+        return this;
     }
     
-    
+
     /**
      * @since Available in iOS 5.0 and later.
      */
     public CIImage getOutputImage() {
-        if (data.containsKey(OutputImageKey())) {
-            CIImage val = (CIImage)data.get(OutputImageKey());
+        if (has(Keys.OutputImage())) {
+            CIImage val = (CIImage) get(Keys.OutputImage());
             return val;
         }
         return null;
@@ -94,16 +123,16 @@ import org.robovm.apple.imageio.*;
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public CIFilterInputParameters setOutputImage(CIImage image) {
-        data.put(OutputImageKey(), image);
+    public CIFilterInputParameters setOutputImage(CIImage outputImage) {
+        set(Keys.OutputImage(), outputImage);
         return this;
     }
     /**
      * @since Available in iOS 5.0 and later.
      */
     public CIImage getBackgroundImage() {
-        if (data.containsKey(BackgroundImageKey())) {
-            CIImage val = (CIImage)data.get(BackgroundImageKey());
+        if (has(Keys.BackgroundImage())) {
+            CIImage val = (CIImage) get(Keys.BackgroundImage());
             return val;
         }
         return null;
@@ -111,16 +140,16 @@ import org.robovm.apple.imageio.*;
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public CIFilterInputParameters setBackgroundImage(CIImage image) {
-        data.put(BackgroundImageKey(), image);
+    public CIFilterInputParameters setBackgroundImage(CIImage backgroundImage) {
+        set(Keys.BackgroundImage(), backgroundImage);
         return this;
     }
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public CIImage getImage() {
-        if (data.containsKey(ImageKey())) {
-            CIImage val = (CIImage)data.get(ImageKey());
+    public CIImage getInputImage() {
+        if (has(Keys.Image())) {
+            CIImage val = (CIImage) get(Keys.Image());
             return val;
         }
         return null;
@@ -128,16 +157,16 @@ import org.robovm.apple.imageio.*;
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public CIFilterInputParameters setImage(CIImage image) {
-        data.put(ImageKey(), image);
+    public CIFilterInputParameters setInputImage(CIImage inputImage) {
+        set(Keys.Image(), inputImage);
         return this;
     }
     /**
      * @since Available in iOS 6.0 and later.
      */
     public long getVersion() {
-        if (data.containsKey(VersionKey())) {
-            NSNumber val = (NSNumber)data.get(VersionKey());
+        if (has(Keys.Version())) {
+            NSNumber val = (NSNumber) get(Keys.Version());
             return val.longValue();
         }
         return 0;
@@ -146,34 +175,44 @@ import org.robovm.apple.imageio.*;
      * @since Available in iOS 6.0 and later.
      */
     public CIFilterInputParameters setVersion(long version) {
-        data.put(VersionKey(), NSNumber.valueOf(version));
+        set(Keys.Version(), NSNumber.valueOf(version));
         return this;
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="kCIOutputImageKey", optional=true)
-    protected static native NSString OutputImageKey();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="kCIInputBackgroundImageKey", optional=true)
-    protected static native NSString BackgroundImageKey();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="kCIInputImageKey", optional=true)
-    protected static native NSString ImageKey();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="kCIInputVersionKey", optional=true)
-    protected static native NSString VersionKey();
     /*</methods>*/
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    public boolean has(String key) {
+        return has(new NSString(key));
     }
+    public NSObject get(String key) {
+        return get(new NSString(key));
+    }
+    public CIFilterInputParameters set(String key, NSObject value) {
+        return set(new NSString(key), value);
+    }
+    
+    /*<keys>*/
+    @Library("CoreImage")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="kCIOutputImageKey", optional=true)
+        public static native NSString OutputImage();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="kCIInputBackgroundImageKey", optional=true)
+        public static native NSString BackgroundImage();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="kCIInputImageKey", optional=true)
+        public static native NSString Image();
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        @GlobalValue(symbol="kCIInputVersionKey", optional=true)
+        public static native NSString Version();
+    }
+    /*</keys>*/
 }

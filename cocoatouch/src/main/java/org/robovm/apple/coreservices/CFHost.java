@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,9 +46,9 @@ import org.robovm.apple.coremedia.CMTime;
         void invoke(CFHost host, CFHostInfoType infoType, CFStreamError error);
     }
     
-    private static java.util.concurrent.atomic.AtomicLong refconId = new java.util.concurrent.atomic.AtomicLong();
+    private static final java.util.concurrent.atomic.AtomicLong refconId = new java.util.concurrent.atomic.AtomicLong();
     private long localRefconId;
-    private static Map<Long, ClientCallback> callbacks = new HashMap<Long, ClientCallback>();
+    private static final LongMap<ClientCallback> callbacks = new LongMap<>();
     private static final java.lang.reflect.Method cbInvoke;
     
     static {
@@ -104,12 +104,6 @@ import org.robovm.apple.coremedia.CMTime;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public boolean startInfoResolution(CFHostInfoType info) {
-        return startInfoResolution(info, null);
-    }
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
     public NSArray<NSData> getAddressing() {
         return getAddressing(null);
     }
@@ -139,16 +133,16 @@ import org.robovm.apple.coremedia.CMTime;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public CFReadStream createSocketReadStream(int port) {
-        CFReadStream.CFReadStreamPtr ptr = new CFReadStream.CFReadStreamPtr();
+    public NSInputStream createSocketReadStream(int port) {
+        NSInputStream.NSInputStreamPtr ptr = new NSInputStream.NSInputStreamPtr();
         createSocketStreamPair(null, this, port, ptr, null);
         return ptr.get();
     }
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public CFWriteStream createSocketWriteStream(int port) {
-        CFWriteStream.CFWriteStreamPtr ptr = new CFWriteStream.CFWriteStreamPtr();
+    public NSOutputStream createSocketWriteStream(int port) {
+        NSOutputStream.NSOutputStreamPtr ptr = new NSOutputStream.NSOutputStreamPtr();
         createSocketStreamPair(null, this, port, null, ptr);
         return ptr.get();
     }
@@ -162,37 +156,46 @@ import org.robovm.apple.coremedia.CMTime;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFHostCreateWithName", optional=true)
-    protected static native CFHost create(CFAllocator allocator, String hostname);
+    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFHost create(CFAllocator allocator, String hostname);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFHostCreateWithAddress", optional=true)
-    protected static native CFHost create(CFAllocator allocator, NSData addr);
+    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFHost create(CFAllocator allocator, NSData addr);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFHostCreateCopy", optional=true)
-    protected static native CFHost createCopy(CFAllocator alloc, CFHost host);
+    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFHost createCopy(CFAllocator alloc, CFHost host);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public boolean startInfoResolution(CFHostInfoType info) throws CFStreamErrorException {
+       CFStreamError.CFStreamErrorPtr ptr = new CFStreamError.CFStreamErrorPtr();
+       boolean result = startInfoResolution(info, ptr);
+       if (ptr.get() != null) { throw new CFStreamErrorException(ptr.get()); }
+       return result;
+    }
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFHostStartInfoResolution", optional=true)
-    protected native boolean startInfoResolution(CFHostInfoType info, CFStreamError.CFStreamErrorPtr error);
+    private native boolean startInfoResolution(CFHostInfoType info, CFStreamError.CFStreamErrorPtr error);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFHostGetAddressing", optional=true)
-    protected native NSArray<NSData> getAddressing(BooleanPtr hasBeenResolved);
+    public native NSArray<NSData> getAddressing(BooleanPtr hasBeenResolved);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFHostGetNames", optional=true)
-    protected native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String> getNames(BooleanPtr hasBeenResolved);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String> getNames(BooleanPtr hasBeenResolved);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFHostGetReachability", optional=true)
-    protected native NSData getReachability(BooleanPtr hasBeenResolved);
+    public native NSData getReachability(BooleanPtr hasBeenResolved);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -202,21 +205,21 @@ import org.robovm.apple.coremedia.CMTime;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFHostSetClient", optional=true)
-    protected native boolean setCallback(FunctionPtr clientCB, CFHostClientContext clientContext);
+    private native boolean setCallback(FunctionPtr clientCB, CFHostClientContext clientContext);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFHostScheduleWithRunLoop", optional=true)
-    public native void schedule(CFRunLoop runLoop, CFString runLoopMode);
+    public native void scheduleInRunLoop(CFRunLoop runLoop, String runLoopMode);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFHostUnscheduleFromRunLoop", optional=true)
-    public native void unschedule(CFRunLoop runLoop, CFString runLoopMode);
+    public native void unscheduleFromRunLoop(CFRunLoop runLoop, String runLoopMode);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFStreamCreatePairWithSocketToCFHost", optional=true)
-    protected static native void createSocketStreamPair(CFAllocator alloc, CFHost host, int port, CFReadStream.CFReadStreamPtr readStream, CFWriteStream.CFWriteStreamPtr writeStream);
+    private static native void createSocketStreamPair(CFAllocator alloc, CFHost host, int port, NSInputStream.NSInputStreamPtr readStream, NSOutputStream.NSOutputStreamPtr writeStream);
     /*</methods>*/
 }

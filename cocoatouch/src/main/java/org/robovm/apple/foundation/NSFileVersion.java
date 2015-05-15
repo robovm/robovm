@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -82,53 +82,23 @@ import org.robovm.apple.dispatch.*;
     public native boolean hasThumbnail();
     /*</properties>*/
     /*<members>*//*</members>*/
-    /**
-     * 
-     * @param url
-     * @param options
-     * @return
-     * @throws NSErrorException
-     */
-    public NSURL replaceItemAtURL(NSURL url, NSFileVersionReplacingOptions options) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        NSURL result = replaceItemAtURL(url, options, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @return
-     * @throws NSErrorException
-     */
-    public boolean remove() throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = remove(err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @param url
-     * @return
-     * @throws NSErrorException
-     */
-    public static boolean removeOtherItemVersionsAtURL(NSURL url) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = removeOtherItemVersionsAtURL(url, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
     /*<methods>*/
+    public NSURL replaceItemAtURL(NSURL url, NSFileVersionReplacingOptions options) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       NSURL result = replaceItemAtURL(url, options, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "replaceItemAtURL:options:error:")
-    protected native NSURL replaceItemAtURL(NSURL url, NSFileVersionReplacingOptions options, NSError.NSErrorPtr error);
+    private native NSURL replaceItemAtURL(NSURL url, NSFileVersionReplacingOptions options, NSError.NSErrorPtr error);
+    public boolean remove() throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = remove(ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "removeAndReturnError:")
-    protected native boolean remove(NSError.NSErrorPtr outError);
+    private native boolean remove(NSError.NSErrorPtr outError);
     @Method(selector = "currentVersionOfItemAtURL:")
     public static native NSFileVersion getCurrentItemVersionAtURL(NSURL url);
     @Method(selector = "otherVersionsOfItemAtURL:")
@@ -142,7 +112,13 @@ import org.robovm.apple.dispatch.*;
     public static native void getNonlocalItemVersionsAtURL(NSURL url, @Block VoidBlock2<NSArray<NSFileVersion>, NSError> completionHandler);
     @Method(selector = "versionOfItemAtURL:forPersistentIdentifier:")
     public static native NSFileVersion getItemVersionAtURL(NSURL url, NSObject persistentIdentifier);
+    public static boolean removeOtherItemVersionsAtURL(NSURL url) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = removeOtherItemVersionsAtURL(url, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "removeOtherVersionsOfItemAtURL:error:")
-    protected static native boolean removeOtherItemVersionsAtURL(NSURL url, NSError.NSErrorPtr outError);
+    private static native boolean removeOtherItemVersionsAtURL(NSURL url, NSError.NSErrorPtr outError);
     /*</methods>*/
 }

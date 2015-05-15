@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
+import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 /*</imports>*/
 
@@ -34,7 +35,7 @@ import org.robovm.apple.corefoundation.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("Security")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SecImportExport/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/
@@ -44,42 +45,30 @@ import org.robovm.apple.corefoundation.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public static List<SecImportItem> importPKCS12(NSData pkcs12_data, SecImportExportOptions options) throws OSStatusException {
+        CFArray.CFArrayPtr ptr = new CFArray.CFArrayPtr();
+        OSStatus status = importPKCS120(pkcs12_data, options, ptr);
+        OSStatusException.throwIfNecessary(status);
+        CFArray arr = ptr.get();
+        
+        if (arr == null) {
+            return null;
+        }
+        List<SecImportItem> list = new ArrayList<>();
+        for (int i = 0; i < arr.size(); i++) {
+            list.add(new SecImportItem(arr.get(i, CFDictionary.class)));
+        }
+        return list;
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 2.0 and later.
      */
-    @GlobalValue(symbol="kSecImportExportPassphrase", optional=true)
-    public static native CFString KeyPassphrase();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kSecImportItemLabel", optional=true)
-    public static native CFString KeyItemLabel();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kSecImportItemKeyID", optional=true)
-    public static native CFString KeyItemKeyID();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kSecImportItemTrust", optional=true)
-    public static native CFString KeyItemTrust();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kSecImportItemCertChain", optional=true)
-    public static native CFString KeyItemCertChain();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kSecImportItemIdentity", optional=true)
-    public static native CFString KeyItemIdentity();
-    
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
     @Bridge(symbol="SecPKCS12Import", optional=true)
-    public static native int importPKCS12(CFData pkcs12_data, CFDictionary options, CFArray.CFArrayPtr items);
+    protected static native OSStatus importPKCS120(NSData pkcs12_data, SecImportExportOptions options, CFArray.CFArrayPtr items);
     /*</methods>*/
 }

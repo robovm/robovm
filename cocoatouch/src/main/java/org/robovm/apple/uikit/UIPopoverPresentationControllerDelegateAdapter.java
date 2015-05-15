@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,12 +54,12 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("prepareForPopoverPresentation:")
-    public void prepareForPopoverPresentation(UIPopoverPresentationController popoverPresentationController) { throw new UnsupportedOperationException(); }
+    public void prepareForPopoverPresentation(UIPopoverPresentationController popoverPresentationController) {}
     @NotImplemented("popoverPresentationControllerShouldDismissPopover:")
-    public boolean shouldDismissPopover(UIPopoverPresentationController popoverPresentationController) { throw new UnsupportedOperationException(); }
+    public boolean shouldDismissPopover(UIPopoverPresentationController popoverPresentationController) { return false; }
     @NotImplemented("popoverPresentationControllerDidDismissPopover:")
-    public void didDismissPopover(UIPopoverPresentationController popoverPresentationController) { throw new UnsupportedOperationException(); }
+    public void didDismissPopover(UIPopoverPresentationController popoverPresentationController) {}
     @NotImplemented("popoverPresentationController:willRepositionPopoverToRect:inView:")
-    public void willRepositionPopover(UIPopoverPresentationController popoverPresentationController, CGRect rect, UIView.UIViewPtr view) { throw new UnsupportedOperationException(); }
+    public void willRepositionPopover(UIPopoverPresentationController popoverPresentationController, CGRect rect, UIView.UIViewPtr view) {}
     /*</methods>*/
 }

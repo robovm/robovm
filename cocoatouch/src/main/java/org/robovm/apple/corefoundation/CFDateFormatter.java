@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -73,11 +73,11 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CFDateFormatterCreateDateFormatFromTemplate", optional=true)
-    protected static native String getDateFormat(CFAllocator allocator, String tmplate, @MachineSizedUInt long options, CFLocale locale);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getDateFormat(CFAllocator allocator, String tmplate, @MachineSizedUInt long options, CFLocale locale);
     @Bridge(symbol="CFDateFormatterGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFDateFormatterCreate", optional=true)
-    protected static native CFDateFormatter create(CFAllocator allocator, CFLocale locale, CFDateFormatterStyle dateStyle, CFDateFormatterStyle timeStyle);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFDateFormatter create(CFAllocator allocator, CFLocale locale, CFDateFormatterStyle dateStyle, CFDateFormatterStyle timeStyle);
     @Bridge(symbol="CFDateFormatterGetLocale", optional=true)
     public native CFLocale getLocale();
     @Bridge(symbol="CFDateFormatterGetDateStyle", optional=true)
@@ -89,16 +89,16 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFDateFormatterSetFormat", optional=true)
     public native void setFormat(String formatString);
     @Bridge(symbol="CFDateFormatterCreateStringWithDate", optional=true)
-    protected static native String format(CFAllocator allocator, CFDateFormatter formatter, CFDate date);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String format(CFAllocator allocator, CFDateFormatter formatter, CFDate date);
     @Bridge(symbol="CFDateFormatterCreateStringWithAbsoluteTime", optional=true)
-    protected static native String format(CFAllocator allocator, CFDateFormatter formatter, double at);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String format(CFAllocator allocator, CFDateFormatter formatter, double at);
     @Bridge(symbol="CFDateFormatterCreateDateFromString", optional=true)
-    protected static native CFDate parse(CFAllocator allocator, CFDateFormatter formatter, String string, CFRange rangep);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFDate parse(CFAllocator allocator, CFDateFormatter formatter, String string, CFRange rangep);
     @Bridge(symbol="CFDateFormatterGetAbsoluteTimeFromString", optional=true)
-    protected native boolean getAbsoluteTime(String string, CFRange rangep, DoublePtr atp);
+    private native boolean getAbsoluteTime(String string, CFRange rangep, DoublePtr atp);
     @Bridge(symbol="CFDateFormatterSetProperty", optional=true)
     public native void setProperty(CFDateFormatterProperty key, CFType value);
     @Bridge(symbol="CFDateFormatterCopyProperty", optional=true)
-    public native CFType getProperty(CFDateFormatterProperty key);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFType getProperty(CFDateFormatterProperty key);
     /*</methods>*/
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,12 +48,12 @@ import org.robovm.apple.foundation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("homeManagerDidUpdateHomes:")
-    public void didUpdateHomes(HMHomeManager manager) { throw new UnsupportedOperationException(); }
+    public void didUpdateHomes(HMHomeManager manager) {}
     @NotImplemented("homeManagerDidUpdatePrimaryHome:")
-    public void didUpdatePrimaryHome(HMHomeManager manager) { throw new UnsupportedOperationException(); }
+    public void didUpdatePrimaryHome(HMHomeManager manager) {}
     @NotImplemented("homeManager:didAddHome:")
-    public void didAddHome(HMHomeManager manager, HMHome home) { throw new UnsupportedOperationException(); }
+    public void didAddHome(HMHomeManager manager, HMHome home) {}
     @NotImplemented("homeManager:didRemoveHome:")
-    public void didRemoveHome(HMHomeManager manager, HMHome home) { throw new UnsupportedOperationException(); }
+    public void didRemoveHome(HMHomeManager manager, HMHome home) {}
     /*</methods>*/
 }

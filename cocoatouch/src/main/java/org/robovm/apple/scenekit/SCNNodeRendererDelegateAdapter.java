@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,6 +55,6 @@ import org.robovm.apple.opengles.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("renderNode:renderer:arguments:")
-    public void renderNode(SCNNode node, SCNRenderer renderer, @org.robovm.rt.bro.annotation.Marshaler(SCNRenderingTransform.AsTransform3DMapMarshaler.class) Map<SCNRenderingTransform, CATransform3D> arguments) { throw new UnsupportedOperationException(); }
+    public void renderNode(SCNNode node, SCNRenderer renderer, @org.robovm.rt.bro.annotation.Marshaler(SCNRenderingTransform.AsTransform3DMapMarshaler.class) Map<SCNRenderingTransform, CATransform3D> arguments) {}
     /*</methods>*/
 }

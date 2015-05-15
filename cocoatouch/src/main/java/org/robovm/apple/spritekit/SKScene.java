@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -81,7 +81,7 @@ import org.robovm.apple.scenekit.*;
     @Property(selector = "setAnchorPoint:")
     public native void setAnchorPoint(@ByVal CGPoint v);
     @Property(selector = "physicsWorld")
-    public native SKPhysicsWorld getPhysicsWorld();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSObject.Marshaler.class) SKPhysicsWorld getPhysicsWorld();
     @Property(selector = "view")
     public native SKView getView();
     /*</properties>*/

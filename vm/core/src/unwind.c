@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian Mobile AB
+ * Copyright (C) 2012 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@
 #define TOPC(addr) (addr - 2)
 
 typedef struct UnwindCallStackData {
-    jboolean (*it)(Env*, void*, ProxyMethod*, void*);
+    jboolean (*it)(Env*, void*, void*, ProxyMethod*, void*);
     Env* env;
     GatewayFrame* gatewayFrames;
     void* data;
@@ -80,7 +80,7 @@ static jboolean unwindCallStack(UnwindContext* context, void* _data) {
         context->newFrame = data->gatewayFrames->frameAddress;
 
         if (data->gatewayFrames->proxyMethod) {
-            if (!data->it(env, NULL, data->gatewayFrames->proxyMethod, data->data)) return FALSE;
+            if (!data->it(env, NULL, data->gatewayFrames->frameAddress, data->gatewayFrames->proxyMethod, data->data)) return FALSE;
         }
 
         data->gatewayFrames = data->gatewayFrames->prev;
@@ -88,10 +88,10 @@ static jboolean unwindCallStack(UnwindContext* context, void* _data) {
         return data->gatewayFrames ? TRUE : FALSE;
     }
 
-    return data->it(env, pc, NULL, data->data);
+    return data->it(env, pc, frameAddress, NULL, data->data);
 }
 
-void unwindIterateCallStack(Env* env, void* fp, jboolean (*it)(Env*, void*, ProxyMethod*, void*), void* data) {
+void unwindIterateCallStack(Env* env, void* fp, jboolean (*it)(Env*, void*, void*, ProxyMethod*, void*), void* data) {
     jboolean calledFromNative = !rvmIsNonNativeFrame(env);
     if (calledFromNative) {
         if (!fp) {

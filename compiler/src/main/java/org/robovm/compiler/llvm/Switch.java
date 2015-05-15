@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian Mobile AB
+ * Copyright (C) 2012 RoboVM AB
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,6 +17,7 @@
 package org.robovm.compiler.llvm;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -51,6 +52,14 @@ public class Switch extends Instruction {
         return super.getReadsFrom();
     }
     
+    @Override
+    public Set<BasicBlockRef> getBranchTargets() {
+        Set<BasicBlockRef> result = new HashSet<>();
+        result.add(def);
+        result.addAll(alt.values());
+        return result;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

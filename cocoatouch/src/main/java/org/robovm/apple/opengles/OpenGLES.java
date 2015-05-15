@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ import org.robovm.apple.foundation.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("OpenGLES") @Marshaler(NSString.AsStringMarshaler.class)/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/OpenGLES/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/
@@ -60,6 +60,6 @@ import org.robovm.apple.foundation.*;
     
     /*<methods>*/
     @Bridge(symbol="EAGLGetVersion", optional=true)
-    protected static native void getVersion(IntPtr major, IntPtr minor);
+    private static native void getVersion(IntPtr major, IntPtr minor);
     /*</methods>*/
 }

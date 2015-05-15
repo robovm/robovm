@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,21 +53,21 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 8.0 and later.
      */
     @NotImplemented("accessoryBrowser:didUpdateState:")
-    public void didUpdateState(EAWiFiUnconfiguredAccessoryBrowser browser, EAWiFiUnconfiguredAccessoryBrowserState state) { throw new UnsupportedOperationException(); }
+    public void didUpdateState(EAWiFiUnconfiguredAccessoryBrowser browser, EAWiFiUnconfiguredAccessoryBrowserState state) {}
     /**
      * @since Available in iOS 8.0 and later.
      */
     @NotImplemented("accessoryBrowser:didFindUnconfiguredAccessories:")
-    public void didFindUnconfiguredAccessories(EAWiFiUnconfiguredAccessoryBrowser browser, NSSet<EAWiFiUnconfiguredAccessory> accessories) { throw new UnsupportedOperationException(); }
+    public void didFindUnconfiguredAccessories(EAWiFiUnconfiguredAccessoryBrowser browser, NSSet<EAWiFiUnconfiguredAccessory> accessories) {}
     /**
      * @since Available in iOS 8.0 and later.
      */
     @NotImplemented("accessoryBrowser:didRemoveUnconfiguredAccessories:")
-    public void didRemoveUnconfiguredAccessories(EAWiFiUnconfiguredAccessoryBrowser browser, NSSet<EAWiFiUnconfiguredAccessory> accessories) { throw new UnsupportedOperationException(); }
+    public void didRemoveUnconfiguredAccessories(EAWiFiUnconfiguredAccessoryBrowser browser, NSSet<EAWiFiUnconfiguredAccessory> accessories) {}
     /**
      * @since Available in iOS 8.0 and later.
      */
     @NotImplemented("accessoryBrowser:didFinishConfiguringAccessory:withStatus:")
-    public void didFinishConfiguringAccessory(EAWiFiUnconfiguredAccessoryBrowser browser, EAWiFiUnconfiguredAccessory accessory, EAWiFiUnconfiguredAccessoryConfigurationStatus status) { throw new UnsupportedOperationException(); }
+    public void didFinishConfiguringAccessory(EAWiFiUnconfiguredAccessoryBrowser browser, EAWiFiUnconfiguredAccessory accessory, EAWiFiUnconfiguredAccessoryConfigurationStatus status) {}
     /*</methods>*/
 }

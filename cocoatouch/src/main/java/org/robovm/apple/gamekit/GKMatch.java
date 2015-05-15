@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -68,66 +68,29 @@ import org.robovm.apple.uikit.*;
     public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getPlayerIDs();
     /*</properties>*/
     /*<members>*//*</members>*/
-    /**
-     * 
-     * @param data
-     * @param players
-     * @param mode
-     * @return
-     * @throws NSErrorException
-     * @since Available in iOS 8.0 and later.
-     */
-    public boolean sendDataToPlayers(NSData data, NSArray<GKPlayer> players, GKMatchSendDataMode mode) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = sendDataToPlayers(data, players, mode, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @param data
-     * @param mode
-     * @return
-     * @throws NSErrorException
-     */
-    public boolean sendDataToAllPlayers(NSData data, GKMatchSendDataMode mode) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = sendDataToAllPlayers(data, mode, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @param data
-     * @param playerIDs
-     * @param mode
-     * @return
-     * @throws NSErrorException
-     * @since Available in iOS 4.1 and later.
-     * @deprecated Deprecated in iOS 8.0.
-     */
-    @Deprecated
-    public boolean sendDataToPlayers(NSData data, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> playerIDs, GKMatchSendDataMode mode) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = sendDataToPlayers(data, playerIDs, mode, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-
     /*<methods>*/
     /**
      * @since Available in iOS 8.0 and later.
      */
+    public boolean sendDataToPlayers(NSData data, NSArray<GKPlayer> players, GKMatchSendDataMode mode) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = sendDataToPlayers(data, players, mode, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "sendData:toPlayers:dataMode:error:")
-    protected native boolean sendDataToPlayers(NSData data, NSArray<GKPlayer> players, GKMatchSendDataMode mode, NSError.NSErrorPtr error);
+    private native boolean sendDataToPlayers(NSData data, NSArray<GKPlayer> players, GKMatchSendDataMode mode, NSError.NSErrorPtr error);
+    public boolean sendDataToAllPlayers(NSData data, GKMatchSendDataMode mode) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = sendDataToAllPlayers(data, mode, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "sendDataToAllPlayers:withDataMode:error:")
-    protected native boolean sendDataToAllPlayers(NSData data, GKMatchSendDataMode mode, NSError.NSErrorPtr error);
+    private native boolean sendDataToAllPlayers(NSData data, GKMatchSendDataMode mode, NSError.NSErrorPtr error);
     @Method(selector = "disconnect")
     public native void disconnect();
     @Method(selector = "voiceChatWithName:")
@@ -154,7 +117,18 @@ import org.robovm.apple.uikit.*;
      * @deprecated Deprecated in iOS 8.0.
      */
     @Deprecated
+    public boolean sendDataToPlayers(NSData data, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> playerIDs, GKMatchSendDataMode mode) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = sendDataToPlayers(data, playerIDs, mode, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
+    /**
+     * @since Available in iOS 4.1 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @Method(selector = "sendData:toPlayers:withDataMode:error:")
-    protected native boolean sendDataToPlayers(NSData data, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> playerIDs, GKMatchSendDataMode mode, NSError.NSErrorPtr error);
+    private native boolean sendDataToPlayers(NSData data, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> playerIDs, GKMatchSendDataMode mode, NSError.NSErrorPtr error);
     /*</methods>*/
 }

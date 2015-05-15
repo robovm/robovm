@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,7 +66,7 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "contents")
     protected native @Pointer long getContents0();
     @Method(selector = "newTextureWithDescriptor:offset:bytesPerRow:")
-    public native MTLTexture newTexture(MTLTextureDescriptor descriptor, @MachineSizedUInt long offset, @MachineSizedUInt long bytesPerRow);
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSObject.NoRetainMarshaler.class) MTLTexture newTexture(MTLTextureDescriptor descriptor, @MachineSizedUInt long offset, @MachineSizedUInt long bytesPerRow);
     @Method(selector = "setPurgeableState:")
     public native MTLPurgeableState setPurgeableState(MTLPurgeableState state);
     /*</methods>*/

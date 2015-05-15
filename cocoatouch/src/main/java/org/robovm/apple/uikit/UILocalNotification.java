@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -105,6 +105,16 @@ import org.robovm.apple.corelocation.*;
     public native String getAlertLaunchImage();
     @Property(selector = "setAlertLaunchImage:")
     public native void setAlertLaunchImage(String v);
+    /**
+     * @since Available in iOS 8.2 and later.
+     */
+    @Property(selector = "alertTitle")
+    public native String getAlertTitle();
+    /**
+     * @since Available in iOS 8.2 and later.
+     */
+    @Property(selector = "setAlertTitle:")
+    public native void setAlertTitle(String v);
     @Property(selector = "soundName")
     public native String getSoundName();
     @Property(selector = "setSoundName:")

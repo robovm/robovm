@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,6 +43,45 @@ import org.robovm.apple.audiotoolbox.*;
     extends /*<extends>*/CMClockOrTimebase/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Notifications {
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        public static NSObject observeEffectiveRateChanged(CMTimebase object, final VoidBlock2<CMTimebase, CMTime> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(EffectiveRateChangedNotification(), object.as(NSObject.class), NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    CMTimebase object = a.getObject() != null ? a.getObject().as(CMTimebase.class) : null;
+                    CMTime time = null;
+                    
+                    NSDictionary<NSString, NSObject> data = a.getUserInfo();
+                    if (data.containsKey(EventTimeNotificationKey())) {
+                        time = data.get(EventTimeNotificationKey()).as(CMTime.class);
+                    }
+                    block.invoke(object, time);
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        public static NSObject observeTimeJumped(CMTimebase object, final VoidBlock2<CMTimebase, CMTime> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(TimeJumpedNotification(), object.as(NSObject.class), NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    CMTimebase object = a.getObject() != null ? a.getObject().as(CMTimebase.class) : null;
+                    CMTime time = null;
+                    
+                    NSDictionary<NSString, NSObject> data = a.getUserInfo();
+                    if (data.containsKey(EventTimeNotificationKey())) {
+                        time = data.get(EventTimeNotificationKey()).as(CMTime.class);
+                    }
+                    block.invoke(object, time);
+                }
+            });
+        }
+    }
+    
     /*<ptr>*/public static class CMTimebasePtr extends Ptr<CMTimebase, CMTimebasePtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(CMTimebase.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -51,18 +90,147 @@ import org.robovm.apple.audiotoolbox.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/ 
-    public static CMTimebase create(CMClock masterClock) {
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 6.0 and later.
+     */
+    public static CMTimebase create(CMClock masterClock) throws OSStatusException  {
         CMTimebasePtr ptr = new CMTimebasePtr();
-        create(null, masterClock, ptr);
+        OSStatus status = create0(null, masterClock, ptr);
+        OSStatusException.throwIfNecessary(status);
         return ptr.get();
     }
-    
-    public static CMTimebase create(CMTimebase masterTimebase) {
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 6.0 and later.
+     */
+    public static CMTimebase create(CMTimebase masterTimebase) throws OSStatusException  {
         CMTimebasePtr ptr = new CMTimebasePtr();
-        create(null, masterTimebase, ptr);
+        OSStatus status = create0(null, masterTimebase, ptr);
+        OSStatusException.throwIfNecessary(status);
         return ptr.get();
-    }   
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 6.0 and later.
+     */
+    public void setTime(CMTime time) throws OSStatusException {
+        OSStatus status = setTime0(time);
+        OSStatusException.throwIfNecessary(status);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 6.0 and later.
+     */
+    public void setAnchorTime(CMTime timebaseTime, CMTime immediateMasterTime) throws OSStatusException {
+        OSStatus status = setAnchorTime0(timebaseTime, immediateMasterTime);
+        OSStatusException.throwIfNecessary(status);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 6.0 and later.
+     */
+    public void setRate(double rate) throws OSStatusException {
+        OSStatus status = setRate0(rate);
+        OSStatusException.throwIfNecessary(status);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 6.0 and later.
+     */
+    public void setRateAndAnchorTime(double rate, CMTime timebaseTime, CMTime immediateMasterTime) throws OSStatusException {
+        OSStatus status = setRateAndAnchorTime0(rate, timebaseTime, immediateMasterTime);
+        OSStatusException.throwIfNecessary(status);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 6.0 and later.
+     */
+    public void addTimer(NSTimer timer, NSRunLoop runloop) throws OSStatusException {
+        OSStatus status = addTimer0(timer, runloop);
+        OSStatusException.throwIfNecessary(status);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 6.0 and later.
+     */
+    public void removeTimer(NSTimer timer) throws OSStatusException {
+        OSStatus status = removeTimer0(timer);
+        OSStatusException.throwIfNecessary(status);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 6.0 and later.
+     */
+    public void setTimerNextFireTime(NSTimer timer, CMTime fireTime) throws OSStatusException {
+        OSStatus status = setTimerNextFireTime0(timer, fireTime, 0);
+        OSStatusException.throwIfNecessary(status);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 6.0 and later.
+     */
+    public void setTimerToFireImmediately(NSTimer timer) throws OSStatusException {
+        OSStatus status = setTimerToFireImmediately0(timer);
+        OSStatusException.throwIfNecessary(status);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 6.0 and later.
+     */
+    public void addTimerDispatchSource(DispatchSource timerSource) throws OSStatusException {
+        OSStatus status = addTimerDispatchSource0(timerSource);
+        OSStatusException.throwIfNecessary(status);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 6.0 and later.
+     */
+    public void removeTimerDispatchSource(DispatchSource timerSource) throws OSStatusException {
+        OSStatus status = removeTimerDispatchSource0(timerSource);
+        OSStatusException.throwIfNecessary(status);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 6.0 and later.
+     */
+    public void setTimerDispatchSourceNextFireTime(DispatchSource timerSource, CMTime fireTime) throws OSStatusException {
+        OSStatus status = setTimerDispatchSourceNextFireTime0(timerSource, fireTime, 0);
+        OSStatusException.throwIfNecessary(status);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 6.0 and later.
+     */
+    public void setTimerDispatchSourceToFireImmediately(DispatchSource timerSource) throws OSStatusException {
+        OSStatus status = setTimerDispatchSourceToFireImmediately0(timerSource);
+        OSStatusException.throwIfNecessary(status);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 6.0 and later.
+     */
+    public void notificationBarrier() throws OSStatusException {
+        OSStatus status = notificationBarrier0();
+        OSStatusException.throwIfNecessary(status);
+    }
     /*<methods>*/
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @GlobalValue(symbol="kCMTimebaseNotification_EffectiveRateChanged", optional=true)
+    public static native NSString EffectiveRateChangedNotification();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @GlobalValue(symbol="kCMTimebaseNotification_TimeJumped", optional=true)
+    public static native NSString TimeJumpedNotification();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @GlobalValue(symbol="kCMTimebaseNotificationKey_EventTime", optional=true)
+    protected static native NSString EventTimeNotificationKey();
+    
     /**
      * @since Available in iOS 6.0 and later.
      */
@@ -72,12 +240,12 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="CMTimebaseCreateWithMasterClock", optional=true)
-    protected static native int create(CFAllocator allocator, CMClock masterClock, CMTimebase.CMTimebasePtr timebaseOut);
+    protected static native OSStatus create0(CFAllocator allocator, CMClock masterClock, CMTimebase.CMTimebasePtr timebaseOut);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="CMTimebaseCreateWithMasterTimebase", optional=true)
-    protected static native int create(CFAllocator allocator, CMTimebase masterTimebase, CMTimebase.CMTimebasePtr timebaseOut);
+    protected static native OSStatus create0(CFAllocator allocator, CMTimebase masterTimebase, CMTimebase.CMTimebasePtr timebaseOut);
     /**
      * @since Available in iOS 6.0 and later.
      */
@@ -112,12 +280,12 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="CMTimebaseSetTime", optional=true)
-    public native CMTimebaseError setTime(@ByVal CMTime time);
+    protected native OSStatus setTime0(@ByVal CMTime time);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="CMTimebaseSetAnchorTime", optional=true)
-    public native CMTimebaseError setAnchorTime(@ByVal CMTime timebaseTime, @ByVal CMTime immediateMasterTime);
+    protected native OSStatus setAnchorTime0(@ByVal CMTime timebaseTime, @ByVal CMTime immediateMasterTime);
     /**
      * @since Available in iOS 6.0 and later.
      */
@@ -127,12 +295,12 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="CMTimebaseSetRate", optional=true)
-    public native CMTimebaseError setRate(double rate);
+    protected native OSStatus setRate0(double rate);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="CMTimebaseSetRateAndAnchorTime", optional=true)
-    public native CMTimebaseError setRateAndAnchorTime(double rate, @ByVal CMTime timebaseTime, @ByVal CMTime immediateMasterTime);
+    protected native OSStatus setRateAndAnchorTime0(double rate, @ByVal CMTime timebaseTime, @ByVal CMTime immediateMasterTime);
     /**
      * @since Available in iOS 6.0 and later.
      */
@@ -142,46 +310,46 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="CMTimebaseAddTimer", optional=true)
-    public native CMTimebaseError addTimer(CFRunLoopTimer timer, CFRunLoop runloop);
+    protected native OSStatus addTimer0(NSTimer timer, NSRunLoop runloop);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="CMTimebaseRemoveTimer", optional=true)
-    public native CMTimebaseError removeTimer(CFRunLoopTimer timer);
+    protected native OSStatus removeTimer0(NSTimer timer);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="CMTimebaseSetTimerNextFireTime", optional=true)
-    public native CMTimebaseError setTimerNextFireTime(CFRunLoopTimer timer, @ByVal CMTime fireTime, int flags);
+    protected native OSStatus setTimerNextFireTime0(NSTimer timer, @ByVal CMTime fireTime, int flags);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="CMTimebaseSetTimerToFireImmediately", optional=true)
-    public native CMTimebaseError setTimerToFireImmediately(CFRunLoopTimer timer);
+    protected native OSStatus setTimerToFireImmediately0(NSTimer timer);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="CMTimebaseAddTimerDispatchSource", optional=true)
-    public native CMTimebaseError addTimerDispatchSource(DispatchSource timerSource);
+    protected native OSStatus addTimerDispatchSource0(DispatchSource timerSource);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="CMTimebaseRemoveTimerDispatchSource", optional=true)
-    public native CMTimebaseError removeTimerDispatchSource(DispatchSource timerSource);
+    protected native OSStatus removeTimerDispatchSource0(DispatchSource timerSource);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="CMTimebaseSetTimerDispatchSourceNextFireTime", optional=true)
-    public native CMTimebaseError setTimerDispatchSourceNextFireTime(DispatchSource timerSource, @ByVal CMTime fireTime, int flags);
+    protected native OSStatus setTimerDispatchSourceNextFireTime0(DispatchSource timerSource, @ByVal CMTime fireTime, int flags);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="CMTimebaseSetTimerDispatchSourceToFireImmediately", optional=true)
-    public native CMTimebaseError setTimerDispatchSourceToFireImmediately(DispatchSource timerSource);
+    protected native OSStatus setTimerDispatchSourceToFireImmediately0(DispatchSource timerSource);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="CMTimebaseNotificationBarrier", optional=true)
-    public native CMTimebaseError notificationBarrier();
+    protected native OSStatus notificationBarrier0();
     /*</methods>*/
 }

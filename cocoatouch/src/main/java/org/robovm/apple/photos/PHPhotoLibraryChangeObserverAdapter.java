@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,6 +52,6 @@ import org.robovm.apple.avfoundation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("photoLibraryDidChange:")
-    public void didChange(PHChange changeInstance) { throw new UnsupportedOperationException(); }
+    public void didChange(PHChange changeInstance) {}
     /*</methods>*/
 }

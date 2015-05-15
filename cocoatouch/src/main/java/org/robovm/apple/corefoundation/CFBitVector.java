@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,6 +38,27 @@ import org.robovm.apple.foundation.*;
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class CFBitVectorPtr extends Ptr<CFBitVector, CFBitVectorPtr> {}/*</ptr>*/
+    
+    private static final int EFFECTIVE_DIRECT_ADDRESS_OFFSET;
+
+    static {
+        try {
+            java.lang.reflect.Field f1 = Buffer.class.getDeclaredField("effectiveDirectAddress");
+            if (f1.getType() != long.class) {
+                throw new Error("java.nio.Buffer.effectiveDirectAddress should be a long");
+            }
+            EFFECTIVE_DIRECT_ADDRESS_OFFSET = VM.getInstanceFieldOffset(VM.getFieldAddress(f1));
+        } catch (NoSuchFieldException e) {
+            throw new Error(e);
+        }
+    }
+    
+    static long getEffectiveAddress(ByteBuffer bytes) {
+        if (!bytes.isDirect()) {
+            throw new IllegalArgumentException("Direct ByteBuffer expected");
+        }
+        return VM.getLong(VM.getObjectAddress(bytes) + EFFECTIVE_DIRECT_ADDRESS_OFFSET);
+    }
     /*<bind>*/static { Bro.bind(CFBitVector.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
@@ -45,26 +66,56 @@ import org.robovm.apple.foundation.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    public static CFBitVector create(byte[] bytes) {
+        return create(null, bytes);
+    }
+    public static CFBitVector create(CFAllocator allocator, byte[] bytes) {
+        if (bytes == null) {
+            throw new NullPointerException("bytes");
+        }
+        return create(allocator, VM.getArrayValuesAddress(bytes), bytes.length);
+    }
+    public static CFBitVector create(ByteBuffer bytes) {
+        return create(null, bytes);
+    }
+    public static CFBitVector create(CFAllocator allocator, ByteBuffer bytes) {
+        if (bytes == null) {
+            throw new NullPointerException("bytes");
+        }
+        long handle = getEffectiveAddress(bytes) + bytes.position();
+        CFBitVector result = create(allocator, handle, bytes.remaining());
+        return result;
+    }
+    public static CFBitVector createCopy(CFBitVector bv) {
+        return createCopy(null, bv);
+    }
+
+    public byte[] getBytes() {
+        int length = (int) getCount();
+        byte[] bytes = new byte[length];
+        getBits(new CFRange(0, length), VM.getArrayValuesAddress(bytes));
+        return bytes;
+    }
     /*<methods>*/
     @Bridge(symbol="CFBitVectorGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFBitVectorCreate", optional=true)
-    public static native CFBitVector create(CFAllocator allocator, BytePtr bytes, @MachineSizedSInt long numBits);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFBitVector create(CFAllocator allocator, @Pointer long bytes, @MachineSizedSInt long numBits);
     @Bridge(symbol="CFBitVectorCreateCopy", optional=true)
-    public static native CFBitVector createCopy(CFAllocator allocator, CFBitVector bv);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFBitVector createCopy(CFAllocator allocator, CFBitVector bv);
     @Bridge(symbol="CFBitVectorGetCount", optional=true)
     public native @MachineSizedSInt long getCount();
     @Bridge(symbol="CFBitVectorGetCountOfBit", optional=true)
     public native @MachineSizedSInt long getCountOfBit(@ByVal CFRange range, int value);
     @Bridge(symbol="CFBitVectorContainsBit", optional=true)
-    public native boolean containsBit(@ByVal CFRange range, int value);
+    public native boolean contains(@ByVal CFRange range, int value);
     @Bridge(symbol="CFBitVectorGetBitAtIndex", optional=true)
-    public native int getBitAtIndex(@MachineSizedSInt long idx);
+    public native int get(@MachineSizedSInt long idx);
     @Bridge(symbol="CFBitVectorGetBits", optional=true)
-    public native void getBits(@ByVal CFRange range, BytePtr bytes);
+    private native void getBits(@ByVal CFRange range, @Pointer long bytes);
     @Bridge(symbol="CFBitVectorGetFirstIndexOfBit", optional=true)
-    public native @MachineSizedSInt long getFirstIndexOfBit(@ByVal CFRange range, int value);
+    public native @MachineSizedSInt long indexOf(@ByVal CFRange range, int value);
     @Bridge(symbol="CFBitVectorGetLastIndexOfBit", optional=true)
-    public native @MachineSizedSInt long getLastIndexOfBit(@ByVal CFRange range, int value);
+    public native @MachineSizedSInt long lastIndexOf(@ByVal CFRange range, int value);
     /*</methods>*/
 }

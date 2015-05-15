@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,10 +45,13 @@ import org.robovm.apple.metal.*;
     /*<ptr>*/public static class CVTimeStampPtr extends Ptr<CVTimeStamp, CVTimeStampPtr> {}/*</ptr>*/
     /*<bind>*/
     /*</bind>*/
-    /*<constants>*//*</constants>*/
+    /*<constants>*/
+    public static final int VideoHostTimeValid = 3;
+    public static final int IsInterlaced = 196608;
+    /*</constants>*/
     /*<constructors>*/
     public CVTimeStamp() {}
-    public CVTimeStamp(int version, int videoTimeScale, long videoTime, long hostTime, double rateScalar, long videoRefreshPeriod, CVSMPTETime smpteTime, long flags, long reserved) {
+    public CVTimeStamp(int version, int videoTimeScale, long videoTime, long hostTime, double rateScalar, long videoRefreshPeriod, CVSMPTETime smpteTime, CVTimeStampFlags flags, long reserved) {
         this.setVersion(version);
         this.setVideoTimeScale(videoTimeScale);
         this.setVideoTime(videoTime);
@@ -76,8 +79,8 @@ import org.robovm.apple.metal.*;
     @StructMember(5) public native CVTimeStamp setVideoRefreshPeriod(long videoRefreshPeriod);
     @StructMember(6) public native @ByVal CVSMPTETime getSmpteTime();
     @StructMember(6) public native CVTimeStamp setSmpteTime(@ByVal CVSMPTETime smpteTime);
-    @StructMember(7) public native long getFlags();
-    @StructMember(7) public native CVTimeStamp setFlags(long flags);
+    @StructMember(7) public native CVTimeStampFlags getFlags();
+    @StructMember(7) public native CVTimeStamp setFlags(CVTimeStampFlags flags);
     @StructMember(8) public native long getReserved();
     @StructMember(8) public native CVTimeStamp setReserved(long reserved);
     /*</members>*/

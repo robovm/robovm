@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,8 +30,10 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -40,9 +42,9 @@ import org.robovm.apple.coremedia.*;
 /*<annotations>*//*</annotations>*/
 public enum /*<name>*/AudioFilePermission/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    ReadPermission(1L),
-    WritePermission(2L),
-    ReadWritePermission(3L);
+    Read(1L),
+    Write(2L),
+    ReadWrite(3L);
     /*</values>*/
 
     /*<bind>*/

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,10 +54,10 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("videoEditorController:didSaveEditedVideoToPath:")
-    public void didSave(UIVideoEditorController editor, String editedVideoPath) { throw new UnsupportedOperationException(); }
+    public void didSave(UIVideoEditorController editor, String editedVideoPath) {}
     @NotImplemented("videoEditorController:didFailWithError:")
-    public void didFail(UIVideoEditorController editor, NSError error) { throw new UnsupportedOperationException(); }
+    public void didFail(UIVideoEditorController editor, NSError error) {}
     @NotImplemented("videoEditorControllerDidCancel:")
-    public void didCancel(UIVideoEditorController editor) { throw new UnsupportedOperationException(); }
+    public void didCancel(UIVideoEditorController editor) {}
     /*</methods>*/
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,12 @@
 package org.robovm.apple.foundation;
 
 /**
- * {@code NSErrorException} extends from {@link RuntimeException} and wraps {@link NSError}.
+ * {@code NSErrorException} extends from {@link Exception} and wraps {@link NSError}.
  * It is used throughout the Cocoa frameworks on methods that return pointers to {@code NSError}.
  * 
  * Use {@link #getError()} to get the {@code NSError} instance that was used to instantiate this exception.
  */
-public class NSErrorException extends RuntimeException {
+public class NSErrorException extends Exception {
     private static final long serialVersionUID = -1423038930507165128L;
     private NSError error;
     

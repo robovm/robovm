@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,8 +55,8 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("lock")
-    public void lock() { throw new UnsupportedOperationException(); }
+    public void lock() {}
     @NotImplemented("unlock")
-    public void unlock() { throw new UnsupportedOperationException(); }
+    public void unlock() {}
     /*</methods>*/
 }

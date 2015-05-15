@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,12 +37,9 @@ import org.robovm.apple.coregraphics.*;
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/CTFontOrientation/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    OrientationDefault(0L),
-    OrientationHorizontal(1L),
-    OrientationVertical(2L),
-    DefaultOrientation(0L),
-    HorizontalOrientation(1L),
-    VerticalOrientation(2L);
+    Default(0L),
+    Horizontal(1L),
+    Vertical(2L);
     /*</values>*/
 
     /*<bind>*/

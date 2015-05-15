@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,8 +30,10 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -48,20 +50,20 @@ import org.robovm.apple.coremedia.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public AudioFramePacketTranslation() {}
-    public AudioFramePacketTranslation(long mFrame, long mPacket, int mFrameOffsetInPacket) {
-        this.setMFrame(mFrame);
-        this.setMPacket(mPacket);
-        this.setMFrameOffsetInPacket(mFrameOffsetInPacket);
+    public AudioFramePacketTranslation(long frame, long packet, int frameOffsetInPacket) {
+        this.setFrame(frame);
+        this.setPacket(packet);
+        this.setFrameOffsetInPacket(frameOffsetInPacket);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native long getMFrame();
-    @StructMember(0) public native AudioFramePacketTranslation setMFrame(long mFrame);
-    @StructMember(1) public native long getMPacket();
-    @StructMember(1) public native AudioFramePacketTranslation setMPacket(long mPacket);
-    @StructMember(2) public native int getMFrameOffsetInPacket();
-    @StructMember(2) public native AudioFramePacketTranslation setMFrameOffsetInPacket(int mFrameOffsetInPacket);
+    @StructMember(0) public native long getFrame();
+    @StructMember(0) public native AudioFramePacketTranslation setFrame(long frame);
+    @StructMember(1) public native long getPacket();
+    @StructMember(1) public native AudioFramePacketTranslation setPacket(long packet);
+    @StructMember(2) public native int getFrameOffsetInPacket();
+    @StructMember(2) public native AudioFramePacketTranslation setFrameOffsetInPacket(int frameOffsetInPacket);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

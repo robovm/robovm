@@ -104,6 +104,7 @@ functions:
     AB(CreateString)WithAddressDictionary:
         class: ABAddressFormating
         name: '#{g[0]}'
+        return_marshaler: 
         parameters:
             address:
                 type: CFDictionary

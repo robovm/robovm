@@ -381,3 +381,11 @@ void LLVMGetLineInfoForAddressRange(LLVMObjectFileRef O, uint64_t Address, uint6
     }
   }
 }
+
+size_t LLVMCopySectionContents(LLVMSectionIteratorRef SI, char* Dest, size_t DestSize) {
+  uint64_t SectionSize = LLVMGetSectionSize(SI);
+  size_t Size = SectionSize > DestSize ? DestSize : SectionSize;
+  const char* Contents = LLVMGetSectionContents(SI);
+  memcpy(Dest, Contents, (size_t) Size);
+  return Size;
+}

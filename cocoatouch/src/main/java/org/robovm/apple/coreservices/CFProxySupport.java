@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,23 +34,23 @@ import org.robovm.apple.corefoundation.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("CFNetwork")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CFProxySupport/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/
     /*</ptr>*/
     public interface AutoConfigurationClientCallback {
-        void invoke(List<CFProxy> proxyList, CFError error);
+        void invoke(List<CFProxy> proxyList, NSError error);
     }
     
-    private static java.util.concurrent.atomic.AtomicLong refconId = new java.util.concurrent.atomic.AtomicLong();
+    private static final java.util.concurrent.atomic.AtomicLong refconId = new java.util.concurrent.atomic.AtomicLong();
     private long localRefconId;
-    private static Map<Long, AutoConfigurationClientCallback> callbacks = new HashMap<Long, AutoConfigurationClientCallback>();
+    private static final LongMap<AutoConfigurationClientCallback> callbacks = new LongMap<>();
     private static final java.lang.reflect.Method cbInvoke;
     
     static {
         try {
-            cbInvoke = CFProxySupport.class.getDeclaredMethod("cbInvoke", long.class, CFArray.class, CFError.class);
+            cbInvoke = CFProxySupport.class.getDeclaredMethod("cbInvoke", long.class, CFArray.class, NSError.class);
         } catch (Throwable e) {
             throw new Error(e);
         }
@@ -61,7 +61,7 @@ import org.robovm.apple.corefoundation.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     @Callback
-    private static void cbInvoke(@Pointer long refcon, CFArray proxyList0, CFError error) {
+    private static void cbInvoke(@Pointer long refcon, CFArray proxyList0, NSError error) {
         AutoConfigurationClientCallback callback = null;
         synchronized (callbacks) {
             callback = callbacks.get(refcon);
@@ -71,20 +71,6 @@ import org.robovm.apple.corefoundation.*;
             proxyList.add(new CFProxy(proxyList0.get(i, CFDictionary.class)));
         }
         callback.invoke(proxyList, error);
-    }
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public static List<CFProxy> getProxies(String proxyAutoConfigurationScript, NSURL targetURL) {
-        CFArray proxies0 = getProxies0(proxyAutoConfigurationScript, targetURL, null);
-        if (proxies0 != null) {
-            List<CFProxy> proxies = new ArrayList<CFProxy>();
-            for (int i = 0; i < proxies0.size(); i++) {
-                proxies.add(new CFProxy(proxies0.get(i, CFDictionary.class)));
-            }
-            return proxies;
-        }
-        return null;
     }
     /**
      * @since Available in iOS 2.0 and later.
@@ -127,17 +113,26 @@ import org.robovm.apple.corefoundation.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
+    public static List<CFProxy> getProxies(String proxyAutoConfigurationScript, NSURL targetURL) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       List<CFProxy> result = getProxies(proxyAutoConfigurationScript, targetURL, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CFNetworkCopyProxiesForAutoConfigurationScript", optional=true)
-    protected static native CFArray getProxies0(String proxyAutoConfigurationScript, NSURL targetURL, CFError.CFErrorPtr error);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFProxy.AsListMarshaler.class) List<CFProxy> getProxies(String proxyAutoConfigurationScript, NSURL targetURL, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFNetworkExecuteProxyAutoConfigurationScript", optional=true)
-    protected static native CFRunLoopSource executeProxyAutoConfigurationScript(String proxyAutoConfigurationScript, NSURL targetURL, FunctionPtr cb, CFStreamClientContext clientContext);
+    private static native CFRunLoopSource executeProxyAutoConfigurationScript(String proxyAutoConfigurationScript, NSURL targetURL, FunctionPtr cb, CFStreamClientContext clientContext);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFNetworkExecuteProxyAutoConfigurationURL", optional=true)
-    protected static native CFRunLoopSource executeProxyAutoConfigurationURL(NSURL proxyAutoConfigURL, NSURL targetURL, FunctionPtr cb, CFStreamClientContext clientContext);
+    private static native CFRunLoopSource executeProxyAutoConfigurationURL(NSURL proxyAutoConfigURL, NSURL targetURL, FunctionPtr cb, CFStreamClientContext clientContext);
     /*</methods>*/
 }

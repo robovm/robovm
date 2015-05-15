@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,17 +56,17 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTGlyphInfoCreateWithGlyphName", optional=true)
-    public static native CTGlyphInfo create(String glyphName, CTFont font, String baseString);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CTGlyphInfo create(String glyphName, CTFont font, String baseString);
     /**
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTGlyphInfoCreateWithGlyph", optional=true)
-    public static native CTGlyphInfo create(short glyph, CTFont font, String baseString);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CTGlyphInfo create(short glyph, CTFont font, String baseString);
     /**
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTGlyphInfoCreateWithCharacterIdentifier", optional=true)
-    public static native CTGlyphInfo create(short cid, CTCharacterCollection collection, String baseString);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CTGlyphInfo create(short cid, CTCharacterCollection collection, String baseString);
     /**
      * @since Available in iOS 3.2 and later.
      */

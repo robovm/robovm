@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,6 +36,7 @@ import org.robovm.apple.coremedia.*;
 import org.robovm.apple.corevideo.*;
 import org.robovm.apple.audiotoolbox.*;
 import org.robovm.apple.mediatoolbox.*;
+import org.robovm.apple.audiounit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -299,215 +300,6 @@ import org.robovm.apple.mediatoolbox.*;
     public native double getPreferredHardwareSampleRate();
     /*</properties>*/
     /*<members>*//*</members>*/
-    /**
-     * 
-     * @param active
-     * @return
-     * @throws NSErrorException
-     */
-    public boolean setActive(boolean active) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = setActive(active, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @param active
-     * @param options
-     * @return
-     * @throws NSErrorException
-     * @since Available in iOS 6.0 and later.
-     */
-    public boolean setActive(boolean active, AVAudioSessionSetActiveOptions options) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = setActive(active, options, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @param category
-     * @return
-     * @throws NSErrorException
-     */
-    public boolean setCategory(AVAudioSessionCategory category) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = setCategory(category, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @param category
-     * @param options
-     * @return
-     * @throws NSErrorException
-     * @since Available in iOS 6.0 and later.
-     */
-    public boolean setCategory(AVAudioSessionCategory category, AVAudioSessionCategoryOptions options) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = setCategory(category, options, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @param mode
-     * @return
-     * @throws NSErrorException
-     * @since Available in iOS 5.0 and later.
-     */
-    public boolean setMode(AVAudioSessionMode mode) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = setMode(mode, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @param portOverride
-     * @return
-     * @throws NSErrorException
-     * @since Available in iOS 6.0 and later.
-     */
-    public boolean overrideOutputAudioPort(AVAudioSessionPortOverride portOverride) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = overrideOutputAudioPort(portOverride, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @param inPort
-     * @return
-     * @since Available in iOS 7.0 and later.
-     * @throws NSErrorException
-     */
-    public boolean setPreferredInput(AVAudioSessionPortDescription inPort) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = setPreferredInput(inPort, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @param sampleRate
-     * @return
-     * @since Available in iOS 6.0 and later.
-     * @throws NSErrorException
-     */
-    public boolean setPreferredSampleRate(double sampleRate) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = setPreferredSampleRate(sampleRate, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @param duration
-     * @return
-     * @throws NSErrorException
-     */
-    public boolean setPreferredIOBufferDuration(double duration) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = setPreferredIOBufferDuration(duration, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @param count
-     * @return
-     * @throws NSErrorException
-     * @since Available in iOS 7.0 and later.
-     */
-    public boolean setPreferredInputNumberOfChannels(@MachineSizedSInt long count) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = setPreferredInputNumberOfChannels(count, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @param count
-     * @return
-     * @throws NSErrorException
-     * @since Available in iOS 7.0 and later.
-     */
-    public boolean setPreferredOutputNumberOfChannels(@MachineSizedSInt long count) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = setPreferredOutputNumberOfChannels(count, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @param gain
-     * @return
-     * @throws NSErrorException
-     * @since Available in iOS 6.0 and later.
-     */
-    public boolean setInputGain(float gain) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = setInputGain(gain, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @param dataSource
-     * @return
-     * @throws NSErrorException
-     * @since Available in iOS 6.0 and later.
-     */
-    public boolean setInputDataSource(AVAudioSessionDataSourceDescription dataSource) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = setInputDataSource(dataSource, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @param dataSource
-     * @return
-     * @throws NSErrorException
-     * @since Available in iOS 6.0 and later.
-     */
-    public boolean setOutputDataSource(AVAudioSessionDataSourceDescription dataSource) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = setOutputDataSource(dataSource, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
     /*<methods>*/
     /**
      * @since Available in iOS 6.0 and later.
@@ -540,20 +332,53 @@ import org.robovm.apple.mediatoolbox.*;
     @GlobalValue(symbol="AVAudioSessionSilenceSecondaryAudioHintTypeKey", optional=true)
     protected static native NSString SilenceSecondaryAudioHintTypeKey();
     
+    public boolean setActive(boolean active) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = setActive(active, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "setActive:error:")
-    protected native boolean setActive(boolean active, NSError.NSErrorPtr outError);
+    private native boolean setActive(boolean active, NSError.NSErrorPtr outError);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public boolean setActive(boolean active, AVAudioSessionSetActiveOptions options) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = setActive(active, options, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "setActive:withOptions:error:")
-    protected native boolean setActive(boolean active, AVAudioSessionSetActiveOptions options, NSError.NSErrorPtr outError);
+    private native boolean setActive(boolean active, AVAudioSessionSetActiveOptions options, NSError.NSErrorPtr outError);
+    public boolean setCategory(AVAudioSessionCategory category) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = setCategory(category, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "setCategory:error:")
-    protected native boolean setCategory(AVAudioSessionCategory category, NSError.NSErrorPtr outError);
+    private native boolean setCategory(AVAudioSessionCategory category, NSError.NSErrorPtr outError);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public boolean setCategory(AVAudioSessionCategory category, AVAudioSessionCategoryOptions options) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = setCategory(category, options, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "setCategory:withOptions:error:")
-    protected native boolean setCategory(AVAudioSessionCategory category, AVAudioSessionCategoryOptions options, NSError.NSErrorPtr outError);
+    private native boolean setCategory(AVAudioSessionCategory category, AVAudioSessionCategoryOptions options, NSError.NSErrorPtr outError);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "recordPermission")
     public native AVAudioSessionRecordPermission getRecordPermission();
     /**
@@ -564,65 +389,174 @@ import org.robovm.apple.mediatoolbox.*;
     /**
      * @since Available in iOS 5.0 and later.
      */
+    public boolean setMode(AVAudioSessionMode mode) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = setMode(mode, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "setMode:error:")
-    protected native boolean setMode(AVAudioSessionMode mode, NSError.NSErrorPtr outError);
+    private native boolean setMode(AVAudioSessionMode mode, NSError.NSErrorPtr outError);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public boolean overrideOutputAudioPort(AVAudioSessionPortOverride portOverride) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = overrideOutputAudioPort(portOverride, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "overrideOutputAudioPort:error:")
-    protected native boolean overrideOutputAudioPort(AVAudioSessionPortOverride portOverride, NSError.NSErrorPtr outError);
+    private native boolean overrideOutputAudioPort(AVAudioSessionPortOverride portOverride, NSError.NSErrorPtr outError);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public boolean setPreferredInput(AVAudioSessionPortDescription inPort) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = setPreferredInput(inPort, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "setPreferredInput:error:")
-    protected native boolean setPreferredInput(AVAudioSessionPortDescription inPort, NSError.NSErrorPtr outError);
+    private native boolean setPreferredInput(AVAudioSessionPortDescription inPort, NSError.NSErrorPtr outError);
     @Method(selector = "sharedInstance")
     public static native AVAudioSession getSharedInstance();
     /**
      * @since Available in iOS 6.0 and later.
      */
+    public boolean setPreferredSampleRate(double sampleRate) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = setPreferredSampleRate(sampleRate, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "setPreferredSampleRate:error:")
-    protected native boolean setPreferredSampleRate(double sampleRate, NSError.NSErrorPtr outError);
+    private native boolean setPreferredSampleRate(double sampleRate, NSError.NSErrorPtr outError);
+    public boolean setPreferredIOBufferDuration(double duration) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = setPreferredIOBufferDuration(duration, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "setPreferredIOBufferDuration:error:")
-    protected native boolean setPreferredIOBufferDuration(double duration, NSError.NSErrorPtr outError);
+    private native boolean setPreferredIOBufferDuration(double duration, NSError.NSErrorPtr outError);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public boolean setPreferredInputNumberOfChannels(@MachineSizedSInt long count) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = setPreferredInputNumberOfChannels(count, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "setPreferredInputNumberOfChannels:error:")
-    protected native boolean setPreferredInputNumberOfChannels(@MachineSizedSInt long count, NSError.NSErrorPtr outError);
+    private native boolean setPreferredInputNumberOfChannels(@MachineSizedSInt long count, NSError.NSErrorPtr outError);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public boolean setPreferredOutputNumberOfChannels(@MachineSizedSInt long count) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = setPreferredOutputNumberOfChannels(count, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "setPreferredOutputNumberOfChannels:error:")
-    protected native boolean setPreferredOutputNumberOfChannels(@MachineSizedSInt long count, NSError.NSErrorPtr outError);
+    private native boolean setPreferredOutputNumberOfChannels(@MachineSizedSInt long count, NSError.NSErrorPtr outError);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public boolean setInputGain(float gain) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = setInputGain(gain, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "setInputGain:error:")
-    protected native boolean setInputGain(float gain, NSError.NSErrorPtr outError);
+    private native boolean setInputGain(float gain, NSError.NSErrorPtr outError);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public boolean setInputDataSource(AVAudioSessionDataSourceDescription dataSource) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = setInputDataSource(dataSource, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "setInputDataSource:error:")
-    protected native boolean setInputDataSource(AVAudioSessionDataSourceDescription dataSource, NSError.NSErrorPtr outError);
+    private native boolean setInputDataSource(AVAudioSessionDataSourceDescription dataSource, NSError.NSErrorPtr outError);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public boolean setOutputDataSource(AVAudioSessionDataSourceDescription dataSource) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = setOutputDataSource(dataSource, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "setOutputDataSource:error:")
-    protected native boolean setOutputDataSource(AVAudioSessionDataSourceDescription dataSource, NSError.NSErrorPtr outError);
+    private native boolean setOutputDataSource(AVAudioSessionDataSourceDescription dataSource, NSError.NSErrorPtr outError);
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 6.0.
+     */
+    @Deprecated
+    public boolean setActive(boolean active, @MachineSizedSInt long flags) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = setActive(active, flags, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     /**
      * @since Available in iOS 4.0 and later.
      * @deprecated Deprecated in iOS 6.0.
      */
     @Deprecated
     @Method(selector = "setActive:withFlags:error:")
-    protected native boolean setActive(boolean active, @MachineSizedSInt long flags, NSError.NSErrorPtr outError);
+    private native boolean setActive(boolean active, @MachineSizedSInt long flags, NSError.NSErrorPtr outError);
+    /**
+     * @since Available in iOS 3.0 and later.
+     * @deprecated Deprecated in iOS 6.0.
+     */
+    @Deprecated
+    public boolean setPreferredHardwareSampleRate(double sampleRate) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = setPreferredHardwareSampleRate(sampleRate, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     /**
      * @since Available in iOS 3.0 and later.
      * @deprecated Deprecated in iOS 6.0.
      */
     @Deprecated
     @Method(selector = "setPreferredHardwareSampleRate:error:")
-    protected native boolean setPreferredHardwareSampleRate(double sampleRate, NSError.NSErrorPtr outError);
+    private native boolean setPreferredHardwareSampleRate(double sampleRate, NSError.NSErrorPtr outError);
     /*</methods>*/
 }

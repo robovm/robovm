@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian Mobile AB
+ * Copyright (C) 2012 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,7 +32,11 @@ extern void* rvmAllocateMemoryAtomic(Env* env, size_t size);
 extern void* rvmAllocateMemoryAtomicUncollectable(Env* env, size_t size);
 extern void rvmFreeMemoryUncollectable(Env* env, void* m);
 extern void rvmGCCollect(Env* env);
-extern jboolean rvmAddObjectGCRoot(Env* env, Object* object);
+extern jboolean rvmInitRefTable(Env* env, RefTable* refTable, jint size);
+extern jboolean rvmAddGlobalRef(Env* env, Object* object);
+extern jboolean rvmRemoveGlobalRef(Env* env, Object* object);
+extern jboolean rvmAddRef(Env* env, RefTable* refTable, Object* object);
+extern jboolean rvmRemoveRef(Env* env, RefTable* refTable, Object* object);
 extern jlong rvmGetFreeMemory(Env* env);
 extern jlong rvmGetTotalMemory(Env* env);
 extern jlong rvmGetMaxMemory(Env* env);

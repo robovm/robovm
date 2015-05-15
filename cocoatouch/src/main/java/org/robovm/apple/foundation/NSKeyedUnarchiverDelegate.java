@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,7 +53,7 @@ import org.robovm.apple.dispatch.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "unarchiver:cannotDecodeObjectOfClassName:originalClasses:")
-    Class<?> cannotDecodeObjectOfClassName(NSKeyedUnarchiver unarchiver, String name, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> classNames);
+    Class<? extends NSObject> cannotDecodeObjectOfClassName(NSKeyedUnarchiver unarchiver, String name, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> classNames);
     @Method(selector = "unarchiver:didDecodeObject:")
     NSObject didDecodeObject(NSKeyedUnarchiver unarchiver, NSObject object);
     @Method(selector = "unarchiver:willReplaceObject:withObject:")

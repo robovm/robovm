@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -59,8 +59,8 @@ public final class /*<name>*/UIControlEvents/*</name>*/ extends Bits</*<name>*/U
     public static final UIControlEvents AllTouchEvents = new UIControlEvents(4095L);
     public static final UIControlEvents AllEditingEvents = new UIControlEvents(983040L);
     public static final UIControlEvents ApplicationReserved = new UIControlEvents(251658240L);
-    public static final UIControlEvents SystemReserved = new UIControlEvents(-268435456L);
-    public static final UIControlEvents AllEvents = new UIControlEvents(-1L);
+    public static final UIControlEvents SystemReserved = new UIControlEvents(4026531840L);
+    public static final UIControlEvents AllEvents = new UIControlEvents(4294967295L);
     /*</values>*/
 
     private static final /*<name>*/UIControlEvents/*</name>*/[] values = _values(/*<name>*/UIControlEvents/*</name>*/.class);

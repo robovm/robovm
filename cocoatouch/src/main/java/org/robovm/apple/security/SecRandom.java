@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
+import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 /*</imports>*/
 
@@ -45,17 +46,26 @@ import org.robovm.apple.corefoundation.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public byte[] getRandomBytes(int count) {
+        byte[] bytes = new byte[count];
+        getBytes(count, VM.getArrayValuesAddress(bytes));
+        return bytes;
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="kSecRandomDefault", optional=true)
-    public static native SecRandom Default();
+    public static native SecRandom getDefault();
     
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="SecRandomCopyBytes", optional=true)
-    public native int copyBytes(@MachineSizedUInt long count, BytePtr bytes);
+    protected native int getBytes(@MachineSizedUInt long count, @Pointer long bytes);
     /*</methods>*/
 }

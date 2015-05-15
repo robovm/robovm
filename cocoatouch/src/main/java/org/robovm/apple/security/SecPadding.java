@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
+import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 /*</imports>*/
 
@@ -39,6 +40,7 @@ public enum /*<name>*/SecPadding/*</name>*/ implements ValuedEnum {
     None(0L),
     PKCS1(1L),
     OAEP(2L),
+    SigRaw(16384L),
     PKCS1MD2(32768L),
     PKCS1MD5(32769L),
     PKCS1SHA1(32770L),

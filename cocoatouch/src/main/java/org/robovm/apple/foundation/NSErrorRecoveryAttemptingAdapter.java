@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,8 +55,8 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("attemptRecoveryFromError:optionIndex:delegate:didRecoverSelector:contextInfo:")
-    public void attemptRecoveryFromError(NSError error, @MachineSizedUInt long recoveryOptionIndex, NSObject delegate, Selector didRecoverSelector, VoidPtr contextInfo) { throw new UnsupportedOperationException(); }
+    public void attemptRecoveryFromError(NSError error, @MachineSizedUInt long recoveryOptionIndex, NSObject delegate, Selector didRecoverSelector, VoidPtr contextInfo) {}
     @NotImplemented("attemptRecoveryFromError:optionIndex:")
-    public boolean attemptRecoveryFromError(NSError error, @MachineSizedUInt long recoveryOptionIndex) { throw new UnsupportedOperationException(); }
+    public boolean attemptRecoveryFromError(NSError error, @MachineSizedUInt long recoveryOptionIndex) { return false; }
     /*</methods>*/
 }

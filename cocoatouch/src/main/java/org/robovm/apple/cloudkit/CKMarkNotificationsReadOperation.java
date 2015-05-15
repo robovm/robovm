@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,7 +46,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public CKMarkNotificationsReadOperation() {}
     protected CKMarkNotificationsReadOperation(SkipInit skipInit) { super(skipInit); }
-    public CKMarkNotificationsReadOperation(NSArray<?> notificationIDs) { super((SkipInit) null); initObject(init(notificationIDs)); }
+    public CKMarkNotificationsReadOperation(NSArray<CKNotificationID> notificationIDs) { super((SkipInit) null); initObject(init(notificationIDs)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "notificationIDs")
@@ -61,6 +61,6 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithNotificationIDsToMarkRead:")
-    protected native @Pointer long init(NSArray<?> notificationIDs);
+    protected native @Pointer long init(NSArray<CKNotificationID> notificationIDs);
     /*</methods>*/
 }

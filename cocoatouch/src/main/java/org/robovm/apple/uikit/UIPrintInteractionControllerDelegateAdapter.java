@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,25 +54,25 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("printInteractionControllerParentViewController:")
-    public UIViewController getParentViewController(UIPrintInteractionController printInteractionController) { throw new UnsupportedOperationException(); }
+    public UIViewController getParentViewController(UIPrintInteractionController printInteractionController) { return null; }
     @NotImplemented("printInteractionController:choosePaper:")
-    public UIPrintPaper choosePaper(UIPrintInteractionController printInteractionController, NSArray<UIPrintPaper> paperList) { throw new UnsupportedOperationException(); }
+    public UIPrintPaper choosePaper(UIPrintInteractionController printInteractionController, NSArray<UIPrintPaper> paperList) { return null; }
     @NotImplemented("printInteractionControllerWillPresentPrinterOptions:")
-    public void willPresentPrinterOptions(UIPrintInteractionController printInteractionController) { throw new UnsupportedOperationException(); }
+    public void willPresentPrinterOptions(UIPrintInteractionController printInteractionController) {}
     @NotImplemented("printInteractionControllerDidPresentPrinterOptions:")
-    public void didPresentPrinterOptions(UIPrintInteractionController printInteractionController) { throw new UnsupportedOperationException(); }
+    public void didPresentPrinterOptions(UIPrintInteractionController printInteractionController) {}
     @NotImplemented("printInteractionControllerWillDismissPrinterOptions:")
-    public void willDismissPrinterOptions(UIPrintInteractionController printInteractionController) { throw new UnsupportedOperationException(); }
+    public void willDismissPrinterOptions(UIPrintInteractionController printInteractionController) {}
     @NotImplemented("printInteractionControllerDidDismissPrinterOptions:")
-    public void didDismissPrinterOptions(UIPrintInteractionController printInteractionController) { throw new UnsupportedOperationException(); }
+    public void didDismissPrinterOptions(UIPrintInteractionController printInteractionController) {}
     @NotImplemented("printInteractionControllerWillStartJob:")
-    public void willStartJob(UIPrintInteractionController printInteractionController) { throw new UnsupportedOperationException(); }
+    public void willStartJob(UIPrintInteractionController printInteractionController) {}
     @NotImplemented("printInteractionControllerDidFinishJob:")
-    public void didFinishJob(UIPrintInteractionController printInteractionController) { throw new UnsupportedOperationException(); }
+    public void didFinishJob(UIPrintInteractionController printInteractionController) {}
     /**
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("printInteractionController:cutLengthForPaper:")
-    public @MachineSizedFloat double getCutLength(UIPrintInteractionController printInteractionController, UIPrintPaper paper) { throw new UnsupportedOperationException(); }
+    public @MachineSizedFloat double getCutLength(UIPrintInteractionController printInteractionController, UIPrintPaper paper) { return 0; }
     /*</methods>*/
 }

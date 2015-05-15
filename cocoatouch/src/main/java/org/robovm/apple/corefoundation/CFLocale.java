@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -71,10 +71,10 @@ import org.robovm.apple.foundation.*;
     public static String getLocaleIdentifierFromWindowsLocaleCode(int lcid) {
         return getLocaleIdentifierFromWindowsLocaleCode(null, lcid);
     }
-    public static Map<CFLocaleComponent, NSObject> getComponentsFromLocaleIdentifier(String localeID) {
+    public static CFLocaleComponents getComponentsFromLocaleIdentifier(String localeID) {
         return getComponentsFromLocaleIdentifier(null, localeID);
     }
-    public static String getLocaleIdentifierFromComponents(Map<CFLocaleComponent, NSObject> components) {
+    public static String getLocaleIdentifierFromComponents(CFLocaleComponents components) {
         return getLocaleIdentifierFromComponents(null, components);
     }
     public static CFLocale create(String localeIdentifier) {
@@ -115,16 +115,16 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFLocaleCopyPreferredLanguages", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String> getPreferredLanguages();
     @Bridge(symbol="CFLocaleCreateCanonicalLanguageIdentifierFromString", optional=true)
-    protected static native String getCanonicalLanguageIdentifier(CFAllocator allocator, String localeIdentifier);
+    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getCanonicalLanguageIdentifier(CFAllocator allocator, String localeIdentifier);
     @Bridge(symbol="CFLocaleCreateCanonicalLocaleIdentifierFromString", optional=true)
-    protected static native String getCanonicalLocaleIdentifier(CFAllocator allocator, String localeIdentifier);
+    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getCanonicalLocaleIdentifier(CFAllocator allocator, String localeIdentifier);
     @Bridge(symbol="CFLocaleCreateCanonicalLocaleIdentifierFromScriptManagerCodes", optional=true)
-    protected static native String getCanonicalLocaleIdentifier(CFAllocator allocator, short lcode, short rcode);
+    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getCanonicalLocaleIdentifier(CFAllocator allocator, short lcode, short rcode);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CFLocaleCreateLocaleIdentifierFromWindowsLocaleCode", optional=true)
-    protected static native String getLocaleIdentifierFromWindowsLocaleCode(CFAllocator allocator, int lcid);
+    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getLocaleIdentifierFromWindowsLocaleCode(CFAllocator allocator, int lcid);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -141,18 +141,18 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFLocaleGetLanguageLineDirection", optional=true)
     public static native CFLocaleLanguageDirection getLanguageLineDirection(String isoLangCode);
     @Bridge(symbol="CFLocaleCreateComponentsFromLocaleIdentifier", optional=true)
-    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFLocaleComponent.AsMapMarshaler.class) Map<CFLocaleComponent, NSObject> getComponentsFromLocaleIdentifier(CFAllocator allocator, String localeID);
+    protected static native CFLocaleComponents getComponentsFromLocaleIdentifier(CFAllocator allocator, String localeID);
     @Bridge(symbol="CFLocaleCreateLocaleIdentifierFromComponents", optional=true)
-    protected static native String getLocaleIdentifierFromComponents(CFAllocator allocator, @org.robovm.rt.bro.annotation.Marshaler(CFLocaleComponent.AsMapMarshaler.class) Map<CFLocaleComponent, NSObject> dictionary);
+    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getLocaleIdentifierFromComponents(CFAllocator allocator, CFLocaleComponents dictionary);
     @Bridge(symbol="CFLocaleCreate", optional=true)
-    protected static native CFLocale create(CFAllocator allocator, String localeIdentifier);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFLocale create(CFAllocator allocator, String localeIdentifier);
     @Bridge(symbol="CFLocaleCreateCopy", optional=true)
-    protected static native CFLocale createCopy(CFAllocator allocator, CFLocale locale);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFLocale createCopy(CFAllocator allocator, CFLocale locale);
     @Bridge(symbol="CFLocaleGetIdentifier", optional=true)
     public native String getIdentifier();
     @Bridge(symbol="CFLocaleGetValue", optional=true)
     public native CFType getComponent(CFLocaleComponent key);
     @Bridge(symbol="CFLocaleCopyDisplayNameForPropertyValue", optional=true)
-    public native String getComponentDisplayName(CFLocaleComponent key, String value);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getComponentDisplayName(CFLocaleComponent key, String value);
     /*</methods>*/
 }

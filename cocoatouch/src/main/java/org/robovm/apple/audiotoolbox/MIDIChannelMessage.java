@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,8 +30,10 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -48,11 +50,10 @@ import org.robovm.apple.coremedia.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public MIDIChannelMessage() {}
-    public MIDIChannelMessage(byte status, byte data1, byte data2, byte reserved) {
+    public MIDIChannelMessage(byte status, byte data1, byte data2) {
         this.setStatus(status);
         this.setData1(data1);
         this.setData2(data2);
-        this.setReserved(reserved);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
@@ -63,8 +64,8 @@ import org.robovm.apple.coremedia.*;
     @StructMember(1) public native MIDIChannelMessage setData1(byte data1);
     @StructMember(2) public native byte getData2();
     @StructMember(2) public native MIDIChannelMessage setData2(byte data2);
-    @StructMember(3) public native byte getReserved();
-    @StructMember(3) public native MIDIChannelMessage setReserved(byte reserved);
+    @StructMember(3) private native byte getReserved();
+    @StructMember(3) private native MIDIChannelMessage setReserved(byte reserved);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

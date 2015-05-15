@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -93,9 +93,9 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "removePropertyForKey:inRequest:")
     public static native void removePropertyInRequest(String key, NSMutableURLRequest request);
     @Method(selector = "registerClass:")
-    public static native boolean registerClass(Class<?> protocolClass);
+    public static native boolean registerClass(Class<? extends NSURLProtocol> protocolClass);
     @Method(selector = "unregisterClass:")
-    public static native void unregisterClass(Class<?> protocolClass);
+    public static native void unregisterClass(Class<? extends NSURLProtocol> protocolClass);
     /**
      * @since Available in iOS 8.0 and later.
      */

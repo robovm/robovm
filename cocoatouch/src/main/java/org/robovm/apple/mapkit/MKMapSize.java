@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,6 +53,16 @@ import org.robovm.apple.dispatch.*;
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
+    public boolean equalsTo(MKMapSize other) {
+        return getWidth() == other.getWidth() && getHeight() == other.getHeight();
+    }
+    public boolean equals(Object obj) {
+        return obj instanceof MKMapSize && equalsTo((MKMapSize)obj);
+    }
+    
+    public String toString() {
+        return String.format("{%.1f, %.1f}", getWidth(), getHeight());
+    }
     /*<members>*/
     @StructMember(0) public native double getWidth();
     @StructMember(0) public native MKMapSize setWidth(double width);
@@ -64,6 +74,6 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="MKMapSizeWorld", optional=true)
-    public static native @ByVal MKMapSize getWorldSize();
+    public static native @ByVal MKMapSize World();
     /*</methods>*/
 }

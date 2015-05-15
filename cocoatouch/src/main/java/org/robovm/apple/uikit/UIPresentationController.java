@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -79,6 +79,11 @@ import org.robovm.apple.corelocation.*;
     protected native @Pointer long init(UIViewController presentedViewController, UIViewController presentingViewController);
     @Method(selector = "adaptivePresentationStyle")
     public native UIModalPresentationStyle getAdaptivePresentationStyle();
+    /**
+     * @since Available in iOS 8.3 and later.
+     */
+    @Method(selector = "adaptivePresentationStyleForTraitCollection:")
+    public native UIModalPresentationStyle getAdaptivePresentationStyleForTraitCollection(UITraitCollection traitCollection);
     @Method(selector = "containerViewWillLayoutSubviews")
     public native void containerViewWillLayoutSubviews();
     @Method(selector = "containerViewDidLayoutSubviews")

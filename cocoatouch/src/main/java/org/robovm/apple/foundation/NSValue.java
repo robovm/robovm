@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -216,7 +216,7 @@ import org.robovm.apple.scenekit.SCNVector4;
     @Method(selector = "pointerValue")
     public native VoidPtr pointerValue();
     @Method(selector = "isEqualToValue:")
-    public native boolean isEqualTo(NSValue value);
+    public native boolean equalsTo(NSValue value);
     @Method(selector = "valueWithNonretainedObject:")
     public static native NSValue valueOf(NSObject anObject);
     @Method(selector = "valueWithPointer:")

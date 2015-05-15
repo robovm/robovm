@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,10 +54,10 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("hasText")
-    public boolean hasText() { throw new UnsupportedOperationException(); }
+    public boolean hasText() { return false; }
     @NotImplemented("insertText:")
-    public void insertText(String text) { throw new UnsupportedOperationException(); }
+    public void insertText(String text) {}
     @NotImplemented("deleteBackward")
-    public void deleteBackward() { throw new UnsupportedOperationException(); }
+    public void deleteBackward() {}
     /*</methods>*/
 }

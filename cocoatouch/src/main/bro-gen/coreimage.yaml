@@ -48,8 +48,10 @@ classes:
                 name: render
             '-createCGImage.*':
                 name: createCGImage
+                return_marshaler: CFType.NoRetainMarshaler
             '-createCGLayer.*':
                 name: createCGLayer
+                return_marshaler: CFType.NoRetainMarshaler
     CIDetector: # DONE
         methods:
             '+detectorOfType:context:options:':
@@ -82,7 +84,7 @@ classes:
             '+filterArrayFromSerializedXMP:inputImageExtent:error:':
                 name: deserializeFromXMP
                 return_type: NSArray<CIFilter>
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '+filterWithName:withInputParameters:':
                 name: create
                 parameters:
@@ -239,18 +241,24 @@ values:
     # CIFilter
     kCIInput(Time|Transform|Scale|AspectRatio|Center|Radius|Angle|Width|Sharpness|Intensity|EV|Saturation|Color|Brightness|Contrast|MaskImage|TargetImage|Extent)Key:
         exclude: true # not available in iOS
-    kCIInput(.*Key):
-        class: CIFilterInputParameters
+    kCIInput(.*)Key:
+        dictionary: CIFilterInputParameters
         name: '#{g[0]}'
         type: NSString
-        readonly: true
-        visibility: protected
-    kCI(OutputImageKey):
-        class: CIFilterInputParameters
+    kCI(OutputImage)Key:
+        dictionary: CIFilterInputParameters
         name: '#{g[0]}'
         type: NSString
-        readonly: true
-        visibility: protected
+        methods:
+            OutputImage:
+                type: CIImage
+            BackgroundImage:
+                type: CIImage
+            Image:
+                name: InputImage
+                type: CIImage
+            Version:
+                type: long
     kCICategory(.*):
         class: CIFilterCategory
         name: '#{g[0]}Value'

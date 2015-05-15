@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,15 +46,12 @@ import org.robovm.apple.uikit.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    
     public static CGColor create(CGColorSpace space, float[] components) {
         return create(space, components, components != null ? components.length : 0);
     }
-
     public static CGColor create(CGColorSpace space, double[] components) {
         return create(space, components, components != null ? components.length : 0);
     }
-
     private static CGColor create(CGColorSpace space, Object components, int componentsLength) {
         if (space == null) {
             throw new NullPointerException("space == null");
@@ -68,25 +65,42 @@ import org.robovm.apple.uikit.*;
         return create(space, VM.getArrayValuesAddress(CoreGraphics.toMachineSizedFloatArray(components)));
     }
     
+    public static CGColor create(CGColorSpace space, CGPattern pattern, float[] components) {
+        return create(space, pattern, components, components != null ? components.length : 0);
+    }
+    public static CGColor create(CGColorSpace space, CGPattern pattern, double[] components) {
+        return create(space, pattern, components, components != null ? components.length : 0);
+    }
+    private static CGColor create(CGColorSpace space, CGPattern pattern, Object components, int componentsLength) {
+        if (space == null) {
+            throw new NullPointerException("space == null");
+        }
+        if (components == null) {
+            throw new NullPointerException("components == null");
+        }
+        if (componentsLength != space.getNumberOfComponents() + 1) {
+            throw new IllegalArgumentException("components.length != space.numberOfComponents + 1");
+        }
+        return create(space, pattern, VM.getArrayValuesAddress(CoreGraphics.toMachineSizedFloatArray(components)));
+    }
+    
     public double[] getComponentsD() {
         return getComponents(this).toDoubleArray((int) getNumberOfComponents());
     }
-
     public float[] getComponentsF() {
         return getComponents(this).toFloatArray((int) getNumberOfComponents());
     }
-
     /*<methods>*/
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGColorCreate", optional=true)
-    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColor create(CGColorSpace space, @Pointer long components);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColor create(CGColorSpace space, @Pointer long components);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGColorCreateWithPattern", optional=true)
-    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColor createWithPattern(CGColorSpace space, CGPattern pattern, @Pointer long components);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColor create(CGColorSpace space, CGPattern pattern, @Pointer long components);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -96,12 +110,12 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGColorCreateCopyWithAlpha", optional=true)
-    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColor createCopyWithAlpha(CGColor color, @MachineSizedFloat double alpha);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColor createCopy(CGColor color, @MachineSizedFloat double alpha);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGColorEqualToColor", optional=true)
-    public native boolean equalToColor(CGColor color2);
+    public native boolean equalsTo(CGColor color2);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -111,7 +125,7 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGColorGetComponents", optional=true)
-    protected static native MachineSizedFloatPtr getComponents(CGColor color);
+    private static native MachineSizedFloatPtr getComponents(CGColor color);
     /**
      * @since Available in iOS 2.0 and later.
      */

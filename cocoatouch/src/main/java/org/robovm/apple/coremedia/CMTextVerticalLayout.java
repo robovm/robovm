@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,12 +38,13 @@ import org.robovm.apple.audiotoolbox.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CMTextVerticalLayout.Marshaler.class)
 /*<annotations>*/@Library("CoreMedia")/*</annotations>*/
+@Marshaler(/*<name>*/CMTextVerticalLayout/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CMTextVerticalLayout/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<CFString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CMTextVerticalLayout toObject(Class<CMTextVerticalLayout> cls, long handle, long flags) {
@@ -61,35 +62,52 @@ import org.robovm.apple.audiotoolbox.*;
             return CFType.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(CMTextVerticalLayout.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CMTextVerticalLayout> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CMTextVerticalLayout> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(CMTextVerticalLayout.valueOf(o.get(i, CFString.class)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CMTextVerticalLayout> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray array = CFMutableArray.create();
+            for (CMTextVerticalLayout i : l) {
+                array.add(i.value());
+            }
+            return CFType.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public static final CMTextVerticalLayout LeftToRight = new CMTextVerticalLayout("LeftToRightValue");
+    public static final CMTextVerticalLayout LeftToRight = new CMTextVerticalLayout("LeftToRight");
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public static final CMTextVerticalLayout RightToLeft = new CMTextVerticalLayout("RightToLeftValue");
+    public static final CMTextVerticalLayout RightToLeft = new CMTextVerticalLayout("RightToLeft");
+    /*</constants>*/
     
-    private static CMTextVerticalLayout[] values = new CMTextVerticalLayout[] {LeftToRight, RightToLeft};
-    private final LazyGlobalValue<CFString> lazyGlobalValue;
+    private static /*<name>*/CMTextVerticalLayout/*</name>*/[] values = new /*<name>*/CMTextVerticalLayout/*</name>*/[] {/*<value_list>*/LeftToRight, RightToLeft/*</value_list>*/};
     
-    private CMTextVerticalLayout(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public CFString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/CMTextVerticalLayout/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static CMTextVerticalLayout valueOf(CFString value) {
-        for (CMTextVerticalLayout v : values) {
+    public static /*<name>*/CMTextVerticalLayout/*</name>*/ valueOf(/*<type>*/CFString/*</type>*/ value) {
+        for (/*<name>*/CMTextVerticalLayout/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -97,16 +115,24 @@ import org.robovm.apple.audiotoolbox.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/CMTextVerticalLayout/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="kCMTextVerticalLayout_LeftToRight", optional=true)
-    protected static native CFString LeftToRightValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="kCMTextVerticalLayout_RightToLeft", optional=true)
-    protected static native CFString RightToLeftValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("CoreMedia")/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="kCMTextVerticalLayout_LeftToRight", optional=true)
+        public static native CFString LeftToRight();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="kCMTextVerticalLayout_RightToLeft", optional=true)
+        public static native CFString RightToLeft();
+        /*</values>*/
+    }
 }

@@ -2,6 +2,7 @@
 %StackFrame = type {i8*, i8*}
 %Thread = type {i32} ; Incomplete. Just enough to get threadId
 %Env = type {i8*, i8*, i8*, %Thread*, i8*, i8*, %GatewayFrame*, i8*, i32}
+%DebugEnv = type {%Env, i8*, i8*, i8*, i8*, i8, i8}
 %TypeInfo = type {i32, i32, i32, i32, i32, [0 x i32]}
 %VITable = type {i16, [0 x i8*]}
 %ITable = type {%TypeInfo*, %VITable}
@@ -70,6 +71,8 @@ declare void @_bcThrowNullPointerException(%Env*) noreturn
 declare void @_bcThrowArrayIndexOutOfBoundsException(%Env*, i32, i32) noreturn
 declare void @_bcThrowArithmeticException(%Env*) noreturn
 declare void @_bcThrowUnsatisfiedLinkError(%Env*, i8*) noreturn
+declare void @_bcThrowUnsatisfiedLinkErrorBridgeNotBound(%Env*, i8*, i8*, i8*) noreturn
+declare void @_bcThrowUnsatisfiedLinkErrorOptionalBridgeNotBound(%Env*, i8*, i8*, i8*) noreturn
 declare void @_bcThrowNoClassDefFoundError(%Env*, i8*) noreturn
 declare void @_bcThrowNoSuchFieldError(%Env*, i8*) noreturn
 declare void @_bcThrowNoSuchMethodError(%Env*, i8*) noreturn
@@ -109,6 +112,8 @@ declare %Env* @_bcAttachThreadFromCallback()
 declare void @_bcDetachThreadFromCallback(%Env*)
 
 declare i8* @_bcCopyStruct(%Env*, i8*, i32)
+
+declare void @_bcHookInstrumented(%Env*, i32, i32, i8*, i8*)
 
 declare i8* @llvm.frameaddress(i32) nounwind readnone
 declare void @llvm.memcpy.p0i8.p0i8.i32(i8*, i8*, i32, i32, i1)

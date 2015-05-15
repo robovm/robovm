@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,16 +49,25 @@ import org.robovm.apple.audiotoolbox.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    public static CMMuxedFormatDescription create(CMMuxedStreamType muxType, NSDictionary<NSString, ?> extensions) {
-        CMFormatDescriptionPtr ptr = new CMFormatDescriptionPtr();
-        create(null, muxType, extensions, ptr);
-        return (CMMuxedFormatDescription)ptr.get();
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 4.0 and later.
+     */
+    public static CMMuxedFormatDescription create(CMMuxedStreamType muxType, CMVideoFormatDescriptionExtension extensions) throws OSStatusException {
+        CMMuxedFormatDescription.CMMuxedFormatDescriptionPtr ptr = new CMMuxedFormatDescription.CMMuxedFormatDescriptionPtr();
+        OSStatus status = create0(null, muxType, extensions, ptr);
+        OSStatusException.throwIfNecessary(status);
+        return ptr.get();
+    }
+    
+    public CMMuxedStreamType getMuxedStreamType() {
+        return CMMuxedStreamType.valueOf(getMediaSubType());
     }
     /*<methods>*/
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMMuxedFormatDescriptionCreate", optional=true)
-    protected static native int create(CFAllocator allocator, CMMuxedStreamType muxType, NSDictionary<NSString, ?> extensions, CMFormatDescription.CMFormatDescriptionPtr outDesc);
+    private static native OSStatus create0(CFAllocator allocator, CMMuxedStreamType muxType, CMVideoFormatDescriptionExtension extensions, CMMuxedFormatDescription.CMMuxedFormatDescriptionPtr outDesc);
     /*</methods>*/
 }

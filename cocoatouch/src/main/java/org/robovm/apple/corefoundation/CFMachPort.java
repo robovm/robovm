@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,8 +44,8 @@ import org.robovm.apple.foundation.*;
         void invalidate(CFMachPort port);
     }
     
-    private static java.util.concurrent.atomic.AtomicLong refconId = new java.util.concurrent.atomic.AtomicLong();
-    private static final Map<Long, MachPortCallback> portCallbacks = new HashMap<>();
+    private static final java.util.concurrent.atomic.AtomicLong refconId = new java.util.concurrent.atomic.AtomicLong();
+    private static final LongMap<MachPortCallback> portCallbacks = new LongMap<>();
     private static final java.lang.reflect.Method cbPort;
     private static final java.lang.reflect.Method cbInvalidate;
     
@@ -128,9 +128,9 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFMachPortGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFMachPortCreate", optional=true)
-    protected static native CFMachPort create(CFAllocator allocator, FunctionPtr callout, CFMachPortContext context, BooleanPtr shouldFreeInfo);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFMachPort create(CFAllocator allocator, FunctionPtr callout, CFMachPortContext context, BooleanPtr shouldFreeInfo);
     @Bridge(symbol="CFMachPortCreateWithPort", optional=true)
-    protected static native CFMachPort create(CFAllocator allocator, int portNum, FunctionPtr callout, CFMachPortContext context, BooleanPtr shouldFreeInfo);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFMachPort create(CFAllocator allocator, int portNum, FunctionPtr callout, CFMachPortContext context, BooleanPtr shouldFreeInfo);
     @Bridge(symbol="CFMachPortGetPort", optional=true)
     public native int getPort();
     @Bridge(symbol="CFMachPortInvalidate", optional=true)
@@ -142,6 +142,6 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFMachPortSetInvalidationCallBack", optional=true)
     private native void setInvalidationCallBack0(FunctionPtr callout);
     @Bridge(symbol="CFMachPortCreateRunLoopSource", optional=true)
-    protected static native CFRunLoopSource createRunLoopSource(CFAllocator allocator, CFMachPort port, @MachineSizedSInt long order);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFRunLoopSource createRunLoopSource(CFAllocator allocator, CFMachPort port, @MachineSizedSInt long order);
     /*</methods>*/
 }

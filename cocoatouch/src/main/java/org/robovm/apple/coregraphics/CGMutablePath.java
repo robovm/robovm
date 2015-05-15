@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,7 +46,6 @@ import org.robovm.apple.uikit.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    
     public void addRects(CGAffineTransform m, CGRect[] rects) {
         if (rects == null) {
             throw new NullPointerException("rects");
@@ -55,7 +54,6 @@ import org.robovm.apple.uikit.*;
         first.update(rects);
         addRects(m, first, rects.length);
     }
-    
     public void addLines(CGAffineTransform m, CGPoint[] points) {
         if (points == null) {
             throw new NullPointerException("points");
@@ -64,7 +62,6 @@ import org.robovm.apple.uikit.*;
         first.update(points);
         addLines(m, first, points.length);
     }
-    
     /*<methods>*/
     /**
      * @since Available in iOS 2.0 and later.
@@ -120,12 +117,12 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGPathAddRects", optional=true)
-    protected native void addRects(CGAffineTransform m, CGRect rects, @MachineSizedUInt long count);
+    private native void addRects(CGAffineTransform m, CGRect rects, @MachineSizedUInt long count);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGPathAddLines", optional=true)
-    protected native void addLines(CGAffineTransform m, CGPoint points, @MachineSizedUInt long count);
+    private native void addLines(CGAffineTransform m, CGPoint points, @MachineSizedUInt long count);
     /**
      * @since Available in iOS 2.0 and later.
      */

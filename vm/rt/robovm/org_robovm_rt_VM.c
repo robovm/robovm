@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian Mobile AB
+ * Copyright (C) 2012 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -81,6 +81,25 @@ ObjectArray* Java_org_robovm_rt_VM_staticLibs(Env* env, Class* c) {
     }
 
     return result;
+}
+
+ByteArray* Java_org_robovm_rt_VM_getRuntimeData0(Env* env, Class* c) {
+    Options* options = env->vm->options;
+    if (!options->runtimeData) {
+        return NULL;
+    }
+    void* p = options->runtimeData;
+    jint length = *((jint*) p);
+    if (length == 0) {
+        return NULL;
+    }
+    p += sizeof(jint);
+    ByteArray* data = rvmNewByteArray(env, length);
+    if (!data) {
+        return NULL;
+    }
+    memcpy(data->values, p, length);
+    return data;
 }
 
 ObjectArray* Java_org_robovm_rt_VM_getStackClasses(Env* env, Class* c, jint skipNum, jint maxDepth) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -122,7 +122,7 @@ import org.robovm.apple.foundation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "relationshipsWithDestinationEntity:")
-    public native NSArray<NSRelationshipDescription> getRelationshipsWith(NSEntityDescription entity);
+    public native NSArray<NSRelationshipDescription> getRelationshipsWithDestination(NSEntityDescription entity);
     /**
      * @since Available in iOS 3.0 and later.
      */

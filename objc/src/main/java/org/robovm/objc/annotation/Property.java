@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2014 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,7 +42,7 @@ import org.robovm.objc.ObjCObject;
  * the method will be used to determine the selector for the property. In that
  * case the property methods must follow the Java beans property methods
  * naming convention: the getter name starts with "is" or "get" while the 
- * setter name starts with "set.
+ * setter name starts with "set".
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

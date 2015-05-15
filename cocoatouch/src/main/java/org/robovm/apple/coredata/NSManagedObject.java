@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -88,51 +88,7 @@ import org.robovm.apple.foundation.*;
      * @throws NSErrorException
      */
     public boolean validateValue(String key, NSObject value) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = validateValue(value, key, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @return
-     * @throws NSErrorException
-     */
-    public boolean validateForDelete() throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = validateForDelete(err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @return
-     * @throws NSErrorException
-     */
-    public boolean validateForInsert() throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = validateForInsert(err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @return
-     * @throws NSErrorException
-     */
-    public boolean validateForUpdate() throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = validateForUpdate(err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
+        return validateValue(value, key);
     }
     /*<methods>*/
     @Method(selector = "initWithEntity:insertIntoManagedObjectContext:")
@@ -196,14 +152,38 @@ import org.robovm.apple.foundation.*;
      */
     @Method(selector = "changedValuesForCurrentEvent")
     public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject> getChangedValuesForCurrentEvent();
+    private boolean validateValue(NSObject value, String key) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = validateValue(value, key, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "validateValue:forKey:error:")
-    protected native boolean validateValue(NSObject value, String key, NSError.NSErrorPtr error);
+    private native boolean validateValue(NSObject value, String key, NSError.NSErrorPtr error);
+    public boolean validateForDelete() throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = validateForDelete(ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "validateForDelete:")
-    protected native boolean validateForDelete(NSError.NSErrorPtr error);
+    private native boolean validateForDelete(NSError.NSErrorPtr error);
+    public boolean validateForInsert() throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = validateForInsert(ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "validateForInsert:")
-    protected native boolean validateForInsert(NSError.NSErrorPtr error);
+    private native boolean validateForInsert(NSError.NSErrorPtr error);
+    public boolean validateForUpdate() throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = validateForUpdate(ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "validateForUpdate:")
-    protected native boolean validateForUpdate(NSError.NSErrorPtr error);
+    private native boolean validateForUpdate(NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 3.0 and later.
      */

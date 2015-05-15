@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,10 +55,10 @@ import org.robovm.apple.opengles.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("physicsWorld:didBeginContact:")
-    public void didBeginContact(SCNPhysicsWorld world, SCNPhysicsContact contact) { throw new UnsupportedOperationException(); }
+    public void didBeginContact(SCNPhysicsWorld world, SCNPhysicsContact contact) {}
     @NotImplemented("physicsWorld:didUpdateContact:")
-    public void didUpdateContact(SCNPhysicsWorld world, SCNPhysicsContact contact) { throw new UnsupportedOperationException(); }
+    public void didUpdateContact(SCNPhysicsWorld world, SCNPhysicsContact contact) {}
     @NotImplemented("physicsWorld:didEndContact:")
-    public void didEndContact(SCNPhysicsWorld world, SCNPhysicsContact contact) { throw new UnsupportedOperationException(); }
+    public void didEndContact(SCNPhysicsWorld world, SCNPhysicsContact contact) {}
     /*</methods>*/
 }

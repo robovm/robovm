@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,93 +50,93 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*/
     @NotImplemented("isAccessibilityElement")
-    public boolean isAccessibilityElement() { throw new UnsupportedOperationException(); }
+    public boolean isAccessibilityElement() { return false; }
     @NotImplemented("setIsAccessibilityElement:")
-    public void setAccessibilityElement(boolean v) { throw new UnsupportedOperationException(); }
+    public void setAccessibilityElement(boolean v) {}
     @NotImplemented("accessibilityLabel")
-    public String getAccessibilityLabel() { throw new UnsupportedOperationException(); }
+    public String getAccessibilityLabel() { return null; }
     @NotImplemented("setAccessibilityLabel:")
-    public void setAccessibilityLabel(String v) { throw new UnsupportedOperationException(); }
+    public void setAccessibilityLabel(String v) {}
     @NotImplemented("accessibilityHint")
-    public String getAccessibilityHint() { throw new UnsupportedOperationException(); }
+    public String getAccessibilityHint() { return null; }
     @NotImplemented("setAccessibilityHint:")
-    public void setAccessibilityHint(String v) { throw new UnsupportedOperationException(); }
+    public void setAccessibilityHint(String v) {}
     @NotImplemented("accessibilityValue")
-    public String getAccessibilityValue() { throw new UnsupportedOperationException(); }
+    public String getAccessibilityValue() { return null; }
     @NotImplemented("setAccessibilityValue:")
-    public void setAccessibilityValue(String v) { throw new UnsupportedOperationException(); }
+    public void setAccessibilityValue(String v) {}
     @NotImplemented("accessibilityTraits")
-    public UIAccessibilityTraits getAccessibilityTraits() { throw new UnsupportedOperationException(); }
+    public UIAccessibilityTraits getAccessibilityTraits() { return null; }
     @NotImplemented("setAccessibilityTraits:")
-    public void setAccessibilityTraits(UIAccessibilityTraits v) { throw new UnsupportedOperationException(); }
+    public void setAccessibilityTraits(UIAccessibilityTraits v) {}
     @NotImplemented("accessibilityFrame")
-    public @ByVal CGRect getAccessibilityFrame() { throw new UnsupportedOperationException(); }
+    public @ByVal CGRect getAccessibilityFrame() { return null; }
     @NotImplemented("setAccessibilityFrame:")
-    public void setAccessibilityFrame(@ByVal CGRect v) { throw new UnsupportedOperationException(); }
+    public void setAccessibilityFrame(@ByVal CGRect v) {}
     /**
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("accessibilityPath")
-    public UIBezierPath getAccessibilityPath() { throw new UnsupportedOperationException(); }
+    public UIBezierPath getAccessibilityPath() { return null; }
     /**
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("setAccessibilityPath:")
-    public void setAccessibilityPath(UIBezierPath v) { throw new UnsupportedOperationException(); }
+    public void setAccessibilityPath(UIBezierPath v) {}
     /**
      * @since Available in iOS 5.0 and later.
      */
     @NotImplemented("accessibilityActivationPoint")
-    public @ByVal CGPoint getAccessibilityActivationPoint() { throw new UnsupportedOperationException(); }
+    public @ByVal CGPoint getAccessibilityActivationPoint() { return null; }
     /**
      * @since Available in iOS 5.0 and later.
      */
     @NotImplemented("setAccessibilityActivationPoint:")
-    public void setAccessibilityActivationPoint(@ByVal CGPoint v) { throw new UnsupportedOperationException(); }
+    public void setAccessibilityActivationPoint(@ByVal CGPoint v) {}
     @NotImplemented("accessibilityLanguage")
-    public String getAccessibilityLanguage() { throw new UnsupportedOperationException(); }
+    public String getAccessibilityLanguage() { return null; }
     @NotImplemented("setAccessibilityLanguage:")
-    public void setAccessibilityLanguage(String v) { throw new UnsupportedOperationException(); }
+    public void setAccessibilityLanguage(String v) {}
     /**
      * @since Available in iOS 5.0 and later.
      */
     @NotImplemented("accessibilityElementsHidden")
-    public boolean isAccessibilityElementsHidden() { throw new UnsupportedOperationException(); }
+    public boolean areAccessibilityElementsHidden() { return false; }
     /**
      * @since Available in iOS 5.0 and later.
      */
     @NotImplemented("setAccessibilityElementsHidden:")
-    public void setAccessibilityElementsHidden(boolean v) { throw new UnsupportedOperationException(); }
+    public void setAccessibilityElementsHidden(boolean v) {}
     /**
      * @since Available in iOS 5.0 and later.
      */
     @NotImplemented("accessibilityViewIsModal")
-    public boolean isAccessibilityViewIsModal() { throw new UnsupportedOperationException(); }
+    public boolean isAccessibilityViewModal() { return false; }
     /**
      * @since Available in iOS 5.0 and later.
      */
     @NotImplemented("setAccessibilityViewIsModal:")
-    public void setAccessibilityViewIsModal(boolean v) { throw new UnsupportedOperationException(); }
+    public void setAccessibilityViewModal(boolean v) {}
     /**
      * @since Available in iOS 6.0 and later.
      */
     @NotImplemented("shouldGroupAccessibilityChildren")
-    public boolean shouldGroupAccessibilityChildren() { throw new UnsupportedOperationException(); }
+    public boolean shouldGroupAccessibilityChildren() { return false; }
     /**
      * @since Available in iOS 6.0 and later.
      */
     @NotImplemented("setShouldGroupAccessibilityChildren:")
-    public void setShouldGroupAccessibilityChildren(boolean v) { throw new UnsupportedOperationException(); }
+    public void setShouldGroupAccessibilityChildren(boolean v) {}
     /**
      * @since Available in iOS 8.0 and later.
      */
     @NotImplemented("accessibilityNavigationStyle")
-    public UIAccessibilityNavigationStyle getAccessibilityNavigationStyle() { throw new UnsupportedOperationException(); }
+    public UIAccessibilityNavigationStyle getAccessibilityNavigationStyle() { return null; }
     /**
      * @since Available in iOS 8.0 and later.
      */
     @NotImplemented("setAccessibilityNavigationStyle:")
-    public void setAccessibilityNavigationStyle(UIAccessibilityNavigationStyle v) { throw new UnsupportedOperationException(); }
+    public void setAccessibilityNavigationStyle(UIAccessibilityNavigationStyle v) {}
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

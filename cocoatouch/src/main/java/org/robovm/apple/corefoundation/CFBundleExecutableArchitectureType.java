@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,6 +37,8 @@ import org.robovm.apple.foundation.*;
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 public enum /*<name>*/CFBundleExecutableArchitectureType/*</name>*/ implements ValuedEnum {
+	ARM(12L),
+    ARM64(16777228L),
     /*<values>*/
     I386(7L),
     PPC(18L),

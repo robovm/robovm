@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,23 +53,79 @@ import org.robovm.apple.imageio.*;
     public native CIImage getOutputImage();
     /*</properties>*/
     /*<members>*//*</members>*/
-    /**
-     * 
-     * @param xmpData
-     * @param extent
-     * @return
-     * @since Available in iOS 6.0 and later.
-     * @throws NSErrorException
-     */
-    public static NSArray<CIFilter> deserializeFromXMP(NSData xmpData, @ByVal CGRect extent) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        NSArray<CIFilter> result = deserializeFromXMP(xmpData, extent, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
+    
+    private static NSObject toNSObject(Object[] keysAndValues, int index) {
+        if (index >= keysAndValues.length) {
+            return null;
         }
-        return result;
+        NSObject val = null;
+        
+        Object o = keysAndValues[index];
+        if (o instanceof String) {
+            val = new NSString((String)o);
+        } else if (o instanceof Number) {
+            val = NSNumber.valueOf((Number)o);
+        }
+           
+        return val;
     }
-
+    
+    /**
+     * Creates a new CIFilter with the specified {@code name}.
+     * You can specify the input parameters as key-value pairs (String <-> Object). Currently a maximum
+     * of 10 key-value pairs is supported.
+     * The key of a key-value pair needs to be of type String or NSString.
+     * The value of a key-value pair needs to be a String, a Number or a subtype of NSObject.
+     * 
+     * @param name
+     * @param inputParameters
+     * @return
+     */
+    public static CIFilter create(String name, Object...inputParameters) {
+        if (inputParameters == null || inputParameters.length == 0) {
+            return create(name);
+        }
+        int n = inputParameters.length;
+        if (n > 20) {
+            throw new IllegalArgumentException("A maximum of 10 key-value pairs is supported");
+        }
+        if (n % 2 != 0) {
+            throw new IllegalArgumentException("Length of array inputParameters must be even but was " + n);
+        }
+        
+        NSObject key0 = toNSObject(inputParameters, 0);
+        NSObject value0 = toNSObject(inputParameters, 1);
+        NSObject key1 = toNSObject(inputParameters, 2);
+        NSObject value1 = toNSObject(inputParameters, 3);
+        NSObject key2 = toNSObject(inputParameters, 4);
+        NSObject value2 = toNSObject(inputParameters, 5);
+        NSObject key3 = toNSObject(inputParameters, 6);
+        NSObject value3 = toNSObject(inputParameters, 7);
+        NSObject key4 = toNSObject(inputParameters, 8);
+        NSObject value4 = toNSObject(inputParameters, 9);
+        NSObject key5 = toNSObject(inputParameters, 10);
+        NSObject value5 = toNSObject(inputParameters, 11);
+        NSObject key6 = toNSObject(inputParameters, 12);
+        NSObject value6 = toNSObject(inputParameters, 13);
+        NSObject key7 = toNSObject(inputParameters, 14);
+        NSObject value7 = toNSObject(inputParameters, 15);
+        NSObject key8 = toNSObject(inputParameters, 16);
+        NSObject value8 = toNSObject(inputParameters, 17);
+        NSObject key9 = toNSObject(inputParameters, 18);
+        NSObject value9 = toNSObject(inputParameters, 19);
+        
+        return create(objCClass, createSelector, name, key0, value0, key1, value1, key2, value2, key3, value3, key4, value4, 
+            key5, value5, key6, value6, key7, value7, key8, value8, key9, value9);
+    }
+    
+    // FIXME use the new @Method annotation when #783 is fixed.
+    private static final ObjCClass objCClass = ObjCClass.getByType(CIFilter.class);
+    private static final Selector createSelector = Selector.register("filterWithName:keysAndValues:");
+    @Bridge
+    @Variadic(2)
+    private static native CIFilter create(ObjCClass __self__, Selector __cmd__, String name, NSObject key0, NSObject value0, NSObject key1, NSObject value1, NSObject key2, NSObject value2, 
+        NSObject key3, NSObject value3, NSObject key4, NSObject value4, NSObject key5, NSObject value5, NSObject key6, NSObject value6, NSObject key7,
+        NSObject value7, NSObject key8, NSObject value8, NSObject key9, NSObject value9);
     /*<methods>*/
     /**
      * @since Available in iOS 5.0 and later.
@@ -103,8 +159,17 @@ import org.robovm.apple.imageio.*;
     /**
      * @since Available in iOS 6.0 and later.
      */
+    public static NSArray<CIFilter> deserializeFromXMP(NSData xmpData, @ByVal CGRect extent) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       NSArray<CIFilter> result = deserializeFromXMP(xmpData, extent, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "filterArrayFromSerializedXMP:inputImageExtent:error:")
-    protected static native NSArray<CIFilter> deserializeFromXMP(NSData xmpData, @ByVal CGRect extent, NSError.NSErrorPtr outError);
+    private static native NSArray<CIFilter> deserializeFromXMP(NSData xmpData, @ByVal CGRect extent, NSError.NSErrorPtr outError);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     /*</methods>*/

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,6 +38,30 @@ import org.robovm.apple.coregraphics.*;
     extends /*<extends>*/CFType/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<?> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return o.toList(CTLine.class);
+        }
+        @MarshalsPointer
+        public static long toNative(List<? extends CFType> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray o = null;
+            if (l instanceof CFArray) {
+                o = (CFArray) l;
+            } else {
+                o = CFArray.create((List<? extends CFType>) l);
+            }
+            return CFType.Marshaler.toNative(o, flags);
+        }
+    }
+    
     /*<ptr>*/public static class CTLinePtr extends Ptr<CTLine, CTLinePtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(CTLine.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -46,12 +70,6 @@ import org.robovm.apple.coregraphics.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    public CTRun[] getGlyphRuns() {
-        return getGlyphRuns0().toArray(CTRun.class);
-    }
     /**
     * @since Available in iOS 3.2 and later.
     */
@@ -106,17 +124,17 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTLineCreateWithAttributedString", optional=true)
-    public static native CTLine create(NSAttributedString string);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CTLine create(NSAttributedString string);
     /**
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTLineCreateTruncatedLine", optional=true)
-    public native CTLine createTruncatedLine(double width, CTLineTruncationType truncationType, CTLine truncationToken);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CTLine createTruncatedLine(double width, CTLineTruncationType truncationType, CTLine truncationToken);
     /**
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTLineCreateJustifiedLine", optional=true)
-    public native CTLine createJustifiedLine(@MachineSizedFloat double justificationFactor, double justificationWidth);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CTLine createJustifiedLine(@MachineSizedFloat double justificationFactor, double justificationWidth);
     /**
      * @since Available in iOS 3.2 and later.
      */
@@ -126,7 +144,7 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTLineGetGlyphRuns", optional=true)
-    protected native CFArray getGlyphRuns0();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CTRun.AsListMarshaler.class) List<CTRun> getGlyphRuns();
     /**
      * @since Available in iOS 3.2 and later.
      */

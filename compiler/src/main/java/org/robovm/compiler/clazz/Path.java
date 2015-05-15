@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian Mobile AB
+ * Copyright (C) 2012 RoboVM AB
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,6 +17,8 @@
 package org.robovm.compiler.clazz;
 
 import java.io.File;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 
 /**
@@ -54,4 +56,6 @@ public interface Path {
      * @return {@code true} if it exists, {@code false} otherwise.
      */
     boolean contains(String file);
+    
+    InputStream open(String file) throws IOException;
 }

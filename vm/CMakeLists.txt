@@ -1,5 +1,5 @@
 # The Mac OS X SDK version required when building the VM libs
-set(MACOSX_SDK_VERSION 10.9)
+set(MACOSX_SDK_VERSION 10.10)
 # The minimum Mac OS X version needed by apps built by RoboVM
 set(MACOSX_MIN_VERSION 10.6)
 # The iOS SDK version required when building the VM libs
@@ -11,6 +11,7 @@ cmake_minimum_required(VERSION 2.8.8)
 project(build)
 include(CheckCCompilerFlag)
 include(ExternalProject)
+include(${CMAKE_SOURCE_DIR}/MergeStaticLibObjectFiles.cmake)
 
 enable_testing()
 
@@ -108,7 +109,7 @@ endif()
 # Set up global C and C++ compiler flags
 set(C_FLAGS "${C_FLAGS} -std=gnu99")
 set(CXX_FLAGS "${CXX_FLAGS} -std=gnu++11")
-set(C_CXX_FLAGS "${C_CXX_FLAGS} -Wall -fvisibility=hidden -fdata-sections -ffunction-sections")
+set(C_CXX_FLAGS "${C_CXX_FLAGS} -Wall -fdata-sections -ffunction-sections")
 if(CARCH)
   set(C_CXX_FLAGS "${C_CXX_FLAGS} -arch ${CARCH}")
 elseif(64_BIT)

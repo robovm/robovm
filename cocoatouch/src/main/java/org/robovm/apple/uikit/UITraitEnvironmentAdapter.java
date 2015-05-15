@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,11 +50,11 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*/
     @NotImplemented("traitCollection")
-    public UITraitCollection getTraitCollection() { throw new UnsupportedOperationException(); }
+    public UITraitCollection getTraitCollection() { return null; }
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("traitCollectionDidChange:")
-    public void traitCollectionDidChange(UITraitCollection previousTraitCollection) { throw new UnsupportedOperationException(); }
+    public void traitCollectionDidChange(UITraitCollection previousTraitCollection) {}
     /*</methods>*/
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,19 +44,25 @@ import org.robovm.apple.foundation.*;
     protected CFMutableBitVector() {}
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    public static CFMutableBitVector create(@MachineSizedSInt long capacity) {
+        return create(null, capacity);
+    }
+    public static CFMutableBitVector createCopy(@MachineSizedSInt long capacity, CFBitVector bv) {
+        return createCopy(null, capacity, bv);
+    }
     /*<methods>*/
     @Bridge(symbol="CFBitVectorCreateMutable", optional=true)
-    protected static native CFMutableBitVector createMutable(CFAllocator allocator, @MachineSizedSInt long capacity);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFMutableBitVector create(CFAllocator allocator, @MachineSizedSInt long capacity);
     @Bridge(symbol="CFBitVectorCreateMutableCopy", optional=true)
-    protected static native CFMutableBitVector createMutableCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFBitVector bv);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFMutableBitVector createCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFBitVector bv);
     @Bridge(symbol="CFBitVectorSetCount", optional=true)
     public native void setCount(@MachineSizedSInt long count);
     @Bridge(symbol="CFBitVectorFlipBitAtIndex", optional=true)
-    public native void flipBitAtIndex(@MachineSizedSInt long idx);
+    public native void flipBit(@MachineSizedSInt long idx);
     @Bridge(symbol="CFBitVectorFlipBits", optional=true)
     public native void flipBits(@ByVal CFRange range);
     @Bridge(symbol="CFBitVectorSetBitAtIndex", optional=true)
-    public native void setBitAtIndex(@MachineSizedSInt long idx, int value);
+    public native void setBit(@MachineSizedSInt long idx, int value);
     @Bridge(symbol="CFBitVectorSetBits", optional=true)
     public native void setBits(@ByVal CFRange range, int value);
     @Bridge(symbol="CFBitVectorSetAllBits", optional=true)

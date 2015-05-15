@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,21 +44,30 @@ import org.robovm.apple.foundation.*;
     protected CFMutableString() {}
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    public static CFMutableString create(@MachineSizedSInt long maxLength) {
+        return create((CFAllocator)null, maxLength);
+    }
+    public static CFMutableString createCopy(@MachineSizedSInt long maxLength, CFMutableString theString) {
+        return createCopy(null, maxLength, theString);
+    }
+    private void appendCharacters(char[] chars) {
+        CharPtr ptr = new CharPtr();
+        ptr.set(chars);
+        appendCharacters(ptr, chars.length);
+    }
     /*<methods>*/
     @Bridge(symbol="CFStringCreateMutable", optional=true)
-    protected static native CFMutableString createMutable(CFAllocator alloc, @MachineSizedSInt long maxLength);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFMutableString create(CFAllocator alloc, @MachineSizedSInt long maxLength);
     @Bridge(symbol="CFStringCreateMutableCopy", optional=true)
-    protected static native CFMutableString createMutableCopy(CFAllocator alloc, @MachineSizedSInt long maxLength, String theString);
-    @Bridge(symbol="CFStringCreateMutableWithExternalCharactersNoCopy", optional=true)
-    protected static native CFMutableString createMutableWithExternalCharactersNoCopy(CFAllocator alloc, ShortPtr chars, @MachineSizedSInt long numChars, @MachineSizedSInt long capacity, CFAllocator externalCharactersAllocator);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFMutableString createCopy(CFAllocator alloc, @MachineSizedSInt long maxLength, CFMutableString theString);
     @Bridge(symbol="CFStringAppend", optional=true)
     public native void append(String appendedString);
     @Bridge(symbol="CFStringAppendCharacters", optional=true)
-    public native void appendCharacters(ShortPtr chars, @MachineSizedSInt long numChars);
+    private native void appendCharacters(CharPtr chars, @MachineSizedSInt long numChars);
     @Bridge(symbol="CFStringAppendPascalString", optional=true)
-    public native void appendPascalString(BytePtr pStr, int encoding);
+    public native void appendPascalString(BytePtr pStr, CFStringEncodings encoding);
     @Bridge(symbol="CFStringAppendCString", optional=true)
-    public native void appendCString(BytePtr cStr, int encoding);
+    public native void appendCString(BytePtr cStr, CFStringEncodings encoding);
     @Bridge(symbol="CFStringInsert", optional=true)
     public native void insert(@MachineSizedSInt long idx, String insertedStr);
     @Bridge(symbol="CFStringDelete", optional=true)
@@ -69,8 +78,6 @@ import org.robovm.apple.foundation.*;
     public native void replaceAll(String replacement);
     @Bridge(symbol="CFStringFindAndReplace", optional=true)
     public native @MachineSizedSInt long findAndReplace(String stringToFind, String replacementString, @ByVal CFRange rangeToSearch, CFStringCompareFlags compareOptions);
-    @Bridge(symbol="CFStringSetExternalCharactersNoCopy", optional=true)
-    public native void setExternalCharactersNoCopy(ShortPtr chars, @MachineSizedSInt long length, @MachineSizedSInt long capacity);
     @Bridge(symbol="CFStringPad", optional=true)
     public native void pad(String padString, @MachineSizedSInt long length, @MachineSizedSInt long indexIntoPad);
     @Bridge(symbol="CFStringTrim", optional=true)
@@ -91,6 +98,6 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFStringFold", optional=true)
     public native void fold(CFStringCompareFlags theFlags, CFLocale theLocale);
     @Bridge(symbol="CFStringTransform", optional=true)
-    public native boolean transform(CFRange range, String transform, boolean reverse);
+    public native boolean transform(CFRange range, CFStringTransform transform, boolean reverse);
     /*</methods>*/
 }

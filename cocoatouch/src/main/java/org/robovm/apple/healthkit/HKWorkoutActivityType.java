@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -93,7 +93,8 @@ public enum /*<name>*/HKWorkoutActivityType/*</name>*/ implements ValuedEnum {
     WaterPolo(54L),
     WaterSports(55L),
     Wrestling(56L),
-    Yoga(57L);
+    Yoga(57L),
+    Other(3000L);
     /*</values>*/
 
     /*<bind>*/

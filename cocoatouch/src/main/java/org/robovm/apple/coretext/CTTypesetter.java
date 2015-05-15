@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,22 +56,22 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTTypesetterCreateWithAttributedString", optional=true)
-    public static native CTTypesetter create(NSAttributedString string);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CTTypesetter create(NSAttributedString string);
     /**
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTTypesetterCreateWithAttributedStringAndOptions", optional=true)
-    public static native CTTypesetter create(NSAttributedString string, CTTypesetterOptions options);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CTTypesetter create(NSAttributedString string, CTTypesetterOptions options);
     /**
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTTypesetterCreateLineWithOffset", optional=true)
-    public native CTLine createLine(@ByVal CFRange stringRange, double offset);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CTLine createLine(@ByVal CFRange stringRange, double offset);
     /**
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTTypesetterCreateLine", optional=true)
-    public native CTLine createLine(@ByVal CFRange stringRange);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CTLine createLine(@ByVal CFRange stringRange);
     /**
      * @since Available in iOS 3.2 and later.
      */

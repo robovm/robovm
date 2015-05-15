@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,20 +52,44 @@ import org.robovm.apple.opengles.*;
     
     /*</properties>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "runAction:")
     void runAction(SCNAction action);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "runAction:completionHandler:")
     void runAction(SCNAction action, @Block Runnable block);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "runAction:forKey:")
     void runAction(SCNAction action, String key);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "runAction:forKey:completionHandler:")
     void runAction(SCNAction action, String key, @Block Runnable block);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "hasActions")
     boolean hasActions();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "actionForKey:")
     SCNAction getAction(String key);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "removeActionForKey:")
     void removeAction(String key);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "removeAllActions")
     void removeAllActions();
     /*</methods>*/

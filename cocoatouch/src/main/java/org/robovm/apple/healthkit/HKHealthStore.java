@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,6 +39,20 @@ import org.robovm.apple.foundation.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Notifications {
+        /**
+         * @since Available in iOS 8.2 and later.
+         */
+        public static NSObject observeUserPreferencesDidChange(HKHealthStore object, final VoidBlock1<HKHealthStore> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(UserPreferencesDidChangeNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((HKHealthStore) a.getObject());
+                }
+            });
+        }
+    }
+    
     /*<ptr>*/public static class HKHealthStorePtr extends Ptr<HKHealthStore, HKHealthStorePtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(HKHealthStore.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -50,46 +64,13 @@ import org.robovm.apple.foundation.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
-    /**
-     * 
-     * @return
-     * @throws NSErrorException
-     */
-    public NSDate getDateOfBirth() throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        NSDate result = getDateOfBirth(err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @return
-     * @throws NSErrorException
-     */
-    public HKBiologicalSexObject getBiologicalSex() throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        HKBiologicalSexObject result = getBiologicalSex(err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @return
-     * @throws NSErrorException
-     */
-    public HKBloodTypeObject getBloodType() throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        HKBloodTypeObject result = getBloodType(err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
     /*<methods>*/
+    /**
+     * @since Available in iOS 8.2 and later.
+     */
+    @GlobalValue(symbol="HKUserPreferencesDidChangeNotification", optional=true)
+    public static native NSString UserPreferencesDidChangeNotification();
+    
     @Method(selector = "authorizationStatusForType:")
     public native HKAuthorizationStatus getAuthorizationStatusForType(HKObjectType type);
     @Method(selector = "requestAuthorizationToShareTypes:readTypes:completion:")
@@ -104,12 +85,30 @@ import org.robovm.apple.foundation.*;
     public native void executeQuery(HKQuery query);
     @Method(selector = "stopQuery:")
     public native void stopQuery(HKQuery query);
+    public NSDate getDateOfBirth() throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       NSDate result = getDateOfBirth(ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "dateOfBirthWithError:")
-    protected native NSDate getDateOfBirth(NSError.NSErrorPtr error);
+    private native NSDate getDateOfBirth(NSError.NSErrorPtr error);
+    public HKBiologicalSexObject getBiologicalSex() throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       HKBiologicalSexObject result = getBiologicalSex(ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "biologicalSexWithError:")
-    protected native HKBiologicalSexObject getBiologicalSex(NSError.NSErrorPtr error);
+    private native HKBiologicalSexObject getBiologicalSex(NSError.NSErrorPtr error);
+    public HKBloodTypeObject getBloodType() throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       HKBloodTypeObject result = getBloodType(ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "bloodTypeWithError:")
-    protected native HKBloodTypeObject getBloodType(NSError.NSErrorPtr error);
+    private native HKBloodTypeObject getBloodType(NSError.NSErrorPtr error);
     @Method(selector = "isHealthDataAvailable")
     public static native boolean isHealthDataAvailable();
     @Method(selector = "addSamples:toWorkout:completion:")
@@ -120,5 +119,10 @@ import org.robovm.apple.foundation.*;
     public native void disableBackgroundDeliveryForType(HKObjectType type, @Block VoidBlock2<Boolean, NSError> completion);
     @Method(selector = "disableAllBackgroundDeliveryWithCompletion:")
     public native void disableAllBackgroundDelivery(@Block VoidBlock2<Boolean, NSError> completion);
+    /**
+     * @since Available in iOS 8.2 and later.
+     */
+    @Method(selector = "preferredUnitsForQuantityTypes:completion:")
+    public native void getPreferredUnitsForQuantityTypes(NSSet<HKQuantityType> quantityTypes, @Block VoidBlock2<NSDictionary<HKQuantityType, HKUnit>, NSError> completion);
     /*</methods>*/
 }

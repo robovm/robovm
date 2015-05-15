@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,8 +30,10 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -48,23 +50,23 @@ import org.robovm.apple.coremedia.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public AudioBytePacketTranslation() {}
-    public AudioBytePacketTranslation(long mByte, long mPacket, int mByteOffsetInPacket, int mFlags) {
-        this.setMByte(mByte);
-        this.setMPacket(mPacket);
-        this.setMByteOffsetInPacket(mByteOffsetInPacket);
-        this.setMFlags(mFlags);
+    public AudioBytePacketTranslation(long translationByte, long packet, int byteOffsetInPacket, AudioBytePacketTranslationFlags flags) {
+        this.setTranslationByte(translationByte);
+        this.setPacket(packet);
+        this.setByteOffsetInPacket(byteOffsetInPacket);
+        this.setFlags(flags);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native long getMByte();
-    @StructMember(0) public native AudioBytePacketTranslation setMByte(long mByte);
-    @StructMember(1) public native long getMPacket();
-    @StructMember(1) public native AudioBytePacketTranslation setMPacket(long mPacket);
-    @StructMember(2) public native int getMByteOffsetInPacket();
-    @StructMember(2) public native AudioBytePacketTranslation setMByteOffsetInPacket(int mByteOffsetInPacket);
-    @StructMember(3) public native int getMFlags();
-    @StructMember(3) public native AudioBytePacketTranslation setMFlags(int mFlags);
+    @StructMember(0) public native long getTranslationByte();
+    @StructMember(0) public native AudioBytePacketTranslation setTranslationByte(long translationByte);
+    @StructMember(1) public native long getPacket();
+    @StructMember(1) public native AudioBytePacketTranslation setPacket(long packet);
+    @StructMember(2) public native int getByteOffsetInPacket();
+    @StructMember(2) public native AudioBytePacketTranslation setByteOffsetInPacket(int byteOffsetInPacket);
+    @StructMember(3) public native AudioBytePacketTranslationFlags getFlags();
+    @StructMember(3) public native AudioBytePacketTranslation setFlags(AudioBytePacketTranslationFlags flags);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

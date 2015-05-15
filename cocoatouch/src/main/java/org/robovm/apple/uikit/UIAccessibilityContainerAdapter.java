@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,20 +53,20 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 8.0 and later.
      */
     @NotImplemented("accessibilityElements")
-    public NSArray<UIAccessibilityElement> getAccessibilityElements() { throw new UnsupportedOperationException(); }
+    public NSArray<UIAccessibilityElement> getAccessibilityElements() { return null; }
     /**
      * @since Available in iOS 8.0 and later.
      */
     @NotImplemented("setAccessibilityElements:")
-    public void setAccessibilityElements(NSArray<UIAccessibilityElement> v) { throw new UnsupportedOperationException(); }
+    public void setAccessibilityElements(NSArray<UIAccessibilityElement> v) {}
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("accessibilityElementCount")
-    public @MachineSizedSInt long getAccessibilityElementCount() { throw new UnsupportedOperationException(); }
+    public @MachineSizedSInt long getAccessibilityElementCount() { return 0; }
     @NotImplemented("accessibilityElementAtIndex:")
-    public UIAccessibilityElement getAccessibilityElement(@MachineSizedSInt long index) { throw new UnsupportedOperationException(); }
+    public UIAccessibilityElement getAccessibilityElement(@MachineSizedSInt long index) { return null; }
     @NotImplemented("indexOfAccessibilityElement:")
-    public @MachineSizedSInt long indexOfAccessibilityElement(UIAccessibilityElement element) { throw new UnsupportedOperationException(); }
+    public @MachineSizedSInt long indexOfAccessibilityElement(UIAccessibilityElement element) { return 0; }
     /*</methods>*/
 }

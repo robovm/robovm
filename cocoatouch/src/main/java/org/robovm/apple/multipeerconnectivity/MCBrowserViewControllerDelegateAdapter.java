@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,10 +50,10 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("browserViewControllerDidFinish:")
-    public void didFinish(MCBrowserViewController browserViewController) { throw new UnsupportedOperationException(); }
+    public void didFinish(MCBrowserViewController browserViewController) {}
     @NotImplemented("browserViewControllerWasCancelled:")
-    public void wasCancelled(MCBrowserViewController browserViewController) { throw new UnsupportedOperationException(); }
+    public void wasCancelled(MCBrowserViewController browserViewController) {}
     @NotImplemented("browserViewController:shouldPresentNearbyPeer:withDiscoveryInfo:")
-    public boolean shouldPresentNearbyPeer(MCBrowserViewController browserViewController, MCPeerID peerID, @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String> info) { throw new UnsupportedOperationException(); }
+    public boolean shouldPresentNearbyPeer(MCBrowserViewController browserViewController, MCPeerID peerID, @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String> info) { return false; }
     /*</methods>*/
 }

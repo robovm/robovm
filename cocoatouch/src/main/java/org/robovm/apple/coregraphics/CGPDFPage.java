@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -72,6 +72,11 @@ import org.robovm.apple.uikit.*;
      */
     @Bridge(symbol="CGPDFPageGetDrawingTransform", optional=true)
     public native @ByVal CGAffineTransform getDrawingTransform(CGPDFBox box, @ByVal CGRect rect, int rotate, boolean preserveAspectRatio);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Bridge(symbol="CGPDFPageGetDictionary", optional=true)
+    public native CGPDFDictionary getDictionary();
     /**
      * @since Available in iOS 2.0 and later.
      */

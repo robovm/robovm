@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,9 @@ import org.robovm.apple.opengles.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 8.0 and later.
+ */
 /*</javadoc>*/
 /*<annotations>*/@Library("SceneKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SCNText/*</name>*/ 
@@ -73,13 +75,13 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setContainerFrame:")
     public native void setContainerFrame(@ByVal CGRect v);
     @Property(selector = "truncationMode")
-    public native String getTruncationMode();
+    public native CATextTruncationMode getTruncationMode();
     @Property(selector = "setTruncationMode:")
-    public native void setTruncationMode(String v);
+    public native void setTruncationMode(CATextTruncationMode v);
     @Property(selector = "alignmentMode")
-    public native String getAlignmentMode();
+    public native CATextAlignmentMode getAlignmentMode();
     @Property(selector = "setAlignmentMode:")
-    public native void setAlignmentMode(String v);
+    public native void setAlignmentMode(CATextAlignmentMode v);
     @Property(selector = "chamferRadius")
     public native @MachineSizedFloat double getChamferRadius();
     @Property(selector = "setChamferRadius:")
@@ -88,8 +90,14 @@ import org.robovm.apple.opengles.*;
     public native UIBezierPath getChamferProfile();
     @Property(selector = "setChamferProfile:")
     public native void setChamferProfile(UIBezierPath v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "flatness")
     public native @MachineSizedFloat double getFlatness();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "setFlatness:")
     public native void setFlatness(@MachineSizedFloat double v);
     /*</properties>*/

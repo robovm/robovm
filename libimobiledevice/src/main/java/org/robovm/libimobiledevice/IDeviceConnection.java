@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 Trillian Mobile AB
+ * Copyright (C) 2013 RoboVM AB
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -186,7 +186,7 @@ public class IDeviceConnection implements AutoCloseable {
         public int read() throws IOException {
             byte[] b = new byte[1];
             int n = read(b);
-            return n <= 0 ? -1 : b[0];
+            return n <= 0 ? -1 : b[0] & 0xff;
         }
 
         @Override

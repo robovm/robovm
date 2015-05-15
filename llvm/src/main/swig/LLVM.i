@@ -11,7 +11,9 @@
 #include <llvm-c/Transforms/Vectorize.h>
 #include <llvm-c/Target.h>
 #include <llvm-c/TargetMachine.h>
+#include <llvm-c/Linker.h>
 #include "../native/LLVMExtra.h"
+#include "../native/ClangExtra.h"
 
 struct LongArray;
 typedef char* charp;
@@ -176,6 +178,7 @@ ARRAY_ARG(IntArray, unsigned *IdxList)
 }
 
 %apply (char *ARRAY, size_t ARRAYSIZE) {(const char *InputData, size_t InputDataLength)};
+%apply (char *ARRAY, size_t ARRAYSIZE) {(char *Dest, size_t DestSize)};
 %apply (char *STRING, size_t STRINGSIZE) {(const char *Name, unsigned SLen)};
 %apply (char *STRING, size_t STRINGSIZE) {(const char *Str, unsigned Length)};
 %apply (char *STRING, size_t STRINGSIZE) {(const char *Str, unsigned SLen)};
@@ -204,6 +207,20 @@ ARRAY_ARG(IntArray, unsigned *IdxList)
     return swigCPtr == other.swigCPtr;
   }
 %}
+
+%typemap(javain) enum LLVMAttribute "$javainput"
+%typemap(javaout) enum LLVMAttribute {
+    return $jnicall;
+  }
+%typemap(jni) enum LLVMAttribute "jint"
+%typemap(jtype) enum LLVMAttribute "int"
+%typemap(jstype) enum LLVMAttribute "int"
+%typemap(in) enum LLVMAttribute  %{ $1 = ($1_ltype)$input; %}
+%typemap(out) enum LLVMAttribute  %{ $result = (jint)$1; %}
+%typemap(directorout) enum LLVMAttribute  %{ $result = ($1_ltype)$input; %}
+%typemap(directorin, descriptor="L$packagepath/$javaclassname;") enum LLVMAttribute "$input = (jint) $1;"
+%typemap(javadirectorin) enum LLVMAttribute "$jniinput"
+%typemap(javadirectorout) enum LLVMAttribute "$javacall"
 
 typedef jboolean LLVMBool;
 typedef jbyte uint8_t;
@@ -256,7 +273,9 @@ typedef jlong uint64_t;
 %include "llvm-c/Transforms/Vectorize.h"
 %include "llvm-c/Target.h"
 %include "llvm-c/TargetMachine.h"
+%include "llvm-c/Linker.h"
 %include "../native/LLVMExtra.h"
+%include "../native/ClangExtra.h"
 
 %pragma(java) jniclasscode=%{
   static {

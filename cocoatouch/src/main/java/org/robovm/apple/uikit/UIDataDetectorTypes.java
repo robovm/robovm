@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,7 +46,7 @@ public final class /*<name>*/UIDataDetectorTypes/*</name>*/ extends Bits</*<name
     public static final UIDataDetectorTypes Address = new UIDataDetectorTypes(4L);
     public static final UIDataDetectorTypes CalendarEvent = new UIDataDetectorTypes(8L);
     public static final UIDataDetectorTypes None = new UIDataDetectorTypes(0L);
-    public static final UIDataDetectorTypes All = new UIDataDetectorTypes(-1L);
+    public static final UIDataDetectorTypes All = new UIDataDetectorTypes(Bro.IS_32BIT ? 0xffffffffL : 0xffffffffffffffffL);
     /*</values>*/
 
     private static final /*<name>*/UIDataDetectorTypes/*</name>*/[] values = _values(/*<name>*/UIDataDetectorTypes/*</name>*/.class);

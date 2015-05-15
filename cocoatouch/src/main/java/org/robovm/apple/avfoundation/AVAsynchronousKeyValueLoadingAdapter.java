@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,6 +36,7 @@ import org.robovm.apple.coremedia.*;
 import org.robovm.apple.corevideo.*;
 import org.robovm.apple.audiotoolbox.*;
 import org.robovm.apple.mediatoolbox.*;
+import org.robovm.apple.audiounit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -57,8 +58,8 @@ import org.robovm.apple.mediatoolbox.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("statusOfValueForKey:error:")
-    public AVKeyValueStatus getStatusOfValue(AVMetadataKey key, NSError.NSErrorPtr outError) { throw new UnsupportedOperationException(); }
+    public AVKeyValueStatus getStatusOfValue(AVMetadataKey key, NSError.NSErrorPtr outError) { return null; }
     @NotImplemented("loadValuesAsynchronouslyForKeys:completionHandler:")
-    public void loadValuesAsynchronously(@org.robovm.rt.bro.annotation.Marshaler(AVMetadataKey.AsListMarshaler.class) List<AVMetadataKey> keys, @Block Runnable handler) { throw new UnsupportedOperationException(); }
+    public void loadValuesAsynchronously(@org.robovm.rt.bro.annotation.Marshaler(AVMetadataKey.AsListMarshaler.class) List<AVMetadataKey> keys, @Block Runnable handler) {}
     /*</methods>*/
 }

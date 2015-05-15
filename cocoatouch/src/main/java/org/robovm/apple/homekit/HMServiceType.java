@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,12 +31,15 @@ import org.robovm.apple.foundation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(HMServiceType.Marshaler.class)
 /*<annotations>*/@Library("HomeKit")/*</annotations>*/
+@Marshaler(/*<name>*/HMServiceType/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/HMServiceType/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
-    
+
+    static { Bro.bind(/*<name>*/HMServiceType/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static HMServiceType toObject(Class<HMServiceType> cls, long handle, long flags) {
@@ -54,7 +57,6 @@ import org.robovm.apple.foundation.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
     public static class AsListMarshaler {
         @SuppressWarnings("unchecked")
         @MarshalsPointer
@@ -64,8 +66,8 @@ import org.robovm.apple.foundation.*;
                 return null;
             }
             List<HMServiceType> list = new ArrayList<>();
-            for (NSString str : o) {
-                list.add(HMServiceType.valueOf(str));
+            for (int i = 0; i < o.size(); i++) {
+                list.add(HMServiceType.valueOf(o.get(i)));
             }
             return list;
         }
@@ -74,71 +76,62 @@ import org.robovm.apple.foundation.*;
             if (l == null) {
                 return 0L;
             }
-            NSMutableArray<NSString> array = new NSMutableArray<>();
+            NSArray<NSString> array = new NSMutableArray<>();
             for (HMServiceType i : l) {
                 array.add(i.value());
             }
             return NSObject.Marshaler.toNative(array, flags);
         }
     }
+    /*</marshalers>*/
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(HMServiceType.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    /*<constants>*/
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final HMServiceType Lightbulb = new HMServiceType("LightbulbValue");
+    public static final HMServiceType Lightbulb = new HMServiceType("Lightbulb");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final HMServiceType Switch = new HMServiceType("SwitchValue");
+    public static final HMServiceType Switch = new HMServiceType("Switch");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final HMServiceType Thermostat = new HMServiceType("ThermostatValue");
+    public static final HMServiceType Thermostat = new HMServiceType("Thermostat");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final HMServiceType GarageDoorOpener = new HMServiceType("GarageDoorOpenerValue");
+    public static final HMServiceType GarageDoorOpener = new HMServiceType("GarageDoorOpener");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final HMServiceType AccessoryInformation = new HMServiceType("AccessoryInformationValue");
+    public static final HMServiceType AccessoryInformation = new HMServiceType("AccessoryInformation");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final HMServiceType Fan = new HMServiceType("FanValue");
+    public static final HMServiceType Fan = new HMServiceType("Fan");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final HMServiceType Outlet = new HMServiceType("OutletValue");
+    public static final HMServiceType Outlet = new HMServiceType("Outlet");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final HMServiceType LockMechanism = new HMServiceType("LockMechanismValue");
+    public static final HMServiceType LockMechanism = new HMServiceType("LockMechanism");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final HMServiceType LockManagement = new HMServiceType("LockManagementValue");
+    public static final HMServiceType LockManagement = new HMServiceType("LockManagement");
+    /*</constants>*/
     
-    private static HMServiceType[] values = new HMServiceType[] {Lightbulb, Switch, Thermostat, GarageDoorOpener, 
-        AccessoryInformation, Fan, Outlet, LockMechanism, LockManagement};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    private static /*<name>*/HMServiceType/*</name>*/[] values = new /*<name>*/HMServiceType/*</name>*/[] {/*<value_list>*/Lightbulb, Switch, Thermostat, GarageDoorOpener, AccessoryInformation, Fan, Outlet, LockMechanism, LockManagement/*</value_list>*/};
     
-    private HMServiceType(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/HMServiceType/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static HMServiceType valueOf(NSString value) {
-        for (HMServiceType v : values) {
+    public static /*<name>*/HMServiceType/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/HMServiceType/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -146,51 +139,59 @@ import org.robovm.apple.foundation.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/HMServiceType/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HMServiceTypeLightbulb", optional=true)
-    protected static native NSString LightbulbValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HMServiceTypeSwitch", optional=true)
-    protected static native NSString SwitchValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HMServiceTypeThermostat", optional=true)
-    protected static native NSString ThermostatValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HMServiceTypeGarageDoorOpener", optional=true)
-    protected static native NSString GarageDoorOpenerValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HMServiceTypeAccessoryInformation", optional=true)
-    protected static native NSString AccessoryInformationValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HMServiceTypeFan", optional=true)
-    protected static native NSString FanValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HMServiceTypeOutlet", optional=true)
-    protected static native NSString OutletValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HMServiceTypeLockMechanism", optional=true)
-    protected static native NSString LockMechanismValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HMServiceTypeLockManagement", optional=true)
-    protected static native NSString LockManagementValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("HomeKit")/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HMServiceTypeLightbulb", optional=true)
+        public static native NSString Lightbulb();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HMServiceTypeSwitch", optional=true)
+        public static native NSString Switch();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HMServiceTypeThermostat", optional=true)
+        public static native NSString Thermostat();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HMServiceTypeGarageDoorOpener", optional=true)
+        public static native NSString GarageDoorOpener();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HMServiceTypeAccessoryInformation", optional=true)
+        public static native NSString AccessoryInformation();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HMServiceTypeFan", optional=true)
+        public static native NSString Fan();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HMServiceTypeOutlet", optional=true)
+        public static native NSString Outlet();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HMServiceTypeLockMechanism", optional=true)
+        public static native NSString LockMechanism();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HMServiceTypeLockManagement", optional=true)
+        public static native NSString LockManagement();
+        /*</values>*/
+    }
 }

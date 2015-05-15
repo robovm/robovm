@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -68,20 +68,6 @@ import org.robovm.apple.foundation.*;
     public native NEVPNStatus getStatus();
     /*</properties>*/
     /*<members>*//*</members>*/
-    /**
-     * 
-     * @return
-     * @throws NSErrorException
-     * @since Available in iOS 8.0 and later.
-     */
-    public boolean startVPNTunnel() throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = startVPNTunnel(err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
     /*<methods>*/
     /**
      * @since Available in iOS 8.0 and later.
@@ -92,8 +78,17 @@ import org.robovm.apple.foundation.*;
     /**
      * @since Available in iOS 8.0 and later.
      */
+    public boolean startVPNTunnel() throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = startVPNTunnel(ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "startVPNTunnelAndReturnError:")
-    protected native boolean startVPNTunnel(NSError.NSErrorPtr error);
+    private native boolean startVPNTunnel(NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 8.0 and later.
      */

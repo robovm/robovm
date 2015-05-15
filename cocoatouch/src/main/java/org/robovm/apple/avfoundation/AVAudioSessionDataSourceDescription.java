@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,6 +36,7 @@ import org.robovm.apple.coremedia.*;
 import org.robovm.apple.corevideo.*;
 import org.robovm.apple.audiotoolbox.*;
 import org.robovm.apple.mediatoolbox.*;
+import org.robovm.apple.audiounit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -87,26 +88,20 @@ import org.robovm.apple.mediatoolbox.*;
     public native AVAudioSessionPolarPattern getPreferredPolarPattern();
     /*</properties>*/
     /*<members>*//*</members>*/
-    /**
-     * 
-     * @param pattern
-     * @return
-     * @since Available in iOS 7.0 and later.
-     * @throws NSErrorException
-     */
-    public boolean setPreferredPolarPattern(AVAudioSessionPolarPattern pattern) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = setPreferredPolarPattern(pattern, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
     /*<methods>*/
     /**
      * @since Available in iOS 7.0 and later.
      */
+    public boolean setPreferredPolarPattern(AVAudioSessionPolarPattern pattern) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = setPreferredPolarPattern(pattern, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "setPreferredPolarPattern:error:")
-    protected native boolean setPreferredPolarPattern(AVAudioSessionPolarPattern pattern, NSError.NSErrorPtr outError);
+    private native boolean setPreferredPolarPattern(AVAudioSessionPolarPattern pattern, NSError.NSErrorPtr outError);
     /*</methods>*/
 }

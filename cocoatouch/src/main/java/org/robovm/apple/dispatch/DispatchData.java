@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,11 +49,6 @@ import org.robovm.rt.bro.ptr.*;
      */
     @GlobalValue(symbol="_dispatch_data_empty", optional=true, dereference=false)
     public static native DispatchData Empty();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="_dispatch_data_empty", optional=true)
-    public static native void Empty(DispatchData v);
     /**
      * @since Available in iOS 5.0 and later.
      */

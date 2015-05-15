@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,6 +50,6 @@ import org.robovm.apple.addressbook.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("personViewController:shouldPerformDefaultActionForPerson:property:identifier:")
-    public boolean shouldPerformDefaultAction(ABPersonViewController personViewController, ABPerson person, ABProperty property, int identifier) { throw new UnsupportedOperationException(); }
+    public boolean shouldPerformDefaultAction(ABPersonViewController personViewController, ABPerson person, ABProperty property, int identifier) { return false; }
     /*</methods>*/
 }

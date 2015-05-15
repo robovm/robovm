@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 Trillian Mobile AB
+ * Copyright (C) 2013 RoboVM AB
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,7 +16,6 @@
  */
 package org.robovm.compiler.target.ios;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,7 +26,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.robovm.compiler.config.Arch;
-import org.robovm.compiler.config.Config.Home;
 import org.robovm.compiler.log.Logger;
 import org.robovm.compiler.util.Executor;
 
@@ -40,6 +38,7 @@ import org.robovm.compiler.util.Executor;
  */
 public class DeviceType implements Comparable<DeviceType> {
     public static final String PREFIX = "com.apple.CoreSimulator.SimDeviceType.";
+    public static final String PREFERRED_DEVICE_NAME = PREFIX + "iPhone-6";
 
     public static enum DeviceFamily {
         iPhone,
@@ -67,7 +66,7 @@ public class DeviceType implements Comparable<DeviceType> {
     public Set<Arch> getArchs() {
         return Collections.unmodifiableSet(archs);
     }
-    
+
     /**
      * @return id as understood by ios-sim, concatentation of type and sdk
      *         version
@@ -95,9 +94,9 @@ public class DeviceType implements Comparable<DeviceType> {
         }
     }
 
-    public static List<DeviceType> listDeviceTypes(Home home) {
+    public static List<DeviceType> listDeviceTypes() {
         try {
-            String capture = new Executor(Logger.NULL_LOGGER, new File(home.getBinDir(), "ios-sim")).args(
+            String capture = new Executor(Logger.NULL_LOGGER, IOSTarget.getIosSimPath()).args(
                     "showdevicetypes").execCapture();
             List<DeviceType> types = new ArrayList<DeviceType>();
             String[] deviceTypeIds = capture.split("\n");
@@ -135,7 +134,7 @@ public class DeviceType implements Comparable<DeviceType> {
             throw new RuntimeException(e);
         }
     }
-    
+
     @Override
     public int compareTo(DeviceType that) {
         int c = this.sdk.compareTo(that.sdk);
@@ -147,12 +146,12 @@ public class DeviceType implements Comparable<DeviceType> {
         }
         return c;
     }
-    
-    private static List<DeviceType> filter(List<DeviceType> deviceTypes, Arch arch, 
+
+    private static List<DeviceType> filter(List<DeviceType> deviceTypes, Arch arch,
             DeviceFamily family, String deviceName, String sdkVersion) {
-        
+
         deviceName = deviceName == null ? null : deviceName.toLowerCase();
-        
+
         List<DeviceType> result = new ArrayList<>();
         for (DeviceType type : deviceTypes) {
             if (arch == null || type.getArchs().contains(arch)) {
@@ -167,17 +166,17 @@ public class DeviceType implements Comparable<DeviceType> {
         }
         return result;
     }
-    
-    public static List<String> getSimpleDeviceTypeIds(Home home) {
+
+    public static List<String> getSimpleDeviceTypeIds() {
         List<String> result = new ArrayList<>();
-        for (DeviceType type : listDeviceTypes(home)) {
+        for (DeviceType type : listDeviceTypes()) {
             result.add(type.getSimpleDeviceTypeId());
         }
         return result;
     }
 
-    public static DeviceType getDeviceType(Home home, String deviceTypeId) {
-        List<DeviceType> types = listDeviceTypes(home);
+    public static DeviceType getDeviceType(String deviceTypeId) {
+        List<DeviceType> types = listDeviceTypes();
         if (deviceTypeId == null) {
             return null;
         }
@@ -192,12 +191,12 @@ public class DeviceType implements Comparable<DeviceType> {
         return null;
     }
 
-    public static DeviceType getBestDeviceType(Home home) {
-        return getBestDeviceType(home, null, null, null, null);
+    public static DeviceType getBestDeviceType() {
+        return getBestDeviceType(null, null, null, null);
     }
 
-    public static DeviceType getBestDeviceType(Home home, DeviceFamily family) {
-        return getBestDeviceType(home, null, family, null, null);
+    public static DeviceType getBestDeviceType(DeviceFamily family) {
+        return getBestDeviceType(null, family, null, null);
     }
 
     /**
@@ -206,24 +205,25 @@ public class DeviceType implements Comparable<DeviceType> {
      * number will be returned. If no device name and no {@link DeviceFamily} is
      * specified this method will default to {@link DeviceFamily#iPhone}.
      */
-    public static DeviceType getBestDeviceType(Home home, Arch arch, DeviceFamily family,
+    public static DeviceType getBestDeviceType(Arch arch, DeviceFamily family,
             String deviceName, String sdkVersion) {
 
         if (deviceName == null && family == null) {
             family = DeviceFamily.iPhone;
         }
-        
+
         DeviceType best = null;
-        for (DeviceType type : filter(listDeviceTypes(home), arch, family, deviceName, sdkVersion)) {
+        for (DeviceType type : filter(listDeviceTypes(), arch, family, deviceName, sdkVersion)) {
             if (best == null) {
                 best = type;
-            } else if (type.getSdk().compareTo(best.getSdk()) > 0) {
+            } else if (type.getSdk().compareTo(best.getSdk()) > 0 ||
+                    type.getSdk().compareTo(best.getSdk()) == 0 && type.getDeviceName().equals(PREFERRED_DEVICE_NAME)) {
                 best = type;
             }
         }
         if (best == null) {
-            throw new IllegalArgumentException("Unable to find a matching device " 
-                    + "[arch=" + arch + ", family=" + family 
+            throw new IllegalArgumentException("Unable to find a matching device "
+                    + "[arch=" + arch + ", family=" + family
                     + ", name=" + deviceName + ", sdk=" + sdkVersion + "]");
         }
         return best;

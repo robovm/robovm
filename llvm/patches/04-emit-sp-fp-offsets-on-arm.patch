@@ -1,0 +1,93 @@
+diff --git a/lib/CodeGen/AsmPrinter/AsmPrinter.cpp b/lib/CodeGen/AsmPrinter/AsmPrinter.cpp
+index 97ef12c..e175480 100644
+--- a/lib/CodeGen/AsmPrinter/AsmPrinter.cpp
++++ b/lib/CodeGen/AsmPrinter/AsmPrinter.cpp
+@@ -1018,6 +1018,27 @@ bool AsmPrinter::doFinalization(Module &M) {
+     if (const MCSection *S = MAI->getNonexecutableStackSection(OutContext))
+       OutStreamer.SwitchSection(S);
+ 
++  // RoboVM change: Emit spfpoffset symbols if requested to do so. The symbols are
++  // created in ARMFrameLowering::emitPrologue and AAarch64FrameLowering::emitPrologue.
++  if (MMI->getModule()->getNamedValue("robovm.emitSpFpOffsets")) {
++    bool InTextSeciton = false;
++    for (const Function &F : *(MMI->getModule())) {
++      if (F.isDeclaration())
++        continue;
++
++      MCSymbol *Offset = OutContext.LookupSymbol(Twine("l_") + F.getName() + ".spfpoffset");
++      if (Offset) {
++        if (!InTextSeciton) {
++          OutStreamer.SwitchSection(getObjFileLowering().getTextSection());
++          OutStreamer.EmitCodeAlignment(4);
++          InTextSeciton = true;
++        }
++        OutStreamer.EmitLabel(Offset);
++        OutStreamer.EmitIntValue(((MCConstantExpr *) Offset->getVariableValue())->getValue(), 4);
++      }
++    }
++  }
++
+   // Allow the target to emit any magic that it wants at the end of the file,
+   // after everything else has gone out.
+   EmitEndOfAsmFile(M);
+diff --git a/lib/Target/AArch64/AArch64FrameLowering.cpp b/lib/Target/AArch64/AArch64FrameLowering.cpp
+index 66aa216..57fa466 100644
+--- a/lib/Target/AArch64/AArch64FrameLowering.cpp
++++ b/lib/Target/AArch64/AArch64FrameLowering.cpp
+@@ -28,6 +28,7 @@
+ #include "llvm/Support/CommandLine.h"
+ #include "llvm/Support/Debug.h"
+ #include "llvm/Support/raw_ostream.h"
++#include "llvm/MC/MCSymbol.h"
+ 
+ using namespace llvm;
+ 
+@@ -408,6 +409,14 @@ void AArch64FrameLowering::emitPrologue(MachineFunction &MF) const {
+     // Now emit the moves for whatever callee saved regs we have.
+     emitCalleeSavedFrameMoves(MBB, MBBI, FramePtr);
+   }
++    
++  // RoboVM change: Create a symbol which stores the sp<->fp offset and sp alignment. The symbol
++  // is finally emitted in AsmPrinter::doFinalization().
++  MCSymbol *Offset = MMI.getContext().GetOrCreateSymbol(Twine("l_") + MF.getName() + ".spfpoffset");
++  // Calculare the SP<->FP offset for the function. We subtract 16 to ignore fp/lr on the stack.
++  // We divide by 4 since the offset is always at least a multiple of 4.
++  uint32_t spFpOffset = (MFI->getStackSize() - 16) >> 2;
++  Offset->setVariableValue(MCConstantExpr::Create(spFpOffset, MMI.getContext()));
+ }
+ 
+ static bool isCalleeSavedRegister(unsigned Reg, const MCPhysReg *CSRegs) {
+diff --git a/lib/Target/ARM/ARMFrameLowering.cpp b/lib/Target/ARM/ARMFrameLowering.cpp
+index 831c2eb..7ae8d19 100644
+--- a/lib/Target/ARM/ARMFrameLowering.cpp
++++ b/lib/Target/ARM/ARMFrameLowering.cpp
+@@ -26,8 +26,10 @@
+ #include "llvm/IR/CallingConv.h"
+ #include "llvm/IR/Function.h"
+ #include "llvm/MC/MCContext.h"
++#include "llvm/MC/MCSymbol.h"
+ #include "llvm/Support/CommandLine.h"
+ #include "llvm/Target/TargetOptions.h"
++#include "llvm/IR/Module.h"
+ 
+ using namespace llvm;
+ 
+@@ -617,6 +619,18 @@ void ARMFrameLowering::emitPrologue(MachineFunction &MF) const {
+   // checks for hasVarSizedObjects.
+   if (MFI->hasVarSizedObjects())
+     AFI->setShouldRestoreSPFromFP(true);
++
++  // RoboVM change: Create a symbol which stores the sp<->fp offset and sp alignment. The symbol
++  // is finally emitted in AsmPrinter::doFinalization().
++  MCSymbol *Offset = Context.GetOrCreateSymbol(Twine("l_") + MF.getName() + ".spfpoffset");
++  // Calculare the SP<->FP offset for the function. We subtract 8 to ignore r7/lr on the stack.
++  // We divide by 4 since the offset is always at least a multiple of 4.
++  uint32_t spFpOffset = (GPRCS1Size - 8 + GPRCS2Size + DPRGapSize + DPRCSSize + NumBytes + AFI->getNumAlignedDPRCS2Regs()*8) >> 2;
++  // Calculate the stack alignment. It's at least a multiple of 4 so we divide by 4.
++  // We subtract by 1 since alignment/4 is always at least 1.
++  uint32_t spAlignment = (MFI->getMaxAlignment() >> 2) - 1;
++  // We store the stack alignment in the 4 MSBs of the symbol value.
++  Offset->setVariableValue(MCConstantExpr::Create(spFpOffset | (spAlignment << 28), Context));
+ }
+ 
+ // Resolve TCReturn pseudo-instruction

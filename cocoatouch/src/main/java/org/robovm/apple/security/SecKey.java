@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
+import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 /*</imports>*/
 
@@ -45,18 +46,81 @@ import org.robovm.apple.corefoundation.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public static void generatePair(SecKeyParameters parameters, SecKey.SecKeyPtr publicKey, SecKey.SecKeyPtr privateKey) throws OSStatusException {
+        OSStatus status = generatePair0(parameters, publicKey, privateKey);
+        OSStatusException.throwIfNecessary(status);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public static void generatePair(SecKeyParameters parameters, VoidBlock2<SecKey, SecKey> result) throws OSStatusException {
+        SecKey.SecKeyPtr publicPtr = new SecKey.SecKeyPtr();
+        SecKey.SecKeyPtr privatePtr = new SecKey.SecKeyPtr();
+        generatePair(parameters, publicPtr, privatePtr);
+        result.invoke(publicPtr.get(), privatePtr.get());
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public byte[] rawSign(SecPadding padding, byte[] dataToSign) throws OSStatusException {
+        if (dataToSign == null) {
+            throw new NullPointerException("dataToSign");
+        }
+        BytePtr sigPtr = new BytePtr();
+        MachineSizedUIntPtr sigLenPtr = new MachineSizedUIntPtr();
+        OSStatus status = rawSign0(padding, VM.getArrayValuesAddress(dataToSign), dataToSign.length, sigPtr, sigLenPtr);
+        OSStatusException.throwIfNecessary(status);
+        return sigPtr.toByteArray((int)sigLenPtr.get());
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public void rawVerify(SecPadding padding, byte[] signedData, byte[] sig) throws OSStatusException {
+        if (signedData == null) {
+            throw new NullPointerException("signedData");
+        }
+        if (sig == null) {
+            throw new NullPointerException("sig");
+        }
+        OSStatus status = rawVerify0(padding, VM.getArrayValuesAddress(signedData), signedData.length, VM.getArrayValuesAddress(sig), sig.length);
+        OSStatusException.throwIfNecessary(status);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public byte[] encrypt(SecPadding padding, byte[] plainText) throws OSStatusException {
+        if (plainText == null) {
+            throw new NullPointerException("plainText");
+        }
+        BytePtr cipherTextPtr = new BytePtr();
+        MachineSizedUIntPtr cipherTextLenPtr = new MachineSizedUIntPtr();
+        OSStatus status = encrypt0(padding, VM.getArrayValuesAddress(plainText), plainText.length, cipherTextPtr, cipherTextLenPtr);
+        OSStatusException.throwIfNecessary(status);
+        return cipherTextPtr.toByteArray((int)cipherTextLenPtr.get());
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public byte[] decrypt(SecPadding padding, byte[] cipherText) throws OSStatusException {
+        if (cipherText == null) {
+            throw new NullPointerException("cipherText");
+        }
+        BytePtr plainTextPtr = new BytePtr();
+        MachineSizedUIntPtr plainTextLenPtr = new MachineSizedUIntPtr();
+        OSStatus status = decrypt0(padding, VM.getArrayValuesAddress(cipherText), cipherText.length, plainTextPtr, plainTextLenPtr);
+        OSStatusException.throwIfNecessary(status);
+        return plainTextPtr.toByteArray((int)plainTextLenPtr.get());
+    }
     /*<methods>*/
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kSecPrivateKeyAttrs", optional=true)
-    public static native CFType PrivateKeyAttrs();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kSecPublicKeyAttrs", optional=true)
-    public static native CFType PublicKeyAttrs();
-    
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -66,27 +130,27 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="SecKeyGeneratePair", optional=true)
-    public static native int generatePair(CFDictionary parameters, SecKey.SecKeyPtr publicKey, SecKey.SecKeyPtr privateKey);
+    protected static native OSStatus generatePair0(SecKeyParameters parameters, SecKey.SecKeyPtr publicKey, SecKey.SecKeyPtr privateKey);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="SecKeyRawSign", optional=true)
-    public native int rawSign(SecPadding padding, BytePtr dataToSign, @MachineSizedUInt long dataToSignLen, BytePtr sig, MachineSizedUIntPtr sigLen);
+    protected native OSStatus rawSign0(SecPadding padding, @Pointer long dataToSign, @MachineSizedUInt long dataToSignLen, BytePtr sig, MachineSizedUIntPtr sigLen);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="SecKeyRawVerify", optional=true)
-    public native int rawVerify(SecPadding padding, BytePtr signedData, @MachineSizedUInt long signedDataLen, BytePtr sig, @MachineSizedUInt long sigLen);
+    protected native OSStatus rawVerify0(SecPadding padding, @Pointer long signedData, @MachineSizedUInt long signedDataLen, @Pointer long sig, @MachineSizedUInt long sigLen);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="SecKeyEncrypt", optional=true)
-    public native int encrypt(SecPadding padding, BytePtr plainText, @MachineSizedUInt long plainTextLen, BytePtr cipherText, MachineSizedUIntPtr cipherTextLen);
+    protected native OSStatus encrypt0(SecPadding padding, @Pointer long plainText, @MachineSizedUInt long plainTextLen, BytePtr cipherText, MachineSizedUIntPtr cipherTextLen);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="SecKeyDecrypt", optional=true)
-    public native int decrypt(SecPadding padding, BytePtr cipherText, @MachineSizedUInt long cipherTextLen, BytePtr plainText, MachineSizedUIntPtr plainTextLen);
+    protected native OSStatus decrypt0(SecPadding padding, @Pointer long cipherText, @MachineSizedUInt long cipherTextLen, BytePtr plainText, MachineSizedUIntPtr plainTextLen);
     /**
      * @since Available in iOS 2.0 and later.
      */

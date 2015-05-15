@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -368,7 +368,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "registerClass:forCellReuseIdentifier:")
-    public native void registerReusableCellClass(Class<?> cellClass, String identifier);
+    public native void registerReusableCellClass(Class<? extends UITableViewCell> cellClass, String identifier);
     /**
      * @since Available in iOS 6.0 and later.
      */
@@ -378,6 +378,6 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "registerClass:forHeaderFooterViewReuseIdentifier:")
-    public native void registerReusableHeaderFooterViewClass(Class<?> aClass, String identifier);
+    public native void registerReusableHeaderFooterViewClass(Class<? extends UITableViewHeaderFooterView> aClass, String identifier);
     /*</methods>*/
 }

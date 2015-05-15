@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,6 +36,7 @@ import org.robovm.apple.coremedia.*;
 import org.robovm.apple.corevideo.*;
 import org.robovm.apple.audiotoolbox.*;
 import org.robovm.apple.mediatoolbox.*;
+import org.robovm.apple.audiounit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -60,26 +61,26 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 6.0 and later.
      */
     @NotImplemented("resourceLoader:shouldWaitForLoadingOfRequestedResource:")
-    public boolean shouldWaitForLoadingOfRequestedResource(AVAssetResourceLoader resourceLoader, AVAssetResourceLoadingRequest loadingRequest) { throw new UnsupportedOperationException(); }
+    public boolean shouldWaitForLoadingOfRequestedResource(AVAssetResourceLoader resourceLoader, AVAssetResourceLoadingRequest loadingRequest) { return false; }
     /**
      * @since Available in iOS 8.0 and later.
      */
     @NotImplemented("resourceLoader:shouldWaitForRenewalOfRequestedResource:")
-    public boolean shouldWaitForRenewalOfRequestedResource(AVAssetResourceLoader resourceLoader, AVAssetResourceRenewalRequest renewalRequest) { throw new UnsupportedOperationException(); }
+    public boolean shouldWaitForRenewalOfRequestedResource(AVAssetResourceLoader resourceLoader, AVAssetResourceRenewalRequest renewalRequest) { return false; }
     /**
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("resourceLoader:didCancelLoadingRequest:")
-    public void didCancelLoadingRequest(AVAssetResourceLoader resourceLoader, AVAssetResourceLoadingRequest loadingRequest) { throw new UnsupportedOperationException(); }
+    public void didCancelLoadingRequest(AVAssetResourceLoader resourceLoader, AVAssetResourceLoadingRequest loadingRequest) {}
     /**
      * @since Available in iOS 8.0 and later.
      */
     @NotImplemented("resourceLoader:shouldWaitForResponseToAuthenticationChallenge:")
-    public boolean shouldWaitForResponseToAuthenticationChallenge(AVAssetResourceLoader resourceLoader, NSURLAuthenticationChallenge authenticationChallenge) { throw new UnsupportedOperationException(); }
+    public boolean shouldWaitForResponseToAuthenticationChallenge(AVAssetResourceLoader resourceLoader, NSURLAuthenticationChallenge authenticationChallenge) { return false; }
     /**
      * @since Available in iOS 8.0 and later.
      */
     @NotImplemented("resourceLoader:didCancelAuthenticationChallenge:")
-    public void didCancelAuthenticationChallenge(AVAssetResourceLoader resourceLoader, NSURLAuthenticationChallenge authenticationChallenge) { throw new UnsupportedOperationException(); }
+    public void didCancelAuthenticationChallenge(AVAssetResourceLoader resourceLoader, NSURLAuthenticationChallenge authenticationChallenge) {}
     /*</methods>*/
 }

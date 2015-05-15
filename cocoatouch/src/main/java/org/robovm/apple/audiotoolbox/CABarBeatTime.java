@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,8 +30,10 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -48,12 +50,11 @@ import org.robovm.apple.coremedia.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public CABarBeatTime() {}
-    public CABarBeatTime(int bar, short beat, short subbeat, short subbeatDivisor, short reserved) {
+    public CABarBeatTime(int bar, short beat, short subbeat, short subbeatDivisor) {
         this.setBar(bar);
         this.setBeat(beat);
         this.setSubbeat(subbeat);
         this.setSubbeatDivisor(subbeatDivisor);
-        this.setReserved(reserved);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
@@ -66,8 +67,8 @@ import org.robovm.apple.coremedia.*;
     @StructMember(2) public native CABarBeatTime setSubbeat(short subbeat);
     @StructMember(3) public native short getSubbeatDivisor();
     @StructMember(3) public native CABarBeatTime setSubbeatDivisor(short subbeatDivisor);
-    @StructMember(4) public native short getReserved();
-    @StructMember(4) public native CABarBeatTime setReserved(short reserved);
+    @StructMember(4) private native short getReserved();
+    @StructMember(4) private native CABarBeatTime setReserved(short reserved);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

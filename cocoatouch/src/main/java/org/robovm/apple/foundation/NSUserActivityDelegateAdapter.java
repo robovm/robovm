@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,10 +55,10 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("userActivityWillSave:")
-    public void willSave(NSUserActivity userActivity) { throw new UnsupportedOperationException(); }
+    public void willSave(NSUserActivity userActivity) {}
     @NotImplemented("userActivityWasContinued:")
-    public void wasContinued(NSUserActivity userActivity) { throw new UnsupportedOperationException(); }
+    public void wasContinued(NSUserActivity userActivity) {}
     @NotImplemented("userActivity:didReceiveInputStream:outputStream:")
-    public void didReceiveStreams(NSUserActivity userActivity, NSInputStream inputStream, NSOutputStream outputStream) { throw new UnsupportedOperationException(); }
+    public void didReceiveStreams(NSUserActivity userActivity, NSInputStream inputStream, NSOutputStream outputStream) {}
     /*</methods>*/
 }

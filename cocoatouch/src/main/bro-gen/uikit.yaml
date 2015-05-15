@@ -47,7 +47,7 @@ enums:
     UIBackgroundRefreshStatus: {}
     UIBarButtonItemStyle: {}
     UIBarButtonSystemItem: {}
-    UIBarMetrics: {}
+    UIBarMetrics: {ignore: Landscape}
     UIBarPosition: {}
     UIBarStyle: {}
     UIBaselineAdjustment: {}
@@ -61,7 +61,7 @@ enums:
     UIControlContentHorizontalAlignment: {}
     UIControlContentVerticalAlignment: {}
     UIControlEvents: {} # TODO: Extra values?
-    UIControlState: {} # TODO: Extra values?
+    UIControlState: {skip_none: true} # TODO: Extra values?
     UIDataDetectorTypes: {}
     UIDatePickerMode: {}
     UIDeviceBatteryState: {}
@@ -70,7 +70,7 @@ enums:
     UIDocumentMenuOrder: {}
     UIDocumentPickerMode: {}
     UIDocumentSaveOperation: {}
-    UIDocumentState: {}
+    UIDocumentState: {skip_none: true}
     UIEventSubtype: {}
     UIEventType: {}
     UIFontDescriptorSymbolicTraits: {}
@@ -103,7 +103,7 @@ enums:
     UIPageViewControllerTransitionStyle: {}
     UIPopoverArrowDirection: {}
     UIPrintErrorCode: {first: UIPrintingNotAvailableError, suffix: Error, UIPrintingNotAvailableError: PrintingNotAvailableError}
-    UIPrinterJobTypes: {}
+    UIPrinterJobTypes: {skip_none: true}
     UIPrintInfoDuplex: {}
     UIPrintInfoOrientation: {}
     UIPrintInfoOutputType: {}
@@ -186,6 +186,7 @@ categories:
         methods:
             '-init.*':
                 name: init
+                throws: NSErrorException
                 visibility: protected
                 return_type: '@Pointer long'
                 parameters:
@@ -197,7 +198,7 @@ categories:
                 name: getBoundingRect
             '-dataFromRange:documentAttributes:error:':
                 name: getData
-                visibility: protected
+                throws: NSErrorException
                 parameters:
                     dict:
                         type: NSAttributedStringDocumentAttributes
@@ -209,7 +210,7 @@ categories:
                 name: draw
             '-fileWrapperFromRange:documentAttributes:error:':
                 name: getFileWrapper
-                visibility: protected
+                throws: NSErrorException
                 parameters:
                     dict:
                         type: NSAttributedStringDocumentAttributes
@@ -240,66 +241,53 @@ categories:
                 name: fixAttributesInRange
             '-readFromData:options:documentAttributes:error:':
                 name: readFromData
+                throws: NSErrorException
                 visibility: protected
                 parameters:
                     opts:
                         type: NSAttributedStringDocumentAttributes
             '-readFromFileURL:options:documentAttributes:error:':
                 name: readFromFileURL
+                throws: NSErrorException
                 visibility: protected
                 parameters:
                     opts:
                         type: NSAttributedStringDocumentAttributes
     NSString: # DONE
+        owner_type: '@Pointer long'
         methods:
             '-boundingRectWithSize:options:attributes:context:':
                 name: getBoundingRect
                 parameters:
                     attributes:
-                        type: NSAttributedStringAttributes
-            '-drawAtPoint:forWidth:withFont:fontSize:lineBreakMode:baselineAdjustment:':
-                name: draw
-            '-drawAtPoint:forWidth:withFont:lineBreakMode:':
-                name: draw
-            '-drawAtPoint:forWidth:withFont:minFontSize:actualFontSize:lineBreakMode:baselineAdjustment:':
+                        type: 'NSDictionary<NSString, NSObject>'
+            '-drawAtPoint:forWidth.*':
                 name: draw
             '-drawAtPoint:withAttributes:':
                 name: draw
                 parameters:
                     attrs:
-                        type: NSAttributedStringAttributes
+                        type: 'NSDictionary<NSString, NSObject>'
             '-drawAtPoint:withFont:':
                 name: draw
             '-drawInRect:withAttributes:':
                 name: draw
                 parameters:
                     attrs:
-                        type: NSAttributedStringAttributes
-            '-drawInRect:withFont:':
-                name: draw
-            '-drawInRect:withFont:lineBreakMode:':
-                name: draw
-            '-drawInRect:withFont:lineBreakMode:alignment:':
+                        type: 'NSDictionary<NSString, NSObject>'
+            '-drawInRect:withFont:.*':
                 name: draw
             '-drawWithRect:options:attributes:context:':
                 name: draw
                 parameters:
                     attributes:
-                        type: NSAttributedStringAttributes
+                        type: 'NSDictionary<NSString, NSObject>'
             '-sizeWithAttributes:':
                 name: getSize
                 parameters:
                     attrs:
-                        type: NSAttributedStringAttributes
-            '-sizeWithFont:':
-                name: getSize
-            '-sizeWithFont:constrainedToSize:':
-                name: getSize
-            '-sizeWithFont:constrainedToSize:lineBreakMode:':
-                name: getSize
-            '-sizeWithFont:forWidth:lineBreakMode:':
-                name: getSize
-            '-sizeWithFont:minFontSize:actualFontSize:forWidth:lineBreakMode:':
+                        type: 'NSDictionary<NSString, NSObject>'
+            '-sizeWithFont.*':
                 name: getSize
     NSValue: # DONE
         methods:
@@ -355,7 +343,7 @@ classes:
                 name: stopProvidingItem
             '+writePlaceholderAtURL:withMetadata:error:':
                 name: writePlaceholder
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
                 parameters:
                     metadata:
                         type: NSURLProperties
@@ -782,13 +770,13 @@ classes:
         protocols: [UIAppearanceContainer]
         methods:
             '-setTitleTextAttributes:forState:':
-                name: setTitleTextAttributes
+                name: setTitleTextAttributesDictionary
                 parameters:
                     attributes:
-                        type: NSAttributedStringAttributes
+                        type: 'NSDictionary<NSString, NSObject>'
             '-titleTextAttributesForState:':
-                name: getTitleTextAttributes
-                return_type: NSAttributedStringAttributes
+                name: getTitleTextAttributesDictionary
+                return_type: 'NSDictionary<NSString, NSObject>'
     UIBezierPath: # DONE
         methods:
             '+bezierPath':
@@ -926,9 +914,14 @@ classes:
                 name: getNumberOfSections
             '-registerClass:forCellWithReuseIdentifier:':
                 name: registerReusableCellClass
+                parameters:
+                    cellClass:
+                        type: 'Class<? extends UICollectionViewCell>'
             '-registerClass:forSupplementaryViewOfKind:withReuseIdentifier:':
                 name: registerReusableSupplementaryViewClass
                 parameters:
+                    viewClass:
+                        type: 'Class<? extends UICollectionReusableView>'
                     elementKind:
                         type: UICollectionElementKind
             '-registerNib:forCellWithReuseIdentifier:':
@@ -987,8 +980,10 @@ classes:
         methods:
             '+layoutAttributesClass':
                 property: true
+                return_type: 'Class<? extends UICollectionViewLayoutAttributes>'
             '+invalidationContextClass':
                 property: true
+                return_type: 'Class<? extends UICollectionViewLayoutInvalidationContext>'
             '-collectionViewContentSize':
                 name: getCollectionViewContentSize
             '-finalLayoutAttributesForDisappearingDecorationElementOfKind:atIndexPath:':
@@ -1014,6 +1009,9 @@ classes:
                 name: getLayoutAttributesForSupplementaryView
             '-registerClass:forDecorationViewOfKind:':
                 name: registerDecorationViewClass
+                parameters:
+                    viewClass:
+                        type: 'Class<? extends UICollectionReusableView>'
             '-registerNib:forDecorationViewOfKind:':
                 name: registerDecorationViewNib
             '-targetContentOffsetForProposedContentOffset:withScrollingVelocity:':
@@ -1200,7 +1198,7 @@ classes:
             '-fileAttributesToWriteToURL:forSaveOperation:error:':
                 name: getFileAttributesToWrite
                 return_type: NSFileAttributes
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-fileNameExtensionForType:saveOperation:':
                 name: getFileNameExtension
             '-openWithCompletionHandler:':
@@ -1209,7 +1207,7 @@ classes:
                 name: performAsynchronousFileAccess
             '-readFromURL:error:':
                 name: read
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-revertToContentsOfURL:completionHandler:':
                 name: revert
             '-saveToURL:forSaveOperation:completionHandler:':
@@ -1218,23 +1216,23 @@ classes:
                 name: updateChangeCount
             '-loadFromContents:ofType:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-contentsForType:error:':
                 name: getContentsForType
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-updateChangeCount:':
                 trim_after_first_colon: true
             '-changeCountTokenForSaveOperation:':
                 name: getChangeCountToken
             '-writeContents:andAttributes:safelyToURL:forSaveOperation:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
                 parameters:
                     additionalFileAttributes:
                         type: NSFileAttributes
             '-writeContents:toURL:forSaveOperation:originalContentsURL:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-handleError:userInteractionPermitted:':
                 trim_after_first_colon: true
             '-finishedHandlingError:recovered:':
@@ -1389,6 +1387,8 @@ classes:
                 name: getSmallSystemFontSize
             '+systemFontOfSize:':
                 name: getSystemFont
+            '+systemFontOfSize:weight:':
+                name: getSystemFont
             '+systemFontSize':
                 name: getSystemFontSize
             '+fontWithName:size:':
@@ -1495,6 +1495,7 @@ classes:
             '-setAngle:magnitude:':
                 trim_after_first_colon: true
     UIImage: # DONE
+        protocols: [UIAccessibility, UIAccessibilityIdentification]
         properties:
             'images':
                 type: NSArray<UIImage>
@@ -1654,10 +1655,10 @@ classes:
                 name: getPersistentStoreName
             '-additionalContentForURL:error:':
                 name: getAdditionalContent
-                visibility: protected # throw NSErrorException
+                throws: NSErrorException
             '-configurePersistentStoreCoordinatorForURL:ofType:modelConfiguration:storeOptions:error:':
                 name: configurePersistentStoreCoordinator
-                visibility: protected # throw NSErrorException
+                throws: NSErrorException
                 parameters:
                     storeOptions:
                         type: NSPersistentStoreOptions
@@ -1665,10 +1666,10 @@ classes:
                 name: getPersistentStoreType
             '-readAdditionalContentFromURL:error:':
                 name: readAdditionalContent
-                visibility: protected # throw NSErrorException
+                throws: NSErrorException
             '-writeAdditionalContent:toURL:originalContentsURL:error:':
                 name: writeAdditionalContent
-                visibility: protected # throw NSErrorException
+                throws: NSErrorException
     UIMarkupTextPrintFormatter: # DONE
         methods:
             '-init.*':
@@ -1676,7 +1677,9 @@ classes:
     UIMenuController: # DONE
         properties:
             'menuItems':
+                name: menuItems0
                 type: NSArray<UIMenuItem>
+                visibility: private
         methods:
             '+sharedMenuController':
                 name: getSharedMenuController
@@ -1704,7 +1707,8 @@ classes:
             'items':
                 type: NSArray<UINavigationItem>
             'titleTextAttributes':
-                type: NSAttributedStringAttributes
+                name: titleTextAttributesDictionary
+                type: 'NSDictionary<NSString, NSObject>'
         methods:
             '-backgroundImageForBarMetrics:':
                 name: getBackgroundImage
@@ -1732,6 +1736,13 @@ classes:
             'viewControllers':
                 type: NSArray<UIViewController>
         methods:
+            '-initWithNavigationBarClass:toolbarClass:':
+                name: init
+                parameters:
+                    navigationBarClass:
+                        type: 'Class<? extends UINavigationBar>'
+                    toolbarClass:
+                        type: 'Class<? extends UIToolbar>'
             '-init.*':
                 name: init
             '-pushViewController:animated:':
@@ -1920,6 +1931,8 @@ classes:
         properties:
             'passthroughViews':
                 type: NSArray<UIView>
+            'popoverBackgroundViewClass':
+                type: 'Class<? extends UIPopoverBackgroundView>'
         methods:
             '-init.*':
                 name: init
@@ -1939,12 +1952,16 @@ classes:
                 name: popoverPresentationDelegate
             'passthroughViews':
                 type: NSArray<UIView>
+            'popoverBackgroundViewClass':
+                type: 'Class<? extends UIPopoverBackgroundView>'
     UIPresentationController: # DONE
         methods:
             '-init.*':
                 name: init
             '-(adaptivePresentationStyle|presentedView)':
                 property: true
+            '-adaptivePresentationStyleForTraitCollection:':
+                name: getAdaptivePresentationStyleForTraitCollection
             '-frameOfPresentedViewInContainerView':
                 property: true
             '-presentationTransitionDidEnd:':
@@ -2096,6 +2113,7 @@ classes:
             '-init':
                 exclude: true
     UIResponder: # DONE
+        protocols: [UIAccessibility]
         properties:
             'keyCommands':
                 type: NSArray<UIKeyCommand>
@@ -2172,8 +2190,8 @@ classes:
             '-scopeBarButtonDividerImageForLeftSegmentState:rightSegmentState:':
                 name: getScopeBarButtonDividerImage
             '-scopeBarButtonTitleTextAttributesForState:':
-                name: getScopeBarButtonTitleTextAttributes
-                return_type: NSAttributedStringAttributes
+                name: getScopeBarButtonTitleTextAttributesDictionary
+                return_type: 'NSDictionary<NSString, NSObject>'
             '-searchFieldBackgroundImageForState:':
                 name: getSearchFieldBackgroundImage
             '-setImage:forSearchBarIcon:state:':
@@ -2193,10 +2211,10 @@ classes:
             '-setScopeBarButtonDividerImage:forLeftSegmentState:rightSegmentState:':
                 trim_after_first_colon: true 
             '-setScopeBarButtonTitleTextAttributes:forState:':
-                name: setScopeBarButtonTitleTextAttributes
+                name: setScopeBarButtonTitleTextAttributesDictionary
                 parameters:
                     attributes:
-                        type: NSAttributedStringAttributes
+                        type: 'NSDictionary<NSString, NSObject>'
     UISearchController: # DONE
         methods:
             '-init.*':
@@ -2237,8 +2255,8 @@ classes:
             '-titleForSegmentAtIndex:':
                 name: getTitle
             '-titleTextAttributesForState:':
-                name: getTitleTextAttributes
-                return_type: NSAttributedStringAttributes
+                name: getTitleTextAttributesDictionary
+                return_type: 'NSDictionary<NSString, NSObject>'
             '-removeSegmentAtIndex:animated:':
                 name: removeSegment
             '-setTitle:forSegmentAtIndex:':
@@ -2256,10 +2274,10 @@ classes:
             '-setDividerImage:forLeftSegmentState:rightSegmentState:barMetrics:':
                 name: setDividerImage
             '-setTitleTextAttributes:forState:':
-                name: setTitleTextAttributes
+                name: setTitleTextAttributesDictionary
                 parameters:
                     attributes:
-                        type: NSAttributedStringAttributes
+                        type: 'NSDictionary<NSString, NSObject>'
             '-setContentPositionAdjustment:forSegmentType:barMetrics:':
                 name: setContentPositionAdjustment
     UISimpleTextPrintFormatter: # DONE
@@ -2456,6 +2474,9 @@ classes:
                 name: registerReusableCellNib
             '-registerClass:forCellReuseIdentifier:':
                 name: registerReusableCellClass
+                parameters:
+                    cellClass:
+                        type: 'Class<? extends UITableViewCell>'
             '-reloadRowsAtIndexPaths:withRowAnimation:':
                 name: reloadRows
                 parameters:
@@ -2472,6 +2493,9 @@ classes:
                 return_type: NSArray<UITableViewCell>
             '-registerClass:forHeaderFooterViewReuseIdentifier:':
                 name: registerReusableHeaderFooterViewClass
+                parameters:
+                    aClass:
+                        type: 'Class<? extends UITableViewHeaderFooterView>'
             '-registerNib:forHeaderFooterViewReuseIdentifier:':
                 name: registerReusableHeaderFooterViewNib
             '-footerViewForSection:':
@@ -2547,9 +2571,11 @@ classes:
     UITextField: # DONE
         properties:
             'defaultTextAttributes':
-                type: NSAttributedStringAttributes
+                name: defaultTextAttributesDictionary
+                type: 'NSDictionary<NSString, NSObject>'
             'typingAttributes':
-                type: NSAttributedStringAttributes
+                name: typingAttributesDictionary
+                type: 'NSDictionary<NSString, NSObject>'
         methods:
             '-borderRectForBounds:':
                 name: getBorderRect
@@ -2592,9 +2618,11 @@ classes:
     UITextView: # DONE
         properties:
             'linkTextAttributes':
-                type: NSAttributedStringAttributes
+                name: linkTextAttributesDictionary
+                type: 'NSDictionary<NSString, NSObject>'
             'typingAttributes':
-                type: NSAttributedStringAttributes
+                name: typingAttributesDictionary
+                type: 'NSDictionary<NSString, NSObject>'
         methods:
             '-init.*':
                 name: init
@@ -2705,6 +2733,7 @@ classes:
                 name: transition
             '+layerClass':
                 name: getLayerClass
+                return_type: 'Class<? extends CALayer>'
             '+performSystemAnimation:onViews:options:animations:completion:':
                 trim_after_first_colon: true
                 parameters:
@@ -2870,6 +2899,9 @@ classes:
                 name: dismissModalViewController
             '-dismissViewControllerAnimated:completion:':
                 name: dismissViewController
+                parameters:
+                    flag:
+                        name: animated
             '-performSegueWithIdentifier:sender:':
                 name: performSegue
             '-transitionFromViewController:toViewController:duration:options:animations:completion:':
@@ -2913,6 +2945,9 @@ classes:
                 trim_after_first_colon: true
             '-presentViewController:animated:completion:':
                 trim_after_first_colon: true
+                parameters:
+                    flag:
+                        name: animated
             '-setEditing:animated:':
                 trim_after_first_colon: true
             '-setToolbarItems:animated:':
@@ -3056,8 +3091,12 @@ protocols:
         methods:
             '-adaptivePresentationStyleForPresentationController:':
                 name: getAdaptivePresentationStyle
+            '-adaptivePresentationStyleForPresentationController:traitCollection:':
+                name: getAdaptivePresentationStyle
             '-presentationController:viewControllerForAdaptivePresentationStyle:':
                 name: getViewController
+            '-presentationController:willPresentWithAdaptiveStyle:transitionCoordinator:':
+                name: willPresent
     UIAlertViewDelegate: # DONE
         methods:
             '-alertView:clickedButtonAtIndex:':
@@ -3075,10 +3114,13 @@ protocols:
             '-alertViewShouldEnableFirstOtherButton:':
                 name: shouldEnableFirstOtherButton
     # UIAppearance is bound as a class with static methods rather than an interface.
-#    UIAppearance: {}
+    # UIAppearance: {}
     UIAppearanceContainer: # DONE
         skip_adapter: true
     UIApplicationDelegate: # DONE
+        properties:
+            'window':
+                skip_adapter: true
         methods:
             '-application:didChangeStatusBarFrame:':
                 name: didChangStatusBarFrame
@@ -3119,6 +3161,7 @@ protocols:
                 name: didEnterBackground
             '-applicationDidReceiveMemoryWarning:':
                 name: didReceiveMemoryWarning
+                skip_adapter: true
             '-applicationProtectedDataDidBecomeAvailable:':
                 name: protectedDataDidBecomeAvailable
             '-applicationProtectedDataWillBecomeUnavailable:':
@@ -3185,6 +3228,11 @@ protocols:
                 name: didFailToContinueUserActivity
             '-application:didUpdateUserActivity:':
                 name: didUpdateUserActivity
+            '-application:handleWatchKitExtensionRequest:reply:':
+                name: handleWatchKitExtensionRequest
+                parameters:
+                    reply:
+                        type: '@Block VoidBlock1<NSDictionary<?, ?>>'
     UIBarPositioning: {} # DONE
     UIBarPositioningDelegate: # DONE
         methods:
@@ -3789,18 +3837,23 @@ protocols:
         methods:
             '-textField:shouldChangeCharactersInRange:replacementString:':
                 name: shouldChangeCharacters
+                default: true
             '-textFieldDidBeginEditing:':
                 name: didBeginEditing
             '-textFieldDidEndEditing:':
                 name: didEndEditing
             '-textFieldShouldBeginEditing:':
                 name: shouldBeginEditing
+                default: true
             '-textFieldShouldClear:':
                 name: shouldClear
+                default: true
             '-textFieldShouldEndEditing:':
                 name: shouldEndEditing
+                default: true
             '-textFieldShouldReturn:':
                 name: shouldReturn
+                default: true
     UITextInput: # DONE
         properties:
             'markedTextStyle':
@@ -4002,6 +4055,7 @@ protocols:
                 name: didFailLoad
             '-webView:shouldStartLoadWithRequest:navigationType:':
                 name: shouldStartLoad
+                default: true
             '-webViewDidFinishLoad:':
                 name: didFinishLoad
             '-webViewDidStartLoad:':
@@ -4012,6 +4066,11 @@ protocols:
         properties:
             'isAccessibilityElement':
                 name: accessibilityElement
+            'accessibilityElementsHidden':
+                name: accessibilityElementsHidden
+                getter: areAccessibilityElementsHidden
+            'accessibilityViewIsModal':
+                name: accessibilityViewModal
     UIAccessibilityAction: # DONE
         properties:
             'accessibilityCustomActions':
@@ -4384,6 +4443,9 @@ values:
         name: '#{g[0]}'
         type: NSString
         visibility: protected
+    UIFontWeight(.*):
+        enum: UIFontWeight
+        name: '#{g[0]}'
 
     # UIImagePickerController
     UIImagePickerController(.*):

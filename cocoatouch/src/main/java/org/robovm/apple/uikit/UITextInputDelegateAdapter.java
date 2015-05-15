@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,12 +54,12 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("selectionWillChange:")
-    public void selectionWillChange(UITextInput textInput) { throw new UnsupportedOperationException(); }
+    public void selectionWillChange(UITextInput textInput) {}
     @NotImplemented("selectionDidChange:")
-    public void selectionDidChange(UITextInput textInput) { throw new UnsupportedOperationException(); }
+    public void selectionDidChange(UITextInput textInput) {}
     @NotImplemented("textWillChange:")
-    public void textWillChange(UITextInput textInput) { throw new UnsupportedOperationException(); }
+    public void textWillChange(UITextInput textInput) {}
     @NotImplemented("textDidChange:")
-    public void textDidChange(UITextInput textInput) { throw new UnsupportedOperationException(); }
+    public void textDidChange(UITextInput textInput) {}
     /*</methods>*/
 }

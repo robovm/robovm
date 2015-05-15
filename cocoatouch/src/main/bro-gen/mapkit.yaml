@@ -11,7 +11,7 @@ typedefs:
     
 enums:
     MKAnnotationViewDragState: { marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
-    MKDirectionsTransportType: { marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    MKDirectionsTransportType: { }
     MKDistanceFormatterUnits: { marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     MKDistanceFormatterUnitStyle: { marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     MKUserTrackingMode: {}
@@ -344,6 +344,7 @@ classes:
                 name: setNeedsDisplay
     MKPinAnnotationView: {} # DONE
     MKPlacemark: # DONE
+        skip_def_constructor: true
         methods:
             '-initWithCoordinate:addressDictionary:':
                 name: init
@@ -614,11 +615,11 @@ functions:
 values:
     MKMapSize(.*):
         class: MKMapSize
-        name: 'get#{g[0]}Size'
+        name: '#{g[0]}'
       
     MKMapRect(.*):
         class: MKMapRect
-        name: 'get#{g[0]}Rect'
+        name: '#{g[0]}'
         
     MKErrorDomain:
         class: MKError

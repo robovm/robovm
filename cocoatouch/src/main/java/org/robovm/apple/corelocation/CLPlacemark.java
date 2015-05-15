@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,7 +45,6 @@ import org.robovm.apple.corebluetooth.*;
     /*<bind>*/static { ObjCRuntime.bind(CLPlacemark.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public CLPlacemark() {}
     protected CLPlacemark(SkipInit skipInit) { super(skipInit); }
     public CLPlacemark(CLPlacemark placemark) { super((SkipInit) null); initObject(init(placemark)); }
     /*</constructors>*/

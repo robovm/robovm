@@ -15,9 +15,6 @@ enums:
     SKErrorCode: {first: SKErrorUnknown}
 
 classes:
-    StoreKit:
-        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
-
     SKError:
         extends: NSError
 
@@ -26,10 +23,7 @@ classes:
     SKPayment: # DONE
         methods:
             '+paymentWithProduct:':
-                name: createFromProduct
-                return_type: SKPayment
-            '+paymentWithProductIdentifier:':
-                name: createFromProductIdentifier
+                name: create
                 return_type: SKPayment
     SKPaymentQueue: # DONE
         properties:
@@ -176,10 +170,18 @@ values:
         visibility: protected
         
     SKStoreProductParameter(.*):
-        class: SKStoreProductParameters
-        name: '#{g[0]}Key'
+        dictionary: SKStoreProductParameters
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        methods:
+            ITunesItemIdentifier:
+                type: long
+            AffiliateToken:
+                type: String
+            CampaignToken:
+                type: String
+            ProviderToken:
+                type: String
 
     # Make sure we don't miss any values if new ones are introduced in a later version
     (SK.*):

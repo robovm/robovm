@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,8 +30,10 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -48,17 +50,17 @@ import org.robovm.apple.coremedia.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public CAFAudioFormatListItem() {}
-    public CAFAudioFormatListItem(CAFAudioDescription mFormat, int mChannelLayoutTag) {
-        this.setMFormat(mFormat);
-        this.setMChannelLayoutTag(mChannelLayoutTag);
+    public CAFAudioFormatListItem(CAFAudioDescription format, int channelLayoutTag) {
+        this.setFormat(format);
+        this.setChannelLayoutTag(channelLayoutTag);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native @ByVal CAFAudioDescription getMFormat();
-    @StructMember(0) public native CAFAudioFormatListItem setMFormat(@ByVal CAFAudioDescription mFormat);
-    @StructMember(1) public native int getMChannelLayoutTag();
-    @StructMember(1) public native CAFAudioFormatListItem setMChannelLayoutTag(int mChannelLayoutTag);
+    @StructMember(0) public native @ByVal CAFAudioDescription getFormat();
+    @StructMember(0) public native CAFAudioFormatListItem setFormat(@ByVal CAFAudioDescription format);
+    @StructMember(1) public native int getChannelLayoutTag();
+    @StructMember(1) public native CAFAudioFormatListItem setChannelLayoutTag(int channelLayoutTag);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

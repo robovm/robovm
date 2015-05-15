@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,8 +30,10 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -48,17 +50,17 @@ import org.robovm.apple.coremedia.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public CAFOverviewSample() {}
-    public CAFOverviewSample(short mMinValue, short mMaxValue) {
-        this.setMMinValue(mMinValue);
-        this.setMMaxValue(mMaxValue);
+    public CAFOverviewSample(short minValue, short maxValue) {
+        this.setMinValue(minValue);
+        this.setMaxValue(maxValue);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native short getMMinValue();
-    @StructMember(0) public native CAFOverviewSample setMMinValue(short mMinValue);
-    @StructMember(1) public native short getMMaxValue();
-    @StructMember(1) public native CAFOverviewSample setMMaxValue(short mMaxValue);
+    @StructMember(0) public native short getMinValue();
+    @StructMember(0) public native CAFOverviewSample setMinValue(short minValue);
+    @StructMember(1) public native short getMaxValue();
+    @StructMember(1) public native CAFOverviewSample setMaxValue(short maxValue);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

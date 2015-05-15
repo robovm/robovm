@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,7 +56,7 @@ public enum /*<name>*/ACErrorCode/*</name>*/ implements NSErrorCode {
     CoreDataSaveFailed(18L),
     FailedSerializingAccountInfo(19L),
     InvalidCommand(20L),
-    MissingMessageID(21L);
+    MissingTransportMessageID(21L);
     /*</values>*/
 
     /*<bind>*/

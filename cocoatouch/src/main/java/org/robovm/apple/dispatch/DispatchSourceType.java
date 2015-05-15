@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -68,7 +68,7 @@ import org.robovm.rt.bro.ptr.*;
      * @since Available in iOS 8.0 and later.
      */
     @GlobalValue(symbol="_dispatch_source_type_memorypressure", optional=true, dereference=false)
-    public static native DispatchSourceType Memorypressure();
+    public static native DispatchSourceType MemoryPressure();
     /**
      * @since Available in iOS 4.0 and later.
      */

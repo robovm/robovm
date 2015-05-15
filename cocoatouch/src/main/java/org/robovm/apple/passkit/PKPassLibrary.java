@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -90,6 +90,11 @@ import org.robovm.apple.addressbook.*;
      */
     @Method(selector = "addPasses:withCompletionHandler:")
     public native void addPasses(NSArray<PKPass> passes, @Block VoidBlock1<PKPassLibraryAddPassesStatus> completion);
+    /**
+     * @since Available in iOS 8.3 and later.
+     */
+    @Method(selector = "openPaymentSetup")
+    public native void openPaymentSetup();
     /**
      * @since Available in iOS 8.0 and later.
      */

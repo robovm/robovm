@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,8 +30,10 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -48,17 +50,17 @@ import org.robovm.apple.coremedia.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public AudioFormatListItem() {}
-    public AudioFormatListItem(AudioStreamBasicDescription mASBD, AudioChannelLayoutTag mChannelLayoutTag) {
-        this.setMASBD(mASBD);
-        this.setMChannelLayoutTag(mChannelLayoutTag);
+    public AudioFormatListItem(AudioStreamBasicDescription ASBD, AudioChannelLayoutTag channelLayoutTag) {
+        this.setASBD(ASBD);
+        this.setChannelLayoutTag(channelLayoutTag);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native @ByVal AudioStreamBasicDescription getMASBD();
-    @StructMember(0) public native AudioFormatListItem setMASBD(@ByVal AudioStreamBasicDescription mASBD);
-    @StructMember(1) public native AudioChannelLayoutTag getMChannelLayoutTag();
-    @StructMember(1) public native AudioFormatListItem setMChannelLayoutTag(AudioChannelLayoutTag mChannelLayoutTag);
+    @StructMember(0) public native @ByVal AudioStreamBasicDescription getASBD();
+    @StructMember(0) public native AudioFormatListItem setASBD(@ByVal AudioStreamBasicDescription ASBD);
+    @StructMember(1) public native AudioChannelLayoutTag getChannelLayoutTag();
+    @StructMember(1) public native AudioFormatListItem setChannelLayoutTag(AudioChannelLayoutTag channelLayoutTag);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

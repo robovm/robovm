@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,12 +66,19 @@ import org.robovm.apple.corelocation.*;
     @StructMember(3) public native @MachineSizedFloat double getRight();
     @StructMember(3) public native UIEdgeInsets setRight(@MachineSizedFloat double right);
     /*</members>*/
+
+    public boolean equalsTo(UIEdgeInsets other) {
+        return getLeft() == other.getLeft() && getTop() == other.getTop() && getRight() == other.getRight() && getBottom() == other.getBottom();
+    }
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof UIEdgeInsets && equalsTo((UIEdgeInsets)obj);
+    }
     
     @Override
     public String toString() {
         return toString(this);
     }
-    
     /*<methods>*/
     @GlobalValue(symbol="UIEdgeInsetsZero", optional=true)
     public static native @ByVal UIEdgeInsets Zero();

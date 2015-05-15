@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,21 +52,6 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
     @Property(selector = "mergeType")
     public native NSMergePolicyType getMergeType();
     /*</properties>*/
-    /*<members>*//*</members>*/
-    /**
-     * 
-     * @param list
-     * @return
-     * @throws NSErrorException
-     */
-    public boolean resolveConflicts(NSArray<NSMergeConflict> list) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = resolveConflicts(list, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
     /*<methods>*/
     /**
      * @since Available in iOS 3.0 and later.
@@ -96,7 +81,13 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
     
     @Method(selector = "initWithMergeType:")
     protected native @Pointer long init(NSMergePolicyType ty);
+    public boolean resolveConflicts(NSArray<NSMergeConflict> list) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = resolveConflicts(list, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "resolveConflicts:error:")
-    protected native boolean resolveConflicts(NSArray<NSMergeConflict> list, NSError.NSErrorPtr error);
+    private native boolean resolveConflicts(NSArray<NSMergeConflict> list, NSError.NSErrorPtr error);
     /*</methods>*/
 }

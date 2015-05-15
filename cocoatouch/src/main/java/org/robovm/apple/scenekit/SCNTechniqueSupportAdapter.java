@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,9 +51,9 @@ import org.robovm.apple.opengles.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*/
     @NotImplemented("technique")
-    public SCNTechnique getTechnique() { throw new UnsupportedOperationException(); }
+    public SCNTechnique getTechnique() { return null; }
     @NotImplemented("setTechnique:")
-    public void setTechnique(SCNTechnique v) { throw new UnsupportedOperationException(); }
+    public void setTechnique(SCNTechnique v) {}
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 Trillian Mobile AB
+ * Copyright (C) 2013 RoboVM AB
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -240,7 +240,7 @@ public class PassManager implements AutoCloseable {
     
     public void run(Module module) {
         checkDisposed();
-        LLVM.RunPassManager(ref, module.ref);
+        LLVM.RunPassManager(ref, module.getRef());
     }
 
     @Override

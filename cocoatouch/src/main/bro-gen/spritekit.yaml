@@ -8,9 +8,9 @@ headers:
     - /System/Library/Frameworks/SpriteKit.framework/Headers/SpriteKitBase.h
 typedefs:
     'void (^)(SKNode *, CGFloat)': '@Block("(,@MachineSizedFloat)") VoidBlock2<SKNode, Double>'
-    'void (^)(SKNode *, BOOL *)': '@Block VoidBlock2<SKNode, BytePtr>'
-    'void (^)(SKPhysicsBody *, BOOL *)': '@Block VoidBlock2<SKPhysicsBody, BytePtr>'
-    'void (^)(SKPhysicsBody *, CGPoint, CGVector, BOOL *)': '@Block VoidBlock4<SKPhysicsBody, CGPoint, CGVector, BytePtr>'
+    'void (^)(SKNode *, BOOL *)': '@Block VoidBlock2<SKNode, BooleanPtr>'
+    'void (^)(SKPhysicsBody *, BOOL *)': '@Block VoidBlock2<SKPhysicsBody, BooleanPtr>'
+    'void (^)(SKPhysicsBody *, CGPoint, CGVector, BOOL *)': '@Block VoidBlock4<SKPhysicsBody, CGPoint, CGVector, BooleanPtr>'
     vector_float3: '@ByVal SKVector3'
 
 enums:
@@ -314,6 +314,8 @@ classes:
             '-objectForKeyedSubscript:':
                 name: findNodesByName
                 return_type: NSArray<SKNode>
+            '-isEqualToNode:':
+                name: equalsTo
             '+node':
                 name: create
             '+nodeWithFileNamed:':
@@ -433,6 +435,9 @@ classes:
             '+infiniteRegion':
                 name: createInfiniteRegion
     SKScene: # DONE
+        properties:
+            'physicsWorld':
+                marshaler: NSObject.Marshaler
         methods:
             '-initWithSize:':
                 name: init

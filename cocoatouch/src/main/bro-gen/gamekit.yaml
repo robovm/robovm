@@ -272,19 +272,19 @@ classes:
         methods:
             '-sendData:toPlayers:dataMode:error:':
                 name: sendDataToPlayers
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
                 parameters:
                     players:
                         type: NSArray<GKPlayer>
             '-sendData:toPlayers:withDataMode:error:':
                 name: sendDataToPlayers
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
                 parameters:
                     playerIDs:
                         type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-sendDataToAllPlayers:withDataMode:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-voiceChatWithName:':
                 name: getVoiceChat
             '-chooseBestHostingPlayerWithCompletionHandler:':
@@ -416,13 +416,13 @@ classes:
                 name: getDisplayName
             '-sendData:toPeers:withDataMode:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
                 parameters:
                     peers:
                         type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-sendDataToAllPeers:withDataMode:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-setDataReceiveHandler:withContext:':
                 trim_after_first_colon: true
                 visibility: protected
@@ -435,7 +435,7 @@ classes:
                 name: cancelConnect
             '-acceptConnectionFromPeer:error:':
                 name: acceptConnection
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-denyConnectionFromPeer:':
                 name: denyConnection
             '-disconnectPeerFromAllPeers:':
@@ -565,12 +565,12 @@ classes:
         methods:
             '-startVoiceChatWithParticipantID:error:':
                 name: startVoiceChat
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-stopVoiceChatWithParticipantID:':
                 name: stopVoiceChat
             '-acceptCallID:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-denyCallID:':
                 trim_after_first_colon: true
             '-receivedRealTimeData:fromParticipantID:':

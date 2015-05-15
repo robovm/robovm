@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -67,18 +67,18 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFUUIDGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFUUIDCreate", optional=true)
-    protected static native CFUUID create(CFAllocator alloc);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFUUID create(CFAllocator alloc);
     @Bridge(symbol="CFUUIDCreateWithBytes", optional=true)
-    protected static native CFUUID create(CFAllocator alloc, byte byte0, byte byte1, byte byte2, byte byte3, byte byte4, byte byte5, byte byte6, byte byte7, byte byte8, byte byte9, byte byte10, byte byte11, byte byte12, byte byte13, byte byte14, byte byte15);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFUUID create(CFAllocator alloc, byte byte0, byte byte1, byte byte2, byte byte3, byte byte4, byte byte5, byte byte6, byte byte7, byte byte8, byte byte9, byte byte10, byte byte11, byte byte12, byte byte13, byte byte14, byte byte15);
     @Bridge(symbol="CFUUIDCreateFromString", optional=true)
-    protected static native CFUUID create(CFAllocator alloc, String uuidStr);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFUUID create(CFAllocator alloc, String uuidStr);
     @Bridge(symbol="CFUUIDCreateString", optional=true)
-    protected static native String asString(CFAllocator alloc, CFUUID uuid);
+    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String asString(CFAllocator alloc, CFUUID uuid);
     @Bridge(symbol="CFUUIDGetConstantUUIDWithBytes", optional=true)
     protected static native CFUUID getConstantUUID(CFAllocator alloc, byte byte0, byte byte1, byte byte2, byte byte3, byte byte4, byte byte5, byte byte6, byte byte7, byte byte8, byte byte9, byte byte10, byte byte11, byte byte12, byte byte13, byte byte14, byte byte15);
     @Bridge(symbol="CFUUIDGetUUIDBytes", optional=true)
     public native @ByVal CFUUIDBytes getUUIDBytes();
     @Bridge(symbol="CFUUIDCreateFromUUIDBytes", optional=true)
-    protected static native CFUUID create(CFAllocator alloc, @ByVal CFUUIDBytes bytes);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFUUID create(CFAllocator alloc, @ByVal CFUUIDBytes bytes);
     /*</methods>*/
 }

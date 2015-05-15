@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,12 +32,13 @@ import org.robovm.apple.corefoundation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CFSystemProxySettings.Marshaler.class)
 /*<annotations>*/@Library("CFNetwork")/*</annotations>*/
+@Marshaler(/*<name>*/CFSystemProxySettings/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CFSystemProxySettings/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CFDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CFSystemProxySettings toObject(Class<CFSystemProxySettings> cls, long handle, long flags) {
@@ -55,28 +56,58 @@ import org.robovm.apple.corefoundation.*;
             return CFType.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private CFDictionary data;
-    
-    protected CFSystemProxySettings(CFDictionary data) {
-        this.data = data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CFSystemProxySettings> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CFSystemProxySettings> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new CFSystemProxySettings(o.get(i, CFDictionary.class)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CFSystemProxySettings> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray array = CFMutableArray.create();
+            for (CFSystemProxySettings i : l) {
+                array.add(i.getDictionary());
+            }
+            return CFType.Marshaler.toNative(array, flags);
+        }
     }
-    /*<bind>*/static { Bro.bind(CFSystemProxySettings.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    CFSystemProxySettings(CFDictionary data) {
+        super(data);
+    }
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(CFString key) {
+        return data.containsKey(key);
+    }
+    public <T extends NativeObject> T get(CFString key, Class<T> type) {
+        if (has(key)) {
+            return data.get(key, type);
+        }
+        return null;
+    }
+    
+
     /**
      * @since Available in iOS 2.0 and later.
      */
     public boolean isHTTPProxyEnabled() {
-        if (data.containsKey(HTTPEnable())) {
-            CFNumber val = data.get(HTTPEnable(), CFNumber.class);
-            if (val.intValue() != 0) {
-                return true;
-            }
+        if (has(Keys.HTTPEnable())) {
+            CFBoolean val = get(Keys.HTTPEnable(), CFBoolean.class);
+            return val.booleanValue();
         }
         return false;
     }
@@ -84,18 +115,18 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     public int getHTTPProxyPort() {
-        if (data.containsKey(HTTPPort())) {
-            CFNumber val = data.get(HTTPPort(), CFNumber.class);
+        if (has(Keys.HTTPPort())) {
+            CFNumber val = get(Keys.HTTPPort(), CFNumber.class);
             return val.intValue();
         }
-        return -1;
+        return 0;
     }
     /**
      * @since Available in iOS 2.0 and later.
      */
     public String getHTTPProxyHost() {
-        if (data.containsKey(HTTPProxy())) {
-            CFString val = data.get(HTTPProxy(), CFString.class);
+        if (has(Keys.HTTPProxy())) {
+            CFString val = get(Keys.HTTPProxy(), CFString.class);
             return val.toString();
         }
         return null;
@@ -104,11 +135,9 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     public boolean isAutoConfigurationEnabled() {
-        if (data.containsKey(ProxyAutoConfigEnable())) {
-            CFNumber val = (CFNumber)data.get(ProxyAutoConfigEnable(), CFNumber.class);
-            if (val.intValue() != 0) {
-                return true;
-            }
+        if (has(Keys.ProxyAutoConfigEnable())) {
+            CFBoolean val = get(Keys.ProxyAutoConfigEnable(), CFBoolean.class);
+            return val.booleanValue();
         }
         return false;
     }
@@ -116,8 +145,8 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     public String getAutoConfigurationURL() {
-        if (data.containsKey(ProxyAutoConfigURLString())) {
-            CFString val = data.get(ProxyAutoConfigURLString(), CFString.class);
+        if (has(Keys.ProxyAutoConfigURLString())) {
+            CFString val = get(Keys.ProxyAutoConfigURLString(), CFString.class);
             return val.toString();
         }
         return null;
@@ -126,48 +155,48 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 3.0 and later.
      */
     public String getAutoConfigurationJavaScript() {
-        if (data.containsKey(ProxyAutoConfigJavaScript())) {
-            CFString val = data.get(ProxyAutoConfigJavaScript(), CFString.class);
+        if (has(Keys.ProxyAutoConfigJavaScript())) {
+            CFString val = get(Keys.ProxyAutoConfigJavaScript(), CFString.class);
             return val.toString();
         }
         return null;
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCFNetworkProxiesHTTPEnable", optional=true)
-    protected static native CFString HTTPEnable();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCFNetworkProxiesHTTPPort", optional=true)
-    protected static native CFString HTTPPort();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCFNetworkProxiesHTTPProxy", optional=true)
-    protected static native CFString HTTPProxy();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCFNetworkProxiesProxyAutoConfigEnable", optional=true)
-    protected static native CFString ProxyAutoConfigEnable();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCFNetworkProxiesProxyAutoConfigURLString", optional=true)
-    protected static native CFString ProxyAutoConfigURLString();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="kCFNetworkProxiesProxyAutoConfigJavaScript", optional=true)
-    protected static native CFString ProxyAutoConfigJavaScript();
     /*</methods>*/
     
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    /*<keys>*/
+    @Library("CFNetwork")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCFNetworkProxiesHTTPEnable", optional=true)
+        public static native CFString HTTPEnable();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCFNetworkProxiesHTTPPort", optional=true)
+        public static native CFString HTTPPort();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCFNetworkProxiesHTTPProxy", optional=true)
+        public static native CFString HTTPProxy();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCFNetworkProxiesProxyAutoConfigEnable", optional=true)
+        public static native CFString ProxyAutoConfigEnable();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCFNetworkProxiesProxyAutoConfigURLString", optional=true)
+        public static native CFString ProxyAutoConfigURLString();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="kCFNetworkProxiesProxyAutoConfigJavaScript", optional=true)
+        public static native CFString ProxyAutoConfigJavaScript();
     }
+    /*</keys>*/
 }

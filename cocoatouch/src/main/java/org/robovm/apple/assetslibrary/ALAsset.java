@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -160,7 +160,7 @@ import org.robovm.apple.imageio.*;
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "writeModifiedVideoAtPathToSavedPhotosAlbum:completionBlock:")
-    public native void writeModifiedVideoData(NSURL videoPathURL, @Block VoidBlock2<NSURL, NSError> completionBlock);
+    public native void writeModifiedVideo(NSURL videoPathURL, @Block VoidBlock2<NSURL, NSError> completionBlock);
     /**
      * @since Available in iOS 5.0 and later.
      */

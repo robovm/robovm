@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,61 +51,94 @@ import org.robovm.apple.opengles.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*/
     @NotImplemented("scene")
-    public SCNScene getScene() { throw new UnsupportedOperationException(); }
+    public SCNScene getScene() { return null; }
     @NotImplemented("setScene:")
-    public void setScene(SCNScene v) { throw new UnsupportedOperationException(); }
+    public void setScene(SCNScene v) {}
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @NotImplemented("sceneTime")
-    public double getSceneTime() { throw new UnsupportedOperationException(); }
+    public double getSceneTime() { return 0; }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @NotImplemented("setSceneTime:")
-    public void setSceneTime(double v) { throw new UnsupportedOperationException(); }
+    public void setSceneTime(double v) {}
     @NotImplemented("delegate")
-    public SCNSceneRendererDelegate getDelegate() { throw new UnsupportedOperationException(); }
+    public SCNSceneRendererDelegate getDelegate() { return null; }
     @NotImplemented("setDelegate:")
-    public void setDelegate(SCNSceneRendererDelegate v) { throw new UnsupportedOperationException(); }
+    public void setDelegate(SCNSceneRendererDelegate v) {}
     @NotImplemented("isPlaying")
-    public boolean isPlaying() { throw new UnsupportedOperationException(); }
+    public boolean isPlaying() { return false; }
     @NotImplemented("setPlaying:")
-    public void setPlaying(boolean v) { throw new UnsupportedOperationException(); }
+    public void setPlaying(boolean v) {}
     @NotImplemented("loops")
-    public boolean loops() { throw new UnsupportedOperationException(); }
+    public boolean loops() { return false; }
     @NotImplemented("setLoops:")
-    public void setLoops(boolean v) { throw new UnsupportedOperationException(); }
+    public void setLoops(boolean v) {}
     @NotImplemented("pointOfView")
-    public SCNNode getPointOfView() { throw new UnsupportedOperationException(); }
+    public SCNNode getPointOfView() { return null; }
     @NotImplemented("setPointOfView:")
-    public void setPointOfView(SCNNode v) { throw new UnsupportedOperationException(); }
+    public void setPointOfView(SCNNode v) {}
     @NotImplemented("autoenablesDefaultLighting")
-    public boolean autoenablesDefaultLighting() { throw new UnsupportedOperationException(); }
+    public boolean autoenablesDefaultLighting() { return false; }
     @NotImplemented("setAutoenablesDefaultLighting:")
-    public void setAutoenablesDefaultLighting(boolean v) { throw new UnsupportedOperationException(); }
+    public void setAutoenablesDefaultLighting(boolean v) {}
     @NotImplemented("isJitteringEnabled")
-    public boolean isJitteringEnabled() { throw new UnsupportedOperationException(); }
+    public boolean isJitteringEnabled() { return false; }
     @NotImplemented("setJitteringEnabled:")
-    public void setJitteringEnabled(boolean v) { throw new UnsupportedOperationException(); }
+    public void setJitteringEnabled(boolean v) {}
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @NotImplemented("showsStatistics")
-    public boolean showsStatistics() { throw new UnsupportedOperationException(); }
+    public boolean showsStatistics() { return false; }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @NotImplemented("setShowsStatistics:")
-    public void setShowsStatistics(boolean v) { throw new UnsupportedOperationException(); }
+    public void setShowsStatistics(boolean v) {}
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @NotImplemented("overlaySKScene")
-    public SKScene getOverlaySKScene() { throw new UnsupportedOperationException(); }
+    public SKScene getOverlaySKScene() { return null; }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @NotImplemented("setOverlaySKScene:")
-    public void setOverlaySKScene(SKScene v) { throw new UnsupportedOperationException(); }
+    public void setOverlaySKScene(SKScene v) {}
     @NotImplemented("context")
-    public EAGLContext getContext() { throw new UnsupportedOperationException(); }
+    public EAGLContext getContext() { return null; }
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("hitTest:options:")
-    public NSArray<SCNHitTestResult> hitTest(@ByVal CGPoint thePoint, SCNHitTestOptions options) { throw new UnsupportedOperationException(); }
+    public NSArray<SCNHitTestResult> hitTest(@ByVal CGPoint thePoint, SCNHitTestOptions options) { return null; }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @NotImplemented("isNodeInsideFrustum:withPointOfView:")
-    public boolean isNodeInsideFrustum(SCNNode node, SCNNode pointOfView) { throw new UnsupportedOperationException(); }
+    public boolean isNodeInsideFrustum(SCNNode node, SCNNode pointOfView) { return false; }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @NotImplemented("projectPoint:")
-    public @ByVal SCNVector3 projectPoint(@ByVal SCNVector3 point) { throw new UnsupportedOperationException(); }
+    public @ByVal SCNVector3 projectPoint(@ByVal SCNVector3 point) { return null; }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @NotImplemented("unprojectPoint:")
-    public @ByVal SCNVector3 unprojectPoint(@ByVal SCNVector3 point) { throw new UnsupportedOperationException(); }
+    public @ByVal SCNVector3 unprojectPoint(@ByVal SCNVector3 point) { return null; }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @NotImplemented("prepareObject:shouldAbortBlock:")
-    public boolean prepareObject(NSObject object, @Block Block0<Boolean> block) { throw new UnsupportedOperationException(); }
+    public boolean prepareObject(NSObject object, @Block Block0<Boolean> block) { return false; }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @NotImplemented("prepareObjects:withCompletionHandler:")
-    public void prepareObjects(NSArray<?> objects, @Block VoidBooleanBlock completionHandler) { throw new UnsupportedOperationException(); }
+    public void prepareObjects(NSArray<?> objects, @Block VoidBooleanBlock completionHandler) {}
     /*</methods>*/
 }

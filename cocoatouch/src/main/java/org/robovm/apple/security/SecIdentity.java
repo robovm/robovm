@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
+import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 /*</imports>*/
 
@@ -45,6 +46,26 @@ import org.robovm.apple.corefoundation.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public SecCertificate getCertificate() throws OSStatusException {
+        SecCertificate.SecCertificatePtr ptr = new SecCertificate.SecCertificatePtr();
+        OSStatus status = getCertificate0(ptr);
+        OSStatusException.throwIfNecessary(status);
+        return ptr.get();
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public SecKey getPrivateKey() throws OSStatusException {
+        SecKey.SecKeyPtr ptr = new SecKey.SecKeyPtr();
+        OSStatus status = getPrivateKey0(ptr);
+        OSStatusException.throwIfNecessary(status);
+        return ptr.get();
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 2.0 and later.
@@ -55,11 +76,11 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="SecIdentityCopyCertificate", optional=true)
-    public native int copyCertificate(SecCertificate.SecCertificatePtr certificateRef);
+    protected native OSStatus getCertificate0(SecCertificate.SecCertificatePtr certificateRef);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="SecIdentityCopyPrivateKey", optional=true)
-    public native int copyPrivateKey(SecKey.SecKeyPtr privateKeyRef);
+    protected native OSStatus getPrivateKey0(SecKey.SecKeyPtr privateKeyRef);
     /*</methods>*/
 }

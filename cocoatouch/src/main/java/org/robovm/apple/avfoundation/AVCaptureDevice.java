@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,6 +36,7 @@ import org.robovm.apple.coremedia.*;
 import org.robovm.apple.corevideo.*;
 import org.robovm.apple.audiotoolbox.*;
 import org.robovm.apple.mediatoolbox.*;
+import org.robovm.apple.audiounit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -356,19 +357,6 @@ import org.robovm.apple.mediatoolbox.*;
     public native void setVideoHDREnabled(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
-    /**
-     * 
-     * @return
-     * @throws NSErrorException
-     */
-    public boolean lockForConfiguration() throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = lockForConfiguration(err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
     /*<methods>*/
     /**
      * @since Available in iOS 4.0 and later.
@@ -415,8 +403,14 @@ import org.robovm.apple.mediatoolbox.*;
     
     @Method(selector = "hasMediaType:")
     public native boolean hasMediaType(AVMediaType mediaType);
+    public boolean lockForConfiguration() throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = lockForConfiguration(ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "lockForConfiguration:")
-    protected native boolean lockForConfiguration(NSError.NSErrorPtr outError);
+    private native boolean lockForConfiguration(NSError.NSErrorPtr outError);
     @Method(selector = "unlockForConfiguration")
     public native void unlockForConfiguration();
     @Method(selector = "supportsAVCaptureSessionPreset:")
@@ -436,8 +430,17 @@ import org.robovm.apple.mediatoolbox.*;
     /**
      * @since Available in iOS 6.0 and later.
      */
+    public boolean setTorchModeOn(float torchLevel) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = setTorchModeOn(torchLevel, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "setTorchModeOnWithLevel:error:")
-    protected native boolean setTorchModeOn(float torchLevel, NSError.NSErrorPtr outError);
+    private native boolean setTorchModeOn(float torchLevel, NSError.NSErrorPtr outError);
     @Method(selector = "isFocusModeSupported:")
     public native boolean isFocusModeSupported(AVCaptureFocusMode focusMode);
     /**

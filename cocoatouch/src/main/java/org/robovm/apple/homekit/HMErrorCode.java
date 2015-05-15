@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -115,7 +115,9 @@ public enum /*<name>*/HMErrorCode/*</name>*/ implements NSErrorCode {
     CloudDataSyncInProgress(77L),
     NetworkUnavailable(78L),
     AddAccessoryFailed(79L),
-    MissingEntitlement(80L);
+    MissingEntitlement(80L),
+    CannotUnblockNonBridgeAccessory(81L),
+    DeviceLocked(82L);
     /*</values>*/
 
     /*<bind>*/

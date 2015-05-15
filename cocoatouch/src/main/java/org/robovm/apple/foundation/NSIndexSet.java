@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -76,7 +76,7 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "initWithIndex:")
     protected native @Pointer long init(@MachineSizedUInt long value);
     @Method(selector = "isEqualToIndexSet:")
-    public native boolean equals(NSIndexSet indexSet);
+    public native boolean equalsTo(NSIndexSet indexSet);
     @Method(selector = "indexGreaterThanIndex:")
     public native @MachineSizedUInt long greaterThan(@MachineSizedUInt long value);
     @Method(selector = "indexLessThanIndex:")

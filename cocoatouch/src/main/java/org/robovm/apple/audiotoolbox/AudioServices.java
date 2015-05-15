@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,69 +30,195 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("AudioToolbox")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/AudioServices/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/
     /*</ptr>*/
+    
+    public interface SystemSoundCompletionListener {
+        void onComplete(int systemSoundID);
+    }
+    
+    private static final LongMap<SystemSoundCompletionListener> completionListeners = new LongMap<>();
+    private static final java.lang.reflect.Method cbSystemSoundCompleted;
+    
+    static {
+        try {
+            cbSystemSoundCompleted = AudioServices.class.getDeclaredMethod("cbSystemSoundCompleted", Integer.TYPE, Long.TYPE);
+        } catch (Throwable e) {
+            throw new Error(e);
+        }
+    }
+    
     /*<bind>*/static { Bro.bind(AudioServices.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    /*<constants>*/
+    public static final int SystemSoundVibrate = 4095;
+    /*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    @Callback
+    private static void cbSystemSoundCompleted(int systemSoundID, long clientData) {
+        synchronized (completionListeners) {
+            completionListeners.get(systemSoundID).onComplete(systemSoundID);
+        }
+    }
+    
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public static int createSystemSoundID(NSURL fileURL) throws OSStatusException {
+        IntPtr ptr = new IntPtr();
+        OSStatus status = createSystemSoundID0(fileURL, ptr);
+        OSStatusException.throwIfNecessary(status);
+        return ptr.get();
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public static void disposeSystemSoundID(int systemSoundID) throws OSStatusException {
+        OSStatus status = disposeSystemSoundID0(systemSoundID);
+        OSStatusException.throwIfNecessary(status);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public static void addSystemSoundCompletionListener(int systemSoundID, NSRunLoop runLoop, String runLoopMode, SystemSoundCompletionListener listener) throws OSStatusException {
+        if (listener == null) {
+            throw new NullPointerException("listener");
+        }
+        OSStatus status = addSystemSoundCompletion0(systemSoundID, runLoop, runLoopMode, new FunctionPtr(cbSystemSoundCompleted), null);
+        if (OSStatusException.throwIfNecessary(status)) {
+            synchronized (completionListeners) {
+                completionListeners.put(systemSoundID, listener);
+            }
+        }
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public static void removeSystemSoundCompletion(int systemSoundID) {
+        removeSystemSoundCompletion0(systemSoundID);
+        synchronized (completionListeners) {
+            completionListeners.remove(systemSoundID);
+        }
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public static int getPropertySize(AudioServicesProperty id) throws OSStatusException {
+        IntPtr ptr = new IntPtr();
+        OSStatus status = getPropertyInfo0(id, 0, null, ptr, null);
+        OSStatusException.throwIfNecessary(status);
+        return ptr.get();
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public static boolean isPropertyWritable(AudioServicesProperty id) throws OSStatusException {
+        BooleanPtr ptr = new BooleanPtr();
+        OSStatus status = getPropertyInfo0(id, 0, null, null, ptr);
+        OSStatusException.throwIfNecessary(status);
+        return ptr.get();
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public static <T extends Struct<T>> T getProperty(AudioServicesProperty id, Struct<?> specifier, Class<T> type) throws OSStatusException {
+        T data = Struct.allocate(type);
+        IntPtr dataSize = new IntPtr(Struct.sizeOf(data));
+        OSStatus status = getProperty0(id, specifier == null ? 0 : Struct.sizeOf(specifier), specifier == null ? null : specifier.as(VoidPtr.class), dataSize, data.as(VoidPtr.class));
+        OSStatusException.throwIfNecessary(status);
+        return data;
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public static <T extends Struct<T>> void setProperty(AudioServicesProperty id, Struct<?> specifier, T data) throws OSStatusException {
+        OSStatus status = setProperty0(id, specifier == null ? 0 : Struct.sizeOf(specifier), specifier == null ? null : specifier.as(VoidPtr.class), data == null ? 0 : Struct.sizeOf(data), data == null ? null : data.as(VoidPtr.class));
+        OSStatusException.throwIfNecessary(status);
+    }
+    public static boolean isUISound(int systemSoundID) throws OSStatusException {
+        IntPtr ptr = new IntPtr(systemSoundID);
+        IntPtr result = getProperty(AudioServicesProperty.IsUISound, ptr, IntPtr.class);
+        return result.get() == 1;
+    }
+    public static void setUISound(int systemSoundID, boolean ui) throws OSStatusException {
+        IntPtr ptr = new IntPtr(systemSoundID);
+        setProperty(AudioServicesProperty.IsUISound, ptr, new IntPtr(ui ? 1 : 0));
+    }
+    public static boolean completesPlaybackIfAppDies(int systemSoundID) throws OSStatusException {
+        IntPtr ptr = new IntPtr(systemSoundID);
+        IntPtr result = getProperty(AudioServicesProperty.CompletePlaybackIfAppDies, ptr, IntPtr.class);
+        return result.get() == 1;
+    }
+    public static void setCompletesPlaybackIfAppDies(int systemSoundID, boolean ui) throws OSStatusException {
+        IntPtr ptr = new IntPtr(systemSoundID);
+        setProperty(AudioServicesProperty.CompletePlaybackIfAppDies, ptr, new IntPtr(ui ? 1 : 0));
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioServicesPlayAlertSound", optional=true)
-    public static native void playAlertSound(int inSystemSoundID);
+    public static native void playAlertSound(int systemSoundID);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioServicesPlaySystemSound", optional=true)
-    public static native void playSystemSound(int inSystemSoundID);
+    public static native void playSystemSound(int systemSoundID);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioServicesCreateSystemSoundID", optional=true)
-    public static native int createSystemSoundID(CFURL inFileURL, IntPtr outSystemSoundID);
+    protected static native OSStatus createSystemSoundID0(NSURL inFileURL, IntPtr outSystemSoundID);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioServicesDisposeSystemSoundID", optional=true)
-    public static native int disposeSystemSoundID(int inSystemSoundID);
+    protected static native OSStatus disposeSystemSoundID0(int inSystemSoundID);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioServicesAddSystemSoundCompletion", optional=true)
-    public static native int addSystemSoundCompletion(int inSystemSoundID, CFRunLoop inRunLoop, CFString inRunLoopMode, FunctionPtr inCompletionRoutine, VoidPtr inClientData);
+    protected static native OSStatus addSystemSoundCompletion0(int inSystemSoundID, NSRunLoop inRunLoop, String inRunLoopMode, FunctionPtr inCompletionRoutine, VoidPtr inClientData);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioServicesRemoveSystemSoundCompletion", optional=true)
-    public static native void removeSystemSoundCompletion(int inSystemSoundID);
+    protected static native void removeSystemSoundCompletion0(int inSystemSoundID);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioServicesGetPropertyInfo", optional=true)
-    public static native int getPropertyInfo(int inPropertyID, int inSpecifierSize, VoidPtr inSpecifier, IntPtr outPropertyDataSize, BooleanPtr outWritable);
+    protected static native OSStatus getPropertyInfo0(AudioServicesProperty inPropertyID, int inSpecifierSize, VoidPtr inSpecifier, IntPtr outPropertyDataSize, BooleanPtr outWritable);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioServicesGetProperty", optional=true)
-    public static native int getProperty(int inPropertyID, int inSpecifierSize, VoidPtr inSpecifier, IntPtr ioPropertyDataSize, VoidPtr outPropertyData);
+    protected static native OSStatus getProperty0(AudioServicesProperty inPropertyID, int inSpecifierSize, VoidPtr inSpecifier, IntPtr ioPropertyDataSize, VoidPtr outPropertyData);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioServicesSetProperty", optional=true)
-    public static native int setProperty(int inPropertyID, int inSpecifierSize, VoidPtr inSpecifier, int inPropertyDataSize, VoidPtr inPropertyData);
+    protected static native OSStatus setProperty0(AudioServicesProperty inPropertyID, int inSpecifierSize, VoidPtr inSpecifier, int inPropertyDataSize, VoidPtr inPropertyData);
     /*</methods>*/
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,35 +32,74 @@ import org.robovm.apple.foundation.*;
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("HomeKit")/*</annotations>*/
+@Marshaler(/*<name>*/HMErrorUserInfoKey/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/HMErrorUserInfoKey/*</name>*/ 
-    extends /*<extends>*/NSErrorUserInfoKey/*</extends>*/ 
+    extends /*<extends>*/NSErrorUserInfoKey/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(HMErrorUserInfoKey.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    static { Bro.bind(/*<name>*/HMErrorUserInfoKey/*</name>*/.class); }
+
+    /*<marshalers>*/
+    public static class Marshaler {
+        @MarshalsPointer
+        public static HMErrorUserInfoKey toObject(Class<HMErrorUserInfoKey> cls, long handle, long flags) {
+            NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return HMErrorUserInfoKey.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(HMErrorUserInfoKey o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(o.value(), flags);
+        }
+    }
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<HMErrorUserInfoKey> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<HMErrorUserInfoKey> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(HMErrorUserInfoKey.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<HMErrorUserInfoKey> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (HMErrorUserInfoKey i : l) {
+                array.add(i.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final HMErrorUserInfoKey FailedAccessories = new HMErrorUserInfoKey("FailedAccessoriesValue");
+    public static final HMErrorUserInfoKey FailedAccessories = new HMErrorUserInfoKey("FailedAccessories");
+    /*</constants>*/
     
-    private static HMErrorUserInfoKey[] values = new HMErrorUserInfoKey[] {FailedAccessories};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    private static /*<name>*/HMErrorUserInfoKey/*</name>*/[] values = new /*<name>*/HMErrorUserInfoKey/*</name>*/[] {/*<value_list>*/FailedAccessories/*</value_list>*/};
     
-    private HMErrorUserInfoKey(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    @Override
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/HMErrorUserInfoKey/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static HMErrorUserInfoKey valueOf(NSString value) {
-        for (HMErrorUserInfoKey v : values) {
+    public static /*<name>*/HMErrorUserInfoKey/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/HMErrorUserInfoKey/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -68,11 +107,19 @@ import org.robovm.apple.foundation.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/HMErrorUserInfoKey/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HMUserFailedAccessoriesKey", optional=true)
-    protected static native NSString FailedAccessoriesValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("HomeKit")/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HMUserFailedAccessoriesKey", optional=true)
+        public static native NSString FailedAccessories();
+        /*</values>*/
+    }
 }

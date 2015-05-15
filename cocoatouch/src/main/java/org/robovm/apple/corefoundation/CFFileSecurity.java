@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,6 +45,58 @@ import org.robovm.apple.foundation.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static CFFileSecurity create() {
+        return create(null);
+    }
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static CFFileSecurity createCopy(CFFileSecurity fileSec) {
+        return createCopy(null, fileSec);
+    }
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public CFUUID getOwnerUUID() {
+        CFUUID.CFUUIDPtr ptr = new CFUUID.CFUUIDPtr();
+        getOwnerUUID(ptr);
+        return ptr.get();
+    }
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public CFUUID getGroupUUID() {
+        CFUUID.CFUUIDPtr ptr = new CFUUID.CFUUIDPtr();
+        getGroupUUID(ptr);
+        return ptr.get();
+    }
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public int getOwner() {
+        IntPtr ptr = new IntPtr();
+        getOwner(ptr);
+        return ptr.get();
+    }
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public int getGroup() {
+        IntPtr ptr = new IntPtr();
+        getGroup(ptr);
+        return ptr.get();
+    }
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public short getMode() {
+        ShortPtr ptr = new ShortPtr();
+        getMode(ptr);
+        return ptr.get();
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 5.0 and later.
@@ -55,17 +107,17 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="CFFileSecurityCreate", optional=true)
-    public static native CFFileSecurity create(CFAllocator allocator);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFFileSecurity create(CFAllocator allocator);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="CFFileSecurityCreateCopy", optional=true)
-    public static native CFFileSecurity createCopy(CFAllocator allocator, CFFileSecurity fileSec);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFFileSecurity createCopy(CFAllocator allocator, CFFileSecurity fileSec);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="CFFileSecurityCopyOwnerUUID", optional=true)
-    public native boolean copyOwnerUUID(CFUUID.CFUUIDPtr ownerUUID);
+    private native boolean getOwnerUUID(CFUUID.CFUUIDPtr ownerUUID);
     /**
      * @since Available in iOS 5.0 and later.
      */
@@ -75,7 +127,7 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="CFFileSecurityCopyGroupUUID", optional=true)
-    public native boolean copyGroupUUID(CFUUID.CFUUIDPtr groupUUID);
+    private native boolean getGroupUUID(CFUUID.CFUUIDPtr groupUUID);
     /**
      * @since Available in iOS 5.0 and later.
      */
@@ -85,7 +137,7 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="CFFileSecurityGetOwner", optional=true)
-    public native boolean getOwner(IntPtr owner);
+    private native boolean getOwner(IntPtr owner);
     /**
      * @since Available in iOS 5.0 and later.
      */
@@ -95,7 +147,7 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="CFFileSecurityGetGroup", optional=true)
-    public native boolean getGroup(IntPtr group);
+    private native boolean getGroup(IntPtr group);
     /**
      * @since Available in iOS 5.0 and later.
      */
@@ -105,7 +157,7 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="CFFileSecurityGetMode", optional=true)
-    public native boolean getMode(ShortPtr mode);
+    private native boolean getMode(ShortPtr mode);
     /**
      * @since Available in iOS 5.0 and later.
      */

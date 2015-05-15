@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,31 +40,6 @@ import org.robovm.apple.foundation.NSObject.NSObjectPtr;
     extends /*<extends>*/CFPropertyList/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    public static class AsListMarshaler {
-        @MarshalsPointer
-        public static List<?> toObject(Class<? extends CFType> cls, long handle, long flags) {
-            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
-            if (o == null) {
-                return null;
-            }
-            return o.toList(NativeObject.class);
-        }
-        @SuppressWarnings("unchecked")
-        @MarshalsPointer
-        public static long toNative(List<?> l, long flags) {
-            if (l == null) {
-                return 0L;
-            }
-            CFArray o = null;
-            if (l instanceof CFArray) {
-                o = (CFArray) l;
-            } else {
-                o = CFArray.create((List<CFType>) l);
-            }
-            return CFType.Marshaler.toNative(o, flags);
-        }
-    }
-    
     public static class AsStringListMarshaler {
         @MarshalsPointer
         public static List<String> toObject(Class<? extends CFType> cls, long handle, long flags) {
@@ -211,9 +186,9 @@ import org.robovm.apple.foundation.NSObject.NSObjectPtr;
     @Bridge(symbol="CFArrayGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFArrayCreate", optional=true)
-    protected static native CFArray create(CFAllocator allocator, VoidPtr.VoidPtrPtr values, @MachineSizedSInt long numValues, CFArrayCallBacks callBacks);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFArray create(CFAllocator allocator, VoidPtr.VoidPtrPtr values, @MachineSizedSInt long numValues, CFArrayCallBacks callBacks);
     @Bridge(symbol="CFArrayCreateCopy", optional=true)
-    protected static native CFArray createCopy(CFAllocator allocator, CFArray theArray);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFArray createCopy(CFAllocator allocator, CFArray theArray);
     @Bridge(symbol="CFArrayGetCount", optional=true)
     protected native @MachineSizedSInt long getCount();
     @Bridge(symbol="CFArrayGetCountOfValue", optional=true)

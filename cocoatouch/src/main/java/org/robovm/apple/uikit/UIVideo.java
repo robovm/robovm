@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,29 +46,25 @@ import org.robovm.apple.corelocation.*;
     /*<ptr>*/
     /*</ptr>*/
     
-    public interface VideoSaveListener {
-        void didFinishSaving (String videoPath, NSError error);
-    }
-    
     private static java.util.concurrent.atomic.AtomicLong id = new java.util.concurrent.atomic.AtomicLong();
     private static final Selector didFinishSaving = Selector.register("video:didFinishSavingWithError:contextInfo:");
-    private static Map<Long, ListenerWrapper> listeners = new HashMap<>();
+    private static LongMap<ListenerWrapper> callbacks = new LongMap<>();
     private static class ListenerWrapper extends NSObject {
-        private final VideoSaveListener listener;
-        private ListenerWrapper(VideoSaveListener listener, long contextInfo) {
-            this.listener = listener;
+        private final VoidBlock2<String, NSError> callback;
+        private ListenerWrapper(VoidBlock2<String, NSError> callback, long contextInfo) {
+            this.callback = callback;
             
-            synchronized (listeners) {
-                listeners.put(contextInfo, this);
+            synchronized (callbacks) {
+                callbacks.put(contextInfo, this);
             }
         }
         @TypeEncoding("v@:@:^v")
         @Method(selector = "video:didFinishSavingWithError:contextInfo:")
         private void didFinishSaving(String videoPath, NSError error, @Pointer long contextInfo) {
-            listener.didFinishSaving(videoPath, error);
+            callback.invoke(videoPath, error);
             
-            synchronized (listeners) {
-                listeners.remove(contextInfo);
+            synchronized (callbacks) {
+                callbacks.remove(contextInfo);
             }
         }
     }
@@ -83,10 +79,10 @@ import org.robovm.apple.corelocation.*;
         return isCompatibleWithSavedPhotosAlbum(videoPath.getAbsolutePath());
     }
     
-    public static void saveToPhotosAlbum(File videoPath, VideoSaveListener listener) {
-        if (listener != null) {
+    public static void saveToPhotosAlbum(File videoPath, VoidBlock2<String, NSError> callback) {
+        if (callback != null) {
             long context = id.getAndIncrement();
-            ListenerWrapper l = new ListenerWrapper(listener, context);
+            ListenerWrapper l = new ListenerWrapper(callback, context);
             saveToPhotosAlbum(videoPath.getAbsolutePath(), l, didFinishSaving, context);
         } else {
             saveToPhotosAlbum(videoPath.getAbsolutePath(), null, null, 0);

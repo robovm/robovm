@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,10 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.foundation.*;
 /*</imports>*/
+import org.robovm.apple.coremedia.CMTextMarkupAttribute;
+import org.robovm.apple.coremedia.CMTextMarkupAttributes;
+import org.robovm.apple.uikit.NSAttributedStringAttribute;
+import org.robovm.apple.uikit.NSAttributedStringAttributes;
 
 /*<javadoc>*/
 /*</javadoc>*/
@@ -44,19 +48,65 @@ import org.robovm.apple.foundation.*;
     protected CFMutableAttributedString() {}
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    public static CFMutableAttributedString createCopy(@MachineSizedSInt long maxLength, CFAttributedString aStr) {
+        return createCopy(null, maxLength, aStr);
+    }
+    public static CFMutableAttributedString create(@MachineSizedSInt long maxLength) {
+        return create(null, maxLength);
+    }
+    public void setAttributes(@ByVal CFRange range, NSAttributedStringAttributes replacement, boolean clearOtherAttributes) {
+        if (replacement == null) {
+            setAttributesDictionary(range, null, clearOtherAttributes);
+        } else {
+            setAttributesDictionary(range, replacement.getDictionary().as(CFDictionary.class), clearOtherAttributes);
+        }
+    }
+    public void setAttributes(@ByVal CFRange range, CMTextMarkupAttributes replacement, boolean clearOtherAttributes) {
+        if (replacement == null) {
+            setAttributesDictionary(range, null, clearOtherAttributes);
+        } else {
+            setAttributesDictionary(range, replacement.getDictionary(), clearOtherAttributes);
+        }
+    }
+    public void setAttribute(@ByVal CFRange range, NSAttributedStringAttribute attribute, CFType value) {
+        if (attribute == null) {
+            throw new NullPointerException("attribute");
+        }
+        setAttribute(range, attribute.value().as(CFString.class), value);
+    }
+    public void setAttribute(@ByVal CFRange range, CMTextMarkupAttribute attribute, CFType value) {
+        if (attribute == null) {
+            throw new NullPointerException("attribute");
+        }
+        setAttribute(range, attribute.value(), value);
+    }
+    public void removeAttribute(@ByVal CFRange range, NSAttributedStringAttribute attribute) {
+        if (attribute == null) {
+            throw new NullPointerException("attribute");
+        }
+        removeAttribute(range, attribute.value().as(CFString.class));
+    }
+    public void removeAttribute(@ByVal CFRange range, CMTextMarkupAttribute attribute) {
+        if (attribute == null) {
+            throw new NullPointerException("attribute");
+        }
+        removeAttribute(range, attribute.value());
+    }
     /*<methods>*/
     @Bridge(symbol="CFAttributedStringCreateMutableCopy", optional=true)
-    protected static native CFMutableAttributedString createMutableCopy(CFAllocator alloc, @MachineSizedSInt long maxLength, CFAttributedString aStr);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFMutableAttributedString createCopy(CFAllocator alloc, @MachineSizedSInt long maxLength, CFAttributedString aStr);
     @Bridge(symbol="CFAttributedStringCreateMutable", optional=true)
-    protected static native CFMutableAttributedString createMutable(CFAllocator alloc, @MachineSizedSInt long maxLength);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFMutableAttributedString create(CFAllocator alloc, @MachineSizedSInt long maxLength);
     @Bridge(symbol="CFAttributedStringReplaceString", optional=true)
     public native void replaceString(@ByVal CFRange range, String replacement);
+    @Bridge(symbol="CFAttributedStringGetMutableString", optional=true)
+    public static native CFMutableString getMutableString(CFAttributedString aStr);
     @Bridge(symbol="CFAttributedStringSetAttributes", optional=true)
-    public native void setAttributes(@ByVal CFRange range, CFDictionary replacement, boolean clearOtherAttributes);
+    public native void setAttributesDictionary(@ByVal CFRange range, CFDictionary replacement, boolean clearOtherAttributes);
     @Bridge(symbol="CFAttributedStringSetAttribute", optional=true)
-    public native void setAttribute(@ByVal CFRange range, String attrName, CFType value);
+    public native void setAttribute(@ByVal CFRange range, CFString attrName, CFType value);
     @Bridge(symbol="CFAttributedStringRemoveAttribute", optional=true)
-    public native void removeAttribute(@ByVal CFRange range, String attrName);
+    public native void removeAttribute(@ByVal CFRange range, CFString attrName);
     @Bridge(symbol="CFAttributedStringReplaceAttributedString", optional=true)
     public native void replaceAttributedString(@ByVal CFRange range, CFAttributedString replacement);
     @Bridge(symbol="CFAttributedStringBeginEditing", optional=true)

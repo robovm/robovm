@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -99,59 +99,6 @@ import org.robovm.apple.uikit.*;
     public native void setDisconnectTimeout(double v);
     /*</properties>*/
     /*<members>*//*</members>*/
-    /**
-     * 
-     * @param data
-     * @param peers
-     * @param mode
-     * @return
-     * @since Available in iOS 3.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     * @throws NSErrorException
-     */
-    @Deprecated
-    public boolean sendData(NSData data, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> peers, GKSendDataMode mode) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = sendData(data, peers, mode, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @param data
-     * @param mode
-     * @return
-     * @since Available in iOS 3.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     * @throws NSErrorException
-     */
-    @Deprecated
-    @Method(selector = "sendDataToAllPeers:withDataMode:error:")
-    public boolean sendDataToAllPeers(NSData data, GKSendDataMode mode) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = sendDataToAllPeers(data, mode, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @param peerID
-     * @return
-     * @throws NSErrorException
-     */
-    public boolean acceptConnection(String peerID) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = acceptConnection(peerID, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    
     public void setDataReceiveHandler(DataReceiveHandler handler) {
         if (handler == null) {
             throw new NullPointerException("handler");
@@ -175,23 +122,51 @@ import org.robovm.apple.uikit.*;
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
+    public boolean sendData(NSData data, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> peers, GKSendDataMode mode) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = sendData(data, peers, mode, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
+    /**
+     * @since Available in iOS 3.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     @Method(selector = "sendData:toPeers:withDataMode:error:")
-    protected native boolean sendData(NSData data, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> peers, GKSendDataMode mode, NSError.NSErrorPtr error);
+    private native boolean sendData(NSData data, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> peers, GKSendDataMode mode, NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 3.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
+    public boolean sendDataToAllPeers(NSData data, GKSendDataMode mode) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = sendDataToAllPeers(data, mode, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     /**
      * @since Available in iOS 3.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @Method(selector = "sendDataToAllPeers:withDataMode:error:")
-    protected native boolean sendDataToAllPeers(NSData data, GKSendDataMode mode, NSError.NSErrorPtr error);
+    private native boolean sendDataToAllPeers(NSData data, GKSendDataMode mode, NSError.NSErrorPtr error);
     @Method(selector = "setDataReceiveHandler:withContext:")
     protected native void setDataReceiveHandler(NSObject handler, @Pointer long context);
     @Method(selector = "connectToPeer:withTimeout:")
     public native void connect(String peerID, double timeout);
     @Method(selector = "cancelConnectToPeer:")
     public native void cancelConnect(String peerID);
+    public boolean acceptConnection(String peerID) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = acceptConnection(peerID, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "acceptConnectionFromPeer:error:")
-    protected native boolean acceptConnection(String peerID, NSError.NSErrorPtr error);
+    private native boolean acceptConnection(String peerID, NSError.NSErrorPtr error);
     @Method(selector = "denyConnectionFromPeer:")
     public native void denyConnection(String peerID);
     @Method(selector = "disconnectPeerFromAllPeers:")

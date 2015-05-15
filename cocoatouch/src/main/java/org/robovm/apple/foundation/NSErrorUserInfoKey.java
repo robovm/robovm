@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,13 +15,9 @@
  */
 package org.robovm.apple.foundation;
 
-import org.robovm.rt.bro.Bro;
-import org.robovm.rt.bro.annotation.Library;
-
-@Library("Foundation")
-public abstract class NSErrorUserInfoKey {
+public abstract class NSErrorUserInfoKey extends GlobalValueEnumeration<NSString> {
     
-    static { Bro.bind(NSErrorUserInfoKey.class); }
-    
-    public abstract NSString value();
+    protected NSErrorUserInfoKey (Class<?> clazz, String getterName) {
+        super(clazz, getterName);
+    }
 }

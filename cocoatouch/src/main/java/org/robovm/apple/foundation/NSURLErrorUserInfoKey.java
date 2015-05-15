@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,73 +39,121 @@ import org.robovm.apple.dispatch.*;
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("Foundation")/*</annotations>*/
+@Marshaler(/*<name>*/NSURLErrorUserInfoKey/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSURLErrorUserInfoKey/*</name>*/ 
-    extends /*<extends>*/NSErrorUserInfoKey/*</extends>*/ 
+    extends /*<extends>*/NSErrorUserInfoKey/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(NSURLErrorUserInfoKey.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    static { Bro.bind(/*<name>*/NSURLErrorUserInfoKey/*</name>*/.class); }
+
+    /*<marshalers>*/
+    public static class Marshaler {
+        @MarshalsPointer
+        public static NSURLErrorUserInfoKey toObject(Class<NSURLErrorUserInfoKey> cls, long handle, long flags) {
+            NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return NSURLErrorUserInfoKey.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(NSURLErrorUserInfoKey o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(o.value(), flags);
+        }
+    }
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<NSURLErrorUserInfoKey> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<NSURLErrorUserInfoKey> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(NSURLErrorUserInfoKey.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<NSURLErrorUserInfoKey> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (NSURLErrorUserInfoKey i : l) {
+                array.add(i.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final NSURLErrorUserInfoKey KeysOfUnsetValues = new NSURLErrorUserInfoKey("KeysOfUnsetValuesKey");
+    public static final NSURLErrorUserInfoKey KeysOfUnsetValues = new NSURLErrorUserInfoKey("KeysOfUnsetValues");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSURLErrorUserInfoKey FailingURL = new NSURLErrorUserInfoKey("FailingURLErrorKey");
+    public static final NSURLErrorUserInfoKey FailingURL = new NSURLErrorUserInfoKey("FailingURL");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSURLErrorUserInfoKey FailingURLString = new NSURLErrorUserInfoKey("FailingURLStringErrorKey");
+    public static final NSURLErrorUserInfoKey FailingURLString = new NSURLErrorUserInfoKey("FailingURLString");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSURLErrorUserInfoKey FailingURLPeerTrust = new NSURLErrorUserInfoKey("FailingURLPeerTrustErrorKey");
+    public static final NSURLErrorUserInfoKey FailingURLPeerTrust = new NSURLErrorUserInfoKey("FailingURLPeerTrust");
+    /*</constants>*/
     
-    private static NSURLErrorUserInfoKey[] values = new NSURLErrorUserInfoKey[] {FailingURL, FailingURLString, FailingURLPeerTrust, KeysOfUnsetValues};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    private static /*<name>*/NSURLErrorUserInfoKey/*</name>*/[] values = new /*<name>*/NSURLErrorUserInfoKey/*</name>*/[] {/*<value_list>*/KeysOfUnsetValues, FailingURL, FailingURLString, FailingURLPeerTrust/*</value_list>*/};
     
-    private NSURLErrorUserInfoKey(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/NSURLErrorUserInfoKey/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static NSURLErrorUserInfoKey valueOf(NSString value) {
-        for (NSURLErrorUserInfoKey v : values) {
+    public static /*<name>*/NSURLErrorUserInfoKey/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/NSURLErrorUserInfoKey/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
-                + /*<name>*/NSURLErrorUserInfoKey/*</name>*/.class.getName());
+            + /*<name>*/NSURLErrorUserInfoKey/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSURLKeysOfUnsetValuesKey", optional=true)
-    protected static native NSString KeysOfUnsetValuesKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSURLErrorFailingURLErrorKey", optional=true)
-    protected static native NSString FailingURLErrorKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSURLErrorFailingURLStringErrorKey", optional=true)
-    protected static native NSString FailingURLStringErrorKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSURLErrorFailingURLPeerTrustErrorKey", optional=true)
-    protected static native NSString FailingURLPeerTrustErrorKey();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("Foundation")/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSURLKeysOfUnsetValuesKey", optional=true)
+        public static native NSString KeysOfUnsetValues();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSURLErrorFailingURLErrorKey", optional=true)
+        public static native NSString FailingURL();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSURLErrorFailingURLStringErrorKey", optional=true)
+        public static native NSString FailingURLString();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSURLErrorFailingURLPeerTrustErrorKey", optional=true)
+        public static native NSString FailingURLPeerTrust();
+        /*</values>*/
+    }
 }

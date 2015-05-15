@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,8 +30,10 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -48,26 +50,55 @@ import org.robovm.apple.coremedia.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public AudioFileRegion() {}
-    public AudioFileRegion(int mRegionID, CFString mName, int mFlags, int mNumberMarkers, AudioFileMarker mMarkers) {
-        this.setMRegionID(mRegionID);
-        this.setMName(mName);
-        this.setMFlags(mFlags);
-        this.setMNumberMarkers(mNumberMarkers);
-        this.setMMarkers(mMarkers);
+    public AudioFileRegion(int regionID, String name, AudioFileRegionFlags flags) {
+        this.setRegionID(regionID);
+        this.setName(name);
+        this.setFlags(flags);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
+    public int getMarkerCount() {
+        return getNumberMarkers();
+    }
+    
+    public AudioFileMarker getMarker(int index) {
+        if (index >= getMarkerCount()) {
+            throw new ArrayIndexOutOfBoundsException(index);
+        }
+        return getMarkers0().next(index).get();
+    }
+    public AudioFileRegion setMarker(int index, AudioFileMarker value) {
+        if (index >= getMarkerCount()) {
+            throw new ArrayIndexOutOfBoundsException(index);
+        }
+        getMarkers0().next(index).set(value);
+        return this;
+    }
+    public AudioFileMarker[] getMarkers() {
+        int count = getMarkerCount();
+        AudioFileMarker[] array = new AudioFileMarker[count];
+        AudioFileMarker.AudioFileMarkerPtr ptr = getMarkers0();
+        for (int i = 0; i < count; i++) {
+            array[i] = ptr.next(i).get();
+        }
+        return array;
+    }
+    public AudioFileRegion setMarkers(AudioFileMarker[] markers) {
+        this.setNumberMarkers(markers.length);
+        getMarkers0().set(markers);
+        return this;
+    }
     /*<members>*/
-    @StructMember(0) public native int getMRegionID();
-    @StructMember(0) public native AudioFileRegion setMRegionID(int mRegionID);
-    @StructMember(1) public native CFString getMName();
-    @StructMember(1) public native AudioFileRegion setMName(CFString mName);
-    @StructMember(2) public native int getMFlags();
-    @StructMember(2) public native AudioFileRegion setMFlags(int mFlags);
-    @StructMember(3) public native int getMNumberMarkers();
-    @StructMember(3) public native AudioFileRegion setMNumberMarkers(int mNumberMarkers);
-    @StructMember(4) public native @Array({1}) AudioFileMarker getMMarkers();
-    @StructMember(4) public native AudioFileRegion setMMarkers(@Array({1}) AudioFileMarker mMarkers);
+    @StructMember(0) public native int getRegionID();
+    @StructMember(0) public native AudioFileRegion setRegionID(int regionID);
+    @StructMember(1) public native String getName();
+    @StructMember(1) public native AudioFileRegion setName(String name);
+    @StructMember(2) public native AudioFileRegionFlags getFlags();
+    @StructMember(2) public native AudioFileRegion setFlags(AudioFileRegionFlags flags);
+    @StructMember(3) protected native int getNumberMarkers();
+    @StructMember(3) protected native AudioFileRegion setNumberMarkers(int numberMarkers);
+    @StructMember(4) protected native AudioFileMarker.AudioFileMarkerPtr getMarkers0();
+    @StructMember(4) protected native AudioFileRegion setMarkers0(AudioFileMarker.AudioFileMarkerPtr markers0);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

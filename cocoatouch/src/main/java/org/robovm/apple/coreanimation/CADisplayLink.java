@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,15 +42,15 @@ import org.robovm.apple.metal.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    public interface UpdateListener {
+    public interface OnUpdateListener {
         void onUpdate(CADisplayLink displayLink);
     }
     
     private static final String LISTENER_KEY = "listener";
     private static final Selector handleUpdate = Selector.register("handleUpdate");
     private static class ListenerWrapper extends NSObject {
-        private final UpdateListener listener;
-        private ListenerWrapper(UpdateListener listener) {
+        private final OnUpdateListener listener;
+        private ListenerWrapper(OnUpdateListener listener) {
             this.listener = listener;
         }
         @Method(selector = "handleUpdate")
@@ -87,7 +87,7 @@ import org.robovm.apple.metal.*;
         removeFromRunLoop(runloop, mode.value());
     }
     
-    public static CADisplayLink create(UpdateListener listener) {
+    public static CADisplayLink create(OnUpdateListener listener) {
         if (listener == null) {
             throw new NullPointerException("listener");
         }

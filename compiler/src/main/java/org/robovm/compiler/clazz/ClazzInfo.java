@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian Mobile AB
+ * Copyright (C) 2012 RoboVM AB
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -39,7 +39,7 @@ import soot.SootMethod;
  *
  */
 public class ClazzInfo implements Serializable {
-    private static final long serialVersionUID = 70L;
+    private static final long serialVersionUID = 75L;
     
     private int modifiers;
     private String name;
@@ -51,6 +51,9 @@ public class ClazzInfo implements Serializable {
     private final List<MethodInfo> methods = new ArrayList<MethodInfo>();
     private final Set<String> catchNames = new HashSet<String>();
     private Map<String, Dependency> dependencies = new HashMap<String,Dependency>();
+    private final Set<String> checkcasts = new HashSet<String>();
+    private final Set<String> instanceofs = new HashSet<String>();
+    private final Set<String> invokes = new HashSet<String>();
     
     private transient Clazz clazz;
     private transient List<FieldInfo> classFields;
@@ -305,7 +308,31 @@ public class ClazzInfo implements Serializable {
     public Set<Dependency> getDependencies() {
         return new HashSet<Dependency>(dependencies.values());
     }
-    
+
+    public Set<String> getCheckcasts() {
+        return checkcasts;
+    }
+
+    public void addCheckcast(String className) {
+        checkcasts.add(className);
+    }
+
+    public Set<String> getInstanceofs() {
+        return instanceofs;
+    }
+
+    public void addInstanceof(String className) {
+        instanceofs.add(className);
+    }
+
+    public Set<String> getInvokes() {
+        return invokes;
+    }
+
+    public void addInvoke(String className) {
+        invokes.add(className);
+    }
+
     public boolean isPublic() {
         return (modifiers & Modifier.PUBLIC) > 0;
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,39 +27,49 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
+import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
+
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/SecErrorCode/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+public enum /*<name>*/SecErrorCode/*</name>*/ implements ValuedEnum {
+    /*<values>*/
+    Success(0L),
+    Unimplemented(-4L),
+    IO(-36L),
+    OpWr(-49L),
+    Param(-50L),
+    Allocate(-108L),
+    UserCanceled(-128L),
+    BadReq(-909L),
+    InternalComponent(-2070L),
+    NotAvailable(-25291L),
+    DuplicateItem(-25299L),
+    ItemNotFound(-25300L),
+    InteractionNotAllowed(-25308L),
+    Decode(-26275L),
+    AuthFailed(-25293L);
+    /*</values>*/
 
-    /*<ptr>*/
-    /*</ptr>*/
     /*<bind>*/
     /*</bind>*/
-    /*<constants>*/
-    public static final int Success = 0;
-    public static final int Unimplemented = -4;
-    public static final int IO = -36;
-    public static final int OpWr = -49;
-    public static final int Param = -50;
-    public static final int Allocate = -108;
-    public static final int UserCanceled = -128;
-    public static final int BadReq = -909;
-    public static final int InternalComponent = -2070;
-    public static final int NotAvailable = -25291;
-    public static final int DuplicateItem = -25299;
-    public static final int ItemNotFound = -25300;
-    public static final int InteractionNotAllowed = -25308;
-    public static final int Decode = -26275;
-    public static final int AuthFailed = -25293;
-    /*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
+    /*<constants>*//*</constants>*/
     /*<methods>*//*</methods>*/
+
+    private final long n;
+
+    private /*<name>*/SecErrorCode/*</name>*/(long n) { this.n = n; }
+    public long value() { return n; }
+    public static /*<name>*/SecErrorCode/*</name>*/ valueOf(long n) {
+        for (/*<name>*/SecErrorCode/*</name>*/ v : values()) {
+            if (v.n == n) {
+                return v;
+            }
+        }
+        throw new IllegalArgumentException("No constant with value " + n + " found in " 
+            + /*<name>*/SecErrorCode/*</name>*/.class.getName());
+    }
 }

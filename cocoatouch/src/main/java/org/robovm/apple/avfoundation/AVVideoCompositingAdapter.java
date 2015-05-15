@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,6 +36,7 @@ import org.robovm.apple.coremedia.*;
 import org.robovm.apple.corevideo.*;
 import org.robovm.apple.audiotoolbox.*;
 import org.robovm.apple.mediatoolbox.*;
+import org.robovm.apple.audiounit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -53,17 +54,17 @@ import org.robovm.apple.mediatoolbox.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*/
     @NotImplemented("sourcePixelBufferAttributes")
-    public CVPixelBufferAttributes getSourcePixelBufferAttributes() { throw new UnsupportedOperationException(); }
+    public CVPixelBufferAttributes getSourcePixelBufferAttributes() { return null; }
     @NotImplemented("requiredPixelBufferAttributesForRenderContext")
-    public CVPixelBufferAttributes getRequiredPixelBufferAttributesForRenderContext() { throw new UnsupportedOperationException(); }
+    public CVPixelBufferAttributes getRequiredPixelBufferAttributesForRenderContext() { return null; }
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("renderContextChanged:")
-    public void renderContextChanged(AVVideoCompositionRenderContext newRenderContext) { throw new UnsupportedOperationException(); }
+    public void renderContextChanged(AVVideoCompositionRenderContext newRenderContext) {}
     @NotImplemented("startVideoCompositionRequest:")
-    public void startVideoCompositionRequest(AVAsynchronousVideoCompositionRequest asyncVideoCompositionRequest) { throw new UnsupportedOperationException(); }
+    public void startVideoCompositionRequest(AVAsynchronousVideoCompositionRequest asyncVideoCompositionRequest) {}
     @NotImplemented("cancelAllPendingVideoCompositionRequests")
-    public void cancelAllPendingVideoCompositionRequests() { throw new UnsupportedOperationException(); }
+    public void cancelAllPendingVideoCompositionRequests() {}
     /*</methods>*/
 }

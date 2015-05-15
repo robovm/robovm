@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,8 +54,18 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("adaptivePresentationStyleForPresentationController:")
-    public UIModalPresentationStyle getAdaptivePresentationStyle(UIPresentationController controller) { throw new UnsupportedOperationException(); }
+    public UIModalPresentationStyle getAdaptivePresentationStyle(UIPresentationController controller) { return null; }
+    /**
+     * @since Available in iOS 8.3 and later.
+     */
+    @NotImplemented("adaptivePresentationStyleForPresentationController:traitCollection:")
+    public UIModalPresentationStyle getAdaptivePresentationStyle(UIPresentationController controller, UITraitCollection traitCollection) { return null; }
     @NotImplemented("presentationController:viewControllerForAdaptivePresentationStyle:")
-    public UIViewController getViewController(UIPresentationController controller, UIModalPresentationStyle style) { throw new UnsupportedOperationException(); }
+    public UIViewController getViewController(UIPresentationController controller, UIModalPresentationStyle style) { return null; }
+    /**
+     * @since Available in iOS 8.3 and later.
+     */
+    @NotImplemented("presentationController:willPresentWithAdaptiveStyle:transitionCoordinator:")
+    public void willPresent(UIPresentationController presentationController, UIModalPresentationStyle style, UIViewControllerTransitionCoordinator transitionCoordinator) {}
     /*</methods>*/
 }

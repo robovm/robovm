@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ public abstract class NSExtensions extends ObjCExtensions {
     
     protected static <T extends NSObject> T alloc(Class<T> c) {
         long h = NSObject.alloc(ObjCClass.getByType(c));
-        return ObjCObject.toObjCObject(c, h);
+        return ObjCObject.toObjCObject(c, h, NSObject.FLAG_NO_RETAIN);
     }
 
 }

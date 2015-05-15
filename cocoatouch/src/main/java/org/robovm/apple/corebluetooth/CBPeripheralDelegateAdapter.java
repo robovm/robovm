@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,48 +53,48 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 6.0 and later.
      */
     @NotImplemented("peripheralDidUpdateName:")
-    public void didUpdateName(CBPeripheral peripheral) { throw new UnsupportedOperationException(); }
+    public void didUpdateName(CBPeripheral peripheral) {}
     /**
      * @since Available in iOS 6.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @NotImplemented("peripheralDidInvalidateServices:")
-    public void didInvalidateServices(CBPeripheral peripheral) { throw new UnsupportedOperationException(); }
+    public void didInvalidateServices(CBPeripheral peripheral) {}
     /**
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("peripheral:didModifyServices:")
-    public void didModifyServices(CBPeripheral peripheral, NSArray<CBService> invalidatedServices) { throw new UnsupportedOperationException(); }
+    public void didModifyServices(CBPeripheral peripheral, NSArray<CBService> invalidatedServices) {}
     /**
      * @since Available in iOS 5.0 and later.
      * @deprecated Deprecated in iOS 8.0.
      */
     @Deprecated
     @NotImplemented("peripheralDidUpdateRSSI:error:")
-    public void didUpdateRSSI(CBPeripheral peripheral, NSError error) { throw new UnsupportedOperationException(); }
+    public void didUpdateRSSI(CBPeripheral peripheral, NSError error) {}
     /**
      * @since Available in iOS 8.0 and later.
      */
     @NotImplemented("peripheral:didReadRSSI:error:")
-    public void didReadRSSI(CBPeripheral peripheral, NSNumber RSSI, NSError error) { throw new UnsupportedOperationException(); }
+    public void didReadRSSI(CBPeripheral peripheral, NSNumber RSSI, NSError error) {}
     @NotImplemented("peripheral:didDiscoverServices:")
-    public void didDiscoverServices(CBPeripheral peripheral, NSError error) { throw new UnsupportedOperationException(); }
+    public void didDiscoverServices(CBPeripheral peripheral, NSError error) {}
     @NotImplemented("peripheral:didDiscoverIncludedServicesForService:error:")
-    public void didDiscoverIncludedServices(CBPeripheral peripheral, CBService service, NSError error) { throw new UnsupportedOperationException(); }
+    public void didDiscoverIncludedServices(CBPeripheral peripheral, CBService service, NSError error) {}
     @NotImplemented("peripheral:didDiscoverCharacteristicsForService:error:")
-    public void didDiscoverCharacteristics(CBPeripheral peripheral, CBService service, NSError error) { throw new UnsupportedOperationException(); }
+    public void didDiscoverCharacteristics(CBPeripheral peripheral, CBService service, NSError error) {}
     @NotImplemented("peripheral:didUpdateValueForCharacteristic:error:")
-    public void didUpdateValue(CBPeripheral peripheral, CBCharacteristic characteristic, NSError error) { throw new UnsupportedOperationException(); }
+    public void didUpdateValue(CBPeripheral peripheral, CBCharacteristic characteristic, NSError error) {}
     @NotImplemented("peripheral:didWriteValueForCharacteristic:error:")
-    public void didWriteValue(CBPeripheral peripheral, CBCharacteristic characteristic, NSError error) { throw new UnsupportedOperationException(); }
+    public void didWriteValue(CBPeripheral peripheral, CBCharacteristic characteristic, NSError error) {}
     @NotImplemented("peripheral:didUpdateNotificationStateForCharacteristic:error:")
-    public void didUpdateNotificationState(CBPeripheral peripheral, CBCharacteristic characteristic, NSError error) { throw new UnsupportedOperationException(); }
+    public void didUpdateNotificationState(CBPeripheral peripheral, CBCharacteristic characteristic, NSError error) {}
     @NotImplemented("peripheral:didDiscoverDescriptorsForCharacteristic:error:")
-    public void didDiscoverDescriptors(CBPeripheral peripheral, CBCharacteristic characteristic, NSError error) { throw new UnsupportedOperationException(); }
+    public void didDiscoverDescriptors(CBPeripheral peripheral, CBCharacteristic characteristic, NSError error) {}
     @NotImplemented("peripheral:didUpdateValueForDescriptor:error:")
-    public void didUpdateValue(CBPeripheral peripheral, CBDescriptor descriptor, NSError error) { throw new UnsupportedOperationException(); }
+    public void didUpdateValue(CBPeripheral peripheral, CBDescriptor descriptor, NSError error) {}
     @NotImplemented("peripheral:didWriteValueForDescriptor:error:")
-    public void didWriteValue(CBPeripheral peripheral, CBDescriptor descriptor, NSError error) { throw new UnsupportedOperationException(); }
+    public void didWriteValue(CBPeripheral peripheral, CBDescriptor descriptor, NSError error) {}
     /*</methods>*/
 }

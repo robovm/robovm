@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,6 +55,9 @@ import org.robovm.apple.opengles.*;
     public static native @ByVal SCNVector3 getSCNVector3Value(NSValue thiz);
     @Property(selector = "SCNVector4Value")
     public static native @ByVal SCNVector4 getSCNVector4Value(NSValue thiz);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "SCNMatrix4Value")
     public static native @ByVal SCNMatrix4 getSCNMatrix4Value(NSValue thiz);
     /*</properties>*/
@@ -66,6 +69,9 @@ import org.robovm.apple.opengles.*;
     @Method(selector = "valueWithSCNVector4:")
     protected static native NSValue create(ObjCClass clazz, @ByVal SCNVector4 v);
     public static NSValue create(@ByVal SCNVector4 v) { return create(ObjCClass.getByType(NSValue.class), v); }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "valueWithSCNMatrix4:")
     protected static native NSValue create(ObjCClass clazz, @ByVal SCNMatrix4 v);
     public static NSValue create(@ByVal SCNMatrix4 v) { return create(ObjCClass.getByType(NSValue.class), v); }

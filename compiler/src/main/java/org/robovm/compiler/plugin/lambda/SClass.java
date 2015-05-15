@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2014 RoboVM AB
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -188,12 +188,12 @@ public abstract class SClass<T> {
             return that.implementsInterface(this);
         }
         
-        SClass<?> superclass = this.getSuperclass();
+        SClass<?> superclass = that.getSuperclass();
         while (superclass != null) {
-            if (superclass.getDescriptor().equals(thatDescriptor)) {
+            if (superclass.getDescriptor().equals(thisDescriptor)) {
                 return true;
             }
-            superclass = this.getSuperclass();
+            superclass = superclass.getSuperclass();
         }
         
         return false;

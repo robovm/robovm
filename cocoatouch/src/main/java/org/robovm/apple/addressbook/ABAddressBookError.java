@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,7 +50,13 @@ import org.robovm.apple.corefoundation.*;
     /*<members>*//*</members>*/
     @Override
     public ABAddressBookErrorCode getErrorCode() {
-        return ABAddressBookErrorCode.valueOf(getCode());
+        ABAddressBookErrorCode code = null;
+        try {
+            code = ABAddressBookErrorCode.valueOf(getCode());
+        } catch (IllegalArgumentException e) {
+            // ignore
+        }
+        return code;
     }
     /*<methods>*/
     @GlobalValue(symbol="ABAddressBookErrorDomain", optional=true)

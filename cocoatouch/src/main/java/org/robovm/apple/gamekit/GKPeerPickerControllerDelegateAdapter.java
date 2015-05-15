@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,12 +49,12 @@ import org.robovm.apple.uikit.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("peerPickerController:didSelectConnectionType:")
-    public void didSelectConnectionType(GKPeerPickerController picker, GKPeerPickerConnectionType type) { throw new UnsupportedOperationException(); }
+    public void didSelectConnectionType(GKPeerPickerController picker, GKPeerPickerConnectionType type) {}
     @NotImplemented("peerPickerController:sessionForConnectionType:")
-    public GKSession getSession(GKPeerPickerController picker, GKPeerPickerConnectionType type) { throw new UnsupportedOperationException(); }
+    public GKSession getSession(GKPeerPickerController picker, GKPeerPickerConnectionType type) { return null; }
     @NotImplemented("peerPickerController:didConnectPeer:toSession:")
-    public void didConnectPeer(GKPeerPickerController picker, String peerID, GKSession session) { throw new UnsupportedOperationException(); }
+    public void didConnectPeer(GKPeerPickerController picker, String peerID, GKSession session) {}
     @NotImplemented("peerPickerControllerDidCancel:")
-    public void didCancel(GKPeerPickerController picker) { throw new UnsupportedOperationException(); }
+    public void didCancel(GKPeerPickerController picker) {}
     /*</methods>*/
 }

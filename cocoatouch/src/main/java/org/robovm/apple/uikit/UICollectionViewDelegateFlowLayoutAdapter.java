@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,16 +54,16 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("collectionView:layout:sizeForItemAtIndexPath:")
-    public @ByVal CGSize getItemSize(UICollectionView collectionView, UICollectionViewLayout collectionViewLayout, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+    public @ByVal CGSize getItemSize(UICollectionView collectionView, UICollectionViewLayout collectionViewLayout, NSIndexPath indexPath) { return null; }
     @NotImplemented("collectionView:layout:insetForSectionAtIndex:")
-    public @ByVal UIEdgeInsets getSectionInset(UICollectionView collectionView, UICollectionViewLayout collectionViewLayout, @MachineSizedSInt long section) { throw new UnsupportedOperationException(); }
+    public @ByVal UIEdgeInsets getSectionInset(UICollectionView collectionView, UICollectionViewLayout collectionViewLayout, @MachineSizedSInt long section) { return null; }
     @NotImplemented("collectionView:layout:minimumLineSpacingForSectionAtIndex:")
-    public @MachineSizedFloat double getSectionMinimumLineSpacing(UICollectionView collectionView, UICollectionViewLayout collectionViewLayout, @MachineSizedSInt long section) { throw new UnsupportedOperationException(); }
+    public @MachineSizedFloat double getSectionMinimumLineSpacing(UICollectionView collectionView, UICollectionViewLayout collectionViewLayout, @MachineSizedSInt long section) { return 0; }
     @NotImplemented("collectionView:layout:minimumInteritemSpacingForSectionAtIndex:")
-    public @MachineSizedFloat double getSectionMinimumInteritemSpacing(UICollectionView collectionView, UICollectionViewLayout collectionViewLayout, @MachineSizedSInt long section) { throw new UnsupportedOperationException(); }
+    public @MachineSizedFloat double getSectionMinimumInteritemSpacing(UICollectionView collectionView, UICollectionViewLayout collectionViewLayout, @MachineSizedSInt long section) { return 0; }
     @NotImplemented("collectionView:layout:referenceSizeForHeaderInSection:")
-    public @ByVal CGSize getSectionHeaderReferenceSize(UICollectionView collectionView, UICollectionViewLayout collectionViewLayout, @MachineSizedSInt long section) { throw new UnsupportedOperationException(); }
+    public @ByVal CGSize getSectionHeaderReferenceSize(UICollectionView collectionView, UICollectionViewLayout collectionViewLayout, @MachineSizedSInt long section) { return null; }
     @NotImplemented("collectionView:layout:referenceSizeForFooterInSection:")
-    public @ByVal CGSize getSectionFooterReferenceSize(UICollectionView collectionView, UICollectionViewLayout collectionViewLayout, @MachineSizedSInt long section) { throw new UnsupportedOperationException(); }
+    public @ByVal CGSize getSectionFooterReferenceSize(UICollectionView collectionView, UICollectionViewLayout collectionViewLayout, @MachineSizedSInt long section) { return null; }
     /*</methods>*/
 }

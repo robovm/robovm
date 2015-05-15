@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,8 +54,8 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("documentMenu:didPickDocumentPicker:")
-    public void didPickDocumentPicker(UIDocumentMenuViewController documentMenu, UIDocumentPickerViewController documentPicker) { throw new UnsupportedOperationException(); }
+    public void didPickDocumentPicker(UIDocumentMenuViewController documentMenu, UIDocumentPickerViewController documentPicker) {}
     @NotImplemented("documentMenuWasCancelled:")
-    public void wasCancelled(UIDocumentMenuViewController documentMenu) { throw new UnsupportedOperationException(); }
+    public void wasCancelled(UIDocumentMenuViewController documentMenu) {}
     /*</methods>*/
 }

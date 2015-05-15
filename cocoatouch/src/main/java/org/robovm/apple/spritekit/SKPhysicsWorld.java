@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -86,11 +86,11 @@ import org.robovm.apple.scenekit.*;
     @Method(selector = "bodyAlongRayStart:end:")
     public native SKPhysicsBody getBodyAlongRay(@ByVal CGPoint start, @ByVal CGPoint end);
     @Method(selector = "enumerateBodiesAtPoint:usingBlock:")
-    public native void enumerateBodiesAtPoint(@ByVal CGPoint point, @Block VoidBlock2<SKPhysicsBody, BytePtr> block);
+    public native void enumerateBodiesAtPoint(@ByVal CGPoint point, @Block VoidBlock2<SKPhysicsBody, BooleanPtr> block);
     @Method(selector = "enumerateBodiesInRect:usingBlock:")
-    public native void enumerateBodiesInRect(@ByVal CGRect rect, @Block VoidBlock2<SKPhysicsBody, BytePtr> block);
+    public native void enumerateBodiesInRect(@ByVal CGRect rect, @Block VoidBlock2<SKPhysicsBody, BooleanPtr> block);
     @Method(selector = "enumerateBodiesAlongRayStart:end:usingBlock:")
-    public native void enumerateBodiesAlongRay(@ByVal CGPoint start, @ByVal CGPoint end, @Block VoidBlock4<SKPhysicsBody, CGPoint, CGVector, BytePtr> block);
+    public native void enumerateBodiesAlongRay(@ByVal CGPoint start, @ByVal CGPoint end, @Block VoidBlock4<SKPhysicsBody, CGPoint, CGVector, BooleanPtr> block);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     /*</methods>*/

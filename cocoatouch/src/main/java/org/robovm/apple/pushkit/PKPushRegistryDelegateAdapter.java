@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,10 +49,10 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("pushRegistry:didUpdatePushCredentials:forType:")
-    public void didUpdatePushCredentials(PKPushRegistry registry, PKPushCredentials credentials, String type) { throw new UnsupportedOperationException(); }
+    public void didUpdatePushCredentials(PKPushRegistry registry, PKPushCredentials credentials, String type) {}
     @NotImplemented("pushRegistry:didReceiveIncomingPushWithPayload:forType:")
-    public void didReceiveIncomingPush(PKPushRegistry registry, PKPushPayload payload, String type) { throw new UnsupportedOperationException(); }
+    public void didReceiveIncomingPush(PKPushRegistry registry, PKPushPayload payload, String type) {}
     @NotImplemented("pushRegistry:didInvalidatePushTokenForType:")
-    public void didInvalidatePushToken(PKPushRegistry registry, String type) { throw new UnsupportedOperationException(); }
+    public void didInvalidatePushToken(PKPushRegistry registry, String type) {}
     /*</methods>*/
 }

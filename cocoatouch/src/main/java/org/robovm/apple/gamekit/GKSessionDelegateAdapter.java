@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,12 +49,12 @@ import org.robovm.apple.uikit.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("session:peer:didChangeState:")
-    public void didChangeState(GKSession session, String peerID, GKPeerConnectionState state) { throw new UnsupportedOperationException(); }
+    public void didChangeState(GKSession session, String peerID, GKPeerConnectionState state) {}
     @NotImplemented("session:didReceiveConnectionRequestFromPeer:")
-    public void didReceiveConnectionRequest(GKSession session, String peerID) { throw new UnsupportedOperationException(); }
+    public void didReceiveConnectionRequest(GKSession session, String peerID) {}
     @NotImplemented("session:connectionWithPeerFailed:withError:")
-    public void connectionWithPeerFailed(GKSession session, String peerID, NSError error) { throw new UnsupportedOperationException(); }
+    public void connectionWithPeerFailed(GKSession session, String peerID, NSError error) {}
     @NotImplemented("session:didFailWithError:")
-    public void didFail(GKSession session, NSError error) { throw new UnsupportedOperationException(); }
+    public void didFail(GKSession session, NSError error) {}
     /*</methods>*/
 }

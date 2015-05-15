@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,19 +33,44 @@ import org.robovm.apple.uikit.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
+/*<annotations>*/@Library("CoreGraphics")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CGPDFStream/*</name>*/ 
     extends /*<extends>*/NativeObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class CGPDFStreamPtr extends Ptr<CGPDFStream, CGPDFStreamPtr> {}/*</ptr>*/
-    /*<bind>*/
-    /*</bind>*/
+    /*<bind>*/static { Bro.bind(CGPDFStream.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     protected CGPDFStream() {}
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    /*<methods>*//*</methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public NSData getData() {
+        IntPtr ptr = new IntPtr();
+        return getData(ptr);
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public CGPDFDataFormat getDataFormat() {
+        IntPtr ptr = new IntPtr();
+        getData(ptr);
+        return CGPDFDataFormat.valueOf(ptr.get());
+    }
+    /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Bridge(symbol="CGPDFStreamGetDictionary", optional=true)
+    public native CGPDFDictionary getDictionary();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Bridge(symbol="CGPDFStreamCopyData", optional=true)
+    private native @org.robovm.rt.bro.annotation.Marshaler(NSObject.NoRetainMarshaler.class) NSData getData(IntPtr format);
+    /*</methods>*/
 }

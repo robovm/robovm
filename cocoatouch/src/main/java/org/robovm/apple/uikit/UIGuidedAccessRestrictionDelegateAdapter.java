@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,12 +54,12 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("guidedAccessRestrictionIdentifiers")
-    public @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getIdentifiers() { throw new UnsupportedOperationException(); }
+    public @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getIdentifiers() { return null; }
     @NotImplemented("guidedAccessRestrictionWithIdentifier:didChangeState:")
-    public void didChangeState(String restrictionIdentifier, UIGuidedAccessRestrictionState newRestrictionState) { throw new UnsupportedOperationException(); }
+    public void didChangeState(String restrictionIdentifier, UIGuidedAccessRestrictionState newRestrictionState) {}
     @NotImplemented("textForGuidedAccessRestrictionWithIdentifier:")
-    public String getText(String restrictionIdentifier) { throw new UnsupportedOperationException(); }
+    public String getText(String restrictionIdentifier) { return null; }
     @NotImplemented("detailTextForGuidedAccessRestrictionWithIdentifier:")
-    public String getDetailText(String restrictionIdentifier) { throw new UnsupportedOperationException(); }
+    public String getDetailText(String restrictionIdentifier) { return null; }
     /*</methods>*/
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,9 @@ import org.robovm.apple.opengles.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 8.0 and later.
+ */
 /*</javadoc>*/
 /*<annotations>*/@Library("SceneKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SCNRenderer/*</name>*/ 
@@ -56,10 +58,19 @@ import org.robovm.apple.opengles.*;
     public native SCNScene getScene();
     @Property(selector = "setScene:")
     public native void setScene(SCNScene v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "nextFrameTime")
     public native double getNextFrameTime();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "sceneTime")
     public native double getSceneTime();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "setSceneTime:")
     public native void setSceneTime(double v);
     @Property(selector = "delegate")
@@ -86,12 +97,24 @@ import org.robovm.apple.opengles.*;
     public native boolean isJitteringEnabled();
     @Property(selector = "setJitteringEnabled:")
     public native void setJitteringEnabled(boolean v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "showsStatistics")
     public native boolean showsStatistics();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "setShowsStatistics:")
     public native void setShowsStatistics(boolean v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "overlaySKScene")
     public native SKScene getOverlaySKScene();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "setOverlaySKScene:")
     public native void setOverlaySKScene(SKScene v);
     @Property(selector = "context")
@@ -105,20 +128,38 @@ import org.robovm.apple.opengles.*;
     /*<methods>*/
     @Method(selector = "render")
     public native void render();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "renderAtTime:")
     public native void renderAtTime(double time);
     @Method(selector = "rendererWithContext:options:")
     public static native SCNRenderer create(EAGLContext context, NSDictionary<?, ?> options);
     @Method(selector = "hitTest:options:")
     public native NSArray<SCNHitTestResult> hitTest(@ByVal CGPoint thePoint, SCNHitTestOptions options);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "isNodeInsideFrustum:withPointOfView:")
     public native boolean isNodeInsideFrustum(SCNNode node, SCNNode pointOfView);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "projectPoint:")
     public native @ByVal SCNVector3 projectPoint(@ByVal SCNVector3 point);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "unprojectPoint:")
     public native @ByVal SCNVector3 unprojectPoint(@ByVal SCNVector3 point);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "prepareObject:shouldAbortBlock:")
     public native boolean prepareObject(NSObject object, @Block Block0<Boolean> block);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "prepareObjects:withCompletionHandler:")
     public native void prepareObjects(NSArray<?> objects, @Block VoidBooleanBlock completionHandler);
     /*</methods>*/

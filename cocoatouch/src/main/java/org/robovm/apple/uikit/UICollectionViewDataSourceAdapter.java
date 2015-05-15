@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,12 +54,12 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("collectionView:numberOfItemsInSection:")
-    public @MachineSizedSInt long getNumberOfItemsInSection(UICollectionView collectionView, @MachineSizedSInt long section) { throw new UnsupportedOperationException(); }
+    public @MachineSizedSInt long getNumberOfItemsInSection(UICollectionView collectionView, @MachineSizedSInt long section) { return 0; }
     @NotImplemented("collectionView:cellForItemAtIndexPath:")
-    public UICollectionViewCell getCellForItem(UICollectionView collectionView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+    public UICollectionViewCell getCellForItem(UICollectionView collectionView, NSIndexPath indexPath) { return null; }
     @NotImplemented("numberOfSectionsInCollectionView:")
-    public @MachineSizedSInt long getNumberOfSections(UICollectionView collectionView) { throw new UnsupportedOperationException(); }
+    public @MachineSizedSInt long getNumberOfSections(UICollectionView collectionView) { return 0; }
     @NotImplemented("collectionView:viewForSupplementaryElementOfKind:atIndexPath:")
-    public UICollectionReusableView getViewForSupplementaryElement(UICollectionView collectionView, String kind, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+    public UICollectionReusableView getViewForSupplementaryElement(UICollectionView collectionView, String kind, NSIndexPath indexPath) { return null; }
     /*</methods>*/
 }

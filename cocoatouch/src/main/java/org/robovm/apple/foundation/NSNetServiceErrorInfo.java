@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -83,7 +83,13 @@ import org.robovm.apple.dispatch.*;
     public NSNetServiceErrorCode getErrorCode() {
         if (data.containsKey(ErrorCodeKey())) {
             NSNumber val = (NSNumber)data.get(ErrorCodeKey());
-            return NSNetServiceErrorCode.valueOf(val.intValue());
+            NSNetServiceErrorCode code = null;
+            try {
+                code = NSNetServiceErrorCode.valueOf(val.intValue());
+            } catch (IllegalArgumentException e) {
+                // ignore
+            }
+            return code;
         }
         return null;
     }

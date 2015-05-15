@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian Mobile AB
+ * Copyright (C) 2012 RoboVM AB
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -15,6 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/gpl-2.0.html>.
  */
 package org.robovm.compiler.config;
+
+import java.nio.ByteOrder;
 
 import org.robovm.compiler.CompilerException;
 import org.robovm.llvm.Target;
@@ -34,17 +36,23 @@ public enum Arch {
     private final String llvmCpu;
     private final boolean is32Bit;
     private final boolean isArm;
+    private final ByteOrder byteOrder;
     
     private Arch(String llvmName, String clangName, boolean is32Bit, boolean isArm) {
         this(llvmName, clangName, "generic", is32Bit, isArm);
     }
 
     private Arch(String llvmName, String clangName, String llvmCpu, boolean is32Bit, boolean isArm) {
+        this(llvmName, clangName, llvmCpu, is32Bit, isArm, ByteOrder.LITTLE_ENDIAN);
+    }
+    
+    private Arch(String llvmName, String clangName, String llvmCpu, boolean is32Bit, boolean isArm, ByteOrder byteOrder) {
         this.llvmName = llvmName;
         this.clangName = clangName;
         this.llvmCpu = llvmCpu;
         this.is32Bit = is32Bit;
         this.isArm = isArm;
+        this.byteOrder = byteOrder;
     }
     
     public String getLlvmName() {
@@ -65,6 +73,10 @@ public enum Arch {
     
     public boolean is32Bit() {
         return is32Bit;
+    }
+    
+    public ByteOrder getByteOrder() {
+        return byteOrder;
     }
     
     public static Arch getDefaultArch() {

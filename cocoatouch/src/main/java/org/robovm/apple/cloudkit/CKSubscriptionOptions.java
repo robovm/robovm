@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,10 +39,10 @@ import org.robovm.apple.corelocation.*;
 public final class /*<name>*/CKSubscriptionOptions/*</name>*/ extends Bits</*<name>*/CKSubscriptionOptions/*</name>*/> {
     /*<values>*/
     public static final CKSubscriptionOptions None = new CKSubscriptionOptions(0L);
-    public static final CKSubscriptionOptions RecordCreation = new CKSubscriptionOptions(1L);
-    public static final CKSubscriptionOptions RecordUpdate = new CKSubscriptionOptions(2L);
-    public static final CKSubscriptionOptions RecordDeletion = new CKSubscriptionOptions(4L);
-    public static final CKSubscriptionOptions ce = new CKSubscriptionOptions(8L);
+    public static final CKSubscriptionOptions OnRecordCreation = new CKSubscriptionOptions(1L);
+    public static final CKSubscriptionOptions OnRecordUpdate = new CKSubscriptionOptions(2L);
+    public static final CKSubscriptionOptions OnRecordDeletion = new CKSubscriptionOptions(4L);
+    public static final CKSubscriptionOptions Once = new CKSubscriptionOptions(8L);
     /*</values>*/
 
     /*<bind>*/

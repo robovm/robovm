@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,17 +46,17 @@ import org.robovm.apple.uikit.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*/
     @NotImplemented("shouldShowCancelConfirmation")
-    public boolean shouldShowCancelConfirmation() { throw new UnsupportedOperationException(); }
+    public boolean shouldShowCancelConfirmation() { return false; }
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("canHandleAdjustmentData:")
-    public boolean canHandleAdjustmentData(PHAdjustmentData adjustmentData) { throw new UnsupportedOperationException(); }
+    public boolean canHandleAdjustmentData(PHAdjustmentData adjustmentData) { return false; }
     @NotImplemented("startContentEditingWithInput:placeholderImage:")
-    public void startContentEditing(PHContentEditingInput contentEditingInput, UIImage placeholderImage) { throw new UnsupportedOperationException(); }
+    public void startContentEditing(PHContentEditingInput contentEditingInput, UIImage placeholderImage) {}
     @NotImplemented("finishContentEditingWithCompletionHandler:")
-    public void finishContentEditing(@Block VoidBlock1<PHContentEditingOutput> completionHandler) { throw new UnsupportedOperationException(); }
+    public void finishContentEditing(@Block VoidBlock1<PHContentEditingOutput> completionHandler) {}
     @NotImplemented("cancelContentEditing")
-    public void cancelContentEditing() { throw new UnsupportedOperationException(); }
+    public void cancelContentEditing() {}
     /*</methods>*/
 }

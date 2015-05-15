@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 Trillian Mobile AB
+ * Copyright (C) 2013 RoboVM AB
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -26,6 +26,8 @@ import org.robovm.libimobiledevice.IDevice;
  */
 public interface AppLauncherCallback {
     public void setAppLaunchInfo(AppLauncherInfo info);
+    
+    public byte[] filterOutput(byte[] data);
     
     static class AppLauncherInfo {
         final IDevice device;

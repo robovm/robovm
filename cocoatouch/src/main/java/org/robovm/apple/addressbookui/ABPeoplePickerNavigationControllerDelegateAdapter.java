@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,27 +53,27 @@ import org.robovm.apple.addressbook.*;
      * @since Available in iOS 8.0 and later.
      */
     @NotImplemented("peoplePickerNavigationController:didSelectPerson:")
-    public void didSelectPerson(ABPeoplePickerNavigationController peoplePicker, ABPerson person) { throw new UnsupportedOperationException(); }
+    public void didSelectPerson(ABPeoplePickerNavigationController peoplePicker, ABPerson person) {}
     /**
      * @since Available in iOS 8.0 and later.
      */
     @NotImplemented("peoplePickerNavigationController:didSelectPerson:property:identifier:")
-    public void didSelectPerson(ABPeoplePickerNavigationController peoplePicker, ABPerson person, ABProperty property, int identifier) { throw new UnsupportedOperationException(); }
+    public void didSelectPerson(ABPeoplePickerNavigationController peoplePicker, ABPerson person, ABProperty property, int identifier) {}
     @NotImplemented("peoplePickerNavigationControllerDidCancel:")
-    public void didCancel(ABPeoplePickerNavigationController peoplePicker) { throw new UnsupportedOperationException(); }
+    public void didCancel(ABPeoplePickerNavigationController peoplePicker) {}
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 8.0.
      */
     @Deprecated
     @NotImplemented("peoplePickerNavigationController:shouldContinueAfterSelectingPerson:")
-    public boolean shouldContinueAfterSelectingPerson(ABPeoplePickerNavigationController peoplePicker, ABPerson person) { throw new UnsupportedOperationException(); }
+    public boolean shouldContinueAfterSelectingPerson(ABPeoplePickerNavigationController peoplePicker, ABPerson person) { return false; }
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 8.0.
      */
     @Deprecated
     @NotImplemented("peoplePickerNavigationController:shouldContinueAfterSelectingPerson:property:identifier:")
-    public boolean shouldContinueAfterSelectingPerson(ABPeoplePickerNavigationController peoplePicker, ABPerson person, ABProperty property, int identifier) { throw new UnsupportedOperationException(); }
+    public boolean shouldContinueAfterSelectingPerson(ABPeoplePickerNavigationController peoplePicker, ABPerson person, ABProperty property, int identifier) { return false; }
     /*</methods>*/
 }

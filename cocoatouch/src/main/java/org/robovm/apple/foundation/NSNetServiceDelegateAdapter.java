@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,25 +55,25 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("netServiceWillPublish:")
-    public void willPublish(NSNetService sender) { throw new UnsupportedOperationException(); }
+    public void willPublish(NSNetService sender) {}
     @NotImplemented("netServiceDidPublish:")
-    public void didPublish(NSNetService sender) { throw new UnsupportedOperationException(); }
+    public void didPublish(NSNetService sender) {}
     @NotImplemented("netService:didNotPublish:")
-    public void didNotPublish(NSNetService sender, NSNetServiceErrorInfo errorDict) { throw new UnsupportedOperationException(); }
+    public void didNotPublish(NSNetService sender, NSNetServiceErrorInfo errorDict) {}
     @NotImplemented("netServiceWillResolve:")
-    public void willResolve(NSNetService sender) { throw new UnsupportedOperationException(); }
+    public void willResolve(NSNetService sender) {}
     @NotImplemented("netServiceDidResolveAddress:")
-    public void didResolve(NSNetService sender) { throw new UnsupportedOperationException(); }
+    public void didResolve(NSNetService sender) {}
     @NotImplemented("netService:didNotResolve:")
-    public void didNotResolve(NSNetService sender, NSNetServiceErrorInfo errorDict) { throw new UnsupportedOperationException(); }
+    public void didNotResolve(NSNetService sender, NSNetServiceErrorInfo errorDict) {}
     @NotImplemented("netServiceDidStop:")
-    public void didStop(NSNetService sender) { throw new UnsupportedOperationException(); }
+    public void didStop(NSNetService sender) {}
     @NotImplemented("netService:didUpdateTXTRecordData:")
-    public void didUpdateTXTRecordData(NSNetService sender, NSData data) { throw new UnsupportedOperationException(); }
+    public void didUpdateTXTRecordData(NSNetService sender, NSData data) {}
     /**
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("netService:didAcceptConnectionWithInputStream:outputStream:")
-    public void didAcceptConnection(NSNetService sender, NSInputStream inputStream, NSOutputStream outputStream) { throw new UnsupportedOperationException(); }
+    public void didAcceptConnection(NSNetService sender, NSInputStream inputStream, NSOutputStream outputStream) {}
     /*</methods>*/
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -131,5 +131,10 @@ import org.robovm.apple.dispatch.*;
      */
     @Method(selector = "performActivityWithOptions:reason:usingBlock:")
     public native void performActivity(NSActivityOptions options, String reason, @Block Runnable block);
+    /**
+     * @since Available in iOS 8.2 and later.
+     */
+    @Method(selector = "performExpiringActivityWithReason:usingBlock:")
+    public native void performExpiringActivity(String reason, @Block VoidBooleanBlock block);
     /*</methods>*/
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,7 +43,11 @@ public final class /*<name>*/PKAddressField/*</name>*/ extends Bits</*<name>*/PK
     public static final PKAddressField PostalAddress = new PKAddressField(1L);
     public static final PKAddressField Phone = new PKAddressField(2L);
     public static final PKAddressField Email = new PKAddressField(4L);
-    public static final PKAddressField All = new PKAddressField(7L);
+    /**
+     * @since Available in iOS 8.3 and later.
+     */
+    public static final PKAddressField Name = new PKAddressField(8L);
+    public static final PKAddressField All = new PKAddressField(15L);
     /*</values>*/
 
     /*<bind>*/

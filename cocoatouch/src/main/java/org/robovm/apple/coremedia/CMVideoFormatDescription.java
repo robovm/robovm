@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,15 +49,55 @@ import org.robovm.apple.audiotoolbox.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    public static CMVideoFormatDescription create(CMVideoCodecType codecType, int width, int height, NSDictionary<NSString, ?> extensions) {
-        CMVideoFormatDescriptionPtr ptr = new CMVideoFormatDescriptionPtr();
-        create(null, codecType, width, height, extensions, ptr);
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 4.0 and later.
+     */
+    public static CMVideoFormatDescription create(CMVideoCodecType codecType, int width, int height, CMVideoFormatDescriptionExtension extensions) throws OSStatusException {
+        CMVideoFormatDescription.CMVideoFormatDescriptionPtr ptr = new CMVideoFormatDescription.CMVideoFormatDescriptionPtr();
+        OSStatus status = create0(null, codecType, width, height, extensions, ptr);
+        OSStatusException.throwIfNecessary(status);
         return ptr.get();
     }
-    
-    public static CMVideoFormatDescription create(CVImageBuffer imageBuffer) {
-        CMVideoFormatDescriptionPtr ptr = new CMVideoFormatDescriptionPtr();
-        create(null, imageBuffer, ptr);
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 4.0 and later.
+     */
+    public static CMVideoFormatDescription create(CVImageBuffer imageBuffer) throws OSStatusException {
+        CMVideoFormatDescription.CMVideoFormatDescriptionPtr ptr = new CMVideoFormatDescription.CMVideoFormatDescriptionPtr();
+        OSStatus status = create0(null, imageBuffer, ptr);
+        OSStatusException.throwIfNecessary(status);
+        return ptr.get();
+    }
+
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 8.0 and later.
+     */
+    public static CMVideoFormatDescription createFromBigEndianImageDescriptionData(BytePtr imageDescriptionData, @MachineSizedUInt long imageDescriptionSize, int imageDescriptionStringEncoding, String imageDescriptionFlavor) throws OSStatusException {
+        CMVideoFormatDescription.CMVideoFormatDescriptionPtr ptr = new CMVideoFormatDescription.CMVideoFormatDescriptionPtr();
+        OSStatus status = createFromBigEndianImageDescriptionData0(null, imageDescriptionData, imageDescriptionSize, imageDescriptionStringEncoding, imageDescriptionFlavor, ptr);
+        OSStatusException.throwIfNecessary(status);
+        return ptr.get();
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 8.0 and later.
+     */
+    public static CMVideoFormatDescription createFromBigEndianImageDescriptionBlockBuffer(CMBlockBuffer imageDescriptionBlockBuffer, int imageDescriptionStringEncoding, String imageDescriptionFlavor) throws OSStatusException {
+        CMVideoFormatDescription.CMVideoFormatDescriptionPtr ptr = new CMVideoFormatDescription.CMVideoFormatDescriptionPtr();
+        OSStatus status = createFromBigEndianImageDescriptionBlockBuffer0(null, imageDescriptionBlockBuffer, imageDescriptionStringEncoding, imageDescriptionFlavor, ptr);
+        OSStatusException.throwIfNecessary(status);
+        return ptr.get();
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 8.0 and later.
+     */
+    public static CMBlockBuffer copyAsBigEndianImageDescriptionBlockBuffer(CFAllocator allocator, CMVideoFormatDescription videoFormatDescription, int imageDescriptionStringEncoding, String imageDescriptionFlavor) throws OSStatusException {
+        CMBlockBuffer.CMBlockBufferPtr ptr = new CMBlockBuffer.CMBlockBufferPtr();
+        OSStatus status = copyAsBigEndianImageDescriptionBlockBuffer0(null, videoFormatDescription, imageDescriptionStringEncoding, imageDescriptionFlavor, ptr);
+        OSStatusException.throwIfNecessary(status);
         return ptr.get();
     }
     /*<methods>*/
@@ -65,22 +105,12 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMVideoFormatDescriptionCreate", optional=true)
-    protected static native int create(CFAllocator allocator, CMVideoCodecType codecType, int width, int height, NSDictionary<NSString, ?> extensions, CMVideoFormatDescription.CMVideoFormatDescriptionPtr outDesc);
+    private static native OSStatus create0(CFAllocator allocator, CMVideoCodecType codecType, int width, int height, CMVideoFormatDescriptionExtension extensions, CMVideoFormatDescription.CMVideoFormatDescriptionPtr outDesc);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMVideoFormatDescriptionCreateForImageBuffer", optional=true)
-    protected static native int create(CFAllocator allocator, CVImageBuffer imageBuffer, CMVideoFormatDescription.CMVideoFormatDescriptionPtr outDesc);
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @Bridge(symbol="CMVideoFormatDescriptionCreateFromH264ParameterSets", optional=true)
-    protected static native int create(CFAllocator allocator, @MachineSizedUInt long parameterSetCount, BytePtr.BytePtrPtr parameterSetPointers, MachineSizedUIntPtr parameterSetSizes, int NALUnitHeaderLength, CMFormatDescription.CMFormatDescriptionPtr formatDescriptionOut);
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @Bridge(symbol="CMVideoFormatDescriptionGetH264ParameterSetAtIndex", optional=true)
-    protected static native int getH264ParameterSetAtIndex(CMFormatDescription videoDesc, @MachineSizedUInt long parameterSetIndex, BytePtr.BytePtrPtr parameterSetPointerOut, MachineSizedUIntPtr parameterSetSizeOut, MachineSizedUIntPtr parameterSetCountOut, IntPtr NALUnitHeaderLengthOut);
+    private static native OSStatus create0(CFAllocator allocator, CVImageBuffer imageBuffer, CMVideoFormatDescription.CMVideoFormatDescriptionPtr outDesc);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -100,7 +130,7 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMVideoFormatDescriptionGetExtensionKeysCommonWithImageBuffers", optional=true)
-    public static native NSArray<?> getExtensionKeysCommonWithImageBuffers();
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String> getExtensionKeysCommonWithImageBuffers();
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -110,16 +140,16 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 8.0 and later.
      */
     @Bridge(symbol="CMVideoFormatDescriptionCreateFromBigEndianImageDescriptionData", optional=true)
-    protected static native int create(CFAllocator allocator, BytePtr imageDescriptionData, @MachineSizedUInt long imageDescriptionSize, int imageDescriptionStringEncoding, String imageDescriptionFlavor, CMVideoFormatDescription.CMVideoFormatDescriptionPtr videoFormatDescriptionOut);
+    private static native OSStatus createFromBigEndianImageDescriptionData0(CFAllocator allocator, BytePtr imageDescriptionData, @MachineSizedUInt long imageDescriptionSize, int imageDescriptionStringEncoding, String imageDescriptionFlavor, CMVideoFormatDescription.CMVideoFormatDescriptionPtr videoFormatDescriptionOut);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Bridge(symbol="CMVideoFormatDescriptionCreateFromBigEndianImageDescriptionBlockBuffer", optional=true)
-    protected static native int create(CFAllocator allocator, CMBlockBuffer imageDescriptionBlockBuffer, int imageDescriptionStringEncoding, String imageDescriptionFlavor, CMVideoFormatDescription.CMVideoFormatDescriptionPtr videoFormatDescriptionOut);
+    private static native OSStatus createFromBigEndianImageDescriptionBlockBuffer0(CFAllocator allocator, CMBlockBuffer imageDescriptionBlockBuffer, int imageDescriptionStringEncoding, String imageDescriptionFlavor, CMVideoFormatDescription.CMVideoFormatDescriptionPtr videoFormatDescriptionOut);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Bridge(symbol="CMVideoFormatDescriptionCopyAsBigEndianImageDescriptionBlockBuffer", optional=true)
-    public static native int copyAsBigEndianImageDescriptionBlockBuffer(CFAllocator allocator, CMVideoFormatDescription videoFormatDescription, int imageDescriptionStringEncoding, String imageDescriptionFlavor, CMBlockBuffer.CMBlockBufferPtr imageDescriptionBlockBufferOut);
+    private static native OSStatus copyAsBigEndianImageDescriptionBlockBuffer0(CFAllocator allocator, CMVideoFormatDescription videoFormatDescription, int imageDescriptionStringEncoding, String imageDescriptionFlavor, CMBlockBuffer.CMBlockBufferPtr imageDescriptionBlockBufferOut);
     /*</methods>*/
 }

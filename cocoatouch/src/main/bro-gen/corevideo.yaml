@@ -7,42 +7,40 @@ headers:
     - /System/Library/Frameworks/CoreVideo.framework/Headers/CoreVideo.h
     - /System/Library/Frameworks/CoreVideo.framework/Headers/CVBase.h
 typedefs:
-    '__CVBuffer': CVBuffer
-    '__CVOpenGLESTextureCache': CVOpenGLESTextureCache
-    '__CVPixelBufferPool': CVPixelBufferPool
+    __CVBuffer: CVBuffer
+    __CVOpenGLESTextureCache: CVOpenGLESTextureCache
+    __CVPixelBufferPool: CVPixelBufferPool
+    __CVMetalTextureCache: CVMetalTextureCache
     CVBufferRef: CVBuffer
     CVImageBufferRef: CVImageBuffer
     CVOpenGLESTextureRef: CVOpenGLESTexture
     CVOpenGLESTextureCacheRef: CVOpenGLESTextureCache
+    CVMetalTextureRef: CVMetalTexture
+    CVMetalTextureCacheRef: CVMetalTextureCache
     CVPixelBufferRef: CVPixelBuffer
     CVPixelBufferPoolRef: CVPixelBufferPool
 
 enums:
     CVSMPTETimeType: { first: kCVSMPTETimeType24 }
-    CVSMPTETimeFlag: { first: kCVSMPTETimeValid, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
-    CVTimeStampFlag: { first: kCVTimeStampVideoTimeValid, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
+    CVSMPTETimeFlags: { first: kCVSMPTETimeValid, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
+    CVTimeFlags: { first: kCVTimeIsIndefinite, prefix: kCVTime, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
+    CVTimeStampFlags: { first: kCVTimeStampVideoTimeValid, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
     CVAttachmentMode: { first: kCVAttachmentMode_ShouldNotPropagate, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     CVPixelFormatType: { first: kCVPixelFormatType_1Monochrome, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     CVPixelBufferLockFlags: { first: kCVPixelBufferLock_ReadOnly, prefix: kCVPixelBufferLock_, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
     CVReturn: { first: kCVReturnSuccess }
 
-# typedef void (*CVPixelBufferReleaseBytesCallback)( void *releaseRefCon, const void *baseAddress );
-#typedef void (*CVPixelBufferReleasePlanarBytesCallback)( void *releaseRefCon, const void *dataPtr, size_t dataSize, size_t numberOfPlanes, const void *planeAddresses[] );
-
-
 classes:
-    CoreVideo:
-        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
-
     # Opaque Types
     CVBuffer:
         extends: CFType
+        visibility: 'public abstract'
     CVImageBuffer:
         extends: CVBuffer
-    CVPixelBuffer:
+    CVMetalTexture:
         extends: CVImageBuffer
         add_ptr: true
-    CVPixelBufferPool:
+    CVMetalTextureCache:
         extends: CFType
         add_ptr: true
     CVOpenGLESTexture:
@@ -51,164 +49,220 @@ classes:
     CVOpenGLESTextureCache:
         extends: CFType
         add_ptr: true
+    CVPixelBuffer:
+        extends: CVImageBuffer
+        add_ptr: true
+    CVPixelBufferPool:
+        extends: CFType
+        add_ptr: true
 
     # Structs
-    CVSMPTETime: {}
-    CVTime: {}
-    CVTimeStamp: {}
+    CVSMPTETime:
+        type: 
+            type: CVSMPTETimeType
+        flags: 
+            type: CVSMPTETimeFlags
+    CVTime:
+        flags:
+            type: CVTimeFlags
+    CVTimeStamp:
+        flags:
+            type: CVTimeStampFlags
     CVPlanarComponentInfo: {}
     CVPlanarPixelBufferInfo: {}
     CVPlanarPixelBufferInfo_YCbCrPlanar: {}
     CVPlanarPixelBufferInfo_YCbCrBiPlanar: {}
+    CVFillExtendedPixelsCallBackData:
+        visibility: ''
+        refCon:
+            type: '@Pointer long'
 
 protocols: {}
 
 functions:
     (CV.*)GetTypeID:
-        class: "#{g[0]}"
+        class: '#{g[0]}'
         name: getClassTypeID
     
     # CVBuffer
     CVBuffer(GetAttachment):
         class: CVBuffer
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         visibility: protected
     CVBuffer(GetAttachments):
         class: CVBuffer
-        name: "#{g[0]}"
-        return_type: "NSDictionary<NSString, ?>"
+        name: '#{g[0]}'
+        return_type: 'NSDictionary<NSString, ?>'
+        visibility: protected
     CVBuffer(SetAttachments):
         class: CVBuffer
-        name: "#{g[0]}"
+        name: '#{g[0]}'
+        visibility: protected
         parameters:
             theAttachments:
-                type: "NSDictionary<NSString, ?>"
+                type: 'NSDictionary<NSString, ?>'
     CVBuffer(Retain|Release):
         exclude: true
     CVBuffer(.*):
         class: CVBuffer
-        name: "#{g[0]}"
+        name: '#{g[0]}'
+        visibility: protected
 
     # CVHostTime
     CV(GetCurrentHostTime):
         class: CVHostTime
-        name: "#{g[0]}"
+        name: '#{g[0]}'
     CV(GetHostClockFrequency):
         class: CVHostTime
-        name: "#{g[0]}"
+        name: '#{g[0]}'
     CV(GetHostClockMinimumTimeDelta):
         class: CVHostTime
-        name: "#{g[0]}"
+        name: '#{g[0]}'
 
     # CVImageBuffer
     CVImageBuffer(.*):
         class: CVImageBuffer
-        name: "#{g[0]}"
+        name: '#{g[0]}'
+
+    # CVMetalTextureCache
+    CVMetalTextureCache(Create):
+        class: CVMetalTextureCache
+        name: '#{g[0]}'
+        visibility: private
+        parameters:
+            cacheAttributes:
+                type: CVMetalTextureCacheAttributes
+            textureAttributes:
+                type: 'NSDictionary<NSString, ?>'
+    CVMetalTextureCache(CreateTexture)FromImage:
+        class: CVMetalTextureCache
+        name: '#{g[0]}'
+        visibility: private
+        parameters:
+            textureAttributes:
+                type: 'NSDictionary<NSString, ?>'
+    CVMetalTextureCache(.*):
+        class: CVMetalTextureCache
+        name: '#{g[0]}'
+
+    # CVMetalTexture
+    CVMetalTexture(GetCleanTexCoords):
+        class: CVMetalTexture
+        name: '#{g[0]}'
+        visibility: protected
+    CVMetalTexture(.*):
+        class: CVMetalTexture
+        name: '#{g[0]}'
 
     #CVOpenGLESTextureCache
     CVOpenGLESTextureCache(Create):
         class: CVOpenGLESTextureCache
-        name: "#{g[0]}"
-        visibility: protected
+        name: '#{g[0]}'
+        visibility: private
         parameters:
             textureAttributes:
-                type: "NSDictionary<NSString, ?>"
+                type: 'NSDictionary<NSString, ?>'
             cacheAttributes:
-                type: "NSDictionary<NSString, ?>"
+                type: CVOpenGLESTextureCacheAttributes
     CVOpenGLESTextureCache(CreateTexture)FromImage:
         class: CVOpenGLESTextureCache
-        name: "#{g[0]}"
-        visibility: protected
+        name: '#{g[0]}'
+        visibility: private
         parameters:
             textureAttributes:
-                type: "NSDictionary<NSString, ?>"
+                type: 'NSDictionary<NSString, ?>'
     CVOpenGLESTextureCache(.*):
         class: CVOpenGLESTextureCache
-        name: "#{g[0]}"
+        name: '#{g[0]}'
 
     # CVOpenGLESTexture
     CVOpenGLESTexture(GetCleanTexCoords):
         class: CVOpenGLESTexture
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         visibility: protected
     CVOpenGLESTexture(.*):
         class: CVOpenGLESTexture
-        name: "#{g[0]}"
+        name: '#{g[0]}'
 
     # CVPixelBufferPool
     CVPixelBufferPool(CreatePixelBuffer).*:
         class: CVPixelBufferPool
-        name: "#{g[0]}"
-        visibility: protected
+        name: '#{g[0]}'
+        visibility: private
         parameters:
             auxAttributes:
-                type: "NSDictionary<NSString, ?>"
+                type: CVPixelBufferPoolAuxiliaryAttributes
     CVPixelBufferPool(Create).*:
         class: CVPixelBufferPool
-        name: "#{g[0]}"
-        visibility: protected
+        name: '#{g[0]}'
+        visibility: private
         parameters:
             poolAttributes:
-                type: "NSDictionary<NSString, ?>"
+                type: CVPixelBufferPoolAttributes
             pixelBufferAttributes:
-                type: "NSDictionary<NSString, ?>"
-    CVPixelBufferPool(Get.*Attributes):
+                type: CVPixelBufferAttributes
+    CVPixelBufferPool(GetAttributes):
         class: CVPixelBufferPool
-        name: "#{g[0]}"
-        return_type: "NSDictionary<NSString, ?>"
+        name: '#{g[0]}'
+        return_type: CVPixelBufferPoolAttributes
+    CVPixelBufferPool(GetPixelBufferAttributes):
+        class: CVPixelBufferPool
+        name: '#{g[0]}'
+        return_type: CVPixelBufferAttributes
     CVPixelBufferPool(Retain|Release):
         exclude: true
     CVPixelBufferPool(.*):
         class: CVPixelBufferPool
-        name: "#{g[0]}"
+        name: '#{g[0]}'
 
     # CVPixelBuffer
     CVPixelBuffer(CreateResolvedAttributesDictionary):
         class: CVPixelBuffer
-        name: "#{g[0]}"
-        visibility: protected
+        name: '#{g[0]}'
+        visibility: private
         parameters:
             attributes:
-                type: "NSArray<NSDictionary<NSString, ?>>"
+                type: List<CVPixelBufferAttributes>
+                marshaler: CVPixelBufferAttributes.AsListMarshaler
             resolvedDictionaryOut:
-                type: "NSDictionary.NSDictionaryPtr"
-    CVPixelBuffer(Create)WithPlanarBytes: # TODO wrap
+                type: CFDictionary.CFDictionaryPtr
+    CVPixelBuffer(Create)WithPlanarBytes:
         class: CVPixelBuffer
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         visibility: protected
         parameters:
             planeWidth:
-                type: "MachineSizedUIntPtr"
+                type: MachineSizedUIntPtr
             planeHeight:
-                type: "MachineSizedUIntPtr"
+                type: MachineSizedUIntPtr
             planeBytesPerRow:
-                type: "MachineSizedUIntPtr"
+                type: MachineSizedUIntPtr
             pixelBufferAttributes:
-                type: "NSDictionary<NSString, ?>"
+                type: CVPixelBufferAttributes
             pixelFormatType:
-                type: "CVPixelFormatType"
+                type: CVPixelFormatType
     CVPixelBuffer(Create).*:
         class: CVPixelBuffer
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         visibility: protected
         parameters:
             pixelBufferAttributes:
-                type: "NSDictionary<NSString, ?>"
+                type: CVPixelBufferAttributes
             pixelFormatType:
-                type: "CVPixelFormatType"
+                type: CVPixelFormatType
             releaseRefCon:
-                type: "@Pointer long"
+                type: '@Pointer long'
     CVPixelBuffer(GetExtendedPixels):
         class: CVPixelBuffer
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         visibility: protected
     CVPixelBuffer(GetPixelFormatType):
         class: CVPixelBuffer
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         return_type: CVPixelFormatType
     CVPixelBuffer(LockBaseAddress|UnlockBaseAddress):
         class: CVPixelBuffer
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         parameters:
             lockFlags:
                 type: CVPixelBufferLockFlags
@@ -218,120 +272,338 @@ functions:
         exclude: true
     CVPixelBuffer(.*):
         class: CVPixelBuffer
-        name: "#{g[0]}"
+        name: '#{g[0]}'
 
     # CVPixelFormatDescription
-    CVPixelFormatDescriptionArrayCreateWithAllPixelFormatTypes:
+    CVPixelFormatDescriptionArrayCreateWith(AllPixelFormatTypes):
         class: CVPixelFormatDescription
-        name: "createPixelFormatTypesArray"
-        visibility: protected
-        return_type: "NSArray<?>" # CVPixelFormatType
+        name: 'get#{g[0]}'
+        return_type: List<CVPixelFormatType>
+        return_marshaler: CVPixelFormatType.AsListMarshaler
     CVPixelFormatDescription(Create).*:
         class: CVPixelFormatDescription
-        name: "#{g[0]}"
-        visibility: protected
-        return_type: "NSDictionary<NSString, ?>"
+        name: '#{g[0]}'
+        return_type: CVPixelFormatDescription
         parameters:
             pixelFormat:
-                type: "CVPixelFormatType"
+                type: CVPixelFormatType
     CVPixelFormatDescription(RegisterDescription)WithPixelFormatType:
         class: CVPixelFormatDescription
-        name: "#{g[0]}"
+        name: '#{g[0]}'
+        static: true
         parameters:
             description:
-                type: "NSDictionary<NSString, ?>"
+                type: CVPixelFormatDescription
             pixelFormat:
-                type: "CVPixelFormatType"
+                type: CVPixelFormatType
     CVPixelFormatDescription(.*):
         class: CVPixelFormatDescription
-        name: "#{g[0]}"
+        name: '#{g[0]}'
 
     # Make sure we don't miss any functions if new ones are introduced in a later version
-    (CV.*):
+    (k?CV.*):
         class: CoreVideo
-        name: "Function__#{g[0]}"
-    (kCV.*):
-        class: CoreVideo
-        name: "Function__#{g[0]}"
+        name: 'Function__#{g[0]}'
 
 values:
-    kCV(ZeroTime):
-        class: CoreVideo
-        name: "CVTime#{g[0]}"
-    kCV(IndefiniteTime):
-        class: CoreVideo
-        name: "CVTime#{g[0]}"
-        
-    kCVBuffer(.*)Key:
-        class: CoreVideo
-        name: "CVBuffer#{g[0]}Key"
-        
-    kCVImageBuffer(.*)Key:
-        class: CoreVideo
-        name: "CVImageBuffer#{g[0]}Key"
-    kCVImageBufferFieldDetail(.*):
-        class: CoreVideo
-        name: "CVImageBufferFieldDetail#{g[0]}"
-    kCVImageBufferYCbCrMatrix_(.*):
-        class: CoreVideo
-        name: "CVImageBufferYCbCrMatrix#{g[0]}"
-    kCVImageBufferColorPrimaries_(.*):
-        class: CoreVideo
-        name: "CVImageBufferColorPrimaries#{g[0]}"
-    kCVImageBufferTransferFunction_(.*):
-        class: CoreVideo
-        name: "CVImageBufferTransferFunction#{g[0]}"
-    kCVImageBufferChromaLocation_(.*):
-        class: CoreVideo
-        name: "CVImageBufferChromaLocation#{g[0]}"
-    kCVImageBufferChromaSubsampling_(.*):
-        class: CoreVideo
-        name: "CVImageBufferChromaSubsampling_#{g[0]}"
-    
-    kCVPixelBufferPool(.*)Key:
-        class: CoreVideo
-        name: "CVPixelBufferPoolPool#{g[0]}Key"
-    
-    kCVPixelBuffer(.*Key):
-        class: CVPixelBufferAttributes
+    # CVTime
+    kCV(Zero)Time:
+        class: CVTime
+        name: '#{g[0]}'
+    kCV(Indefinite)Time:
+        class: CVTime
+        name: '#{g[0]}'
+
+    # CVBuffer
+    kCVBufferTime(.*)Key:
+        dictionary: CVBufferMovieTime
         name: '#{g[0]}'
         type: CFString
-        visibility: protected
-    
-    kCVPixelBufferPool(.*)Notification:
-        class: CoreVideo
-        name: "CVPixelBufferPool#{g[0]}Notification"
-        
+        methods:
+            TimeValue:
+                type: double
+            TimeScale:
+                type: double
+    kCVBuffer(.*)Key:
+        dictionary: CVBufferAttributes
+        enum: CVBufferAttribute
+        name: '#{g[0]}'
+        type: CFString
+        methods:
+            PropagatedAttachments:
+                type: CVBufferAttributes
+            NonPropagatedAttachments:
+                type: CVBufferAttributes
+            MovieTime:
+                type: CVBufferMovieTime
+
+    # CVImageBuffer
+    kCVImageBufferCleanAperture(Width|Height|HorizontalOffset|VerticalOffset)Key:
+        dictionary: CVImageBufferCleanAperture
+        name: '#{g[0]}'
+        type: CFString
+        methods:
+            Width:
+                type: long
+            Height:
+                type: long
+            HorizontalOffset:
+                type: long
+            VerticalOffset:
+                type: long
+    kCVImageBufferPixelAspectRatio(HorizontalSpacing|VerticalSpacing)Key:
+        dictionary: CVImageBufferPixelAspectRatio
+        name: '#{g[0]}'
+        type: CFString
+        methods:
+            HorizontalSpacing:
+                type: long
+            VerticalSpacing:
+                type: long
+    kCVImageBufferDisplay(Width|Height)Key:
+        dictionary: CVImageBufferDisplayDimensions
+        name: '#{g[0]}'
+        type: CFString
+        methods:
+            Width:
+                type: long
+            Height:
+                type: long
+    kCVImageBuffer(.*)Key:
+        dictionary: CVImageBufferAttributes
+        enum: CVImageBufferAttribute
+        dictionary_extends: CVBufferAttributes
+        enum_extends: CVBufferAttribute
+        name: '#{g[0]}'
+        type: CFString
+        methods:
+            CGColorSpace:
+                type: CGColorSpace
+            CleanAperture:
+                type: CVImageBufferCleanAperture
+            PreferredCleanAperture:
+                type: CVImageBufferCleanAperture
+            FieldCount:
+                type: int
+            FieldDetail:
+                type: CVImageBufferFieldDetail
+            PixelAspectRatio:
+                type: CVImageBufferPixelAspectRatio
+            DisplayDimensions:
+                type: CVImageBufferDisplayDimensions
+            GammaLevel:
+                type: double
+            ICCProfile:
+                type: NSData
+            YCbCrMatrix:
+                type: CVImageBufferYCbCrMatrix
+            ColorPrimaries:
+                type: CVImageBufferColorPrimaries
+            TransferFunction:
+                type: CVImageBufferTransferFunction
+            ChromaLocationTopField:
+                type: CVImageBufferChromaLocation
+            ChromaLocationBottomField:
+                type: CVImageBufferChromaLocation
+            ChromaSubsampling:
+                type: CVImageBufferChromaSubsampling
+            AlphaChannelIsOpaque:
+                name: AlphaChannelOpaque
+                type: boolean
+    kCVImageBuffer(AlphaChannelIsOpaque):
+        dictionary: CVImageBufferAttributes
+        enum: CVImageBufferAttribute
+        name: '#{g[0]}'
+        type: CFString
+    kCVImageBufferFieldDetail(.*):
+        enum: CVImageBufferFieldDetail
+        name: '#{g[0]}'
+        type: CFString
+    kCVImageBufferYCbCrMatrix_(.*):
+        enum: CVImageBufferYCbCrMatrix
+        name: '#{g[0]}'
+        type: CFString
+    kCVImageBufferColorPrimaries_(.*):
+        enum: CVImageBufferColorPrimaries
+        name: '#{g[0]}'
+        type: CFString
+    kCVImageBufferTransferFunction_(.*):
+        enum: CVImageBufferTransferFunction
+        name: '#{g[0]}'
+        type: CFString
+    kCVImageBufferChromaLocation_(.*):
+        enum: CVImageBufferChromaLocation
+        name: '#{g[0]}'
+        type: CFString
+    kCVImageBufferChromaSubsampling_(.*):
+        enum: CVImageBufferChromaSubsampling
+        name: '#{g[0]}'
+        type: CFString
+
+    # CVMetalTextureCache
+    kCVMetalTextureCache(.*)Key:
+        dictionary: CVMetalTextureCacheAttributes
+        name: '#{g[0]}'
+        type: CFString
+        methods:
+            MaximumTextureAge:
+                type: long
+
+    # CVOpenGLESTextureCache
     kCVOpenGLESTextureCache(.*)Key:
-        class: CoreVideo
-        name: "CVOpenGLESTextureCache#{g[0]}Key"
-        
+        dictionary: CVOpenGLESTextureCacheAttributes
+        name: '#{g[0]}'
+        type: CFString
+        methods:
+            MaximumTextureAge:
+                type: long
+
+    # CVPixelBufferPool
+    kCVPixelBufferPool(AllocationThreshold)Key:
+        dictionary: CVPixelBufferPoolAuxiliaryAttributes
+        name: '#{g[0]}'
+        type: CFString
+        methods:
+            AllocationThreshold:
+                type: int
+    kCVPixelBufferPool(.*)Key:
+        dictionary: CVPixelBufferPoolAttributes
+        name: '#{g[0]}'
+        type: CFString
+        methods:
+            MinimumBufferCount:
+                type: int
+            MaximumBufferAge:
+                type: double
+    kCVPixelBufferPool(.*Notification):
+        class: CVPixelBufferPool
+        name: '#{g[0]}'
+        type: NSString
+    
+    # CVPixelBuffer
+    kCVPixelBuffer(.*)Key:
+        dictionary: CVPixelBufferAttributes
+        enum: CVPixelBufferAttribute
+        dictionary_extends: CVBufferAttributes
+        enum_extends: CVBufferAttribute
+        name: '#{g[0]}'
+        type: CFString
+        methods:
+            MemoryAllocator:
+                type: CFAllocator
+            Width:
+                type: long
+            Height:
+                type: long
+            ExtendedPixelsLeft:
+                type: long
+            ExtendedPixelsTop:
+                type: long
+            ExtendedPixelsRight:
+                type: long
+            ExtendedPixelsBottom:
+                type: long
+            BytesPerRowAlignment:
+                type: long
+            CGBitmapContextCompatibility:
+                name: compatibleWithCGBitmapContext
+                type: boolean
+            CGImageCompatibility:
+                name: compatibleWithCGImage
+                type: boolean
+            OpenGLCompatibility:
+                name: compatibleWithOpenGL
+                type: boolean
+            PlaneAlignment:
+                type: long
+            IOSurfaceProperties:
+                type: 'NSDictionary<NSString, NSObject>'
+            OpenGLESCompatibility:
+                name: compatibleWithOpenGLES
+                type: boolean
+            MetalCompatibility:
+                name: compatibleWithMetal
+                type: boolean
+
+    # CVPixelFormatDescription
     kCVPixelFormat(.*):
-        class: CoreVideo
-        name: "CVPixelFormat#{g[0]}"
+        dictionary: CVPixelFormatDescription
+        name: '#{g[0]}'
+        type: CFString
+        methods:
+            Name:
+                type: String
+            Constant:
+                type: long
+            CodecType:
+                type: String
+            FourCC:
+                type: String
+            ContainsAlpha:
+                type: boolean
+            ContainsYCbCr:
+                type: boolean
+            ContainsRGB:
+                type: boolean
+            Planes:
+                type: int
+            BlockWidth:
+                type: int
+                default: 1
+            BlockHeight:
+                type: int
+                default: 1
+            BitsPerBlock:
+                type: int
+            BlockHorizontalAlignment:
+                type: int
+                default: 1
+            BlockVerticalAlignment:
+                type: int
+                default: 1
+            BlackBlock:
+                type: NSData
+            HorizontalSubsampling:
+                type: int
+                default: 1
+            VerticalSubsampling:
+                type: int
+                default: 1
+            OpenGLFormat:
+                type: int
+            OpenGLType:
+                type: int
+            OpenGLInternalFormat:
+                type: int
+            CGBitmapInfo:
+                type: CGBitmapInfo
+            QDCompatibility:
+                name: compatibleWithQD
+                type: boolean
+            CGBitmapContextCompatibility:
+                name: compatibleWithCGBitmapContext
+                type: boolean
+            CGImageCompatibility:
+                name: compatibleWithCGImage
+                type: boolean
+            OpenGLCompatibility:
+                name: compatibleWithOpenGL
+                type: boolean
+            OpenGLESCompatibility:
+                name: compatibleWithOpenGLES
+                type: boolean
 
     # Make sure we don't miss any values if new ones are introduced in a later version
-    (CV):
+    (k?CV.*):
         class: CoreVideo
-        name: "Value__#{g[0]}"
-    (kCV.*):
-        class: CoreVideo
-        name: "Value__#{g[0]}"
+        name: 'Value__#{g[0]}'
 
 constants:
     kCVTimeStamp(.*):
-        class: CoreVideo
-        name: "CVTimeStamp#{g[0]}"
-        
-    kCVTime(.*):
-        class: CoreVideo
-        name: "CVTime#{g[0]}"
+        class: CVTimeStamp
+        name: '#{g[0]}'
 
-    # Make sure we don't miss any constants if new ones are introduced in a later version
-    (CV.*):
+    # Make sure we don't miss any constants if new ones are introduced in a later version   
+    (k?CV.*):
         class: CoreVideo
-        name: "Constant__#{g[0]}"
-        
-    (kCV.*):
-        class: CoreVideo
-        name: "Constant__#{g[0]}"
+        name: 'Constant__#{g[0]}'

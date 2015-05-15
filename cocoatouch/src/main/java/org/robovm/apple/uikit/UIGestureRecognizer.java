@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,19 +49,19 @@ import org.robovm.apple.corelocation.*;
     /*<bind>*/static { ObjCRuntime.bind(UIGestureRecognizer.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     
-    public interface GestureListener {
-        void handleGesture(UIGestureRecognizer gestureRecognizer);
+    public interface OnGestureListener {
+        void onGesture(UIGestureRecognizer gestureRecognizer);
     }
     
     private static final Selector handleGesture = Selector.register("handleGesture:");
     private static class ListenerWrapper extends NSObject {
-        private final GestureListener listener;
-        private ListenerWrapper(GestureListener listener) {
+        private final OnGestureListener listener;
+        private ListenerWrapper(OnGestureListener listener) {
             this.listener = listener;
         }
         @Method(selector = "handleGesture:")
         private void handleGesture(UIGestureRecognizer gestureRecognizer) {
-            listener.handleGesture(gestureRecognizer);
+            listener.onGesture(gestureRecognizer);
         }
     }
     
@@ -78,7 +78,7 @@ import org.robovm.apple.corelocation.*;
             return listeners;
         }
     }
-    public void addListener(GestureListener listener) {
+    public void addListener(OnGestureListener listener) {
         ListenerWrapper wrapper = new ListenerWrapper(listener);
         List<ListenerWrapper> listeners = getListeners(true);
         synchronized (listeners) {
@@ -87,7 +87,7 @@ import org.robovm.apple.corelocation.*;
         addTarget(wrapper, handleGesture);
     }
     
-    public void removeListener(GestureListener listener) {
+    public void removeListener(OnGestureListener listener) {
         List<ListenerWrapper> listeners = getListeners(false);
         if (listeners == null) {
             return;
@@ -104,7 +104,7 @@ import org.robovm.apple.corelocation.*;
         }        
     }
     
-    public UIGestureRecognizer(GestureListener listener) { 
+    public UIGestureRecognizer(OnGestureListener listener) { 
         if (listener != null) addListener(listener);
     }
     /*<constructors>*/

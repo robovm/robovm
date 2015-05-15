@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,7 +47,7 @@ import org.robovm.apple.audiotoolbox.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public MTAudioProcessingTapCallbacksStruct() {}
-    public MTAudioProcessingTapCallbacksStruct(int version, VoidPtr clientInfo, FunctionPtr init, FunctionPtr finalizeCbk, FunctionPtr prepare, FunctionPtr unprepare, FunctionPtr process) {
+    public MTAudioProcessingTapCallbacksStruct(int version, @Pointer long clientInfo, FunctionPtr init, FunctionPtr finalizeCbk, FunctionPtr prepare, FunctionPtr unprepare, FunctionPtr process) {
         this.setVersion(version);
         this.setClientInfo(clientInfo);
         this.setInit(init);
@@ -61,8 +61,8 @@ import org.robovm.apple.audiotoolbox.*;
     /*<members>*/
     @StructMember(0) public native int getVersion();
     @StructMember(0) public native MTAudioProcessingTapCallbacksStruct setVersion(int version);
-    @StructMember(1) public native VoidPtr getClientInfo();
-    @StructMember(1) public native MTAudioProcessingTapCallbacksStruct setClientInfo(VoidPtr clientInfo);
+    @StructMember(1) public native @Pointer long getClientInfo();
+    @StructMember(1) public native MTAudioProcessingTapCallbacksStruct setClientInfo(@Pointer long clientInfo);
     @StructMember(2) public native FunctionPtr getInit();
     @StructMember(2) public native MTAudioProcessingTapCallbacksStruct setInit(FunctionPtr init);
     @StructMember(3) public native FunctionPtr getFinalizeCbk();

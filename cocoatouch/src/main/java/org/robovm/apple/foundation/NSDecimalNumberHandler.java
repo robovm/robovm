@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,6 +50,7 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     protected NSDecimalNumberHandler(SkipInit skipInit) { super(skipInit); }
     public NSDecimalNumberHandler(NSRoundingMode roundingMode, short scale, boolean exact, boolean overflow, boolean underflow, boolean divideByZero) { super((SkipInit) null); initObject(init(roundingMode, scale, exact, overflow, underflow, divideByZero)); }
+    public NSDecimalNumberHandler(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     
@@ -67,6 +68,8 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "exceptionDuringOperation:error:leftOperand:rightOperand:")
     public native NSDecimalNumber exceptionDuringOperation(Selector operation, NSCalculationError error, NSDecimalNumber leftOperand, NSDecimalNumber rightOperand);
     @Method(selector = "encodeWithCoder:")
-    public native void encode(NSCoder aCoder);
+    public native void encode(NSCoder coder);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     /*</methods>*/
 }

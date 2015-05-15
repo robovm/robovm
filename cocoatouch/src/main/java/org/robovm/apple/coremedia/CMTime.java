@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -74,7 +74,7 @@ import org.robovm.apple.audiotoolbox.*;
     /*<ptr>*/public static class CMTimePtr extends Ptr<CMTime, CMTimePtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(CMTime.class); }/*</bind>*/
     /*<constants>*/
-    public static final long getMaxTimescale = 0x7fffffffL;
+    public static final long MaxTimescale = 0x7fffffffL;
     /*</constants>*/
     /*<constructors>*/
     public CMTime() {}
@@ -96,10 +96,37 @@ import org.robovm.apple.audiotoolbox.*;
     @StructMember(3) public native long getEpoch();
     @StructMember(3) public native CMTime setEpoch(long epoch);
     /*</members>*/
-    public String asString() {
+    @Override
+    public String toString() {
         return getDescription(null, this);
     }
     /*<methods>*/
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="kCMTimeInvalid", optional=true)
+    public static native @ByVal CMTime Invalid();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="kCMTimeIndefinite", optional=true)
+    public static native @ByVal CMTime Indefinite();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="kCMTimePositiveInfinity", optional=true)
+    public static native @ByVal CMTime PositiveInfinity();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="kCMTimeNegativeInfinity", optional=true)
+    public static native @ByVal CMTime NegativeInfinity();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="kCMTimeZero", optional=true)
+    public static native @ByVal CMTime Zero();
+    
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -119,72 +146,108 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 4.0 and later.
      */
     public double getSeconds() { return getSeconds(this); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="CMTimeGetSeconds", optional=true)
     private static native double getSeconds(@ByVal CMTime time);
     /**
      * @since Available in iOS 4.0 and later.
      */
     public CMTime convertScale(int newTimescale, CMTimeRoundingMethod method) { return convertScale(this, newTimescale, method); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="CMTimeConvertScale", optional=true)
     private static native @ByVal CMTime convertScale(@ByVal CMTime time, int newTimescale, CMTimeRoundingMethod method);
     /**
      * @since Available in iOS 4.0 and later.
      */
     public CMTime add(CMTime addend2) { return add(this, addend2); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="CMTimeAdd", optional=true)
     private static native @ByVal CMTime add(@ByVal CMTime addend1, @ByVal CMTime addend2);
     /**
      * @since Available in iOS 4.0 and later.
      */
     public CMTime subtract(CMTime subtrahend) { return subtract(this, subtrahend); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="CMTimeSubtract", optional=true)
     private static native @ByVal CMTime subtract(@ByVal CMTime minuend, @ByVal CMTime subtrahend);
     /**
      * @since Available in iOS 4.0 and later.
      */
     public CMTime multiply(int multiplier) { return multiply(this, multiplier); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="CMTimeMultiply", optional=true)
     private static native @ByVal CMTime multiply(@ByVal CMTime time, int multiplier);
     /**
      * @since Available in iOS 4.0 and later.
      */
     public CMTime multiplyByFloat64(double multiplier) { return multiplyByFloat64(this, multiplier); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="CMTimeMultiplyByFloat64", optional=true)
     private static native @ByVal CMTime multiplyByFloat64(@ByVal CMTime time, double multiplier);
     /**
      * @since Available in iOS 7.1 and later.
      */
     public CMTime multiplyByRatio(int multiplier, int divisor) { return multiplyByRatio(this, multiplier, divisor); }
+    /**
+     * @since Available in iOS 7.1 and later.
+     */
     @Bridge(symbol="CMTimeMultiplyByRatio", optional=true)
     private static native @ByVal CMTime multiplyByRatio(@ByVal CMTime time, int multiplier, int divisor);
     /**
      * @since Available in iOS 4.0 and later.
      */
     public int compare(CMTime time2) { return compare(this, time2); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="CMTimeCompare", optional=true)
     private static native int compare(@ByVal CMTime time1, @ByVal CMTime time2);
     /**
      * @since Available in iOS 4.0 and later.
      */
     public CMTime minimum(CMTime time2) { return minimum(this, time2); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="CMTimeMinimum", optional=true)
     private static native @ByVal CMTime minimum(@ByVal CMTime time1, @ByVal CMTime time2);
     /**
      * @since Available in iOS 4.0 and later.
      */
     public CMTime maximum(CMTime time2) { return maximum(this, time2); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="CMTimeMaximum", optional=true)
     private static native @ByVal CMTime maximum(@ByVal CMTime time1, @ByVal CMTime time2);
     /**
      * @since Available in iOS 4.0 and later.
      */
     public CMTime absoluteValue() { return absoluteValue(this); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="CMTimeAbsoluteValue", optional=true)
     private static native @ByVal CMTime absoluteValue(@ByVal CMTime time);
     /**
      * @since Available in iOS 4.0 and later.
      */
     public NSDictionary<?, ?> asDictionary(CFAllocator allocator) { return asDictionary(this, allocator); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="CMTimeCopyAsDictionary", optional=true)
     private static native NSDictionary<?, ?> asDictionary(@ByVal CMTime time, CFAllocator allocator);
     /**
@@ -196,29 +259,41 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMTimeCopyDescription", optional=true)
-    protected static native String getDescription(CFAllocator allocator, @ByVal CMTime time);
+    private static native String getDescription(CFAllocator allocator, @ByVal CMTime time);
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public void print() { print(this); }
+    public void show() { show(this); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="CMTimeShow", optional=true)
-    private static native void print(@ByVal CMTime time);
+    private static native void show(@ByVal CMTime time);
     /**
      * @since Available in iOS 4.0 and later.
      */
     public CMTime mapTimeFromRangeToRange(CMTimeRange fromRange, CMTimeRange toRange) { return mapTimeFromRangeToRange(this, fromRange, toRange); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="CMTimeMapTimeFromRangeToRange", optional=true)
     private static native @ByVal CMTime mapTimeFromRangeToRange(@ByVal CMTime t, @ByVal CMTimeRange fromRange, @ByVal CMTimeRange toRange);
     /**
      * @since Available in iOS 4.0 and later.
      */
     public CMTime clampToRange(CMTimeRange range) { return clampToRange(this, range); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="CMTimeClampToRange", optional=true)
     private static native @ByVal CMTime clampToRange(@ByVal CMTime time, @ByVal CMTimeRange range);
     /**
      * @since Available in iOS 4.0 and later.
      */
     public CMTime mapDurationFromRangeToRange(CMTimeRange fromRange, CMTimeRange toRange) { return mapDurationFromRangeToRange(this, fromRange, toRange); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="CMTimeMapDurationFromRangeToRange", optional=true)
     private static native @ByVal CMTime mapDurationFromRangeToRange(@ByVal CMTime dur, @ByVal CMTimeRange fromRange, @ByVal CMTimeRange toRange);
     /*</methods>*/

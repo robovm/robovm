@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,8 +30,10 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -48,26 +50,26 @@ import org.robovm.apple.coremedia.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public CAFMarker() {}
-    public CAFMarker(int mType, double mFramePosition, int mMarkerID, CAFSMPTETime mSMPTETime, int mChannel) {
-        this.setMType(mType);
-        this.setMFramePosition(mFramePosition);
-        this.setMMarkerID(mMarkerID);
-        this.setMSMPTETime(mSMPTETime);
-        this.setMChannel(mChannel);
+    public CAFMarker(CAFMarkerType type, double framePosition, int markerID, CAFSMPTETime SMPTETime, int channel) {
+        this.setType(type);
+        this.setFramePosition(framePosition);
+        this.setMarkerID(markerID);
+        this.setSMPTETime(SMPTETime);
+        this.setChannel(channel);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native int getMType();
-    @StructMember(0) public native CAFMarker setMType(int mType);
-    @StructMember(1) public native double getMFramePosition();
-    @StructMember(1) public native CAFMarker setMFramePosition(double mFramePosition);
-    @StructMember(2) public native int getMMarkerID();
-    @StructMember(2) public native CAFMarker setMMarkerID(int mMarkerID);
-    @StructMember(3) public native @ByVal CAFSMPTETime getMSMPTETime();
-    @StructMember(3) public native CAFMarker setMSMPTETime(@ByVal CAFSMPTETime mSMPTETime);
-    @StructMember(4) public native int getMChannel();
-    @StructMember(4) public native CAFMarker setMChannel(int mChannel);
+    @StructMember(0) public native CAFMarkerType getType();
+    @StructMember(0) public native CAFMarker setType(CAFMarkerType type);
+    @StructMember(1) public native double getFramePosition();
+    @StructMember(1) public native CAFMarker setFramePosition(double framePosition);
+    @StructMember(2) public native int getMarkerID();
+    @StructMember(2) public native CAFMarker setMarkerID(int markerID);
+    @StructMember(3) public native @ByVal CAFSMPTETime getSMPTETime();
+    @StructMember(3) public native CAFMarker setSMPTETime(@ByVal CAFSMPTETime SMPTETime);
+    @StructMember(4) public native int getChannel();
+    @StructMember(4) public native CAFMarker setChannel(int channel);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

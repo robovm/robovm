@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -68,24 +68,17 @@ import org.robovm.apple.foundation.*;
     public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<NSFetchedResultsSectionInfo> getSections();
     /*</properties>*/
     /*<members>*//*</members>*/
-    /**
-     * 
-     * @return
-     * @throws NSErrorException
-     */
-    public boolean performFetch() throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = performFetch(err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
     /*<methods>*/
     @Method(selector = "initWithFetchRequest:managedObjectContext:sectionNameKeyPath:cacheName:")
     protected native @Pointer long init(NSFetchRequest fetchRequest, NSManagedObjectContext context, String sectionNameKeyPath, String name);
+    public boolean performFetch() throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = performFetch(ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "performFetch:")
-    protected native boolean performFetch(NSError.NSErrorPtr error);
+    private native boolean performFetch(NSError.NSErrorPtr error);
     @Method(selector = "objectAtIndexPath:")
     public native NSObject getObjectAtIndexPath(NSIndexPath indexPath);
     @Method(selector = "indexPathForObject:")

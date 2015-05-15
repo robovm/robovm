@@ -9,12 +9,8 @@ typedefs:
     'void (^)(GCController *)': '@Block VoidBlock1<GCController>'
     
 enums:
-    GCControllerPlayerIndex: { first: GCControllerPlayerIndexUnset, prefix: GCControllerPlayerIndex }
         
 classes:
-    GameController:
-        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
-
     # Structs
     GCAcceleration: {}
     GCRotationRate: {}
@@ -85,23 +81,27 @@ functions:
         name: "getData"
 
     # Make sure we don't miss any functions if new ones are introduced in a later version
-    (GC.*):
+    (k?GC.*):
         class: GameController
-        name: "Function__#{g[0]}"
+        name: 'Function__#{g[0]}'
 
 values:
     GCController(.*Notification):
         class: GCController
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
 
     # Make sure we don't miss any values if new ones are introduced in a later version
-    (GC.*):
+    (k?GC.*):
         class: GameController
-        name: "Value__#{g[0]}"
+        name: 'Value__#{g[0]}'
 
 constants:
+    GCControllerPlayerIndexUnset:
+        class: GCController
+        name: UnsetPlayerIndex
+
     # Make sure we don't miss any constants if new ones are introduced in a later version
-    (GC.*):
+    (k?GC.*):
         class: GameController
-        name: "Constant__#{g[0]}"
+        name: 'Constant__#{g[0]}'

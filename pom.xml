@@ -10,7 +10,7 @@
   </parent>
 
   <groupId>org.robovm</groupId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.2.1-SNAPSHOT</version>
   <artifactId>robovm-parent</artifactId>
   <name>RoboVM</name>
   <packaging>pom</packaging>
@@ -22,7 +22,7 @@
   <inceptionYear>2012</inceptionYear>
 
   <organization>
-    <name>Trillian Mobile AB</name>
+    <name>RoboVM AB</name>
     <url>http://www.robovm.com</url>
   </organization>
 
@@ -52,6 +52,36 @@
 
   <dependencies>
   </dependencies>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>commons-io</groupId>
+        <artifactId>commons-io</artifactId>
+        <version>2.4</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-exec</artifactId>
+        <version>1.0.1</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-lang3</artifactId>
+        <version>3.3.2</version>
+      </dependency>
+      <dependency>
+        <groupId>com.googlecode.plist</groupId>
+        <artifactId>dd-plist</artifactId>
+        <version>1.16</version>
+      </dependency>
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.12</version>
+        <scope>test</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <profiles>
     <profile>

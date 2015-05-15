@@ -16,8 +16,8 @@
 
 package org.robovm.objc;
 
-//import java.util.Iterator;
-//import java.util.NoSuchElementException;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /*
  * RoboVM note: The LongMap and RandomXS128 classes in this file have been copied
@@ -32,7 +32,7 @@ package org.robovm.objc;
  * depending on hash collisions. Load factors greater than 0.91 greatly increase the chances the map will have to rehash to the
  * next higher POT size.
  * @author Nathan Sweet */
-class LongMap<V> /*implements Iterable<LongMap.Entry<V>>*/ {
+public class LongMap<V> implements Iterable<LongMap.Entry<V>> {
         @SuppressWarnings("unused")
         private static final int PRIME1 = 0xbe1f14b1;
         private static final int PRIME2 = 0xb4b82e39;
@@ -52,7 +52,7 @@ class LongMap<V> /*implements Iterable<LongMap.Entry<V>>*/ {
         private int stashCapacity;
         private int pushIterations;
 
-        //private Entries entries1, entries2;
+        private Entries<V> entries1, entries2;
         //private Values values1, values2;
         //private Keys keys1, keys2;
 
@@ -186,11 +186,10 @@ class LongMap<V> /*implements Iterable<LongMap.Entry<V>>*/ {
                 return null;
         }
 
-        // RoboVM note: Not needed
-//        public void putAll (LongMap<V> map) {
-//                for (Entry<V> entry : map.entries())
-//                        put(entry.key, entry.value);
-//        }
+        public void putAll (LongMap<V> map) {
+                for (Entry<V> entry : map.entries())
+                        put(entry.key, entry.value);
+        }
 
         /** Skips checks for existing keys. */
         private void putResize (long key, V value) {
@@ -591,17 +590,16 @@ class LongMap<V> /*implements Iterable<LongMap.Entry<V>>*/ {
                 return buffer.toString();
         }
 
-        // RoboVM note: Not needed
-/*        public Iterator<Entry<V>> iterator () {
+        public Iterator<Entry<V>> iterator () {
                 return entries();
-        }*/
+        }
 
         /** Returns an iterator for the entries in the map. Remove is supported. Note that the same iterator instance is returned each
          * time this method is called. Use the {@link Entries} constructor for nested or multithreaded iteration. */
-/*        public Entries<V> entries () {
+        public Entries<V> entries () {
                 if (entries1 == null) {
-                        entries1 = new Entries(this);
-                        entries2 = new Entries(this);
+                        entries1 = new Entries<V>(this);
+                        entries2 = new Entries<V>(this);
                 }
                 if (!entries1.valid) {
                         entries1.reset();
@@ -613,7 +611,7 @@ class LongMap<V> /*implements Iterable<LongMap.Entry<V>>*/ {
                 entries2.valid = true;
                 entries1.valid = false;
                 return entries2;
-        }*/
+        }
 
         // RoboVM note: Not needed
         /** Returns an iterator for the values in the map. Remove is supported. Note that the same iterator instance is returned each
@@ -654,18 +652,16 @@ class LongMap<V> /*implements Iterable<LongMap.Entry<V>>*/ {
                 return keys2;
         }*/
 
-        // RoboVM note: Not needed
-/*        static public class Entry<V> {
+        static public class Entry<V> {
                 public long key;
                 public V value;
 
                 public String toString () {
                         return key + "=" + value;
                 }
-        }*/
+        }
 
-        // RoboVM note: Not needed
-/*        static private class MapIterator<V> {
+        static private class MapIterator<V> {
                 static final int INDEX_ILLEGAL = -2;
                 static final int INDEX_ZERO = -1;
 
@@ -717,20 +713,19 @@ class LongMap<V> /*implements Iterable<LongMap.Entry<V>>*/ {
                         currentIndex = INDEX_ILLEGAL;
                         map.size--;
                 }
-        }*/
+        }
 
-        // RoboVM note: Not needed
-/*        static public class Entries<V> extends MapIterator<V> implements Iterable<Entry<V>>, Iterator<Entry<V>> {
-                private Entry<V> entry = new Entry();
+        static public class Entries<V> extends MapIterator<V> implements Iterable<Entry<V>>, Iterator<Entry<V>> {
+                private Entry<V> entry = new Entry<V>();
 
-                public Entries (LongMap map) {
+                public Entries (LongMap<V> map) {
                         super(map);
                 }
 
-                *//** Note the same entry instance is returned each time this method is called. *//*
+                /** Note the same entry instance is returned each time this method is called. */
                 public Entry<V> next () {
                         if (!hasNext) throw new NoSuchElementException();
-                        if (!valid) throw new GdxRuntimeExceptionIllegalStateException("#iterator() cannot be used nested.");
+                        if (!valid) throw new IllegalStateException("#iterator() cannot be used nested.");
                         long[] keyTable = map.keyTable;
                         if (nextIndex == INDEX_ZERO) {
                                 entry.key = 0;
@@ -745,7 +740,7 @@ class LongMap<V> /*implements Iterable<LongMap.Entry<V>>*/ {
                 }
 
                 public boolean hasNext () {
-                        if (!valid) throw new GdxRuntimeExceptionIllegalStateException("#iterator() cannot be used nested.");
+                        if (!valid) throw new IllegalStateException("#iterator() cannot be used nested.");
                         return hasNext;
                 }
 
@@ -756,7 +751,7 @@ class LongMap<V> /*implements Iterable<LongMap.Entry<V>>*/ {
                 public void remove () {
                         super.remove();
                 }
-        }*/
+        }
 
         // RoboVM note: Not needed
 /*        static public class Values<V> extends MapIterator<V> implements Iterable<V>, Iterator<V> {
@@ -799,7 +794,6 @@ class LongMap<V> /*implements Iterable<LongMap.Entry<V>>*/ {
                 }
         }*/
 
-        // RoboVM note: Not needed
 /*        static public class Keys extends MapIterator {
                 public Keys (LongMap map) {
                         super(map);

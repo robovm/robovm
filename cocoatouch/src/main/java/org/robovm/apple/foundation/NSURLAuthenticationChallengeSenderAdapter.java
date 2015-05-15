@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,14 +55,14 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("useCredential:forAuthenticationChallenge:")
-    public void useCredential(NSURLCredential credential, NSURLAuthenticationChallenge challenge) { throw new UnsupportedOperationException(); }
+    public void useCredential(NSURLCredential credential, NSURLAuthenticationChallenge challenge) {}
     @NotImplemented("continueWithoutCredentialForAuthenticationChallenge:")
-    public void continueWithoutCredential(NSURLAuthenticationChallenge challenge) { throw new UnsupportedOperationException(); }
+    public void continueWithoutCredential(NSURLAuthenticationChallenge challenge) {}
     @NotImplemented("cancelAuthenticationChallenge:")
-    public void cancel(NSURLAuthenticationChallenge challenge) { throw new UnsupportedOperationException(); }
+    public void cancel(NSURLAuthenticationChallenge challenge) {}
     @NotImplemented("performDefaultHandlingForAuthenticationChallenge:")
-    public void performDefaultHandling(NSURLAuthenticationChallenge challenge) { throw new UnsupportedOperationException(); }
+    public void performDefaultHandling(NSURLAuthenticationChallenge challenge) {}
     @NotImplemented("rejectProtectionSpaceAndContinueWithChallenge:")
-    public void rejectProtectionSpaceAndContinue(NSURLAuthenticationChallenge challenge) { throw new UnsupportedOperationException(); }
+    public void rejectProtectionSpaceAndContinue(NSURLAuthenticationChallenge challenge) {}
     /*</methods>*/
 }

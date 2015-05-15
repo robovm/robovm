@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,7 +54,7 @@ import org.robovm.apple.corelocation.*;
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public UINavigationController(Class<?> navigationBarClass, Class<?> toolbarClass) { super((SkipInit) null); initObject(init(navigationBarClass, toolbarClass)); }
+    public UINavigationController(Class<? extends UINavigationBar> navigationBarClass, Class<? extends UIToolbar> toolbarClass) { super((SkipInit) null); initObject(init(navigationBarClass, toolbarClass)); }
     public UINavigationController(UIViewController rootViewController) { super((SkipInit) null); initObject(init(rootViewController)); }
     /*</constructors>*/
     /*<properties>*/
@@ -156,7 +156,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "initWithNavigationBarClass:toolbarClass:")
-    protected native @Pointer long init(Class<?> navigationBarClass, Class<?> toolbarClass);
+    protected native @Pointer long init(Class<? extends UINavigationBar> navigationBarClass, Class<? extends UIToolbar> toolbarClass);
     @Method(selector = "initWithRootViewController:")
     protected native @Pointer long init(UIViewController rootViewController);
     @Method(selector = "pushViewController:animated:")

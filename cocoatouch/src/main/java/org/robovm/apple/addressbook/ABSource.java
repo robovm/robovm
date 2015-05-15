@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ import org.robovm.apple.corefoundation.*;
     public static class AsListMarshaler {
         @MarshalsPointer
         public static List<ABSource> toObject(Class<? extends CFType> cls, long handle, long flags) {
-            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            CFArray o = (CFArray) CFType.Marshaler.toObject(CFArray.class, handle, flags);
             if (o == null) {
                 return null;
             }
@@ -73,20 +73,29 @@ import org.robovm.apple.corefoundation.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     public String getName() {
-        CFString val = (CFString)getValue(ABSourceProperty.Name);
+        CFString val = getValue(ABSourceProperty.Name, CFString.class);
         if (val != null) return val.toString();
         return null;
     }
     public ABSource setName(String name) throws NSErrorException {
-        setValue(ABSourceProperty.Name, new CFString(name));
+        if (name == null) {
+            setValue(ABSourceProperty.Name, null);
+        } else {
+            setValue(ABSourceProperty.Name, new CFString(name));
+        }
         return this;
     }
     public ABSourceType getType() {
-        NSNumber val = (NSNumber)getNSValue(ABSourceProperty.Type);
-        return ABSourceType.valueOf(val.intValue());
+        CFNumber val = getValue(ABSourceProperty.Type, CFNumber.class);
+        if (val != null) return new ABSourceType(val.intValue());
+        return null;
     }
     public ABSource setType(ABSourceType type) throws NSErrorException {
-        setNSValue(ABSourceProperty.Type, NSNumber.valueOf((int)type.value()));
+        if (type == null) {
+            setValue(ABSourceProperty.Type, null);
+        } else {
+            setValue(ABSourceProperty.Type, CFNumber.valueOf((int)type.value()));
+        }
         return this;
     }
     /*<methods>*/

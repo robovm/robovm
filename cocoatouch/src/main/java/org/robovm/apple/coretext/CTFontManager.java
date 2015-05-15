@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,8 +35,22 @@ import org.robovm.apple.coregraphics.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("CoreText")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CTFontManager/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
+
+    public static class Notifications {
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        public static NSObject observeRegisteredFontsChanged(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(RegisteredFontsChangedNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke (NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+    }
 
     /*<ptr>*/
     /*</ptr>*/
@@ -45,30 +59,6 @@ import org.robovm.apple.coregraphics.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    /**
-     * @since Available in iOS 4.1 and later.
-     */
-    public static boolean registerFonts(NSURL fontURL, CTFontManagerScope scope) {
-        return registerFonts(fontURL, scope, null);
-    }
-    /**
-     * @since Available in iOS 4.1 and later.
-     */
-    public static boolean unregisterFonts(NSURL fontURL, CTFontManagerScope scope) {
-        return unregisterFonts(fontURL, scope, null);
-    }
-    /**
-     * @since Available in iOS 4.1 and later.
-     */
-    public static boolean registerGraphicsFont(CGFont font) {
-        return registerGraphicsFont(font, null);
-    }
-    /**
-     * @since Available in iOS 4.1 and later.
-     */
-    public static boolean unregisterGraphicsFont(CGFont font) {
-        return unregisterGraphicsFont(font, null);
-    }
     /**
      * @since Available in iOS 4.1 and later.
      */
@@ -97,8 +87,14 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
+    @GlobalValue(symbol="kCTFontManagerRegisteredFontsChangedNotification", optional=true)
+    public static native NSString RegisteredFontsChangedNotification();
+    
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Bridge(symbol="CTFontManagerCreateFontDescriptorsFromURL", optional=true)
-    public static native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<CTFontDescriptor> createFontDescriptors0(NSURL fileURL);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CTFontDescriptor.AsListMarshaler.class) List<CTFontDescriptor> createFontDescriptors(NSURL fileURL);
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -107,23 +103,59 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 4.1 and later.
      */
+    public static boolean registerFonts(NSURL fontURL, CTFontManagerScope scope) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = registerFonts(fontURL, scope, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
+    /**
+     * @since Available in iOS 4.1 and later.
+     */
     @Bridge(symbol="CTFontManagerRegisterFontsForURL", optional=true)
-    protected static native boolean registerFonts(NSURL fontURL, CTFontManagerScope scope, CFError.CFErrorPtr error);
+    private static native boolean registerFonts(NSURL fontURL, CTFontManagerScope scope, NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 4.1 and later.
+     */
+    public static boolean unregisterFonts(NSURL fontURL, CTFontManagerScope scope) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = unregisterFonts(fontURL, scope, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     /**
      * @since Available in iOS 4.1 and later.
      */
     @Bridge(symbol="CTFontManagerUnregisterFontsForURL", optional=true)
-    protected static native boolean unregisterFonts(NSURL fontURL, CTFontManagerScope scope, CFError.CFErrorPtr error);
+    private static native boolean unregisterFonts(NSURL fontURL, CTFontManagerScope scope, NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 4.1 and later.
+     */
+    public static boolean registerGraphicsFont(CGFont font) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = registerGraphicsFont(font, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     /**
      * @since Available in iOS 4.1 and later.
      */
     @Bridge(symbol="CTFontManagerRegisterGraphicsFont", optional=true)
-    protected static native boolean registerGraphicsFont(CGFont font, CFError.CFErrorPtr error);
+    private static native boolean registerGraphicsFont(CGFont font, NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 4.1 and later.
+     */
+    public static boolean unregisterGraphicsFont(CGFont font) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = unregisterGraphicsFont(font, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     /**
      * @since Available in iOS 4.1 and later.
      */
     @Bridge(symbol="CTFontManagerUnregisterGraphicsFont", optional=true)
-    protected static native boolean unregisterGraphicsFont(CGFont font, CFError.CFErrorPtr error);
+    private static native boolean unregisterGraphicsFont(CGFont font, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 4.1 and later.
      */

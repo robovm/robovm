@@ -89,7 +89,7 @@ classes:
             '-objectAtIndexedSubscript:':
                 name: get
             '-setObject:atIndexedSubscript:':
-                name: insert
+                name: set
     MTLRenderPassDescriptor: # DONE
         methods:
             '+renderPassDescriptor':
@@ -100,7 +100,7 @@ classes:
             '-objectAtIndexedSubscript:':
                 name: get
             '-setObject:atIndexedSubscript:':
-                name: insert
+                name: set
     MTLRenderPipelineDescriptor: {} # DONE
     MTLRenderPipelineReflection: # DONE
         properties:
@@ -139,14 +139,14 @@ classes:
             '-objectAtIndexedSubscript:':
                 name: get
             '-setObject:atIndexedSubscript:':
-                name: insert
+                name: set
     MTLVertexBufferLayoutDescriptor: {} # DONE
     MTLVertexBufferLayoutDescriptorArray: # DONE
         methods:
             '-objectAtIndexedSubscript:':
                 name: get
             '-setObject:atIndexedSubscript:':
-                name: insert
+                name: set
     MTLVertexDescriptor: # DONE
         methods:
             '+vertexDescriptor':
@@ -179,6 +179,7 @@ protocols:
                 visibility: protected
             '-newTextureWithDescriptor:offset:bytesPerRow:':
                 name: newTexture
+                return_marshaler: NSObject.NoRetainMarshaler
     MTLCommandBuffer: # DONE
         class: true
         visibility: 'public final'
@@ -227,6 +228,14 @@ protocols:
         class: true
         visibility: 'public final'
         methods:
+            '-setBytes:length:atIndex:':
+                trim_after_first_colon: true
+                visibility: protected
+                parameters:
+                    bytes:
+                        type: '@Pointer long'
+            '-setBufferOffset:atIndex:':
+                trim_after_first_colon: true
             '-setBuffer:offset:atIndex:':
                 trim_after_first_colon: true
             '-setBuffers:offsets:withRange:':
@@ -297,34 +306,34 @@ protocols:
                 name: newSamplerState
             '-newLibraryWithFile:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-newLibraryWithData:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
                 parameters:
                     data:
                         type: DispatchData
             '-newLibraryWithSource:options:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-newLibraryWithSource:options:completionHandler:':
                 trim_after_first_colon: true
             '-newRenderPipelineStateWithDescriptor:error:':
                 name: newRenderPipelineState
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-newRenderPipelineStateWithDescriptor:options:reflection:error:':
                 name: newRenderPipelineState
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-newRenderPipelineStateWithDescriptor:completionHandler:':
                 name: newRenderPipelineState
             '-newRenderPipelineStateWithDescriptor:options:completionHandler:':
                 name: newRenderPipelineState
             '-newComputePipelineStateWithFunction:error:':
                 name: newComputePipelineState
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-newComputePipelineStateWithFunction:options:reflection:error:':
                 name: newComputePipelineState
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-newComputePipelineStateWithFunction:completionHandler:':
                 name: newComputePipelineState
             '-newComputePipelineStateWithFunction:options:completionHandler:':
@@ -350,6 +359,7 @@ protocols:
         methods:
             '-newFunctionWithName:':
                 name: newFunction
+                return_marshaler: NSObject.NoRetainMarshaler
     MTLParallelRenderCommandEncoder: # DONE
         class: true
         visibility: 'public final'
@@ -360,6 +370,14 @@ protocols:
         class: true
         visibility: 'public final'
         methods:
+            '-setVertexBytes:length:atIndex:':
+                trim_after_first_colon: true
+                visibility: protected
+                parameters:
+                    bytes:
+                        type: '@Pointer long'
+            '-setVertexBufferOffset:atIndex:':
+                trim_after_first_colon: true
             '-setVertexBuffer:offset:atIndex:':
                 trim_after_first_colon: true
             '-setVertexBuffers:offsets:withRange:':
@@ -478,16 +496,18 @@ protocols:
                         type: '@Pointer long'
             '-newTextureViewWithPixelFormat:':
                 name: newTextureView
+                return_marshaler: NSObject.NoRetainMarshaler
 
 functions:
     MTLClearColorMake:
         exclude: true # use constructor instead
-    MTL(CreateSystemDefaultDevice):
+    MTLCreate(SystemDefaultDevice):
         class: MTLDevice
-        name: '#{g[0]}'
+        name: 'get#{g[0]}'
+        return_marshaler: NSObject.NoRetainMarshaler
 
     # Make sure we don't miss any functions if new ones are introduced in a later version
-    (MTL.*):
+    (k?MTL.*):
         class: Metal
         name: 'Function__#{g[0]}'
 
@@ -504,12 +524,12 @@ values:
         name: getClassDomain
 
     # Make sure we don't miss any values if new ones are introduced in a later version
-    (MTL.*):
+    (k?MTL.*):
         class: Metal
         name: 'Value__#{g[0]}'
 
 constants:
     # Make sure we don't miss any constants if new ones are introduced in a later version
-    (MTL.*):
+    (k?MTL.*):
         class: Metal
         name: 'Constant__#{g[0]}'

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,12 +33,13 @@ import org.robovm.apple.coregraphics.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CTFontTraits.Marshaler.class)
 /*<annotations>*/@Library("CoreText")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class CTFontTraits 
-    extends /*<extends>*/Object/*</extends>*/ 
+@Marshaler(/*<name>*/CTFontTraits/*</name>*/.Marshaler.class)
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/CTFontTraits/*</name>*/ 
+    extends /*<extends>*/CFDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CTFontTraits toObject(Class<CTFontTraits> cls, long handle, long flags) {
@@ -56,49 +57,79 @@ import org.robovm.apple.coregraphics.*;
             return CFType.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private CFDictionary data;
-    
-    protected CTFontTraits(CFDictionary data) {
-        this.data = data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CTFontTraits> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CTFontTraits> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new CTFontTraits(o.get(i, CFDictionary.class)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CTFontTraits> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray array = CFMutableArray.create();
+            for (CTFontTraits i : l) {
+                array.add(i.getDictionary());
+            }
+            return CFType.Marshaler.toNative(array, flags);
+        }
     }
-    public CTFontTraits() {
-        this.data = CFMutableDictionary.create();
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    CTFontTraits(CFDictionary data) {
+        super(data);
     }
-    /*<bind>*/static { Bro.bind(CTFontTraits.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    protected CFDictionary getDictionary() {
-        return data;
+    public CTFontTraits() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(CFString key) {
+        return data.containsKey(key);
+    }
+    public <T extends NativeObject> T get(CFString key, Class<T> type) {
+        if (has(key)) {
+            return data.get(key, type);
+        }
+        return null;
+    }
+    public CTFontTraits set(CFString key, NativeObject value) {
+        data.put(key, value);
+        return this;
     }
     
+
     /**
      * @since Available in iOS 3.2 and later.
      */
     public CTFontSymbolicTraits getSymbolicTrait() {
-        if (data.containsKey(SymbolicTrait())) {
-            CFNumber val = data.get(SymbolicTrait(), CFNumber.class);
-            return new CTFontSymbolicTraits(val.intValue());
+        if (has(Keys.SymbolicTrait())) {
+            CFNumber val = get(Keys.SymbolicTrait(), CFNumber.class);
+            return new CTFontSymbolicTraits(val.longValue());
         }
         return null;
     }
     /**
      * @since Available in iOS 3.2 and later.
      */
-    public CTFontTraits setSymbolicTrait(CTFontSymbolicTraits trait) {
-        data.put(SymbolicTrait(), CFNumber.valueOf((int)trait.value()));
+    public CTFontTraits setSymbolicTrait(CTFontSymbolicTraits symbolicTrait) {
+        set(Keys.SymbolicTrait(), CFNumber.valueOf(symbolicTrait.value()));
         return this;
     }
     /**
      * @since Available in iOS 3.2 and later.
      */
     public float getWeightTrait() {
-        if (data.containsKey(WeightTrait())) {
-            CFNumber val = data.get(WeightTrait(), CFNumber.class);
+        if (has(Keys.WeightTrait())) {
+            CFNumber val = get(Keys.WeightTrait(), CFNumber.class);
             return val.floatValue();
         }
         return 0;
@@ -106,16 +137,16 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 3.2 and later.
      */
-    public CTFontTraits setWeightTrait(float trait) {
-        data.put(WeightTrait(), CFNumber.valueOf(trait));
+    public CTFontTraits setWeightTrait(float weightTrait) {
+        set(Keys.WeightTrait(), CFNumber.valueOf(weightTrait));
         return this;
     }
     /**
      * @since Available in iOS 3.2 and later.
      */
     public float getWidthTrait() {
-        if (data.containsKey(WidthTrait())) {
-            CFNumber val = data.get(WidthTrait(), CFNumber.class);
+        if (has(Keys.WidthTrait())) {
+            CFNumber val = get(Keys.WidthTrait(), CFNumber.class);
             return val.floatValue();
         }
         return 0;
@@ -123,16 +154,16 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 3.2 and later.
      */
-    public CTFontTraits setWidthTrait(float trait) {
-        data.put(WidthTrait(), CFNumber.valueOf(trait));
+    public CTFontTraits setWidthTrait(float widthTrait) {
+        set(Keys.WidthTrait(), CFNumber.valueOf(widthTrait));
         return this;
     }
     /**
      * @since Available in iOS 3.2 and later.
      */
     public float getSlantTrait() {
-        if (data.containsKey(SlantTrait())) {
-            CFNumber val = data.get(SlantTrait(), CFNumber.class);
+        if (has(Keys.SlantTrait())) {
+            CFNumber val = get(Keys.SlantTrait(), CFNumber.class);
             return val.floatValue();
         }
         return 0;
@@ -140,36 +171,36 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 3.2 and later.
      */
-    public CTFontTraits setSlantTrait(float trait) {
-        data.put(SlantTrait(), CFNumber.valueOf(trait));
+    public CTFontTraits setSlantTrait(float slantTrait) {
+        set(Keys.SlantTrait(), CFNumber.valueOf(slantTrait));
         return this;
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @GlobalValue(symbol="kCTFontSymbolicTrait", optional=true)
-    protected static native CFString SymbolicTrait();
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @GlobalValue(symbol="kCTFontWeightTrait", optional=true)
-    protected static native CFString WeightTrait();
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @GlobalValue(symbol="kCTFontWidthTrait", optional=true)
-    protected static native CFString WidthTrait();
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @GlobalValue(symbol="kCTFontSlantTrait", optional=true)
-    protected static native CFString SlantTrait();
     /*</methods>*/
     
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    /*<keys>*/
+    @Library("CoreText")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        /**
+         * @since Available in iOS 3.2 and later.
+         */
+        @GlobalValue(symbol="kCTFontSymbolicTrait", optional=true)
+        public static native CFString SymbolicTrait();
+        /**
+         * @since Available in iOS 3.2 and later.
+         */
+        @GlobalValue(symbol="kCTFontWeightTrait", optional=true)
+        public static native CFString WeightTrait();
+        /**
+         * @since Available in iOS 3.2 and later.
+         */
+        @GlobalValue(symbol="kCTFontWidthTrait", optional=true)
+        public static native CFString WidthTrait();
+        /**
+         * @since Available in iOS 3.2 and later.
+         */
+        @GlobalValue(symbol="kCTFontSlantTrait", optional=true)
+        public static native CFString SlantTrait();
     }
+    /*</keys>*/
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,21 +56,6 @@ import org.robovm.apple.corelocation.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
-    /**
-     * 
-     * @param placeholderURL
-     * @param metadata
-     * @return
-     * @throws NSErrorException
-     */
-    public static boolean writePlaceholder(NSURL placeholderURL, NSURLProperties metadata) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = writePlaceholder(placeholderURL, metadata, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
     /*<methods>*/
     @Method(selector = "providerIdentifier")
     public native String getProviderIdentifier();
@@ -88,8 +73,14 @@ import org.robovm.apple.corelocation.*;
     public native void itemChanged(NSURL url);
     @Method(selector = "stopProvidingItemAtURL:")
     public native void stopProvidingItem(NSURL url);
+    public static boolean writePlaceholder(NSURL placeholderURL, NSURLProperties metadata) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = writePlaceholder(placeholderURL, metadata, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "writePlaceholderAtURL:withMetadata:error:")
-    protected static native boolean writePlaceholder(NSURL placeholderURL, NSURLProperties metadata, NSError.NSErrorPtr error);
+    private static native boolean writePlaceholder(NSURL placeholderURL, NSURLProperties metadata, NSError.NSErrorPtr error);
     @Method(selector = "placeholderURLForURL:")
     public static native NSURL getPlaceholderURL(NSURL url);
     /*</methods>*/

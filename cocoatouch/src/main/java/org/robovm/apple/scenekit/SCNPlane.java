@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,9 @@ import org.robovm.apple.opengles.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 8.0 and later.
+ */
 /*</javadoc>*/
 /*<annotations>*/@Library("SceneKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SCNPlane/*</name>*/ 
@@ -68,12 +70,24 @@ import org.robovm.apple.opengles.*;
     public native @MachineSizedSInt long getHeightSegmentCount();
     @Property(selector = "setHeightSegmentCount:")
     public native void setHeightSegmentCount(@MachineSizedSInt long v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "cornerRadius")
     public native @MachineSizedFloat double getCornerRadius();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "setCornerRadius:")
     public native void setCornerRadius(@MachineSizedFloat double v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "cornerSegmentCount")
     public native @MachineSizedSInt long getCornerSegmentCount();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "setCornerSegmentCount:")
     public native void setCornerSegmentCount(@MachineSizedSInt long v);
     /*</properties>*/

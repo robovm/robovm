@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,7 +66,7 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "invalidateLayoutWithContext:")
     public native void invalidateLayout(UICollectionViewLayoutInvalidationContext context);
     @Method(selector = "registerClass:forDecorationViewOfKind:")
-    public native void registerDecorationViewClass(Class<?> viewClass, String elementKind);
+    public native void registerDecorationViewClass(Class<? extends UICollectionReusableView> viewClass, String elementKind);
     @Method(selector = "registerNib:forDecorationViewOfKind:")
     public native void registerDecorationViewNib(UINib nib, String elementKind);
     @Method(selector = "prepareLayout")
@@ -106,12 +106,12 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "collectionViewContentSize")
     public native @ByVal CGSize getCollectionViewContentSize();
     @Method(selector = "layoutAttributesClass")
-    public static native Class<?> getLayoutAttributesClass();
+    public static native Class<? extends UICollectionViewLayoutAttributes> getLayoutAttributesClass();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "invalidationContextClass")
-    public static native Class<?> getInvalidationContextClass();
+    public static native Class<? extends UICollectionViewLayoutInvalidationContext> getInvalidationContextClass();
     @Method(selector = "prepareForCollectionViewUpdates:")
     public native void prepareForCollectionViewUpdates(NSArray<UICollectionViewUpdateItem> updateItems);
     @Method(selector = "finalizeCollectionViewUpdates")

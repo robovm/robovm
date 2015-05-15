@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -58,7 +58,7 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFErrorCreate", optional=true)
-    protected static native CFError create(CFAllocator allocator, String domain, @MachineSizedSInt long code, NSDictionary<NSString, NSObject> userInfo);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFError create(CFAllocator allocator, String domain, @MachineSizedSInt long code, NSDictionary<NSString, NSObject> userInfo);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -73,16 +73,16 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFErrorCopyUserInfo", optional=true)
-    public native CFDictionary getUserInfo();
+    public native NSDictionary<NSString, NSObject> getUserInfo();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFErrorCopyFailureReason", optional=true)
-    public native String getFailureReason();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getFailureReason();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFErrorCopyRecoverySuggestion", optional=true)
-    public native String getRecoverySuggestion();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getRecoverySuggestion();
     /*</methods>*/
 }

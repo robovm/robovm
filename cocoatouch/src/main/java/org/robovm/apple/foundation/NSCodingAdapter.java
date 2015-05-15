@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,13 +48,18 @@ import org.robovm.apple.dispatch.*;
     /*<bind>*/
     /*</bind>*/
     /*<constants>*//*</constants>*/
+    public NSCodingAdapter() {}
+    public NSCodingAdapter(NSCoder coder) {
+        super((SkipInit)null);
+        initObject(init(coder));
+    }
     /*<constructors>*//*</constructors>*/
+    @Method(selector = "initWithCoder:")
+    private native @Pointer long init(NSCoder coder);
     /*<properties>*/
     
     /*</properties>*/
     /*<members>*//*</members>*/
-    /*<methods>*/
     @NotImplemented("encodeWithCoder:")
-    public void encode(NSCoder aCoder) { throw new UnsupportedOperationException(); }
-    /*</methods>*/
+    public void encode(NSCoder aCoder) {}
 }

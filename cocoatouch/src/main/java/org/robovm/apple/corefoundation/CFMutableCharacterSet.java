@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,11 +44,17 @@ import org.robovm.apple.foundation.*;
     protected CFMutableCharacterSet() {}
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    public static CFMutableCharacterSet create() {
+        return create((CFAllocator)null);
+    }
+    public static CFMutableCharacterSet createCopy(CFCharacterSet theSet) {
+        return createCopy(null, theSet);
+    }
     /*<methods>*/
     @Bridge(symbol="CFCharacterSetCreateMutable", optional=true)
-    protected static native CFMutableCharacterSet createMutable(CFAllocator alloc);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFMutableCharacterSet create(CFAllocator alloc);
     @Bridge(symbol="CFCharacterSetCreateMutableCopy", optional=true)
-    protected static native CFMutableCharacterSet createMutableCopy(CFAllocator alloc, CFCharacterSet theSet);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFMutableCharacterSet createCopy(CFAllocator alloc, CFCharacterSet theSet);
     @Bridge(symbol="CFCharacterSetAddCharactersInRange", optional=true)
     public native void addCharactersInRange(@ByVal CFRange theRange);
     @Bridge(symbol="CFCharacterSetRemoveCharactersInRange", optional=true)

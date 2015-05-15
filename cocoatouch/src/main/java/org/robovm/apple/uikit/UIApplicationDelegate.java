@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -147,6 +147,11 @@ import org.robovm.apple.corelocation.*;
      */
     @Method(selector = "application:handleEventsForBackgroundURLSession:completionHandler:")
     void handleEventsForBackgroundURLSession(UIApplication application, String identifier, @Block Runnable completionHandler);
+    /**
+     * @since Available in iOS 8.2 and later.
+     */
+    @Method(selector = "application:handleWatchKitExtensionRequest:reply:")
+    void handleWatchKitExtensionRequest(UIApplication application, NSDictionary<?, ?> userInfo, @Block VoidBlock1<NSDictionary<?, ?>> reply);
     /**
      * @since Available in iOS 4.0 and later.
      */

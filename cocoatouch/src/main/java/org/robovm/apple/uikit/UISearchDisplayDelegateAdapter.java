@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -59,83 +59,83 @@ import org.robovm.apple.corelocation.*;
      */
     @Deprecated
     @NotImplemented("searchDisplayControllerWillBeginSearch:")
-    public void willBeginSearch(UISearchDisplayController controller) { throw new UnsupportedOperationException(); }
+    public void willBeginSearch(UISearchDisplayController controller) {}
     /**
      * @since Available in iOS 3.0 and later.
      * @deprecated Deprecated in iOS 8.0.
      */
     @Deprecated
     @NotImplemented("searchDisplayControllerDidBeginSearch:")
-    public void didBeginSearch(UISearchDisplayController controller) { throw new UnsupportedOperationException(); }
+    public void didBeginSearch(UISearchDisplayController controller) {}
     /**
      * @since Available in iOS 3.0 and later.
      * @deprecated Deprecated in iOS 8.0.
      */
     @Deprecated
     @NotImplemented("searchDisplayControllerWillEndSearch:")
-    public void willEndSearch(UISearchDisplayController controller) { throw new UnsupportedOperationException(); }
+    public void willEndSearch(UISearchDisplayController controller) {}
     /**
      * @since Available in iOS 3.0 and later.
      * @deprecated Deprecated in iOS 8.0.
      */
     @Deprecated
     @NotImplemented("searchDisplayControllerDidEndSearch:")
-    public void didEndSearch(UISearchDisplayController controller) { throw new UnsupportedOperationException(); }
+    public void didEndSearch(UISearchDisplayController controller) {}
     /**
      * @since Available in iOS 3.0 and later.
      * @deprecated Deprecated in iOS 8.0.
      */
     @Deprecated
     @NotImplemented("searchDisplayController:didLoadSearchResultsTableView:")
-    public void didLoadSearchResults(UISearchDisplayController controller, UITableView tableView) { throw new UnsupportedOperationException(); }
+    public void didLoadSearchResults(UISearchDisplayController controller, UITableView tableView) {}
     /**
      * @since Available in iOS 3.0 and later.
      * @deprecated Deprecated in iOS 8.0.
      */
     @Deprecated
     @NotImplemented("searchDisplayController:willUnloadSearchResultsTableView:")
-    public void willUnloadSearchResults(UISearchDisplayController controller, UITableView tableView) { throw new UnsupportedOperationException(); }
+    public void willUnloadSearchResults(UISearchDisplayController controller, UITableView tableView) {}
     /**
      * @since Available in iOS 3.0 and later.
      * @deprecated Deprecated in iOS 8.0.
      */
     @Deprecated
     @NotImplemented("searchDisplayController:willShowSearchResultsTableView:")
-    public void willShowSearchResults(UISearchDisplayController controller, UITableView tableView) { throw new UnsupportedOperationException(); }
+    public void willShowSearchResults(UISearchDisplayController controller, UITableView tableView) {}
     /**
      * @since Available in iOS 3.0 and later.
      * @deprecated Deprecated in iOS 8.0.
      */
     @Deprecated
     @NotImplemented("searchDisplayController:didShowSearchResultsTableView:")
-    public void didShowSearchResults(UISearchDisplayController controller, UITableView tableView) { throw new UnsupportedOperationException(); }
+    public void didShowSearchResults(UISearchDisplayController controller, UITableView tableView) {}
     /**
      * @since Available in iOS 3.0 and later.
      * @deprecated Deprecated in iOS 8.0.
      */
     @Deprecated
     @NotImplemented("searchDisplayController:willHideSearchResultsTableView:")
-    public void willHideSearchResults(UISearchDisplayController controller, UITableView tableView) { throw new UnsupportedOperationException(); }
+    public void willHideSearchResults(UISearchDisplayController controller, UITableView tableView) {}
     /**
      * @since Available in iOS 3.0 and later.
      * @deprecated Deprecated in iOS 8.0.
      */
     @Deprecated
     @NotImplemented("searchDisplayController:didHideSearchResultsTableView:")
-    public void didHideSearchResults(UISearchDisplayController controller, UITableView tableView) { throw new UnsupportedOperationException(); }
+    public void didHideSearchResults(UISearchDisplayController controller, UITableView tableView) {}
     /**
      * @since Available in iOS 3.0 and later.
      * @deprecated Deprecated in iOS 8.0.
      */
     @Deprecated
     @NotImplemented("searchDisplayController:shouldReloadTableForSearchString:")
-    public boolean shouldReloadForSearchString(UISearchDisplayController controller, String searchString) { throw new UnsupportedOperationException(); }
+    public boolean shouldReloadForSearchString(UISearchDisplayController controller, String searchString) { return false; }
     /**
      * @since Available in iOS 3.0 and later.
      * @deprecated Deprecated in iOS 8.0.
      */
     @Deprecated
     @NotImplemented("searchDisplayController:shouldReloadTableForSearchScope:")
-    public boolean shouldReloadForSearchScope(UISearchDisplayController controller, @MachineSizedSInt long searchOption) { throw new UnsupportedOperationException(); }
+    public boolean shouldReloadForSearchScope(UISearchDisplayController controller, @MachineSizedSInt long searchOption) { return false; }
     /*</methods>*/
 }

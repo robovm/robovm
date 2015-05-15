@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,12 +55,12 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("URLSession:dataTask:didReceiveResponse:completionHandler:")
-    public void didReceiveResponse(NSURLSession session, NSURLSessionDataTask dataTask, NSURLResponse response, @Block VoidBlock1<NSURLSessionResponseDisposition> completionHandler) { throw new UnsupportedOperationException(); }
+    public void didReceiveResponse(NSURLSession session, NSURLSessionDataTask dataTask, NSURLResponse response, @Block VoidBlock1<NSURLSessionResponseDisposition> completionHandler) {}
     @NotImplemented("URLSession:dataTask:didBecomeDownloadTask:")
-    public void didBecomeDownloadTask(NSURLSession session, NSURLSessionDataTask dataTask, NSURLSessionDownloadTask downloadTask) { throw new UnsupportedOperationException(); }
+    public void didBecomeDownloadTask(NSURLSession session, NSURLSessionDataTask dataTask, NSURLSessionDownloadTask downloadTask) {}
     @NotImplemented("URLSession:dataTask:didReceiveData:")
-    public void didReceiveData(NSURLSession session, NSURLSessionDataTask dataTask, NSData data) { throw new UnsupportedOperationException(); }
+    public void didReceiveData(NSURLSession session, NSURLSessionDataTask dataTask, NSData data) {}
     @NotImplemented("URLSession:dataTask:willCacheResponse:completionHandler:")
-    public void willCacheResponse(NSURLSession session, NSURLSessionDataTask dataTask, NSCachedURLResponse proposedResponse, @Block VoidBlock1<NSCachedURLResponse> completionHandler) { throw new UnsupportedOperationException(); }
+    public void willCacheResponse(NSURLSession session, NSURLSessionDataTask dataTask, NSCachedURLResponse proposedResponse, @Block VoidBlock1<NSCachedURLResponse> completionHandler) {}
     /*</methods>*/
 }

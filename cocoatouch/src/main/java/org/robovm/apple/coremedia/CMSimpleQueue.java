@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,10 +51,38 @@ import org.robovm.apple.audiotoolbox.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    public static CMSimpleQueue create(int capacity) {
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 5.0 and later.
+     */
+    public static CMSimpleQueue create(int capacity) throws OSStatusException {
+        return create(null, capacity);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 5.0 and later.
+     */
+    public static CMSimpleQueue create(CFAllocator allocator, int capacity) throws OSStatusException {
         CMSimpleQueuePtr ptr = new CMSimpleQueuePtr();
-        create(null, capacity, ptr);
+        OSStatus status = create0(allocator, capacity, ptr);
+        OSStatusException.throwIfNecessary(status);
         return ptr.get();
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 5.0 and later.
+     */
+    public void enqueue(VoidPtr element) throws OSStatusException {
+        OSStatus status = enqueue0(element);
+        OSStatusException.throwIfNecessary(status);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 5.0 and later.
+     */
+    public void reset() throws OSStatusException {
+        OSStatus status = reset0();
+        OSStatusException.throwIfNecessary(status);
     }
     /*<methods>*/
     /**
@@ -66,12 +94,12 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="CMSimpleQueueCreate", optional=true)
-    protected static native int create(CFAllocator allocator, int capacity, CMSimpleQueue.CMSimpleQueuePtr queueOut);
+    protected static native OSStatus create0(CFAllocator allocator, int capacity, CMSimpleQueue.CMSimpleQueuePtr queueOut);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="CMSimpleQueueEnqueue", optional=true)
-    public native CMSimpleQueueError enqueue(VoidPtr element);
+    protected native OSStatus enqueue0(VoidPtr element);
     /**
      * @since Available in iOS 5.0 and later.
      */
@@ -86,7 +114,7 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="CMSimpleQueueReset", optional=true)
-    public native int reset();
+    protected native OSStatus reset0();
     /**
      * @since Available in iOS 5.0 and later.
      */

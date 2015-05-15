@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,18 +37,17 @@ import org.robovm.apple.metal.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
+/*<annotations>*/@Library("CoreVideo")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CVTime/*</name>*/ 
     extends /*<extends>*/Struct<CVTime>/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class CVTimePtr extends Ptr<CVTime, CVTimePtr> {}/*</ptr>*/
-    /*<bind>*/
-    /*</bind>*/
+    /*<bind>*/static { Bro.bind(CVTime.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public CVTime() {}
-    public CVTime(long timeValue, int timeScale, int flags) {
+    public CVTime(long timeValue, int timeScale, CVTimeFlags flags) {
         this.setTimeValue(timeValue);
         this.setTimeScale(timeScale);
         this.setFlags(flags);
@@ -60,8 +59,13 @@ import org.robovm.apple.metal.*;
     @StructMember(0) public native CVTime setTimeValue(long timeValue);
     @StructMember(1) public native int getTimeScale();
     @StructMember(1) public native CVTime setTimeScale(int timeScale);
-    @StructMember(2) public native int getFlags();
-    @StructMember(2) public native CVTime setFlags(int flags);
+    @StructMember(2) public native CVTimeFlags getFlags();
+    @StructMember(2) public native CVTime setFlags(CVTimeFlags flags);
     /*</members>*/
-    /*<methods>*//*</methods>*/
+    /*<methods>*/
+    @GlobalValue(symbol="kCVZeroTime", optional=true)
+    public static native @ByVal CVTime Zero();
+    @GlobalValue(symbol="kCVIndefiniteTime", optional=true)
+    public static native @ByVal CVTime Indefinite();
+    /*</methods>*/
 }

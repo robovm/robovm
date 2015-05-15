@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,19 +62,16 @@ import org.robovm.apple.uikit.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    
     public static CGPath createCopyByDashingPath(CGPath path, CGAffineTransform transform, double phase, double[] lengths) {
         return createCopyByDashingPath(path, transform, phase, 
                 lengths != null ? VM.getArrayValuesAddress(CoreGraphics.toMachineSizedFloatArray(lengths)) : 0, 
                 lengths != null ? lengths.length : 0);
     }
-
     public static CGPath createCopyByDashingPath(CGPath path, CGAffineTransform transform, double phase, float[] lengths) {
         return createCopyByDashingPath(path, transform, phase, 
                 lengths != null ? VM.getArrayValuesAddress(CoreGraphics.toMachineSizedFloatArray(lengths)) : 0, 
                 lengths != null ? lengths.length : 0);
     }
-    
     public void apply(Applier applier) {
         if (applier == null) {
             throw new NullPointerException("applier");
@@ -107,7 +104,6 @@ import org.robovm.apple.uikit.*;
         }
         applier.apply(element.getType(), point1, point2, point3);
     }
-    
     /*<methods>*/
     /**
      * @since Available in iOS 2.0 and later.
@@ -143,7 +139,7 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="CGPathCreateCopyByDashingPath", optional=true)
-    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGPath createCopyByDashingPath(CGPath path, CGAffineTransform transform, @MachineSizedFloat double phase, @Pointer long lengths, @MachineSizedUInt long count);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGPath createCopyByDashingPath(CGPath path, CGAffineTransform transform, @MachineSizedFloat double phase, @Pointer long lengths, @MachineSizedUInt long count);
     /**
      * @since Available in iOS 5.0 and later.
      */
@@ -153,7 +149,7 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGPathEqualToPath", optional=true)
-    public native boolean equalToPath(CGPath path2);
+    public native boolean equalsTo(CGPath path2);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -188,6 +184,6 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGPathApply", optional=true)
-    protected native void apply(@Pointer long info, @Pointer long function);
+    private native void apply(@Pointer long info, @Pointer long function);
     /*</methods>*/
 }

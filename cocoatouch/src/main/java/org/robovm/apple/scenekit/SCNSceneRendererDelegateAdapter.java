@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,15 +54,24 @@ import org.robovm.apple.opengles.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @NotImplemented("renderer:updateAtTime:")
-    public void update(SCNSceneRenderer aRenderer, double time) { throw new UnsupportedOperationException(); }
+    public void update(SCNSceneRenderer aRenderer, double time) {}
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @NotImplemented("renderer:didApplyAnimationsAtTime:")
-    public void didApplyAnimations(SCNSceneRenderer aRenderer, double time) { throw new UnsupportedOperationException(); }
+    public void didApplyAnimations(SCNSceneRenderer aRenderer, double time) {}
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @NotImplemented("renderer:didSimulatePhysicsAtTime:")
-    public void didSimulatePhysics(SCNSceneRenderer aRenderer, double time) { throw new UnsupportedOperationException(); }
+    public void didSimulatePhysics(SCNSceneRenderer aRenderer, double time) {}
     @NotImplemented("renderer:willRenderScene:atTime:")
-    public void willRenderScene(SCNSceneRenderer aRenderer, SCNScene scene, double time) { throw new UnsupportedOperationException(); }
+    public void willRenderScene(SCNSceneRenderer aRenderer, SCNScene scene, double time) {}
     @NotImplemented("renderer:didRenderScene:atTime:")
-    public void didRenderScene(SCNSceneRenderer aRenderer, SCNScene scene, double time) { throw new UnsupportedOperationException(); }
+    public void didRenderScene(SCNSceneRenderer aRenderer, SCNScene scene, double time) {}
     /*</methods>*/
 }

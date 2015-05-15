@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian Mobile AB
+ * Copyright (C) 2012 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,6 +41,7 @@ void rvmRaiseException(Env* env, Object* e) {
     while (tc) {
         if (tc->sel != 0 && (tc->sel == CATCH_ALL_SEL || exceptionMatch(env, tc))) {
             rvmRestoreThreadSignalMask(env);
+            rvmHookExceptionRaised(env, e, tc->prev? TRUE: FALSE);
             rvmTrycatchJump(tc);
             // unreachable
         }

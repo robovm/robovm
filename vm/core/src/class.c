@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian Mobile AB
+ * Copyright (C) 2012 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -180,7 +180,7 @@ static Class* createPrimitiveClass(Env* env, const char* desc) {
     clazz->_interfaces = NULL;
     clazz->_fields = NULL;
     clazz->_methods = NULL;
-    if (!rvmAddObjectGCRoot(env, (Object*) clazz)) return NULL;
+    if (!rvmAddGlobalRef(env, (Object*) clazz)) return NULL;
     clazz->flags = (clazz->flags & (~CLASS_STATE_MASK)) | CLASS_STATE_INITIALIZED;
     return clazz;
 }
@@ -1114,7 +1114,7 @@ jboolean rvmRegisterClass(Env* env, Class* clazz) {
         return FALSE;
     }
 
-    if (!rvmAddObjectGCRoot(env, (Object*) clazz)) {
+    if (!rvmAddGlobalRef(env, (Object*) clazz)) {
         releaseClassLock();
         return FALSE;
     }

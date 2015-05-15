@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,12 +32,15 @@ import org.robovm.apple.corefoundation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CFHTTPVersion.Marshaler.class)
 /*<annotations>*/@Library("CFNetwork")/*</annotations>*/
+@Marshaler(/*<name>*/CFHTTPVersion/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CFHTTPVersion/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<CFString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
-    
+
+    static { Bro.bind(/*<name>*/CFHTTPVersion/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CFHTTPVersion toObject(Class<CFHTTPVersion> cls, long handle, long flags) {
@@ -55,36 +58,52 @@ import org.robovm.apple.corefoundation.*;
             return CFType.Marshaler.toNative(o.value(), flags);
         }
     }
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CFHTTPVersion> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CFHTTPVersion> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(CFHTTPVersion.valueOf(o.get(i, CFString.class)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CFHTTPVersion> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray array = CFMutableArray.create();
+            for (CFHTTPVersion i : l) {
+                array.add(i.value());
+            }
+            return CFType.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(CFHTTPVersion.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    /*<constants>*/
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static CFHTTPVersion Version1_0 = new CFHTTPVersion("Version1_0Value");
+    public static final CFHTTPVersion Version1_0 = new CFHTTPVersion("Version1_0");
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static CFHTTPVersion Version1_1 = new CFHTTPVersion("Version1_1Value");
-    private static CFHTTPVersion[] values = new CFHTTPVersion[] {Version1_0, Version1_1};
+    public static final CFHTTPVersion Version1_1 = new CFHTTPVersion("Version1_1");
+    /*</constants>*/
     
-    private final LazyGlobalValue<CFString> lazyGlobalValue;
+    private static /*<name>*/CFHTTPVersion/*</name>*/[] values = new /*<name>*/CFHTTPVersion/*</name>*/[] {/*<value_list>*/Version1_0, Version1_1/*</value_list>*/};
     
-    private CFHTTPVersion(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public CFString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/CFHTTPVersion/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static CFHTTPVersion valueOf(CFString value) {
-        if (value == null) throw new NullPointerException("value");
-        for (CFHTTPVersion v : values) {
+    public static /*<name>*/CFHTTPVersion/*</name>*/ valueOf(/*<type>*/CFString/*</type>*/ value) {
+        for (/*<name>*/CFHTTPVersion/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -92,16 +111,24 @@ import org.robovm.apple.corefoundation.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/CFHTTPVersion/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCFHTTPVersion1_0", optional=true)
-    protected static native CFString Version1_0Value();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCFHTTPVersion1_1", optional=true)
-    protected static native CFString Version1_1Value();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("CFNetwork")/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCFHTTPVersion1_0", optional=true)
+        public static native CFString Version1_0();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCFHTTPVersion1_1", optional=true)
+        public static native CFString Version1_1();
+        /*</values>*/
+    }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ import org.robovm.apple.foundation.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public CFFileDescriptorContext() {}
-    public CFFileDescriptorContext(@MachineSizedSInt long version, VoidPtr info, FunctionPtr retain, FunctionPtr release, FunctionPtr copyDescription) {
+    public CFFileDescriptorContext(@MachineSizedSInt long version, @Pointer long info, FunctionPtr retain, FunctionPtr release, FunctionPtr copyDescription) {
         this.setVersion(version);
         this.setInfo(info);
         this.setRetain(retain);
@@ -56,8 +56,8 @@ import org.robovm.apple.foundation.*;
     /*<members>*/
     @StructMember(0) public native @MachineSizedSInt long getVersion();
     @StructMember(0) public native CFFileDescriptorContext setVersion(@MachineSizedSInt long version);
-    @StructMember(1) public native VoidPtr getInfo();
-    @StructMember(1) public native CFFileDescriptorContext setInfo(VoidPtr info);
+    @StructMember(1) public native @Pointer long getInfo();
+    @StructMember(1) public native CFFileDescriptorContext setInfo(@Pointer long info);
     @StructMember(2) public native FunctionPtr getRetain();
     @StructMember(2) public native CFFileDescriptorContext setRetain(FunctionPtr retain);
     @StructMember(3) public native FunctionPtr getRelease();

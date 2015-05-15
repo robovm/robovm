@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,11 +52,11 @@ import org.robovm.apple.corefoundation.*;
     @Bridge(symbol="ABMultiValueGetCount", optional=true)
     public native @MachineSizedSInt long getCount();
     @Bridge(symbol="ABMultiValueCopyValueAtIndex", optional=true)
-    public native CFType getValue(@MachineSizedSInt long index);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFType getValue(@MachineSizedSInt long index);
     @Bridge(symbol="ABMultiValueCopyArrayOfAllValues", optional=true)
-    public native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<CFType> getAllValues();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.AsListMarshaler.class) List<CFType> getAllValues();
     @Bridge(symbol="ABMultiValueCopyLabelAtIndex", optional=true)
-    public native CFString getLabel(@MachineSizedSInt long index);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFString getLabel(@MachineSizedSInt long index);
     @Bridge(symbol="ABMultiValueGetIndexForIdentifier", optional=true)
     public native @MachineSizedSInt long indexOf(int identifier);
     @Bridge(symbol="ABMultiValueGetIdentifierAtIndex", optional=true)

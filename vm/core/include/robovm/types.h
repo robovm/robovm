@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian Mobile AB
+ * Copyright (C) 2012 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,6 +56,7 @@ typedef struct Monitor Monitor;
 typedef struct Array Array;
 typedef struct EnclosingMethod EnclosingMethod;
 typedef struct InnerClass InnerClass;
+typedef struct Env Env;
 typedef pthread_mutex_t Mutex;
 
 struct Field {
@@ -258,6 +259,7 @@ struct JavaThread {
 
 struct Thread {
   jint threadId;
+  Env* env;
   JavaThread* threadObj;
   struct Thread* waitNext;
   struct Thread* prev;
@@ -347,8 +349,6 @@ struct ClasspathEntry {
     char jarPath[PATH_MAX];
 };
 
-struct Env;
-typedef struct Env Env;
 struct TrycatchContext;
 typedef struct TrycatchContext TrycatchContext;
 
@@ -369,9 +369,11 @@ typedef struct Options {
     jlong initialHeapSize;
     jboolean enableGCHeapStats;
     jboolean enableHooks;
-    jboolean waitForAttach;
+    jboolean waitForResume;
     jboolean printPID;
     char* pidFile;
+    jboolean printDebugPort;
+    char* debugPortFile;
     char basePath[PATH_MAX];
     char executablePath[PATH_MAX];
     char** rawBootclasspath; 
@@ -381,6 +383,7 @@ typedef struct Options {
     ClasspathEntry* classpath;
     jboolean dynamicJNI;
     char** staticLibs; 
+    void* runtimeData;
     Class* (*loadBootClass)(Env*, const char*, ClassLoader*);
     Class* (*loadUserClass)(Env*, const char*, ClassLoader*);
     void (*classInitialized)(Env*, Class*);
@@ -398,6 +401,13 @@ typedef struct VM {
     Options* options;
     jboolean initialized;
 } VM;
+
+typedef struct RefTable {
+    struct RefTable* prev;
+    jint size; // Total size of this table
+    jint count; // Number of references in this table
+    void** entries;
+} RefTable;
 
 typedef struct GatewayFrame {
     /* 
@@ -510,9 +520,58 @@ struct Env {
     jint attachCount;
 };
 
+typedef struct DebugGcRoot {
+    Object* root;
+    struct DebugGcRoot* next;
+} DebugGcRoot;
+
+typedef struct {
+    Env env;
+    void* pclow;
+    void* pchigh;
+    void* pclow2;
+    void* pchigh2;
+    Mutex suspendMutex;
+    pthread_cond_t suspendCond;
+    jboolean suspended;
+    jboolean stepping;
+    jboolean ignoreExceptions;
+
+    // used for invoking methods/creating new
+    // instances on a thread
+    jbyte command;
+    jlong reqId;
+
+    // used for method invocation and new instance
+    void* classOrObjectPtr;
+    char* methodName;
+    char* descriptor;
+    jboolean isClassMethod;
+    jbyte returnType;
+    jvalue* arguments;
+
+    // used for new string
+    char* string;
+    jint stringLength;
+
+    // used for new array
+    jint arrayLength;
+    char* elementName;
+    jint elementNameLength;
+
+    // used to keep track of GC roots
+    // created when instantiating objects
+    // or invoking methods. All items
+    // are unrooted when a thread is
+    // resumed
+    DebugGcRoot* gcRoot;
+} DebugEnv;
+
 typedef struct {
     void* pc;
+    void* fp;
     Method* method;
+    jint lineNumber;
 } CallStackFrame;
 typedef struct {
     jint length;

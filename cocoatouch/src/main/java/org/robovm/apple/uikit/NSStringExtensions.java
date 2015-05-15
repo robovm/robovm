@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -60,108 +60,108 @@ import org.robovm.apple.corelocation.*;
      */
     @Deprecated
     @Method(selector = "sizeWithFont:")
-    public static native @ByVal CGSize getSize(NSString thiz, UIFont font);
+    public static native @ByVal CGSize getSize(@Pointer long thiz, UIFont font);
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @Method(selector = "sizeWithFont:forWidth:lineBreakMode:")
-    public static native @ByVal CGSize getSize(NSString thiz, UIFont font, @MachineSizedFloat double width, NSLineBreakMode lineBreakMode);
+    public static native @ByVal CGSize getSize(@Pointer long thiz, UIFont font, @MachineSizedFloat double width, NSLineBreakMode lineBreakMode);
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @Method(selector = "drawAtPoint:withFont:")
-    public static native @ByVal CGSize draw(NSString thiz, @ByVal CGPoint point, UIFont font);
+    public static native @ByVal CGSize draw(@Pointer long thiz, @ByVal CGPoint point, UIFont font);
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @Method(selector = "drawAtPoint:forWidth:withFont:lineBreakMode:")
-    public static native @ByVal CGSize draw(NSString thiz, @ByVal CGPoint point, @MachineSizedFloat double width, UIFont font, NSLineBreakMode lineBreakMode);
+    public static native @ByVal CGSize draw(@Pointer long thiz, @ByVal CGPoint point, @MachineSizedFloat double width, UIFont font, NSLineBreakMode lineBreakMode);
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @Method(selector = "sizeWithFont:constrainedToSize:")
-    public static native @ByVal CGSize getSize(NSString thiz, UIFont font, @ByVal CGSize size);
+    public static native @ByVal CGSize getSize(@Pointer long thiz, UIFont font, @ByVal CGSize size);
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @Method(selector = "sizeWithFont:constrainedToSize:lineBreakMode:")
-    public static native @ByVal CGSize getSize(NSString thiz, UIFont font, @ByVal CGSize size, NSLineBreakMode lineBreakMode);
+    public static native @ByVal CGSize getSize(@Pointer long thiz, UIFont font, @ByVal CGSize size, NSLineBreakMode lineBreakMode);
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @Method(selector = "drawInRect:withFont:")
-    public static native @ByVal CGSize draw(NSString thiz, @ByVal CGRect rect, UIFont font);
+    public static native @ByVal CGSize draw(@Pointer long thiz, @ByVal CGRect rect, UIFont font);
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @Method(selector = "drawInRect:withFont:lineBreakMode:")
-    public static native @ByVal CGSize draw(NSString thiz, @ByVal CGRect rect, UIFont font, NSLineBreakMode lineBreakMode);
+    public static native @ByVal CGSize draw(@Pointer long thiz, @ByVal CGRect rect, UIFont font, NSLineBreakMode lineBreakMode);
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @Method(selector = "drawInRect:withFont:lineBreakMode:alignment:")
-    public static native @ByVal CGSize draw(NSString thiz, @ByVal CGRect rect, UIFont font, NSLineBreakMode lineBreakMode, NSTextAlignment alignment);
+    public static native @ByVal CGSize draw(@Pointer long thiz, @ByVal CGRect rect, UIFont font, NSLineBreakMode lineBreakMode, NSTextAlignment alignment);
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @Method(selector = "sizeWithFont:minFontSize:actualFontSize:forWidth:lineBreakMode:")
-    public static native @ByVal CGSize getSize(NSString thiz, UIFont font, @MachineSizedFloat double minFontSize, MachineSizedFloatPtr actualFontSize, @MachineSizedFloat double width, NSLineBreakMode lineBreakMode);
+    public static native @ByVal CGSize getSize(@Pointer long thiz, UIFont font, @MachineSizedFloat double minFontSize, MachineSizedFloatPtr actualFontSize, @MachineSizedFloat double width, NSLineBreakMode lineBreakMode);
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @Method(selector = "drawAtPoint:forWidth:withFont:fontSize:lineBreakMode:baselineAdjustment:")
-    public static native @ByVal CGSize draw(NSString thiz, @ByVal CGPoint point, @MachineSizedFloat double width, UIFont font, @MachineSizedFloat double fontSize, NSLineBreakMode lineBreakMode, UIBaselineAdjustment baselineAdjustment);
+    public static native @ByVal CGSize draw(@Pointer long thiz, @ByVal CGPoint point, @MachineSizedFloat double width, UIFont font, @MachineSizedFloat double fontSize, NSLineBreakMode lineBreakMode, UIBaselineAdjustment baselineAdjustment);
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @Method(selector = "drawAtPoint:forWidth:withFont:minFontSize:actualFontSize:lineBreakMode:baselineAdjustment:")
-    public static native @ByVal CGSize draw(NSString thiz, @ByVal CGPoint point, @MachineSizedFloat double width, UIFont font, @MachineSizedFloat double minFontSize, MachineSizedFloatPtr actualFontSize, NSLineBreakMode lineBreakMode, UIBaselineAdjustment baselineAdjustment);
+    public static native @ByVal CGSize draw(@Pointer long thiz, @ByVal CGPoint point, @MachineSizedFloat double width, UIFont font, @MachineSizedFloat double minFontSize, MachineSizedFloatPtr actualFontSize, NSLineBreakMode lineBreakMode, UIBaselineAdjustment baselineAdjustment);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "sizeWithAttributes:")
-    public static native @ByVal CGSize getSize(NSString thiz, NSAttributedStringAttributes attrs);
+    public static native @ByVal CGSize getSize(@Pointer long thiz, NSDictionary<NSString, NSObject> attrs);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "drawAtPoint:withAttributes:")
-    public static native void draw(NSString thiz, @ByVal CGPoint point, NSAttributedStringAttributes attrs);
+    public static native void draw(@Pointer long thiz, @ByVal CGPoint point, NSDictionary<NSString, NSObject> attrs);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "drawInRect:withAttributes:")
-    public static native void draw(NSString thiz, @ByVal CGRect rect, NSAttributedStringAttributes attrs);
+    public static native void draw(@Pointer long thiz, @ByVal CGRect rect, NSDictionary<NSString, NSObject> attrs);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "drawWithRect:options:attributes:context:")
-    public static native void draw(NSString thiz, @ByVal CGRect rect, NSStringDrawingOptions options, NSAttributedStringAttributes attributes, NSStringDrawingContext context);
+    public static native void draw(@Pointer long thiz, @ByVal CGRect rect, NSStringDrawingOptions options, NSDictionary<NSString, NSObject> attributes, NSStringDrawingContext context);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "boundingRectWithSize:options:attributes:context:")
-    public static native @ByVal CGRect getBoundingRect(NSString thiz, @ByVal CGSize size, NSStringDrawingOptions options, NSAttributedStringAttributes attributes, NSStringDrawingContext context);
+    public static native @ByVal CGRect getBoundingRect(@Pointer long thiz, @ByVal CGSize size, NSStringDrawingOptions options, NSDictionary<NSString, NSObject> attributes, NSStringDrawingContext context);
     /*</methods>*/
 }

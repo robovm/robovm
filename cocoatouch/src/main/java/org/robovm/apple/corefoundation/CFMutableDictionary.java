@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,32 +48,39 @@ import org.robovm.apple.foundation.*;
         return create(0);
     }
     public static CFMutableDictionary create(long capacity) {
-        return createMutable(null, capacity, getTypeKeyCallBacks(), getTypeValueCallBacks());
+        return create(null, capacity, getTypeKeyCallBacks(), getTypeValueCallBacks());
     }
     
+    @Override
     public void put(NativeObject key, NativeObject value) {
         setValue(key.as(VoidPtr.class), value.as(VoidPtr.class));
     }
+    @Override
+    public void putAll(CFDictionary dict) {
+        dict.applyFunction(new FunctionPtr(cbPutAll), getHandle());
+    }
+    @Override
     public void remove(NativeObject key) {
         removeValue(key.as(VoidPtr.class));
     }
+    @Override
     public void clear() {
         removeAllValues();
     }
     /*<methods>*/
     @Bridge(symbol="CFDictionaryCreateMutable", optional=true)
-    protected static native CFMutableDictionary createMutable(CFAllocator allocator, @MachineSizedSInt long capacity, CFDictionaryKeyCallBacks keyCallBacks, CFDictionaryValueCallBacks valueCallBacks);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFMutableDictionary create(CFAllocator allocator, @MachineSizedSInt long capacity, CFDictionaryKeyCallBacks keyCallBacks, CFDictionaryValueCallBacks valueCallBacks);
     @Bridge(symbol="CFDictionaryCreateMutableCopy", optional=true)
-    protected static native CFMutableDictionary createMutableCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFDictionary theDict);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFMutableDictionary createCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFDictionary theDict);
     @Bridge(symbol="CFDictionaryAddValue", optional=true)
-    protected native void addValue(VoidPtr key, VoidPtr value);
+    private native void addValue(VoidPtr key, VoidPtr value);
     @Bridge(symbol="CFDictionarySetValue", optional=true)
-    protected native void setValue(VoidPtr key, VoidPtr value);
+    private native void setValue(VoidPtr key, VoidPtr value);
     @Bridge(symbol="CFDictionaryReplaceValue", optional=true)
-    protected native void replaceValue(VoidPtr key, VoidPtr value);
+    private native void replaceValue(VoidPtr key, VoidPtr value);
     @Bridge(symbol="CFDictionaryRemoveValue", optional=true)
-    protected native void removeValue(VoidPtr key);
+    private native void removeValue(VoidPtr key);
     @Bridge(symbol="CFDictionaryRemoveAllValues", optional=true)
-    protected native void removeAllValues();
+    private native void removeAllValues();
     /*</methods>*/
 }

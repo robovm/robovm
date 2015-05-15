@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -90,81 +90,35 @@ import org.robovm.apple.corefoundation.*;
     @Bridge(symbol="ABRecordGetRecordType", optional=true)
     static native int getRecordType(@Pointer long handle);
 
-    public CFType getValue(ABProperty property) {
-        return getValue(property.value());
+    public <T extends NativeObject> T getValue(ABProperty property, Class<T> type) {
+        CFType val = getValue(property);
+        if (val != null) return val.as(type);
+        return null;
     }
-    /**
-     * 
-     * @param property
-     * @param value
-     * @return
-     * @throws NSErrorException
-     */
-    public boolean setValue(ABProperty property, CFType value) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = setValue(property.value(), value, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @param property
-     * @return
-     * @throws NSErrorException
-     */
-    public boolean removeValue(ABProperty property) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = removeValue(property.value(), err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    
-    /**
-     * Use this in order to get a toll-free bridged Cocoa Foundation object.
-     * Use this method only for properties whose type is toll-free bridged!
-     * @param property
-     * @return a toll-free bridged Cocoa Foundation object.
-     */
-    public NSObject getNSValue(ABProperty property) {
-        return getNSValue(property.value());
-    }
-    /**
-     * Set a toll-free bridged Cocoa Foundation object.
-     * Use this method only for properties whose type is toll-free bridged!
-     * @param property
-     * @param value
-     * @return
-     * @throws NSErrorException
-     */
-    public boolean setNSValue(ABProperty property, NSObject value) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = setNSValue(property.value(), value, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    
-    @Bridge(symbol="ABRecordCopyValue", optional=true)
-    protected native NSObject getNSValue(int property);
-    @Bridge(symbol="ABRecordSetValue", optional=true)
-    protected native boolean setNSValue(int property, NSObject value, NSError.NSErrorPtr error);
     /*<methods>*/
     @Bridge(symbol="ABRecordGetRecordID", optional=true)
     public native int getRecordID();
     @Bridge(symbol="ABRecordGetRecordType", optional=true)
     public native ABRecordType getRecordType();
     @Bridge(symbol="ABRecordCopyValue", optional=true)
-    protected native CFType getValue(int property);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFType getValue(ABProperty property);
+    public boolean setValue(ABProperty property, CFType value) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = setValue(property, value, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Bridge(symbol="ABRecordSetValue", optional=true)
-    protected native boolean setValue(int property, CFType value, NSError.NSErrorPtr error);
+    private native boolean setValue(ABProperty property, CFType value, NSError.NSErrorPtr error);
+    public boolean removeValue(ABProperty property) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = removeValue(property, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Bridge(symbol="ABRecordRemoveValue", optional=true)
-    protected native boolean removeValue(int property, NSError.NSErrorPtr error);
+    private native boolean removeValue(ABProperty property, NSError.NSErrorPtr error);
     @Bridge(symbol="ABRecordCopyCompositeName", optional=true)
-    public native String getCompositeName();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getCompositeName();
     /*</methods>*/
 }

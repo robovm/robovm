@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,7 +46,6 @@ import org.robovm.apple.uikit.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-
     public static CGGradient create(CGColorSpace space, double[] components, double[] locations) {
         if (space == null) {
             throw new NullPointerException("space");
@@ -59,7 +58,6 @@ import org.robovm.apple.uikit.*;
                 locations != null ? VM.getArrayValuesAddress(CoreGraphics.toMachineSizedFloatArray(locations)) : 0, 
                 locations != null ? locations.length : 0);
     }
-    
     public static CGGradient create(CGColorSpace space, float[] components, float[] locations) {
         if (space == null) {
             throw new NullPointerException("space");
@@ -72,15 +70,12 @@ import org.robovm.apple.uikit.*;
                 locations != null ? VM.getArrayValuesAddress(CoreGraphics.toMachineSizedFloatArray(locations)) : 0, 
                 locations != null ? locations.length : 0);
     }
-    
     public static CGGradient create(CGColorSpace space, CGColor[] colors, double[] locations) {
         return create(space, colors, (Object) locations);
     }
-
     public static CGGradient create(CGColorSpace space, CGColor[] colors, float[] locations) {
         return create(space, colors, (Object) locations);
     }
-
     private static CGGradient create(CGColorSpace space, CGColor[] colors, Object locations) {
         if (colors == null) {
             throw new NullPointerException("colors");
@@ -90,7 +85,6 @@ import org.robovm.apple.uikit.*;
                     locations != null ? VM.getArrayValuesAddress(CoreGraphics.toMachineSizedFloatArray(locations)) : 0);
         }
     }
-    
     /*<methods>*/
     /**
      * @since Available in iOS 2.0 and later.
@@ -101,11 +95,11 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGGradientCreateWithColorComponents", optional=true)
-    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGGradient create(CGColorSpace space, @Pointer long components, @Pointer long locations, @MachineSizedUInt long count);
+    private static native CGGradient create(CGColorSpace space, @Pointer long components, @Pointer long locations, @MachineSizedUInt long count);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGGradientCreateWithColors", optional=true)
-    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGGradient create(CGColorSpace space, CFArray colors, @Pointer long locations);
+    private static native CGGradient create(CGColorSpace space, CFArray colors, @Pointer long locations);
     /*</methods>*/
 }

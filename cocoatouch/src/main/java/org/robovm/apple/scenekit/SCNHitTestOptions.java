@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ import org.robovm.apple.opengles.*;
 @Marshaler(SCNHitTestOptions.Marshaler.class)
 /*<annotations>*/@Library("SceneKit")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SCNHitTestOptions/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     public static class Marshaler {
@@ -185,6 +185,9 @@ import org.robovm.apple.opengles.*;
     protected static native NSString IgnoreChildNodesKey();
     @GlobalValue(symbol="SCNHitTestRootNodeKey", optional=true)
     protected static native NSString RootNodeKey();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @GlobalValue(symbol="SCNHitTestIgnoreHiddenNodesKey", optional=true)
     protected static native NSString IgnoreHiddenNodesKey();
     /*</methods>*/

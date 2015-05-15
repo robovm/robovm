@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,8 +30,10 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -40,22 +42,24 @@ import org.robovm.apple.coremedia.*;
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/AudioQueueProperty/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    Property_IsRunning(1634824814L),
-    DeviceProperty_SampleRate(1634825074L),
-    DeviceProperty_NumberChannels(1634821219L),
-    Property_CurrentDevice(1634820964L),
-    Property_MagicCookie(1634823523L),
-    Property_MaximumOutputPacketSize(2020569203L),
-    Property_StreamDescription(1634821748L),
-    Property_ChannelLayout(1634820972L),
-    Property_EnableLevelMetering(1634823525L),
-    Property_CurrentLevelMeter(1634823542L),
-    Property_CurrentLevelMeterDB(1634823524L),
-    Property_DecodeBufferSizeFrames(1684234854L),
-    Property_ConverterError(1902343781L),
-    Property_EnableTimePitch(1902081136L),
-    Property_TimePitchAlgorithm(1903456353L),
-    Property_TimePitchBypass(1903456354L);
+    IsRunning(1634824814L),
+    SampleRate(1634825074L),
+    NumberChannels(1634821219L),
+    CurrentDevice(1634820964L),
+    MagicCookie(1634823523L),
+    MaximumOutputPacketSize(2020569203L),
+    StreamDescription(1634821748L),
+    ChannelLayout(1634820972L),
+    EnableLevelMetering(1634823525L),
+    CurrentLevelMeter(1634823542L),
+    CurrentLevelMeterDB(1634823524L),
+    DecodeBufferSizeFrames(1684234854L),
+    ConverterError(1902343781L),
+    EnableTimePitch(1902081136L),
+    TimePitchAlgorithm(1903456353L),
+    TimePitchBypass(1903456354L),
+    HardwareCodecPolicy(1634820976L),
+    ChannelAssignments(1634820961L);
     /*</values>*/
 
     /*<bind>*/

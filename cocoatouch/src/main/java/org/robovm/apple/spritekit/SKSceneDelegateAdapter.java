@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,14 +56,14 @@ import org.robovm.apple.scenekit.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("update:forScene:")
-    public void update(double currentTime, SKScene scene) { throw new UnsupportedOperationException(); }
+    public void update(double currentTime, SKScene scene) {}
     @NotImplemented("didEvaluateActionsForScene:")
-    public void didEvaluateActions(SKScene scene) { throw new UnsupportedOperationException(); }
+    public void didEvaluateActions(SKScene scene) {}
     @NotImplemented("didSimulatePhysicsForScene:")
-    public void didSimulatePhysics(SKScene scene) { throw new UnsupportedOperationException(); }
+    public void didSimulatePhysics(SKScene scene) {}
     @NotImplemented("didApplyConstraintsForScene:")
-    public void didApplyConstraints(SKScene scene) { throw new UnsupportedOperationException(); }
+    public void didApplyConstraints(SKScene scene) {}
     @NotImplemented("didFinishUpdateForScene:")
-    public void didFinishUpdate(SKScene scene) { throw new UnsupportedOperationException(); }
+    public void didFinishUpdate(SKScene scene) {}
     /*</methods>*/
 }

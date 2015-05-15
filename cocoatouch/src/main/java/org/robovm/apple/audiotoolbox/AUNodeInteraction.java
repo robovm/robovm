@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,36 +30,40 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/AUNodeInteraction/*</name>*/ implements ValuedEnum {
-    /*<values>*/
-    Connection(1L),
-    InputCallback(2L);
-    /*</values>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/AUNodeInteraction/*</name>*/ 
+    extends /*<extends>*/Struct<AUNodeInteraction>/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
 
+    /*<ptr>*/public static class AUNodeInteractionPtr extends Ptr<AUNodeInteraction, AUNodeInteractionPtr> {}/*</ptr>*/
     /*<bind>*/
     /*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<methods>*//*</methods>*/
-
-    private final long n;
-
-    private /*<name>*/AUNodeInteraction/*</name>*/(long n) { this.n = n; }
-    public long value() { return n; }
-    public static /*<name>*/AUNodeInteraction/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AUNodeInteraction/*</name>*/ v : values()) {
-            if (v.n == n) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AUNodeInteraction/*</name>*/.class.getName());
+    /*<constructors>*/
+    public AUNodeInteraction() {}
+    public AUNodeInteraction(AUNodeInteractionType nodeInteractionType) {
+        this.setNodeInteractionType(nodeInteractionType);
     }
+    /*</constructors>*/
+    public AUNodeInteraction(AUNodeInteractionType nodeInteractionType, AUNodeInteractionInfo nodeInteraction) {
+        this.setNodeInteractionType(nodeInteractionType);
+        this.setNodeInteraction(nodeInteraction);
+    }
+    /*<properties>*//*</properties>*/
+    /*<members>*/
+    @StructMember(0) public native AUNodeInteractionType getNodeInteractionType();
+    @StructMember(0) public native AUNodeInteraction setNodeInteractionType(AUNodeInteractionType nodeInteractionType);
+    /*</members>*/
+    @StructMember(1) public native @ByVal AUNodeInteractionInfo getNodeInteraction();
+    @StructMember(1) public native AUNodeInteraction setNodeInteraction(@ByVal AUNodeInteractionInfo nodeInteraction);
+    /*<methods>*//*</methods>*/
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,6 +36,7 @@ import org.robovm.apple.coremedia.*;
 import org.robovm.apple.corevideo.*;
 import org.robovm.apple.audiotoolbox.*;
 import org.robovm.apple.mediatoolbox.*;
+import org.robovm.apple.audiounit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -57,16 +58,16 @@ import org.robovm.apple.mediatoolbox.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("speechSynthesizer:didStartSpeechUtterance:")
-    public void didStartSpeechUtterance(AVSpeechSynthesizer synthesizer, AVSpeechUtterance utterance) { throw new UnsupportedOperationException(); }
+    public void didStartSpeechUtterance(AVSpeechSynthesizer synthesizer, AVSpeechUtterance utterance) {}
     @NotImplemented("speechSynthesizer:didFinishSpeechUtterance:")
-    public void didFinishSpeechUtterance(AVSpeechSynthesizer synthesizer, AVSpeechUtterance utterance) { throw new UnsupportedOperationException(); }
+    public void didFinishSpeechUtterance(AVSpeechSynthesizer synthesizer, AVSpeechUtterance utterance) {}
     @NotImplemented("speechSynthesizer:didPauseSpeechUtterance:")
-    public void didPauseSpeechUtterance(AVSpeechSynthesizer synthesizer, AVSpeechUtterance utterance) { throw new UnsupportedOperationException(); }
+    public void didPauseSpeechUtterance(AVSpeechSynthesizer synthesizer, AVSpeechUtterance utterance) {}
     @NotImplemented("speechSynthesizer:didContinueSpeechUtterance:")
-    public void didContinueSpeechUtterance(AVSpeechSynthesizer synthesizer, AVSpeechUtterance utterance) { throw new UnsupportedOperationException(); }
+    public void didContinueSpeechUtterance(AVSpeechSynthesizer synthesizer, AVSpeechUtterance utterance) {}
     @NotImplemented("speechSynthesizer:didCancelSpeechUtterance:")
-    public void didCancelSpeechUtterance(AVSpeechSynthesizer synthesizer, AVSpeechUtterance utterance) { throw new UnsupportedOperationException(); }
+    public void didCancelSpeechUtterance(AVSpeechSynthesizer synthesizer, AVSpeechUtterance utterance) {}
     @NotImplemented("speechSynthesizer:willSpeakRangeOfSpeechString:utterance:")
-    public void willSpeak(AVSpeechSynthesizer synthesizer, @ByVal NSRange characterRange, AVSpeechUtterance utterance) { throw new UnsupportedOperationException(); }
+    public void willSpeak(AVSpeechSynthesizer synthesizer, @ByVal NSRange characterRange, AVSpeechUtterance utterance) {}
     /*</methods>*/
 }

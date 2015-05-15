@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,7 +46,7 @@ import org.robovm.apple.dispatch.*;
     
     private static java.util.concurrent.atomic.AtomicLong refconId = new java.util.concurrent.atomic.AtomicLong();
     private long localRefconId;
-    private static Map<Long, ClientCallback> callbacks = new HashMap<Long, ClientCallback>();
+    private static LongMap<ClientCallback> callbacks = new LongMap<>();
     private static final java.lang.reflect.Method cbInvoke;
     
     static {
@@ -149,17 +149,17 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="SCNetworkReachabilityCreateWithAddress", optional=true)
-    protected static native SCNetworkReachability create(CFAllocator allocator, Struct<?> address);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) SCNetworkReachability create(CFAllocator allocator, Struct<?> address);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="SCNetworkReachabilityCreateWithAddressPair", optional=true)
-    protected static native SCNetworkReachability create(CFAllocator allocator, Struct<?> localAddress, Struct<?> remoteAddress);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) SCNetworkReachability create(CFAllocator allocator, Struct<?> localAddress, Struct<?> remoteAddress);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="SCNetworkReachabilityCreateWithName", optional=true)
-    protected static native SCNetworkReachability create(CFAllocator allocator, BytePtr nodename);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) SCNetworkReachability create(CFAllocator allocator, BytePtr nodename);
     /**
      * @since Available in iOS 2.0 and later.
      */

@@ -1,5 +1,5 @@
 RoboVM libimobiledevice Bindings
-Copyright (C) 2013-2014 Trillian Mobile AB
+Copyright (C) 2013-2014 RoboVM AB
 For license information see the LICENSE.txt file which accompanies this
 NOTICE.txt file.
 

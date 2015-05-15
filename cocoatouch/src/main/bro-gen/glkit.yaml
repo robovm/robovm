@@ -5,6 +5,9 @@ framework: GLKit
 clang_args: ['-x', 'objective-c']
 headers:
     - /System/Library/Frameworks/GLKit.framework/Headers/GLKit.h
+private_typedefs:
+    GLboolean: boolean
+    GLKTextureLoaderCallback: '@Block VoidBlock2<GLKTextureInfo, NSError>'
 
 enums:
     GLKFogMode: {}
@@ -12,7 +15,7 @@ enums:
     GLKTextureEnvMode: {}
     GLKTextureInfoAlphaState: {}
     GLKTextureInfoOrigin: {}
-    GLKTextureLoaderError: {}
+    GLKTextureLoaderErrorCode: { first: GLKTextureLoaderErrorFileOrURLNotFound }
     GLKTextureTarget: {}
     GLKVertexAttrib: {}
     GLKViewDrawableColorFormat: {}
@@ -21,8 +24,8 @@ enums:
     GLKViewDrawableStencilFormat: {}
 
 classes:
-    GLKit:
-        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
+    GLKTextureLoaderError:
+        extends: NSError
 
     # Opaque types
     _GLKMatrixStack:
@@ -38,28 +41,99 @@ classes:
     GLKVector3: {}
     GLKVector4: {}
 
-    GLKBaseEffect: {}
-    GLKEffectProperty: {}
-    GLKEffectPropertyFog: {}
-    GLKEffectPropertyLight: {}
-    GLKEffectPropertyMaterial: {}
-    GLKEffectPropertyTexture: {}
-    GLKEffectPropertyTransform: {}
-    GLKReflectionMapEffect: {}
-    GLKSkyboxEffect: {}
-    GLKTextureInfo: {}
-    GLKTextureLoader: {}
-    GLKView: {}
-    GLKViewController: {}
+    GLKBaseEffect: # DONE
+        properties:
+            'useConstantColor':
+                name: usesConstantColor
+            'textureOrder':
+                type: NSArray<GLKEffectPropertyTexture>
+    GLKEffectProperty: {} # DONE
+    GLKEffectPropertyFog: # DONE
+        properties:
+            'mode':
+                type: GLKFogMode
+    GLKEffectPropertyLight: {} # DONE
+    GLKEffectPropertyMaterial: {} # DONE
+    GLKEffectPropertyTexture: {} # DONE
+    GLKEffectPropertyTransform: {} # DONE
+    GLKReflectionMapEffect: {} # DONE
+    GLKSkyboxEffect: {} # DONE
+    GLKTextureInfo: {} # DONE
+    GLKTextureLoader: # DONE
+        methods:
+            '-initWithSharegroup:':
+                name: init
+            '-textureWithContentsOf(File|URL).*':
+                name: loadTexture
+                parameters:
+                    options:
+                        type: GLKTextureLoaderOptions
+            '-textureWith(ContentsOfData|CGImage).*':
+                name: createTexture
+                parameters:
+                    options:
+                        type: GLKTextureLoaderOptions
+            '-cubeMapWithContentsOfFiles:options:queue:completionHandler:':
+                name: loadCubeMap
+                parameters:
+                    paths:
+                        type: List<String>
+                        marshaler: NSArray.AsStringListMarshaler
+                    options:
+                        type: GLKTextureLoaderOptions
+            '-cubeMapWithContentsOf(File|URL).*':
+                name: loadCubeMap
+                parameters:
+                    options:
+                        type: GLKTextureLoaderOptions
+            '+textureWithContentsOf(File|URL).*':
+                name: loadTexture
+                throws: NSErrorException
+                parameters:
+                    options:
+                        type: GLKTextureLoaderOptions
+            '+textureWith(ContentsOfData|CGImage).*':
+                name: createTexture
+                throws: NSErrorException
+                parameters:
+                    options:
+                        type: GLKTextureLoaderOptions
+            '+cubeMapWithContentsOfFiles:options:error:':
+                name: loadCubeMap
+                throws: NSErrorException
+                parameters:
+                    paths:
+                        type: List<String>
+                        marshaler: NSArray.AsStringListMarshaler
+                    options:
+                        type: GLKTextureLoaderOptions
+            '+cubeMapWithContentsOf(File|URL).*':
+                name: loadCubeMap
+                throws: NSErrorException
+                parameters:
+                    options:
+                        type: GLKTextureLoaderOptions
+    GLKView: # DONE
+        properties:
+            'enableSetNeedsDisplay':
+                name: enablesSetNeedsDisplay
+        methods:
+            '-init.*':
+                name: init
+    GLKViewController: # DONE
+        properties:
+            'pauseOnWillResignActive':
+                name: pausesOnWillResignActive
+            'resumeOnDidBecomeActive':
+                name: resumesOnDidBecomeActive
 
 protocols:
-
-    GLKNamedEffect: {}
-    GLKViewDelegate:
+    GLKNamedEffect: {} # DONE
+    GLKViewDelegate: # DONE
         methods:
             '-glkView:drawInRect:':
                 name: draw
-    GLKViewControllerDelegate:
+    GLKViewControllerDelegate: # DONE
         methods:
             '-glkViewController:willPause:':
                 name: willPause
@@ -67,30 +141,179 @@ protocols:
                 name: update
 
 functions:
-
     (GLK.*)GetTypeID:
-        class: "#{g[0]}"
+        class: '#{g[0]}'
         name: getClassTypeID
 
+    # GLKMatrixStack
+    GLKMatrixStack(Scale|Translate).*:
+        class: GLKMatrixStack
+        name: '#{g[0]}'
+    GLKMatrixStack(Rotate)With.*:
+        class: GLKMatrixStack
+        name: '#{g[0]}'
+    GLKMatrixStack(Create):
+        class: GLKMatrixStack
+        name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
     GLKMatrixStack(.*):
         class: GLKMatrixStack
-        name: "#{g[0]}"
+        name: '#{g[0]}'
+
+    # GLKMath
+    GLKMath(Project):
+        class: GLKMath
+        name: '#{g[0]}'
+        visibility: private
+    GLKMath(Unproject):
+        class: GLKMath
+        name: '#{g[0]}'
+        visibility: private
+        parameters:
+            success:
+                type: BooleanPtr
+
+    # GLKVector2
+    GLKVector2Make.*:
+        class: GLKVector2
+        name: create
+    GLKVector2(.*):
+        class: GLKVector2
+        name: '#{g[0]}'
+
+    # GLKVector3
+    GLKVector3Make.*:
+        class: GLKVector3
+        name: create
+    GLKVector3(.*):
+        class: GLKVector3
+        name: '#{g[0]}'
+
+    # GLKVector4
+    GLKVector4Make.*:
+        class: GLKVector4
+        name: create
+    GLKVector4(.*):
+        class: GLKVector4
+        name: '#{g[0]}'
+
+    # GLKQuaternion
+    GLKQuaternionMake(WithAngle).*:
+        class: GLKQuaternion
+        name: createRotation
+    GLKQuaternionMake.*:
+        class: GLKQuaternion
+        name: create
+    GLKQuaternion(.*):
+        class: GLKQuaternion
+        name: '#{g[0]}'
+
+    # GLKMatrix3
+    GLKMatrix3Make(WithRows|WithColumns):
+        class: GLKMatrix3
+        name: 'create#{g[0]}'
+    GLKMatrix3Make.*(AndTranspose):
+        class: GLKMatrix3
+        name: 'create#{g[0]}'
+    GLKMatrix3Make(.?Rotation):
+        class: GLKMatrix3
+        name: 'create#{g[0]}'
+    GLKMatrix3Make(Scale):
+        class: GLKMatrix3
+        name: 'create#{g[0]}'
+    GLKMatrix3Make.*:
+        class: GLKMatrix3
+        name: create
+    GLKMatrix3(Scale|Translate).*:
+        class: GLKMatrix3
+        name: '#{g[0]}'
+    GLKMatrix3(Rotate)WithVector.*:
+        class: GLKMatrix3
+        name: '#{g[0]}'
+    GLKMatrix3(.*):
+        class: GLKMatrix3
+        name: '#{g[0]}'
+        parameters:
+            isInvertible:
+                type: BooleanPtr
+
+    # GLKMatrix4
+    GLKMatrix4Make(WithRows|WithColumns):
+        class: GLKMatrix4
+        name: 'create#{g[0]}'
+    GLKMatrix4Make.*(AndTranspose):
+        class: GLKMatrix4
+        name: 'create#{g[0]}'
+    GLKMatrix4Make(.?Rotation):
+        class: GLKMatrix4
+        name: 'create#{g[0]}'
+    GLKMatrix4Make(Scale|Translation|Perspective|Frustum|Ortho|LookAt):
+        class: GLKMatrix4
+        name: 'create#{g[0]}'
+    GLKMatrix4Make.*:
+        class: GLKMatrix4
+        name: create
+    GLKMatrix4(.*):
+        class: GLKMatrix4
+        name: '#{g[0]}'
+        parameters:
+            isInvertible:
+                type: BooleanPtr
 
     # Make sure we don't miss any functions if new ones are introduced in a later version
-    (GLK.*):
+    (k?GLK.*):
         class: GLKit
-        name: "Function__#{g[0]}"
+        name: 'Function__#{g[0]}'
 
 values:
+    GLKQuaternion(Identity):
+        class: GLKQuaternion
+        name: '#{g[0]}'
+    GLKMatrix3(Identity):
+        class: GLKMatrix3
+        name: '#{g[0]}'
+    GLKMatrix4(Identity):
+        class: GLKMatrix4
+        name: '#{g[0]}'
+
+    # GLKError
+    GLKTextureLoaderErrorDomain:
+        class: GLKTextureLoaderError
+        name: getClassDomain
+    GLKTextureLoader(.*Error)Key:
+        enum: GLKErrorUserInfoKey
+        name: '#{g[0]}'
+        type: NSString
+        extends: NSErrorUserInfoKey
+
+    # GLKTextureLoader
+    GLKTextureLoader(.*):
+        dictionary: GLKTextureLoaderOptions
+        name: '#{g[0]}'
+        type: NSString
+        methods:
+            ApplyPremultiplication:
+                name: shouldApplyPremultiplication
+                type: boolean
+            GenerateMipmaps:
+                name: shouldGenerateMipmaps
+                type: boolean
+            OriginBottomLeft:
+                type: boolean
+            GrayscaleAsAlpha:
+                name: shouldTreatGrayscaleAsAlpha
+                type: boolean
+            SRGB:
+                type: boolean
 
     # Make sure we don't miss any values if new ones are introduced in a later version
     (k?GLK.*):
         class: GLKit
-        name: "Value__#{g[0]}"
+        name: 'Value__#{g[0]}'
 
 constants:
 
     # Make sure we don't miss any constants if new ones are introduced in a later version
     (k?GLK.*):
         class: GLKit
-        name: "Constant__#{g[0]}"
+        name: 'Constant__#{g[0]}'

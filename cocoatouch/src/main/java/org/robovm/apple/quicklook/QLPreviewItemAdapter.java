@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,9 +46,9 @@ import org.robovm.apple.uikit.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*/
     @NotImplemented("previewItemURL")
-    public NSURL getURL() { throw new UnsupportedOperationException(); }
+    public NSURL getURL() { return null; }
     @NotImplemented("previewItemTitle")
-    public String getTitle() { throw new UnsupportedOperationException(); }
+    public String getTitle() { return null; }
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

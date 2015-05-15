@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -218,9 +218,9 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "preferredLanguages")
     public static native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getPreferredLanguages();
     @Method(selector = "componentsFromLocaleIdentifier:")
-    public static native @org.robovm.rt.bro.annotation.Marshaler(NSLocaleComponent.AsMapMarshaler.class) Map<NSLocaleComponent, NSObject> getComponentsFromLocaleIdentifier(String string);
+    public static native NSLocaleComponents getComponentsFromLocaleIdentifier(String string);
     @Method(selector = "localeIdentifierFromComponents:")
-    public static native String getLocaleIdentifierFromComponents(@org.robovm.rt.bro.annotation.Marshaler(NSLocaleComponent.AsMapMarshaler.class) Map<NSLocaleComponent, NSObject> dict);
+    public static native String getLocaleIdentifierFromComponents(NSLocaleComponents dict);
     @Method(selector = "canonicalLocaleIdentifierFromString:")
     public static native String getCanonicalLocaleIdentifier(String string);
     @Method(selector = "canonicalLanguageIdentifierFromString:")

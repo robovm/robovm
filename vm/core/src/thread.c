@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian Mobile AB
+ * Copyright (C) 2012 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@
 #if defined(DARWIN)
 # include <mach/mach.h>
 # include <unistd.h>
+#include <errno.h>
 #endif
 #include "private.h"
 #include "utlist.h"
@@ -26,6 +27,7 @@
 /*
  * This code has been heavily inspired by Android's dalvik/vm/Thread.cpp code.
  */
+#define LOG_TAG "thread.c"
 
 // GC descriptor specifying which words in a Thread that should be scanned 
 // for heap pointers.
@@ -35,6 +37,13 @@
 
 // Maximum thread id, 32767 (1 << 15 - 1), as Thread.threadId is a signed jint
 #define MAX_THREAD_ID ((1 << 15) - 1)
+
+typedef struct DetachedThread DetachedThread;
+struct DetachedThread {
+    jlong threadId;
+    pthread_t thread;
+    DetachedThread* next;
+};
 
 static Mutex threadsLock;
 static pthread_cond_t threadStartCond;
@@ -47,7 +56,87 @@ static Method* getUncaughtExceptionHandlerMethod;
 static Method* uncaughtExceptionMethod;
 static Method* removeThreadMethod;
 static uint32_t threadGCKind;
+static Mutex detachedThreadsLock;
+static DetachedThread* detachedThreads = NULL;
 
+static jlong getUniqueThreadId(pthread_t thread) {
+#if defined(DARWIN)
+    __uint64_t threadId = 0;
+    pthread_threadid_np(thread, &threadId);
+    return (jlong)threadId;
+#else
+    // FIXME need to get a unique id on Linux
+    return 0;
+#endif
+}
+
+static void addToDetachedList(pthread_t thread) {
+    rvmLockMutex(&detachedThreadsLock);
+    DetachedThread* dt = (DetachedThread*)malloc(sizeof(DetachedThread));
+    dt->threadId = getUniqueThreadId(thread);
+    dt->thread = thread;
+    dt->next = detachedThreads? detachedThreads: NULL;
+    DEBUGF("Added thread with tid %llu to detach list", dt->threadId);
+    detachedThreads = dt;
+    rvmUnlockMutex(&detachedThreadsLock);
+}
+
+static void cleanupDetachedList() {
+    // we only clean up the detached thread list on
+    // Darwin, as that supports pthread_kill(deadthread, 0) == ESRCH
+    // That's in Posix standard from 1996 which Mac OS X and iOS
+    // implement. Linux doesn't implement this behaviour as it
+    // adhere's to a newer Posix standard which reomved this
+    // behaviour from the spec.
+    //
+    // This means we leak memory on Linux (one DetachedThread struct
+    // per thread that's been created. FIXME
+#if defined(DARWIN)
+    rvmLockMutex(&detachedThreadsLock);
+    DetachedThread* dt = detachedThreads;
+    DetachedThread* prev = NULL;
+
+    while(dt) {
+        // check if the thread's dead and remove
+        // it from the list
+        if(pthread_kill(dt->thread, 0) == ESRCH) {
+            if(!prev) {
+                detachedThreads = dt->next;
+            } else {
+                prev->next = dt->next;
+            }
+            // prev stays the same
+            DetachedThread* tmp = dt;
+            dt = dt->next;
+            free(tmp);
+        } else {
+            prev = dt;
+            dt = dt->next;
+        }
+    }
+    rvmUnlockMutex(&detachedThreadsLock);
+#endif
+}
+
+jboolean rvmHasThreadBeenDetached() {
+    pthread_t self = pthread_self();
+    rvmLockMutex(&detachedThreadsLock);
+    DetachedThread* dt = detachedThreads;
+    jboolean result = FALSE;
+    jlong threadId = getUniqueThreadId(self);
+    while(dt) {
+        if(dt->threadId == threadId) {
+            result = TRUE;
+            break;
+        }
+        dt = dt->next;
+    }
+    rvmUnlockMutex(&detachedThreadsLock);
+    if(result) {
+        DEBUGF("Thread with tid %llu has been detached already", threadId);
+    }
+    return result;
+}
 
 inline void rvmLockThreadsList() {
     rvmLockMutex(&threadsLock);
@@ -141,12 +230,32 @@ static jboolean initThread(Env* env, Thread* thread, JavaThread* threadObj) {
         rvmThrowInternalErrorErrno(env, err);
         return FALSE;
     }
+    if (env->vm->options->enableHooks) {
+        DebugEnv* debugEnv = (DebugEnv*) env;
+        if ((err = rvmInitMutex(&debugEnv->suspendMutex)) != 0 
+                || (err = pthread_cond_init(&debugEnv->suspendCond, NULL)) != 0) {
+            rvmThrowInternalErrorErrno(env, err);
+            return FALSE;
+        }
+    }
     thread->threadId = getNextThreadId();
     thread->threadObj = threadObj;
+    thread->env = env;
     threadObj->threadPtr = PTR_TO_LONG(thread);
     env->currentThread = thread;
     env->attachCount = 1;
     return TRUE;
+}
+
+static void cleanupThreadMutex(Env* env, Thread* thread) {
+    // NOTE: threadsLock must be held
+    pthread_cond_destroy(&thread->waitCond);
+    rvmDestroyMutex(&thread->waitMutex);
+    if (env->vm->options->enableHooks) {
+        DebugEnv* debugEnv = (DebugEnv*) env;
+        pthread_cond_destroy(&debugEnv->suspendCond);
+        rvmDestroyMutex(&debugEnv->suspendMutex);
+    }
 }
 
 /**
@@ -318,6 +427,7 @@ static jint detachThread(Env* env, jboolean ignoreAttachCount, jboolean unregist
     clearThreadEnv();
     clearThreadTLS();
     freeThreadId(thread->threadId);
+    cleanupThreadMutex(env, thread);
     rvmUnlockThreadsList();
 
     if (unregisterGC) {
@@ -342,6 +452,16 @@ static void attachedThreadExiting(Env* env) {
         // The Thread TLS may have been cleared. We need it to be set.
         setThreadTLS(env, env->currentThread);
         detachThread(env, TRUE, TRUE, TRUE);
+        addToDetachedList(pthread_self());
+        // we need to set the env TLS to 0 here
+        // as we are about to free it. If this
+        // thread calls back into Java code, a
+        // new env has to be created. This happens
+        // in _bcAttachThreadFromCallback when
+        // an auto-release pool calls back into
+        // Java code. See #817, #772
+        setThreadEnv(0);
+        gcFree(env);
     }
 }
 
@@ -350,6 +470,7 @@ jboolean rvmInitThreads(Env* env) {
     threadGCKind = gcNewDirectBitmapKind(THREAD_GC_BITMAP);
     if ((threadIdMap = rvmAllocBitVector(MAX_THREAD_ID, TRUE)) == 0) return FALSE;
     if (rvmInitMutex(&threadsLock) != 0) return FALSE;
+    if (rvmInitMutex(&detachedThreadsLock) != 0) return FALSE;
     if (pthread_key_create(&tlsEnvKey, (void (*)(void *)) attachedThreadExiting) != 0) return FALSE;
     if (pthread_key_create(&tlsThreadKey, NULL) != 0) return FALSE;
     if (pthread_cond_init(&threadStartCond, NULL) != 0) return FALSE;
@@ -435,7 +556,8 @@ static void* startThreadEntryPoint(void* _args) {
     }
 
     detachThread(env, TRUE, FALSE, !failure);
-
+    addToDetachedList(pthread_self());
+    cleanupDetachedList();
     return NULL;
 }
 

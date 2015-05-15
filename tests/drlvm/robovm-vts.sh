@@ -74,6 +74,11 @@ if [ ! -x $TARGET/vts ]; then
     export ROBOVM_DEV_ROOT=$BASE
     ROBOVM="$ROBOVM_DEV_ROOT/bin/robovm"
   fi
+  if [ "$OS" == 'ios' ]; then
+    if [ "x$KEYCHAIN_PASSWORD" != "x" ]; then
+      security unlock-keychain -p $KEYCHAIN_PASSWORD
+    fi
+  fi
   "$ROBOVM" \
     -tmp $TARGET.tmp \
     -d $TARGET \
@@ -87,6 +92,9 @@ if [ ! -x $TARGET/vts ]; then
   if [ "$RET" != "0" ]; then
     exit $RET
   fi
+  if [ "x$SSH_HOST" != 'x' ]; then
+    rsync -a --delete -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=quiet" $TARGET/ $SSH_HOST:$TARGET/ >> $TARGET/robovm.log
+  fi
 fi
 
 LIBPATH=$TARGET
@@ -98,7 +106,6 @@ if [ "x$DYLD_LIBRARY_PATH" != 'x' ]; then
 fi
 
 if [ "x$SSH_HOST" != 'x' ]; then
-  rsync -a --delete -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=quiet" $TARGET/ $SSH_HOST:$TARGET/ > /dev/null
   ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=quiet $SSH_HOST $TARGET/vts -rvm:MainClass=$MAINCLASS $RUNARGS
 else
   LD_LIBRARY_PATH=$LIBPATH DYLD_LIBRARY_PATH=$LIBPATH $TARGET/vts -rvm:MainClass=$MAINCLASS $RUNARGS

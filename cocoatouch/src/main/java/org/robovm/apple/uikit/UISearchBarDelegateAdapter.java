@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,35 +54,35 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("searchBarShouldBeginEditing:")
-    public boolean shouldBeginEditing(UISearchBar searchBar) { throw new UnsupportedOperationException(); }
+    public boolean shouldBeginEditing(UISearchBar searchBar) { return false; }
     @NotImplemented("searchBarTextDidBeginEditing:")
-    public void didBeginEditing(UISearchBar searchBar) { throw new UnsupportedOperationException(); }
+    public void didBeginEditing(UISearchBar searchBar) {}
     @NotImplemented("searchBarShouldEndEditing:")
-    public boolean shouldEndEditing(UISearchBar searchBar) { throw new UnsupportedOperationException(); }
+    public boolean shouldEndEditing(UISearchBar searchBar) { return false; }
     @NotImplemented("searchBarTextDidEndEditing:")
-    public void didEndEditing(UISearchBar searchBar) { throw new UnsupportedOperationException(); }
+    public void didEndEditing(UISearchBar searchBar) {}
     @NotImplemented("searchBar:textDidChange:")
-    public void didChange(UISearchBar searchBar, String searchText) { throw new UnsupportedOperationException(); }
+    public void didChange(UISearchBar searchBar, String searchText) {}
     /**
      * @since Available in iOS 3.0 and later.
      */
     @NotImplemented("searchBar:shouldChangeTextInRange:replacementText:")
-    public boolean shouldChange(UISearchBar searchBar, @ByVal NSRange range, String text) { throw new UnsupportedOperationException(); }
+    public boolean shouldChange(UISearchBar searchBar, @ByVal NSRange range, String text) { return false; }
     @NotImplemented("searchBarSearchButtonClicked:")
-    public void searchButtonClicked(UISearchBar searchBar) { throw new UnsupportedOperationException(); }
+    public void searchButtonClicked(UISearchBar searchBar) {}
     @NotImplemented("searchBarBookmarkButtonClicked:")
-    public void bookmarkButtonClicked(UISearchBar searchBar) { throw new UnsupportedOperationException(); }
+    public void bookmarkButtonClicked(UISearchBar searchBar) {}
     @NotImplemented("searchBarCancelButtonClicked:")
-    public void cancelButtonClicked(UISearchBar searchBar) { throw new UnsupportedOperationException(); }
+    public void cancelButtonClicked(UISearchBar searchBar) {}
     /**
      * @since Available in iOS 3.2 and later.
      */
     @NotImplemented("searchBarResultsListButtonClicked:")
-    public void resultsListButtonClicked(UISearchBar searchBar) { throw new UnsupportedOperationException(); }
+    public void resultsListButtonClicked(UISearchBar searchBar) {}
     /**
      * @since Available in iOS 3.0 and later.
      */
     @NotImplemented("searchBar:selectedScopeButtonIndexDidChange:")
-    public void selectedScopeButtonIndexDidChange(UISearchBar searchBar, @MachineSizedSInt long selectedScope) { throw new UnsupportedOperationException(); }
+    public void selectedScopeButtonIndexDidChange(UISearchBar searchBar, @MachineSizedSInt long selectedScope) {}
     /*</methods>*/
 }

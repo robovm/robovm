@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,62 +48,62 @@ import org.robovm.apple.foundation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("homeDidUpdateName:")
-    public void didUpdateName(HMHome home) { throw new UnsupportedOperationException(); }
+    public void didUpdateName(HMHome home) {}
     @NotImplemented("home:didAddAccessory:")
-    public void didAddAccessory(HMHome home, HMAccessory accessory) { throw new UnsupportedOperationException(); }
+    public void didAddAccessory(HMHome home, HMAccessory accessory) {}
     @NotImplemented("home:didRemoveAccessory:")
-    public void didRemoveAccessory(HMHome home, HMAccessory accessory) { throw new UnsupportedOperationException(); }
+    public void didRemoveAccessory(HMHome home, HMAccessory accessory) {}
     @NotImplemented("home:didAddUser:")
-    public void didAddUser(HMHome home, HMUser user) { throw new UnsupportedOperationException(); }
+    public void didAddUser(HMHome home, HMUser user) {}
     @NotImplemented("home:didRemoveUser:")
-    public void didRemoveUser(HMHome home, HMUser user) { throw new UnsupportedOperationException(); }
+    public void didRemoveUser(HMHome home, HMUser user) {}
     @NotImplemented("home:didUpdateRoom:forAccessory:")
-    public void didUpdateRoom(HMHome home, HMRoom room, HMAccessory accessory) { throw new UnsupportedOperationException(); }
+    public void didUpdateRoom(HMHome home, HMRoom room, HMAccessory accessory) {}
     @NotImplemented("home:didAddRoom:")
-    public void didAddRoom(HMHome home, HMRoom room) { throw new UnsupportedOperationException(); }
+    public void didAddRoom(HMHome home, HMRoom room) {}
     @NotImplemented("home:didRemoveRoom:")
-    public void didRemoveRoom(HMHome home, HMRoom room) { throw new UnsupportedOperationException(); }
+    public void didRemoveRoom(HMHome home, HMRoom room) {}
     @NotImplemented("home:didUpdateNameForRoom:")
-    public void didUpdateRoomName(HMHome home, HMRoom room) { throw new UnsupportedOperationException(); }
+    public void didUpdateRoomName(HMHome home, HMRoom room) {}
     @NotImplemented("home:didAddZone:")
-    public void didAddZone(HMHome home, HMZone zone) { throw new UnsupportedOperationException(); }
+    public void didAddZone(HMHome home, HMZone zone) {}
     @NotImplemented("home:didRemoveZone:")
-    public void didRemoveZone(HMHome home, HMZone zone) { throw new UnsupportedOperationException(); }
+    public void didRemoveZone(HMHome home, HMZone zone) {}
     @NotImplemented("home:didUpdateNameForZone:")
-    public void didUpdateZoneName(HMHome home, HMZone zone) { throw new UnsupportedOperationException(); }
+    public void didUpdateZoneName(HMHome home, HMZone zone) {}
     @NotImplemented("home:didAddRoom:toZone:")
-    public void didAddRoomToZone(HMHome home, HMRoom room, HMZone zone) { throw new UnsupportedOperationException(); }
+    public void didAddRoomToZone(HMHome home, HMRoom room, HMZone zone) {}
     @NotImplemented("home:didRemoveRoom:fromZone:")
-    public void didRemoveRoomFromZone(HMHome home, HMRoom room, HMZone zone) { throw new UnsupportedOperationException(); }
+    public void didRemoveRoomFromZone(HMHome home, HMRoom room, HMZone zone) {}
     @NotImplemented("home:didAddServiceGroup:")
-    public void didAddServiceGroup(HMHome home, HMServiceGroup group) { throw new UnsupportedOperationException(); }
+    public void didAddServiceGroup(HMHome home, HMServiceGroup group) {}
     @NotImplemented("home:didRemoveServiceGroup:")
-    public void didRemoveServiceGroup(HMHome home, HMServiceGroup group) { throw new UnsupportedOperationException(); }
+    public void didRemoveServiceGroup(HMHome home, HMServiceGroup group) {}
     @NotImplemented("home:didUpdateNameForServiceGroup:")
-    public void didUpdateServiceGroupName(HMHome home, HMServiceGroup group) { throw new UnsupportedOperationException(); }
+    public void didUpdateServiceGroupName(HMHome home, HMServiceGroup group) {}
     @NotImplemented("home:didAddService:toServiceGroup:")
-    public void didAddServiceToServiceGroup(HMHome home, HMService service, HMServiceGroup group) { throw new UnsupportedOperationException(); }
+    public void didAddServiceToServiceGroup(HMHome home, HMService service, HMServiceGroup group) {}
     @NotImplemented("home:didRemoveService:fromServiceGroup:")
-    public void didRemoveServiceFromServiceGroup(HMHome home, HMService service, HMServiceGroup group) { throw new UnsupportedOperationException(); }
+    public void didRemoveServiceFromServiceGroup(HMHome home, HMService service, HMServiceGroup group) {}
     @NotImplemented("home:didAddActionSet:")
-    public void didAddActionSet(HMHome home, HMActionSet actionSet) { throw new UnsupportedOperationException(); }
+    public void didAddActionSet(HMHome home, HMActionSet actionSet) {}
     @NotImplemented("home:didRemoveActionSet:")
-    public void didRemoveActionSet(HMHome home, HMActionSet actionSet) { throw new UnsupportedOperationException(); }
+    public void didRemoveActionSet(HMHome home, HMActionSet actionSet) {}
     @NotImplemented("home:didUpdateNameForActionSet:")
-    public void didUpdateActionSetName(HMHome home, HMActionSet actionSet) { throw new UnsupportedOperationException(); }
+    public void didUpdateActionSetName(HMHome home, HMActionSet actionSet) {}
     @NotImplemented("home:didUpdateActionsForActionSet:")
-    public void didUpdateActions(HMHome home, HMActionSet actionSet) { throw new UnsupportedOperationException(); }
+    public void didUpdateActions(HMHome home, HMActionSet actionSet) {}
     @NotImplemented("home:didAddTrigger:")
-    public void didAddTrigger(HMHome home, HMTrigger trigger) { throw new UnsupportedOperationException(); }
+    public void didAddTrigger(HMHome home, HMTrigger trigger) {}
     @NotImplemented("home:didRemoveTrigger:")
-    public void didRemoveTrigger(HMHome home, HMTrigger trigger) { throw new UnsupportedOperationException(); }
+    public void didRemoveTrigger(HMHome home, HMTrigger trigger) {}
     @NotImplemented("home:didUpdateNameForTrigger:")
-    public void didUpdateTriggerName(HMHome home, HMTrigger trigger) { throw new UnsupportedOperationException(); }
+    public void didUpdateTriggerName(HMHome home, HMTrigger trigger) {}
     @NotImplemented("home:didUpdateTrigger:")
-    public void didUpdateTrigger(HMHome home, HMTrigger trigger) { throw new UnsupportedOperationException(); }
+    public void didUpdateTrigger(HMHome home, HMTrigger trigger) {}
     @NotImplemented("home:didUnblockAccessory:")
-    public void didUnblockAccessory(HMHome home, HMAccessory accessory) { throw new UnsupportedOperationException(); }
+    public void didUnblockAccessory(HMHome home, HMAccessory accessory) {}
     @NotImplemented("home:didEncounterError:forAccessory:")
-    public void didEncounterError(HMHome home, NSError error, HMAccessory accessory) { throw new UnsupportedOperationException(); }
+    public void didEncounterError(HMHome home, NSError error, HMAccessory accessory) {}
     /*</methods>*/
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,46 +45,51 @@ import org.robovm.apple.foundation.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     public static CFMutableArray create() {
-        return createMutable(null, 0, getTypeCallBacks());
+        return create(null, 0, getTypeCallBacks());
     }
     
+    @Override
     public void add(NativeObject value) {
         appendValue(value.as(VoidPtr.class));
     }
+    @Override
     public void insert(@MachineSizedSInt long idx, NativeObject value) {
         insertValueAtIndex(idx, value.as(VoidPtr.class));
     }
+    @Override
     public void replace(@MachineSizedSInt long idx, NativeObject value) {
         setValueAtIndex(idx, value.as(VoidPtr.class));
     }
+    @Override
     public void remove(@MachineSizedSInt long idx) {
         removeValueAtIndex(idx);
     }
+    @Override
     public void clear() {
         removeAllValues();
     }
     /*<methods>*/
     @Bridge(symbol="CFArrayCreateMutable", optional=true)
-    protected static native CFMutableArray createMutable(CFAllocator allocator, @MachineSizedSInt long capacity, CFArrayCallBacks callBacks);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFMutableArray create(CFAllocator allocator, @MachineSizedSInt long capacity, CFArrayCallBacks callBacks);
     @Bridge(symbol="CFArrayCreateMutableCopy", optional=true)
-    protected static native CFMutableArray createMutableCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFArray theArray);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFMutableArray createCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFArray theArray);
     @Bridge(symbol="CFArrayAppendValue", optional=true)
-    protected native void appendValue(VoidPtr value);
+    private native void appendValue(VoidPtr value);
     @Bridge(symbol="CFArrayInsertValueAtIndex", optional=true)
-    protected native void insertValueAtIndex(@MachineSizedSInt long idx, VoidPtr value);
+    private native void insertValueAtIndex(@MachineSizedSInt long idx, VoidPtr value);
     @Bridge(symbol="CFArraySetValueAtIndex", optional=true)
-    protected native void setValueAtIndex(@MachineSizedSInt long idx, VoidPtr value);
+    private native void setValueAtIndex(@MachineSizedSInt long idx, VoidPtr value);
     @Bridge(symbol="CFArrayRemoveValueAtIndex", optional=true)
-    protected native void removeValueAtIndex(@MachineSizedSInt long idx);
+    private native void removeValueAtIndex(@MachineSizedSInt long idx);
     @Bridge(symbol="CFArrayRemoveAllValues", optional=true)
-    protected native void removeAllValues();
+    private native void removeAllValues();
     @Bridge(symbol="CFArrayReplaceValues", optional=true)
-    protected native void replaceValues(@ByVal CFRange range, VoidPtr.VoidPtrPtr newValues, @MachineSizedSInt long newCount);
+    private native void replaceValues(@ByVal CFRange range, VoidPtr.VoidPtrPtr newValues, @MachineSizedSInt long newCount);
     @Bridge(symbol="CFArrayExchangeValuesAtIndices", optional=true)
-    protected native void exchangeValuesAtIndices(@MachineSizedSInt long idx1, @MachineSizedSInt long idx2);
+    private native void exchangeValuesAtIndices(@MachineSizedSInt long idx1, @MachineSizedSInt long idx2);
     @Bridge(symbol="CFArraySortValues", optional=true)
-    protected native void sortValues(@ByVal CFRange range, FunctionPtr comparator, VoidPtr context);
+    private native void sortValues(@ByVal CFRange range, FunctionPtr comparator, VoidPtr context);
     @Bridge(symbol="CFArrayAppendArray", optional=true)
-    protected native void appendArray(CFArray otherArray, @ByVal CFRange otherRange);
+    private native void appendArray(CFArray otherArray, @ByVal CFRange otherRange);
     /*</methods>*/
 }

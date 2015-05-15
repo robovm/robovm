@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -70,22 +70,6 @@ import org.robovm.apple.newsstandkit.NKAssetDownload;
     public native NSURLRequest getCurrentRequest();
     /*</properties>*/
     /*<members>*//*</members>*/
-    /**
-     * 
-     * @param request
-     * @param response
-     * @return
-     * @throws NSErrorException
-     */
-    public static NSData sendSynchronousRequest(NSURLRequest request, NSURLResponse.NSURLResponsePtr response) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        NSData result = sendSynchronousRequest(request, response, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    
     public void scheduleInRunLoop(NSRunLoop aRunLoop, NSRunLoopMode mode) {
         scheduleInRunLoop(aRunLoop, mode.value());
     }
@@ -131,8 +115,14 @@ import org.robovm.apple.newsstandkit.NKAssetDownload;
     public static native NSURLConnection create(NSURLRequest request, NSURLConnectionDelegate delegate);
     @Method(selector = "canHandleRequest:")
     public static native boolean canHandleRequest(NSURLRequest request);
+    public static NSData sendSynchronousRequest(NSURLRequest request, NSURLResponse.NSURLResponsePtr response) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       NSData result = sendSynchronousRequest(request, response, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "sendSynchronousRequest:returningResponse:error:")
-    protected static native NSData sendSynchronousRequest(NSURLRequest request, NSURLResponse.NSURLResponsePtr response, NSError.NSErrorPtr error);
+    private static native NSData sendSynchronousRequest(NSURLRequest request, NSURLResponse.NSURLResponsePtr response, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 5.0 and later.
      */

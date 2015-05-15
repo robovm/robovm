@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,13 +44,13 @@ import org.robovm.apple.foundation.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*/
     @NotImplemented("name")
-    public String getName() { throw new UnsupportedOperationException(); }
+    public String getName() { return null; }
     @NotImplemented("indexTitle")
-    public String getIndexTitle() { throw new UnsupportedOperationException(); }
+    public String getIndexTitle() { return null; }
     @NotImplemented("numberOfObjects")
-    public @MachineSizedUInt long getNumberOfObjects() { throw new UnsupportedOperationException(); }
+    public @MachineSizedUInt long getNumberOfObjects() { return 0; }
     @NotImplemented("objects")
-    public NSArray<NSManagedObject> getObjects() { throw new UnsupportedOperationException(); }
+    public NSArray<NSManagedObject> getObjects() { return null; }
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

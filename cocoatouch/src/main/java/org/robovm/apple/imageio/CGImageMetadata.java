@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,13 +54,8 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 7.0 and later.
      * @throws NSErrorException
      */
-    public boolean registerNamespaceForPrefix(String xmlns, String prefix) throws NSErrorException {
-        CFError.CFErrorPtr err = new CFError.CFErrorPtr();
-        boolean result = registerNamespaceForPrefix(xmlns, prefix, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get().as(NSError.class));
-        }
-        return result;
+    public boolean registerNamespaceForPrefix(CGImageMetadataNamespace xmlns, CGImageMetadataPrefix prefix) throws NSErrorException {
+        return registerNamespaceForPrefix(xmlns.value().toString(), prefix.value().toString());
     }
     /**
      * 
@@ -91,32 +86,41 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 7.0 and later.
      */
     @Bridge(symbol="CGImageMetadataCreateMutable", optional=true)
-    public static native CGImageMetadata create();
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImageMetadata create();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Bridge(symbol="CGImageMetadataCreateMutableCopy", optional=true)
-    public static native CGImageMetadata createCopy(CGImageMetadata metadata);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImageMetadata createCopy(CGImageMetadata metadata);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Bridge(symbol="CGImageMetadataCopyTags", optional=true)
-    public native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<CGImageMetadataTag> getTags();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CGImageMetadataTag.AsListMarshaler.class) List<CGImageMetadataTag> getTags();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Bridge(symbol="CGImageMetadataCopyTagWithPath", optional=true)
-    public native CGImageMetadataTag getTagAtPath(CGImageMetadataTag parent, String path);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImageMetadataTag getTagAtPath(CGImageMetadataTag parent, String path);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Bridge(symbol="CGImageMetadataCopyStringValueWithPath", optional=true)
-    public native String getStringValueAtPath(CGImageMetadataTag parent, String path);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getStringValueAtPath(CGImageMetadataTag parent, String path);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public boolean registerNamespaceForPrefix(String xmlns, String prefix) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = registerNamespaceForPrefix(xmlns, prefix, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Bridge(symbol="CGImageMetadataRegisterNamespaceForPrefix", optional=true)
-    protected native boolean registerNamespaceForPrefix(String xmlns, String prefix, CFError.CFErrorPtr err);
+    private native boolean registerNamespaceForPrefix(String xmlns, String prefix, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -141,11 +145,11 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 7.0 and later.
      */
     @Bridge(symbol="CGImageMetadataCreateXMPData", optional=true)
-    public native NSData createXMPData(NSDictionary<?, ?> options);
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSObject.NoRetainMarshaler.class) NSData createXMPData(NSDictionary<?, ?> options);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Bridge(symbol="CGImageMetadataCreateFromXMPData", optional=true)
-    public static native CGImageMetadata createFromXMPData(NSData data);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImageMetadata createFromXMPData(NSData data);
     /*</methods>*/
 }

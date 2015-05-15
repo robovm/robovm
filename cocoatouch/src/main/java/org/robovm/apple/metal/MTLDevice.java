@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -63,112 +63,18 @@ import org.robovm.apple.dispatch.*;
             }
         });
     }
-    /**
-     * 
-     * @param filepath
-     * @return
-     * @throws NSErrorException
-     */
-    public MTLLibrary newLibraryWithFile(String filepath) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        MTLLibrary result = newLibraryWithFile(filepath, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @param data
-     * @return
-     * @throws NSErrorException
-     */
-    public MTLLibrary newLibraryWithData(DispatchData data) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        MTLLibrary result = newLibraryWithData(data, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @param source
-     * @param options
-     * @return
-     * @throws NSErrorException
-     */
-    public MTLLibrary newLibraryWithSource(String source, MTLCompileOptions options) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        MTLLibrary result = newLibraryWithSource(source, options, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @param descriptor
-     * @return
-     * @throws NSErrorException
-     */
-    public MTLRenderPipelineState newRenderPipelineState(MTLRenderPipelineDescriptor descriptor) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        MTLRenderPipelineState result = newRenderPipelineState(descriptor, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @param descriptor
-     * @param options
-     * @return
-     * @throws NSErrorException
-     */
     public MTLRenderPipelineState newRenderPipelineState(MTLRenderPipelineDescriptor descriptor, MTLPipelineOption options) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        MTLRenderPipelineState result = newRenderPipelineState(descriptor, options, null, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
+        return newRenderPipelineState(descriptor, options, (MTLRenderPipelineReflection.MTLRenderPipelineReflectionPtr)null);
     }
-    /**
-     * 
-     * @param computeFunction
-     * @return
-     * @throws NSErrorException
-     */
-    public MTLComputePipelineState newComputePipelineState(MTLFunction computeFunction) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        MTLComputePipelineState result = newComputePipelineState(computeFunction, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @param computeFunction
-     * @param options
-     * @return
-     */
-    public MTLComputePipelineState newComputePipelineState(MTLFunction computeFunction, MTLPipelineOption options) {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        MTLComputePipelineState result = newComputePipelineState(computeFunction, options, null, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
+    public MTLComputePipelineState newComputePipelineState(MTLFunction computeFunction, MTLPipelineOption options) throws NSErrorException {
+        return newComputePipelineState(computeFunction, options, (MTLComputePipelineReflection.MTLComputePipelineReflectionPtr)null);
     }
     /*<methods>*/
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Bridge(symbol="MTLCreateSystemDefaultDevice", optional=true)
-    public static native MTLDevice createSystemDefaultDevice();
+    public static native @org.robovm.rt.bro.annotation.Marshaler(NSObject.NoRetainMarshaler.class) MTLDevice getSystemDefaultDevice();
     
     @Method(selector = "newCommandQueue")
     public native MTLCommandQueue newCommandQueue();
@@ -188,26 +94,68 @@ import org.robovm.apple.dispatch.*;
     public native MTLSamplerState newSamplerState(MTLSamplerDescriptor descriptor);
     @Method(selector = "newDefaultLibrary")
     public native MTLLibrary newDefaultLibrary();
+    public MTLLibrary newLibraryWithFile(String filepath) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       MTLLibrary result = newLibraryWithFile(filepath, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "newLibraryWithFile:error:")
-    protected native MTLLibrary newLibraryWithFile(String filepath, NSError.NSErrorPtr error);
+    private native MTLLibrary newLibraryWithFile(String filepath, NSError.NSErrorPtr error);
+    public MTLLibrary newLibraryWithData(DispatchData data) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       MTLLibrary result = newLibraryWithData(data, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "newLibraryWithData:error:")
-    protected native MTLLibrary newLibraryWithData(DispatchData data, NSError.NSErrorPtr error);
+    private native MTLLibrary newLibraryWithData(DispatchData data, NSError.NSErrorPtr error);
+    public MTLLibrary newLibraryWithSource(String source, MTLCompileOptions options) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       MTLLibrary result = newLibraryWithSource(source, options, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "newLibraryWithSource:options:error:")
-    protected native MTLLibrary newLibraryWithSource(String source, MTLCompileOptions options, NSError.NSErrorPtr error);
+    private native MTLLibrary newLibraryWithSource(String source, MTLCompileOptions options, NSError.NSErrorPtr error);
     @Method(selector = "newLibraryWithSource:options:completionHandler:")
     public native void newLibraryWithSource(String source, MTLCompileOptions options, @Block VoidBlock2<MTLLibrary, NSError> completionHandler);
+    public MTLRenderPipelineState newRenderPipelineState(MTLRenderPipelineDescriptor descriptor) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       MTLRenderPipelineState result = newRenderPipelineState(descriptor, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "newRenderPipelineStateWithDescriptor:error:")
-    protected native MTLRenderPipelineState newRenderPipelineState(MTLRenderPipelineDescriptor descriptor, NSError.NSErrorPtr error);
+    private native MTLRenderPipelineState newRenderPipelineState(MTLRenderPipelineDescriptor descriptor, NSError.NSErrorPtr error);
+    public MTLRenderPipelineState newRenderPipelineState(MTLRenderPipelineDescriptor descriptor, MTLPipelineOption options, MTLRenderPipelineReflection.MTLRenderPipelineReflectionPtr reflection) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       MTLRenderPipelineState result = newRenderPipelineState(descriptor, options, reflection, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "newRenderPipelineStateWithDescriptor:options:reflection:error:")
-    protected native MTLRenderPipelineState newRenderPipelineState(MTLRenderPipelineDescriptor descriptor, MTLPipelineOption options, MTLRenderPipelineReflection.MTLRenderPipelineReflectionPtr reflection, NSError.NSErrorPtr error);
+    private native MTLRenderPipelineState newRenderPipelineState(MTLRenderPipelineDescriptor descriptor, MTLPipelineOption options, MTLRenderPipelineReflection.MTLRenderPipelineReflectionPtr reflection, NSError.NSErrorPtr error);
     @Method(selector = "newRenderPipelineStateWithDescriptor:completionHandler:")
     public native void newRenderPipelineState(MTLRenderPipelineDescriptor descriptor, @Block VoidBlock2<MTLRenderPipelineState, NSError> completionHandler);
     @Method(selector = "newRenderPipelineStateWithDescriptor:options:completionHandler:")
     public native void newRenderPipelineState(MTLRenderPipelineDescriptor descriptor, MTLPipelineOption options, @Block VoidBlock3<MTLRenderPipelineState, MTLRenderPipelineReflection, NSError> completionHandler);
+    public MTLComputePipelineState newComputePipelineState(MTLFunction computeFunction) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       MTLComputePipelineState result = newComputePipelineState(computeFunction, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "newComputePipelineStateWithFunction:error:")
-    protected native MTLComputePipelineState newComputePipelineState(MTLFunction computeFunction, NSError.NSErrorPtr error);
+    private native MTLComputePipelineState newComputePipelineState(MTLFunction computeFunction, NSError.NSErrorPtr error);
+    public MTLComputePipelineState newComputePipelineState(MTLFunction computeFunction, MTLPipelineOption options, MTLComputePipelineReflection.MTLComputePipelineReflectionPtr reflection) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       MTLComputePipelineState result = newComputePipelineState(computeFunction, options, reflection, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "newComputePipelineStateWithFunction:options:reflection:error:")
-    protected native MTLComputePipelineState newComputePipelineState(MTLFunction computeFunction, MTLPipelineOption options, MTLComputePipelineReflection.MTLComputePipelineReflectionPtr reflection, NSError.NSErrorPtr error);
+    private native MTLComputePipelineState newComputePipelineState(MTLFunction computeFunction, MTLPipelineOption options, MTLComputePipelineReflection.MTLComputePipelineReflectionPtr reflection, NSError.NSErrorPtr error);
     @Method(selector = "newComputePipelineStateWithFunction:completionHandler:")
     public native void newComputePipelineState(MTLFunction computeFunction, @Block VoidBlock2<MTLComputePipelineState, NSError> completionHandler);
     @Method(selector = "newComputePipelineStateWithFunction:options:completionHandler:")

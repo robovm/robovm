@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,45 +35,60 @@ import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
-/**
- * @since Available in iOS 5.0 and later.
- */
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-public enum /*<name>*/GLKTextureLoaderError/*</name>*/ implements ValuedEnum {
-    /*<values>*/
-    FileOrURLNotFound(0L),
-    InvalidNSData(1L),
-    InvalidCGImage(2L),
-    UnknownPathType(3L),
-    UnknownFileType(4L),
-    PVRAtlasUnsupported(5L),
-    CubeMapInvalidNumFiles(6L),
-    CompressedTextureUpload(7L),
-    UncompressedTextureUpload(8L),
-    UnsupportedCubeMapDimensions(9L),
-    UnsupportedBitDepth(10L),
-    UnsupportedPVRFormat(11L),
-    DataPreprocessingFailure(12L),
-    MipmapUnsupported(13L),
-    UnsupportedOrientation(14L),
-    ReorientationFailure(15L),
-    AlphaPremultiplicationFailure(16L),
-    InvalidEAGLContext(17L),
-    IncompatibleFormatSRGB(18L);
-    /*</values>*/
+/*<annotations>*/@Library("GLKit")/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/GLKTextureLoaderError/*</name>*/ 
+    extends /*<extends>*/NSError/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
 
-    private final long n;
-
-    private /*<name>*/GLKTextureLoaderError/*</name>*/(long n) { this.n = n; }
-    public long value() { return n; }
-    public static /*<name>*/GLKTextureLoaderError/*</name>*/ valueOf(long n) {
-        for (/*<name>*/GLKTextureLoaderError/*</name>*/ v : values()) {
-            if (v.n == n) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/GLKTextureLoaderError/*</name>*/.class.getName());
+    protected GLKTextureLoaderError (SkipInit skipInit) {
+        super(skipInit);
     }
+    
+    /*<ptr>*/public static class GLKTextureLoaderErrorPtr extends Ptr<GLKTextureLoaderError, GLKTextureLoaderErrorPtr> {}/*</ptr>*/
+    /*<bind>*/static { Bro.bind(GLKTextureLoaderError.class); }/*</bind>*/
+    /*<constants>*//*</constants>*/
+    /*<properties>*//*</properties>*/
+    /*<members>*//*</members>*/
+    @Override
+    public GLKTextureLoaderErrorCode getErrorCode () {
+        GLKTextureLoaderErrorCode code = null;
+        try {
+            code = GLKTextureLoaderErrorCode.valueOf(getCode());
+        } catch (IllegalArgumentException e) {
+            // ignore
+        }
+        return code;
+    }
+    
+    /* Convenience methods */
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public String getError() {
+        NSErrorUserInfo data = getUserInfo();
+        if (data.contains(GLKErrorUserInfoKey.Error)) {
+            NSString val = (NSString) data.get(GLKErrorUserInfoKey.Error);
+            return val.toString();
+        }
+        return null;
+    }
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public long getGLError() {
+        NSErrorUserInfo data = getUserInfo();
+        if (data.contains(GLKErrorUserInfoKey.GLError)) {
+            NSNumber val = (NSNumber) data.get(GLKErrorUserInfoKey.GLError);
+            return val.longValue();
+        }
+        return 0;
+    }
+    /*<methods>*/
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @GlobalValue(symbol="GLKTextureLoaderErrorDomain", optional=true)
+    public static native String getClassDomain();
+    /*</methods>*/
 }

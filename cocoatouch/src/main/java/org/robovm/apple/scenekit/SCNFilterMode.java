@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,8 +42,17 @@ import org.robovm.apple.opengles.*;
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/SCNFilterMode/*</name>*/ implements ValuedEnum {
     /*<values>*/
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     None(0L),
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     Nearest(1L),
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     Linear(2L);
     /*</values>*/
 

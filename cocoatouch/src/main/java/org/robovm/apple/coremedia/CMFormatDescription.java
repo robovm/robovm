@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,17 +51,41 @@ import org.robovm.apple.audiotoolbox.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    public static CMFormatDescription create(CMMediaType mediaType, int mediaSubtype, NSDictionary<NSString, ?> extensions) {
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 4.0 and later.
+     */
+    public static CMFormatDescription create(CMMediaType mediaType, int mediaSubtype, NSDictionary<NSString, ?> extensions) throws OSStatusException {
+        return create(null, mediaType, mediaSubtype, extensions);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 4.0 and later.
+     */
+    public static CMFormatDescription create(CFAllocator allocator, CMMediaType mediaType, int mediaSubtype, NSDictionary<NSString, ?> extensions) throws OSStatusException {
         CMFormatDescriptionPtr ptr = new CMFormatDescriptionPtr();
-        create(null, mediaType, mediaSubtype, extensions, ptr);
+        OSStatus status = create0(allocator, mediaType, mediaSubtype, extensions.as(CFDictionary.class), ptr);
+        OSStatusException.throwIfNecessary(status);
         return ptr.get();
+    }
+    /**
+     * @since Available in iOS 4.3 and later.
+     */
+    public boolean equalsTo(CMFormatDescription desc2, String formatDescriptionExtensionKeysToIgnore, String sampleDescriptionExtensionAtomKeysToIgnore) {
+        return equalsTo0(desc2, new CFString(formatDescriptionExtensionKeysToIgnore), new CFString(sampleDescriptionExtensionAtomKeysToIgnore));
+    }
+    /**
+     * @since Available in iOS 4.3 and later.
+     */
+    public boolean equalsTo(CMFormatDescription desc2, List<String> formatDescriptionExtensionKeysToIgnore, List<String> sampleDescriptionExtensionAtomKeysToIgnore) {
+        return equalsTo0(desc2, CFArray.fromStrings(formatDescriptionExtensionKeysToIgnore), CFArray.fromStrings(sampleDescriptionExtensionAtomKeysToIgnore));
     }
     /*<methods>*/
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMFormatDescriptionCreate", optional=true)
-    protected static native int create(CFAllocator allocator, CMMediaType mediaType, int mediaSubtype, NSDictionary<NSString, ?> extensions, CMFormatDescription.CMFormatDescriptionPtr descOut);
+    protected static native OSStatus create0(CFAllocator allocator, CMMediaType mediaType, int mediaSubtype, CFDictionary extensions, CMFormatDescription.CMFormatDescriptionPtr descOut);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -71,12 +95,12 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMFormatDescriptionEqual", optional=true)
-    public native boolean equals(CMFormatDescription desc2);
+    public native boolean equalsTo(CMFormatDescription desc2);
     /**
      * @since Available in iOS 4.3 and later.
      */
     @Bridge(symbol="CMFormatDescriptionEqualIgnoringExtensionKeys", optional=true)
-    public native boolean equals(CMFormatDescription desc2, CFType formatDescriptionExtensionKeysToIgnore, CFType sampleDescriptionExtensionAtomKeysToIgnore);
+    private native boolean equalsTo0(CMFormatDescription desc2, CFType formatDescriptionExtensionKeysToIgnore, CFType sampleDescriptionExtensionAtomKeysToIgnore);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -91,7 +115,7 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMFormatDescriptionGetExtensions", optional=true)
-    public native NSDictionary<NSString, ?> getExtensions();
+    public native CFDictionary getExtensionDictionary();
     /**
      * @since Available in iOS 4.0 and later.
      */

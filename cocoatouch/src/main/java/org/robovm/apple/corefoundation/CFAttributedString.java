@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,12 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.foundation.*;
 /*</imports>*/
+import org.robovm.apple.coremedia.CMTextMarkupAttribute;
+import org.robovm.apple.coremedia.CMTextMarkupAttributes;
+import org.robovm.apple.coretext.CTAttributedStringAttribute;
+import org.robovm.apple.coretext.CTAttributedStringAttributes;
+import org.robovm.apple.uikit.NSAttributedStringAttribute;
+import org.robovm.apple.uikit.NSAttributedStringAttributes;
 
 /*<javadoc>*/
 /*</javadoc>*/
@@ -45,28 +51,84 @@ import org.robovm.apple.foundation.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    public static CFAttributedString create(String str, NSAttributedStringAttributes attributes) {
+        return create(null, str, attributes);
+    }
+    public static CFAttributedString create(CFAllocator alloc, String str, NSAttributedStringAttributes attributes) {
+        if (attributes == null) {
+            return create(alloc, str, (CFDictionary)null);
+        }
+        return create(alloc, str, attributes.getDictionary().as(CFDictionary.class));
+    }
+    public static CFAttributedString create(String str, CMTextMarkupAttributes attributes) {
+        return create(null, str, attributes);
+    }
+    public static CFAttributedString create(CFAllocator alloc, String str, CMTextMarkupAttributes attributes) {
+        if (attributes == null) {
+            return create(alloc, str, (CFDictionary)null);
+        }
+        return create(alloc, str, attributes.getDictionary());
+    }
+    public static CFAttributedString create(String str, CTAttributedStringAttributes attributes) {
+        return create(null, str, attributes);
+    }
+    public static CFAttributedString create(CFAllocator alloc, String str, CTAttributedStringAttributes attributes) {
+        if (attributes == null) {
+            return create(alloc, str, (CFDictionary)null);
+        }
+        return create(alloc, str, attributes.getDictionary());
+    }
+
+    public CFType getAttribute(long loc, NSAttributedStringAttribute attrName, CFRange effectiveRange) {
+        if (attrName == null) {
+            throw new NullPointerException("attrName");
+        }
+        return getAttribute(loc, attrName.value().as(CFString.class), effectiveRange);
+    }
+    public CFType getAttribute(long loc, CMTextMarkupAttribute attrName, CFRange effectiveRange) {
+        if (attrName == null) {
+            throw new NullPointerException("attrName");
+        }
+        return getAttribute(loc, attrName.value(), effectiveRange);
+    }
+    public CFType getAttribute(long loc, CTAttributedStringAttribute attrName, CFRange effectiveRange) {
+        if (attrName == null) {
+            throw new NullPointerException("attrName");
+        }
+        return getAttribute(loc, attrName.value(), effectiveRange);
+    }
+    
+    public NSAttributedStringAttributes getAttributes(long loc, CFRange effectiveRange) {
+        CFDictionary dict = getAttributesDictionary(loc, effectiveRange);
+        if (dict == null) return null;
+        return new NSAttributedStringAttributes(dict.as(NSDictionary.class));
+    }
+    public CMTextMarkupAttributes getTextMarkupAttributes(long loc, CFRange effectiveRange) {
+        CFDictionary dict = getAttributesDictionary(loc, effectiveRange);
+        if (dict == null) return null;
+        return new CMTextMarkupAttributes(dict);
+    }
+    public CTAttributedStringAttributes getCoreTextAttributes(long loc, CFRange effectiveRange) {
+        CFDictionary dict = getAttributesDictionary(loc, effectiveRange);
+        if (dict == null) return null;
+        return new CTAttributedStringAttributes(null);
+    }
     /*<methods>*/
     @Bridge(symbol="CFAttributedStringGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFAttributedStringCreate", optional=true)
-    public static native CFAttributedString create(CFAllocator alloc, String str, CFDictionary attributes);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFAttributedString create(CFAllocator alloc, String str, CFDictionary attributes);
     @Bridge(symbol="CFAttributedStringCreateWithSubstring", optional=true)
-    public static native CFAttributedString createWithSubstring(CFAllocator alloc, CFAttributedString aStr, @ByVal CFRange range);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFAttributedString createWithSubstring(CFAllocator alloc, CFAttributedString aStr, @ByVal CFRange range);
     @Bridge(symbol="CFAttributedStringCreateCopy", optional=true)
-    public static native CFAttributedString createCopy(CFAllocator alloc, CFAttributedString aStr);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFAttributedString createCopy(CFAllocator alloc, CFAttributedString aStr);
     @Bridge(symbol="CFAttributedStringGetString", optional=true)
     public native String getString();
     @Bridge(symbol="CFAttributedStringGetLength", optional=true)
-    public native @MachineSizedSInt long getLength();
+    public native @MachineSizedSInt long length();
     @Bridge(symbol="CFAttributedStringGetAttributes", optional=true)
-    public native CFDictionary getAttributes(@MachineSizedSInt long loc, CFRange effectiveRange);
+    public native CFDictionary getAttributesDictionary(@MachineSizedSInt long loc, CFRange effectiveRange);
     @Bridge(symbol="CFAttributedStringGetAttribute", optional=true)
-    public native CFType getAttribute(@MachineSizedSInt long loc, String attrName, CFRange effectiveRange);
-    @Bridge(symbol="CFAttributedStringGetAttributesAndLongestEffectiveRange", optional=true)
-    public native CFDictionary getAttributesAndLongestEffectiveRange(@MachineSizedSInt long loc, @ByVal CFRange inRange, CFRange longestEffectiveRange);
-    @Bridge(symbol="CFAttributedStringGetAttributeAndLongestEffectiveRange", optional=true)
-    public native CFType getAttributeAndLongestEffectiveRange(@MachineSizedSInt long loc, String attrName, @ByVal CFRange inRange, CFRange longestEffectiveRange);
-    @Bridge(symbol="CFAttributedStringGetMutableString", optional=true)
-    public native CFMutableString getMutableString();
+    public native CFType getAttribute(@MachineSizedSInt long loc, CFString attrName, CFRange effectiveRange);
     /*</methods>*/
 }

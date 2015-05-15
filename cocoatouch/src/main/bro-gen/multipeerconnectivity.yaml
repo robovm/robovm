@@ -82,7 +82,7 @@ classes:
                         type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<SecIdentity>'
             '-sendData:toPeers:withMode:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
                 parameters:
                     peerIDs:
                         type: NSArray<MCPeerID>
@@ -90,7 +90,7 @@ classes:
                 name: sendResource
             '-startStreamWithName:toPeer:error:':
                 name: startStream
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-nearbyConnectionDataForPeer:withCompletionHandler:':
                 name: requestNearbyConnectionData
             '-connectPeer:withNearbyConnectionData:':

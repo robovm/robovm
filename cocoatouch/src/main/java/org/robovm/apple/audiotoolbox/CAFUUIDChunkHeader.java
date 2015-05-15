@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,8 +30,10 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -48,17 +50,17 @@ import org.robovm.apple.coremedia.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public CAFUUIDChunkHeader() {}
-    public CAFUUIDChunkHeader(CAFChunkHeader mHeader, ByteBuffer mUUID) {
-        this.setMHeader(mHeader);
-        this.setMUUID(mUUID);
+    public CAFUUIDChunkHeader(CAFChunkHeader header, ByteBuffer UUID) {
+        this.setHeader(header);
+        this.setUUID(UUID);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native @ByVal CAFChunkHeader getMHeader();
-    @StructMember(0) public native CAFUUIDChunkHeader setMHeader(@ByVal CAFChunkHeader mHeader);
-    @StructMember(1) public native @Array({16}) ByteBuffer getMUUID();
-    @StructMember(1) public native CAFUUIDChunkHeader setMUUID(@Array({16}) ByteBuffer mUUID);
+    @StructMember(0) public native @ByVal CAFChunkHeader getHeader();
+    @StructMember(0) public native CAFUUIDChunkHeader setHeader(@ByVal CAFChunkHeader header);
+    @StructMember(1) public native @Array({16}) ByteBuffer getUUID();
+    @StructMember(1) public native CAFUUIDChunkHeader setUUID(@Array({16}) ByteBuffer UUID);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

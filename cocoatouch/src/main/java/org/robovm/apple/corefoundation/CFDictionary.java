@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -94,6 +94,17 @@ import org.robovm.apple.foundation.NSObject.NSObjectPtr;
             return CFType.Marshaler.toNative(CFDictionary.fromStringStringMap(l), flags);
         }
     }
+    
+    static final java.lang.reflect.Method cbPutAll;
+    
+    static {
+        try {
+            cbPutAll = CFDictionary.class.getDeclaredMethod("cbPutAll", VoidPtr.class, VoidPtr.class, CFMutableDictionary.class);
+        } catch (Throwable e) {
+            throw new Error(e);
+        }
+    }
+    
     /*<ptr>*/public static class CFDictionaryPtr extends Ptr<CFDictionary, CFDictionaryPtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(CFDictionary.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -102,6 +113,12 @@ import org.robovm.apple.foundation.NSObject.NSObjectPtr;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    @Callback
+    private static void cbPutAll(VoidPtr key, VoidPtr value, CFMutableDictionary thiz) {
+        thiz.put(key, value);
+    }
+    
+    
     public static <K extends NativeObject, V extends NativeObject> CFDictionary create(Map<K, V> m) {
         if (m == null) {
             throw new NullPointerException("m");
@@ -237,6 +254,9 @@ import org.robovm.apple.foundation.NSObject.NSObjectPtr;
     public void put(NativeObject key, NativeObject value) {
         throw new UnsupportedOperationException("CFDictionary is immutable. Use CFMutableDictionary instead!");
     }
+    public void putAll(CFDictionary dict) {
+        throw new UnsupportedOperationException("CFDictionary is immutable. Use CFMutableDictionary instead!");
+    }
     public void remove(NativeObject key) {
         throw new UnsupportedOperationException("CFDictionary is immutable. Use CFMutableDictionary instead!");
     }
@@ -254,9 +274,9 @@ import org.robovm.apple.foundation.NSObject.NSObjectPtr;
     @Bridge(symbol="CFDictionaryGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFDictionaryCreate", optional=true)
-    protected static native CFDictionary create(CFAllocator allocator, VoidPtr.VoidPtrPtr keys, VoidPtr.VoidPtrPtr values, @MachineSizedSInt long numValues, CFDictionaryKeyCallBacks keyCallBacks, CFDictionaryValueCallBacks valueCallBacks);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFDictionary create(CFAllocator allocator, VoidPtr.VoidPtrPtr keys, VoidPtr.VoidPtrPtr values, @MachineSizedSInt long numValues, CFDictionaryKeyCallBacks keyCallBacks, CFDictionaryValueCallBacks valueCallBacks);
     @Bridge(symbol="CFDictionaryCreateCopy", optional=true)
-    protected static native CFDictionary createCopy(CFAllocator allocator, CFDictionary theDict);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFDictionary createCopy(CFAllocator allocator, CFDictionary theDict);
     @Bridge(symbol="CFDictionaryGetCount", optional=true)
     protected native @MachineSizedSInt long getCount();
     @Bridge(symbol="CFDictionaryGetCountOfKey", optional=true)

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,21 +45,21 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*/
     @NotImplemented("device")
-    public MTLDevice getDevice() { throw new UnsupportedOperationException(); }
+    public MTLDevice getDevice() { return null; }
     @NotImplemented("label")
-    public String getLabel() { throw new UnsupportedOperationException(); }
+    public String getLabel() { return null; }
     @NotImplemented("setLabel:")
-    public void setLabel(String v) { throw new UnsupportedOperationException(); }
+    public void setLabel(String v) {}
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("endEncoding")
-    public void endEncoding() { throw new UnsupportedOperationException(); }
+    public void endEncoding() {}
     @NotImplemented("insertDebugSignpost:")
-    public void insertDebugSignpost(String string) { throw new UnsupportedOperationException(); }
+    public void insertDebugSignpost(String string) {}
     @NotImplemented("pushDebugGroup:")
-    public void pushDebugGroup(String string) { throw new UnsupportedOperationException(); }
+    public void pushDebugGroup(String string) {}
     @NotImplemented("popDebugGroup")
-    public void popDebugGroup() { throw new UnsupportedOperationException(); }
+    public void popDebugGroup() {}
     /*</methods>*/
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,8 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.foundation.*;
 /*</imports>*/
+import org.robovm.apple.coreservices.CFFTPStreamProperty;
+import org.robovm.apple.coreservices.CFSocketStreamProperty;
 
 /*<javadoc>*/
 /*</javadoc>*/
@@ -42,7 +44,7 @@ import org.robovm.apple.foundation.*;
     }
     
     private static java.util.concurrent.atomic.AtomicLong refconId = new java.util.concurrent.atomic.AtomicLong();
-    private static final Map<Long, ClientCallback> clientCallbacks = new HashMap<>();
+    private static final LongMap<ClientCallback> clientCallbacks = new LongMap<>();
     private static final java.lang.reflect.Method cbClient;
     
     static {
@@ -119,20 +121,46 @@ import org.robovm.apple.foundation.*;
         }
         return result;
     }
+    
+    public CFType getProperty(CFStreamProperty property) {
+        return getProperty(property.value());
+    }
+    public CFType getProperty(CFSocketStreamProperty property) {
+        return getProperty(property.value());
+    }
+    public CFType getProperty(CFFTPStreamProperty property) {
+        return getProperty(property.value());
+    }
+    public boolean setProperty(CFStreamProperty property, CFType propertyValue) {
+        return setProperty(property.value(), propertyValue);
+    }
+    public boolean setProperty(CFSocketStreamProperty property, CFType propertyValue) {
+        return setProperty(property.value(), propertyValue);
+    }
+    public boolean setProperty(CFFTPStreamProperty property, CFType propertyValue) {
+        return setProperty(property.value(), propertyValue);
+    }
+    
+    public void scheduleInRunLoop(CFRunLoop runLoop, CFRunLoopMode runLoopMode) {
+        scheduleInRunLoop(runLoop, runLoopMode.value());
+    }
+    public void unscheduleFromRunLoop(CFRunLoop runLoop, CFRunLoopMode runLoopMode) {
+        unscheduleFromRunLoop(runLoop, runLoopMode.value());
+    }
     /*<methods>*/
     @Bridge(symbol="CFWriteStreamGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFWriteStreamCreateWithBuffer", optional=true)
-    protected static native CFWriteStream create(CFAllocator alloc, @Pointer long buffer, @MachineSizedSInt long bufferCapacity);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFWriteStream create(CFAllocator alloc, @Pointer long buffer, @MachineSizedSInt long bufferCapacity);
     @Bridge(symbol="CFWriteStreamCreateWithFile", optional=true)
-    protected static native CFWriteStream create(CFAllocator alloc, CFURL fileURL);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFWriteStream create(CFAllocator alloc, CFURL fileURL);
     @Bridge(symbol="CFWriteStreamGetStatus", optional=true)
     public native CFStreamStatus getStatus();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFWriteStreamCopyError", optional=true)
-    public native CFError getError();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFError getError();
     @Bridge(symbol="CFWriteStreamOpen", optional=true)
     public native boolean openStream();
     @Bridge(symbol="CFWriteStreamClose", optional=true)
@@ -142,9 +170,9 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFWriteStreamWrite", optional=true)
     private native @MachineSizedSInt long write(@Pointer long buffer, @MachineSizedSInt long bufferLength);
     @Bridge(symbol="CFWriteStreamCopyProperty", optional=true)
-    public native CFType getProperty(CFStreamProperty propertyName);
+    private native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFType getProperty(CFString propertyName);
     @Bridge(symbol="CFWriteStreamSetProperty", optional=true)
-    public native boolean setProperty(CFStreamProperty propertyName, CFType propertyValue);
+    private native boolean setProperty(CFString propertyName, CFType propertyValue);
     @Bridge(symbol="CFWriteStreamSetClient", optional=true)
     private native boolean setClient(CFStreamEventType streamEvents, FunctionPtr clientCB, CFStreamClientContext clientContext);
     @Bridge(symbol="CFWriteStreamScheduleWithRunLoop", optional=true)

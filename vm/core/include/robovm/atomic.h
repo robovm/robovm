@@ -83,4 +83,8 @@ static inline void* rvmAtomicStorePtr(void** ptr, void* newval) {
     }
 }
 
+static inline void rvmAtomicSynchronize() {
+    __sync_synchronize();
+}
+
 #endif

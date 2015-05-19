@@ -159,18 +159,24 @@ void Java_sun_misc_Unsafe_putObjectVolatile(Env* env, Object* unsafe, Object* ob
 }
 
 void Java_sun_misc_Unsafe_putOrderedInt(Env* env, Object* unsafe, Object* obj, jlong offset, jint newValue) {
-    // TODO: Java_sun_misc_Unsafe_putOrderedInt(...) calls Java_sun_misc_Unsafe_putIntVolatile(...)
-    Java_sun_misc_Unsafe_putIntVolatile(env, unsafe, obj, offset, newValue);
+    if (!checkNull(env, obj)) return;
+    jint* address = (jint*) getFieldAddress(obj, offset);
+    rvmAtomicSynchronize();
+    *address = newValue;
 }
 
 void Java_sun_misc_Unsafe_putOrderedLong(Env* env, Object* unsafe, Object* obj, jlong offset, jlong newValue) {
-    // TODO: Java_sun_misc_Unsafe_putOrderedLong(...) calls Java_sun_misc_Unsafe_putLongVolatile(...)
-    Java_sun_misc_Unsafe_putLongVolatile(env, unsafe, obj, offset, newValue);
+    if (!checkNull(env, obj)) return;
+    jlong* address = (jlong*) getFieldAddress(obj, offset);
+    rvmAtomicSynchronize();
+    *address = newValue;
 }
 
 void Java_sun_misc_Unsafe_putOrderedObject(Env* env, Object* unsafe, Object* obj, jlong offset, Object* newValue) {
-    // TODO: Java_sun_misc_Unsafe_putOrderedObject(...) calls Java_sun_misc_Unsafe_putObjectVolatile(...)
-    Java_sun_misc_Unsafe_putObjectVolatile(env, unsafe, obj, offset, newValue);
+    if (!checkNull(env, obj)) return;
+    Object** address = (Object**) getFieldAddress(obj, offset);
+    rvmAtomicSynchronize();
+    *address = newValue;
 }
 
 Object* Java_sun_misc_Unsafe_allocateInstance(Env* env, Object* unsafe, Class* c) {

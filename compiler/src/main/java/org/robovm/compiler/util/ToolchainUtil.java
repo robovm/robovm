@@ -16,9 +16,7 @@
  */
 package org.robovm.compiler.util;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +24,6 @@ import java.util.List;
 import org.apache.commons.exec.ExecuteException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
 import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.config.OS;
@@ -260,40 +257,54 @@ public class ToolchainUtil {
         new Executor(config.getLogger(), getPackageApplication()).args(appDir, "-o", outFile).exec();
     }
 
+    private static List<File> writeObjectsFiles(Config config, List<File> objectFiles, int maxObjectsPerFile,
+            boolean quote) throws IOException {
+
+        ArrayList<File> files = new ArrayList<>();
+        for (int i = 0, start = 0; start < objectFiles.size(); i++, start += maxObjectsPerFile) {
+            List<File> partition = objectFiles.subList(start, Math.min(objectFiles.size(), start + maxObjectsPerFile));
+            List<String> paths = new ArrayList<>();
+            for (File f : partition) {
+                paths.add((quote ? "\"" : "") + f.getAbsolutePath() + (quote ? "\"" : ""));
+            }
+
+            File objectsFile = new File(config.getTmpDir(), "objects" + i);
+            FileUtils.writeLines(objectsFile, paths, "\n");
+            files.add(objectsFile);
+        }
+
+        return files;
+    }
+
     public static void link(Config config, List<String> args, List<File> objectFiles, List<String> libs, File outFile)
             throws IOException {
-        File objectsFile = new File(config.getTmpDir(), "objects");
-        if (config.getOs().getFamily() == OS.Family.darwin) {
-            // The Xcode linker doesn't need paths with spaces to be quoted and
-            // will fail if we do quote
-            FileUtils.writeLines(objectsFile, objectFiles, "\n");
-        } else {
-            // The linker on Linux will fail if we don't quote paths with spaces
-            BufferedOutputStream objectsOut = null;
-            try {
-                objectsOut = new BufferedOutputStream(new FileOutputStream(objectsFile));
-                for (File f : objectFiles) {
-                    objectsOut.write('"');
-                    objectsOut.write(f.getAbsolutePath().getBytes());
-                    objectsOut.write('"');
-                    objectsOut.write('\n');
-                }
-            } finally {
-                IOUtils.closeQuietly(objectsOut);
-            }
-        }
+        
+        boolean isDarwin = config.getOs().getFamily() == OS.Family.darwin;
+        /*
+         * The Xcode linker doesn't need paths with spaces to be quoted and will
+         * fail if we do quote. The Xcode linker will crash if we pass more than
+         * 65535 files in an objects file.
+         * 
+         * The linker on Linux will fail if we don't quote paths with spaces.
+         */
+        List<File> objectsFiles = writeObjectsFiles(config, objectFiles, isDarwin ? 0xffff : Integer.MAX_VALUE,
+                !isDarwin);
 
         List<String> opts = new ArrayList<String>();
         if (config.isDebug()) {
             opts.add("-g");
         }
-        if (config.getOs().getFamily() == OS.Family.darwin) {
+        if (isDarwin) {
             opts.add("-arch");
             opts.add(config.getArch().getClangName());
-            opts.add("-Wl,-filelist," + objectsFile.getAbsolutePath());
+            for (File objectsFile : objectsFiles) {
+                opts.add("-Wl,-filelist," + objectsFile.getAbsolutePath());
+            }
         } else {
             opts.add(config.getArch().is32Bit() ? "-m32" : "-m64");
-            opts.add("@" + objectsFile.getAbsolutePath());
+            for (File objectsFile : objectsFiles) {
+                opts.add("@" + objectsFile.getAbsolutePath());
+            }
         }
         opts.addAll(args);
 

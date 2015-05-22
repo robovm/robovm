@@ -96,31 +96,36 @@ int main(int argc, char* argv[]) {
 }
 
 static ClassInfoHeader** getClassInfosBase(void* hash) {
-    hash += sizeof(jint); // Skip count
-    jint size = ((uint16_t*) hash)[0];
-#ifdef _LP64
-    ClassInfoHeader** base  = hash + (size << 1) + 4;
-#else
-    ClassInfoHeader** base  = hash + (size << 1) + 4;
-#endif
-    return base;
+    uint32_t size = ((uint32_t*) hash)[1];
+    void* base = hash
+            + sizeof(uint32_t) /* count */
+            + sizeof(uint32_t) /* size */
+            + (size << 2)
+            + sizeof(uint32_t) /* this is for the last end index in the hash */;
+    // Make sure base is properly aligned
+    return (ClassInfoHeader**) (((uintptr_t) base + sizeof(void*) - 1) & ~(sizeof(void*) - 1));
 }
 
-static jint getClassInfosCount(void* hash) {
-    return ((jint*) hash)[0];
+static uint32_t getClassInfosCount(void* hash) {
+    return ((uint32_t*) hash)[0];
 }
 
 static ClassInfoHeader* lookupClassInfo(Env* env, const char* className, void* hash) {
     ClassInfoHeader** base = getClassInfosBase(hash);
-    jint h = 0;
+
+    // Hash the class name
+    uint32_t h = 0;
     MurmurHash3_x86_32(className, strlen(className) + 1, 0x1ce79e5c, &h);
-    hash += sizeof(jint); // Skip count
-    jint size = ((uint16_t*) hash)[0];
+    uint32_t size = ((uint32_t*) hash)[1];
     h &= size - 1;
-    jint start = ((uint16_t*) hash)[h + 1];
-    jint end = ((uint16_t*) hash)[h + 1 + 1];
-    jint i;
-    for (i = start; i < end; i++) {
+
+    // Get the start and end indexes
+    hash += sizeof(uint32_t) + sizeof(uint32_t); // Skip count and size
+    uint32_t start = ((uint32_t*) hash)[h];
+    uint32_t end = ((uint32_t*) hash)[h + 1];
+
+    // Iterate through the ClassInfoHeaders between start and end
+    for (uint32_t i = start; i < end; i++) {
         ClassInfoHeader* header = base[i];
         if (header && !strcmp(header->className, className)) {
             return header;
@@ -131,8 +136,8 @@ static ClassInfoHeader* lookupClassInfo(Env* env, const char* className, void* h
 
 static void iterateClassInfos(Env* env, jboolean (*callback)(Env*, ClassInfoHeader*, MethodInfo*, void*), void* hash, void* data) {
     ClassInfoHeader** base = getClassInfosBase(hash);
-    jint count = getClassInfosCount(hash);
-    jint i = 0;
+    uint32_t count = getClassInfosCount(hash);
+    uint32_t i = 0;
     for (i = 0; i < count; i++) {
         ClassInfoHeader* header = base[i];
         if ((header->flags & CI_ERROR) == 0) {
@@ -158,8 +163,8 @@ static ObjectArray* listClasses(Env* env, Class* instanceofClazz, ClassLoader* c
         return NULL;
     }
     ClassInfoHeader** base = getClassInfosBase(hash);
-    jint count = getClassInfosCount(hash);
-    jint i = 0;
+    uint32_t count = getClassInfosCount(hash);
+    uint32_t i = 0;
     jint matches = count;
     TypeInfo* instanceofTypeInfo = instanceofClazz ? instanceofClazz->typeInfo : NULL;
     if (instanceofTypeInfo) {

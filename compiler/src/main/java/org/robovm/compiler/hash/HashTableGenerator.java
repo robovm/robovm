@@ -27,15 +27,16 @@ import org.robovm.compiler.llvm.StructureConstantBuilder;
 import org.robovm.compiler.llvm.Type;
 
 /**
- * @author niklas
- *
+ * Generates static hash tables in the form of a {@link StructureConstant} using
+ * a {@link HashFunction}.
  */
 public class HashTableGenerator<K, V extends Constant> {
+    private static final IntegerType INDEX_TYPE = Type.I32;
+
     private final HashFunction<K> function;
     private List<Entry<K, V>>[] table;
     private int tableSize;
     private int count = 0;
-    private IntegerType indexType = Type.I16;
     private double loadFactor;
     
     public HashTableGenerator(HashFunction<K> function) {
@@ -99,14 +100,14 @@ public class HashTableGenerator<K, V extends Constant> {
         StructureConstantBuilder builder = new StructureConstantBuilder();
         int start = 0;
         builder.add(new IntegerConstant(count));
-        builder.add(new IntegerConstant(table.length, indexType));
-        builder.add(new IntegerConstant(start, indexType));
+        builder.add(new IntegerConstant(table.length, INDEX_TYPE));
+        builder.add(new IntegerConstant(start, INDEX_TYPE));
         for (int i = 1; i <= table.length; i++) {
             if (table[i - 1] == null) {
-                builder.add(new IntegerConstant(start, indexType));                
+                builder.add(new IntegerConstant(start, INDEX_TYPE));                
             } else {
                 start += table[i - 1].size();
-                builder.add(new IntegerConstant(start, indexType));
+                builder.add(new IntegerConstant(start, INDEX_TYPE));
             }
         }
         for (int i = 0; i < table.length; i++) {

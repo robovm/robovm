@@ -51,7 +51,6 @@ import soot.DoubleType;
 import soot.FloatType;
 import soot.IntType;
 import soot.LongType;
-import soot.Modifier;
 import soot.PrimType;
 import soot.RefLikeType;
 import soot.RefType;
@@ -521,14 +520,21 @@ public class Types {
     
     public static int getFieldAlignment(OS os, Arch arch, SootField f) {
         soot.Type t = f.getType();
-        if (arch.isArm()) {
-            if (LongType.v().equals(t) && Modifier.isVolatile(f.getModifiers())) {
-                // On ARM volatile longs must be 8 byte aligned
-                return 8;
-            }
-            if (LongType.v().equals(t) && !f.isStatic() && Modifier.isFinal(f.getModifiers())) {
-                // The Java Memory Model requires final instance fields to be written to using
-                // volatile semantics. Because of ARM's alignment requirements we return 8 here too.
+        if (arch.is32Bit() && arch.isArm()) {
+            if (LongType.v().equals(t)) {
+                /*
+                 * On ARM 32-bit volatile longs must be 8 byte aligned. Also,
+                 * the Java Memory Model mandates that final instance fields are
+                 * written to using volatile semantics. So we need to return 8
+                 * here for volatile long static/instance fields and final long
+                 * instance fields.
+                 *
+                 * But due to sun.misc.Unsafe's getLongVolatile() and
+                 * putLongVolatile(), which can be used for
+                 * non-volatile/non-final long fields (e.g. RxJava does this,
+                 * see #987), we always make sure long fields are 8 byte
+                 * aligned to avoid the app crashing when using those methods.
+                 */
                 return 8;
             }
         }

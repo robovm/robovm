@@ -242,15 +242,12 @@ struct JavaThread {
   Object* target;
   Object* uncaughtHandler;
 #if defined(RVM_THUMBV7)
-  // volatile long is 8-byte aligned on ARM
-  /*volatile*/ jlong threadPtr __attribute__ ((aligned (8))); // Points to the Thread
-  jlong id;
-  jlong stackSize;
+  jlong id __attribute__ ((aligned (8))); // The compiler 8-byte aligns all long fields on ARM 32-bit.
 #else
   jlong id;
+#endif
   jlong stackSize;
   /*volatile*/ jlong threadPtr; // Points to the Thread
-#endif
   jint parkState;
   jint priority;
   jboolean daemon;

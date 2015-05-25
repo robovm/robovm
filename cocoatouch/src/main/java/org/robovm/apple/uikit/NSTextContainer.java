@@ -52,6 +52,7 @@ import org.robovm.apple.corelocation.*;
     public NSTextContainer() {}
     protected NSTextContainer(SkipInit skipInit) { super(skipInit); }
     public NSTextContainer(@ByVal CGSize size) { super((SkipInit) null); initObject(init(size)); }
+    public NSTextContainer(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "layoutManager")
@@ -104,6 +105,8 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "lineFragmentRectForProposedRect:atIndex:writingDirection:remainingRect:")
     public native @ByVal CGRect getLineFragmentRect(@ByVal CGRect proposedRect, @MachineSizedUInt long characterIndex, NSWritingDirection baseWritingDirection, CGRect remainingRect);
     @Method(selector = "encodeWithCoder:")
-    public native void encode(NSCoder aCoder);
+    public native void encode(NSCoder coder);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     /*</methods>*/
 }

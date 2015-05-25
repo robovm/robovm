@@ -51,6 +51,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public NSLayoutManager() {}
     protected NSLayoutManager(SkipInit skipInit) { super(skipInit); }
+    public NSLayoutManager(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "textStorage")
@@ -251,6 +252,8 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "strikethroughGlyphRange:strikethroughType:lineFragmentRect:lineFragmentGlyphRange:containerOrigin:")
     public native void strikethrough(@ByVal NSRange glyphRange, NSUnderlineStyle strikethroughVal, @ByVal CGRect lineRect, @ByVal NSRange lineGlyphRange, @ByVal CGPoint containerOrigin);
     @Method(selector = "encodeWithCoder:")
-    public native void encode(NSCoder aCoder);
+    public native void encode(NSCoder coder);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     /*</methods>*/
 }

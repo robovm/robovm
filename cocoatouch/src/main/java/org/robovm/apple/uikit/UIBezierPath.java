@@ -51,6 +51,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UIBezierPath() {}
     protected UIBezierPath(SkipInit skipInit) { super(skipInit); }
+    public UIBezierPath(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "CGPath")
@@ -188,6 +189,8 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "bezierPathWithCGPath:")
     public static native UIBezierPath createFromPath(CGPath CGPath);
     @Method(selector = "encodeWithCoder:")
-    public native void encode(NSCoder aCoder);
+    public native void encode(NSCoder coder);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     /*</methods>*/
 }

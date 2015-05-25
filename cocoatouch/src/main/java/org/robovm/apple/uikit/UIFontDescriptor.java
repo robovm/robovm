@@ -52,6 +52,7 @@ import org.robovm.apple.corelocation.*;
     public UIFontDescriptor() {}
     protected UIFontDescriptor(SkipInit skipInit) { super(skipInit); }
     public UIFontDescriptor(UIFontDescriptorAttributes attributes) { super((SkipInit) null); initObject(init(attributes)); }
+    public UIFontDescriptor(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "postscriptName")
@@ -113,6 +114,8 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "preferredFontDescriptorWithTextStyle:")
     protected static native UIFontDescriptor getPreferredFontDescriptor(NSString style);
     @Method(selector = "encodeWithCoder:")
-    public native void encode(NSCoder aCoder);
+    public native void encode(NSCoder coder);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     /*</methods>*/
 }

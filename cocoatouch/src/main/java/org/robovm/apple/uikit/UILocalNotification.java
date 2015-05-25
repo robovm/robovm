@@ -51,6 +51,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UILocalNotification() {}
     protected UILocalNotification(SkipInit skipInit) { super(skipInit); }
+    public UILocalNotification(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "fireDate")
@@ -147,6 +148,8 @@ import org.robovm.apple.corelocation.*;
     public static native String getDefaultSoundName();
     
     @Method(selector = "encodeWithCoder:")
-    public native void encode(NSCoder aCoder);
+    public native void encode(NSCoder coder);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     /*</methods>*/
 }

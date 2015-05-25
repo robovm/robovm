@@ -52,6 +52,7 @@ import org.robovm.apple.corelocation.*;
     public UIView() {}
     protected UIView(SkipInit skipInit) { super(skipInit); }
     public UIView(@ByVal CGRect frame) { super((SkipInit) null); initObject(init(frame)); }
+    public UIView(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "isUserInteractionEnabled")
@@ -601,7 +602,9 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "drawRect:forViewPrintFormatter:")
     public native void draw(@ByVal CGRect rect, UIViewPrintFormatter formatter);
     @Method(selector = "encodeWithCoder:")
-    public native void encode(NSCoder aCoder);
+    public native void encode(NSCoder coder);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     @Method(selector = "traitCollectionDidChange:")
     public native void traitCollectionDidChange(UITraitCollection previousTraitCollection);
     /**

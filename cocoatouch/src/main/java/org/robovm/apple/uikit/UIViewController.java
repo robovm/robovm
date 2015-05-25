@@ -68,6 +68,7 @@ import org.robovm.apple.mediaplayer.MPMoviePlayerViewController;
     public UIViewController() {}
     protected UIViewController(SkipInit skipInit) { super(skipInit); }
     public UIViewController(String nibNameOrNil, NSBundle nibBundleOrNil) { super((SkipInit) null); initObject(init(nibNameOrNil, nibBundleOrNil)); }
+    public UIViewController(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "view")
@@ -767,7 +768,9 @@ import org.robovm.apple.mediaplayer.MPMoviePlayerViewController;
     @Method(selector = "separateSecondaryViewControllerForSplitViewController:")
     public native UIViewController separateSecondaryViewController(UISplitViewController splitViewController);
     @Method(selector = "encodeWithCoder:")
-    public native void encode(NSCoder aCoder);
+    public native void encode(NSCoder coder);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     @Method(selector = "traitCollectionDidChange:")
     public native void traitCollectionDidChange(UITraitCollection previousTraitCollection);
     @Method(selector = "beginRequestWithExtensionContext:")

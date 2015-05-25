@@ -51,6 +51,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public NSShadow() {}
     protected NSShadow(SkipInit skipInit) { super(skipInit); }
+    public NSShadow(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "shadowOffset")
@@ -69,6 +70,8 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "encodeWithCoder:")
-    public native void encode(NSCoder aCoder);
+    public native void encode(NSCoder coder);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     /*</methods>*/
 }

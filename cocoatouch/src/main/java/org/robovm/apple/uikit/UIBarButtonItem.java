@@ -117,6 +117,7 @@ import org.robovm.apple.corelocation.*;
     public UIBarButtonItem(String title, UIBarButtonItemStyle style, NSObject target, Selector action) { super((SkipInit) null); initObject(init(title, style, target, action)); }
     public UIBarButtonItem(UIBarButtonSystemItem systemItem, NSObject target, Selector action) { super((SkipInit) null); initObject(init(systemItem, target, action)); }
     public UIBarButtonItem(UIView customView) { super((SkipInit) null); initObject(init(customView)); }
+    public UIBarButtonItem(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     
     public void setOnClickListener(OnClickListener listener) {
@@ -252,6 +253,8 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "backButtonBackgroundVerticalPositionAdjustmentForBarMetrics:")
     public native @MachineSizedFloat double getBackButtonBackgroundVerticalPositionAdjustment(UIBarMetrics barMetrics);
     @Method(selector = "encodeWithCoder:")
-    public native void encode(NSCoder aCoder);
+    public native void encode(NSCoder coder);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     /*</methods>*/
 }

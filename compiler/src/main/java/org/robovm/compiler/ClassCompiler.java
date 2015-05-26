@@ -887,7 +887,13 @@ public class ClassCompiler {
             @SuppressWarnings("unchecked")
             List<soot.Type> paramTypes = (List<soot.Type>) m.getParameterTypes();
             for (soot.Type type : paramTypes) {
-                addClassDependencyIfNeeded(clazz, mi, type, true);
+                /*
+                 * Constructors are strongly linked even in aggressive tree
+                 * shaking mode. Make sure to add the parameters of constructors
+                 * as strong dependencies. For all other methods we add
+                 * parameters as weak dependencies.
+                 */
+                addClassDependencyIfNeeded(clazz, mi, type, !m.getName().equals("<init>"));
             }
         }
         ci.addClassDependencies(attributesEncoder.getDependencies(), false);

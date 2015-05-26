@@ -79,12 +79,12 @@ public class DependencyGraph {
         for (Dependency dep : ci.getDependencies()) {
             if (dep instanceof InvokeMethodDependency) {
                 InvokeMethodDependency mdep = (InvokeMethodDependency) dep;
-                classNode.addStrongEgde(getMethodNode(mdep.getClassName(), mdep.getMethodName(), mdep.getMethodDesc()));
+                classNode.addEgde(getMethodNode(mdep.getClassName(), mdep.getMethodName(), mdep.getMethodDesc()), mdep.isWeak());
             } else if (dep instanceof SuperMethodDependency) {
                 SuperMethodDependency mdep = (SuperMethodDependency) dep;
-                classNode.addStrongEgde(getMethodNode(mdep.getClassName(), mdep.getMethodName(), mdep.getMethodDesc()));
+                classNode.addEgde(getMethodNode(mdep.getClassName(), mdep.getMethodName(), mdep.getMethodDesc()), mdep.isWeak());
             } else {
-                classNode.addStrongEgde(getClassNode(dep.getClassName()));
+                classNode.addEgde(getClassNode(dep.getClassName()), dep.isWeak());
             }
         }
 
@@ -106,21 +106,21 @@ public class DependencyGraph {
 
             MethodNode methodNode = getMethodNode(clazz.getInternalName(), mi.getName(), mi.getDesc());
             classNode.addEgde(methodNode, !strong);
-            methodNode.addStrongEgde(classNode);
+            methodNode.addEgde(classNode, false);
 
             for (Dependency dep : mi.getDependencies()) {
                 if (dep instanceof InvokeMethodDependency) {
                     InvokeMethodDependency mdep = (InvokeMethodDependency) dep;
-                    methodNode.addStrongEgde(getMethodNode(mdep.getClassName(), mdep.getMethodName(),
-                            mdep.getMethodDesc()));
+                    methodNode.addEgde(getMethodNode(mdep.getClassName(), mdep.getMethodName(),
+                            mdep.getMethodDesc()), mdep.isWeak());
                 } else if (dep instanceof SuperMethodDependency) {
                     // Reverse the dependency so that the method is strongly
                     // linked if the super method is invoked.
                     SuperMethodDependency mdep = (SuperMethodDependency) dep;
-                    getMethodNode(mdep.getClassName(), mdep.getMethodName(), mdep.getMethodDesc()).addStrongEgde(
-                            methodNode);
+                    getMethodNode(mdep.getClassName(), mdep.getMethodName(), mdep.getMethodDesc()).addEgde(
+                            methodNode, false);
                 } else {
-                    methodNode.addStrongEgde(getClassNode(dep.getClassName()));
+                    methodNode.addEgde(getClassNode(dep.getClassName()), dep.isWeak());
                 }
             }
         }
@@ -212,14 +212,6 @@ public class DependencyGraph {
 
         public void addEgde(Node to, boolean weak) {
             (weak ? weakEdges : strongEdges).add(to);
-        }
-
-        public void addWeakEgde(Node to) {
-            addEgde(to, true);
-        }
-
-        public void addStrongEgde(Node to) {
-            addEgde(to, false);
         }
     }
 

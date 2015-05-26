@@ -35,6 +35,7 @@ import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
+import org.robovm.rt.annotation.WeaklyLinked;
 
 /*<javadoc>*/
 
@@ -77,24 +78,29 @@ import org.robovm.apple.dispatch.*;
     }
     
     /* UIKit extensions */
+    @WeaklyLinked
     public int getSection() {
         return (int) NSIndexPathExtensions.getSection(this);
     }
+    @WeaklyLinked
     public int getRow() {
         return (int) NSIndexPathExtensions.getRow(this);
     }
     /**
      * @since Available in iOS 6.0 and later.
      */
+    @WeaklyLinked
     public int getItem() {
         return (int) NSIndexPathExtensions.getItem(this);
     }
+    @WeaklyLinked
     public static NSIndexPath createWithRow(@MachineSizedSInt long row, @MachineSizedSInt long section) {
         return NSIndexPathExtensions.createIndexPathForRowInSection(row, section);
     }
     /**
      * @since Available in iOS 6.0 and later.
      */
+    @WeaklyLinked
     public static NSIndexPath createWithItem(@MachineSizedSInt long item, @MachineSizedSInt long section) {
         return NSIndexPathExtensions.createIndexPathForItemInSection(item, section);
     }

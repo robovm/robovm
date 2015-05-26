@@ -33,6 +33,7 @@ import org.robovm.apple.opengles.*;
 import org.robovm.apple.corevideo.*;
 import org.robovm.apple.imageio.*;
 /*</imports>*/
+import org.robovm.rt.annotation.WeaklyLinked;
 import org.robovm.apple.uikit.CIColorExtensions;
 
 /*<javadoc>*/
@@ -75,6 +76,7 @@ import org.robovm.apple.uikit.CIColorExtensions;
     }
 
     /* UIKit extensions */
+    @WeaklyLinked
     public static CIColor fromUIColor(org.robovm.apple.uikit.UIColor color) {
         return CIColorExtensions.create(color);
     }

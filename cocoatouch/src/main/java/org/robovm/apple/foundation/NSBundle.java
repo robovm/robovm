@@ -35,6 +35,7 @@ import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
+import org.robovm.rt.annotation.WeaklyLinked;
 
 /*<javadoc>*/
 
@@ -160,6 +161,7 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     
     /* UIKit extensions */
+    @WeaklyLinked
     public NSArray<?> loadNib(String name, NSObject owner, UINibLoadingOptions options) {
         return NSBundleExtensions.loadNib(this, name, owner, options);
     }

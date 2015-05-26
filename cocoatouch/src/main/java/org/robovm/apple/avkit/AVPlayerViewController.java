@@ -32,6 +32,7 @@ import org.robovm.apple.avfoundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.iad.*;
 /*</imports>*/
+import org.robovm.rt.annotation.WeaklyLinked;
 
 /*<javadoc>*/
 /**
@@ -74,18 +75,21 @@ import org.robovm.apple.iad.*;
     /**
      * @since Available in iOS 8.0 and later.
      */
+    @WeaklyLinked
     public void playPrerollAd(@Block VoidBlock1<NSError> completionHandler) {
         AVPlayerViewControllerExtensions.playPrerollAd(this, completionHandler);
     }
     /**
      * @since Available in iOS 8.0 and later.
      */
+    @WeaklyLinked
     public void cancelPreroll() {
         AVPlayerViewControllerExtensions.cancelPreroll(this);
     }
     /**
      * @since Available in iOS 8.0 and later.
      */
+    @WeaklyLinked
     public static void preparePrerollAds() {
         AVPlayerViewControllerExtensions.preparePrerollAds();
     }

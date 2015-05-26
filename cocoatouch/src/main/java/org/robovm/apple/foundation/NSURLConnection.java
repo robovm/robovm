@@ -35,6 +35,7 @@ import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
+import org.robovm.rt.annotation.WeaklyLinked;
 import org.robovm.apple.newsstandkit.NKAssetDownload;
 
 /*<javadoc>*/
@@ -78,6 +79,7 @@ import org.robovm.apple.newsstandkit.NKAssetDownload;
     }
 
     /* NewsstandKit extensions */
+    @WeaklyLinked
     public NKAssetDownload getNewsstandAssetDownload() {
         return org.robovm.apple.newsstandkit.NSURLConnectionExtensions.getNewsstandAssetDownload(this);
     }

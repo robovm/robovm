@@ -34,6 +34,7 @@ import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
 import org.robovm.apple.corelocation.*;
 /*</imports>*/
+import org.robovm.rt.annotation.WeaklyLinked;
 
 /*<javadoc>*/
 /**
@@ -58,6 +59,7 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     
     /* NotificationCenter extensions */
+    @WeaklyLinked
     public static UIVibrancyEffect createNotificationCenterEffect() {
         return org.robovm.apple.notificationcenter.UIVibrancyEffectExtensions.createNotificationCenterEffect();
     }

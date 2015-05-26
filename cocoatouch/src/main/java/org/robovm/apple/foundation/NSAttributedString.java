@@ -35,6 +35,7 @@ import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
+import org.robovm.rt.annotation.WeaklyLinked;
 import org.robovm.apple.coretext.CTAttributedStringAttribute;
 import org.robovm.apple.coretext.CTAttributedStringAttributes;
 
@@ -211,6 +212,7 @@ import org.robovm.apple.coretext.CTAttributedStringAttributes;
      * @since Available in iOS 7.0 and later.
      * @throws NSErrorException
      */
+    @WeaklyLinked
     public static NSAttributedString create(NSURL url, NSAttributedStringDocumentAttributes options) throws NSErrorException {
         return NSAttributedStringExtensions.createFromURL(url, options);
     }
@@ -222,6 +224,7 @@ import org.robovm.apple.coretext.CTAttributedStringAttributes;
      * @since Available in iOS 7.0 and later.
      * @throws NSErrorException
      */
+    @WeaklyLinked
     public static NSAttributedString create(NSData data, NSAttributedStringDocumentAttributes options) throws NSErrorException {
         return NSAttributedStringExtensions.createFromData(data, options);
     }
@@ -233,6 +236,7 @@ import org.robovm.apple.coretext.CTAttributedStringAttributes;
      * @since Available in iOS 7.0 and later.
      * @throws NSErrorException
      */
+    @WeaklyLinked
     public NSData getData(NSRange range, NSAttributedStringDocumentAttributes dict) throws NSErrorException {
         return NSAttributedStringExtensions.getData(this, range, dict);
     }
@@ -244,42 +248,49 @@ import org.robovm.apple.coretext.CTAttributedStringAttributes;
      * @since Available in iOS 7.0 and later.
      * @throws NSErrorException
      */
+    @WeaklyLinked
     public NSFileWrapper getFileWrapper(NSRange range, NSAttributedStringDocumentAttributes dict) throws NSErrorException {
         return NSAttributedStringExtensions.getFileWrapper(this, range, dict);
     }
     /**
      * @since Available in iOS 6.0 and later.
      */
+    @WeaklyLinked
     public CGSize getSize() {
         return NSAttributedStringExtensions.getSize(this);
     }
     /**
      * @since Available in iOS 6.0 and later.
      */
+    @WeaklyLinked
     public void draw(CGPoint point) {
         NSAttributedStringExtensions.draw(this, point);
     }
     /**
      * @since Available in iOS 6.0 and later.
      */
+    @WeaklyLinked
     public void draw(CGRect rect) {
         NSAttributedStringExtensions.draw(this, rect);
     }
     /**
      * @since Available in iOS 6.0 and later.
      */
+    @WeaklyLinked
     public void draw(@ByVal CGRect rect, NSStringDrawingOptions options, NSStringDrawingContext context) {
         NSAttributedStringExtensions.draw(this, rect, options, context);
     }
     /**
      * @since Available in iOS 6.0 and later.
      */
+    @WeaklyLinked
     public CGRect getBoundingRect(@ByVal CGSize size, NSStringDrawingOptions options, NSStringDrawingContext context) {
         return NSAttributedStringExtensions.getBoundingRect(this, size, options, context);
     }
     /**
      * @since Available in iOS 7.0 and later.
      */
+    @WeaklyLinked
     public static NSAttributedString create(NSTextAttachment attachment) {
         return NSAttributedStringExtensions.create(attachment);
     }

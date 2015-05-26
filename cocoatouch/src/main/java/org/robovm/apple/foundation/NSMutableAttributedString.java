@@ -35,6 +35,7 @@ import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
+import org.robovm.rt.annotation.WeaklyLinked;
 import org.robovm.apple.coretext.CTAttributedStringAttribute;
 import org.robovm.apple.coretext.CTAttributedStringAttributes;
 
@@ -155,6 +156,7 @@ import org.robovm.apple.coretext.CTAttributedStringAttributes;
      * @since Available in iOS 7.0 and later.
      * @throws NSErrorException
      */
+    @WeaklyLinked
     public boolean read(NSURL url, NSAttributedStringDocumentAttributes opts) throws NSErrorException {
         return NSMutableAttributedStringExtensions.readFromFileURL(this, url, opts);
     }
@@ -166,12 +168,14 @@ import org.robovm.apple.coretext.CTAttributedStringAttributes;
      * @since Available in iOS 7.0 and later.
      * @throws NSErrorException
      */
+    @WeaklyLinked
     public boolean read(NSData data, NSAttributedStringDocumentAttributes opts) throws NSErrorException {
         return NSMutableAttributedStringExtensions.readFromData(this, data, opts);
     }
     /**
      * @since Available in iOS 7.0 and later.
      */
+    @WeaklyLinked
     public void fixAttributes(NSRange range) {
         NSMutableAttributedStringExtensions.fixAttributesInRange(this, range);
     }

@@ -30,6 +30,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.apple.coregraphics.*;
 /*</imports>*/
+import org.robovm.rt.annotation.WeaklyLinked;
 
 /*<javadoc>*/
 /**
@@ -371,18 +372,21 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
+    @WeaklyLinked
     public void playPrerollAd(@Block VoidBlock1<NSError> completionHandler) {
         org.robovm.apple.iad.MPMoviePlayerControllerExtensions.playPrerollAd(this, completionHandler);
     }
     /**
      * @since Available in iOS 7.0 and later.
      */
+    @WeaklyLinked
     public static void preparePrerollAds() {
         org.robovm.apple.iad.MPMoviePlayerControllerExtensions.preparePrerollAds();
     }
     /**
      * @since Available in iOS 8.0 and later.
      */
+    @WeaklyLinked
     public void cancelPreroll() {
         org.robovm.apple.iad.MPMoviePlayerControllerExtensions.cancelPreroll(this);
     }

@@ -35,6 +35,7 @@ import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
+import org.robovm.rt.annotation.WeaklyLinked;
 import org.robovm.apple.corelocation.CLLocationCoordinate2D;
 import org.robovm.apple.mapkit.MKCoordinateSpan;
 import org.robovm.apple.scenekit.SCNMatrix4;
@@ -83,46 +84,58 @@ import org.robovm.apple.scenekit.SCNVector4;
     }
     
     /* UIKit Extensions */
+    @WeaklyLinked
     public CGPoint pointValue() {
         return org.robovm.apple.uikit.NSValueExtensions.getPointValue(this);
     }
+    @WeaklyLinked
     public CGSize sizeValue() {
         return org.robovm.apple.uikit.NSValueExtensions.getSizeValue(this);
     }
+    @WeaklyLinked
     public CGRect rectValue() {
         return org.robovm.apple.uikit.NSValueExtensions.getRectValue(this);
     }
+    @WeaklyLinked
     public CGAffineTransform affineTransformValue() {
         return org.robovm.apple.uikit.NSValueExtensions.getAffineTransformValue(this);
     }
+    @WeaklyLinked
     public UIEdgeInsets edgeInsetsValue() {
         return org.robovm.apple.uikit.NSValueExtensions.getEdgeInsetsValue(this);
     }
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @WeaklyLinked
     public UIOffset offsetValue() {
         return org.robovm.apple.uikit.NSValueExtensions.getOffsetValue(this);
     }
 
+    @WeaklyLinked
     public static NSValue valueOf(CGPoint point) {
         return org.robovm.apple.uikit.NSValueExtensions.create(point);
     }
+    @WeaklyLinked
     public static NSValue valueOf(CGSize size) {
         return org.robovm.apple.uikit.NSValueExtensions.create(size);
     }
+    @WeaklyLinked
     public static NSValue valueOf(CGRect rect) {
         return org.robovm.apple.uikit.NSValueExtensions.create(rect);
     }
+    @WeaklyLinked
     public static NSValue valueOf(CGAffineTransform transform) {
         return org.robovm.apple.uikit.NSValueExtensions.create(transform);
     }
+    @WeaklyLinked
     public static NSValue valueOf(UIEdgeInsets insets) {
         return org.robovm.apple.uikit.NSValueExtensions.create(insets);
     }
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @WeaklyLinked
     public static NSValue valueOf(UIOffset insets) {
         return org.robovm.apple.uikit.NSValueExtensions.create(insets);
     }
@@ -131,78 +144,96 @@ import org.robovm.apple.scenekit.SCNVector4;
     /**
      * @since Available in iOS 4.0 and later.
      */
+    @WeaklyLinked
     public CMTime timeValue() {
         return org.robovm.apple.avfoundation.NSValueExtensions.getCMTimeValue(this);
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
+    @WeaklyLinked
     public CMTimeRange timeRangeValue() {
         return org.robovm.apple.avfoundation.NSValueExtensions.getCMTimeRangeValue(this);
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
+    @WeaklyLinked
     public CMTimeMapping timeMappingValue() {
         return org.robovm.apple.avfoundation.NSValueExtensions.getCMTimeMappingValue(this);
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
+    @WeaklyLinked
     public static NSValue valueOf(CMTime time) {
         return org.robovm.apple.avfoundation.NSValueExtensions.create(time);
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
+    @WeaklyLinked
     public static NSValue valueOf(CMTimeRange timeRange) {
         return org.robovm.apple.avfoundation.NSValueExtensions.create(timeRange);
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
+    @WeaklyLinked
     public static NSValue valueOf(CMTimeMapping timeMapping) {
         return org.robovm.apple.avfoundation.NSValueExtensions.create(timeMapping);
     }
     
     /* CoreAnimation extensions */
+    @WeaklyLinked
     public CATransform3D transform3DValue() {
         return org.robovm.apple.coreanimation.NSValueExtensions.getCATransform3DValue(this);
     }
+    @WeaklyLinked
     public static NSValue valueOf(CATransform3D t) {
         return org.robovm.apple.coreanimation.NSValueExtensions.create(t);
     }
     
     /* MapKit extensions */
+    @WeaklyLinked
     public CLLocationCoordinate2D coordinateValue() {
         return org.robovm.apple.mapkit.NSValueExtensions.getMKCoordinateValue(this);
     }
+    @WeaklyLinked
     public MKCoordinateSpan getCoordinateSpanValue() {
         return org.robovm.apple.mapkit.NSValueExtensions.getMKCoordinateSpanValue(this);
     }
+    @WeaklyLinked
     public static NSValue valueOf(CLLocationCoordinate2D coordinate) {
         return org.robovm.apple.mapkit.NSValueExtensions.create(coordinate);
     }
+    @WeaklyLinked
     public static NSValue valueOf(MKCoordinateSpan span) {
         return org.robovm.apple.mapkit.NSValueExtensions.create(span);
     }
     
     /* SceneKit extensions */
+    @WeaklyLinked
     public SCNVector3 SCNVector3Value() {
         return org.robovm.apple.scenekit.NSValueExtensions.getSCNVector3Value(this);
     }
+    @WeaklyLinked
     public SCNVector4 SCNVector4Value() {
         return org.robovm.apple.scenekit.NSValueExtensions.getSCNVector4Value(this);
     }
+    @WeaklyLinked
     public SCNMatrix4 SCNMatrix4Value() {
         return org.robovm.apple.scenekit.NSValueExtensions.getSCNMatrix4Value(this);
     }
+    @WeaklyLinked
     public static NSValue valueOf(SCNVector3 vector3) {
         return org.robovm.apple.scenekit.NSValueExtensions.create(vector3);
     }
+    @WeaklyLinked
     public static NSValue valueOf(SCNVector4 vector4) {
         return org.robovm.apple.scenekit.NSValueExtensions.create(vector4);
     }
+    @WeaklyLinked
     public static NSValue valueOf(SCNMatrix4 matrix4) {
         return org.robovm.apple.scenekit.NSValueExtensions.create(matrix4);
     }

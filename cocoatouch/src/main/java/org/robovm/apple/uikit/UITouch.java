@@ -34,6 +34,7 @@ import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
 import org.robovm.apple.corelocation.*;
 /*</imports>*/
+import org.robovm.rt.annotation.WeaklyLinked;
 import org.robovm.apple.spritekit.SKNode;
 
 /*<javadoc>*/
@@ -83,9 +84,11 @@ import org.robovm.apple.spritekit.SKNode;
     /*<members>*//*</members>*/
     
     /* SpriteKit extensions */
+    @WeaklyLinked
     public CGPoint getLocationInNode(SKNode node) {
         return org.robovm.apple.spritekit.UITouchExtensions.getLocationInNode(this, node);
     }
+    @WeaklyLinked
     public CGPoint getPreviousLocationInNode(SKNode node) {
         return org.robovm.apple.spritekit.UITouchExtensions.getPreviousLocationInNode(this, node);
     }

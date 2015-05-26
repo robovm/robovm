@@ -54,7 +54,6 @@ import org.robovm.compiler.config.Config;
 import org.robovm.compiler.config.Config.TargetType;
 import org.robovm.compiler.config.Config.TreeShakerMode;
 import org.robovm.compiler.config.OS;
-import org.robovm.compiler.config.OS.Family;
 import org.robovm.compiler.config.Resource;
 import org.robovm.compiler.log.ConsoleLogger;
 import org.robovm.compiler.plugin.LaunchPlugin;
@@ -315,15 +314,6 @@ public class AppCompiler {
         HandleFailureListener listenerWrapper = new HandleFailureListener();
 
         DependencyGraph dependencyGraph = config.getDependencyGraph();
-        TreeShakerMode treeShakerMode = config.getTreeShakerMode();
-        if (treeShakerMode != TreeShakerMode.none && config.getOs().getFamily() == Family.darwin
-                && config.getArch() == Arch.x86) {
-            config.getLogger().warn("Tree shaking is not supported when building " 
-                    + "for OS X/iOS x86 32-bit due to a bug in Xcode's linker. No tree " 
-                    + "shaking will be performed. Run in 64-bit mode instead to " 
-                    + "use tree shaking.");
-            treeShakerMode = TreeShakerMode.none;
-        }
 
         TreeSet<Clazz> compileQueue = new TreeSet<>(rootClasses);
         long start = System.currentTimeMillis();
@@ -351,7 +341,7 @@ public class AppCompiler {
             }
 
             if (compileDependencies) {
-                for (String className : dependencyGraph.findReachableClasses(treeShakerMode)) {
+                for (String className : dependencyGraph.findReachableClasses()) {
                     Clazz depClazz = config.getClazzes().load(className);
                     if (depClazz != null && !linkClasses.contains(depClazz)) {
                         compileQueue.add(depClazz);
@@ -821,10 +811,12 @@ public class AppCompiler {
                          + "                        option has been given. A pattern is an ANT style path pattern,\n" 
                          + "                        e.g. com.foo.**.bar.*.Main. An alternative syntax using # is\n" 
                          + "                        also supported, e.g. com.##.#.Main.");
-        System.err.println("  -treeshaker <mode>    The tree shaking algorithm to use. 'none' or 'aggressive'.\n" 
-                         + "                        'aggressive' will remove all unreachable method implementations\n" 
-                         + "                        when it's safe to do so. Methods in the main class and in force\n" 
-                         + "                        linked classes will never be stripped. Default is 'none'.");
+        System.err.println("  -treeshaker <mode>    The tree shaking algorithm to use. 'none', 'conservative' or\n" 
+                         + "                        'aggressive'. 'aggressive' will remove all unreachable method\n" 
+                         + "                        implementations when it's safe to do so. 'conservative' only\n" 
+                         + "                        removes unreachable methods marked as @WeaklyLinked. Methods\n" 
+                         + "                        in the main class and in force linked classes will never be\n" 
+                         + "                        stripped. Default is 'none'.");
         System.err.println("  -threads <n>          The number of threads to use during class compilation. By\n" 
                          + "                        default the number returned by Runtime.availableProcessors()\n" 
                          + "                        will be used (" + Runtime.getRuntime().availableProcessors() + " on this host).");

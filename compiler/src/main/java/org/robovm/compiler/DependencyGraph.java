@@ -28,6 +28,7 @@ import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.clazz.ClazzInfo;
 import org.robovm.compiler.clazz.Dependency;
 import org.robovm.compiler.clazz.InvokeMethodDependency;
+import org.robovm.compiler.clazz.MethodDependency;
 import org.robovm.compiler.clazz.MethodInfo;
 import org.robovm.compiler.clazz.SuperMethodDependency;
 import org.robovm.compiler.config.Config.TreeShakerMode;
@@ -61,6 +62,12 @@ public class DependencyGraph {
      */
     private final Set<Node> reachableNodes = new HashSet<>();
 
+    private final TreeShakerMode treeShakerMode;
+
+    public DependencyGraph(TreeShakerMode treeShakerMode) {
+        this.treeShakerMode = treeShakerMode;
+    }
+
     /**
      * Adds the specified {@link Clazz} to the graph after it has been compiled.
      * If {@code root == true} the class will be added to the root set and it as
@@ -79,10 +86,10 @@ public class DependencyGraph {
         for (Dependency dep : ci.getDependencies()) {
             if (dep instanceof InvokeMethodDependency) {
                 InvokeMethodDependency mdep = (InvokeMethodDependency) dep;
-                classNode.addEgde(getMethodNode(mdep.getClassName(), mdep.getMethodName(), mdep.getMethodDesc()), mdep.isWeak());
+                classNode.addEgde(getMethodNode(mdep), mdep.isWeak());
             } else if (dep instanceof SuperMethodDependency) {
                 SuperMethodDependency mdep = (SuperMethodDependency) dep;
-                classNode.addEgde(getMethodNode(mdep.getClassName(), mdep.getMethodName(), mdep.getMethodDesc()), mdep.isWeak());
+                classNode.addEgde(getMethodNode(mdep), mdep.isWeak());
             } else {
                 classNode.addEgde(getClassNode(dep.getClassName()), dep.isWeak());
             }
@@ -104,21 +111,19 @@ public class DependencyGraph {
                     // in Struct classes
                     || (ci.isStruct() && mi.isStatic() && "sizeOf".equals(mi.getName()) && "()I".equals(mi.getDesc()));
 
-            MethodNode methodNode = getMethodNode(clazz.getInternalName(), mi.getName(), mi.getDesc());
+            MethodNode methodNode = getMethodNode(clazz, mi);
             classNode.addEgde(methodNode, !strong);
             methodNode.addEgde(classNode, false);
 
             for (Dependency dep : mi.getDependencies()) {
                 if (dep instanceof InvokeMethodDependency) {
                     InvokeMethodDependency mdep = (InvokeMethodDependency) dep;
-                    methodNode.addEgde(getMethodNode(mdep.getClassName(), mdep.getMethodName(),
-                            mdep.getMethodDesc()), mdep.isWeak());
+                    methodNode.addEgde(getMethodNode(mdep), mdep.isWeak());
                 } else if (dep instanceof SuperMethodDependency) {
                     // Reverse the dependency so that the method is strongly
                     // linked if the super method is invoked.
                     SuperMethodDependency mdep = (SuperMethodDependency) dep;
-                    getMethodNode(mdep.getClassName(), mdep.getMethodName(), mdep.getMethodDesc()).addEgde(
-                            methodNode, false);
+                    getMethodNode(mdep).addEgde(methodNode, false);
                 } else {
                     methodNode.addEgde(getClassNode(dep.getClassName()), dep.isWeak());
                 }
@@ -135,23 +140,32 @@ public class DependencyGraph {
         return node;
     }
 
-    private MethodNode getMethodNode(String owner, String name, String desc) {
+    private MethodNode getMethodNode(String owner, String name, String desc, boolean weaklyLinked) {
         String key = owner + "." + name + desc;
         MethodNode node = methodNodes.get(key);
         if (node == null) {
-            node = new MethodNode(owner, name, desc);
+            node = new MethodNode(owner, name, desc, weaklyLinked);
             methodNodes.put(key, node);
         }
         return node;
     }
 
+    private MethodNode getMethodNode(Clazz clazz, MethodInfo mi) {
+        return getMethodNode(clazz.getInternalName(), mi.getName(), mi.getDesc(), mi.isWeaklyLinked());
+    }
+
+    private MethodNode getMethodNode(MethodDependency dep) {
+        return getMethodNode(dep.getOwner(), dep.getMethodName(), dep.getMethodDesc(), false);
+    }
+
     /**
-     * Finds reachable classes given the specified {@link TreeShakerMode}.
+     * Finds reachable classes given the {@link TreeShakerMode} set when
+     * creating this {@link DependencyGraph}.
      */
-    public Set<String> findReachableClasses(TreeShakerMode treeShakerMode) {
+    public Set<String> findReachableClasses() {
         if (reachableNodes.isEmpty()) {
             for (ClassNode node : roots) {
-                visitReachableNodes(node, reachableNodes, treeShakerMode);
+                visitReachableNodes(node, reachableNodes);
             }
         }
         Set<String> classes = new HashSet<>();
@@ -164,14 +178,14 @@ public class DependencyGraph {
     }
 
     /**
-     * Finds reachable methods given the specified {@link TreeShakerMode}. The
-     * returned {@link Triple}s contain the method owner, method name and method
-     * descriptor.
+     * Finds reachable methods given {@link TreeShakerMode} set when creating
+     * this {@link DependencyGraph}. The returned {@link Triple}s contain the
+     * method owner, method name and method descriptor.
      */
-    public Set<Triple<String, String, String>> findReachableMethods(TreeShakerMode treeShakerMode) {
+    public Set<Triple<String, String, String>> findReachableMethods() {
         if (reachableNodes.isEmpty()) {
             for (ClassNode node : roots) {
-                visitReachableNodes(node, reachableNodes, treeShakerMode);
+                visitReachableNodes(node, reachableNodes);
             }
         }
         Set<Triple<String, String, String>> methods = new HashSet<>();
@@ -184,15 +198,22 @@ public class DependencyGraph {
         return methods;
     }
 
-    private void visitReachableNodes(Node node, Set<Node> visited, TreeShakerMode treeShakerMode) {
+    private void visitReachableNodes(Node node, Set<Node> visited) {
         if (!visited.contains(node)) {
             visited.add(node);
             for (Node child : node.strongEdges) {
-                visitReachableNodes(child, visited, treeShakerMode);
+                visitReachableNodes(child, visited);
             }
-            if (treeShakerMode == TreeShakerMode.none) {
+            if (treeShakerMode == TreeShakerMode.none || treeShakerMode == TreeShakerMode.conservative) {
                 for (Node child : node.weakEdges) {
-                    visitReachableNodes(child, visited, treeShakerMode);
+                    if (treeShakerMode == TreeShakerMode.conservative && child instanceof MethodNode) {
+                        MethodNode mnode = (MethodNode) child;
+                        if (!mnode.isWeaklyLinked()) {
+                            visitReachableNodes(child, visited);
+                        }
+                    } else {
+                        visitReachableNodes(child, visited);
+                    }
                 }
             }
         }
@@ -257,11 +278,17 @@ public class DependencyGraph {
         private final String owner;
         private final String name;
         private final String desc;
+        private final boolean weaklyLinked;
 
-        private MethodNode(String owner, String name, String desc) {
+        private MethodNode(String owner, String name, String desc, boolean weaklyLinked) {
             this.owner = owner;
             this.name = name;
             this.desc = desc;
+            this.weaklyLinked = weaklyLinked;
+        }
+
+        public boolean isWeaklyLinked() {
+            return weaklyLinked;
         }
 
         @Override
@@ -271,6 +298,7 @@ public class DependencyGraph {
             result = prime * result + ((desc == null) ? 0 : desc.hashCode());
             result = prime * result + ((name == null) ? 0 : name.hashCode());
             result = prime * result + ((owner == null) ? 0 : owner.hashCode());
+            result = prime * result + (weaklyLinked ? 1231 : 1237);
             return result;
         }
 
@@ -305,6 +333,9 @@ public class DependencyGraph {
                     return false;
                 }
             } else if (!owner.equals(other.owner)) {
+                return false;
+            }
+            if (weaklyLinked != other.weaklyLinked) {
                 return false;
             }
             return true;

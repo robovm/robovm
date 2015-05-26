@@ -37,7 +37,7 @@ import soot.SootMethod;
  *
  */
 public class ClazzInfo implements Serializable {
-    private static final long serialVersionUID = 95L;
+    private static final long serialVersionUID = 96L;
     
     private int modifiers;
     private String name;
@@ -86,7 +86,8 @@ public class ClazzInfo implements Serializable {
         methods.clear();
         for (SootMethod method : sootClass.getMethods()) {
             methods.add(new MethodInfo(this, method.getModifiers(), method.getName(), 
-                    Types.getDescriptor(method), Annotations.hasCallbackAnnotation(method)));
+                    Types.getDescriptor(method), Annotations.hasCallbackAnnotation(method),
+                    Annotations.hasWeaklyLinkedAnnotation(method)));
         }
     }
     

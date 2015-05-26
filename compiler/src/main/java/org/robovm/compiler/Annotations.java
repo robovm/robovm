@@ -65,6 +65,7 @@ public class Annotations {
     public static final String BY_VAL = "Lorg/robovm/rt/bro/annotation/ByVal;";
     public static final String BY_REF = "Lorg/robovm/rt/bro/annotation/ByRef;";
     public static final String VARIADIC = "Lorg/robovm/rt/bro/annotation/Variadic;";
+    public static final String WEAKLY_LINKED = "Lorg/robovm/rt/annotation/WeaklyLinked;";
 
     public static boolean hasAnnotation(Host host, String annotationType) {
         return getAnnotation(host, annotationType) != null;
@@ -236,6 +237,10 @@ public class Annotations {
     
     public static boolean hasVariadicAnnotation(SootMethod method) {
         return hasAnnotation(method, VARIADIC);
+    }
+
+    public static boolean hasWeaklyLinkedAnnotation(SootMethod method) {
+        return hasAnnotation(method, WEAKLY_LINKED);
     }
 
     public static int getVariadicParameterIndex(SootMethod method) {

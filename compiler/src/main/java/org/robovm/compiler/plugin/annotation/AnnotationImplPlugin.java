@@ -540,7 +540,11 @@ public class AnnotationImplPlugin extends AbstractCompilerPlugin {
 
                 // Add the impl class as a dependency for the annotation interface.
                 // Important! This must be done AFTER the class file has been written.
-                clazz.getClazzInfo().addDependency(implInternalName);
+                clazz.getClazzInfo().addClassDependency(implInternalName, false);
+                // Make sure the factory methods are always linked in when the
+                // annotation class is referenced.
+                clazz.getClazzInfo().addInvokeMethodDependency(implInternalName, "$createSingleton", "()Ljava/lang/Object;", false);
+                clazz.getClazzInfo().addInvokeMethodDependency(implInternalName, "$create", "()Ljava/lang/Object;", false);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

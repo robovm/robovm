@@ -221,7 +221,7 @@ public class ObjCProtocolProxyPlugin extends AbstractCompilerPlugin {
 
                 // Add the proxy class as a dependency for the protocol interface.
                 // Important! This must be done AFTER the class file has been written.
-                clazz.getClazzInfo().addDependency(proxyInternalName);
+                clazz.getClazzInfo().addClassDependency(proxyInternalName, false);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

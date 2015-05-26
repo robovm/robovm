@@ -47,6 +47,7 @@ import java.util.zip.ZipFile;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.robovm.compiler.CompilerException;
+import org.robovm.compiler.DependencyGraph;
 import org.robovm.compiler.ITable;
 import org.robovm.compiler.MarshalerLookup;
 import org.robovm.compiler.VTable;
@@ -110,6 +111,10 @@ public class Config {
         console, ios
     };
 
+    public enum TreeShakerMode {
+        none, aggressive
+    };
+
     @Element(required = false)
     private File installDir = null;
     @Element(required = false)
@@ -152,6 +157,8 @@ public class Config {
     private ArrayList<String> pluginArguments;
     @Element(required = false, name = "target")
     private TargetType targetType;
+    @Element(required = false, name = "treeShaker")
+    private TreeShakerMode treeShakerMode;
 
     @Element(required = false)
     private String iosSdkVersion;
@@ -205,6 +212,7 @@ public class Config {
     private transient DataLayout dataLayout;
     private transient MarshalerLookup marshalerLookup;
     private transient Config configBeforeBuild;
+    private transient DependencyGraph dependencyGraph = new DependencyGraph();
 
     protected Config() throws IOException {
         // Add standard plugins
@@ -327,6 +335,10 @@ public class Config {
         resourcesPaths.add(path);
     }
 
+    public DependencyGraph getDependencyGraph() {
+        return dependencyGraph;
+    }
+    
     public File getTmpDir() {
         if (tmpDir == null) {
             try {
@@ -448,6 +460,10 @@ public class Config {
 
     public TargetType getTargetType() {
         return targetType;
+    }
+
+    public TreeShakerMode getTreeShakerMode() {
+        return treeShakerMode == null ? TreeShakerMode.none : treeShakerMode;
     }
 
     public String getIosSdkVersion() {
@@ -1121,6 +1137,11 @@ public class Config {
 
         public Builder logger(Logger logger) {
             config.logger = logger;
+            return this;
+        }
+
+        public Builder treeShakerMode(TreeShakerMode treeShakerMode) {
+            config.treeShakerMode = treeShakerMode;
             return this;
         }
 

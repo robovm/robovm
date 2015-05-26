@@ -154,7 +154,7 @@ public class AnnotationImplPluginTest {
         Clazz clazz = toClazz(Anno1.class);
         clazz.resetClazzInfo();
         plugin.beforeClass(config, clazz, new ModuleBuilder());
-        assertFalse(clazz.getClazzInfo().getDependencies().isEmpty());
+        assertFalse(clazz.getClazzInfo().getAllDependencies().isEmpty());
     }
 
     @Test
@@ -341,8 +341,8 @@ public class AnnotationImplPluginTest {
         Clazz clazz = toClazz(annoClass);
         clazz.resetClazzInfo();
         plugin.beforeClass(config, clazz, new ModuleBuilder());
-        assertFalse(clazz.getClazzInfo().getDependencies().isEmpty());
-        Dependency dep = clazz.getClazzInfo().getDependencies().iterator().next();
+        assertFalse(clazz.getClazzInfo().getAllDependencies().isEmpty());
+        Dependency dep = clazz.getClazzInfo().getAllDependencies().iterator().next();
         assertEquals(clazz.getInternalName() + "$Impl", dep.getClassName());
         
         final File implFile = new File(config.getGeneratedClassDir(clazz.getPath()), clazz.getInternalName() + "$Impl.class");

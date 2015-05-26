@@ -27,37 +27,33 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.robovm.compiler.Annotations;
 import org.robovm.compiler.Types;
-import org.robovm.compiler.trampoline.Trampoline;
 
 import soot.SootClass;
-import soot.SootField;
 import soot.SootMethod;
 
 /**
- * @author niklas
  *
  */
 public class ClazzInfo implements Serializable {
-    private static final long serialVersionUID = 76L;
+    private static final long serialVersionUID = 95L;
     
     private int modifiers;
     private String name;
     private String internalName;
     private String superclassName;
     private final List<String> interfaceNames = new ArrayList<String>();
-    private final Set<Trampoline> trampolines = new HashSet<Trampoline>();
-    private final List<FieldInfo> fields = new ArrayList<FieldInfo>();
     private final List<MethodInfo> methods = new ArrayList<MethodInfo>();
     private final Set<String> catchNames = new HashSet<String>();
     private Map<String, Dependency> dependencies = new HashMap<String,Dependency>();
     private final Set<String> checkcasts = new HashSet<String>();
     private final Set<String> instanceofs = new HashSet<String>();
     private final Set<String> invokes = new HashSet<String>();
+    private boolean isStruct;
+    private boolean isEnum;
     
     private transient Clazz clazz;
-    private transient List<FieldInfo> classFields;
-    private transient List<FieldInfo> instanceFields;
     
     ClazzInfo() {}
     
@@ -66,23 +62,32 @@ public class ClazzInfo implements Serializable {
         modifiers = sootClass.getModifiers();
         name = sootClass.getName();
         internalName = Types.getInternalName(sootClass);
-        if (sootClass.hasSuperclass()) {
-            superclassName = Types.getInternalName(sootClass.getSuperclass());
-        }
-        for (SootClass ifs : sootClass.getInterfaces()) {
-            interfaceNames.add(Types.getInternalName(ifs));
-        }
-        for (SootField field : sootClass.getFields()) {
-            fields.add(new FieldInfo(field.getModifiers(), field.getName(), Types.getDescriptor(field)));
-        }
-        for (SootMethod method : sootClass.getMethods()) {
-            methods.add(new MethodInfo(method.getModifiers(), method.getName(), Types.getDescriptor(method)));
-        }
     }
     
     private ClazzInfo(String internalName) {
         this.internalName = internalName;
         this.name = internalName.replace('/', '.');
+    }
+    
+    public void initClassInfo() {
+        if (isPhantom()) {
+            return;
+        }
+        SootClass sootClass = clazz.getSootClass();
+        isStruct = Types.isStruct(sootClass);
+        isEnum = Types.isEnum(sootClass);
+        if (sootClass.hasSuperclass()) {
+            superclassName = Types.getInternalName(sootClass.getSuperclass());
+        }
+        interfaceNames.clear();
+        for (SootClass ifs : sootClass.getInterfaces()) {
+            interfaceNames.add(Types.getInternalName(ifs));
+        }
+        methods.clear();
+        for (SootMethod method : sootClass.getMethods()) {
+            methods.add(new MethodInfo(this, method.getModifiers(), method.getName(), 
+                    Types.getDescriptor(method), Annotations.hasCallbackAnnotation(method)));
+        }
     }
     
     public boolean isPhantom() {
@@ -98,6 +103,14 @@ public class ClazzInfo implements Serializable {
      */
     public Clazz getClazz() {
         return clazz;
+    }
+    
+    public boolean isStruct() {
+        return isStruct;
+    }
+    
+    public boolean isEnum() {
+        return isEnum;
     }
     
     public int getModifiers() {
@@ -175,15 +188,6 @@ public class ClazzInfo implements Serializable {
         return result;
     }
     
-    public Set<Trampoline> getTrampolines() {
-        return Collections.unmodifiableSet(trampolines);
-    }
-    
-    public void setTrampolines(Set<Trampoline> trampolines) {
-        this.trampolines.clear();
-        this.trampolines.addAll(trampolines);
-    }
-
     public Set<String> getCatchNames() {
         return catchNames;
     }
@@ -206,51 +210,6 @@ public class ClazzInfo implements Serializable {
         return name;
     }
     
-    public FieldInfo getField(String name, String desc) {
-        for (FieldInfo f : fields) {
-            if (f.getName().equals(name) && f.getDesc().equals(desc)) {
-                return f;
-            }
-        }
-        return null;
-    }
-    
-    public List<FieldInfo> getFields() {
-        return Collections.unmodifiableList(fields);
-    }
-
-    public void clearFields() {
-        this.fields.clear();
-    }
-
-    public void addField(int modifiers, String name, String desc) {
-        this.fields.add(new FieldInfo(modifiers, name, desc));
-    }
-    
-    public List<FieldInfo> getClassFields() {
-        if (classFields == null) {
-            classFields = new ArrayList<FieldInfo>();
-            for (FieldInfo f : fields) {
-                if (f.isStatic()) {
-                    classFields.add(f);
-                }
-            }
-        }
-        return classFields;
-    }
-    
-    public List<FieldInfo> getInstanceFields() {
-        if (instanceFields == null) {
-            instanceFields = new ArrayList<FieldInfo>();
-            for (FieldInfo f : fields) {
-                if (!f.isStatic()) {
-                    instanceFields.add(f);
-                }
-            }
-        }
-        return instanceFields;
-    }
-    
     public MethodInfo getMethod(String name, String desc) {
         for (MethodInfo m : methods) {
             if (m.getName().equals(name) && m.getDesc().equals(desc)) {
@@ -260,53 +219,59 @@ public class ClazzInfo implements Serializable {
         return null;
     }
 
-    public List<MethodInfo> getMethods(String name) {
-        List<MethodInfo> result = new ArrayList<MethodInfo>();
-        for (MethodInfo m : methods) {
-            if (m.getName().equals(name)) {
-                result.add(m);
-            }
-        }
-        return result;
-    }
-
     public List<MethodInfo> getMethods() {
         return Collections.unmodifiableList(methods);
     }
     
-    public void clearMethods() {
-        this.methods.clear();
-    }
-    
-    public void addMethod(int flags, String name, String desc) {
-        this.methods.add(new MethodInfo(flags, name, desc));
-    }
-    
-    public void addDependency(String className) {
+    public void addClassDependency(String className, boolean weak) {
         if (!dependencies.containsKey(className)) {
             Clazz clazz = this.clazz.clazzes.load(className);
-            String path = null;
-            boolean inBootClasspath = false;
-            if (clazz != null) {
-                path = clazz.getPath().getFile().getAbsolutePath();
-                inBootClasspath = clazz.isInBootClasspath();
-            }
-            dependencies.put(className, new Dependency(className, path, inBootClasspath));
+            String path = clazz != null ? clazz.getPath().getFile().getAbsolutePath() : null;
+            boolean inBootClasspath = clazz != null ? clazz.isInBootClasspath() : false;
+            dependencies.put(className, new ClassDependency(className, path, inBootClasspath, weak));
         }
     }
 
-    public void addDependencies(Collection<String> classNames) {
+    public void addClassDependencies(Collection<String> classNames, boolean weak) {
         for (String className : classNames) {
-            addDependency(className);
+            addClassDependency(className, weak);
         }
     }
 
+    public void addInvokeMethodDependency(String owner, String name, String desc, boolean weak) {
+        String key = "Invoke." + owner + "." + name + desc;
+        if (!dependencies.containsKey(key)) {
+            Clazz clazz = this.clazz.clazzes.load(owner);
+            String path = clazz != null ? clazz.getPath().getFile().getAbsolutePath() : null;
+            boolean inBootClasspath = clazz != null ? clazz.isInBootClasspath() : false;
+            dependencies.put(key, new InvokeMethodDependency(owner, name, desc, path, inBootClasspath, weak));
+        }
+    }
+
+    public void addSuperMethodDependency(String owner, String name, String desc, boolean weak) {
+        String key = "Super." + owner + "." + name + desc;
+        if (!dependencies.containsKey(key)) {
+            Clazz clazz = this.clazz.clazzes.load(owner);
+            String path = clazz != null ? clazz.getPath().getFile().getAbsolutePath() : null;
+            boolean inBootClasspath = clazz != null ? clazz.isInBootClasspath() : false;
+            dependencies.put(key, new SuperMethodDependency(owner, name, desc, path, inBootClasspath, weak));
+        }
+    }
+    
     public void clearDependencies() {
         dependencies = new HashMap<String, Dependency>();
     }
 
     public Set<Dependency> getDependencies() {
         return new HashSet<Dependency>(dependencies.values());
+    }
+
+    public Set<Dependency> getAllDependencies() {
+        Set<Dependency> result = new HashSet<>(dependencies.values());
+        for (MethodInfo mi : methods) {
+            result.addAll(mi.getDependencies());
+        }
+        return result;
     }
 
     public Set<String> getCheckcasts() {
@@ -348,104 +313,42 @@ public class ClazzInfo implements Serializable {
     public boolean isAbstract() {
         return (modifiers & Modifier.ABSTRACT) > 0;
     }
-    
-    public class FieldInfo implements Serializable {
-        private static final long serialVersionUID = 1L;
-        
-        private int modifiers;
-        private String name;
-        private String desc;
-        
-        private FieldInfo(int modifiers, String name, String desc) {
-            this.modifiers = modifiers;
-            this.name = name;
-            this.desc = desc;
-        }
 
-        public String getName() {
-            return name;
-        }
-        
-        public String getDesc() {
-            return desc;
-        }
-        
-        public boolean isPublic() {
-            return (modifiers & Modifier.PUBLIC) > 0;
-        }
-        
-        public boolean isPrivate() {
-            return (modifiers & Modifier.PRIVATE) > 0;
-        }
-        
-        public boolean isProtected() {
-            return (modifiers & Modifier.PROTECTED) > 0;
-        }
-        
-        public boolean isStatic() {
-            return (modifiers & Modifier.STATIC) > 0;
-        }
-        
-        public boolean isFinal() {
-            return (modifiers & Modifier.FINAL) > 0;
-        }
-        
-        public boolean isVolatile() {
-            return (modifiers & Modifier.VOLATILE) > 0;
-        }
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((clazz == null) ? 0 : clazz.hashCode());
+        result = prime * result + ((internalName == null) ? 0 : internalName.hashCode());
+        return result;
     }
-    
-    public class MethodInfo implements Serializable {
-        private static final long serialVersionUID = 1L;
-        
-        private int modifiers;
-        private String name;
-        private String desc;
 
-        private MethodInfo(int modifiers, String name, String desc) {
-            this.modifiers = modifiers;
-            this.name = name;
-            this.desc = desc;
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
         }
-        
-        public String getName() {
-            return name;
+        if (obj == null) {
+            return false;
         }
-        
-        public String getDesc() {
-            return desc;
+        if (getClass() != obj.getClass()) {
+            return false;
         }
-
-        public boolean isPublic() {
-            return (modifiers & Modifier.PUBLIC) > 0;
+        ClazzInfo other = (ClazzInfo) obj;
+        if (clazz == null) {
+            if (other.clazz != null) {
+                return false;
+            }
+        } else if (!clazz.equals(other.clazz)) {
+            return false;
         }
-        
-        public boolean isPrivate() {
-            return (modifiers & Modifier.PRIVATE) > 0;
+        if (internalName == null) {
+            if (other.internalName != null) {
+                return false;
+            }
+        } else if (!internalName.equals(other.internalName)) {
+            return false;
         }
-        
-        public boolean isProtected() {
-            return (modifiers & Modifier.PROTECTED) > 0;
-        }
-        
-        public boolean isStatic() {
-            return (modifiers & Modifier.STATIC) > 0;
-        }
-        
-        public boolean isFinal() {
-            return (modifiers & Modifier.FINAL) > 0;
-        }
-        
-        public boolean isSynchronized() {
-            return (modifiers & Modifier.SYNCHRONIZED) > 0;
-        }
-        
-        public boolean isNative() {
-            return (modifiers & Modifier.NATIVE) > 0;
-        }
-        
-        public boolean isAbstract() {
-            return (modifiers & Modifier.ABSTRACT) > 0;
-        }
+        return true;
     }
 }

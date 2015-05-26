@@ -34,8 +34,10 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
@@ -45,9 +47,11 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.tuple.Triple;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.clazz.ClazzInfo;
 import org.robovm.compiler.clazz.Dependency;
+import org.robovm.compiler.clazz.MethodInfo;
 import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.config.OS;
@@ -84,7 +88,6 @@ import org.robovm.compiler.llvm.Variable;
 import org.robovm.compiler.llvm.VariableRef;
 import org.robovm.compiler.plugin.CompilerPlugin;
 import org.robovm.compiler.trampoline.Checkcast;
-import org.robovm.compiler.trampoline.FieldAccessor;
 import org.robovm.compiler.trampoline.Instanceof;
 import org.robovm.compiler.trampoline.Invoke;
 import org.robovm.compiler.trampoline.Invokeinterface;
@@ -191,7 +194,7 @@ public class ClassCompiler {
     private SootClass sootClass;
     
     private ModuleBuilder mb;
-    private Set<Trampoline> trampolines;
+    private Map<Trampoline, List<SootMethod>> trampolines;
     private Set<String> catches;
     /**
      * Contains the class fields of the class being compiled.
@@ -206,7 +209,7 @@ public class ClassCompiler {
     private StructureType instanceType;
     
     private final Config config;
-    private final MethodCompiler methodCompiler;
+    private final MethodCompiler javaMethodCompiler;
     private final BroMethodCompiler bridgeMethodCompiler;
     private final CallbackMethodCompiler callbackMethodCompiler;
     private final NativeMethodCompiler nativeMethodCompiler;
@@ -219,7 +222,7 @@ public class ClassCompiler {
     
     public ClassCompiler(Config config) {
         this.config = config;
-        this.methodCompiler = new MethodCompiler(config);
+        this.javaMethodCompiler = new MethodCompiler(config);
         this.bridgeMethodCompiler = new BridgeMethodCompiler(config);
         this.callbackMethodCompiler = new CallbackMethodCompiler(config);
         this.nativeMethodCompiler = new NativeMethodCompiler(config);
@@ -240,7 +243,7 @@ public class ClassCompiler {
             return true;
         }
         
-        Set<Dependency> dependencies = ci.getDependencies();
+        Set<Dependency> dependencies = ci.getAllDependencies();
         for (Dependency dep : dependencies) {
             Clazz depClazz = config.getClazzes().load(dep.getClassName());
             if (depClazz == null) {
@@ -659,7 +662,7 @@ public class ClassCompiler {
     }
     
     private void compile(Clazz clazz, OutputStream out) throws IOException {
-        methodCompiler.reset(clazz);
+        javaMethodCompiler.reset(clazz);
         bridgeMethodCompiler.reset(clazz);
         callbackMethodCompiler.reset(clazz);
         nativeMethodCompiler.reset(clazz);
@@ -675,7 +678,7 @@ public class ClassCompiler {
         }
         
         sootClass = clazz.getSootClass();
-        trampolines = new HashSet<Trampoline>();
+        trampolines = new HashMap<>();
         catches = new HashSet<String>();
         classFields = getClassFields(config.getOs(), config.getArch(),sootClass);
         instanceFields = getInstanceFields(config.getOs(), config.getArch(),sootClass);
@@ -724,7 +727,10 @@ public class ClassCompiler {
                 }
             }
         }
-        
+
+        // After this point no changes to methods/fields may be done by CompilerPlugins.
+        ci.initClassInfo(); 
+
         for (SootMethod method : sootClass.getMethods()) {
             
             for (CompilerPlugin compilerPlugin : config.getCompilerPlugins()) {
@@ -770,10 +776,71 @@ public class ClassCompiler {
             }
         }
         
-        Set<String> trampolineDependencies = new HashSet<String>();
-        for (Trampoline trampoline : trampolines) {
-            trampolineResolver.compile(mb, trampoline);
-            trampolineDependencies.addAll(trampolineResolver.getDependencies());
+        for (Trampoline trampoline : trampolines.keySet()) {
+            Set<String> deps = new HashSet<String>();
+            Set<Triple<String, String, String>> mDeps = new HashSet<>();
+            trampolineResolver.compile(mb, clazz, trampoline, deps, mDeps);
+            for (SootMethod m : trampolines.get(trampoline)) {
+                MethodInfo mi = ci.getMethod(m.getName(), getDescriptor(m));
+                mi.addClassDependencies(deps, false);
+                mi.addInvokeMethodDependencies(mDeps, false);
+            }
+        }
+        
+        /*
+         * Add method dependencies from overriding methods to the overridden
+         * super method(s). These will be reversed by the DependencyGraph to
+         * create edges from the super/interface method to the overriding
+         * method.
+         */
+        Map<SootMethod, Set<SootMethod>> overriddenMethods = getOverriddenMethods(this.sootClass);
+        for (SootMethod from : overriddenMethods.keySet()) {
+            MethodInfo mi = ci.getMethod(from.getName(), getDescriptor(from));
+            for (SootMethod to : overriddenMethods.get(from)) {
+                mi.addSuperMethodDependency(getInternalName(to.getDeclaringClass()), to.getName(), getDescriptor(to), false);
+            }
+        }
+        
+        /*
+         * Edge case. A method in a superclass might satisfy an interface method
+         * in the interfaces implemented by this class. See e.g. the abstract
+         * class HashMap$HashIterator which doesn't implement Iterator but has
+         * the hasNext() and other methods. We add a dependency from the current
+         * class to the super method to ensure it's included if the current
+         * class is linked in.
+         */
+        if (sootClass.hasSuperclass()) {
+            for (SootClass interfaze : getImmediateInterfaces(sootClass)) {
+                for (SootMethod m : interfaze.getMethods()) {
+                    if (!m.isStatic()) {
+                        try {
+                            this.sootClass.getMethod(m.getName(), m.getParameterTypes());
+                        } catch (RuntimeException e) {
+                            /*
+                             * Not found. Find the implementation in
+                             * superclasses.
+                             */
+                            SootMethod superMethod = null;
+                            for (SootClass sc = sootClass.getSuperclass(); sc.hasSuperclass(); sc = sc.getSuperclass()) {
+                                try {
+                                    SootMethod candidate = sc.getMethod(m.getName(), m.getParameterTypes());
+                                    if (!candidate.isStatic()) {
+                                        superMethod = candidate;
+                                        break;
+                                    }
+                                } catch (RuntimeException e2) {
+                                    // Not found.
+                                }
+                            }
+
+                            if (superMethod != null) {
+                                ci.addSuperMethodDependency(getInternalName(superMethod.getDeclaringClass()),
+                                        superMethod.getName(), getDescriptor(superMethod), false);
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         Global classInfoStruct = null;
@@ -803,50 +870,30 @@ public class ClassCompiler {
         writer.flush();
 
         ci.setCatchNames(catches);
-        ci.setTrampolines(trampolines);
         
-        ci.addDependency("java/lang/Object"); // Make sure no class or interface has zero dependencies
+        ci.addClassDependency("java/lang/Object", false); // Make sure no class or interface has zero dependencies
         if (sootClass.hasSuperclass() && !sootClass.isInterface()) {
-            ci.addDependency(getInternalName(sootClass.getSuperclass()));
+            ci.addClassDependency(getInternalName(sootClass.getSuperclass()), false);
         }
         for (SootClass iface : sootClass.getInterfaces()) {
-            ci.addDependency(getInternalName(iface));
+            ci.addClassDependency(getInternalName(iface), false);
         }
         for (SootField f : sootClass.getFields()) {
-            addDependencyIfNeeded(clazz, f.getType());
+            addClassDependencyIfNeeded(clazz, f.getType(), false);
         }
         for (SootMethod m : sootClass.getMethods()) {
-            addDependencyIfNeeded(clazz, m.getReturnType());
+            MethodInfo mi = ci.getMethod(m.getName(), getDescriptor(m));
+            addClassDependencyIfNeeded(clazz, mi, m.getReturnType(), true);
             @SuppressWarnings("unchecked")
             List<soot.Type> paramTypes = (List<soot.Type>) m.getParameterTypes();
             for (soot.Type type : paramTypes) {
-                addDependencyIfNeeded(clazz, type);
+                addClassDependencyIfNeeded(clazz, mi, type, true);
             }
         }
-        ci.addDependencies(attributesEncoder.getDependencies());
-        ci.addDependencies(trampolineDependencies);
-        ci.addDependencies(catches);
+        ci.addClassDependencies(attributesEncoder.getDependencies(), false);
+        ci.addClassDependencies(catches, false);
         
-        for (Trampoline t : trampolines) {
-            {
-                String desc = t.getTarget();
-                if (desc.charAt(0) == 'L' || desc.charAt(0) == '[') {
-                    // Target is a descriptor
-                    addDependencyIfNeeded(clazz, desc);
-                } else {
-                    ci.addDependency(t.getTarget());
-                }
-            }
-            if (t instanceof FieldAccessor) {
-                addDependencyIfNeeded(clazz, ((FieldAccessor) t).getFieldDesc());
-            } else if (t instanceof Invoke) {
-                String methodDesc = ((Invoke) t).getMethodDesc();
-                addDependencyIfNeeded(clazz, getReturnTypeDescriptor(methodDesc));
-                for (String desc : getParameterDescriptors(methodDesc)) {
-                    addDependencyIfNeeded(clazz, desc);
-                }
-            }
-
+        for (Trampoline t : trampolines.keySet()) {
             if (t instanceof Checkcast) {
                 ci.addCheckcast(t.getTarget());
             } else if (t instanceof Instanceof) {
@@ -858,23 +905,87 @@ public class ClassCompiler {
         clazz.saveClazzInfo();
     }
 
-    private static void addDependencyIfNeeded(Clazz clazz, soot.Type type) {
+    private static void addClassDependencyIfNeeded(Clazz clazz, soot.Type type, boolean weak) {
         if (type instanceof RefLikeType) {
-            addDependencyIfNeeded(clazz, getDescriptor(type));
+            addClassDependencyIfNeeded(clazz, getDescriptor(type), weak);
         }
     }
 
-    private static void addDependencyIfNeeded(Clazz clazz, String desc) {
+    private static void addClassDependencyIfNeeded(Clazz clazz, String desc, boolean weak) {
         if (!isPrimitive(desc) && (!isArray(desc) || !isPrimitiveBaseType(desc))) {
             String internalName = isArray(desc) ? getBaseType(desc) : getInternalNameFromDescriptor(desc);
             if (!clazz.getInternalName().equals(internalName)) {
-                clazz.getClazzInfo().addDependency(internalName);
+                clazz.getClazzInfo().addClassDependency(internalName, weak);
             }
         }
     }
+
+    private static void addClassDependencyIfNeeded(Clazz clazz, MethodInfo mi, soot.Type type, boolean weak) {
+        if (type instanceof RefLikeType) {
+            addClassDependencyIfNeeded(clazz, mi, getDescriptor(type), weak);
+        }
+    }
+    
+    private static void addClassDependencyIfNeeded(Clazz clazz, MethodInfo mi, String desc, boolean weak) {
+        if (!isPrimitive(desc) && (!isArray(desc) || !isPrimitiveBaseType(desc))) {
+            String internalName = isArray(desc) ? getBaseType(desc) : getInternalNameFromDescriptor(desc);
+            if (!clazz.getInternalName().equals(internalName)) {
+                mi.addClassDependency(internalName, weak);
+            }
+        }
+    }
+
+    private Map<SootMethod, Set<SootMethod>> getOverriddenMethods(SootClass sc) {
+        Map<SootMethod, Set<SootMethod>> result = new HashMap<>();
+        for (SootMethod m : sc.getMethods()) {
+            if (!m.isStatic() && !m.isPrivate() && !m.getName().equals("<init>")) {
+                result.put(m, new HashSet<SootMethod>());
+            }
+        }
+        findOverriddenSuperMethods(sc, sc, result);
+        return result;
+    }
+
+    private void findOverriddenSuperMethods(SootClass childClass, SootClass sc, Map<SootMethod, Set<SootMethod>> result) {
+        if (sc != childClass) {
+            for (SootMethod superMethod : sc.getMethods()) {
+                if (superMethod.isStatic() || superMethod.isPrivate() || superMethod.getName().equals("<init>")) {
+                    // Not overridable
+                    continue;
+                }
+                if (!superMethod.isPublic() && !superMethod.isProtected()) {
+                    // Package private. Must be in same package as the child class.
+                    if (!childClass.getPackageName().equals(sc.getPackageName())) {
+                        continue;
+                    }
+                }
+    
+                for (SootMethod childMethod : result.keySet()) {
+                    if (childMethod.getName().equals(superMethod.getName())
+                            && childMethod.getParameterTypes().equals(superMethod.getParameterTypes())) {
+                        result.get(childMethod).add(superMethod);
+                    }
+                }
+            }
+        }
+        for (SootClass interfaze : sc.getInterfaces()) {
+            findOverriddenSuperMethods(childClass, interfaze, result);
+        }
+        if (sc.hasSuperclass()) {
+            findOverriddenSuperMethods(childClass, sc.getSuperclass(), result);
+        }
+    }
+    
+    private Set<SootClass> getImmediateInterfaces(SootClass sc) {
+        HashSet<SootClass> result = new HashSet<>();
+        result.addAll(sc.getInterfaces());
+        for (SootClass interfaze : sc.getInterfaces()) {
+            result.addAll(getImmediateInterfaces(interfaze));
+        }
+        return result;
+    }
     
     private void createLookupFunction(SootMethod m) {
-        // TODO: This should use a virtual method table or interface method table.
         Function function = FunctionBuilder.lookup(m, true);
         mb.addFunction(function);
 
@@ -1268,47 +1379,43 @@ public class ClassCompiler {
         // after sizeof(ClassInfoHeader) bytes.
         return new StructureConstantBuilder().add(header.build()).add(body.build()).build();
     }
-    
-    private Function nativeMethod(SootMethod method) {
-        Function fn = nativeMethodCompiler.compile(mb, method);
-        trampolines.addAll(nativeMethodCompiler.getTrampolines());
-        catches.addAll(nativeMethodCompiler.getCatches());
+
+    private Function compileMethod(AbstractMethodCompiler methodCompiler, SootMethod method) {
+        Function fn = methodCompiler.compile(mb, method);
+        for (Trampoline t : methodCompiler.getTrampolines()) {
+            List<SootMethod> l = trampolines.get(t);
+            if (l == null) {
+                l = new ArrayList<>();
+                trampolines.put(t, l);
+            }
+            l.add(method);
+        }
+        catches.addAll(methodCompiler.getCatches());
         return fn;
     }
-    
+
+    private Function nativeMethod(SootMethod method) {
+        return compileMethod(nativeMethodCompiler, method);
+    }
+
     private Function bridgeMethod(SootMethod method) {
-        Function fn = bridgeMethodCompiler.compile(mb, method);
-        trampolines.addAll(bridgeMethodCompiler.getTrampolines());
-        catches.addAll(bridgeMethodCompiler.getCatches());
-        return fn;
+        return compileMethod(bridgeMethodCompiler, method);
     }
     
     private Function callbackMethod(SootMethod method) {
-        Function fn = callbackMethodCompiler.compile(mb, method);
-        trampolines.addAll(callbackMethodCompiler.getTrampolines());
-        catches.addAll(callbackMethodCompiler.getCatches());
-        return fn;
+        return compileMethod(callbackMethodCompiler, method);
     }
     
     private Function structMember(SootMethod method) {
-        Function fn = structMemberMethodCompiler.compile(mb, method);
-        trampolines.addAll(structMemberMethodCompiler.getTrampolines());
-        catches.addAll(structMemberMethodCompiler.getCatches());
-        return fn;
+        return compileMethod(structMemberMethodCompiler, method);
     }
 
     private Function globalValueMethod(SootMethod method) {
-        Function fn = globalValueMethodCompiler.compile(mb, method);
-        trampolines.addAll(globalValueMethodCompiler.getTrampolines());
-        catches.addAll(globalValueMethodCompiler.getCatches());
-        return fn;
+        return compileMethod(globalValueMethodCompiler, method);
     }
 
     private Function method(SootMethod method) {
-        Function fn = methodCompiler.compile(mb, method);
-        trampolines.addAll(methodCompiler.getTrampolines());
-        catches.addAll(methodCompiler.getCatches());
-        return fn;
+        return compileMethod(javaMethodCompiler, method);
     }
     
     private Function createAllocator() {

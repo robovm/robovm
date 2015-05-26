@@ -43,6 +43,7 @@ import soot.SootMethod;
  */
 public abstract class AbstractMethodCompiler {
     protected Config config;
+    protected Clazz clazz;
     protected SootClass sootClass;
     protected String className;
     protected SootMethod sootMethod;
@@ -54,6 +55,7 @@ public abstract class AbstractMethodCompiler {
     }
     
     public void reset(Clazz clazz) {
+        this.clazz = clazz;
         this.sootClass = clazz.getSootClass();
         className = getInternalName(this.sootClass);
     }
@@ -66,7 +68,7 @@ public abstract class AbstractMethodCompiler {
         return catches;
     }
     
-    public Function compile(ModuleBuilder moduleBuilder, SootMethod method) {
+    public final Function compile(ModuleBuilder moduleBuilder, SootMethod method) {
         sootMethod = method;
         trampolines = new HashSet<Trampoline>();
         catches = new HashSet<String>();

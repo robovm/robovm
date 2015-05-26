@@ -48,11 +48,11 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.clazz.Clazzes;
-import org.robovm.compiler.clazz.Dependency;
 import org.robovm.compiler.clazz.Path;
 import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.config.Config.TargetType;
+import org.robovm.compiler.config.Config.TreeShakerMode;
 import org.robovm.compiler.config.OS;
 import org.robovm.compiler.config.Resource;
 import org.robovm.compiler.log.ConsoleLogger;
@@ -99,8 +99,10 @@ public class AppCompiler {
         "java/net/Socket",
         "java/net/SocketImpl",
         "java/nio/charset/CharsetICU",
+        "java/nio/DirectByteBuffer",
         "java/text/Bidi$Run",
         "java/text/ParsePosition",
+        "java/util/Calendar",
         "java/util/regex/PatternSyntaxException",
         "java/util/zip/Deflater",
         "java/util/zip/Inflater",
@@ -117,6 +119,7 @@ public class AppCompiler {
         "libcore/io/StructStat",
         "libcore/io/StructStatVfs",
         "libcore/io/StructTimeval",
+        "libcore/io/StructUcred",
         "libcore/io/StructUtsname",
         "libcore/util/MutableInt",
         "libcore/util/MutableLong"
@@ -233,22 +236,12 @@ public class AppCompiler {
     }
 
     private boolean compile(Executor executor, ClassCompilerListener listener,
-            Clazz clazz, Set<Clazz> compileQueue, Set<Clazz> compiled,
-            boolean compileDependencies) throws IOException {
+            Clazz clazz, Set<Clazz> compileQueue, Set<Clazz> compiled) throws IOException {
 
         boolean result = false;
         if (config.isClean() || classCompiler.mustCompile(clazz)) {
             classCompiler.compile(clazz, executor, listener);
             result = true;
-        }
-        if (compileDependencies) {
-            for (Dependency dep : clazz.getClazzInfo().getDependencies()) {
-                Clazz depClazz = config.getClazzes().load(dep.getClassName());
-                if (depClazz != null && !compiled.contains(depClazz)) {
-                    compileQueue.add(depClazz);
-                }
-            }
-            addMetaInfImplementations(config.getClazzes(), clazz, compiled, compileQueue);
         }
         return result;
     }
@@ -282,7 +275,7 @@ public class AppCompiler {
         }
     }
 
-    public Set<Clazz> compile(Collection<Clazz> rootClasses, boolean compileDependencies,
+    public Set<Clazz> compile(Set<Clazz> rootClasses, boolean compileDependencies,
             final ClassCompilerListener listener) throws IOException {
 
         config.getLogger().debug("Compiling classes using %d threads", config.getThreads());
@@ -320,21 +313,39 @@ public class AppCompiler {
         };
         HandleFailureListener listenerWrapper = new HandleFailureListener();
 
+        DependencyGraph dependencyGraph = config.getDependencyGraph();
         TreeSet<Clazz> compileQueue = new TreeSet<>(rootClasses);
         long start = System.currentTimeMillis();
         Set<Clazz> linkClasses = new HashSet<Clazz>();
         int compiledCount = 0;
         while (!compileQueue.isEmpty() && !Thread.currentThread().isInterrupted()) {
-            Clazz clazz = compileQueue.pollFirst();
-            if (!linkClasses.contains(clazz)) {
-                if (compile(executor, listenerWrapper, clazz, compileQueue, linkClasses, compileDependencies)) {
-                    compiledCount++;
-                    if (listenerWrapper.t != null) {
-                        // We have a failed compilation. Stop compiling.
-                        break;
+            while (!compileQueue.isEmpty() && !Thread.currentThread().isInterrupted()) {
+                Clazz clazz = compileQueue.pollFirst();
+                if (!linkClasses.contains(clazz)) {
+                    if (compile(executor, listenerWrapper, clazz, compileQueue, linkClasses)) {
+                        compiledCount++;
+                        if (listenerWrapper.t != null) {
+                            // We have a failed compilation. Stop compiling.
+                            break;
+                        }
+                    }
+
+                    dependencyGraph.add(clazz, rootClasses.contains(clazz));
+                    linkClasses.add(clazz);
+
+                    if (compileDependencies) {
+                        addMetaInfImplementations(config.getClazzes(), clazz, linkClasses, compileQueue);
                     }
                 }
-                linkClasses.add(clazz);
+            }
+
+            if (compileDependencies) {
+                for (String className : dependencyGraph.findReachableClasses(config.getTreeShakerMode())) {
+                    Clazz depClazz = config.getClazzes().load(className);
+                    if (depClazz != null && !linkClasses.contains(depClazz)) {
+                        compileQueue.add(depClazz);
+                    }
+                }
             }
         }
 
@@ -487,6 +498,9 @@ public class AppCompiler {
                 } else if ("-target".equals(args[i])) {
                     String s = args[++i];
                     builder.targetType("auto".equals(s) ? null : TargetType.valueOf(s));
+                } else if ("-treeshaker".equals(args[i])) {
+                    String s = args[++i];
+                    builder.treeShakerMode(TreeShakerMode.valueOf(s));
                 } else if ("-forcelinkclasses".equals(args[i])) {
                     for (String p : args[++i].split(":")) {
                         p = p.replace('#', '*');
@@ -796,6 +810,10 @@ public class AppCompiler {
                          + "                        option has been given. A pattern is an ANT style path pattern,\n" 
                          + "                        e.g. com.foo.**.bar.*.Main. An alternative syntax using # is\n" 
                          + "                        also supported, e.g. com.##.#.Main.");
+        System.err.println("  -treeshaker <mode>    The tree shaking algorithm to use. 'none' or 'aggressive'.\n" 
+                         + "                        'aggressive' will remove all unreachable method implementations\n" 
+                         + "                        when it's safe to do so. Methods in the main class and in force\n" 
+                         + "                        linked classes will never be stripped. Default is 'none'.");
         System.err.println("  -threads <n>          The number of threads to use during class compilation. By\n" 
                          + "                        default the number returned by Runtime.availableProcessors()\n" 
                          + "                        will be used (" + Runtime.getRuntime().availableProcessors() + " on this host).");

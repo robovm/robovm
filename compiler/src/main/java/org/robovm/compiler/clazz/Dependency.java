@@ -18,27 +18,30 @@ package org.robovm.compiler.clazz;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 /**
- * Records a dependency on {@link Clazz} <code>A</code> for a {@link Clazz} <code>B</code> and 
- * the path where <code>A</code> was located when <code>B</code> was built.
+ * Abstract base class for dependencies.
  */
-public class Dependency implements Serializable {
-    private static final long serialVersionUID = 2L;
+public abstract class Dependency implements Serializable {
+    private static final long serialVersionUID = 1L;
     
     private final String className;
     private final String path;
     private final boolean inBootClasspath;
+    private final boolean weak;
     
-    Dependency(String className, String path, boolean inBootClasspath) {
+    Dependency(String className, String path, boolean inBootClasspath, boolean weak) {
         this.className = className;
         this.path = path;
         this.inBootClasspath = inBootClasspath;
+        this.weak = weak;
     }
 
     public String getClassName() {
         return className;
     }
-
+    
     public String getPath() {
         return path;
     }
@@ -47,12 +50,18 @@ public class Dependency implements Serializable {
         return inBootClasspath;
     }
 
+    public boolean isWeak() {
+        return weak;
+    }
+    
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result
-                + ((className == null) ? 0 : className.hashCode());
+        result = prime * result + ((className == null) ? 0 : className.hashCode());
+        result = prime * result + (inBootClasspath ? 1231 : 1237);
+        result = prime * result + ((path == null) ? 0 : path.hashCode());
+        result = prime * result + (weak ? 1231 : 1237);
         return result;
     }
 
@@ -75,14 +84,24 @@ public class Dependency implements Serializable {
         } else if (!className.equals(other.className)) {
             return false;
         }
+        if (inBootClasspath != other.inBootClasspath) {
+            return false;
+        }
+        if (path == null) {
+            if (other.path != null) {
+                return false;
+            }
+        } else if (!path.equals(other.path)) {
+            return false;
+        }
+        if (weak != other.weak) {
+            return false;
+        }
         return true;
     }
     
     @Override
     public String toString() {
-        return Dependency.class.getName() 
-                + "{className=" + className 
-                + ", path=" + path 
-                + ", inBootClasspath=" + inBootClasspath + "}";
+        return ToStringBuilder.reflectionToString(this);
     }
 }

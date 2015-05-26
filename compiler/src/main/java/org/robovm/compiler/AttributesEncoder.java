@@ -208,12 +208,12 @@ public class AttributesEncoder {
                     getStringOrNull(ase.getValue()));            
         } else if (ae instanceof AnnotationClassElem) {
             AnnotationClassElem ace = (AnnotationClassElem) ae;
-            addDependency(ace.getDesc());
+            addDependencyIfNeeded(ace.getDesc());
             return new PackedStructureConstant(type, kind,
                     getStringOrNull(ace.getDesc()));            
         } else if (ae instanceof AnnotationEnumElem) {
             AnnotationEnumElem aee = (AnnotationEnumElem) ae;
-            addDependency(aee.getTypeName());
+            addDependencyIfNeeded(aee.getTypeName());
             return new PackedStructureConstant(type, kind,
                     getStringOrNull(aee.getTypeName()),            
                     getStringOrNull(aee.getConstantName()));            
@@ -247,7 +247,7 @@ public class AttributesEncoder {
     private PackedStructureConstant encodeAnnotationTagValue(AnnotationTag tag) {
         Value[] values = new Value[tag.getNumElems() * 2 + 2];
         values[0] = getString(tag.getType());
-        addDependency(tag.getType());
+        addDependencyIfNeeded(tag.getType());
         values[1] = new IntegerConstant(tag.getNumElems());
         for (int i = 0; i < tag.getNumElems(); i++) {
             values[i * 2 + 2] = getString(tag.getElemAt(i).getName());
@@ -367,19 +367,18 @@ public class AttributesEncoder {
         return mb.getStringOrNull(string);
     }
     
-    private void addDependency(String s) {
-        if (s == null || isArray(s) && isPrimitiveBaseType(s)) {
+    private void addDependency(String internalName) {
+        dependencies.add(internalName);
+    }
+
+    private void addDependencyIfNeeded(String desc) {
+        if (desc == null || isPrimitive(desc) || isArray(desc) && isPrimitiveBaseType(desc)) {
             return;
         }
-        int start = 0;
-        int end = s.length();
-        if (isArray(s)) {
-            start = s.indexOf('L') + 1;
-            end--;
-        } else if (s.charAt(0) == 'L' && s.charAt(end - 1) == ';') {
-            start = 1;
-            end--;
+        if (isArray(desc)) {
+            dependencies.add(getBaseType(desc));
+        } else {
+            dependencies.add(getInternalNameFromDescriptor(desc));
         }
-        dependencies.add(s.substring(start, end));
     }
 }

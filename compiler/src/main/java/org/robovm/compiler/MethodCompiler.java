@@ -738,6 +738,25 @@ public class MethodCompiler extends AbstractMethodCompiler {
         Value result = null;
         FunctionRef functionRef = config.isDebug() ? null : Intrinsics.getIntrinsic(sootMethod, stmt, expr);
         if (functionRef == null) {
+            Trampoline trampoline = null;
+            String targetClassName = getInternalName(methodRef.declaringClass());
+            String methodName = methodRef.name();
+            String methodDesc = getDescriptor(methodRef);
+            if (expr instanceof SpecialInvokeExpr) {
+                soot.Type runtimeType = ((SpecialInvokeExpr) expr).getBase().getType();
+                String runtimeClassName = runtimeType == NullType.v() ? targetClassName : getInternalName(runtimeType);
+                trampoline = new Invokespecial(this.className, targetClassName, methodName, methodDesc, runtimeClassName);
+            } else if (expr instanceof StaticInvokeExpr) {
+                trampoline = new Invokestatic(this.className, targetClassName, methodName, methodDesc);
+            } else if (expr instanceof VirtualInvokeExpr) {
+                soot.Type runtimeType = ((VirtualInvokeExpr) expr).getBase().getType();
+                String runtimeClassName = runtimeType == NullType.v() ? targetClassName : getInternalName(runtimeType);
+                trampoline = new Invokevirtual(this.className, targetClassName, methodName, methodDesc, runtimeClassName);
+            } else if (expr instanceof InterfaceInvokeExpr) {
+                trampoline = new Invokeinterface(this.className, targetClassName, methodName, methodDesc);
+            }
+            trampolines.add(trampoline);
+
             if (canCallDirectly(expr)) {
                 SootMethod method = this.sootMethod.getDeclaringClass().getMethod(methodRef.name(), 
                         methodRef.parameterTypes(), methodRef.returnType());
@@ -747,24 +766,6 @@ public class MethodCompiler extends AbstractMethodCompiler {
                     functionRef = FunctionBuilder.method(method).ref();
                 }
             } else {
-                Trampoline trampoline = null;
-                String targetClassName = getInternalName(methodRef.declaringClass());
-                String methodName = methodRef.name();
-                String methodDesc = getDescriptor(methodRef);
-                if (expr instanceof SpecialInvokeExpr) {
-                    soot.Type runtimeType = ((SpecialInvokeExpr) expr).getBase().getType();
-                    String runtimeClassName = runtimeType == NullType.v() ? targetClassName : getInternalName(runtimeType);
-                    trampoline = new Invokespecial(this.className, targetClassName, methodName, methodDesc, runtimeClassName);
-                } else if (expr instanceof StaticInvokeExpr) {
-                    trampoline = new Invokestatic(this.className, targetClassName, methodName, methodDesc);
-                } else if (expr instanceof VirtualInvokeExpr) {
-                    soot.Type runtimeType = ((VirtualInvokeExpr) expr).getBase().getType();
-                    String runtimeClassName = runtimeType == NullType.v() ? targetClassName : getInternalName(runtimeType);
-                    trampoline = new Invokevirtual(this.className, targetClassName, methodName, methodDesc, runtimeClassName);
-                } else if (expr instanceof InterfaceInvokeExpr) {
-                    trampoline = new Invokeinterface(this.className, targetClassName, methodName, methodDesc);
-                }
-                trampolines.add(trampoline);
                 functionRef = trampoline.getFunctionRef();
             }
         }

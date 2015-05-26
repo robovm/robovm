@@ -23,10 +23,11 @@ import static org.robovm.compiler.llvm.FunctionAttribute.*;
 import static org.robovm.compiler.llvm.Linkage.*;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang3.tuple.ImmutableTriple;
+import org.apache.commons.lang3.tuple.Triple;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.llvm.Function;
@@ -80,16 +81,11 @@ public class TrampolineCompiler {
     
     private final Config config;
     private ModuleBuilder mb;
-    private Set<String> dependencies;
 
     public TrampolineCompiler(Config config) {
         this.config = config;
     }
     
-    public Set<String> getDependencies() {
-        return dependencies;
-    }
-
     private Linkage aliasLinkage() {
         /*
          * The {@link Linkage} used for alias functions used to be _private but
@@ -110,10 +106,13 @@ public class TrampolineCompiler {
         return config.isDebug() ? noinline : alwaysinline;
     }
 
-    public void compile(ModuleBuilder mb, Trampoline t) {
+    public void compile(ModuleBuilder mb, Clazz currentClass, Trampoline t, Set<String> dependencies, 
+            Set<Triple<String, String, String>> methodDependencies) {
+
         this.mb = mb;
-        this.dependencies = new HashSet<String>();
         
+        addDependencyIfNeeded(dependencies, currentClass, t);
+
         /*
          * Check if the target class exists and is accessible. Also check that
          * field accesses and method calls are compatible with the target 
@@ -196,7 +195,8 @@ public class TrampolineCompiler {
         } else if (t instanceof Invokeinterface) {
             SootMethod rm = resolveInterfaceMethod(errorFn, (Invokeinterface) t);
             if (rm != null) {
-                dependencies.add(getInternalName(rm.getDeclaringClass()));
+                methodDependencies.add(new ImmutableTriple<String, String, String>(getInternalName(rm
+                        .getDeclaringClass()), rm.getName(), getDescriptor(rm)));
             }
             if (rm == null || !checkMemberAccessible(errorFn, t, rm)) {
                 mb.addFunction(errorFn);
@@ -206,7 +206,8 @@ public class TrampolineCompiler {
         } else if (t instanceof Invoke) {
             SootMethod method = resolveMethod(errorFn, (Invoke) t);
             if (method != null) {
-                dependencies.add(getInternalName(method.getDeclaringClass()));
+                methodDependencies.add(new ImmutableTriple<String, String, String>(getInternalName(method
+                        .getDeclaringClass()), method.getName(), getDescriptor(method)));
             }
             if (method == null || !checkMemberAccessible(errorFn, t, method)) {
                 mb.addFunction(errorFn);
@@ -222,6 +223,29 @@ public class TrampolineCompiler {
                 return;
             }
             createTrampolineAliasForMethod((Invoke) t, method);
+        }
+    }
+
+    private static void addDependencyIfNeeded(Set<String> deps, Clazz clazz, Trampoline t) {
+        String desc = t.getTarget();
+        if ((desc.charAt(0) == 'L' && desc.endsWith(";")) || desc.charAt(0) == '[') {
+            // Target is a descriptor
+            addDependencyIfNeeded(deps, clazz, desc);
+        } else {
+            deps.add(t.getTarget());
+        }
+    }
+
+    private static void addDependencyIfNeeded(Set<String> deps, Clazz clazz, String desc) {
+        if (desc.charAt(0) == 'L' || desc.charAt(0) == '[') {
+            if (!isPrimitive(desc) && (!isArray(desc) || !isPrimitiveBaseType(desc))) {
+                String internalName = isArray(desc) ? getBaseType(desc) : getInternalNameFromDescriptor(desc);
+                if (!clazz.getInternalName().equals(internalName)) {
+                    deps.add(internalName);
+                }
+            }
+        } else {
+            deps.add(desc);
         }
     }
 

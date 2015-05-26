@@ -46,6 +46,7 @@ extern char** _bcBootclasspath;
 extern char** _bcClasspath;
 extern void* _bcBootClassesHash;
 extern void* _bcClassesHash;
+extern void* _bcStrippedMethodStubs;
 extern void* _bcRuntimeData;
 static Class* loadBootClass(Env*, const char*, ClassLoader*);
 static Class* loadUserClass(Env*, const char*, ClassLoader*);
@@ -363,6 +364,17 @@ error:
     return NULL;
 }
 
+static inline jboolean isStrippedMethod(MethodInfo* mi) {
+    if (mi->impl) {
+        for (void** p = &_bcStrippedMethodStubs; *p; p++) {
+            if (mi->impl == *p) {
+                return TRUE;
+            }
+        }
+    }
+    return FALSE;
+}
+
 static Method* loadMethods(Env* env, Class* clazz) {
     ClassInfoHeader* header = lookupClassInfo(env, clazz->name, 
         !clazz->classLoader || !clazz->classLoader->parent ? _bcBootClassesHash : _bcClassesHash);
@@ -380,16 +392,18 @@ static Method* loadMethods(Env* env, Class* clazz) {
     for (i = 0; i < ci.methodCount; i++) {
         MethodInfo mi;
         readMethodInfo(&p, &mi);
-        Method* m = NULL;
-        if (mi.targetFnPtr) {
-            m = (Method*) rvmAllocateBridgeMethod(env, clazz, mi.name, mi.desc, mi.vtableIndex, mi.access, mi.size, mi.impl, mi.synchronizedImpl, mi.targetFnPtr, mi.attributes);
-        } else if (mi.callbackImpl) {
-            m = (Method*) rvmAllocateCallbackMethod(env, clazz, mi.name, mi.desc, mi.vtableIndex, mi.access, mi.size, mi.impl, mi.synchronizedImpl, mi.linetable, mi.callbackImpl, mi.attributes);
-        } else {
-            m = rvmAllocateMethod(env, clazz, mi.name, mi.desc, mi.vtableIndex, mi.access, mi.size, mi.impl, mi.synchronizedImpl, mi.linetable, mi.attributes);
+        if (!isStrippedMethod(&mi)) {
+            Method* m = NULL;
+            if (mi.targetFnPtr) {
+                m = (Method*) rvmAllocateBridgeMethod(env, clazz, mi.name, mi.desc, mi.vtableIndex, mi.access, mi.size, mi.impl, mi.synchronizedImpl, mi.targetFnPtr, mi.attributes);
+            } else if (mi.callbackImpl) {
+                m = (Method*) rvmAllocateCallbackMethod(env, clazz, mi.name, mi.desc, mi.vtableIndex, mi.access, mi.size, mi.impl, mi.synchronizedImpl, mi.linetable, mi.callbackImpl, mi.attributes);
+            } else {
+                m = rvmAllocateMethod(env, clazz, mi.name, mi.desc, mi.vtableIndex, mi.access, mi.size, mi.impl, mi.synchronizedImpl, mi.linetable, mi.attributes);
+            }
+            if (!m) goto error;
+            LL_PREPEND(first, m);
         }
-        if (!m) goto error;
-        LL_PREPEND(first, m);
     }
     return first;
 error:
@@ -401,8 +415,15 @@ error:
     return NULL;
 }
 
+static inline jboolean hasImpl(MethodInfo* mi) {
+    if (!mi->impl) {
+        return FALSE;
+    }
+    return !isStrippedMethod(mi);
+}
+
 static jboolean countClassesWithConcreteMethodsCallback(Env* env, ClassInfoHeader* header, MethodInfo* mi, void* d) {
-    if (mi->impl) {
+    if (hasImpl(mi)) {
         jint* count = (jint*) d;
         *count = *count + 1;
         return FALSE;
@@ -411,7 +432,7 @@ static jboolean countClassesWithConcreteMethodsCallback(Env* env, ClassInfoHeade
 }
 
 static jboolean initAddressClassLookupsCallback(Env* env, ClassInfoHeader* header, MethodInfo* mi, void* d) {
-    if (mi->impl) {
+    if (hasImpl(mi)) {
         AddressClassLookup** lookupPtr = (AddressClassLookup**) d;
         AddressClassLookup* lookup = *lookupPtr;
         if (lookup->classInfoHeader != header) {

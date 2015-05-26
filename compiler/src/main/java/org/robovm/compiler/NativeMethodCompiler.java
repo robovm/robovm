@@ -63,7 +63,7 @@ public class NativeMethodCompiler extends AbstractMethodCompiler {
     }
 
     protected Function doCompile(ModuleBuilder moduleBuilder, SootMethod method) {
-        Function fn = FunctionBuilder.method(method);
+        Function fn = createMethodFunction(method);
         moduleBuilder.addFunction(fn);
 
         Value env = fn.getParameterRef(0);

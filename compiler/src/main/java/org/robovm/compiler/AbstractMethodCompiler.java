@@ -23,7 +23,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.robovm.compiler.clazz.Clazz;
+import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
+import org.robovm.compiler.config.OS.Family;
 import org.robovm.compiler.llvm.BasicBlockRef;
 import org.robovm.compiler.llvm.Function;
 import org.robovm.compiler.llvm.FunctionRef;
@@ -80,6 +82,17 @@ public abstract class AbstractMethodCompiler {
     }
         
     protected abstract Function doCompile(ModuleBuilder moduleBuilder, SootMethod method);
+
+    protected Function createMethodFunction(SootMethod method) {
+        /*
+         * Hack to make OSX/iOS x86 binaries link properly. The linker will
+         * crash if we make method functions weak which is what we need for the
+         * tree shaking. So in OSX/iOS x86 builds we make method functions
+         * strong and we behave as if tree shaking was disabled.
+         */
+        return FunctionBuilder.method(method,
+                !(config.getOs().getFamily() == Family.darwin && config.getArch() == Arch.x86));
+    }
 
     private void compileSynchronizedWrapper(ModuleBuilder moduleBuilder, SootMethod method) {
         String targetName = Symbols.methodSymbol(method);

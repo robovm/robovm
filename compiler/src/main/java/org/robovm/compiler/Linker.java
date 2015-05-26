@@ -57,6 +57,8 @@ import org.robovm.compiler.clazz.Path;
 import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.config.OS;
+import org.robovm.compiler.config.Config.TreeShakerMode;
+import org.robovm.compiler.config.OS.Family;
 import org.robovm.compiler.hash.HashTableGenerator;
 import org.robovm.compiler.hash.ModifiedUtf8HashFunction;
 import org.robovm.compiler.llvm.Alias;
@@ -317,8 +319,18 @@ public class Linker {
             invokes.addAll(ci.getInvokes());
         }
 
+        TreeShakerMode treeShakerMode = config.getTreeShakerMode();
+        if (treeShakerMode != TreeShakerMode.none && config.getOs().getFamily() == Family.darwin
+                && config.getArch() == Arch.x86) {
+            /*
+             * Cannot tree shake on OS X/iOS x86 due to a bug in Xcode's linker.
+             * AppCompiler has already warned about this.
+             */
+            treeShakerMode = TreeShakerMode.none;
+        }
+
         Set<String> reachableMethods = new HashSet<>();
-        for (Triple<String, String, String> node : config.getDependencyGraph().findReachableMethods(config.getTreeShakerMode())) {
+        for (Triple<String, String, String> node : config.getDependencyGraph().findReachableMethods(treeShakerMode)) {
             reachableMethods.add(node.getLeft() + "." + node.getMiddle() + node.getRight());
         }
         

@@ -35,7 +35,9 @@ import org.robovm.compiler.Bro.MarshalerFlags;
 import org.robovm.compiler.MarshalerLookup.MarshalSite;
 import org.robovm.compiler.MarshalerLookup.MarshalerMethod;
 import org.robovm.compiler.MarshalerLookup.PointerMarshalerMethod;
+import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
+import org.robovm.compiler.config.OS.Family;
 import org.robovm.compiler.llvm.Alloca;
 import org.robovm.compiler.llvm.Argument;
 import org.robovm.compiler.llvm.BasicBlockRef;
@@ -234,7 +236,7 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
         boolean optional = readBooleanElem(bridgeAnnotation, "optional", false);
         boolean useCWrapper = requiresCWrapper(method);
         
-        Function fn = FunctionBuilder.method(method);
+        Function fn = createMethodFunction(method);
         moduleBuilder.addFunction(fn);
         
         Type[] parameterTypes = fn.getType().getParameterTypes();

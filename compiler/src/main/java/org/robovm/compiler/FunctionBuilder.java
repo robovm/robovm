@@ -211,11 +211,11 @@ public class FunctionBuilder {
                 .linkage(external).attribs(noinline, optsize).build();
     }
     
-    public static Function method(SootMethod method) {
-        return new FunctionBuilder(methodSymbol(method), getFunctionType(method)).linkage(weak)
+    public static Function method(SootMethod method, boolean weak) {
+        return new FunctionBuilder(methodSymbol(method), getFunctionType(method)).linkage(weak ? Linkage.weak : external)
                 .attribs(noinline, optsize).build();
     }
-    
+
     public static Function info(String internalName) {
         return new FunctionBuilder(infoSymbol(internalName), new FunctionType(I8_PTR_PTR))
                 .linkage(external).attribs(alwaysinline, optsize).build();

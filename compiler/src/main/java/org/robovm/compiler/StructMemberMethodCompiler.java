@@ -71,14 +71,14 @@ public class StructMemberMethodCompiler extends BroMethodCompiler {
     }
     
     private Function structSizeOf(ModuleBuilder moduleBuilder, SootMethod method) {
-        Function fn = FunctionBuilder.method(method);
+        Function fn = createMethodFunction(method);
         moduleBuilder.addFunction(fn);
         fn.add(new Ret(sizeof(structType)));
         return fn;
     }
 
     private Function structMember(ModuleBuilder moduleBuilder, SootMethod method) {
-        Function function = FunctionBuilder.method(method);
+        Function function = createMethodFunction(method);
         moduleBuilder.addFunction(function);
         
         // Get the value of the handle field in the Struct base class and cast it to a <structType>*

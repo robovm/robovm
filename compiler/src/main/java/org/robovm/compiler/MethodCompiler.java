@@ -209,7 +209,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
     }
     
     protected Function doCompile(ModuleBuilder moduleBuilder, SootMethod method) {
-        function = FunctionBuilder.method(method);
+        function = createMethodFunction(method);
         moduleBuilder.addFunction(function);
         this.moduleBuilder = moduleBuilder;
         
@@ -763,7 +763,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
                 if (method.isSynchronized()) {
                     functionRef = FunctionBuilder.synchronizedWrapper(method).ref();
                 } else {
-                    functionRef = FunctionBuilder.method(method).ref();
+                    functionRef = createMethodFunction(method).ref();
                 }
             } else {
                 functionRef = trampoline.getFunctionRef();

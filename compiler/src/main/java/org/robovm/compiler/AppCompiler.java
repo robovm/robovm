@@ -54,6 +54,7 @@ import org.robovm.compiler.config.Config;
 import org.robovm.compiler.config.Config.TargetType;
 import org.robovm.compiler.config.Config.TreeShakerMode;
 import org.robovm.compiler.config.OS;
+import org.robovm.compiler.config.OS.Family;
 import org.robovm.compiler.config.Resource;
 import org.robovm.compiler.log.ConsoleLogger;
 import org.robovm.compiler.plugin.LaunchPlugin;
@@ -314,6 +315,16 @@ public class AppCompiler {
         HandleFailureListener listenerWrapper = new HandleFailureListener();
 
         DependencyGraph dependencyGraph = config.getDependencyGraph();
+        TreeShakerMode treeShakerMode = config.getTreeShakerMode();
+        if (treeShakerMode != TreeShakerMode.none && config.getOs().getFamily() == Family.darwin
+                && config.getArch() == Arch.x86) {
+            config.getLogger().warn("Tree shaking is not supported when building " 
+                    + "for OS X/iOS x86 32-bit due to a bug in Xcode's linker. No tree " 
+                    + "shaking will be performed. Run in 64-bit mode instead to " 
+                    + "use tree shaking.");
+            treeShakerMode = TreeShakerMode.none;
+        }
+
         TreeSet<Clazz> compileQueue = new TreeSet<>(rootClasses);
         long start = System.currentTimeMillis();
         Set<Clazz> linkClasses = new HashSet<Clazz>();
@@ -340,7 +351,7 @@ public class AppCompiler {
             }
 
             if (compileDependencies) {
-                for (String className : dependencyGraph.findReachableClasses(config.getTreeShakerMode())) {
+                for (String className : dependencyGraph.findReachableClasses(treeShakerMode)) {
                     Clazz depClazz = config.getClazzes().load(className);
                     if (depClazz != null && !linkClasses.contains(depClazz)) {
                         compileQueue.add(depClazz);

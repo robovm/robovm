@@ -90,7 +90,7 @@ public class GlobalValueMethodCompiler extends BroMethodCompiler {
         boolean optional = readBooleanElem(globalValueAnnotation, "optional", false);
         boolean dereference = readBooleanElem(globalValueAnnotation, "dereference", true);
 
-        Function fn = FunctionBuilder.method(method);
+        Function fn = createMethodFunction(method);
         moduleBuilder.addFunction(fn);
 
         Type valueType = getStructMemberType(method);

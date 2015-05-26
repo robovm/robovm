@@ -40,7 +40,7 @@ public class ObjCRuntime {
     private static final Map<Class<?>, Integer> structSizes = new HashMap<Class<?>, Integer>();
     
     static {
-        Bro.bind();
+        Bro.bind(ObjCRuntime.class);
     }
     
     public static void bind() {

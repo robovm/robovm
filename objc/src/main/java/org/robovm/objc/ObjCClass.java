@@ -42,7 +42,7 @@ public final class ObjCClass extends ObjCObject {
     private static final String CUSTOM_CLASS_NAME_PREFIX = "j_";
     
     static {
-        ObjCRuntime.bind();
+        ObjCRuntime.bind(ObjCClass.class);
         @SuppressWarnings("unchecked")
         Class<? extends ObjCObject>[] classes = (Class<? extends ObjCObject>[]) 
                 VM.listClasses(ObjCObject.class, ClassLoader.getSystemClassLoader());

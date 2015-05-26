@@ -54,7 +54,7 @@ public abstract class ObjCObject extends NativeObject {
     public static class ObjCObjectPtr extends Ptr<ObjCObject, ObjCObjectPtr> {}
 
     static {
-        ObjCRuntime.bind();
+        ObjCRuntime.bind(ObjCObject.class);
 
         try {
             Field f = ObjCObject.class.getDeclaredField("customClass");

@@ -828,14 +828,16 @@ public class Config {
         osArchCacheDir = new File(archDir, debug ? "debug" : "release");
         osArchCacheDir.mkdirs();
 
-        if (treeShakerMode != TreeShakerMode.none && os.getFamily() == Family.darwin && arch == Arch.x86) {
+        if (treeShakerMode != null && treeShakerMode != TreeShakerMode.none 
+                && os.getFamily() == Family.darwin && arch == Arch.x86) {
+
             logger.warn("Tree shaking is not supported when building "
                     + "for OS X/iOS x86 32-bit due to a bug in Xcode's linker. No tree "
                     + "shaking will be performed. Run in 64-bit mode instead to "
                     + "use tree shaking.");
             treeShakerMode = TreeShakerMode.none;
         }
-        dependencyGraph = new DependencyGraph(treeShakerMode);
+        dependencyGraph = new DependencyGraph(getTreeShakerMode());
 
         this.clazzes = new Clazzes(this, realBootclasspath, classpath);
 

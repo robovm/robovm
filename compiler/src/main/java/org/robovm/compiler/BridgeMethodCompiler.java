@@ -131,7 +131,7 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
                 wrapperParamTypes.add(t);
             }
         }
-        FunctionType wrapperFnType = new FunctionType(wrapperReturnType, functionType.isVarargs(),
+        FunctionType wrapperFnType = new FunctionType(wrapperReturnType,
                 wrapperParamTypes.toArray(new Type[wrapperParamTypes.size()]));
         return new FunctionRef(name, wrapperFnType);
     }
@@ -368,7 +368,7 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
             FunctionType wrapperFnType = getBridgeFunctionType(method, dynamic, true);
             getCWrapperFunctions().add(createBridgeCWrapper(targetFnType.getReturnType(), 
                     targetFnType.getParameterTypes(), wrapperFnType.getParameterTypes(), wrapperName));
-            FunctionRef wrapperFnRef = getBridgeCWrapperRef(wrapperFnType, wrapperName);
+            FunctionRef wrapperFnRef = getBridgeCWrapperRef(targetFnType, wrapperName);
             moduleBuilder.addFunctionDeclaration(new FunctionDeclaration(wrapperFnRef));
             targetFnRef = wrapperFnRef;
         } else {

@@ -147,6 +147,9 @@ public class DependencyGraph {
             node = new MethodNode(owner, name, desc, weaklyLinked);
             methodNodes.put(key, node);
         }
+        if (weaklyLinked) {
+            node.weaklyLinked = true;
+        }
         return node;
     }
 
@@ -278,7 +281,7 @@ public class DependencyGraph {
         private final String owner;
         private final String name;
         private final String desc;
-        private final boolean weaklyLinked;
+        private boolean weaklyLinked;
 
         private MethodNode(String owner, String name, String desc, boolean weaklyLinked) {
             this.owner = owner;

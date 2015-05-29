@@ -140,25 +140,31 @@ public class DependencyGraph {
         return node;
     }
 
-    private MethodNode getMethodNode(String owner, String name, String desc, boolean weaklyLinked) {
+    private MethodNode getMethodNode(String owner, String name, String desc, boolean weaklyLinked,
+            boolean stronglyLinked) {
         String key = owner + "." + name + desc;
         MethodNode node = methodNodes.get(key);
         if (node == null) {
-            node = new MethodNode(owner, name, desc, weaklyLinked);
+            node = new MethodNode(owner, name, desc, weaklyLinked, stronglyLinked);
             methodNodes.put(key, node);
-        }
-        if (weaklyLinked) {
-            node.weaklyLinked = true;
+        } else {
+            if (weaklyLinked) {
+                node.weaklyLinked = true;
+            }
+            if (stronglyLinked) {
+                node.stronglyLinked = true;
+            }
         }
         return node;
     }
 
     private MethodNode getMethodNode(Clazz clazz, MethodInfo mi) {
-        return getMethodNode(clazz.getInternalName(), mi.getName(), mi.getDesc(), mi.isWeaklyLinked());
+        return getMethodNode(clazz.getInternalName(), mi.getName(), mi.getDesc(), mi.isWeaklyLinked(),
+                mi.isStrongyLinked());
     }
 
     private MethodNode getMethodNode(MethodDependency dep) {
-        return getMethodNode(dep.getOwner(), dep.getMethodName(), dep.getMethodDesc(), false);
+        return getMethodNode(dep.getOwner(), dep.getMethodName(), dep.getMethodDesc(), false, false);
     }
 
     /**
@@ -207,16 +213,21 @@ public class DependencyGraph {
             for (Node child : node.strongEdges) {
                 visitReachableNodes(child, visited);
             }
-            if (treeShakerMode == TreeShakerMode.none || treeShakerMode == TreeShakerMode.conservative) {
-                for (Node child : node.weakEdges) {
-                    if (treeShakerMode == TreeShakerMode.conservative && child instanceof MethodNode) {
-                        MethodNode mnode = (MethodNode) child;
-                        if (!mnode.isWeaklyLinked()) {
-                            visitReachableNodes(child, visited);
-                        }
-                    } else {
+            for (Node child : node.weakEdges) {
+                if (treeShakerMode == TreeShakerMode.conservative && child instanceof MethodNode) {
+                    MethodNode mnode = (MethodNode) child;
+                    if (!mnode.isWeaklyLinked()) {
                         visitReachableNodes(child, visited);
                     }
+                } else if (treeShakerMode == TreeShakerMode.aggressive) {
+                    if (child instanceof MethodNode) {
+                        MethodNode mnode = (MethodNode) child;
+                        if (mnode.isStronglyLinked()) {
+                            visitReachableNodes(child, visited);
+                        }
+                }
+                } else {
+                    visitReachableNodes(child, visited);
                 }
             }
         }
@@ -282,16 +293,22 @@ public class DependencyGraph {
         private final String name;
         private final String desc;
         private boolean weaklyLinked;
+        private boolean stronglyLinked;
 
-        private MethodNode(String owner, String name, String desc, boolean weaklyLinked) {
+        private MethodNode(String owner, String name, String desc, boolean weaklyLinked, boolean stronglyLinked) {
             this.owner = owner;
             this.name = name;
             this.desc = desc;
             this.weaklyLinked = weaklyLinked;
+            this.stronglyLinked = stronglyLinked;
         }
 
         public boolean isWeaklyLinked() {
             return weaklyLinked;
+        }
+
+        public boolean isStronglyLinked() {
+            return stronglyLinked;
         }
 
         @Override
@@ -301,7 +318,6 @@ public class DependencyGraph {
             result = prime * result + ((desc == null) ? 0 : desc.hashCode());
             result = prime * result + ((name == null) ? 0 : name.hashCode());
             result = prime * result + ((owner == null) ? 0 : owner.hashCode());
-            result = prime * result + (weaklyLinked ? 1231 : 1237);
             return result;
         }
 
@@ -336,9 +352,6 @@ public class DependencyGraph {
                     return false;
                 }
             } else if (!owner.equals(other.owner)) {
-                return false;
-            }
-            if (weaklyLinked != other.weaklyLinked) {
                 return false;
             }
             return true;

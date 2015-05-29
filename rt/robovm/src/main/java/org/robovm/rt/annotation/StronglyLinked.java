@@ -21,11 +21,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Marks a method to be weakly linked when using the {@code conservative} tree
- * shaking algorithm. If specified on the class level all methods in that class
- * will be weakly linked except for those annotated with {@link StronglyLinked}.
+ * Marks a method to be strongly linked preventing it from being stripped no
+ * matter which tree shaking algorithm is being used. If specified on the class
+ * level all methods in that class will be strongly linked except for those
+ * annotated with {@link WeaklyLinked}.
  */
 @Retention(RetentionPolicy.CLASS)
 @Target({ElementType.TYPE, ElementType.METHOD})
-public @interface WeaklyLinked  {
+public @interface StronglyLinked  {
 }

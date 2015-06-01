@@ -167,7 +167,10 @@ public class ClazzInfo implements Serializable {
         if (n != null) {
             Clazz c = clazz.clazzes.load(n);
             if (c != null) {
-                return c.getClazzInfo();
+                ClazzInfo ci = c.getClazzInfo();
+                if (ci != null) {
+                    return ci;
+                }
             }
         }
         return new ClazzInfo(n);

@@ -93,6 +93,7 @@ import org.robovm.apple.dispatch.*;
         perform(aSelector, target, arg, order, list);
     }
     /*<methods>*/
+    @WeaklyLinked
     @Method(selector = "getCFRunLoop")
     public native CFRunLoop asCFRunLoop();
     @Method(selector = "addTimer:forMode:")

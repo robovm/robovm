@@ -23,13 +23,14 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
-import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.glkit.*;
 import org.robovm.apple.spritekit.*;
@@ -220,15 +221,18 @@ import org.robovm.apple.opengles.*;
     /**
      * @since Available in iOS 8.0 and later.
      */
+    @WeaklyLinked
     public GLKMatrix4 toGLKMatrix4() { return toGLKMatrix4(this); }
     /**
      * @since Available in iOS 8.0 and later.
      */
+    @WeaklyLinked
     @Bridge(symbol="SCNMatrix4ToGLKMatrix4", optional=true)
     private static native @ByVal GLKMatrix4 toGLKMatrix4(@ByVal SCNMatrix4 mat);
     /**
      * @since Available in iOS 8.0 and later.
      */
+    @WeaklyLinked
     @Bridge(symbol="SCNMatrix4FromGLKMatrix4", optional=true)
     public static native @ByVal SCNMatrix4 fromGLKMatrix4(@ByVal GLKMatrix4 mat);
     /*</methods>*/

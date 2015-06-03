@@ -23,13 +23,13 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.apple.coregraphics.*;
-import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.avfoundation.*;
@@ -61,8 +61,10 @@ import org.robovm.apple.scenekit.*;
     public native @ByVal CGSize getViewportSize();
     @Property(selector = "setViewportSize:")
     public native void setViewportSize(@ByVal CGSize v);
+    @WeaklyLinked
     @Property(selector = "scnScene")
     public native SCNScene getSceneKitScene();
+    @WeaklyLinked
     @Property(selector = "setScnScene:")
     public native void setSceneKitScene(SCNScene v);
     @Property(selector = "sceneTime")
@@ -77,8 +79,10 @@ import org.robovm.apple.scenekit.*;
     public native boolean loops();
     @Property(selector = "setLoops:")
     public native void setLoops(boolean v);
+    @WeaklyLinked
     @Property(selector = "pointOfView")
     public native SCNNode getPointOfView();
+    @WeaklyLinked
     @Property(selector = "setPointOfView:")
     public native void setPointOfView(SCNNode v);
     @Property(selector = "autoenablesDefaultLighting")
@@ -92,6 +96,7 @@ import org.robovm.apple.scenekit.*;
     protected native @Pointer long init(@ByVal CGSize viewportSize);
     @Method(selector = "initWithCoder:")
     protected native @Pointer long init(NSCoder aDecoder);
+    @WeaklyLinked
     @Method(selector = "hitTest:options:")
     public native NSArray<SCNHitTestResult> hitTest(@ByVal CGPoint thePoint, SCNHitTestOptions options);
     @Method(selector = "projectPoint:")

@@ -1,5 +1,5 @@
 package: org.robovm.apple.scenekit
-include: [foundation.yaml, uikit.yaml, coreanimation.yaml, coregraphics.yaml, dispatch.yaml, glkit.yaml, spritekit.yaml, opengles.yaml]
+include: [foundation.yaml, uikit.yaml, coregraphics.yaml, coreanimation.yaml, dispatch.yaml, glkit.yaml, spritekit.yaml, opengles.yaml]
 library: SceneKit
 framework: SceneKit
 clang_args: ['-x', 'objective-c']
@@ -109,6 +109,9 @@ classes:
                 name: fadeOpacityTo
             '+waitForDuration:.*':
                 name: wait
+            '+runBlock:queue':
+                name: run
+                annotations: ['@WeaklyLinked']
             '+runBlock.*':
                 name: run
             '+javaScriptActionWithScript:duration:':
@@ -735,8 +738,11 @@ protocols:
         properties:
             'context':
                 type: EAGLContext
+                annotations: ['@WeaklyLinked']
             'loops':
                 getter: loops
+            'overlaySKScene':
+                annotations: ['@WeaklyLinked']
         methods:
             '-hitTest:options:':
                 trim_after_first_colon: true
@@ -798,6 +804,10 @@ functions:
     SCNMatrix4Make(Rotation):
         class: SCNMatrix4
         name: 'create#{g[0]}'
+    SCNMatrix4((To|From)GLKMatrix4):
+        class: SCNMatrix4
+        name: '#{g[0]}'
+        annotations: ['@WeaklyLinked']
     SCNMatrix4(.*):
         class: SCNMatrix4
         name: '#{g[0]}'

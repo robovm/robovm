@@ -30,6 +30,9 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreservices.*;
+import org.robovm.apple.coremedia.*;
+import org.robovm.apple.uikit.*;
+import org.robovm.apple.coretext.*;
 /*</imports>*/
 import org.robovm.apple.foundation.NSObject.NSObjectPtr;
 

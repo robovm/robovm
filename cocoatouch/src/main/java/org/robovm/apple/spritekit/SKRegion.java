@@ -23,13 +23,13 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.apple.coregraphics.*;
-import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.avfoundation.*;
@@ -56,6 +56,7 @@ import org.robovm.apple.scenekit.*;
     public SKRegion(float radius) { super((SkipInit) null); initObject(init(radius)); }
     public SKRegion(@ByVal CGSize size) { super((SkipInit) null); initObject(init(size)); }
     public SKRegion(CGPath path) { super((SkipInit) null); initObject(init(path)); }
+    public SKRegion(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "path")
@@ -82,6 +83,8 @@ import org.robovm.apple.scenekit.*;
     @Method(selector = "infiniteRegion")
     public static native SKRegion createInfiniteRegion();
     @Method(selector = "encodeWithCoder:")
-    public native void encode(NSCoder aCoder);
+    public native void encode(NSCoder coder);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     /*</methods>*/
 }

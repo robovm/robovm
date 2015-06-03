@@ -23,13 +23,13 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.apple.coregraphics.*;
-import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.avfoundation.*;
@@ -42,7 +42,7 @@ import org.robovm.apple.scenekit.*;
  * @since Available in iOS 8.0 and later.
  */
 /*</javadoc>*/
-/*<annotations>*/@Library("SpriteKit") @NativeClass/*</annotations>*/
+/*<annotations>*/@Library("SpriteKit") @NativeClass @WeaklyLinked/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SKUniform/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*/implements NSCoding/*</implements>*/ {
@@ -62,6 +62,7 @@ import org.robovm.apple.scenekit.*;
     public SKUniform(String name, @ByVal GLKMatrix2 value) { super((SkipInit) null); initObject(init(name, value)); }
     public SKUniform(String name, @ByVal GLKMatrix3 value) { super((SkipInit) null); initObject(init(name, value)); }
     public SKUniform(String name, @ByVal GLKMatrix4 value) { super((SkipInit) null); initObject(init(name, value)); }
+    public SKUniform(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "name")
@@ -140,6 +141,8 @@ import org.robovm.apple.scenekit.*;
     @Method(selector = "uniformWithName:floatMatrix4:")
     public static native SKUniform create(String name, @ByVal GLKMatrix4 value);
     @Method(selector = "encodeWithCoder:")
-    public native void encode(NSCoder aCoder);
+    public native void encode(NSCoder coder);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     /*</methods>*/
 }

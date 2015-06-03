@@ -67,6 +67,7 @@ import org.robovm.apple.dispatch.*;
     public static native CBUUID create(String theString);
     @Method(selector = "UUIDWithData:")
     public static native CBUUID create(NSData theData);
+    @WeaklyLinked
     @Method(selector = "UUIDWithCFUUID:")
     public static native CBUUID create(CFUUID theUUID);
     /**

@@ -80,6 +80,7 @@ import org.robovm.apple.audiounit.*;
     /**
      * @since Available in iOS 8.0 and later.
      */
+    @WeaklyLinked
     @Method(selector = "copyFormatDescription")
     public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CMFormatDescription getFormatDescription();
     /*</methods>*/

@@ -42,9 +42,11 @@ classes:
                         type: CBCentralManagerOptions
             '-retrievePeripherals:':
                 trim_after_first_colon: true
+                annotations: ['@WeaklyLinked']
                 parameters:
                     peripheralUUIDs:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<CFUUID>'
+                        type: List<CFUUID>
+                        marshaler: NSArray.AsListMarshaler
             '-retrievePeripheralsWithIdentifiers:':
                 name: retrievePeripheralsWithId
                 return_type: NSArray<CBPeripheral>
@@ -104,7 +106,10 @@ classes:
         methods:
             '-initWithType:primary:':
                 name: init
-    CBPeer: {} # DONE
+    CBPeer: # DONE
+        properties:
+            'UUID':
+                annotations: ['@WeaklyLinked']
     CBPeripheral: # DONE
         properties:
             'isConnected':
@@ -187,6 +192,7 @@ classes:
                 name: create
             '+UUIDWithCFUUID:':
                 name: create
+                annotations: ['@WeaklyLinked']
             '+UUIDWithNSUUID:':
                 name: create
 

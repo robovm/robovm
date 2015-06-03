@@ -30,15 +30,14 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreservices.*;
+import org.robovm.apple.coremedia.*;
+import org.robovm.apple.uikit.*;
+import org.robovm.apple.coretext.*;
 /*</imports>*/
-import org.robovm.apple.coremedia.CMTextMarkupAttribute;
-import org.robovm.apple.coremedia.CMTextMarkupAttributes;
-import org.robovm.apple.uikit.NSAttributedStringAttribute;
-import org.robovm.apple.uikit.NSAttributedStringAttributes;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("CoreFoundation")/*</annotations>*/
+/*<annotations>*/@Library("CoreFoundation") @WeaklyLinked/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CFMutableAttributedString/*</name>*/ 
     extends /*<extends>*/CFAttributedString/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
@@ -56,6 +55,7 @@ import org.robovm.apple.uikit.NSAttributedStringAttributes;
     public static CFMutableAttributedString create(@MachineSizedSInt long maxLength) {
         return create(null, maxLength);
     }
+    @WeaklyLinked
     public void setAttributes(@ByVal CFRange range, NSAttributedStringAttributes replacement, boolean clearOtherAttributes) {
         if (replacement == null) {
             setAttributesDictionary(range, null, clearOtherAttributes);
@@ -63,6 +63,7 @@ import org.robovm.apple.uikit.NSAttributedStringAttributes;
             setAttributesDictionary(range, replacement.getDictionary().as(CFDictionary.class), clearOtherAttributes);
         }
     }
+    @WeaklyLinked
     public void setAttributes(@ByVal CFRange range, CMTextMarkupAttributes replacement, boolean clearOtherAttributes) {
         if (replacement == null) {
             setAttributesDictionary(range, null, clearOtherAttributes);
@@ -70,24 +71,28 @@ import org.robovm.apple.uikit.NSAttributedStringAttributes;
             setAttributesDictionary(range, replacement.getDictionary(), clearOtherAttributes);
         }
     }
+    @WeaklyLinked
     public void setAttribute(@ByVal CFRange range, NSAttributedStringAttribute attribute, CFType value) {
         if (attribute == null) {
             throw new NullPointerException("attribute");
         }
         setAttribute(range, attribute.value().as(CFString.class), value);
     }
+    @WeaklyLinked
     public void setAttribute(@ByVal CFRange range, CMTextMarkupAttribute attribute, CFType value) {
         if (attribute == null) {
             throw new NullPointerException("attribute");
         }
         setAttribute(range, attribute.value(), value);
     }
+    @WeaklyLinked
     public void removeAttribute(@ByVal CFRange range, NSAttributedStringAttribute attribute) {
         if (attribute == null) {
             throw new NullPointerException("attribute");
         }
         removeAttribute(range, attribute.value().as(CFString.class));
     }
+    @WeaklyLinked
     public void removeAttribute(@ByVal CFRange range, CMTextMarkupAttribute attribute) {
         if (attribute == null) {
             throw new NullPointerException("attribute");

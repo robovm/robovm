@@ -23,13 +23,13 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.apple.coregraphics.*;
-import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.avfoundation.*;
@@ -54,6 +54,7 @@ import org.robovm.apple.scenekit.*;
     public SKReachConstraints() {}
     protected SKReachConstraints(SkipInit skipInit) { super(skipInit); }
     public SKReachConstraints(@MachineSizedFloat double lowerAngleLimit, @MachineSizedFloat double upperAngleLimit) { super((SkipInit) null); initObject(init(lowerAngleLimit, upperAngleLimit)); }
+    public SKReachConstraints(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "lowerAngleLimit")
@@ -70,6 +71,8 @@ import org.robovm.apple.scenekit.*;
     @Method(selector = "initWithLowerAngleLimit:upperAngleLimit:")
     protected native @Pointer long init(@MachineSizedFloat double lowerAngleLimit, @MachineSizedFloat double upperAngleLimit);
     @Method(selector = "encodeWithCoder:")
-    public native void encode(NSCoder aCoder);
+    public native void encode(NSCoder coder);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     /*</methods>*/
 }

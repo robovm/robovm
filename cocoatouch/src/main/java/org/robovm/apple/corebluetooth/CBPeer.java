@@ -55,6 +55,7 @@ import org.robovm.apple.dispatch.*;
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
+    @WeaklyLinked
     @Property(selector = "UUID")
     public native CFUUID getUUID();
     /**

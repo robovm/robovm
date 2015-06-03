@@ -23,13 +23,13 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.apple.coregraphics.*;
-import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.avfoundation.*;
@@ -68,6 +68,7 @@ import org.robovm.apple.scenekit.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @WeaklyLinked
     @Method(selector = "initWithAVPlayer:")
     protected native @Pointer long init(AVPlayer player);
     @Method(selector = "initWithVideoFileNamed:")
@@ -80,6 +81,7 @@ import org.robovm.apple.scenekit.*;
     public native void play();
     @Method(selector = "pause")
     public native void pause();
+    @WeaklyLinked
     @Method(selector = "videoNodeWithAVPlayer:")
     public static native SKVideoNode create(AVPlayer player);
     @Method(selector = "videoNodeWithVideoFileNamed:")

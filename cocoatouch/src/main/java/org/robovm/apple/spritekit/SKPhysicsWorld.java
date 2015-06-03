@@ -23,13 +23,13 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.apple.coregraphics.*;
-import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.avfoundation.*;
@@ -51,6 +51,7 @@ import org.robovm.apple.scenekit.*;
     /*<constructors>*/
     public SKPhysicsWorld() {}
     protected SKPhysicsWorld(SkipInit skipInit) { super(skipInit); }
+    public SKPhysicsWorld(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "gravity")
@@ -92,6 +93,8 @@ import org.robovm.apple.scenekit.*;
     @Method(selector = "enumerateBodiesAlongRayStart:end:usingBlock:")
     public native void enumerateBodiesAlongRay(@ByVal CGPoint start, @ByVal CGPoint end, @Block VoidBlock4<SKPhysicsBody, CGPoint, CGVector, BooleanPtr> block);
     @Method(selector = "encodeWithCoder:")
-    public native void encode(NSCoder aCoder);
+    public native void encode(NSCoder coder);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     /*</methods>*/
 }

@@ -23,13 +23,13 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.apple.coregraphics.*;
-import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.avfoundation.*;
@@ -53,8 +53,10 @@ import org.robovm.apple.scenekit.*;
     protected SKEffectNode(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
+    @WeaklyLinked
     @Property(selector = "filter")
     public native CIFilter getFilter();
+    @WeaklyLinked
     @Property(selector = "setFilter:")
     public native void setFilter(CIFilter v);
     @Property(selector = "shouldCenterFilter")

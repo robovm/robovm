@@ -63,6 +63,7 @@ import org.robovm.apple.audiounit.*;
     public void setVideoSettings(AVVideoSettings videoSettings) {
         setVideoSettings0(videoSettings.getDictionary());
     }
+    @WeaklyLinked
     public AVPixelBufferAttributes getPixelBufferSettings() {
         return new AVPixelBufferAttributes(getVideoSettings0().as(CFDictionary.class));
     }
@@ -106,6 +107,7 @@ import org.robovm.apple.audiounit.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
+    @WeaklyLinked
     public AVPixelBufferAttributes getRecommendedPixelBufferSettings(String outputFileType) {
         return new AVPixelBufferAttributes(getRecommendedVideoSettings0(outputFileType).as(CFDictionary.class));
     }

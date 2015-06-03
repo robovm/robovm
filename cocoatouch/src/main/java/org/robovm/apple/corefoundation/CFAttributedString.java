@@ -30,13 +30,10 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreservices.*;
+import org.robovm.apple.coremedia.*;
+import org.robovm.apple.uikit.*;
+import org.robovm.apple.coretext.*;
 /*</imports>*/
-import org.robovm.apple.coremedia.CMTextMarkupAttribute;
-import org.robovm.apple.coremedia.CMTextMarkupAttributes;
-import org.robovm.apple.coretext.CTAttributedStringAttribute;
-import org.robovm.apple.coretext.CTAttributedStringAttributes;
-import org.robovm.apple.uikit.NSAttributedStringAttribute;
-import org.robovm.apple.uikit.NSAttributedStringAttributes;
 
 /*<javadoc>*/
 /*</javadoc>*/
@@ -53,63 +50,73 @@ import org.robovm.apple.uikit.NSAttributedStringAttributes;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    @WeaklyLinked
     public static CFAttributedString create(String str, NSAttributedStringAttributes attributes) {
         return create(null, str, attributes);
     }
+    @WeaklyLinked
     public static CFAttributedString create(CFAllocator alloc, String str, NSAttributedStringAttributes attributes) {
         if (attributes == null) {
             return create(alloc, str, (CFDictionary)null);
         }
         return create(alloc, str, attributes.getDictionary().as(CFDictionary.class));
     }
+    @WeaklyLinked
     public static CFAttributedString create(String str, CMTextMarkupAttributes attributes) {
         return create(null, str, attributes);
     }
+    @WeaklyLinked
     public static CFAttributedString create(CFAllocator alloc, String str, CMTextMarkupAttributes attributes) {
         if (attributes == null) {
             return create(alloc, str, (CFDictionary)null);
         }
         return create(alloc, str, attributes.getDictionary());
     }
+    @WeaklyLinked
     public static CFAttributedString create(String str, CTAttributedStringAttributes attributes) {
         return create(null, str, attributes);
     }
+    @WeaklyLinked
     public static CFAttributedString create(CFAllocator alloc, String str, CTAttributedStringAttributes attributes) {
         if (attributes == null) {
             return create(alloc, str, (CFDictionary)null);
         }
         return create(alloc, str, attributes.getDictionary());
     }
-
+    @WeaklyLinked
     public CFType getAttribute(long loc, NSAttributedStringAttribute attrName, CFRange effectiveRange) {
         if (attrName == null) {
             throw new NullPointerException("attrName");
         }
         return getAttribute(loc, attrName.value().as(CFString.class), effectiveRange);
     }
+    @WeaklyLinked
     public CFType getAttribute(long loc, CMTextMarkupAttribute attrName, CFRange effectiveRange) {
         if (attrName == null) {
             throw new NullPointerException("attrName");
         }
         return getAttribute(loc, attrName.value(), effectiveRange);
     }
+    @WeaklyLinked
     public CFType getAttribute(long loc, CTAttributedStringAttribute attrName, CFRange effectiveRange) {
         if (attrName == null) {
             throw new NullPointerException("attrName");
         }
         return getAttribute(loc, attrName.value(), effectiveRange);
     }
-    
+    @WeaklyLinked
     public NSAttributedStringAttributes getAttributes(long loc, CFRange effectiveRange) {
         CFDictionary dict = getAttributesDictionary(loc, effectiveRange);
         if (dict == null) return null;
         return new NSAttributedStringAttributes(dict.as(NSDictionary.class));
     }
+    @WeaklyLinked
     public CMTextMarkupAttributes getTextMarkupAttributes(long loc, CFRange effectiveRange) {
         CFDictionary dict = getAttributesDictionary(loc, effectiveRange);
         if (dict == null) return null;
         return new CMTextMarkupAttributes(dict);
     }
+    @WeaklyLinked
     public CTAttributedStringAttributes getCoreTextAttributes(long loc, CFRange effectiveRange) {
         CFDictionary dict = getAttributesDictionary(loc, effectiveRange);
         if (dict == null) return null;

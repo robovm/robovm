@@ -76,8 +76,10 @@ import org.robovm.apple.uikit.*;
     public native void drawImage(CIImage im, @ByVal CGPoint p, @ByVal CGRect src);
     @Method(selector = "drawImage:inRect:fromRect:")
     public native void drawImage(CIImage im, @ByVal CGRect dest, @ByVal CGRect src);
+    @WeaklyLinked
     @Method(selector = "createCGImage:fromRect:")
     public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage createCGImage(CIImage im, @ByVal CGRect r);
+    @WeaklyLinked
     @Method(selector = "createCGImage:fromRect:format:colorSpace:")
     public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage createCGImage(CIImage im, @ByVal CGRect r, int f, CGColorSpace cs);
     @WeaklyLinked

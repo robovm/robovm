@@ -243,6 +243,7 @@ classes:
                 name: getCGImageAtTime
                 throws: NSErrorException
                 return_marshaler: CFType.NoRetainMarshaler
+                annotations: ['@WeaklyLinked']
             '-generateCGImagesAsynchronouslyForTimes:completionHandler:':
                 name: generateCGImagesAsynchronously
                 parameters:
@@ -298,6 +299,7 @@ classes:
             '-copyNextSampleBuffer':
                 name: getNextSampleBuffer
                 return_marshaler: CFType.NoRetainMarshaler
+                annotations: ['@WeaklyLinked']
             '-resetForReadingTimeRanges:':
                 trim_after_first_colon: true
                 parameters:
@@ -1959,6 +1961,7 @@ classes:
             '-copyFormatDescription':
                 name: getFormatDescription
                 return_marshaler: CFType.NoRetainMarshaler
+                annotations: ['@WeaklyLinked']
     AVURLAsset: # DONE
         methods:
             '-initWithURL:options:':

@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -55,14 +56,19 @@ import org.robovm.apple.corelocation.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @WeaklyLinked
     @Method(selector = "setVisibleMapRect:")
     public native void setVisibleMapRect(@ByVal MKMapRect mapRect);
+    @WeaklyLinked
     @Method(selector = "setRegion:")
     public native void setRegion(@ByVal MKCoordinateRegion coordinateRegion);
+    @WeaklyLinked
     @Method(selector = "addAnnotation:withImage:centerOffset:")
     public native void addAnnotation(@ByVal CLLocationCoordinate2D location, UIImage image, @ByVal CGPoint offset);
+    @WeaklyLinked
     @Method(selector = "addAnnotation:withImageNamed:centerOffset:")
     public native void addAnnotation(@ByVal CLLocationCoordinate2D location, String name, @ByVal CGPoint offset);
+    @WeaklyLinked
     @Method(selector = "addAnnotation:withPinColor:")
     public native void addAnnotation(@ByVal CLLocationCoordinate2D location, WKInterfaceMapPinColor pinColor);
     @Method(selector = "removeAllAnnotations")

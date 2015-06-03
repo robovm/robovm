@@ -1,5 +1,5 @@
 package: org.robovm.apple.coretext
-include: [foundation.yaml, corefoundation.yaml, coregraphics.yaml]
+include: [foundation.yaml, corefoundation.yaml, coregraphics.yaml, coremedia.yaml, uikit.yaml]
 library: CoreText
 framework: CoreText
 clang_args: ['-x', 'objective-c']

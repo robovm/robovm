@@ -83,6 +83,7 @@ import org.robovm.apple.audiounit.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @WeaklyLinked
     @Method(selector = "copyNextSampleBuffer")
     public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CMSampleBuffer getNextSampleBuffer();
     /**

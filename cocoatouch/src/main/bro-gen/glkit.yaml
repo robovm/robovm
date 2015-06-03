@@ -31,6 +31,7 @@ classes:
     _GLKMatrixStack:
         name: GLKMatrixStack
         extends: CFType
+        annotations: ['@WeaklyLinked']
 
     # Structs
     GLKMatrix2: {}

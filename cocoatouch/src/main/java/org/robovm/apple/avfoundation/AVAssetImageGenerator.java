@@ -110,12 +110,14 @@ import org.robovm.apple.audiounit.*;
     /*<methods>*/
     @Method(selector = "initWithAsset:")
     protected native @Pointer long init(AVAsset asset);
+    @WeaklyLinked
     public CGImage getCGImageAtTime(@ByVal CMTime requestedTime, CMTime actualTime) throws NSErrorException {
        NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
        CGImage result = getCGImageAtTime(requestedTime, actualTime, ptr);
        if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
        return result;
     }
+    @WeaklyLinked
     @Method(selector = "copyCGImageAtTime:actualTime:error:")
     private native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage getCGImageAtTime(@ByVal CMTime requestedTime, CMTime actualTime, NSError.NSErrorPtr outError);
     @Method(selector = "generateCGImagesAsynchronouslyForTimes:completionHandler:")

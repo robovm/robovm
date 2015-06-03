@@ -23,15 +23,16 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.coremedia.*;
+import org.robovm.apple.uikit.*;
 /*</imports>*/
-import org.robovm.apple.uikit.NSAttributedStringAttributes;
-import org.robovm.apple.coremedia.CMTextMarkupAttributes;
 
 /*<javadoc>*/
 /*</javadoc>*/
@@ -72,11 +73,13 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    @WeaklyLinked
     public NSAttributedStringAttributes getAttributes() {
         NSDictionary<NSString, NSObject> dict = getAttributesDictionary();
         if (dict == null) return null;
         return new NSAttributedStringAttributes(dict);
     }
+    @WeaklyLinked
     public CMTextMarkupAttributes getTextMarkupAttributes() {
         NSDictionary<NSString, NSObject> dict = getAttributesDictionary();
         if (dict == null) return null;

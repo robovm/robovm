@@ -63,6 +63,7 @@ import org.robovm.apple.audiounit.*;
     public void setVideoOutputSettings(AVVideoSettings outputSettings) {
         setOutputSettings0(outputSettings.getDictionary());
     }
+    @WeaklyLinked
     public AVPixelBufferAttributes getPixelBufferOutputSettings() {
         return new AVPixelBufferAttributes(getOutputSettings0().as(CFDictionary.class));
     }

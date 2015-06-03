@@ -74,6 +74,7 @@ classes:
                 omit_prefix: true
                 visibility: protected
     WKWebView: # DONE
+        annotations: ['@WeaklyLinked']
         properties:
             'hasOnlySecureContent':
                 omit_prefix: true

@@ -1,5 +1,5 @@
 package: org.robovm.apple.mapkit
-include: [foundation.yaml, corefoundation.yaml, coregraphics.yaml, corelocation.yaml, uikit.yaml, dispatch.yaml]
+include: [foundation.yaml, coregraphics.yaml, corelocation.yaml, uikit.yaml, dispatch.yaml]
 library: MapKit
 framework: MapKit
 clang_args: ['-x', 'objective-c']

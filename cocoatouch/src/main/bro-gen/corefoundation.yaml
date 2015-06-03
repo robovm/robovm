@@ -1,5 +1,5 @@
 package: org.robovm.apple.corefoundation
-include: [foundation.yaml, dispatch.yaml, coreservices.yaml]
+include: [foundation.yaml, dispatch.yaml, coreservices.yaml, coremedia.yaml, uikit.yaml, coretext.yaml]
 library: CoreFoundation
 framework: CoreFoundation
 clang_args: ['-x', 'objective-c']
@@ -132,6 +132,7 @@ classes:
     __CFAttributedString:
         name: CFAttributedString
         extends: CFType
+        annotations: ['@WeaklyLinked']
     __CFBag:
         name: CFBag
         extends: CFType
@@ -189,6 +190,7 @@ classes:
     CFMutableAttributedString:
         name: CFMutableAttributedString
         extends: CFAttributedString
+        annotations: ['@WeaklyLinked']
     CFMutableBag:
         name: CFMutableBag
         extends: CFBag

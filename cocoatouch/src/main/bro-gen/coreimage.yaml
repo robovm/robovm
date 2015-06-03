@@ -51,9 +51,11 @@ classes:
             '-createCGImage.*':
                 name: createCGImage
                 return_marshaler: CFType.NoRetainMarshaler
+                annotations: ['@WeaklyLinked']
             '-createCGLayer.*':
                 name: createCGLayer
                 return_marshaler: CFType.NoRetainMarshaler
+                annotations: ['@WeaklyLinked']
     CIDetector: # DONE
         methods:
             '+detectorOfType:context:options:':

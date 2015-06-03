@@ -37,9 +37,6 @@ import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
-import org.robovm.rt.annotation.WeaklyLinked;
-import org.robovm.apple.coretext.CTAttributedStringAttribute;
-import org.robovm.apple.coretext.CTAttributedStringAttributes;
 
 /*<javadoc>*/
 /**
@@ -98,72 +95,83 @@ import org.robovm.apple.coretext.CTAttributedStringAttributes;
         }
         return equalsTo((NSAttributedString) obj);
     }
-    
+    @WeaklyLinked
     public NSObject getAttribute(String name, @MachineSizedUInt long location, NSRange range) {
         if (name == null) {
             throw new NullPointerException("name");
         }
         return getAttribute(new NSString(name), location, range);
     }
+    @WeaklyLinked
     public NSObject getAttribute(NSAttributedStringAttribute attribute, @MachineSizedUInt long location, NSRange range) {
         if (attribute == null) {
             throw new NullPointerException("attribute");
         }
         return getAttribute(attribute.value(), location, range);
     }
+    @WeaklyLinked
     public NSObject getAttribute(CMTextMarkupAttribute attribute, @MachineSizedUInt long location, NSRange range) {
         if (attribute == null) {
             throw new NullPointerException("attribute");
         }
         return getAttribute(attribute.value().as(NSString.class), location, range);
     }
+    @WeaklyLinked
     public NSObject getAttribute(CTAttributedStringAttribute attribute, @MachineSizedUInt long location, NSRange range) {
         if (attribute == null) {
             throw new NullPointerException("attribute");
         }
         return getAttribute(attribute.value().as(NSString.class), location, range);
     }
-    
+    @WeaklyLinked
     public NSObject getAttribute(String name, @MachineSizedUInt long location, NSRange range, @ByVal NSRange rangeLimit) {
         if (name == null) {
             throw new NullPointerException("name");
         }
         return getAttribute(new NSString(name), location, range, rangeLimit);
     }
+    @WeaklyLinked
     public NSObject getAttribute(NSAttributedStringAttribute attribute, @MachineSizedUInt long location, NSRange range, @ByVal NSRange rangeLimit) {
         if (attribute == null) {
             throw new NullPointerException("attribute");
         }
         return getAttribute(attribute.value(), location, range, rangeLimit);
     }
+    @WeaklyLinked
     public NSObject getAttribute(CMTextMarkupAttribute attribute, @MachineSizedUInt long location, NSRange range, @ByVal NSRange rangeLimit) {
         if (attribute == null) {
             throw new NullPointerException("attribute");
         }
         return getAttribute(attribute.value().as(NSString.class), location, range, rangeLimit);
     }
+    @WeaklyLinked
     public NSObject getAttribute(CTAttributedStringAttribute attribute, @MachineSizedUInt long location, NSRange range, @ByVal NSRange rangeLimit) {
         if (attribute == null) {
             throw new NullPointerException("attribute");
         }
         return getAttribute(attribute.value().as(NSString.class), location, range, rangeLimit);
     }
-
+    @WeaklyLinked
     public NSAttributedStringAttributes getAttributes(long location, NSRange range) {
         return new NSAttributedStringAttributes(getAttributesDictionary(location, range));
     }
+    @WeaklyLinked
     public NSAttributedStringAttributes getAttributes(long location, NSRange range, NSRange rangeLimit) {
         return new NSAttributedStringAttributes(getAttributesDictionary(location, range, rangeLimit));
     }
+    @WeaklyLinked
     public CMTextMarkupAttributes getTextMarkupAttributes(long location, NSRange range) {
         return new CMTextMarkupAttributes(getAttributesDictionary(location, range).as(CFDictionary.class));
     }
+    @WeaklyLinked
     public CMTextMarkupAttributes getTextMarkupAttributes(long location, NSRange range, NSRange rangeLimit) {
         return new CMTextMarkupAttributes(getAttributesDictionary(location, range, rangeLimit).as(CFDictionary.class));
     }
+    @WeaklyLinked
     public CTAttributedStringAttributes getCoreTextAttributes(long location, NSRange range) {
         return new CTAttributedStringAttributes(getAttributesDictionary(location, range).as(CFDictionary.class));
     }
+    @WeaklyLinked
     public CTAttributedStringAttributes getCoreTextAttributes(long location, NSRange range, NSRange rangeLimit) {
         return new CTAttributedStringAttributes(getAttributesDictionary(location, range, rangeLimit).as(CFDictionary.class));
     }
@@ -171,6 +179,7 @@ import org.robovm.apple.coretext.CTAttributedStringAttributes;
     /**
      * @since Available in iOS 4.0 and later.
      */
+    @WeaklyLinked
     public void enumerateAttribute(String name, @ByVal NSRange enumerationRange, NSAttributedStringEnumerationOptions opts, final VoidBlock3<NSObject, NSRange, BooleanPtr> block) {
         if (name == null) {
             throw new NullPointerException("name");
@@ -180,6 +189,7 @@ import org.robovm.apple.coretext.CTAttributedStringAttributes;
     /**
      * @since Available in iOS 4.0 and later.
      */
+    @WeaklyLinked
     public void enumerateAttribute(NSAttributedStringAttribute attribute, @ByVal NSRange enumerationRange, NSAttributedStringEnumerationOptions opts, final VoidBlock3<NSObject, NSRange, BooleanPtr> block) {
         if (attribute == null) {
             throw new NullPointerException("attribute");
@@ -189,6 +199,7 @@ import org.robovm.apple.coretext.CTAttributedStringAttributes;
     /**
      * @since Available in iOS 4.0 and later.
      */
+    @WeaklyLinked
     public void enumerateAttribute(CMTextMarkupAttribute attribute, @ByVal NSRange enumerationRange, NSAttributedStringEnumerationOptions opts, final VoidBlock3<NSObject, NSRange, BooleanPtr> block) {
         if (attribute == null) {
             throw new NullPointerException("attribute");
@@ -198,6 +209,7 @@ import org.robovm.apple.coretext.CTAttributedStringAttributes;
     /**
      * @since Available in iOS 4.0 and later.
      */
+    @WeaklyLinked
     public void enumerateAttribute(CTAttributedStringAttribute attribute, @ByVal NSRange enumerationRange, NSAttributedStringEnumerationOptions opts, final VoidBlock3<NSObject, NSRange, BooleanPtr> block) {
         if (attribute == null) {
             throw new NullPointerException("attribute");

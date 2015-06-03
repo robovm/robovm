@@ -2827,6 +2827,7 @@ classes:
                 visibility: private
             '-getCFRunLoop':
                 name: asCFRunLoop
+                annotations: ['@WeaklyLinked']
             '-addTimer:forMode:':
                 name: addTimer0
                 visibility: private

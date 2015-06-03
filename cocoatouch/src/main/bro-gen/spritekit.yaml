@@ -1,5 +1,5 @@
 package: org.robovm.apple.spritekit
-include: [foundation.yaml, uikit.yaml, coregraphics.yaml, coreanimation.yaml, dispatch.yaml, coreimage.yaml, avfoundation.yaml, glkit.yaml, scenekit.yaml]
+include: [foundation.yaml, uikit.yaml, coregraphics.yaml, dispatch.yaml, coreimage.yaml, avfoundation.yaml, glkit.yaml, scenekit.yaml]
 library: SpriteKit
 framework: SpriteKit
 clang_args: ['-x', 'objective-c']
@@ -40,12 +40,16 @@ classes:
                 getter: loops
             'scnScene':
                 name: sceneKitScene
+                annotations: ['@WeaklyLinked']
+            'pointOfView':
+                annotations: ['@WeaklyLinked']
         methods:
             '-init.*':
                 name: init
             '-hitTest:options:':
                 trim_after_first_colon: true
                 return_type: NSArray<SCNHitTestResult>
+                annotations: ['@WeaklyLinked']
                 parameters:
                     options:
                         type: SCNHitTestOptions
@@ -148,9 +152,10 @@ classes:
             '+performSelector:onTarget:':
                 exclude: true
             '+runBlock:':
-                trim_after_first_colon: true
+                name: run
             '+runBlock:queue:':
-                trim_after_first_colon: true
+                name: run
+                annotations: ['@WeaklyLinked']
                 parameters:
                     queue:
                         type: DispatchQueue
@@ -181,7 +186,10 @@ classes:
             '+orientToPoint:inNode:offset:':
                 name: orientToPointInNode
     SKCropNode: {} # DONE
-    SKEffectNode: {} # DONE
+    SKEffectNode: # DONE
+        properties:
+            'filter':
+                annotations: ['@WeaklyLinked']
     SKEmitterNode: # DONE
         methods:
             '-advanceSimulationTime:':
@@ -507,6 +515,7 @@ classes:
         methods:
             '-textureByApplyingCIFilter:':
                 name: newTextureByApplyingCIFilter
+                annotations: ['@WeaklyLinked']
             '-textureByGeneratingNormalMap.*':
                 name: newTextureByGeneratingNormalMap
             '-textureRect':
@@ -574,7 +583,9 @@ classes:
                 name: doorway
             '+transitionWithCIFilter:duration:':
                 name: create
+                annotations: ['@WeaklyLinked']
     SKUniform: # DONE
+        annotations: ['@WeaklyLinked']
         methods:
             '-initWithName:.*':
                 name: init
@@ -582,8 +593,14 @@ classes:
                 name: create
     SKVideoNode: # DONE
         methods:
+            '-initWithAVPlayer:':
+                name: init
+                annotations: ['@WeaklyLinked']
             '-initWith.*':
                 name: init
+            '+videoNodeWithAVPlayer:':
+                name: create
+                annotations: ['@WeaklyLinked']
             '+videoNodeWith.*':
                 name: create    
     SKView: # DONE

@@ -21,6 +21,7 @@ import static org.robovm.rt.bro.MarshalerFlags.*;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -392,6 +393,9 @@ import org.robovm.apple.dispatch.*;
     public void didChangeValues(String key, NSKeyValueChange changeKind, NSIndexSet indexes) {
         didChangeValues(changeKind, indexes, key);
     }
+    
+    @Method(selector = "awakeFromNib")
+    public native void awakeFromNib();
     /*<methods>*/
     @Method(selector = "copy")
     public native NSObject copy();

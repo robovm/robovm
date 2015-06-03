@@ -78,8 +78,7 @@ public class AppCompiler {
      * linked in.
      */
     private static final String[] ROOT_CLASS_PATTERNS = {
-        "java.lang.**.*",
-        "org.robovm.rt.**.*"
+        "java.lang.**.*"
     };
     /**
      * Names of root classes. These classes will always be linked in. Most of
@@ -87,6 +86,7 @@ public class AppCompiler {
      * code.
      */
     private static final String[] ROOT_CLASSES = {
+        "org/robovm/rt/bro/Struct",
         "java/io/FileDescriptor",
         "java/io/PrintWriter",
         "java/io/Serializable",

@@ -23,16 +23,14 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
-import org.robovm.apple.coregraphics.*;
-import org.robovm.apple.opengles.*;
 import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
-import org.robovm.apple.coremedia.*;
 import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
@@ -73,6 +71,7 @@ import org.robovm.apple.coremidi.*;
      * @throws OSStatusException 
      * @since Available in iOS 5.0 and later.
      */
+    @WeaklyLinked
     public void setDestMIDIEndpoint(MIDIEndpoint endpoint) throws OSStatusException {
         OSStatus status = setDestMIDIEndpoint0(endpoint);
         OSStatusException.throwIfNecessary(status);
@@ -91,6 +90,7 @@ import org.robovm.apple.coremidi.*;
      * @throws OSStatusException 
      * @since Available in iOS 5.0 and later.
      */
+    @WeaklyLinked
     public MIDIEndpoint getDestMIDIEndpoint() throws OSStatusException {
         MIDIEndpoint.MIDIEndpointPtr ptr = new MIDIEndpoint.MIDIEndpointPtr();
         OSStatus status = getDestMIDIEndpoint0(ptr);
@@ -270,6 +270,7 @@ import org.robovm.apple.coremidi.*;
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @WeaklyLinked
     @Bridge(symbol="MusicTrackSetDestMIDIEndpoint", optional=true)
     protected native OSStatus setDestMIDIEndpoint0(MIDIEndpoint inEndpoint);
     /**
@@ -280,6 +281,7 @@ import org.robovm.apple.coremidi.*;
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @WeaklyLinked
     @Bridge(symbol="MusicTrackGetDestMIDIEndpoint", optional=true)
     protected native OSStatus getDestMIDIEndpoint0(MIDIEndpoint.MIDIEndpointPtr outEndpoint);
     /**

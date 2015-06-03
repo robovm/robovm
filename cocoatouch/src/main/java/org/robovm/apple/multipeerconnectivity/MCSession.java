@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -57,6 +58,7 @@ import org.robovm.apple.security.*;
     public native void setDelegate(MCSessionDelegate v);
     @Property(selector = "myPeerID")
     public native MCPeerID getMyPeerID();
+    @WeaklyLinked
     @Property(selector = "securityIdentity")
     public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<SecIdentity> getSecurityIdentity();
     @Property(selector = "encryptionPreference")
@@ -79,6 +81,7 @@ import org.robovm.apple.security.*;
     
     @Method(selector = "initWithPeer:")
     protected native @Pointer long init(MCPeerID myPeerID);
+    @WeaklyLinked
     @Method(selector = "initWithPeer:securityIdentity:encryptionPreference:")
     protected native @Pointer long init(MCPeerID myPeerID, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<SecIdentity> identity, MCEncryptionPreference encryptionPreference);
     public boolean sendData(NSData data, NSArray<MCPeerID> peerIDs, MCSessionSendDataMode mode) throws NSErrorException {

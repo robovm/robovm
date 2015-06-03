@@ -160,6 +160,7 @@ classes:
                         type: '@Block VoidBlock2<MKMapSnapshot, NSError>'
             '-startWithQueue:completionHandler:':
                 name: start
+                annotations: ['@WeaklyLinked']
                 parameters:
                     completionHandler:
                         type: '@Block VoidBlock2<MKMapSnapshot, NSError>'            

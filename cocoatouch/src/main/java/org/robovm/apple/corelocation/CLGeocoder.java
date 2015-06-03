@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -56,6 +57,7 @@ import org.robovm.apple.corebluetooth.*;
     /*<methods>*/
     @Method(selector = "reverseGeocodeLocation:completionHandler:")
     public native void reverseGeocodeLocation(CLLocation location, @Block VoidBlock2<NSArray<CLPlacemark>, NSError> completionHandler);
+    @WeaklyLinked
     @Method(selector = "geocodeAddressDictionary:completionHandler:")
     public native void geocodeAddress(ABPersonAddress addressDictionary, @Block VoidBlock2<NSArray<CLPlacemark>, NSError> completionHandler);
     @Method(selector = "geocodeAddressString:completionHandler:")

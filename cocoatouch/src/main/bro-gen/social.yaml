@@ -1,5 +1,5 @@
 package: org.robovm.apple.social
-include: [foundation.yaml, uikit.yaml, accounts.yaml, coregraphics.yaml]
+include: [foundation.yaml, uikit.yaml, coregraphics.yaml, accounts.yaml]
 library: Social
 framework: Social
 clang_args: ['-x', 'objective-c']
@@ -13,9 +13,6 @@ enums:
     SLRequestMethod: {}
 
 classes: 
-    Social:
-        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
-
     SLComposeServiceViewController: # DONE
         methods:
             '-configurationItems':
@@ -54,6 +51,8 @@ classes:
         properties:
             'parameters':
                 type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
+            'account':
+                annotations: ['@WeaklyLinked']
         methods:
             '-addMultipartData:withName:type:filename:':
                 trim_after_first_colon: true

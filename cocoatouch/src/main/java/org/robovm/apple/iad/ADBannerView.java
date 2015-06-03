@@ -23,12 +23,12 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
-import org.robovm.apple.addressbook.*;
 import org.robovm.apple.mediaplayer.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.avkit.*;
@@ -119,6 +119,7 @@ import org.robovm.apple.avkit.*;
      * @deprecated Deprecated in iOS 6.0.
      */
     @Deprecated
+    @WeaklyLinked
     @Method(selector = "sizeFromBannerContentSizeIdentifier:")
     protected static native @ByVal CGSize getSizeForIdentifier(NSString contentSizeIdentifier);
     /*</methods>*/

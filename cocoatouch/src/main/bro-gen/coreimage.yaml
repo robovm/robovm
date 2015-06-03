@@ -1,5 +1,5 @@
 package: org.robovm.apple.coreimage
-include: [coregraphics.yaml, foundation.yaml, corefoundation.yaml, opengles.yaml, corevideo.yaml, imageio.yaml]
+include: [foundation.yaml, corefoundation.yaml, coregraphics.yaml, opengles.yaml, corevideo.yaml, imageio.yaml, uikit.yaml]
 library: CoreImage
 framework: CoreImage
 clang_args: ['-x', 'objective-c']
@@ -36,6 +36,7 @@ classes:
                 name: init
                 visibility: protected
                 return_type: '@Pointer long'
+                annotations: ['@WeaklyLinked']
                 parameters:
                     dict:
                         name: options
@@ -46,6 +47,7 @@ classes:
                 name: drawImage
             '-render.*':
                 name: render
+                annotations: ['@WeaklyLinked']
             '-createCGImage.*':
                 name: createCGImage
                 return_marshaler: CFType.NoRetainMarshaler
@@ -108,6 +110,9 @@ classes:
                 return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
     CIImage: # DONE
         methods:
+            '-initWithCVPixelBuffer:.*':
+                name: init
+                annotations: ['@WeaklyLinked']
             '-init.*':
                 name: init
                 parameters:
@@ -135,6 +140,7 @@ classes:
                 name: getRegionOfInterest
             '-imageTransformForOrientation:':
                 name: getImageTransformForOrientation
+                annotations: ['@WeaklyLinked']
                 parameters:
                     orientation:
                         type: CGImagePropertyOrientation
@@ -145,6 +151,7 @@ classes:
                         type: CIFilterInputParameters
             '-imageByApplyingOrientation:':
                 name: newImageByApplyingOrientation
+                annotations: ['@WeaklyLinked'] 
                 parameters:
                     orientation:
                         type: CGImagePropertyOrientation

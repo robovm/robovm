@@ -1,5 +1,5 @@
 package: org.robovm.apple.storekit
-include: [foundation.yaml, uikit.yaml, accounts.yaml]
+include: [foundation.yaml, uikit.yaml]
 library: StoreKit
 framework: StoreKit
 clang_args: ['-x', 'objective-c']

@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -96,6 +97,7 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
     /**
      * @since Available in iOS 7.0 and later.
      */
+    @WeaklyLinked
     public CMTextMarkupAttributes getDefaultTextMarkupAttributes() {
         NSDictionary<NSString, NSObject> dict = getDefaultTextAttributesDictionary();
         if (dict == null) return null;
@@ -104,6 +106,7 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
     /**
      * @since Available in iOS 7.0 and later.
      */
+    @WeaklyLinked
     public CTAttributedStringAttributes getDefaultCoreTextAttributes() {
         NSDictionary<NSString, NSObject> dict = getDefaultTextAttributesDictionary();
         if (dict == null) return null;
@@ -122,6 +125,7 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
     /**
      * @since Available in iOS 7.0 and later.
      */
+    @WeaklyLinked
     public void setDefaultTextMarkupAttributes(CMTextMarkupAttributes v) {
         if (v == null) {
             setDefaultTextAttributesDictionary(null);
@@ -132,6 +136,7 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
     /**
      * @since Available in iOS 7.0 and later.
      */
+    @WeaklyLinked
     public void setDefaultCoreTextAttributes(CTAttributedStringAttributes v) {
         if (v == null) {
             setDefaultTextAttributesDictionary(null);
@@ -150,6 +155,7 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
     /**
      * @since Available in iOS 6.0 and later.
      */
+    @WeaklyLinked
     public CMTextMarkupAttributes getTypingTextMarkupAttributes() {
         NSDictionary<NSString, NSObject> dict = getTypingAttributesDictionary();
         if (dict == null) return null;
@@ -158,6 +164,7 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
     /**
      * @since Available in iOS 6.0 and later.
      */
+    @WeaklyLinked
     public CTAttributedStringAttributes getTypingCoreTextAttributes() {
         NSDictionary<NSString, NSObject> dict = getTypingAttributesDictionary();
         if (dict == null) return null;
@@ -176,6 +183,7 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
     /**
      * @since Available in iOS 6.0 and later.
      */
+    @WeaklyLinked
     public void setTypingTextMarkupAttributes(CMTextMarkupAttributes v) {
         if (v == null) {
             setTypingAttributesDictionary(null);
@@ -186,6 +194,7 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
     /**
      * @since Available in iOS 6.0 and later.
      */
+    @WeaklyLinked
     public void setTypingCoreTextAttributes(CTAttributedStringAttributes v) {
         if (v == null) {
             setTypingAttributesDictionary(null);

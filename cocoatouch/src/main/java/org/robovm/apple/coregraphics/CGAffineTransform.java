@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -69,6 +70,7 @@ import org.robovm.apple.uikit.*;
     @StructMember(5) public native CGAffineTransform setTy(@MachineSizedFloat double ty);
     /*</members>*/
     
+    @WeaklyLinked
     public static CGAffineTransform fromString(String string) {
         return UIGeometry.stringToCGAffineTransform(string);
     }
@@ -78,6 +80,7 @@ import org.robovm.apple.uikit.*;
         return obj instanceof CGAffineTransform && equalsTo(this, (CGAffineTransform) obj);
     }
     
+    @WeaklyLinked
     @Override
     public String toString() {
         return UIGeometry.toString(this);

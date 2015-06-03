@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -71,20 +72,25 @@ import org.robovm.apple.imageio.*;
     /*<methods>*/
     @Method(selector = "UTI")
     public native String getUTI();
+    @WeaklyLinked
     @Method(selector = "dimensions")
     public native @ByVal CGSize getDimensions();
     @Method(selector = "size")
     public native long getSize();
     @Method(selector = "getBytes:fromOffset:length:error:")
     protected native @MachineSizedUInt long getBytes(@Pointer long buffer, long offset, @MachineSizedUInt long length, NSError.NSErrorPtr error);
+    @WeaklyLinked
     @Method(selector = "fullResolutionImage")
     public native CGImage getFullResolutionImage();
+    @WeaklyLinked
     @Method(selector = "CGImageWithOptions:")
     public native CGImage getCGImage(CGImageSourceOptions options);
+    @WeaklyLinked
     @Method(selector = "fullScreenImage")
     public native CGImage getFullScreenImage();
     @Method(selector = "url")
     public native NSURL getUrl();
+    @WeaklyLinked
     @Method(selector = "metadata")
     public native CGImageProperties getMetadata();
     @Method(selector = "orientation")

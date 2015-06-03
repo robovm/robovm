@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -70,6 +71,7 @@ import org.robovm.apple.imageio.*;
         }
         return null;
     }
+    @WeaklyLinked
     public org.robovm.apple.corelocation.CLLocation getLocation() {
         org.robovm.apple.corelocation.CLLocation val = getPropertyValue(ALAssetProperty.Location, org.robovm.apple.corelocation.CLLocation.class);
         if (val != null) {
@@ -84,6 +86,7 @@ import org.robovm.apple.imageio.*;
         }
         return 0;
     }
+    @WeaklyLinked
     public CGImagePropertyOrientation getOrientation() {
         NSNumber val = getPropertyValue(ALAssetProperty.Orientation, NSNumber.class);
         if (val != null) {
@@ -144,16 +147,19 @@ import org.robovm.apple.imageio.*;
     public native ALAssetRepresentation getDefaultRepresentation();
     @Method(selector = "representationForUTI:")
     public native ALAssetRepresentation getRepresentation(String representationUTI);
+    @WeaklyLinked
     @Method(selector = "thumbnail")
     public native CGImage getThumbnail();
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @WeaklyLinked
     @Method(selector = "aspectRatioThumbnail")
     public native CGImage getAspectRatioThumbnail();
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @WeaklyLinked
     @Method(selector = "writeModifiedImageDataToSavedPhotosAlbum:metadata:completionBlock:")
     public native void writeModifiedImageData(NSData imageData, CGImageProperties metadata, @Block VoidBlock2<NSURL, NSError> completionBlock);
     /**
@@ -164,6 +170,7 @@ import org.robovm.apple.imageio.*;
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @WeaklyLinked
     @Method(selector = "setImageData:metadata:completionBlock:")
     public native void setImageData(NSData imageData, CGImageProperties metadata, @Block VoidBlock2<NSURL, NSError> completionBlock);
     /**

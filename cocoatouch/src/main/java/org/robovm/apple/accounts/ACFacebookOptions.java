@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -32,23 +33,85 @@ import org.robovm.apple.foundation.*;
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("Accounts")/*</annotations>*/
+@Marshaler(/*<name>*/ACFacebookOptions/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/ACFacebookOptions/*</name>*/ 
-    extends /*<extends>*/ACAccountOptions/*</extends>*/ 
+    extends /*<extends>*/ACAccountOptions/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(ACFacebookOptions.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
+    /*<marshalers>*/
+    public static class Marshaler {
+        @MarshalsPointer
+        public static ACFacebookOptions toObject(Class<ACFacebookOptions> cls, long handle, long flags) {
+            NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return new ACFacebookOptions(o);
+        }
+        @MarshalsPointer
+        public static long toNative(ACFacebookOptions o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(o.data, flags);
+        }
+    }
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<ACFacebookOptions> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<ACFacebookOptions> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new ACFacebookOptions(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<ACFacebookOptions> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (ACFacebookOptions i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    ACFacebookOptions(NSDictionary<NSString, NSObject> data) {
+        super(data);
+    }
+    public ACFacebookOptions() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
+    }
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
+    }
+    public ACFacebookOptions set(NSString key, NSObject value) {
+        data.put(key, value);
+        return this;
+    }
+    
+
     /**
      * @since Available in iOS 6.0 and later.
      */
     public String getAppId() {
-        if (data.containsKey(AppIdKey())) {
-            NSString val = (NSString)data.get(AppIdKey());
+        if (has(Keys.AppId())) {
+            NSString val = (NSString) get(Keys.AppId());
             return val.toString();
         }
         return null;
@@ -56,16 +119,16 @@ import org.robovm.apple.foundation.*;
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public void setAppId(String appId) {
-        data.put(AppIdKey(), new NSString(appId));
+    public ACFacebookOptions setAppId(String appId) {
+        set(Keys.AppId(), new NSString(appId));
+        return this;
     }
     /**
      * @since Available in iOS 6.0 and later.
      */
-    @SuppressWarnings("unchecked")
     public List<String> getPermissions() {
-        if (data.containsKey(PermissionsKey())) {
-            NSArray<NSString> val = (NSArray<NSString>)data.get(PermissionsKey());
+        if (has(Keys.Permissions())) {
+            NSArray<NSString> val = (NSArray<NSString>) get(Keys.Permissions());
             return val.asStringList();
         }
         return null;
@@ -73,23 +136,16 @@ import org.robovm.apple.foundation.*;
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public void setPermissions(Collection<String> permissions) {
-        NSArray<NSString> p = NSArray.fromStrings(permissions);
-        data.put(PermissionsKey(), p);
-    }
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    public void setPermissions(String...permissions) {
-        NSArray<NSString> p = NSArray.fromStrings(permissions);
-        data.put(PermissionsKey(), p);
+    public ACFacebookOptions setPermissions(List<String> permissions) {
+        set(Keys.Permissions(), NSArray.fromStrings(permissions));
+        return this;
     }
     /**
      * @since Available in iOS 6.0 and later.
      */
     public ACFacebookAudience getAudience() {
-        if (data.containsKey(AudienceKey())) {
-            NSString val = (NSString)data.get(AudienceKey());
+        if (has(Keys.Audience())) {
+            NSString val = (NSString) get(Keys.Audience());
             return ACFacebookAudience.valueOf(val);
         }
         return null;
@@ -97,24 +153,39 @@ import org.robovm.apple.foundation.*;
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public void setAudience(ACFacebookAudience audience) {
-        data.put(AudienceKey(), audience.value());
+    public ACFacebookOptions setAudience(ACFacebookAudience audience) {
+        set(Keys.Audience(), audience.value());
+        return this;
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="ACFacebookAppIdKey", optional=true)
-    protected static native NSString AppIdKey();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="ACFacebookPermissionsKey", optional=true)
-    protected static native NSString PermissionsKey();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="ACFacebookAudienceKey", optional=true)
-    protected static native NSString AudienceKey();
     /*</methods>*/
+    
+     /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public void setPermissions(String...permissions) {
+        NSArray<NSString> p = NSArray.fromStrings(permissions);
+        data.put(Keys.Permissions(), p);
+    }
+    
+    /*<keys>*/
+    @Library("Accounts") @StronglyLinked
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        @GlobalValue(symbol="ACFacebookAppIdKey", optional=true)
+        public static native NSString AppId();
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        @GlobalValue(symbol="ACFacebookPermissionsKey", optional=true)
+        public static native NSString Permissions();
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        @GlobalValue(symbol="ACFacebookAudienceKey", optional=true)
+        public static native NSString Audience();
+    }
+    /*</keys>*/
 }

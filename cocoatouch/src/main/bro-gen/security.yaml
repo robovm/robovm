@@ -1,5 +1,5 @@
 package: org.robovm.apple.security
-include: [dispatch.yaml, foundation.yaml, corefoundation.yaml]
+include: [foundation.yaml, corefoundation.yaml, dispatch.yaml]
 clang_args: ['-x', 'objective-c']
 library: Security
 framework: Security
@@ -283,7 +283,12 @@ functions:
     SecTrust(GetCertificate)AtIndex:
         class: SecTrust
         name: '#{g[0]}'
-    SecTrust(Evaluate|EvaluateAsync|GetTrustResult|SetOCSPResponse|SetVerifyDate|SetAnchorCertificatesOnly|SetAnchorCertificates|SetNetworkFetchAllowed):
+    SecTrust(EvaluateAsync):
+        class: SecTrust
+        name: '#{g[0]}0'
+        visibility: protected
+        annotations: ['@WeaklyLinked']
+    SecTrust(Evaluate|GetTrustResult|SetOCSPResponse|SetVerifyDate|SetAnchorCertificatesOnly|SetAnchorCertificates|SetNetworkFetchAllowed):
         class: SecTrust
         name: '#{g[0]}0'
         visibility: protected

@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -33,12 +34,15 @@ import org.robovm.apple.imageio.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(ALAssetType.Marshaler.class)
-/*<annotations>*/@Library("AssetsLibrary")/*</annotations>*/
+/*<annotations>*/@Library("AssetsLibrary") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/ALAssetType/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/ALAssetType/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/ALAssetType/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static ALAssetType toObject(Class<ALAssetType> cls, long handle, long flags) {
@@ -56,39 +60,57 @@ import org.robovm.apple.imageio.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(ALAssetType.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final ALAssetType Photo = new ALAssetType("PhotoValue");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final ALAssetType Video = new ALAssetType("VideoValue");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final ALAssetType Unknown = new ALAssetType("UnknownValue");
-    
-    private static ALAssetType[] values = new ALAssetType[] {Photo, Video, Unknown};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private ALAssetType(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<ALAssetType> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<ALAssetType> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(ALAssetType.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<ALAssetType> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (ALAssetType i : l) {
+                array.add(i.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*</marshalers>*/
+
+    /*<constants>*/
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final ALAssetType Photo = new ALAssetType("Photo");
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final ALAssetType Video = new ALAssetType("Video");
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final ALAssetType Unknown = new ALAssetType("Unknown");
+    /*</constants>*/
+    
+    private static /*<name>*/ALAssetType/*</name>*/[] values = new /*<name>*/ALAssetType/*</name>*/[] {/*<value_list>*/Photo, Video, Unknown/*</value_list>*/};
+    
+    /*<name>*/ALAssetType/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static ALAssetType valueOf(NSString value) {
-        for (ALAssetType v : values) {
+    public static /*<name>*/ALAssetType/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/ALAssetType/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -96,21 +118,29 @@ import org.robovm.apple.imageio.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/ALAssetType/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="ALAssetTypePhoto", optional=true)
-    protected static native NSString PhotoValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="ALAssetTypeVideo", optional=true)
-    protected static native NSString VideoValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="ALAssetTypeUnknown", optional=true)
-    protected static native NSString UnknownValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("AssetsLibrary") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="ALAssetTypePhoto", optional=true)
+        public static native NSString Photo();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="ALAssetTypeVideo", optional=true)
+        public static native NSString Video();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="ALAssetTypeUnknown", optional=true)
+        public static native NSString Unknown();
+        /*</values>*/
+    }
 }

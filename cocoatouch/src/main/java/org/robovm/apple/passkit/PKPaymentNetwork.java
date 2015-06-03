@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -33,7 +34,7 @@ import org.robovm.apple.addressbook.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("PassKit")/*</annotations>*/
+/*<annotations>*/@Library("PassKit") @StronglyLinked/*</annotations>*/
 @Marshaler(/*<name>*/PKPaymentNetwork/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/PKPaymentNetwork/*</name>*/ 
     extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
@@ -120,7 +121,7 @@ import org.robovm.apple.addressbook.*;
     
     /*<methods>*//*</methods>*/
     
-    /*<annotations>*/@Library("PassKit")/*</annotations>*/
+    /*<annotations>*/@Library("PassKit") @StronglyLinked/*</annotations>*/
     public static class Values {
     	static { Bro.bind(Values.class); }
 

@@ -34,6 +34,7 @@ classes:
             '-peripheralDataWithMeasuredPower:':
                 name: getPeripheralData
                 return_type: CBAdvertisementData
+                annotations: ['@WeaklyLinked']
     CLCircularRegion: # DONE
         methods:
             '-init.*':
@@ -47,6 +48,7 @@ classes:
                 trim_after_first_colon: true
             '-geocodeAddressDictionary:completionHandler:':
                 name: geocodeAddress
+                annotations: ['@WeaklyLinked']
                 parameters:
                     addressDictionary:
                         type: ABPersonAddress
@@ -121,6 +123,7 @@ classes:
             'addressDictionary':
                 name: address
                 type: ABPersonAddress
+                annotations: ['@WeaklyLinked']
         methods:
             '-init.*':
                 name: init

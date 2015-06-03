@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -73,11 +74,13 @@ import org.robovm.apple.corelocation.*;
     }
 
     /*<properties>*/
+    @WeaklyLinked
     @Property(selector = "relativeLocation")
     public native CLLocation getRelativeLocation();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @WeaklyLinked
     @Method(selector = "initWithKey:relativeLocation:")
     protected native @Pointer long init(String key, CLLocation relativeLocation);
     @Method(selector = "initWithCoder:")

@@ -423,9 +423,8 @@ values:
 
     # Keys
     kABPersonAddress(.*)Key:
-        class: ABPersonAddressPart
-        name: '#{g[0]}Value'
-        visibility: protected
+        enum: ABPersonAddressPart
+        name: '#{g[0]}'
         type: CFString
     kABPersonInstantMessage(.*Key):
         class: ABPersonInstantMessageAccount
@@ -442,21 +441,17 @@ values:
         name: '#{g[0]}'
         visibility: protected
         type: CFString
-        
     kABPersonKind(.*):
-        class: ABPersonKind
-        name: '#{g[0]}Value'
-        visibility: protected
+        enum: ABPersonKind
+        name: '#{g[0]}'
         type: CFNumber    
     kABPersonInstantMessageService(.*):
-        class: ABPersonInstantMessageService
-        name: '#{g[0]}Value'
-        visibility: protected
+        enum: ABPersonInstantMessageService
+        name: '#{g[0]}'
         type: CFString
     kABPersonSocialProfileService(.*):
-        class: ABPersonSocialProfileService
-        name: '#{g[0]}Value'
-        visibility: protected
+        enum: ABPersonSocialProfileService
+        name: '#{g[0]}'
         type: CFString
     
     # Labels

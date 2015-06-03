@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -32,7 +33,7 @@ import org.robovm.apple.corelocation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("CloudKit")/*</annotations>*/
+/*<annotations>*/@Library("CloudKit") @StronglyLinked/*</annotations>*/
 @Marshaler(/*<name>*/CKErrorUserInfoKey/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CKErrorUserInfoKey/*</name>*/ 
     extends /*<extends>*/NSErrorUserInfoKey/*</extends>*/
@@ -127,7 +128,7 @@ import org.robovm.apple.corelocation.*;
     
     /*<methods>*//*</methods>*/
     
-    /*<annotations>*/@Library("CloudKit")/*</annotations>*/
+    /*<annotations>*/@Library("CloudKit") @StronglyLinked/*</annotations>*/
     public static class Values {
     	static { Bro.bind(Values.class); }
 

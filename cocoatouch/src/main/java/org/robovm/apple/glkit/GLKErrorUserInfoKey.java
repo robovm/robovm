@@ -23,12 +23,13 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
+import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.coregraphics.*;
-import org.robovm.apple.foundation.*;
 import org.robovm.apple.opengles.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.apple.dispatch.*;
@@ -36,7 +37,7 @@ import org.robovm.apple.dispatch.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("GLKit")/*</annotations>*/
+/*<annotations>*/@Library("GLKit") @StronglyLinked/*</annotations>*/
 @Marshaler(/*<name>*/GLKErrorUserInfoKey/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/GLKErrorUserInfoKey/*</name>*/ 
     extends /*<extends>*/NSErrorUserInfoKey/*</extends>*/
@@ -119,7 +120,7 @@ import org.robovm.apple.dispatch.*;
     
     /*<methods>*//*</methods>*/
     
-    /*<annotations>*/@Library("GLKit")/*</annotations>*/
+    /*<annotations>*/@Library("GLKit") @StronglyLinked/*</annotations>*/
     public static class Values {
     	static { Bro.bind(Values.class); }
 

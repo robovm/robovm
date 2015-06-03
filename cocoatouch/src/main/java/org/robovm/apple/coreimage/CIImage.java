@@ -23,15 +23,17 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
-import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
+import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.opengles.*;
 import org.robovm.apple.corevideo.*;
 import org.robovm.apple.imageio.*;
+import org.robovm.apple.uikit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -66,8 +68,9 @@ import org.robovm.apple.imageio.*;
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public CIImage(CVPixelBuffer buffer, CIImageOptions dict) { super((SkipInit) null); initObject(init(buffer, dict)); }
+    public CIImage(CVPixelBuffer buffer, NSDictionary<?, ?> dict) { super((SkipInit) null); initObject(init(buffer, dict)); }
     public CIImage(CIColor color) { super((SkipInit) null); initObject(init(color)); }
+    public CIImage(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     
@@ -112,13 +115,15 @@ import org.robovm.apple.imageio.*;
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @WeaklyLinked
     @Method(selector = "initWithCVPixelBuffer:")
     protected native @Pointer long init(CVPixelBuffer buffer);
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @WeaklyLinked
     @Method(selector = "initWithCVPixelBuffer:options:")
-    protected native @Pointer long init(CVPixelBuffer buffer, CIImageOptions dict);
+    protected native @Pointer long init(CVPixelBuffer buffer, NSDictionary<?, ?> dict);
     @Method(selector = "initWithColor:")
     protected native @Pointer long init(CIColor color);
     @Method(selector = "imageByApplyingTransform:")
@@ -126,11 +131,13 @@ import org.robovm.apple.imageio.*;
     /**
      * @since Available in iOS 8.0 and later.
      */
+    @WeaklyLinked
     @Method(selector = "imageByApplyingOrientation:")
     public native CIImage newImageByApplyingOrientation(CGImagePropertyOrientation orientation);
     /**
      * @since Available in iOS 8.0 and later.
      */
+    @WeaklyLinked
     @Method(selector = "imageTransformForOrientation:")
     public native @ByVal CGAffineTransform getImageTransformForOrientation(CGImagePropertyOrientation orientation);
     /**
@@ -175,6 +182,8 @@ import org.robovm.apple.imageio.*;
     @Method(selector = "autoAdjustmentFiltersWithOptions:")
     public native NSArray<CIFilter> getAutoAdjustmentFilters(CIImageAutoAdjustOptions options);
     @Method(selector = "encodeWithCoder:")
-    public native void encode(NSCoder aCoder);
+    public native void encode(NSCoder coder);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     /*</methods>*/
 }

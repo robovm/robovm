@@ -69,7 +69,9 @@ classes:
     MCSession: # DONE
         properties:
             'securityIdentity':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<SecIdentity>'
+                type: List<SecIdentity>
+                marshaler: NSArray.AsListMarshaler
+                annotations: ['@WeaklyLinked']
             'connectedPeers':
                 type: NSArray<MCPeerID>
         methods:
@@ -77,6 +79,7 @@ classes:
                 name: init
             '-initWithPeer:securityIdentity:encryptionPreference:':
                 name: init
+                annotations: ['@WeaklyLinked']
                 parameters:
                     identity:
                         type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<SecIdentity>'
@@ -147,6 +150,7 @@ protocols:
                 name: didFinishReceivingResource
             '-session:didReceiveCertificate:fromPeer:certificateHandler:':
                 name: didReceiveCertificate
+                annotations: ['@WeaklyLinked']
                 parameters:
                     certificate:
                         type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<SecIdentity>'

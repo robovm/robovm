@@ -23,13 +23,14 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.coregraphics.*;
-import org.robovm.apple.corelocation.*;
 import org.robovm.apple.uikit.*;
+import org.robovm.apple.corelocation.*;
 import org.robovm.apple.avfoundation.*;
 /*</imports>*/
 
@@ -57,8 +58,10 @@ import org.robovm.apple.avfoundation.*;
     public native NSDate getCreationDate();
     @Property(selector = "setCreationDate:")
     public native void setCreationDate(NSDate v);
+    @WeaklyLinked
     @Property(selector = "location")
     public native CLLocation getLocation();
+    @WeaklyLinked
     @Property(selector = "setLocation:")
     public native void setLocation(CLLocation v);
     @Property(selector = "isFavorite")
@@ -78,6 +81,7 @@ import org.robovm.apple.avfoundation.*;
     /*<methods>*/
     @Method(selector = "revertAssetContentToOriginal")
     public native void revertAssetContentToOriginal();
+    @WeaklyLinked
     @Method(selector = "creationRequestForAssetFromImage:")
     public static native PHAssetChangeRequest createImageAssetCreationRequest(UIImage image);
     @Method(selector = "creationRequestForAssetFromImageAtFileURL:")

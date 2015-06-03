@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -53,12 +54,16 @@ import org.robovm.apple.corelocation.*;
     protected UIManagedDocument(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
+    @WeaklyLinked
     @Property(selector = "managedObjectContext")
     public native NSManagedObjectContext getManagedObjectContext();
+    @WeaklyLinked
     @Property(selector = "managedObjectModel")
     public native NSManagedObjectModel getManagedObjectModel();
+    @WeaklyLinked
     @Property(selector = "persistentStoreOptions")
     public native NSPersistentStoreOptions getPersistentStoreOptions();
+    @WeaklyLinked
     @Property(selector = "setPersistentStoreOptions:")
     public native void setPersistentStoreOptions(NSPersistentStoreOptions v);
     @Property(selector = "modelConfiguration")
@@ -68,12 +73,14 @@ import org.robovm.apple.corelocation.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @WeaklyLinked
     public boolean configurePersistentStoreCoordinator(NSURL storeURL, String fileType, String configuration, NSPersistentStoreOptions storeOptions) throws NSErrorException {
        NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
        boolean result = configurePersistentStoreCoordinator(storeURL, fileType, configuration, storeOptions, ptr);
        if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
        return result;
     }
+    @WeaklyLinked
     @Method(selector = "configurePersistentStoreCoordinatorForURL:ofType:modelConfiguration:storeOptions:error:")
     private native boolean configurePersistentStoreCoordinator(NSURL storeURL, String fileType, String configuration, NSPersistentStoreOptions storeOptions, NSError.NSErrorPtr error);
     @Method(selector = "persistentStoreTypeForFileType:")

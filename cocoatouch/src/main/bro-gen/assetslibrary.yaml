@@ -23,12 +23,16 @@ classes:
                 parameters:
                     property:
                         type: ALAssetProperty
-            '-(defaultRepresentation|thumbnail|aspectRatioThumbnail)':
+            '-(thumbnail|aspectRatioThumbnail)':
+                property: true 
+                annotations: ['@WeaklyLinked']
+            '-defaultRepresentation':
                 property: true
             '-representationForUTI:':
                 name: getRepresentation
             '-writeModifiedImageDataToSavedPhotosAlbum:metadata:completionBlock:':
                 name: writeModifiedImageData
+                annotations: ['@WeaklyLinked']
                 parameters:
                     metadata:
                         type: CGImageProperties
@@ -41,6 +45,7 @@ classes:
                         type: '@Block VoidBlock2<NSURL, NSError>'
             '-setImageData:metadata:completionBlock:':
                 trim_after_first_colon: true
+                annotations: ['@WeaklyLinked']
                 parameters:
                     metadata:
                         type: CGImageProperties
@@ -53,11 +58,15 @@ classes:
                         type: '@Block VoidBlock2<NSURL, NSError>'
     ALAssetRepresentation: # DONE
         methods:
-            '-(UTI|dimensions|size|fullResolutionImage|fullScreenImage|url|orientation|scale|filename)':
+            '-(UTI|size|url|orientation|scale|filename)':
                 property: true
+            '-(dimensions|fullResolutionImage|fullScreenImage)':
+                property: true
+                annotations: ['@WeaklyLinked']
             '-metadata':
                 property: true
                 return_type: CGImageProperties
+                annotations: ['@WeaklyLinked']
             '-getBytes:fromOffset:length:error:':
                 name: getBytes
                 visibility: protected # throws NSErrorException
@@ -66,6 +75,7 @@ classes:
                         type: '@Pointer long'
             '-CGImageWithOptions:':
                 name: getCGImage
+                annotations: ['@WeaklyLinked']
                 parameters:
                     options:
                         type: CGImageSourceOptions
@@ -78,7 +88,10 @@ classes:
                 parameters:
                     property:
                         type: ALAssetsGroupProperty
-            '-(posterImage|numberOfAssets)':
+            '-posterImage':
+                property: true
+                annotations: ['@WeaklyLinked']
+            '-numberOfAssets':
                 property: true
             '-enumerateAssetsUsingBlock:':
                 name: enumerateAssets
@@ -129,11 +142,13 @@ classes:
                         type: '@Block VoidBlock1<NSError>'
             '-writeImageToSavedPhotosAlbum:orientation:completionBlock:':
                 name: writeImageToSavedPhotosAlbum
+                annotations: ['@WeaklyLinked']
                 parameters:
                     completionBlock:
                         type: '@Block VoidBlock2<NSURL, NSError>'
             '-writeImageToSavedPhotosAlbum:metadata:completionBlock:':
                 name: writeImageToSavedPhotosAlbum
+                annotations: ['@WeaklyLinked']
                 parameters:
                     metadata:
                         type: CGImageProperties
@@ -141,6 +156,7 @@ classes:
                         type: '@Block VoidBlock2<NSURL, NSError>'
             '-writeImageDataToSavedPhotosAlbum:metadata:completionBlock:':
                 name: writeImageDataToSavedPhotosAlbum
+                annotations: ['@WeaklyLinked']
                 parameters:
                     metadata:
                         type: CGImageProperties
@@ -171,15 +187,13 @@ values:
 
     # ALAsset
     ALAssetProperty(.*):
-        class: ALAssetProperty
-        name: '#{g[0]}Value'
+        enum: ALAssetProperty
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     ALAssetType(.*):
-        class: ALAssetType
-        name: '#{g[0]}Value'
+        enum: ALAssetType
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     ALError(InvalidProperty):
         class: ALAsset
         name: 'get#{g[0]}'
@@ -187,21 +201,29 @@ values:
 
     # ALAssetsGroup
     ALAssetsGroupProperty(.*):
-        class: ALAssetsGroupProperty
-        name: '#{g[0]}Value'
+        enum: ALAssetsGroupProperty
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
 
     # ALAssetsLibrary
     ALAssetsLibrary(ChangedNotification):
         class: ALAssetsLibrary
         name: '#{g[0]}'
         type: NSString
-    ALAssetLibrary(.*Key):
-        class: ALAssetsLibraryChangedNotificationUserInfo
+    ALAssetLibrary(.*)Key:
+        dictionary: ALAssetsLibraryChangedNotification
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        mutable: false
+        methods:
+            UpdatedAssets:
+                type: NSSet<NSURL>
+            InsertedAssetGroups:
+                type: NSSet<NSURL>
+            UpdatedAssetGroups:
+                type: NSSet<NSURL>
+            DeletedAssetGroups:
+                type: NSSet<NSURL>
 
     # Make sure we don't miss any values if new ones are introduced in a later version
     (k?AL.*):

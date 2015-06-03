@@ -1,5 +1,5 @@
 package: org.robovm.apple.eventkit
-include: [foundation.yaml, coregraphics.yaml, addressbook.yaml, corelocation.yaml]
+include: [foundation.yaml, coregraphics.yaml, corelocation.yaml, addressbook.yaml]
 library: EventKit
 framework: EventKit
 clang_args: ['-x', 'objective-c']
@@ -37,6 +37,9 @@ classes:
             '+alarmWithRelativeOffset:':
                 name: create
     EKCalendar: # DONE
+        properties:
+            'CGColor':
+                annotations: ['@WeaklyLinked']
         methods:
             '+calendarWithEventStore:':
                 name: create
@@ -177,6 +180,7 @@ classes:
         methods:
             '-ABRecordWithAddressBook:':
                 name: getAddessBookRecord
+                annotations: ['@WeaklyLinked']
     EKRecurrenceDayOfWeek: # DONE
         methods:
             '-initWithDayOfTheWeek:weekNumber:':

@@ -335,6 +335,10 @@ functions:
         class: AudioComponent
         name: '#{g[0]}0'
         visibility: protected
+    AudioComponent(GetIcon):
+        class: AudioComponent
+        name: '#{g[0]}'
+        annotations: ['@WeaklyLinked']
     AudioComponent(Register):
         exclude: true
     AudioComponent(.*):
@@ -395,6 +399,7 @@ functions:
     AudioOutputUnit(GetHostIcon):
         class: AudioUnit
         name: getOutputHostIcon # TODO move into separate AudioOutputUnit class
+        annotations: ['@WeaklyLinked']
     AudioOutputUnit(Start|Stop):
         class: AudioUnit
         name: '#{g[0]}Output0'

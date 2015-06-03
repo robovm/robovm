@@ -17,10 +17,10 @@ package org.robovm.apple.accounts;
 
 import org.robovm.apple.foundation.*;
 
-public abstract class ACAccountOptions {
-    NSMutableDictionary<NSString, NSObject> data;
+public abstract class ACAccountOptions extends NSDictionaryWrapper {
 
-    public ACAccountOptions() {
-        this.data = new NSMutableDictionary<>();
+    protected ACAccountOptions(NSDictionary<NSString, NSObject> data) {
+        this.data = data;
     }
+    protected ACAccountOptions() {}
 }

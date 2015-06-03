@@ -168,12 +168,14 @@ enums:
 
 categories:
     CIColor: # DONE
+        annotations: ['@WeaklyLinked']
         methods:
             '-init.*':
                 name: init
                 visibility: protected
                 return_type: '@Pointer long'
     CIImage: # DONE
+        annotations: ['@WeaklyLinked']
         methods:
             '-init.*':
                 name: init
@@ -183,6 +185,7 @@ categories:
                     options:
                         type: CIImageOptions
     NSAttributedString: # DONE
+        annotations: ['@WeaklyLinked']
         methods:
             '-init.*':
                 name: init
@@ -217,6 +220,7 @@ categories:
             '-size':
                 name: getSize
     NSBundle: # DONE
+        annotations: ['@WeaklyLinked']
         methods:
             '-loadNibNamed:owner:options:':
                 name: loadNib
@@ -224,18 +228,21 @@ categories:
                     options:
                         type: UINibLoadingOptions
     NSCoder: # DONE
+        annotations: ['@WeaklyLinked']
         methods:
             '-(decode.*)ForKey:':
                 name: '#{g[0]}'
             '-(encode.*):forKey:':
                 name: '#{g[0]}'
     NSIndexPath: # DONE
+        annotations: ['@WeaklyLinked']
         methods:
             '+indexPathForRow:inSection:':
                 name: createIndexPathForRowInSection
             '+indexPathForItem:inSection:':
                 name: createIndexPathForItemInSection
     NSMutableAttributedString: # DONE
+        annotations: ['@WeaklyLinked']
         methods:
             '-fixAttributesInRange:':
                 name: fixAttributesInRange
@@ -255,6 +262,7 @@ categories:
                         type: NSAttributedStringDocumentAttributes
     NSString: # DONE
         owner_type: '@Pointer long'
+        annotations: ['@WeaklyLinked']
         methods:
             '-boundingRectWithSize:options:attributes:context:':
                 name: getBoundingRect
@@ -290,6 +298,7 @@ categories:
             '-sizeWithFont.*':
                 name: getSize
     NSValue: # DONE
+        annotations: ['@WeaklyLinked']
         methods:
             '-CG(.*Value)':
                 name: 'get#{g[0]}'
@@ -863,6 +872,9 @@ classes:
             '-preferredLayoutAttributesFittingAttributes:':
                 name: getPreferredLayoutAttributesFittingAttributes
     UICollectionView: # DONE
+        properties:
+            'transform3D':
+                annotations: ['@WeaklyLinked']
         methods:
             '-init.*':
                 name: init
@@ -1501,6 +1513,8 @@ classes:
                 type: NSArray<UIImage>
             'imageOrientation':
                 name: orientation
+            'CIImage':
+                annotations: ['@WeaklyLinked']
         methods:
             '+animatedImageNamed:duration:':
                 name: createAnimated
@@ -1526,10 +1540,12 @@ classes:
                 name: create
             '+imageWithCIImage:':
                 name: create
+                annotations: ['@WeaklyLinked']
             '+imageWithData:':
                 name: create
             '+imageWithCIImage:scale:orientation:':
                 name: create
+                annotations: ['@WeaklyLinked']
             '+imageWithData:scale:':
                 name: create
             '-initWithContentsOfFile:':
@@ -1555,6 +1571,9 @@ classes:
                 name: draw
             '-drawAsPatternInRect:':
                 name: drawAsPattern
+            '-initWithCIImage.*':
+                name: init
+                annotations: ['@WeaklyLinked']
             '-init.*':
                 name: init
     UIImageAsset: # DONE
@@ -1645,11 +1664,16 @@ classes:
         properties:
             'regionTriggersOnce':
                 getter: regionTriggersOnce
+            'region':
+                annotations: ['@WeaklyLinked']
     UILongPressGestureRecognizer: {} # DONE
     UIManagedDocument: # DONE
         properties: 
+            '(managedObjectContext|managedObjectModel)':
+                annotations: ['@WeaklyLinked']
             'persistentStoreOptions':
                 type: NSPersistentStoreOptions
+                annotations: ['@WeaklyLinked']
         methods:
             '+persistentStoreName':
                 name: getPersistentStoreName
@@ -1659,6 +1683,7 @@ classes:
             '-configurePersistentStoreCoordinatorForURL:ofType:modelConfiguration:storeOptions:error:':
                 name: configurePersistentStoreCoordinator
                 throws: NSErrorException
+                annotations: ['@WeaklyLinked']
                 parameters:
                     storeOptions:
                         type: NSPersistentStoreOptions
@@ -2155,6 +2180,7 @@ classes:
                 return_type: NSArray<UIScreen>
             '-displayLinkWithTarget:selector:':
                 name: createDisplayLink
+                annotations: ['@WeaklyLinked']
             '-snapshotViewAfterScreenUpdates:':
                 name: snapshotView
     UIScreenEdgePanGestureRecognizer: {} # DONE
@@ -2716,6 +2742,8 @@ classes:
                 type: NSArray<UIGestureRecognizer>
             'motionEffects':
                 type: NSArray<UIMotionEffect>
+            'layer':
+                annotations: ['@WeaklyLinked']
         methods:
             '-init.*':
                 name: init
@@ -2734,6 +2762,7 @@ classes:
             '+layerClass':
                 name: getLayerClass
                 return_type: 'Class<? extends CALayer>'
+                annotations: ['@WeaklyLinked']
             '+performSystemAnimation:onViews:options:animations:completion:':
                 trim_after_first_colon: true
                 parameters:

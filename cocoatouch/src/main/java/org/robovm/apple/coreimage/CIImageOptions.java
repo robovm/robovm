@@ -23,15 +23,17 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
-import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
+import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.opengles.*;
 import org.robovm.apple.corevideo.*;
 import org.robovm.apple.imageio.*;
+import org.robovm.apple.uikit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -94,6 +96,7 @@ import org.robovm.apple.imageio.*;
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @WeaklyLinked
     public CGImageProperties getProperties() {
         if (data.containsKey(PropertiesKey())) {
             CFDictionary val = data.get(PropertiesKey(), CFDictionary.class);
@@ -104,6 +107,7 @@ import org.robovm.apple.imageio.*;
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @WeaklyLinked
     public CIImageOptions setProperties(CGImageProperties properties) {
         data.put(PropertiesKey(), properties.getDictionary());
         return this;

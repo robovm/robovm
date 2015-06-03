@@ -1,5 +1,5 @@
 package: org.robovm.apple.foundation
-include: [corefoundation.yaml, uikit.yaml, coreanimation.yaml, coredata.yaml, coregraphics.yaml, coremedia.yaml, security.yaml, dispatch.yaml]
+include: [corefoundation.yaml, uikit.yaml, coretext.yaml, coreanimation.yaml, coredata.yaml, coregraphics.yaml, coremedia.yaml, security.yaml, dispatch.yaml]
 library: Foundation
 framework: Foundation
 path_match: ^.*/usr/include/objc/.*$
@@ -277,6 +277,7 @@ classes:
             '-.*': {exclude: true}
     NSAssertionHandler: {exclude : true}
     NSAttributedString: # DONE
+        annotations: ['@WeaklyLinked']
         properties:
             'length':
                 omit_prefix: true
@@ -2038,6 +2039,7 @@ classes:
             '+.*': {exclude: true}
             '-.*': {exclude: true}
     NSMutableAttributedString: # DONE
+        annotations: ['@WeaklyLinked']
         methods:
             '-replaceCharactersInRange:withString:':
                 name: replace
@@ -2514,6 +2516,8 @@ classes:
         properties:
             'operations':
                 type: NSArray<NSOperation>
+            'underlyingQueue':
+                annotations: ['@WeaklyLinked']
         methods:
             '+currentQueue':
                 property: true
@@ -2931,6 +2935,7 @@ classes:
                 visibility: protected
     NSString: # DONE
         protocols: [NSPropertyList]
+        annotations: ['@WeaklyLinked']
         properties:
             'length':
                 omit_prefix: true
@@ -3384,16 +3389,20 @@ classes:
         properties:
             'certificates':
                 type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<SecCertificate>'
+            'identity':
+                annotations: ['@WeaklyLinked']
         methods:
             '+credential.*':
                exclude: true
-            '-init.*':
-                name: init
             '-initWithIdentity:certificates:persistence:':
                 name: init
+                annotations: ['@WeaklyLinked']
                 parameters:
                     certArray:
                         type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<SecCertificate>'
+            '-init.*':
+                name: init
+                annotations: ['@WeaklyLinked']
     NSURLCredentialStorage: # DONE
         properties:
             'allCredentials':
@@ -3446,6 +3455,8 @@ classes:
                 type: NSURLProtectionSpaceProtocol
             'proxyType':
                 type: NSURLProtectionSpaceProxyType
+            'serverTrust':
+                annotations: ['@WeaklyLinked']
         methods:
             '-initWithHost:port:protocol:realm:authenticationMethod:':
                 name: init
@@ -3566,6 +3577,8 @@ classes:
                 name: newHTTPGetDataTask
     NSURLSessionConfiguration: # DONE
         properties:
+            '(TLSMinimumSupportedProtocol|TLSMaximumSupportedProtocol)':
+                annotations: ['@WeaklyLinked']
             'sessionSendsLaunchEvents':
                 name: sendsLaunchEvents
             'HTTPShouldUsePipelining':
@@ -3693,6 +3706,7 @@ classes:
             '+.*': {exclude: true}
             '-.*': {exclude: true}
     NSValue: # DONE
+        annotations: ['@WeaklyLinked']
         skip_def_constructor: true
         properties:
             'nonretainedObjectValue':

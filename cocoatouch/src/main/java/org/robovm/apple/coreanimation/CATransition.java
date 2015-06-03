@@ -23,11 +23,12 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
-import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
 import org.robovm.apple.opengles.*;
@@ -66,8 +67,10 @@ import org.robovm.apple.metal.*;
     public native float getEndProgress();
     @Property(selector = "setEndProgress:")
     public native void setEndProgress(float v);
+    @WeaklyLinked
     @Property(selector = "filter")
     public native CIFilter getFilter();
+    @WeaklyLinked
     @Property(selector = "setFilter:")
     public native void setFilter(CIFilter v);
     /*</properties>*/

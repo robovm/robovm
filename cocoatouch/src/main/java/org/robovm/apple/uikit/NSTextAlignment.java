@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -56,14 +57,17 @@ public enum /*<name>*/NSTextAlignment/*</name>*/ implements ValuedEnum {
     /**
      * @since Available in iOS 6.0 and later.
      */
+    @WeaklyLinked
     public CTTextAlignment toCTTextAlignment() {
         return toCTTextAlignment(this);
     }
+    @WeaklyLinked
     @Bridge(symbol="NSTextAlignmentToCTTextAlignment", optional=true)
     private static native CTTextAlignment toCTTextAlignment(NSTextAlignment nsTextAlignment);
     /**
      * @since Available in iOS 6.0 and later.
      */
+    @WeaklyLinked
     @Bridge(symbol="NSTextAlignmentFromCTTextAlignment", optional=true)
     public static native NSTextAlignment fromCTTextAlignment(CTTextAlignment ctTextAlignment);
     

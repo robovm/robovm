@@ -23,18 +23,18 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
-import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
+import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.opengles.*;
 import org.robovm.apple.corevideo.*;
 import org.robovm.apple.imageio.*;
+import org.robovm.apple.uikit.*;
 /*</imports>*/
-import org.robovm.rt.annotation.WeaklyLinked;
-import org.robovm.apple.uikit.CIColorExtensions;
 
 /*<javadoc>*/
 
@@ -50,6 +50,7 @@ import org.robovm.apple.uikit.CIColorExtensions;
     /*<constructors>*/
     public CIColor() {}
     protected CIColor(SkipInit skipInit) { super(skipInit); }
+    public CIColor(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     
     public CIColor(double r, double g, double b, double a) {
@@ -107,6 +108,8 @@ import org.robovm.apple.uikit.CIColorExtensions;
     @Method(selector = "colorWithString:")
     protected static native @Pointer long init(String representation);
     @Method(selector = "encodeWithCoder:")
-    public native void encode(NSCoder aCoder);
+    public native void encode(NSCoder coder);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     /*</methods>*/
 }

@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -59,6 +60,7 @@ import org.robovm.apple.security.*;
     public void didStartReceivingResource(MCSession session, String resourceName, MCPeerID peerID, NSProgress progress) {}
     @NotImplemented("session:didFinishReceivingResourceWithName:fromPeer:atURL:withError:")
     public void didFinishReceivingResource(MCSession session, String resourceName, MCPeerID peerID, NSURL localURL, NSError error) {}
+    @WeaklyLinked
     @NotImplemented("session:didReceiveCertificate:fromPeer:certificateHandler:")
     public void didReceiveCertificate(MCSession session, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<SecIdentity> certificate, MCPeerID peerID, @Block VoidBooleanBlock certificateHandler) {}
     /*</methods>*/

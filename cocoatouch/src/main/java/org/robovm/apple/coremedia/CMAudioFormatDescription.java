@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -30,7 +31,6 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreaudio.*;
-import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.corevideo.*;
 import org.robovm.apple.audiotoolbox.*;
@@ -38,7 +38,7 @@ import org.robovm.apple.audiotoolbox.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("CoreMedia")/*</annotations>*/
+/*<annotations>*/@Library("CoreMedia") @WeaklyLinked/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CMAudioFormatDescription/*</name>*/ 
     extends /*<extends>*/CMFormatDescription/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
@@ -53,6 +53,7 @@ import org.robovm.apple.audiotoolbox.*;
      * @throws OSStatusException 
      * @since Available in iOS 4.0 and later.
      */
+    @WeaklyLinked
     public static CMAudioFormatDescription create(AudioStreamBasicDescription asbd, @MachineSizedUInt long layoutSize, AudioChannelLayout layout, @MachineSizedUInt long magicCookieSize, VoidPtr magicCookie, NSDictionary<NSString, ?> extensions) throws OSStatusException {
         CMAudioFormatDescriptionPtr ptr = new CMAudioFormatDescriptionPtr();
         OSStatus status = create0(null, asbd, layoutSize, layout, magicCookieSize, magicCookie, extensions, ptr);
@@ -103,12 +104,14 @@ import org.robovm.apple.audiotoolbox.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
+    @WeaklyLinked
     public AudioChannelLayout getChannelLayout() {
         return getChannelLayout0(null);
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
+    @WeaklyLinked
     public @MachineSizedUInt long getChannelLayoutSize() {
         MachineSizedUIntPtr ptr = new MachineSizedUIntPtr();
         getChannelLayout0(ptr);
@@ -159,11 +162,13 @@ import org.robovm.apple.audiotoolbox.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
+    @WeaklyLinked
     @Bridge(symbol="CMAudioFormatDescriptionCreate", optional=true)
     protected static native OSStatus create0(CFAllocator allocator, AudioStreamBasicDescription asbd, @MachineSizedUInt long layoutSize, AudioChannelLayout layout, @MachineSizedUInt long magicCookieSize, VoidPtr magicCookie, NSDictionary<NSString, ?> extensions, CMAudioFormatDescription.CMAudioFormatDescriptionPtr outDesc);
     /**
      * @since Available in iOS 4.0 and later.
      */
+    @WeaklyLinked
     @Bridge(symbol="CMAudioFormatDescriptionGetStreamBasicDescription", optional=true)
     public native AudioStreamBasicDescription getStreamBasicDescription();
     /**
@@ -174,6 +179,7 @@ import org.robovm.apple.audiotoolbox.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
+    @WeaklyLinked
     @Bridge(symbol="CMAudioFormatDescriptionGetChannelLayout", optional=true)
     private native AudioChannelLayout getChannelLayout0(MachineSizedUIntPtr layoutSize);
     /**

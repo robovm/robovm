@@ -1,5 +1,5 @@
 package: org.robovm.apple.coremedia
-include: [foundation.yaml, corefoundation.yaml, dispatch.yaml, coreaudio.yaml, coreanimation.yaml, coregraphics.yaml, corevideo.yaml, audiotoolbox.yaml]
+include: [foundation.yaml, corefoundation.yaml, dispatch.yaml, coreaudio.yaml, coregraphics.yaml, corevideo.yaml, audiotoolbox.yaml]
 library: CoreMedia
 framework: CoreMedia
 clang_args: ['-x', 'objective-c']
@@ -87,6 +87,7 @@ classes:
         extends: CFType
     CMAudioFormatDescription:
         extends: CMFormatDescription
+        annotations: ['@WeaklyLinked']
         add_ptr: true
     CMClosedCaptionFormatDescription:
         extends: CMFormatDescription
@@ -105,6 +106,7 @@ classes:
         add_ptr: true
     CMVideoFormatDescription:
         extends: CMFormatDescription
+        annotations: ['@WeaklyLinked']
         add_ptr: true
     CMSampleBuffer:
         extends: CFType
@@ -198,6 +200,7 @@ functions:
         class: CMAudioFormatDescription
         name: '#{g[0]}0'
         visibility: protected
+        annotations: ['@WeaklyLinked']
         parameters:
             extensions:
                 type: 'NSDictionary<NSString, ?>'
@@ -209,7 +212,12 @@ functions:
             formatDescriptionArray:
                 type: List<CMAudioFormatDescription>
                 marshaler: CFType.AsListMarshaler
-    CMAudioFormatDescription(GetChannelLayout|GetFormatList|GetMagicCookie):
+    CMAudioFormatDescription(GetChannelLayout):
+        class: CMAudioFormatDescription
+        name: '#{g[0]}0'
+        visibility: private      
+        annotations: ['@WeaklyLinked']
+    CMAudioFormatDescription(GetFormatList|GetMagicCookie):
         class: CMAudioFormatDescription
         name: '#{g[0]}0'
         visibility: private
@@ -231,6 +239,10 @@ functions:
         parameters:
             soundDescriptionFlavor:
                 type: CMSoundDescriptionFlavor
+    CMAudioFormatDescription(GetStreamBasicDescription):
+        class: CMAudioFormatDescription
+        name: '#{g[0]}'
+        annotations: ['@WeaklyLinked']
     CMAudioFormatDescription(.*):
         class: CMAudioFormatDescription
         name: '#{g[0]}'
@@ -590,6 +602,7 @@ functions:
         class: CMSampleBuffer
         name: '#{g[0]}0'
         visibility: protected
+        annotations: ['@WeaklyLinked']
         parameters:
             makeDataReadyRefcon:
                 type: '@Pointer long'
@@ -597,6 +610,7 @@ functions:
         class: CMSampleBuffer
         name: createAudioSampleBuffer0
         visibility: protected
+        annotations: ['@WeaklyLinked']
         parameters:
             makeDataReadyRefcon:
                 type: '@Pointer long'
@@ -608,6 +622,7 @@ functions:
         class: CMSampleBuffer
         name: setAudioBufferList0
         visibility: protected
+        annotations: ['@WeaklyLinked']
         parameters:
             flags:
                 type: CMSampleBufferFlags
@@ -615,6 +630,7 @@ functions:
         class: CMSampleBuffer
         name: '#{g[0]}0'
         visibility: protected
+        annotations: ['@WeaklyLinked']
         parameters:
             flags:
                 type: CMSampleBufferFlags
@@ -622,6 +638,7 @@ functions:
         class: CMSampleBuffer
         name: '#{g[0]}0'
         visibility: protected
+        annotations: ['@WeaklyLinked']
     CMSampleBufferDataIsReady:
         class: CMSampleBuffer
         name: isDataReady
@@ -637,9 +654,18 @@ functions:
         class: CMSampleBuffer
         name: '#{g[0]}0'
         visibility: protected
+    CMSampleBuffer(GetImageBuffer):
+        class: CMSampleBuffer
+        name: '#{g[0]}'
+        annotations: ['@WeaklyLinked']
     CMSampleBufferGetAudioStreamPacketDescriptionsPtr:
         exclude: true
-    CMSampleBuffer(CopyPCMDataIntoAudioBufferList|SetDataReady|MakeDataReady|TrackDataReadiness|Invalidate|SetOutputPresentationTimeStamp):
+    CMSampleBuffer(CopyPCMDataIntoAudioBufferList):
+        class: CMSampleBuffer
+        name: '#{g[0]}0'
+        visibility: protected
+        annotations: ['@WeaklyLinked']
+    CMSampleBuffer(SetDataReady|MakeDataReady|TrackDataReadiness|Invalidate|SetOutputPresentationTimeStamp):
         class: CMSampleBuffer
         name: '#{g[0]}0'
         visibility: protected
@@ -709,6 +735,7 @@ functions:
         class: CMTextFormatDescription
         name: '#{g[0]}0'
         visibility: protected
+        annotations: ['@WeaklyLinked']
         parameters:
             desc:
                 type: CMTextFormatDescription
@@ -785,6 +812,11 @@ functions:
     CMTimebase(Get.*):
         class: CMTimebase
         name: '#{g[0]}'
+    CMTimebase(.*TimerDispatchSource.*):
+        class: CMTimebase
+        name: '#{g[0]}0'
+        visibility: protected
+        annotations: ['@WeaklyLinked']
     CMTimebase(.*):
         class: CMTimebase
         name: '#{g[0]}0'
@@ -854,6 +886,10 @@ functions:
         class: CMVideoFormatDescription
         name: '#{g[0]}0'
         visibility: private
+    CMVideoFormatDescription(GetPresentationDimensions|GetCleanAperture):
+        class: CMVideoFormatDescription
+        name: '#{g[0]}'
+        annotations: ['@WeaklyLinked']
     CMVideoFormatDescription(.*):
         class: CMVideoFormatDescription
         name: '#{g[0]}'

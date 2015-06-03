@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -292,7 +293,7 @@ import org.robovm.apple.uikit.*;
     /*</methods>*/
     
     /*<keys>*/
-    @Library("CoreGraphics")
+    @Library("CoreGraphics") @StronglyLinked
     public static class Keys {
         static { Bro.bind(Keys.class); }
         /**

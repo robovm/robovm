@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -57,6 +58,7 @@ import org.robovm.apple.uikit.*;
     @StructMember(1) public native CGSize setHeight(@MachineSizedFloat double height);
     /*</members>*/
 
+    @WeaklyLinked
     public static CGSize fromString(String string) {
         return UIGeometry.stringToCGSize(string);
     }
@@ -74,6 +76,7 @@ import org.robovm.apple.uikit.*;
         return obj instanceof CGSize && equalsTo(this, (CGSize) obj);
     }
     
+    @WeaklyLinked
     @Override
     public String toString() {
         return UIGeometry.toString(this);

@@ -15,6 +15,7 @@ enums:
 classes:
     # Opaque Types
     MTAudioProcessingTap:
+        annotations: ['@WeaklyLinked']
         extends: CFType
     opaqueMTAudioProcessingTap:
         name: MTAudioProcessingTap

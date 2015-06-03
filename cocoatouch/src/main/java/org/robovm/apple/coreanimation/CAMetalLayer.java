@@ -23,11 +23,12 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
-import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
 import org.robovm.apple.opengles.*;
@@ -52,12 +53,16 @@ import org.robovm.apple.metal.*;
     protected CAMetalLayer(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
+    @WeaklyLinked
     @Property(selector = "device")
     public native MTLDevice getDevice();
+    @WeaklyLinked
     @Property(selector = "setDevice:")
     public native void setDevice(MTLDevice v);
+    @WeaklyLinked
     @Property(selector = "pixelFormat")
     public native MTLPixelFormat getPixelFormat();
+    @WeaklyLinked
     @Property(selector = "setPixelFormat:")
     public native void setPixelFormat(MTLPixelFormat v);
     @Property(selector = "framebufferOnly")

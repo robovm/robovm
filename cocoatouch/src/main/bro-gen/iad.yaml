@@ -1,5 +1,5 @@
 package: org.robovm.apple.iad
-include: [foundation.yaml, uikit.yaml, addressbook.yaml, mediaplayer.yaml, coregraphics.yaml, avkit.yaml]
+include: [foundation.yaml, uikit.yaml, mediaplayer.yaml, coregraphics.yaml, avkit.yaml]
 library: iAd
 framework: iAd
 clang_args: ['-x', 'objective-c']
@@ -15,10 +15,12 @@ enums:
 
 categories:
     iAdPreroll@AVPlayerViewController: # DONE
+        annotations: ['@WeaklyLinked']
         methods:
             '-playPrerollAdWithCompletionHandler:':
                 name: playPrerollAd
     iAdPreroll@MPMoviePlayerController: # DONE
+        annotations: ['@WeaklyLinked']
         methods:
             '-playPrerollAdWithCompletionHandler:':
                 name: playPrerollAd
@@ -43,6 +45,7 @@ classes:
             '+sizeFromBannerContentSizeIdentifier:':
                 name: getSizeForIdentifier
                 visibility: protected
+                annotations: ['@WeaklyLinked']
                 parameters:
                     contentSizeIdentifier:
                         type: NSString

@@ -23,15 +23,17 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
-import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
+import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.opengles.*;
 import org.robovm.apple.corevideo.*;
 import org.robovm.apple.imageio.*;
+import org.robovm.apple.uikit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -78,16 +80,19 @@ import org.robovm.apple.imageio.*;
     public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage createCGImage(CIImage im, @ByVal CGRect r);
     @Method(selector = "createCGImage:fromRect:format:colorSpace:")
     public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage createCGImage(CIImage im, @ByVal CGRect r, int f, CGColorSpace cs);
+    @WeaklyLinked
     @Method(selector = "render:toBitmap:rowBytes:bounds:format:colorSpace:")
     public native void render(CIImage im, VoidPtr data, @MachineSizedSInt long rb, @ByVal CGRect r, int f, CGColorSpace cs);
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @WeaklyLinked
     @Method(selector = "render:toCVPixelBuffer:")
     public native void render(CIImage image, CVPixelBuffer buffer);
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @WeaklyLinked
     @Method(selector = "render:toCVPixelBuffer:bounds:colorSpace:")
     public native void render(CIImage image, CVPixelBuffer buffer, @ByVal CGRect r, CGColorSpace cs);
     /**
@@ -103,16 +108,19 @@ import org.robovm.apple.imageio.*;
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @WeaklyLinked
     @Method(selector = "contextWithOptions:")
     protected static native @Pointer long init(CIContextOptions options);
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @WeaklyLinked
     @Method(selector = "contextWithEAGLContext:")
     protected static native @Pointer long init(EAGLContext eaglContext);
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @WeaklyLinked
     @Method(selector = "contextWithEAGLContext:options:")
     protected static native @Pointer long init(EAGLContext eaglContext, CIContextOptions options);
     /*</methods>*/

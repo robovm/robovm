@@ -23,11 +23,13 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.uikit.*;
+import org.robovm.apple.coretext.*;
 import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coregraphics.*;
@@ -69,6 +71,7 @@ import org.robovm.apple.dispatch.*;
     public native String getPassword();
     @Property(selector = "hasPassword")
     public native boolean hasPassword();
+    @WeaklyLinked
     @Property(selector = "identity")
     public native SecIdentity getIdentity();
     /**
@@ -79,16 +82,19 @@ import org.robovm.apple.dispatch.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @WeaklyLinked
     @Method(selector = "initWithUser:password:persistence:")
     protected native @Pointer long init(String user, String password, NSURLCredentialPersistence persistence);
     /**
      * @since Available in iOS 3.0 and later.
      */
+    @WeaklyLinked
     @Method(selector = "initWithIdentity:certificates:persistence:")
     protected native @Pointer long init(SecIdentity identity, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<SecCertificate> certArray, NSURLCredentialPersistence persistence);
     /**
      * @since Available in iOS 3.0 and later.
      */
+    @WeaklyLinked
     @Method(selector = "initWithTrust:")
     protected native @Pointer long init(SecTrust trust);
     /*</methods>*/

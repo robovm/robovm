@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -271,6 +272,7 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @WeaklyLinked
     public void setScopeBarButtonTitleTextMarkupAttributes(CMTextMarkupAttributes attributes, UIControlState state) {
         if (attributes == null) {
             setScopeBarButtonTitleTextAttributesDictionary(null, state);
@@ -281,6 +283,7 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @WeaklyLinked
     public void setScopeBarButtonTitleCoreTextAttributes(CTAttributedStringAttributes attributes, UIControlState state) {
         if (attributes == null) {
             setScopeBarButtonTitleTextAttributesDictionary(null, state);
@@ -299,6 +302,7 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @WeaklyLinked
     public CMTextMarkupAttributes getScopeBarButtonTitleTextMarkupAttributes(UIControlState state) {
         NSDictionary<NSString, NSObject> dict = getScopeBarButtonTitleTextAttributesDictionary(state);
         if (dict == null) return null;
@@ -307,6 +311,7 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @WeaklyLinked
     public CTAttributedStringAttributes getScopeBarButtonTitleCoreTextAttributes(UIControlState state) {
         NSDictionary<NSString, NSObject> dict = getScopeBarButtonTitleTextAttributesDictionary(state);
         if (dict == null) return null;

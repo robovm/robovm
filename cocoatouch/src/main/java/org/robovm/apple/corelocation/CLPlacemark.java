@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -53,6 +54,7 @@ import org.robovm.apple.corebluetooth.*;
     public native CLLocation getLocation();
     @Property(selector = "region")
     public native CLRegion getRegion();
+    @WeaklyLinked
     @Property(selector = "addressDictionary")
     public native ABPersonAddress getAddress();
     @Property(selector = "name")

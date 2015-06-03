@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -33,12 +34,15 @@ import org.robovm.apple.imageio.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(ALAssetsGroupProperty.Marshaler.class)
-/*<annotations>*/@Library("AssetsLibrary")/*</annotations>*/
+/*<annotations>*/@Library("AssetsLibrary") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/ALAssetsGroupProperty/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/ALAssetsGroupProperty/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/ALAssetsGroupProperty/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static ALAssetsGroupProperty toObject(Class<ALAssetsGroupProperty> cls, long handle, long flags) {
@@ -56,43 +60,61 @@ import org.robovm.apple.imageio.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(ALAssetsGroupProperty.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<ALAssetsGroupProperty> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<ALAssetsGroupProperty> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(ALAssetsGroupProperty.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<ALAssetsGroupProperty> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (ALAssetsGroupProperty i : l) {
+                array.add(i.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final ALAssetsGroupProperty Name = new ALAssetsGroupProperty("NameValue");
+    public static final ALAssetsGroupProperty Name = new ALAssetsGroupProperty("Name");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final ALAssetsGroupProperty Type = new ALAssetsGroupProperty("TypeValue");
+    public static final ALAssetsGroupProperty Type = new ALAssetsGroupProperty("Type");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final ALAssetsGroupProperty PersistentID = new ALAssetsGroupProperty("PersistentIDValue");
+    public static final ALAssetsGroupProperty PersistentID = new ALAssetsGroupProperty("PersistentID");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final ALAssetsGroupProperty URL = new ALAssetsGroupProperty("URLValue");
+    public static final ALAssetsGroupProperty URL = new ALAssetsGroupProperty("URL");
+    /*</constants>*/
     
-    private static ALAssetsGroupProperty[] values = new ALAssetsGroupProperty[] {Name, Type, PersistentID, URL};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    private static /*<name>*/ALAssetsGroupProperty/*</name>*/[] values = new /*<name>*/ALAssetsGroupProperty/*</name>*/[] {/*<value_list>*/Name, Type, PersistentID, URL/*</value_list>*/};
     
-    private ALAssetsGroupProperty(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/ALAssetsGroupProperty/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static ALAssetsGroupProperty valueOf(NSString value) {
-        for (ALAssetsGroupProperty v : values) {
+    public static /*<name>*/ALAssetsGroupProperty/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/ALAssetsGroupProperty/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -100,26 +122,34 @@ import org.robovm.apple.imageio.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/ALAssetsGroupProperty/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="ALAssetsGroupPropertyName", optional=true)
-    protected static native NSString NameValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="ALAssetsGroupPropertyType", optional=true)
-    protected static native NSString TypeValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="ALAssetsGroupPropertyPersistentID", optional=true)
-    protected static native NSString PersistentIDValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="ALAssetsGroupPropertyURL", optional=true)
-    protected static native NSString URLValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("AssetsLibrary") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="ALAssetsGroupPropertyName", optional=true)
+        public static native NSString Name();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="ALAssetsGroupPropertyType", optional=true)
+        public static native NSString Type();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="ALAssetsGroupPropertyPersistentID", optional=true)
+        public static native NSString PersistentID();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="ALAssetsGroupPropertyURL", optional=true)
+        public static native NSString URL();
+        /*</values>*/
+    }
 }

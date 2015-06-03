@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -32,45 +33,91 @@ import org.robovm.apple.corefoundation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("AddressBook")/*</annotations>*/
+/*<annotations>*/@Library("AddressBook") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/ABPersonKind/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/ABPersonKind/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<CFNumber>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(ABPersonKind.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    public static final ABPersonKind Person = new ABPersonKind("PersonValue");
-    public static final ABPersonKind Organization = new ABPersonKind("OrganizationValue");
-    
-    private static ABPersonKind[] values = new ABPersonKind[] {Person, Organization};
-    
-    private final LazyGlobalValue<CFNumber> lazyGlobalValue;
-    
-    private ABPersonKind(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    static { Bro.bind(/*<name>*/ABPersonKind/*</name>*/.class); }
+
+    /*<marshalers>*/
+    public static class Marshaler {
+        @MarshalsPointer
+        public static ABPersonKind toObject(Class<ABPersonKind> cls, long handle, long flags) {
+            CFNumber o = (CFNumber) CFType.Marshaler.toObject(CFNumber.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return ABPersonKind.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(ABPersonKind o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return CFType.Marshaler.toNative(o.value(), flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public CFNumber value() {
-        return lazyGlobalValue.value();
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<ABPersonKind> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<ABPersonKind> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(ABPersonKind.valueOf(o.get(i, CFNumber.class)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<ABPersonKind> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray array = CFMutableArray.create();
+            for (ABPersonKind i : l) {
+                array.add(i.value());
+            }
+            return CFType.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
+    public static final ABPersonKind Person = new ABPersonKind("Person");
+    public static final ABPersonKind Organization = new ABPersonKind("Organization");
+    /*</constants>*/
+    
+    private static /*<name>*/ABPersonKind/*</name>*/[] values = new /*<name>*/ABPersonKind/*</name>*/[] {/*<value_list>*/Person, Organization/*</value_list>*/};
+    
+    /*<name>*/ABPersonKind/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static ABPersonKind valueOf(CFNumber value) {
-        for (ABPersonKind v : values) {
-            if (v.value().intValue() == value.intValue()) {
+    public static /*<name>*/ABPersonKind/*</name>*/ valueOf(/*<type>*/CFNumber/*</type>*/ value) {
+        for (/*<name>*/ABPersonKind/*</name>*/ v : values) {
+            if (v.value().equals(value)) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/ABPersonKind/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    @GlobalValue(symbol="kABPersonKindPerson", optional=true)
-    protected static native CFNumber PersonValue();
-    @GlobalValue(symbol="kABPersonKindOrganization", optional=true)
-    protected static native CFNumber OrganizationValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("AddressBook") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        @GlobalValue(symbol="kABPersonKindPerson", optional=true)
+        public static native CFNumber Person();
+        @GlobalValue(symbol="kABPersonKindOrganization", optional=true)
+        public static native CFNumber Organization();
+        /*</values>*/
+    }
 }

@@ -69,6 +69,10 @@ functions:
         parameters:
             runLoopMode:
                 type: CFString
+    SCNetworkReachability(SetDispatchQueue):
+        class: SCNetworkReachability
+        name: '#{g[0]}'
+        annotations: ['@WeaklyLinked']
     SCNetworkReachability(.*):
         class: SCNetworkReachability
         name: '#{g[0]}'

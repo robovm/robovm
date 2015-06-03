@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -62,6 +63,7 @@ import org.robovm.apple.dispatch.*;
     /*<methods>*/
     @Method(selector = "pushTokenForType:")
     public native NSData getPushTokenForType(String type);
+    @WeaklyLinked
     @Method(selector = "initWithQueue:")
     protected native @Pointer long init(DispatchQueue queue);
     /*</methods>*/

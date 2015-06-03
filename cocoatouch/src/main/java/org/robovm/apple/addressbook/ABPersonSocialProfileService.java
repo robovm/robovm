@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -32,58 +33,98 @@ import org.robovm.apple.corefoundation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("AddressBook")/*</annotations>*/
+/*<annotations>*/@Library("AddressBook") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/ABPersonSocialProfileService/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/ABPersonSocialProfileService/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<CFString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(ABPersonSocialProfileService.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    static { Bro.bind(/*<name>*/ABPersonSocialProfileService/*</name>*/.class); }
+
+    /*<marshalers>*/
+    public static class Marshaler {
+        @MarshalsPointer
+        public static ABPersonSocialProfileService toObject(Class<ABPersonSocialProfileService> cls, long handle, long flags) {
+            CFString o = (CFString) CFType.Marshaler.toObject(CFString.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return ABPersonSocialProfileService.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(ABPersonSocialProfileService o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return CFType.Marshaler.toNative(o.value(), flags);
+        }
+    }
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<ABPersonSocialProfileService> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<ABPersonSocialProfileService> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(ABPersonSocialProfileService.valueOf(o.get(i, CFString.class)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<ABPersonSocialProfileService> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray array = CFMutableArray.create();
+            for (ABPersonSocialProfileService i : l) {
+                array.add(i.value());
+            }
+            return CFType.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final ABPersonSocialProfileService Twitter = new ABPersonSocialProfileService("TwitterValue");
+    public static final ABPersonSocialProfileService Twitter = new ABPersonSocialProfileService("Twitter");
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public static final ABPersonSocialProfileService SinaWeibo = new ABPersonSocialProfileService("SinaWeiboValue");
+    public static final ABPersonSocialProfileService SinaWeibo = new ABPersonSocialProfileService("SinaWeibo");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final ABPersonSocialProfileService GameCenter = new ABPersonSocialProfileService("GameCenterValue");
+    public static final ABPersonSocialProfileService GameCenter = new ABPersonSocialProfileService("GameCenter");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final ABPersonSocialProfileService Facebook = new ABPersonSocialProfileService("FacebookValue");
+    public static final ABPersonSocialProfileService Facebook = new ABPersonSocialProfileService("Facebook");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final ABPersonSocialProfileService Myspace = new ABPersonSocialProfileService("MyspaceValue");
+    public static final ABPersonSocialProfileService Myspace = new ABPersonSocialProfileService("Myspace");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final ABPersonSocialProfileService LinkedIn = new ABPersonSocialProfileService("LinkedInValue");
+    public static final ABPersonSocialProfileService LinkedIn = new ABPersonSocialProfileService("LinkedIn");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final ABPersonSocialProfileService Flickr = new ABPersonSocialProfileService("FlickrValue");
-    private static ABPersonSocialProfileService[] values = new ABPersonSocialProfileService[] {Twitter, GameCenter, Facebook, Myspace, LinkedIn, Flickr, SinaWeibo};
+    public static final ABPersonSocialProfileService Flickr = new ABPersonSocialProfileService("Flickr");
+    /*</constants>*/
     
-    private final LazyGlobalValue<CFString> lazyGlobalValue;
+    private static /*<name>*/ABPersonSocialProfileService/*</name>*/[] values = new /*<name>*/ABPersonSocialProfileService/*</name>*/[] {/*<value_list>*/Twitter, SinaWeibo, GameCenter, Facebook, Myspace, LinkedIn, Flickr/*</value_list>*/};
     
-    private ABPersonSocialProfileService(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    /*<name>*/ABPersonSocialProfileService/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public CFString value() {
-        return lazyGlobalValue.value();
-    }
-    public static ABPersonSocialProfileService valueOf(CFString value) {
-        for (ABPersonSocialProfileService v : values) {
+    
+    public static /*<name>*/ABPersonSocialProfileService/*</name>*/ valueOf(/*<type>*/CFString/*</type>*/ value) {
+        for (/*<name>*/ABPersonSocialProfileService/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -91,41 +132,49 @@ import org.robovm.apple.corefoundation.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/ABPersonSocialProfileService/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="kABPersonSocialProfileServiceTwitter", optional=true)
-    protected static native CFString TwitterValue();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="kABPersonSocialProfileServiceSinaWeibo", optional=true)
-    protected static native CFString SinaWeiboValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="kABPersonSocialProfileServiceGameCenter", optional=true)
-    protected static native CFString GameCenterValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="kABPersonSocialProfileServiceFacebook", optional=true)
-    protected static native CFString FacebookValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="kABPersonSocialProfileServiceMyspace", optional=true)
-    protected static native CFString MyspaceValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="kABPersonSocialProfileServiceLinkedIn", optional=true)
-    protected static native CFString LinkedInValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="kABPersonSocialProfileServiceFlickr", optional=true)
-    protected static native CFString FlickrValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("AddressBook") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="kABPersonSocialProfileServiceTwitter", optional=true)
+        public static native CFString Twitter();
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        @GlobalValue(symbol="kABPersonSocialProfileServiceSinaWeibo", optional=true)
+        public static native CFString SinaWeibo();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="kABPersonSocialProfileServiceGameCenter", optional=true)
+        public static native CFString GameCenter();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="kABPersonSocialProfileServiceFacebook", optional=true)
+        public static native CFString Facebook();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="kABPersonSocialProfileServiceMyspace", optional=true)
+        public static native CFString Myspace();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="kABPersonSocialProfileServiceLinkedIn", optional=true)
+        public static native CFString LinkedIn();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="kABPersonSocialProfileServiceFlickr", optional=true)
+        public static native CFString Flickr();
+        /*</values>*/
+    }
 }

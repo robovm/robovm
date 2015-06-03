@@ -73,8 +73,10 @@ classes:
         properties:
             'billingAddress':
                 type: ABPerson
+                annotations: ['@WeaklyLinked']
             'shippingAddress':
                 type: ABPerson
+                annotations: ['@WeaklyLinked']
     PKPaymentAuthorizationViewController: # DONE
         methods:
             '-initWithPaymentRequest:':

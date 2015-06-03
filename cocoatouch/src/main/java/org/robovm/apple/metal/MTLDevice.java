@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -102,12 +103,14 @@ import org.robovm.apple.dispatch.*;
     }
     @Method(selector = "newLibraryWithFile:error:")
     private native MTLLibrary newLibraryWithFile(String filepath, NSError.NSErrorPtr error);
+    @WeaklyLinked
     public MTLLibrary newLibraryWithData(DispatchData data) throws NSErrorException {
        NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
        MTLLibrary result = newLibraryWithData(data, ptr);
        if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
        return result;
     }
+    @WeaklyLinked
     @Method(selector = "newLibraryWithData:error:")
     private native MTLLibrary newLibraryWithData(DispatchData data, NSError.NSErrorPtr error);
     public MTLLibrary newLibraryWithSource(String source, MTLCompileOptions options) throws NSErrorException {

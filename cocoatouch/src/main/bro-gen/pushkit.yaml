@@ -11,9 +11,6 @@ typedefs: {}
 enums: {}
         
 classes:
-    PushKit:
-        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
-
     PKPushCredentials: {} # DONE
     PKPushPayload: {} # DONE
     PKPushRegistry: # DONE
@@ -25,6 +22,7 @@ classes:
                 name: getPushTokenForType
             '-initWithQueue:':
                 name: init      
+                annotations: ['@WeaklyLinked']
     
 protocols:
     PKPushRegistryDelegate: # DONE

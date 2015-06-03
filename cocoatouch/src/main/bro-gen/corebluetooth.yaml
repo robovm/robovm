@@ -33,8 +33,10 @@ classes:
         methods:
             '-initWithDelegate:queue:':
                 name: init
+                annotations: ['@WeaklyLinked']
             '-initWithDelegate:queue:options:':
                 name: init
+                annotations: ['@WeaklyLinked']
                 parameters:
                     options:
                         type: CBCentralManagerOptions
@@ -144,8 +146,10 @@ classes:
         methods:
             '-initWithDelegate:queue:':
                 name: init
+                annotations: ['@WeaklyLinked']
             '-initWithDelegate:queue:options:':
                 name: init
+                annotations: ['@WeaklyLinked']
                 parameters:
                     options:
                         type: CBPeripheralManagerOptions

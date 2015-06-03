@@ -88,28 +88,35 @@ functions:
 
 values:
     ACAccountTypeIdentifier(.*):
-        class: ACAccountTypeIdentifier
-        name: '#{g[0]}Value'
-        type: NSString
-        visibility: protected
-        
-    ACFacebook(.*Key):
-        class: ACFacebookOptions
+        enum: ACAccountTypeIdentifier
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        
+    ACFacebook(.*)Key:
+        dictionary: ACFacebookOptions
+        name: '#{g[0]}'
+        type: NSString
+        extends: ACAccountOptions
+        methods:
+            AppId:
+                type: String
+            Permissions:
+                type: List<String>
+            Audience:
+                type: ACFacebookAudience
     ACFacebookAudience(.*):
-        class: ACFacebookAudience
-        name: '#{g[0]}Value'
-        type: NSString
-        visibility: protected
-        
-    ACTencentWeibo(.*Key):
-        class: ACTencentWeiboOptions
+        enum: ACFacebookAudience
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
-        
+    ACTencentWeibo(.*)Key:
+        dictionary: ACTencentWeiboOptions
+        name: '#{g[0]}'
+        type: NSString
+        methods:
+            AppId:
+                type: String
+
+    # ACAccountStore
     ACAccountStore(DidChangeNotification):
         class: ACAccountStore
         type: NSString

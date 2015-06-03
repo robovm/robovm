@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -30,7 +31,6 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreaudio.*;
-import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.corevideo.*;
 import org.robovm.apple.audiotoolbox.*;
@@ -38,7 +38,7 @@ import org.robovm.apple.audiotoolbox.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("CoreMedia")/*</annotations>*/
+/*<annotations>*/@Library("CoreMedia") @WeaklyLinked/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CMVideoFormatDescription/*</name>*/ 
     extends /*<extends>*/CMFormatDescription/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
@@ -63,6 +63,7 @@ import org.robovm.apple.audiotoolbox.*;
      * @throws OSStatusException 
      * @since Available in iOS 4.0 and later.
      */
+    @WeaklyLinked
     public static CMVideoFormatDescription create(CVImageBuffer imageBuffer) throws OSStatusException {
         CMVideoFormatDescription.CMVideoFormatDescriptionPtr ptr = new CMVideoFormatDescription.CMVideoFormatDescriptionPtr();
         OSStatus status = create0(null, imageBuffer, ptr);
@@ -119,11 +120,13 @@ import org.robovm.apple.audiotoolbox.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
+    @WeaklyLinked
     @Bridge(symbol="CMVideoFormatDescriptionGetPresentationDimensions", optional=true)
     public native @ByVal CGSize getPresentationDimensions(boolean usePixelAspectRatio, boolean useCleanAperture);
     /**
      * @since Available in iOS 4.0 and later.
      */
+    @WeaklyLinked
     @Bridge(symbol="CMVideoFormatDescriptionGetCleanAperture", optional=true)
     public native @ByVal CGRect getCleanAperture(boolean originIsAtTopLeft);
     /**

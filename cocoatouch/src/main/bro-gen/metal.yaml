@@ -310,6 +310,7 @@ protocols:
             '-newLibraryWithData:error:':
                 trim_after_first_colon: true
                 throws: NSErrorException
+                annotations: ['@WeaklyLinked']
                 parameters:
                     data:
                         type: DispatchData

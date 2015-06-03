@@ -23,19 +23,20 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
-import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.corevideo.*;
-import org.robovm.apple.audiotoolbox.*;
 import org.robovm.apple.mediatoolbox.*;
+import org.robovm.apple.audiotoolbox.*;
 import org.robovm.apple.audiounit.*;
 /*</imports>*/
 
@@ -72,6 +73,7 @@ import org.robovm.apple.audiounit.*;
     /*<properties>*/
     @Property(selector = "sampleBufferDelegate")
     public native AVCaptureVideoDataOutputSampleBufferDelegate getSampleBufferDelegate();
+    @WeaklyLinked
     @Property(selector = "sampleBufferCallbackQueue")
     public native DispatchQueue getSampleBufferCallbackQueue();
     @Property(selector = "videoSettings")
@@ -81,6 +83,7 @@ import org.robovm.apple.audiounit.*;
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @WeaklyLinked
     @Property(selector = "availableVideoCVPixelFormatTypes")
     public native @org.robovm.rt.bro.annotation.Marshaler(CVPixelFormatType.AsListMarshaler.class) List<CVPixelFormatType> getAvailableVideoCVPixelFormatTypes();
     /**
@@ -107,6 +110,7 @@ import org.robovm.apple.audiounit.*;
         return new AVPixelBufferAttributes(getRecommendedVideoSettings0(outputFileType).as(CFDictionary.class));
     }
     /*<methods>*/
+    @WeaklyLinked
     @Method(selector = "setSampleBufferDelegate:queue:")
     public native void setSampleBufferDelegate(AVCaptureVideoDataOutputSampleBufferDelegate sampleBufferDelegate, DispatchQueue sampleBufferCallbackQueue);
     /**

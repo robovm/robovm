@@ -1,5 +1,5 @@
 package: org.robovm.apple.corevideo
-include: [foundation.yaml, corefoundation.yaml, coregraphics.yaml, opengles.yaml, coremedia.yaml, metal.yaml]
+include: [foundation.yaml, corefoundation.yaml, coregraphics.yaml, opengles.yaml, metal.yaml]
 library: CoreVideo
 framework: CoreVideo
 clang_args: ['-x', 'objective-c']
@@ -39,9 +39,11 @@ classes:
         extends: CVBuffer
     CVMetalTexture:
         extends: CVImageBuffer
+        annotations: ['@WeaklyLinked']
         add_ptr: true
     CVMetalTextureCache:
         extends: CFType
+        annotations: ['@WeaklyLinked']
         add_ptr: true
     CVOpenGLESTexture:
         extends: CVImageBuffer
@@ -159,6 +161,7 @@ functions:
         class: CVOpenGLESTextureCache
         name: '#{g[0]}'
         visibility: private
+        annotations: ['@WeaklyLinked']
         parameters:
             textureAttributes:
                 type: 'NSDictionary<NSString, ?>'

@@ -23,12 +23,13 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
+import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.coregraphics.*;
-import org.robovm.apple.foundation.*;
 import org.robovm.apple.opengles.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.apple.dispatch.*;
@@ -59,18 +60,25 @@ import org.robovm.apple.dispatch.*;
     /*<methods>*/
     @Method(selector = "initWithSharegroup:")
     protected native @Pointer long init(EAGLSharegroup sharegroup);
+    @WeaklyLinked
     @Method(selector = "textureWithContentsOfFile:options:queue:completionHandler:")
     public native void loadTexture(String path, GLKTextureLoaderOptions options, DispatchQueue queue, @Block VoidBlock2<GLKTextureInfo, NSError> block);
+    @WeaklyLinked
     @Method(selector = "textureWithContentsOfURL:options:queue:completionHandler:")
     public native void loadTexture(NSURL url, GLKTextureLoaderOptions options, DispatchQueue queue, @Block VoidBlock2<GLKTextureInfo, NSError> block);
+    @WeaklyLinked
     @Method(selector = "textureWithContentsOfData:options:queue:completionHandler:")
     public native void createTexture(NSData data, GLKTextureLoaderOptions options, DispatchQueue queue, @Block VoidBlock2<GLKTextureInfo, NSError> block);
+    @WeaklyLinked
     @Method(selector = "textureWithCGImage:options:queue:completionHandler:")
     public native void createTexture(CGImage cgImage, GLKTextureLoaderOptions options, DispatchQueue queue, @Block VoidBlock2<GLKTextureInfo, NSError> block);
+    @WeaklyLinked
     @Method(selector = "cubeMapWithContentsOfFiles:options:queue:completionHandler:")
     public native void loadCubeMap(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> paths, GLKTextureLoaderOptions options, DispatchQueue queue, @Block VoidBlock2<GLKTextureInfo, NSError> block);
+    @WeaklyLinked
     @Method(selector = "cubeMapWithContentsOfFile:options:queue:completionHandler:")
     public native void loadCubeMap(String path, GLKTextureLoaderOptions options, DispatchQueue queue, @Block VoidBlock2<GLKTextureInfo, NSError> block);
+    @WeaklyLinked
     @Method(selector = "cubeMapWithContentsOfURL:options:queue:completionHandler:")
     public native void loadCubeMap(NSURL url, GLKTextureLoaderOptions options, DispatchQueue queue, @Block VoidBlock2<GLKTextureInfo, NSError> block);
     public static GLKTextureInfo loadTexture(String path, GLKTextureLoaderOptions options) throws NSErrorException {

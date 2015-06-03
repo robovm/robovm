@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -33,12 +34,15 @@ import org.robovm.apple.imageio.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(ALAssetProperty.Marshaler.class)
-/*<annotations>*/@Library("AssetsLibrary")/*</annotations>*/
+/*<annotations>*/@Library("AssetsLibrary") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/ALAssetProperty/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/ALAssetProperty/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
-    
+
+    static { Bro.bind(/*<name>*/ALAssetProperty/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static ALAssetProperty toObject(Class<ALAssetProperty> cls, long handle, long flags) {
@@ -56,60 +60,77 @@ import org.robovm.apple.imageio.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<ALAssetProperty> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<ALAssetProperty> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(ALAssetProperty.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<ALAssetProperty> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (ALAssetProperty i : l) {
+                array.add(i.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(ALAssetProperty.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    /*<constants>*/
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final ALAssetProperty Type = new ALAssetProperty("TypeValue");
+    public static final ALAssetProperty Type = new ALAssetProperty("Type");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final ALAssetProperty Location = new ALAssetProperty("LocationValue");
+    public static final ALAssetProperty Location = new ALAssetProperty("Location");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final ALAssetProperty Duration = new ALAssetProperty("DurationValue");
+    public static final ALAssetProperty Duration = new ALAssetProperty("Duration");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final ALAssetProperty Orientation = new ALAssetProperty("OrientationValue");
+    public static final ALAssetProperty Orientation = new ALAssetProperty("Orientation");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final ALAssetProperty Date = new ALAssetProperty("DateValue");
+    public static final ALAssetProperty Date = new ALAssetProperty("Date");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final ALAssetProperty Representations = new ALAssetProperty("RepresentationsValue");
+    public static final ALAssetProperty Representations = new ALAssetProperty("Representations");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final ALAssetProperty URLs = new ALAssetProperty("URLsValue");
+    public static final ALAssetProperty URLs = new ALAssetProperty("URLs");
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public static final ALAssetProperty AssetURL = new ALAssetProperty("AssetURLValue");
+    public static final ALAssetProperty AssetURL = new ALAssetProperty("AssetURL");
+    /*</constants>*/
     
-    private static ALAssetProperty[] values = new ALAssetProperty[] {Type, Location, Duration, Orientation, Date, 
-        Representations, URLs, AssetURL};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    private static /*<name>*/ALAssetProperty/*</name>*/[] values = new /*<name>*/ALAssetProperty/*</name>*/[] {/*<value_list>*/Type, Location, Duration, Orientation, Date, Representations, URLs, AssetURL/*</value_list>*/};
     
-    private ALAssetProperty(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/ALAssetProperty/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static ALAssetProperty valueOf(NSString value) {
-        for (ALAssetProperty v : values) {
+    public static /*<name>*/ALAssetProperty/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/ALAssetProperty/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -117,46 +138,54 @@ import org.robovm.apple.imageio.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/ALAssetProperty/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="ALAssetPropertyType", optional=true)
-    protected static native NSString TypeValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="ALAssetPropertyLocation", optional=true)
-    protected static native NSString LocationValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="ALAssetPropertyDuration", optional=true)
-    protected static native NSString DurationValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="ALAssetPropertyOrientation", optional=true)
-    protected static native NSString OrientationValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="ALAssetPropertyDate", optional=true)
-    protected static native NSString DateValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="ALAssetPropertyRepresentations", optional=true)
-    protected static native NSString RepresentationsValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="ALAssetPropertyURLs", optional=true)
-    protected static native NSString URLsValue();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="ALAssetPropertyAssetURL", optional=true)
-    protected static native NSString AssetURLValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("AssetsLibrary") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="ALAssetPropertyType", optional=true)
+        public static native NSString Type();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="ALAssetPropertyLocation", optional=true)
+        public static native NSString Location();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="ALAssetPropertyDuration", optional=true)
+        public static native NSString Duration();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="ALAssetPropertyOrientation", optional=true)
+        public static native NSString Orientation();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="ALAssetPropertyDate", optional=true)
+        public static native NSString Date();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="ALAssetPropertyRepresentations", optional=true)
+        public static native NSString Representations();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="ALAssetPropertyURLs", optional=true)
+        public static native NSString URLs();
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        @GlobalValue(symbol="ALAssetPropertyAssetURL", optional=true)
+        public static native NSString AssetURL();
+        /*</values>*/
+    }
 }

@@ -23,12 +23,13 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
-import org.robovm.apple.dispatch.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -195,6 +196,7 @@ import org.robovm.apple.corefoundation.*;
      * @throws OSStatusException 
      * @since Available in iOS 7.0 and later.
      */
+    @WeaklyLinked
     public void evaluateAsync(DispatchQueue queue, VoidBlock2<SecTrust, SecTrustResultType> result) throws OSStatusException {
         OSStatus status = evaluateAsync0(queue, new FunctionPtr(cbEvaluate));
         OSStatusException.throwIfNecessary(status);
@@ -296,6 +298,7 @@ import org.robovm.apple.corefoundation.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
+    @WeaklyLinked
     @Bridge(symbol="SecTrustEvaluateAsync", optional=true)
     protected native OSStatus evaluateAsync0(DispatchQueue queue, FunctionPtr result);
     /**

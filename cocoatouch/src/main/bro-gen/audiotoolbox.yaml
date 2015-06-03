@@ -1,5 +1,5 @@
 package: org.robovm.apple.audiotoolbox
-include: [foundation.yaml, corefoundation.yaml, coregraphics.yaml, opengles.yaml, audiounit.yaml, coreaudio.yaml, coremedia.yaml, coremidi.yaml]
+include: [foundation.yaml, corefoundation.yaml, audiounit.yaml, coreaudio.yaml, coremidi.yaml]
 library: AudioToolbox
 framework: AudioToolbox
 clang_args: ['-x', 'objective-c']
@@ -1049,6 +1049,10 @@ functions:
         parameters:
             inClientData:
                 type: '@Pointer long'
+    MusicSequence(SetMIDIEndpoint):
+        class: MusicSequence
+        name: '#{g[0]}0'
+        annotations: ['@WeaklyLinked']
     MusicSequence(.*):
         class: MusicSequence
         name: '#{g[0]}0'
@@ -1066,6 +1070,11 @@ functions:
         class: MusicTrack
         name: '#{g[0]}0'
         visibility: protected
+    MusicTrack((Get|Set)DestMIDIEndpoint):
+        class: MusicTrack
+        name: '#{g[0]}0'
+        visibility: protected
+        annotations: ['@WeaklyLinked']
     MusicTrack(.*):
         class: MusicTrack
         name: '#{g[0]}0'

@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -32,37 +33,76 @@ import org.robovm.apple.corefoundation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("AddressBook")/*</annotations>*/
+/*<annotations>*/@Library("AddressBook") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/ABPersonAddressPart/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/ABPersonAddressPart/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<CFString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(ABPersonAddressPart.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    public static final ABPersonAddressPart Street = new ABPersonAddressPart("StreetValue");
-    public static final ABPersonAddressPart City = new ABPersonAddressPart("CityValue");
-    public static final ABPersonAddressPart State = new ABPersonAddressPart("StateValue");
-    public static final ABPersonAddressPart ZIP = new ABPersonAddressPart("ZIPValue");
-    public static final ABPersonAddressPart Country = new ABPersonAddressPart("CountryValue");
-    public static final ABPersonAddressPart CountryCode = new ABPersonAddressPart("CountryCodeValue");
-    private static ABPersonAddressPart[] values = new ABPersonAddressPart[] {Street, City, State, ZIP, Country, CountryCode};
-    
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private ABPersonAddressPart(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    static { Bro.bind(/*<name>*/ABPersonAddressPart/*</name>*/.class); }
+
+    /*<marshalers>*/
+    public static class Marshaler {
+        @MarshalsPointer
+        public static ABPersonAddressPart toObject(Class<ABPersonAddressPart> cls, long handle, long flags) {
+            CFString o = (CFString) CFType.Marshaler.toObject(CFString.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return ABPersonAddressPart.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(ABPersonAddressPart o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return CFType.Marshaler.toNative(o.value(), flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<ABPersonAddressPart> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<ABPersonAddressPart> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(ABPersonAddressPart.valueOf(o.get(i, CFString.class)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<ABPersonAddressPart> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray array = CFMutableArray.create();
+            for (ABPersonAddressPart i : l) {
+                array.add(i.value());
+            }
+            return CFType.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
+    public static final ABPersonAddressPart Street = new ABPersonAddressPart("Street");
+    public static final ABPersonAddressPart City = new ABPersonAddressPart("City");
+    public static final ABPersonAddressPart State = new ABPersonAddressPart("State");
+    public static final ABPersonAddressPart ZIP = new ABPersonAddressPart("ZIP");
+    public static final ABPersonAddressPart Country = new ABPersonAddressPart("Country");
+    public static final ABPersonAddressPart CountryCode = new ABPersonAddressPart("CountryCode");
+    /*</constants>*/
+    
+    private static /*<name>*/ABPersonAddressPart/*</name>*/[] values = new /*<name>*/ABPersonAddressPart/*</name>*/[] {/*<value_list>*/Street, City, State, ZIP, Country, CountryCode/*</value_list>*/};
+    
+    /*<name>*/ABPersonAddressPart/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static ABPersonAddressPart valueOf(int value) {
-        for (ABPersonAddressPart v : values) {
+    public static /*<name>*/ABPersonAddressPart/*</name>*/ valueOf(/*<type>*/CFString/*</type>*/ value) {
+        for (/*<name>*/ABPersonAddressPart/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -70,18 +110,26 @@ import org.robovm.apple.corefoundation.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/ABPersonAddressPart/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    @GlobalValue(symbol="kABPersonAddressStreetKey", optional=true)
-    protected static native CFString StreetValue();
-    @GlobalValue(symbol="kABPersonAddressCityKey", optional=true)
-    protected static native CFString CityValue();
-    @GlobalValue(symbol="kABPersonAddressStateKey", optional=true)
-    protected static native CFString StateValue();
-    @GlobalValue(symbol="kABPersonAddressZIPKey", optional=true)
-    protected static native CFString ZIPValue();
-    @GlobalValue(symbol="kABPersonAddressCountryKey", optional=true)
-    protected static native CFString CountryValue();
-    @GlobalValue(symbol="kABPersonAddressCountryCodeKey", optional=true)
-    protected static native CFString CountryCodeValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("AddressBook") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        @GlobalValue(symbol="kABPersonAddressStreetKey", optional=true)
+        public static native CFString Street();
+        @GlobalValue(symbol="kABPersonAddressCityKey", optional=true)
+        public static native CFString City();
+        @GlobalValue(symbol="kABPersonAddressStateKey", optional=true)
+        public static native CFString State();
+        @GlobalValue(symbol="kABPersonAddressZIPKey", optional=true)
+        public static native CFString ZIP();
+        @GlobalValue(symbol="kABPersonAddressCountryKey", optional=true)
+        public static native CFString Country();
+        @GlobalValue(symbol="kABPersonAddressCountryCodeKey", optional=true)
+        public static native CFString CountryCode();
+        /*</values>*/
+    }
 }

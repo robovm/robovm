@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -63,6 +64,7 @@ import org.robovm.apple.uikit.*;
     @StructMember(1) public native CGRect setSize(@ByVal CGSize size);
     /*</members>*/
     
+    @WeaklyLinked
     public static CGRect fromString(String string) {
         return UIGeometry.stringToCGRect(string);
     }
@@ -74,6 +76,7 @@ import org.robovm.apple.uikit.*;
         return r;
     }
 
+    @WeaklyLinked
     public CGRect inset(UIEdgeInsets insets) {
         getOrigin().setX(getOrigin().getX() + insets.getLeft());
         getOrigin().setY(getOrigin().getY() + insets.getTop());
@@ -86,6 +89,7 @@ import org.robovm.apple.uikit.*;
     public boolean equals(Object obj) {
         return obj instanceof CGRect && equalsTo(this, (CGRect) obj);
     }
+    @WeaklyLinked
     @Override
     public String toString() {
         return UIGeometry.toString(this);

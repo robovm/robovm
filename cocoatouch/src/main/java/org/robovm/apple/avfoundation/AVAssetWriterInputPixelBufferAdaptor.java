@@ -23,19 +23,20 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
-import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.corevideo.*;
-import org.robovm.apple.audiotoolbox.*;
 import org.robovm.apple.mediatoolbox.*;
+import org.robovm.apple.audiotoolbox.*;
 import org.robovm.apple.audiounit.*;
 /*</imports>*/
 
@@ -60,17 +61,22 @@ import org.robovm.apple.audiounit.*;
     /*<properties>*/
     @Property(selector = "assetWriterInput")
     public native AVAssetWriterInput getAssetWriterInput();
+    @WeaklyLinked
     @Property(selector = "sourcePixelBufferAttributes")
     public native CVPixelBufferAttributes getSourcePixelBufferAttributes();
+    @WeaklyLinked
     @Property(selector = "pixelBufferPool")
     public native CVPixelBufferPool getPixelBufferPool();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @WeaklyLinked
     @Method(selector = "initWithAssetWriterInput:sourcePixelBufferAttributes:")
     protected native @Pointer long init(AVAssetWriterInput input, CVPixelBufferAttributes sourcePixelBufferAttributes);
+    @WeaklyLinked
     @Method(selector = "appendPixelBuffer:withPresentationTime:")
     public native boolean appendPixelBuffer(CVPixelBuffer pixelBuffer, @ByVal CMTime presentationTime);
+    @WeaklyLinked
     @Method(selector = "assetWriterInputPixelBufferAdaptorWithAssetWriterInput:sourcePixelBufferAttributes:")
     public static native AVAssetWriterInputPixelBufferAdaptor create(AVAssetWriterInput input, CVPixelBufferAttributes sourcePixelBufferAttributes);
     /*</methods>*/

@@ -23,11 +23,13 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.uikit.*;
+import org.robovm.apple.coretext.*;
 import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coregraphics.*;
@@ -111,12 +113,16 @@ import org.robovm.apple.coreservices.CFProxy;
     public native CFProxy getConnectionProxy();
     @Property(selector = "setConnectionProxyDictionary:")
     public native void setConnectionProxy(CFProxy v);
+    @WeaklyLinked
     @Property(selector = "TLSMinimumSupportedProtocol")
     public native SSLProtocol getTLSMinimumSupportedProtocol();
+    @WeaklyLinked
     @Property(selector = "setTLSMinimumSupportedProtocol:")
     public native void setTLSMinimumSupportedProtocol(SSLProtocol v);
+    @WeaklyLinked
     @Property(selector = "TLSMaximumSupportedProtocol")
     public native SSLProtocol getTLSMaximumSupportedProtocol();
+    @WeaklyLinked
     @Property(selector = "setTLSMaximumSupportedProtocol:")
     public native void setTLSMaximumSupportedProtocol(SSLProtocol v);
     @Property(selector = "HTTPShouldUsePipelining")

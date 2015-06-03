@@ -23,13 +23,14 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.coregraphics.*;
-import org.robovm.apple.corelocation.*;
 import org.robovm.apple.uikit.*;
+import org.robovm.apple.corelocation.*;
 import org.robovm.apple.avfoundation.*;
 /*</imports>*/
 
@@ -57,18 +58,22 @@ import org.robovm.apple.avfoundation.*;
     public native PHAssetMediaSubtype getMediaSubtypes();
     @Property(selector = "creationDate")
     public native NSDate getCreationDate();
+    @WeaklyLinked
     @Property(selector = "location")
     public native CLLocation getLocation();
     @Property(selector = "uniformTypeIdentifier")
     public native String getUniformTypeIdentifier();
     @Property(selector = "adjustmentData")
     public native PHAdjustmentData getAdjustmentData();
+    @WeaklyLinked
     @Property(selector = "displaySizeImage")
     public native UIImage getDisplaySizeImage();
     @Property(selector = "fullSizeImageURL")
     public native NSURL getFullSizeImageURL();
+    @WeaklyLinked
     @Property(selector = "fullSizeImageOrientation")
     public native org.robovm.apple.imageio.CGImagePropertyOrientation getFullSizeImageOrientation();
+    @WeaklyLinked
     @Property(selector = "avAsset")
     public native AVAsset getAvAsset();
     /*</properties>*/

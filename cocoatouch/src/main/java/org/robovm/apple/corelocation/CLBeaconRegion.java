@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -71,6 +72,7 @@ import org.robovm.apple.corebluetooth.*;
     protected native @Pointer long init(NSUUID proximityUUID, short major, String identifier);
     @Method(selector = "initWithProximityUUID:major:minor:identifier:")
     protected native @Pointer long init(NSUUID proximityUUID, short major, short minor, String identifier);
+    @WeaklyLinked
     @Method(selector = "peripheralDataWithMeasuredPower:")
     public native CBAdvertisementData getPeripheralData(NSNumber measuredPower);
     /*</methods>*/

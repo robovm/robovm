@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -30,7 +31,6 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreaudio.*;
-import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.corevideo.*;
 import org.robovm.apple.audiotoolbox.*;
@@ -178,6 +178,7 @@ import org.robovm.apple.audiotoolbox.*;
      * @throws OSStatusException 
      * @since Available in iOS 6.0 and later.
      */
+    @WeaklyLinked
     public void addTimerDispatchSource(DispatchSource timerSource) throws OSStatusException {
         OSStatus status = addTimerDispatchSource0(timerSource);
         OSStatusException.throwIfNecessary(status);
@@ -186,6 +187,7 @@ import org.robovm.apple.audiotoolbox.*;
      * @throws OSStatusException 
      * @since Available in iOS 6.0 and later.
      */
+    @WeaklyLinked
     public void removeTimerDispatchSource(DispatchSource timerSource) throws OSStatusException {
         OSStatus status = removeTimerDispatchSource0(timerSource);
         OSStatusException.throwIfNecessary(status);
@@ -194,6 +196,7 @@ import org.robovm.apple.audiotoolbox.*;
      * @throws OSStatusException 
      * @since Available in iOS 6.0 and later.
      */
+    @WeaklyLinked
     public void setTimerDispatchSourceNextFireTime(DispatchSource timerSource, CMTime fireTime) throws OSStatusException {
         OSStatus status = setTimerDispatchSourceNextFireTime0(timerSource, fireTime, 0);
         OSStatusException.throwIfNecessary(status);
@@ -202,6 +205,7 @@ import org.robovm.apple.audiotoolbox.*;
      * @throws OSStatusException 
      * @since Available in iOS 6.0 and later.
      */
+    @WeaklyLinked
     public void setTimerDispatchSourceToFireImmediately(DispatchSource timerSource) throws OSStatusException {
         OSStatus status = setTimerDispatchSourceToFireImmediately0(timerSource);
         OSStatusException.throwIfNecessary(status);
@@ -329,21 +333,25 @@ import org.robovm.apple.audiotoolbox.*;
     /**
      * @since Available in iOS 6.0 and later.
      */
+    @WeaklyLinked
     @Bridge(symbol="CMTimebaseAddTimerDispatchSource", optional=true)
     protected native OSStatus addTimerDispatchSource0(DispatchSource timerSource);
     /**
      * @since Available in iOS 6.0 and later.
      */
+    @WeaklyLinked
     @Bridge(symbol="CMTimebaseRemoveTimerDispatchSource", optional=true)
     protected native OSStatus removeTimerDispatchSource0(DispatchSource timerSource);
     /**
      * @since Available in iOS 6.0 and later.
      */
+    @WeaklyLinked
     @Bridge(symbol="CMTimebaseSetTimerDispatchSourceNextFireTime", optional=true)
     protected native OSStatus setTimerDispatchSourceNextFireTime0(DispatchSource timerSource, @ByVal CMTime fireTime, int flags);
     /**
      * @since Available in iOS 6.0 and later.
      */
+    @WeaklyLinked
     @Bridge(symbol="CMTimebaseSetTimerDispatchSourceToFireImmediately", optional=true)
     protected native OSStatus setTimerDispatchSourceToFireImmediately0(DispatchSource timerSource);
     /**

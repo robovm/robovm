@@ -23,17 +23,18 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
-import org.robovm.apple.dispatch.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("Security")/*</annotations>*/
+/*<annotations>*/@Library("Security") @StronglyLinked/*</annotations>*/
 @Marshaler(/*<name>*/SecMatchLimit/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SecMatchLimit/*</name>*/ 
     extends /*<extends>*/GlobalValueEnumeration<CFType>/*</extends>*/
@@ -115,7 +116,7 @@ import org.robovm.apple.corefoundation.*;
     
     /*<methods>*//*</methods>*/
     
-    /*<annotations>*/@Library("Security")/*</annotations>*/
+    /*<annotations>*/@Library("Security") @StronglyLinked/*</annotations>*/
     public static class Values {
     	static { Bro.bind(Values.class); }
 

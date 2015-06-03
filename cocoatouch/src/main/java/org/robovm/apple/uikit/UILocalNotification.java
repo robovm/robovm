@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -73,11 +74,13 @@ import org.robovm.apple.corelocation.*;
     /**
      * @since Available in iOS 8.0 and later.
      */
+    @WeaklyLinked
     @Property(selector = "region")
     public native CLRegion getRegion();
     /**
      * @since Available in iOS 8.0 and later.
      */
+    @WeaklyLinked
     @Property(selector = "setRegion:")
     public native void setRegion(CLRegion v);
     /**

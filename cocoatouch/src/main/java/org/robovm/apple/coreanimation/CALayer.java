@@ -23,11 +23,12 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
-import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
 import org.robovm.apple.opengles.*;
@@ -49,6 +50,7 @@ import org.robovm.apple.metal.*;
     public CALayer() {}
     protected CALayer(SkipInit skipInit) { super(skipInit); }
     public CALayer(CALayer layer) { super((SkipInit) null); initObject(init(layer)); }
+    public CALayer(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "bounds")
@@ -185,16 +187,22 @@ import org.robovm.apple.metal.*;
     public native boolean allowsGroupOpacity();
     @Property(selector = "setAllowsGroupOpacity:")
     public native void setAllowsGroupOpacity(boolean v);
+    @WeaklyLinked
     @Property(selector = "compositingFilter")
     public native CIFilter getCompositingFilter();
+    @WeaklyLinked
     @Property(selector = "setCompositingFilter:")
     public native void setCompositingFilter(CIFilter v);
+    @WeaklyLinked
     @Property(selector = "filters")
     public native NSArray<CIFilter> getFilters();
+    @WeaklyLinked
     @Property(selector = "setFilters:")
     public native void setFilters(NSArray<CIFilter> v);
+    @WeaklyLinked
     @Property(selector = "backgroundFilters")
     public native NSArray<CIFilter> getBackgroundFilters();
+    @WeaklyLinked
     @Property(selector = "setBackgroundFilters:")
     public native void setBackgroundFilters(NSArray<CIFilter> v);
     @Property(selector = "shouldRasterize")
@@ -369,6 +377,8 @@ import org.robovm.apple.metal.*;
     @Method(selector = "scrollRectToVisible:")
     public native void scrollTo(@ByVal CGRect r);
     @Method(selector = "encodeWithCoder:")
-    public native void encode(NSCoder aCoder);
+    public native void encode(NSCoder coder);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     /*</methods>*/
 }

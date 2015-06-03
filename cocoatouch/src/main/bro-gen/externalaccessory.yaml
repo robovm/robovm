@@ -1,5 +1,5 @@
 package: org.robovm.apple.externalaccessory
-include: [foundation.yaml, uikit.yaml, dispatch.yaml]
+include: [foundation.yaml, dispatch.yaml, uikit.yaml]
 library: ExternalAccessory
 framework: ExternalAccessory
 clang_args: ['-x', 'objective-c']
@@ -46,10 +46,12 @@ classes:
         methods:
             '-initWithDelegate:queue:':
                 name: init
+                annotations: ['@WeaklyLinked']
             '-startSearchingForUnconfiguredAccessoriesMatchingPredicate:':
                 name: startSearchingForUnconfiguredAccessories
             '-configureAccessory:withConfigurationUIOnViewController:':
                 trim_after_first_colon: true
+                annotations: ['@WeaklyLinked']
 
 protocols:
     EAAccessoryDelegate: # DONE

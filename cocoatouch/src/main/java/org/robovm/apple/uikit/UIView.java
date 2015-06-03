@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -63,6 +64,7 @@ import org.robovm.apple.corelocation.*;
     public native @MachineSizedSInt long getTag();
     @Property(selector = "setTag:")
     public native void setTag(@MachineSizedSInt long v);
+    @WeaklyLinked
     @Property(selector = "layer")
     public native CALayer getLayer();
     @Property(selector = "frame")
@@ -258,6 +260,7 @@ import org.robovm.apple.corelocation.*;
     
     @Method(selector = "initWithFrame:")
     protected native @Pointer long init(@ByVal CGRect frame);
+    @WeaklyLinked
     @Method(selector = "layerClass")
     public static native Class<? extends CALayer> getLayerClass();
     @Method(selector = "hitTest:withEvent:")

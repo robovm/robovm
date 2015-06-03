@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -108,6 +109,7 @@ import org.robovm.apple.corelocation.*;
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @WeaklyLinked
     @Property(selector = "CIImage")
     public native CIImage getCIImage();
     @Property(selector = "imageOrientation")
@@ -301,11 +303,13 @@ import org.robovm.apple.corelocation.*;
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @WeaklyLinked
     @Method(selector = "initWithCIImage:")
     protected native @Pointer long init(CIImage ciImage);
     /**
      * @since Available in iOS 6.0 and later.
      */
+    @WeaklyLinked
     @Method(selector = "initWithCIImage:scale:orientation:")
     protected native @Pointer long init(CIImage ciImage, @MachineSizedFloat double scale, UIImageOrientation orientation);
     @Method(selector = "drawAtPoint:")
@@ -364,11 +368,13 @@ import org.robovm.apple.corelocation.*;
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @WeaklyLinked
     @Method(selector = "imageWithCIImage:")
     public static native UIImage create(CIImage ciImage);
     /**
      * @since Available in iOS 6.0 and later.
      */
+    @WeaklyLinked
     @Method(selector = "imageWithCIImage:scale:orientation:")
     public static native UIImage create(CIImage ciImage, @MachineSizedFloat double scale, UIImageOrientation orientation);
     /**

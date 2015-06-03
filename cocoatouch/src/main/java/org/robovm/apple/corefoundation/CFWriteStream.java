@@ -23,14 +23,14 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
-import org.robovm.apple.dispatch.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.dispatch.*;
+import org.robovm.apple.coreservices.*;
 /*</imports>*/
-import org.robovm.apple.coreservices.CFFTPStreamProperty;
-import org.robovm.apple.coreservices.CFSocketStreamProperty;
 
 /*<javadoc>*/
 /*</javadoc>*/
@@ -125,18 +125,22 @@ import org.robovm.apple.coreservices.CFSocketStreamProperty;
     public CFType getProperty(CFStreamProperty property) {
         return getProperty(property.value());
     }
+    @WeaklyLinked
     public CFType getProperty(CFSocketStreamProperty property) {
         return getProperty(property.value());
     }
+    @WeaklyLinked
     public CFType getProperty(CFFTPStreamProperty property) {
         return getProperty(property.value());
     }
     public boolean setProperty(CFStreamProperty property, CFType propertyValue) {
         return setProperty(property.value(), propertyValue);
     }
+    @WeaklyLinked
     public boolean setProperty(CFSocketStreamProperty property, CFType propertyValue) {
         return setProperty(property.value(), propertyValue);
     }
+    @WeaklyLinked
     public boolean setProperty(CFFTPStreamProperty property, CFType propertyValue) {
         return setProperty(property.value(), propertyValue);
     }
@@ -182,11 +186,13 @@ import org.robovm.apple.coreservices.CFSocketStreamProperty;
     /**
      * @since Available in iOS 7.0 and later.
      */
+    @WeaklyLinked
     @Bridge(symbol="CFWriteStreamSetDispatchQueue", optional=true)
     public native void setDispatchQueue(DispatchQueue q);
     /**
      * @since Available in iOS 7.0 and later.
      */
+    @WeaklyLinked
     @Bridge(symbol="CFWriteStreamCopyDispatchQueue", optional=true)
     public native DispatchQueue getDispatchQueue();
     @Bridge(symbol="CFWriteStreamGetError", optional=true)

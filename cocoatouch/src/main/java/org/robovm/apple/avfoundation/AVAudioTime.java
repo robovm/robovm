@@ -23,19 +23,20 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
-import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.corevideo.*;
-import org.robovm.apple.audiotoolbox.*;
 import org.robovm.apple.mediatoolbox.*;
+import org.robovm.apple.audiotoolbox.*;
 import org.robovm.apple.audiounit.*;
 /*</imports>*/
 
@@ -71,11 +72,13 @@ import org.robovm.apple.audiounit.*;
     public native long getSampleTime();
     @Property(selector = "sampleRate")
     public native double getSampleRate();
+    @WeaklyLinked
     @Property(selector = "audioTimeStamp")
     public native @ByVal AudioTimeStamp getAudioTimeStamp();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @WeaklyLinked
     @Method(selector = "initWithAudioTimeStamp:sampleRate:")
     protected native @Pointer long init(AudioTimeStamp ts, double sampleRate);
     @Method(selector = "initWithHostTime:")
@@ -86,6 +89,7 @@ import org.robovm.apple.audiounit.*;
     protected native @Pointer long init(long hostTime, long sampleTime, double sampleRate);
     @Method(selector = "extrapolateTimeFromAnchor:")
     public native AVAudioTime extrapolateTimeFromAnchor(AVAudioTime anchorTime);
+    @WeaklyLinked
     @Method(selector = "timeWithAudioTimeStamp:sampleRate:")
     public static native AVAudioTime create(AudioTimeStamp ts, double sampleRate);
     @Method(selector = "timeWithHostTime:")

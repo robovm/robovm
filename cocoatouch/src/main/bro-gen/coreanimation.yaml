@@ -1,5 +1,5 @@
 package: org.robovm.apple.coreanimation
-include: [coregraphics.yaml, foundation.yaml, coreimage.yaml, coretext.yaml, opengles.yaml, metal.yaml]
+include: [foundation.yaml, coregraphics.yaml, coreimage.yaml, coretext.yaml, opengles.yaml, metal.yaml]
 library: QuartzCore
 framework: QuartzCore
 clang_args: ['-x', 'objective-c']
@@ -21,9 +21,6 @@ categories:
     CALayerDelegate@NSObject: {protocol: true}
 
 classes:
-    CoreAnimation:
-        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
-
     # Structs
     CATransform3D: {}
 
@@ -54,6 +51,7 @@ classes:
             '+displayLinkWithTarget:selector:':
                 name: create
     CAEAGLLayer: # DONE
+        annotations: ['@WeaklyLinked']
         protocols: [EAGLDrawable]
     CAEmitterCell: # DONE
         properties:
@@ -119,10 +117,13 @@ classes:
                 type: NSArray<CALayer>
             'compositingFilter':
                 type: CIFilter
+                annotations: ['@WeaklyLinked']
             'filters':
                 type: NSArray<CIFilter>
+                annotations: ['@WeaklyLinked']
             'backgroundFilters':
                 type: NSArray<CIFilter>
+                annotations: ['@WeaklyLinked']
             'actions':
                 type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, CAAction>'
             'style':
@@ -227,7 +228,10 @@ classes:
             '+functionWithControlPoints::::':
                 name: create
                 return_type: CAMediaTimingFunction
-    CAMetalLayer: {} # DONE
+    CAMetalLayer: # DONE
+        properties:
+            '(device|pixelFormat)':
+                annotations: ['@WeaklyLinked']
     CAPropertyAnimation: # DONE
         methods:
             '+animationWithKeyPath:':
@@ -299,6 +303,7 @@ classes:
         properties:
             'filter':
                 type: CIFilter
+                annotations: ['@WeaklyLinked']
             'type':
                 type: CATransitionType
             'subtype':
@@ -346,7 +351,10 @@ protocols:
                 name: layoutSublayers
             '-actionForLayer:forKey:':
                 name: getAction
-    CAMetalDrawable: {} # DONE
+    CAMetalDrawable: # DONE
+        properties:
+            'texture':
+                annotations: ['@WeaklyLinked']
 
 functions:
     # CATransform3D

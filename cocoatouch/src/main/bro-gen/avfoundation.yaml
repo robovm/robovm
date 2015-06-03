@@ -1,5 +1,5 @@
 package: org.robovm.apple.avfoundation
-include: [foundation.yaml, dispatch.yaml, coreanimation.yaml, corefoundation.yaml, coregraphics.yaml, coreaudio.yaml, coremedia.yaml, corevideo.yaml, audiotoolbox.yaml, mediatoolbox.yaml, audiounit.yaml ]
+include: [foundation.yaml, corefoundation.yaml, dispatch.yaml, coreanimation.yaml, coregraphics.yaml, coreaudio.yaml, coremedia.yaml, corevideo.yaml, mediatoolbox.yaml, audiotoolbox.yaml, audiounit.yaml ]
 library: AVFoundation
 framework: AVFoundation
 clang_args: ['-x', 'objective-c']
@@ -361,9 +361,13 @@ classes:
                     videoSettings:
                         type: 'NSDictionary<NSString, NSObject>'
     AVAssetResourceLoader: # DONE
+        properties:
+            'delegateQueue':
+                annotations: ['@WeaklyLinked']
         methods:
             '-setDelegate:queue:':
                 trim_after_first_colon: true
+                annotations: ['@WeaklyLinked']
     AVAssetResourceLoadingContentInformationRequest: {} # DONE
     AVAssetResourceLoadingDataRequest: # DONE
         methods:
@@ -495,6 +499,7 @@ classes:
                         type: NSDictionary<NSString, NSObject>
             '-requestMediaDataWhenReadyOnQueue:usingBlock:':
                 name: requestMediaDataWhenReady
+                annotations: ['@WeaklyLinked']
             '-appendSampleBuffer:':
                 trim_after_first_colon: true
             '+assetWriterInputWithMediaType:outputSettings:':
@@ -525,6 +530,7 @@ classes:
                         type: AVTrackAssociationType
             '-respondToEachPassDescriptionOnQueue:usingBlock:':
                 trim_after_first_colon: true
+                annotations: ['@WeaklyLinked']
     AVAssetWriterInputGroup: # DONE
         properties:
             'inputs':
@@ -556,16 +562,22 @@ classes:
         properties:
             'sourcePixelBufferAttributes':
                 type: CVPixelBufferAttributes
+                annotations: ['@WeaklyLinked']
+            'pixelBufferPool':
+                annotations: ['@WeaklyLinked']
         methods:
             '-initWithAssetWriterInput:sourcePixelBufferAttributes:':
                 name: init
+                annotations: ['@WeaklyLinked']
                 parameters:
                     sourcePixelBufferAttributes:
                         type: CVPixelBufferAttributes
             '-appendPixelBuffer:withPresentationTime:':
                 name: appendPixelBuffer
+                annotations: ['@WeaklyLinked']
             '+assetWriterInputPixelBufferAdaptorWithAssetWriterInput:sourcePixelBufferAttributes:':
                 name: create
+                annotations: ['@WeaklyLinked']
                 parameters:
                     sourcePixelBufferAttributes:
                         type: CVPixelBufferAttributes
@@ -576,13 +588,24 @@ classes:
         methods:
             '-sourceFrameByTrackID:':
                 name: getSourceFrame
+                annotations: ['@WeaklyLinked']
             '-finishWithComposedVideoFrame:':
                 name: finish
+                annotations: ['@WeaklyLinked']
             '-finishWithError:':
                 name: finish
-    AVAudioBuffer: {} # DONE
+    AVAudioBuffer: # DONE
+        properties:
+            '(audioBufferList|mutableAudioBufferList)':
+                annotations: ['@WeaklyLinked']
     AVAudioChannelLayout: # DONE
+        properties:
+            'layout':
+                annotations: ['@WeaklyLinked']
         methods:
+            '-initWithLayout:':
+                name: init
+                annotations: ['@WeaklyLinked']
             '-init.*':
                 name: init
             '-isEqual:':
@@ -590,9 +613,15 @@ classes:
                 parameters:
                     object:
                         type: AVAudioChannelLayout
+            '+layoutWithLayout:':
+                name: create
+                annotations: ['@WeaklyLinked']
             '+layoutWith.*':
                 name: create
     AVAudioEngine: # DONE
+        properties:
+            'musicSequence':
+                annotations: ['@WeaklyLinked']
         methods:
             '-init':
                 exclude: true
@@ -646,7 +675,12 @@ classes:
         properties:
             'settings':
                 type: AVAudioSettings
+            'streamDescription':
+                annotations: ['@WeaklyLinked']
         methods:
+            '-initWithStreamDescription:':
+                name: init
+                annotations: ['@WeaklyLinked']
             '-initWithSettings:':
                 name: init
                 parameters:
@@ -659,7 +693,10 @@ classes:
                 parameters:
                     object:
                         type: AVAudioFormat
-    AVAudioIONode: {} # DONE
+    AVAudioIONode: # DONE
+        properties:
+            'audioUnit':
+                annotations: ['@WeaklyLinked']
     AVAudioInputNode: {} # DONE
     AVAudioOutputNode: {} # DONE
     AVAudioMixerNode: {} # DONE
@@ -671,6 +708,8 @@ classes:
         properties:
             'audioTimePitchAlgorithm':
                 type: AVAudioTimePitchAlgorithm
+            'audioTapProcessor':
+                annotations: ['@WeaklyLinked']
         methods:
             '-getVolumeRampForTime:startVolume:endVolume:timeRange:':
                 name: getVolumeRamp
@@ -867,11 +906,20 @@ classes:
             'outputs':
                 type: NSArray<AVAudioSessionPortDescription>
     AVAudioTime: # DONE
+        properties:
+            'audioTimeStamp':
+                annotations: ['@WeaklyLinked']
         methods:
+            '-initWithAudioTimeStamp:sampleRate:':
+                name: init
+                annotations: ['@WeaklyLinked']
             '-init.*':
                 name: init
             '-extrapolateTimeFromAnchor:':
                 trim_after_first_colon: true
+            '+timeWithAudioTimeStamp:sampleRate:':
+                name: create
+                annotations: ['@WeaklyLinked']
             '+timeWith.*':
                 name: create
             '+hostTimeForSeconds:':
@@ -879,6 +927,9 @@ classes:
             '+secondsForHostTime:':
                 name: convertHostTimeToSeconds
     AVAudioUnit: # DONE
+        properties:
+            '(audioComponentDescription|audioUnit)':
+                annotations: ['@WeaklyLinked']
         methods:
             '-loadAudioUnitPresetAtURL:error:':
                 name: loadAudioUnitPreset
@@ -900,14 +951,17 @@ classes:
         methods:
             '-initWithAudioComponentDescription:':
                 name: init
+                annotations: ['@WeaklyLinked']
     AVAudioUnitGenerator: # DONE
         methods:
             '-initWithAudioComponentDescription:':
                 name: init
+                annotations: ['@WeaklyLinked']
     AVAudioUnitMIDIInstrument: # DONE
         methods:
             '-initWithAudioComponentDescription:':
                 name: init
+                annotations: ['@WeaklyLinked']
             '-startNote:withVelocity:onChannel:':
                 trim_after_first_colon: true
             '-stopNote:onChannel:':
@@ -952,13 +1006,18 @@ classes:
         methods:
             '-initWithAudioComponentDescription:':
                 name: init
+                annotations: ['@WeaklyLinked']
     AVAudioUnitTimePitch: {} # DONE
     AVAudioUnitVarispeed: {} # DONE
     AVCaptureAudioChannel: {} # DONE
     AVCaptureAudioDataOutput: # DONE
+        properties:
+            'sampleBufferCallbackQueue':
+                annotations: ['@WeaklyLinked']
         methods:
             '-setSampleBufferDelegate:queue:':
                 trim_after_first_colon: true
+                annotations: ['@WeaklyLinked']
             '-recommendedAudioSettingsForAssetWriterWithOutputFileType:':
                 name: getRecommendedAudioSettings
                 return_type: AVAudioSettings
@@ -1106,9 +1165,12 @@ classes:
                 type: '@org.robovm.rt.bro.annotation.Marshaler(AVMetadataObjectType.AsListMarshaler.class) List<AVMetadataObjectType>'
             'metadataObjectTypes':
                 type: '@org.robovm.rt.bro.annotation.Marshaler(AVMetadataObjectType.AsListMarshaler.class) List<AVMetadataObjectType>'
+            'metadataObjectsCallbackQueue':
+                annotations: ['@WeaklyLinked']
         methods:
             '-setMetadataObjectsDelegate:queue:':
                 trim_after_first_colon: true
+                annotations: ['@WeaklyLinked']
     AVCaptureMovieFileOutput: # DONE
         properties:
             'metadata':
@@ -1197,12 +1259,17 @@ classes:
                 type: 'NSDictionary<NSString, NSObject>'
                 visibility: protected
             'availableVideoCVPixelFormatTypes':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(CVPixelFormatType.AsListMarshaler.class) List<CVPixelFormatType>'
+                type: List<CVPixelFormatType>
+                marshaler: CVPixelFormatType.AsListMarshaler
+                annotations: ['@WeaklyLinked']
             'availableVideoCodecTypes':
                 type: '@org.robovm.rt.bro.annotation.Marshaler(CMVideoCodecType.AsListMarshaler.class) List<CMVideoCodecType>'
+            'sampleBufferCallbackQueue':
+                annotations: ['@WeaklyLinked']
         methods:
             '-setSampleBufferDelegate:queue:':
                 trim_after_first_colon: true
+                annotations: ['@WeaklyLinked']
             '-recommendedVideoSettingsForAssetWriterWithOutputFileType:':
                 name: getRecommendedVideoSettings0
                 visibility: protected
@@ -1446,6 +1513,8 @@ classes:
         properties:
             'audioTimePitchAlgorithm':
                 type: AVAudioTimePitchAlgorithm
+            'audioTapProcessor':
+                annotations: ['@WeaklyLinked']
         methods:
             '-setVolumeRampFromStartVolume:toEndVolume:timeRange:':
                 name: setVolumeRamp
@@ -1613,8 +1682,10 @@ classes:
                 trim_after_first_colon: true
             '-addPeriodicTimeObserverForInterval:queue:usingBlock:':
                 name: addPeriodicTimeObserver
+                annotations: ['@WeaklyLinked']
             '-addBoundaryTimeObserverForTimes:queue:usingBlock:':
                 name: addBoundaryTimeObserver
+                annotations: ['@WeaklyLinked']
                 parameters:
                     times:
                         type: '@org.robovm.rt.bro.annotation.Marshaler(CMTime.AsValuedListMarshaler.class) List<CMTime>'
@@ -1703,17 +1774,23 @@ classes:
     AVPlayerItemErrorLogEvent: {} # DONE
     AVPlayerItemLegibleOutput: # DONE
         properties:
+            'delegateQueue':
+                annotations: ['@WeaklyLinked']
             'textStylingResolution':
                 type: AVPlayerItemLegibleOutputTextStylingResolution
         methods:
             '-setDelegate:queue:':
                 trim_after_first_colon: true
+                annotations: ['@WeaklyLinked']
             '-initWithMediaSubtypesForNativeRepresentation:':
                 name: init
                 parameters:
                     subtypes:
                         type: "NSArray<NSNumber>"
     AVPlayerItemMetadataOutput: # DONE
+        properties:
+            'delegateQueue':
+                annotations: ['@WeaklyLinked']
         methods:
             '-initWithIdentifiers:':
                 name: init
@@ -1722,6 +1799,7 @@ classes:
                         type: '@org.robovm.rt.bro.annotation.Marshaler(AVMetadataIdentifier.AsListMarshaler.class) List<AVMetadataIdentifier>'
             '-setDelegate:queue:':
                 trim_after_first_colon: true
+                annotations: ['@WeaklyLinked']
     AVPlayerItemOutput: # DONE
         methods:
             '-itemTimeForHostTime:':
@@ -1730,9 +1808,13 @@ classes:
                 name: getItem
     AVPlayerItemTrack: {} # DONE
     AVPlayerItemVideoOutput: # DONE
+        properties:
+            'delegateQueue':
+                annotations: ['@WeaklyLinked']
         methods:
             '-initWithPixelBufferAttributes:':
                 name: init
+                annotations: ['@WeaklyLinked']
                 parameters:
                     pixelBufferAttributes:
                         type: CVPixelBufferAttributes
@@ -1741,11 +1823,14 @@ classes:
             '-copyPixelBufferForItemTime:itemTimeForDisplay:':
                 name: getPixelBufferForItemTime
                 return_marshaler: CFType.NoRetainMarshaler
+                annotations: ['@WeaklyLinked']
             '-setDelegate:queue:':
                 trim_after_first_colon: true
+                annotations: ['@WeaklyLinked']
             '-requestNotificationOfMediaDataChangeWithAdvanceInterval:':
                 name: requestNotificationOfMediaDataChange
     AVPlayerLayer: # DONE
+        annotations: ['@WeaklyLinked']
         properties:
             'videoGravity':
                 type: AVLayerVideoGravity
@@ -1789,6 +1874,7 @@ classes:
                     items:
                         type: NSArray<AVPlayerItem>
     AVSampleBufferDisplayLayer: # DONE
+        annotations: ['@WeaklyLinked']
         properties:
             'videoGravity':
                 type: AVLayerVideoGravity
@@ -1797,6 +1883,7 @@ classes:
                 trim_after_first_colon: true
             '-requestMediaDataWhenReadyOnQueue:usingBlock:':
                 trim_after_first_colon: true
+                annotations: ['@WeaklyLinked']
     AVSpeechSynthesisVoice: # DONE
         methods:
             '+speechVoices':
@@ -1821,6 +1908,7 @@ classes:
             '+speechUtteranceWithString:':
                 name: create
     AVSynchronizedLayer: # DONE
+        annotations: ['@WeaklyLinked']
         methods:
             '+synchronizedLayerWithPlayerItem:':
                 name: create
@@ -1908,10 +1996,13 @@ classes:
         methods:
             '+videoCompositionCoreAnimationToolWithAdditionalLayer:asTrackID:':
                 name: create
+                annotations: ['@WeaklyLinked']
             '+videoCompositionCoreAnimationToolWithPostProcessingAsVideoLayer:inLayer:':
                 name: create
+                annotations: ['@WeaklyLinked']
             '+videoCompositionCoreAnimationToolWithPostProcessingAsVideoLayers:inLayer:':
                 name: create
+                annotations: ['@WeaklyLinked']
                 parameters:
                     videoLayers:
                         type: NSArray<CALayer>
@@ -1955,6 +2046,7 @@ classes:
         methods:
             '-newPixelBuffer':
                 return_marshaler: CFType.NoRetainMarshaler
+                annotations: ['@WeaklyLinked']
 
 protocols:
     AVAssetResourceLoaderDelegate: # DONE
@@ -2104,8 +2196,10 @@ protocols:
         properties:
             'sourcePixelBufferAttributes':
                 type: CVPixelBufferAttributes
+                annotations: ['@WeaklyLinked']
             'requiredPixelBufferAttributesForRenderContext':
                 type: CVPixelBufferAttributes
+                annotations: ['@WeaklyLinked']
         methods:
             '-renderContextChanged:':
                 trim_after_first_colon: true

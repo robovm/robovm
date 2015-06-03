@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -42,14 +43,14 @@ import org.robovm.apple.imageio.*;
     /*<implements>*//*</implements>*/ {
 
     public static class Notifications {
-        public static NSObject observeChanged(ALAssetsLibrary object, final VoidBlock2<ALAssetsLibrary, ALAssetsLibraryChangedNotificationUserInfo> block) {
+        public static NSObject observeChanged(ALAssetsLibrary object, final VoidBlock2<ALAssetsLibrary, ALAssetsLibraryChangedNotification> block) {
             return NSNotificationCenter.getDefaultCenter().addObserver(ChangedNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke(NSNotification a) {
-                    ALAssetsLibraryChangedNotificationUserInfo userInfo = null;
+                    ALAssetsLibraryChangedNotification userInfo = null;
                     NSDictionary<NSString, NSObject> dict = a.getUserInfo();
                     if (dict != null) {
-                        userInfo = new ALAssetsLibraryChangedNotificationUserInfo(dict);
+                        userInfo = new ALAssetsLibraryChangedNotification(dict);
                     }
                     block.invoke((ALAssetsLibrary)a.getObject(), userInfo);
                 }
@@ -89,16 +90,19 @@ import org.robovm.apple.imageio.*;
      */
     @Method(selector = "addAssetsGroupAlbumWithName:resultBlock:failureBlock:")
     public native void addAssetsGroupAlbum(String name, @Block VoidBlock1<ALAssetsGroup> resultBlock, @Block VoidBlock1<NSError> failureBlock);
+    @WeaklyLinked
     @Method(selector = "writeImageToSavedPhotosAlbum:orientation:completionBlock:")
     public native void writeImageToSavedPhotosAlbum(CGImage imageRef, ALAssetOrientation orientation, @Block VoidBlock2<NSURL, NSError> completionBlock);
     /**
      * @since Available in iOS 4.1 and later.
      */
+    @WeaklyLinked
     @Method(selector = "writeImageToSavedPhotosAlbum:metadata:completionBlock:")
     public native void writeImageToSavedPhotosAlbum(CGImage imageRef, CGImageProperties metadata, @Block VoidBlock2<NSURL, NSError> completionBlock);
     /**
      * @since Available in iOS 4.1 and later.
      */
+    @WeaklyLinked
     @Method(selector = "writeImageDataToSavedPhotosAlbum:metadata:completionBlock:")
     public native void writeImageDataToSavedPhotosAlbum(NSData imageData, CGImageProperties metadata, @Block VoidBlock2<NSURL, NSError> completionBlock);
     @Method(selector = "writeVideoAtPathToSavedPhotosAlbum:completionBlock:")

@@ -19,6 +19,7 @@ package org.robovm.apple.foundation;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -56,6 +57,16 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    private NSErrorUserInfo userInfo;
+    
+    /* Convenience methods */
+    private NSErrorUserInfo getCachedUserInfo() {
+        if (userInfo == null) {
+            userInfo = getUserInfo();
+        }
+        return userInfo;
+    }   
+    
     @Override
     public NSURLErrorCode getErrorCode() {
         NSURLErrorCode code = null;
@@ -71,9 +82,8 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 4.0 and later.
      */
     public NSURL getFailingURL() {
-        NSErrorUserInfo userInfo = getUserInfo();
-        if (userInfo.contains(NSURLErrorUserInfoKey.FailingURL)) {
-            NSURL val = (NSURL)userInfo.get(NSURLErrorUserInfoKey.FailingURL);
+        if (getCachedUserInfo().has(NSURLErrorUserInfoKey.FailingURL)) {
+            NSURL val = (NSURL)getCachedUserInfo().get(NSURLErrorUserInfoKey.FailingURL);
             return val;
         }
         return null;
@@ -82,9 +92,8 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 4.0 and later.
      */
     public String getFailingURLString() {
-        NSErrorUserInfo userInfo = getUserInfo();
-        if (userInfo.contains(NSURLErrorUserInfoKey.FailingURLString)) {
-            NSString val = (NSString)userInfo.get(NSURLErrorUserInfoKey.FailingURLString);
+        if (getCachedUserInfo().has(NSURLErrorUserInfoKey.FailingURLString)) {
+            NSString val = (NSString)getCachedUserInfo().get(NSURLErrorUserInfoKey.FailingURLString);
             return val.toString();
         }
         return null;
@@ -94,9 +103,8 @@ import org.robovm.apple.dispatch.*;
      */
     @WeaklyLinked
     public SecTrust getFailingURLPeerTrust() {
-        NSErrorUserInfo userInfo = getUserInfo();
-        if (userInfo.contains(NSURLErrorUserInfoKey.FailingURLPeerTrust)) {
-            SecTrust val = userInfo.get(NSURLErrorUserInfoKey.FailingURLPeerTrust, SecTrust.class);
+        if (getCachedUserInfo().has(NSURLErrorUserInfoKey.FailingURLPeerTrust)) {
+            SecTrust val = getCachedUserInfo().get(NSURLErrorUserInfoKey.FailingURLPeerTrust, SecTrust.class);
             return val;
         }
         return null;
@@ -107,9 +115,8 @@ import org.robovm.apple.dispatch.*;
     @SuppressWarnings("unchecked")
     public List<NSURLProperty> getUnsetProperties() {
         List<NSURLProperty> properties = new ArrayList<>();
-        NSErrorUserInfo userInfo = getUserInfo();
-        if (userInfo.contains(NSURLErrorUserInfoKey.KeysOfUnsetValues)) {
-            NSArray<NSString> val = (NSArray<NSString>)userInfo.get(NSURLErrorUserInfoKey.KeysOfUnsetValues);
+        if (getCachedUserInfo().has(NSURLErrorUserInfoKey.KeysOfUnsetValues)) {
+            NSArray<NSString> val = (NSArray<NSString>)getCachedUserInfo().get(NSURLErrorUserInfoKey.KeysOfUnsetValues);
             for (NSString s : val) {
                 NSURLProperty p = NSURLProperty.valueOf(s);
                 if (p != null) properties.add(p);

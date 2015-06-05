@@ -19,6 +19,7 @@ package org.robovm.apple.corelocation;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -48,6 +49,16 @@ import org.robovm.apple.corebluetooth.*;
     /*<constants>*//*</constants>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    private NSErrorUserInfo userInfo;
+    
+    /* Convenience methods */
+    private NSErrorUserInfo getCachedUserInfo() {
+        if (userInfo == null) {
+            userInfo = getUserInfo();
+        }
+        return userInfo;
+    }
+    
     @Override
     public CLErrorCode getErrorCode() {
         CLErrorCode code = null;
@@ -60,9 +71,8 @@ import org.robovm.apple.corebluetooth.*;
     }
     
     public CLRegion getAlternateRegion() {
-        NSErrorUserInfo userInfo = getUserInfo();
-        if (userInfo.contains(CLErrorUserInfoKey.AlternateRegion)) {
-            CLRegion val = (CLRegion)userInfo.get(CLErrorUserInfoKey.AlternateRegion);
+        if (getCachedUserInfo().has(CLErrorUserInfoKey.AlternateRegion)) {
+            CLRegion val = (CLRegion)getCachedUserInfo().get(CLErrorUserInfoKey.AlternateRegion);
             return val;
         }
         return null;

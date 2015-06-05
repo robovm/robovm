@@ -19,6 +19,7 @@ package org.robovm.apple.homekit;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -47,6 +48,16 @@ import org.robovm.apple.foundation.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    private NSErrorUserInfo userInfo;
+    
+    /* Convenience methods */
+    private NSErrorUserInfo getCachedUserInfo() {
+        if (userInfo == null) {
+            userInfo = getUserInfo();
+        }
+        return userInfo;
+    }
+    
     @Override
     public HMErrorCode getErrorCode() {
         HMErrorCode code = null;
@@ -60,9 +71,8 @@ import org.robovm.apple.foundation.*;
     
     @SuppressWarnings("unchecked")
     public NSDictionary<NSUUID, NSError> getFailedAccessories() {
-        NSErrorUserInfo userInfo = getUserInfo();
-        if (userInfo.contains(HMErrorUserInfoKey.FailedAccessories)) {
-            NSDictionary<NSUUID, NSError> val = (NSDictionary<NSUUID, NSError>) userInfo.get(HMErrorUserInfoKey.FailedAccessories);
+        if (getCachedUserInfo().has(HMErrorUserInfoKey.FailedAccessories)) {
+            NSDictionary<NSUUID, NSError> val = (NSDictionary<NSUUID, NSError>) getCachedUserInfo().get(HMErrorUserInfoKey.FailedAccessories);
             return val;
         }
         return null;

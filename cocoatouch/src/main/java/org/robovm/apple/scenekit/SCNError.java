@@ -19,6 +19,7 @@ package org.robovm.apple.scenekit;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -55,6 +56,16 @@ import org.robovm.apple.opengles.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    private NSErrorUserInfo userInfo;
+    
+    /* Convenience methods */
+    private NSErrorUserInfo getCachedUserInfo() {
+        if (userInfo == null) {
+            userInfo = getUserInfo();
+        }
+        return userInfo;
+    }
+    
     @Override
     public NSErrorCode getErrorCode() {
         NSErrorCode code = null;
@@ -72,9 +83,8 @@ import org.robovm.apple.opengles.*;
     
     @SuppressWarnings("unchecked")
     public SCNConsistencyErrorUserInfo getConsistencyError() {
-        NSErrorUserInfo data = getUserInfo();
-        if (data.contains(SCNErrorUserInfoKey.DetailedErrors)) {
-            NSDictionary<NSString, NSObject> val = (NSDictionary<NSString, NSObject>) data.get(SCNErrorUserInfoKey.DetailedErrors);
+        if (getCachedUserInfo().has(SCNErrorUserInfoKey.DetailedErrors)) {
+            NSDictionary<NSString, NSObject> val = (NSDictionary<NSString, NSObject>) getCachedUserInfo().get(SCNErrorUserInfoKey.DetailedErrors);
             return new SCNConsistencyErrorUserInfo(val);
         }
         return null;

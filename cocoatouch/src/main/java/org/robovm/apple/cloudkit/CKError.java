@@ -19,6 +19,7 @@ package org.robovm.apple.cloudkit;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -49,6 +50,16 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    private NSErrorUserInfo userInfo;
+    
+    /* Convenience methods */
+    private NSErrorUserInfo getCachedUserInfo() {
+        if (userInfo == null) {
+            userInfo = getUserInfo();
+        }
+        return userInfo;
+    }
+    
     @Override
     public CKErrorCode getErrorCode() {
         CKErrorCode code = null;
@@ -60,45 +71,39 @@ import org.robovm.apple.corelocation.*;
         return code;
     }
     
-    /* Convenience methods */
     public NSDictionary<?, ?> getPartialErrors() {
-        NSErrorUserInfo data = getUserInfo();
-        if (data.contains(CKErrorUserInfoKey.PartialErrorsByItemID)) {
-            NSDictionary<?, ?> val = (NSDictionary<?, ?>) data.get(CKErrorUserInfoKey.PartialErrorsByItemID);
+        if (getCachedUserInfo().has(CKErrorUserInfoKey.PartialErrorsByItemID)) {
+            NSDictionary<?, ?> val = (NSDictionary<?, ?>) getCachedUserInfo().get(CKErrorUserInfoKey.PartialErrorsByItemID);
             return val;
         }
         return null;
     }
     
     public CKRecord getAncestorRecord() {
-        NSErrorUserInfo data = getUserInfo();
-        if (data.contains(CKErrorUserInfoKey.AncestorRecord)) {
-            CKRecord val = (CKRecord) data.get(CKErrorUserInfoKey.AncestorRecord);
+        if (getCachedUserInfo().has(CKErrorUserInfoKey.AncestorRecord)) {
+            CKRecord val = (CKRecord) getCachedUserInfo().get(CKErrorUserInfoKey.AncestorRecord);
             return val;
         }
         return null;
     }
     public CKRecord getServerRecord() {
-        NSErrorUserInfo data = getUserInfo();
-        if (data.contains(CKErrorUserInfoKey.ServerRecord)) {
-            CKRecord val = (CKRecord) data.get(CKErrorUserInfoKey.ServerRecord);
+        if (getCachedUserInfo().has(CKErrorUserInfoKey.ServerRecord)) {
+            CKRecord val = (CKRecord) getCachedUserInfo().get(CKErrorUserInfoKey.ServerRecord);
             return val;
         }
         return null;
     }
     public CKRecord getClientRecord() {
-        NSErrorUserInfo data = getUserInfo();
-        if (data.contains(CKErrorUserInfoKey.ClientRecord)) {
-            CKRecord val = (CKRecord) data.get(CKErrorUserInfoKey.ClientRecord);
+        if (getCachedUserInfo().has(CKErrorUserInfoKey.ClientRecord)) {
+            CKRecord val = (CKRecord) getCachedUserInfo().get(CKErrorUserInfoKey.ClientRecord);
             return val;
         }
         return null;
     }
     
-    public double getRetryAfterTime() {
-        NSErrorUserInfo data = getUserInfo();
-        if (data.contains(CKErrorUserInfoKey.RetryAfter)) {
-            NSNumber val = (NSNumber) data.get(CKErrorUserInfoKey.RetryAfter);
+    public double retriesAfterTime() {
+        if (getCachedUserInfo().has(CKErrorUserInfoKey.RetryAfter)) {
+            NSNumber val = (NSNumber) getCachedUserInfo().get(CKErrorUserInfoKey.RetryAfter);
             return val.doubleValue();
         }
         return -1;

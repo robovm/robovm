@@ -101,15 +101,15 @@ import org.robovm.apple.dispatch.*;
     public <T extends NativeObject> T get(NSErrorUserInfoKey attribute, Class<T> type) {
         return data.get(attribute.value(), type);
     }
-    public boolean contains(String attribute) {
+    public boolean has(String attribute) {
         return data.containsKey(new NSString(attribute));
     }
-    public boolean contains(NSErrorUserInfoKey attribute) {
+    public boolean has(NSErrorUserInfoKey attribute) {
         return data.containsKey(attribute.value());
     }
     
     public NSError getUnderlyingError() {
-        if (contains(NSCocoaErrorUserInfoKey.UnderlyingError)) {
+        if (has(NSCocoaErrorUserInfoKey.UnderlyingError)) {
             NSError val = (NSError)get(NSCocoaErrorUserInfoKey.UnderlyingError);
             return val;
         }
@@ -120,7 +120,7 @@ import org.robovm.apple.dispatch.*;
         return this;
     }
     public String getLocalizedDescription() {
-        if (contains(NSCocoaErrorUserInfoKey.LocalizedDescription)) {
+        if (has(NSCocoaErrorUserInfoKey.LocalizedDescription)) {
             NSString val = (NSString)get(NSCocoaErrorUserInfoKey.LocalizedDescription);
             return val.toString();
         }
@@ -131,7 +131,7 @@ import org.robovm.apple.dispatch.*;
         return this;
     }
     public String getLocalizedFailureReason() {
-        if (contains(NSCocoaErrorUserInfoKey.LocalizedFailureReason)) {
+        if (has(NSCocoaErrorUserInfoKey.LocalizedFailureReason)) {
             NSString val = (NSString)get(NSCocoaErrorUserInfoKey.LocalizedFailureReason);
             return val.toString();
         }
@@ -142,7 +142,7 @@ import org.robovm.apple.dispatch.*;
         return this;
     }
     public String getLocalizedRecoverySuggestion() {
-        if (contains(NSCocoaErrorUserInfoKey.LocalizedRecoverySuggestion)) {
+        if (has(NSCocoaErrorUserInfoKey.LocalizedRecoverySuggestion)) {
             NSString val = (NSString)get(NSCocoaErrorUserInfoKey.LocalizedRecoverySuggestion);
             return val.toString();
         }
@@ -154,7 +154,7 @@ import org.robovm.apple.dispatch.*;
     }
     @SuppressWarnings("unchecked")
     public List<String> getLocalizedRecoveryOptions() {
-        if (contains(NSCocoaErrorUserInfoKey.LocalizedRecoveryOptions)) {
+        if (has(NSCocoaErrorUserInfoKey.LocalizedRecoveryOptions)) {
             NSArray<NSString> val = (NSArray<NSString>)get(NSCocoaErrorUserInfoKey.LocalizedRecoveryOptions);
             return val.asStringList();
         }
@@ -165,7 +165,7 @@ import org.robovm.apple.dispatch.*;
         return this;
     }
     public NSErrorRecoveryAttempting getRecoveryAttempter() {
-        if (contains(NSCocoaErrorUserInfoKey.RecoveryAttempter)) {
+        if (has(NSCocoaErrorUserInfoKey.RecoveryAttempter)) {
             NSErrorRecoveryAttempting val = (NSErrorRecoveryAttempting)get(NSCocoaErrorUserInfoKey.RecoveryAttempter);
             return val;
         }
@@ -176,7 +176,7 @@ import org.robovm.apple.dispatch.*;
         return this;
     }
     public String getHelpAnchor() {
-        if (contains(NSCocoaErrorUserInfoKey.HelpAnchor)) {
+        if (has(NSCocoaErrorUserInfoKey.HelpAnchor)) {
             NSString val = (NSString)get(NSCocoaErrorUserInfoKey.HelpAnchor);
             return val.toString();
         }
@@ -187,7 +187,7 @@ import org.robovm.apple.dispatch.*;
         return this;
     }
     public NSStringEncoding getStringEncoding() {
-        if (contains(NSCocoaErrorUserInfoKey.StringEncoding)) {
+        if (has(NSCocoaErrorUserInfoKey.StringEncoding)) {
             NSNumber val = (NSNumber)get(NSCocoaErrorUserInfoKey.StringEncoding);
             return NSStringEncoding.valueOf(val.longValue());
         }
@@ -198,7 +198,7 @@ import org.robovm.apple.dispatch.*;
         return this;
     }
     public String getFilePath() {
-        if (contains(NSCocoaErrorUserInfoKey.FilePath)) {
+        if (has(NSCocoaErrorUserInfoKey.FilePath)) {
             NSString val = (NSString)get(NSCocoaErrorUserInfoKey.FilePath);
             return val.toString();
         }
@@ -209,7 +209,7 @@ import org.robovm.apple.dispatch.*;
         return this;
     }
     public NSURL getURL() {
-        if (contains(NSCocoaErrorUserInfoKey.URL)) {
+        if (has(NSCocoaErrorUserInfoKey.URL)) {
             NSURL val = (NSURL)get(NSCocoaErrorUserInfoKey.URL);
             return val;
         }

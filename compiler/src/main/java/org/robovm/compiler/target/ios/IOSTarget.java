@@ -577,7 +577,10 @@ public class IOSTarget extends AbstractTarget {
     protected File getAppDir() {
         File dir = null;
         if (!config.isSkipInstall()) {
-            dir = config.getInstallDir();
+            dir = new File(config.getInstallDir(), getExecutable() + ".app");
+            if (!dir.exists()) {
+                dir = config.getInstallDir();
+            }
         } else {
             dir = new File(config.getTmpDir(), getExecutable() + ".app");
             dir.mkdirs();

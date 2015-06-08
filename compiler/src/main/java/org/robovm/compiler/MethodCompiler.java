@@ -327,8 +327,10 @@ public class MethodCompiler extends AbstractMethodCompiler {
                         Global g = new Global(Symbols.infoStructSymbol(getInternalName(exClass)), I8_PTR, true);
                         if (!moduleBuilder.hasSymbol(g.getName())) {
                             moduleBuilder.addGlobal(g);
+                            landingPad.add(g.ref());
+                        } else {
+                            landingPad.add(moduleBuilder.getGlobalRef(g.getName()));
                         }
-                        landingPad.add(g.ref());
                     }
                     landingPad.add(new IntegerConstant(trapHandlers.get(trap.getHandlerUnit()) + 1));
                     landingPads.add(landingPad.build());

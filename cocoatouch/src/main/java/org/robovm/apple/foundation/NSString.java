@@ -121,7 +121,7 @@ import org.robovm.apple.coretext.CTAttributedStringAttributes;
     /*</properties>*/
     /*<members>*//*</members>*/
 
-    private static long getChars(String s) {
+    protected static long getChars(String s) {
         int offset = VM.getInt(VM.getObjectAddress(s) + STRING_OFFSET_OFFSET);
         char[] value = (char[]) VM.getObject(VM.getObjectAddress(s) + STRING_VALUE_OFFSET);
         return VM.getArrayValuesAddress(value) + (offset << 1);

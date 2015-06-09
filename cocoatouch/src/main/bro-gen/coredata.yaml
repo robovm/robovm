@@ -28,6 +28,7 @@ enums:
 classes:
     NSSQLiteError:
         extends: NSError
+        annotations: ['@StronglyLinked']
 
     NSAsynchronousFetchRequest: # DONE
         properties:

@@ -26,6 +26,7 @@ enums:
 classes:
     GLKTextureLoaderError:
         extends: NSError
+        annotations: ['@StronglyLinked']
 
     # Opaque types
     _GLKMatrixStack:

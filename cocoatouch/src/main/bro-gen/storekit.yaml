@@ -17,6 +17,7 @@ enums:
 classes:
     SKError:
         extends: NSError
+        annotations: ['@StronglyLinked']
 
     SKDownload: {} # DONE
     SKMutablePayment: {} # DONE

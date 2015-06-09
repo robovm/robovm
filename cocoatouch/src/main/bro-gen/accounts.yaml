@@ -15,6 +15,7 @@ enums:
 classes:
     ACError:
         extends: NSError
+        annotations: ['@StronglyLinked']
 
     ACAccount:
         methods:

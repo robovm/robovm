@@ -55,6 +55,7 @@ categories:
 classes:
     SCNError:
         extends: NSError
+        annotations: ['@StronglyLinked']
         
     SCNGeometrySourceSemantic:
         extends: SCNProgramSemantic

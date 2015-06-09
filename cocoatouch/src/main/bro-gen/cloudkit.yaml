@@ -39,6 +39,7 @@ enums:
 classes:
     CKError:
         extends: NSError
+        annotations: ['@StronglyLinked']
 
     CKAsset: # DONE
         methods:

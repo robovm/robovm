@@ -15,6 +15,7 @@ enums:
 classes:
     MFMailComposeError:
         extends: NSError
+        annotations: ['@StronglyLinked']
 
     MFMailComposeViewController: # DONE
         methods:

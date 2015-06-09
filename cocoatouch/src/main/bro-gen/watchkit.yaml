@@ -18,6 +18,7 @@ enums:
 classes:
     WatchKitError:
         extends: NSError
+        annotations: ['@StronglyLinked']
     
     WKAccessibilityImageRegion: {} # DONE
     WKInterfaceController: # DONE

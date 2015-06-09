@@ -34,7 +34,7 @@ import org.robovm.apple.addressbook.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("PassKit")/*</annotations>*/
+/*<annotations>*/@Library("PassKit") @StronglyLinked/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/PKPassKitError/*</name>*/ 
     extends /*<extends>*/NSError/*</extends>*/ 
     /*<implements>*//*</implements>*/ {

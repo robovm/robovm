@@ -15,9 +15,6 @@ enums:
     EKEventViewAction: { first: EKEventViewActionDone }
         
 classes:
-    EventKitUI:
-        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
-
     EKCalendarChooser: # DONE
         properties:
             'selectedCalendars':

@@ -23,6 +23,7 @@ enums:
 classes:
     NEVPNError:
         extends: NSError
+        annotations: ['@StronglyLinked']
 
     NEOnDemandRule: # DONE
         properties:

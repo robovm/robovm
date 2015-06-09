@@ -16,6 +16,7 @@ enums:
 classes:
     LAError:
         extends: NSError
+        annotations: ['@StronglyLinked']
         
     LAContext: # DONE
         methods:

@@ -12,6 +12,7 @@ enums:
     
 categories:
     NSURLConnection: {} # DONE
+
 classes:
     NKAssetDownload: # DONE
         methods:

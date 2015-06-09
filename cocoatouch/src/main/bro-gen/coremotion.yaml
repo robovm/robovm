@@ -17,6 +17,7 @@ enums:
 classes:
     CMError:
         extends: NSError
+        annotations: ['@StronglyLinked']
 
     CMAccelerometerData: {} # DONE
     CMAltimeter: # DONE

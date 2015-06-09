@@ -17,6 +17,7 @@ enums:
 classes:
     EABluetoothAccessoryPickerError:
         extends: NSError
+        annotations: ['@StronglyLinked']
 
     EAAccessory: # DONE
         properties:

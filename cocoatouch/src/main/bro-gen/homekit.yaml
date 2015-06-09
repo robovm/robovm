@@ -25,6 +25,7 @@ enums:
 classes:
     HMError:
         extends: NSError
+        annotations: ['@StronglyLinked']
     
     HMAccessory: # DONE
         properties:

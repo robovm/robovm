@@ -199,22 +199,31 @@ classes:
         
     NSCocoaError:
         extends: NSError
+        annotations: ['@StronglyLinked']
     NSPOSIXError:
         extends: NSError
+        annotations: ['@StronglyLinked']
     NSMachError:
         extends: NSError
+        annotations: ['@StronglyLinked']
     NSCarbonError:
         extends: NSError
+        annotations: ['@StronglyLinked']
     NSItemProviderError:
         extends: NSError
+        annotations: ['@StronglyLinked']
     NSStreamSocketSSLError:
         extends: NSError
+        annotations: ['@StronglyLinked']
     NSStreamSOCKSError:
         extends: NSError
+        annotations: ['@StronglyLinked']
     NSURLError:
         extends: NSError
+        annotations: ['@StronglyLinked']
     NSXMLParserError:
         extends: NSError
+        annotations: ['@StronglyLinked']
 
     NSArray: # DONE
         protocols: [NSFastEnumeration, NSPropertyList, List<T>]

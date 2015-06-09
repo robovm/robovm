@@ -79,9 +79,6 @@ categories:
             '-decodeCMTimeMappingForKey:':
                 name: decodeCMTimeMapping
 classes:
-    AVFoundation:
-        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
-
     # Structs
     AVAudio3DAngularOrientation: {}
     AVAudio3DPoint: {}
@@ -95,6 +92,7 @@ classes:
     
     AVError:
         extends: NSError
+        annotations: ['@StronglyLinked']
     
     AVMetadataIdentifierCommon:
         extends: AVMetadataIdentifier

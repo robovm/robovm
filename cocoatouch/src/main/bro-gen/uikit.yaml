@@ -330,6 +330,7 @@ classes:
     
     UIPrintError:
         extends: NSError
+        annotations: ['@StronglyLinked']
         
     UIRunLoopMode:
         extends: NSRunLoopMode

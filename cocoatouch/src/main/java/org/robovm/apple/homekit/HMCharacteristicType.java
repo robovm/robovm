@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -31,7 +32,7 @@ import org.robovm.apple.foundation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("HomeKit")/*</annotations>*/
+/*<annotations>*/@Library("HomeKit") @StronglyLinked/*</annotations>*/
 @Marshaler(/*<name>*/HMCharacteristicType/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/HMCharacteristicType/*</name>*/ 
     extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
@@ -242,7 +243,7 @@ import org.robovm.apple.foundation.*;
     
     /*<methods>*//*</methods>*/
     
-    /*<annotations>*/@Library("HomeKit")/*</annotations>*/
+    /*<annotations>*/@Library("HomeKit") @StronglyLinked/*</annotations>*/
     public static class Values {
     	static { Bro.bind(Values.class); }
 

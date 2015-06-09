@@ -34,7 +34,7 @@ import org.robovm.apple.imageio.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("AssetsLibrary")/*</annotations>*/
+/*<annotations>*/@Library("AssetsLibrary") @StronglyLinked/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/ALAssetsLibraryError/*</name>*/ 
     extends /*<extends>*/NSError/*</extends>*/ 
     /*<implements>*//*</implements>*/ {

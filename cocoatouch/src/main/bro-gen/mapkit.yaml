@@ -35,6 +35,7 @@ categories:
 classes:
     MKError:
         extends: NSError
+        annotations: ['@StronglyLinked']
 
     # Structs:
     MKCoordinateSpan: {}

@@ -23,8 +23,10 @@ enums:
 classes:
     CBError:
         extends: NSError
+        annotations: ['@StronglyLinked']
     CBATTError:
         extends: NSError
+        annotations: ['@StronglyLinked']
 
     CBATTRequest: {} # DONE
     CBAttribute: {} # DONE

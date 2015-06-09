@@ -25,6 +25,7 @@ enums:
 classes:
     PKPassKitError:
         extends: NSError
+        annotations: ['@StronglyLinked']
 
     PKAddPassesViewController: # DONE
         methods:

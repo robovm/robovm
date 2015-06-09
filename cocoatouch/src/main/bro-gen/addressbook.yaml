@@ -33,6 +33,7 @@ enums:
 classes:
     ABAddressBookError:
         extends: NSError
+        annotations: ['@StronglyLinked']
 
     # Opaque Types
     ABAddressBook:

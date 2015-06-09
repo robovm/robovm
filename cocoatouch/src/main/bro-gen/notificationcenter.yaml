@@ -18,9 +18,6 @@ categories:
                 name: createNotificationCenterEffect
 
 classes:
-    NotificationCenter:
-        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
-
     NCWidgetController: # DONE
         methods:
             '-setHasContent:forWidgetWithBundleIdentifier:':

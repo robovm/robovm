@@ -16,9 +16,6 @@ enums:
     CTErrorDomain: { first: kCTErrorDomainNoError }
         
 classes:
-    CoreTelephony:
-        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
-
     CTCall: # DONE
         properties:
             'callState':

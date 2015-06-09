@@ -54,10 +54,13 @@ enums:
 classes:
     GKError:
         extends: NSError
+        annotations: ['@StronglyLinked']
     GKSessionError:
         extends: NSError
+        annotations: ['@StronglyLinked']
     GKVoiceChatServiceError:
         extends: NSError
+        annotations: ['@StronglyLinked']
         
     GKAchievement: # DONE
         methods:

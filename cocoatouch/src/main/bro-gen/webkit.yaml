@@ -21,6 +21,7 @@ enums:
 classes:
     WKError:
         extends: NSError
+        annotations: ['@StronglyLinked']
 
     WKBackForwardList: # DONE
         properties:

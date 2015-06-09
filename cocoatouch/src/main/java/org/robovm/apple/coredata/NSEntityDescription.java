@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -45,6 +46,7 @@ import org.robovm.apple.foundation.*;
     /*<constructors>*/
     public NSEntityDescription() {}
     protected NSEntityDescription(SkipInit skipInit) { super(skipInit); }
+    public NSEntityDescription(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "managedObjectModel")
@@ -133,6 +135,8 @@ import org.robovm.apple.foundation.*;
     @Method(selector = "insertNewObjectForEntityForName:inManagedObjectContext:")
     public static native NSEntityDescription insertNewEntityInContext(String entityName, NSManagedObjectContext context);
     @Method(selector = "encodeWithCoder:")
-    public native void encode(NSCoder aCoder);
+    public native void encode(NSCoder coder);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     /*</methods>*/
 }

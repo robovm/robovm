@@ -29,6 +29,7 @@ enums:
 classes:
     EKError:
         extends: NSError
+        annotations: ['@StronglyLinked']
 
     EKAlarm: # DONE
         methods:

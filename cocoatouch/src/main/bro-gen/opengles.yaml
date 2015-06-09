@@ -11,9 +11,6 @@ enums:
     EAGLRenderingAPI: {first: kEAGLRenderingAPIOpenGLES1, type: MachineUInt, prefix: kEAGLRenderingAPI}
 
 classes:
-    OpenGLES:
-        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
-
     EAGLContext: # DONE
         methods:
             '-init.*':

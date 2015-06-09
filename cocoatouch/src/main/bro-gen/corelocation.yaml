@@ -18,6 +18,7 @@ enums:
 classes:
     CLError:
         extends: NSError
+        annotations: ['@StronglyLinked']
 
     # Structs
     CLLocationCoordinate2D: {}

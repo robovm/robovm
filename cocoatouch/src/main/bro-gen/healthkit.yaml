@@ -29,9 +29,6 @@ enums:
     HKMetricPrefix: {}
         
 classes:
-    HealthKit:
-        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
-
     HKBodyQuantityTypeIdentifier:
         extends: HKQuantityTypeIdentifier
     HKFitnessQuantityTypeIdentifier:
@@ -53,6 +50,7 @@ classes:
         
     HKError:
         extends: NSError
+        annotations: ['@StronglyLinked']
         
     HKPredicateKeyPath:
         extends: NSPredicateKeyPath

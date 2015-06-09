@@ -15,6 +15,7 @@ enums:
 classes:
     ALAssetsLibraryError:
         extends: NSError
+        annotations: ['@StronglyLinked']
 
     ALAsset: # DONE
         methods:

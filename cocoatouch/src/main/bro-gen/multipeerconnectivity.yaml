@@ -18,6 +18,7 @@ enums:
 classes:
     MCError:
         extends: NSError
+        annotations: ['@StronglyLinked']
 
     MCAdvertiserAssistant: # DONE
         properties:

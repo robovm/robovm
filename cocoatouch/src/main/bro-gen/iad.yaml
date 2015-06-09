@@ -32,6 +32,7 @@ categories:
 classes:
     ADError:
         extends: NSError
+        annotations: ['@StronglyLinked']
 
     ADBannerView: # DONE
         properties:

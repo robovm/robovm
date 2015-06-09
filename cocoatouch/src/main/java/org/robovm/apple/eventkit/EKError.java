@@ -35,7 +35,7 @@ import org.robovm.apple.addressbook.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("EventKit")/*</annotations>*/
+/*<annotations>*/@Library("EventKit") @StronglyLinked/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/EKError/*</name>*/ 
     extends /*<extends>*/NSError/*</extends>*/ 
     /*<implements>*//*</implements>*/ {

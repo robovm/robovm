@@ -35,6 +35,7 @@ import java.util.TreeMap;
 
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.llvm.Add;
+import org.robovm.compiler.llvm.AliasRef;
 import org.robovm.compiler.llvm.Alloca;
 import org.robovm.compiler.llvm.And;
 import org.robovm.compiler.llvm.ArrayType;
@@ -324,12 +325,24 @@ public class MethodCompiler extends AbstractMethodCompiler {
                         landingPad.add(new NullConstant(I8_PTR));
                     } else {
                         catches.add(getInternalName(exClass));
-                        Global g = new Global(Symbols.infoStructSymbol(getInternalName(exClass)), I8_PTR, true);
-                        if (!moduleBuilder.hasSymbol(g.getName())) {
-                            moduleBuilder.addGlobal(g);
-                            landingPad.add(g.ref());
+                        if (exClass == sootClass) {
+                            /*
+                             * The class being compiled is an exception class
+                             * with a catch clause which catches itself. We
+                             * cannot reference the info struct directly since
+                             * we don't know the type of it and it hasn't been
+                             * emitted by ClassCompiler yet. Use the internal
+                             * i8* alias instead which ClassCompiler will emit.
+                             * See #1007.
+                             */
+                            landingPad.add(new AliasRef(Symbols.infoStructSymbol(getInternalName(exClass)) + "_i8ptr",
+                                    I8_PTR));
                         } else {
-                            landingPad.add(moduleBuilder.getGlobalRef(g.getName()));
+                            Global g = new Global(Symbols.infoStructSymbol(getInternalName(exClass)), I8_PTR, true);
+                            if (!moduleBuilder.hasSymbol(g.getName())) {
+                                moduleBuilder.addGlobal(g);
+                            }
+                            landingPad.add(g.ref());
                         }
                     }
                     landingPad.add(new IntegerConstant(trapHandlers.get(trap.getHandlerUnit()) + 1));

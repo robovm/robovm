@@ -55,6 +55,7 @@ import org.robovm.compiler.clazz.MethodInfo;
 import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.config.OS;
+import org.robovm.compiler.llvm.Alias;
 import org.robovm.compiler.llvm.AliasRef;
 import org.robovm.compiler.llvm.And;
 import org.robovm.compiler.llvm.ArrayConstantBuilder;
@@ -856,6 +857,13 @@ public class ClassCompiler {
             classInfoStruct = new Global(Symbols.infoStructSymbol(clazz.getInternalName()), I8_PTR, true);
         }
         mb.addGlobal(classInfoStruct);
+        /*
+         * Emit an internal i8* alias for the info struct which MethodCompiler
+         * can use when referencing this info struct in exception landing pads
+         * in methods in the same class. See #1007.
+         */
+        mb.addAlias(new Alias(classInfoStruct.getName() + "_i8ptr", Linkage._private, new ConstantBitcast(
+                classInfoStruct.ref(), I8_PTR)));
         
         Function infoFn = FunctionBuilder.infoStruct(sootClass);
         infoFn.add(new Ret(new ConstantBitcast(classInfoStruct.ref(), I8_PTR_PTR)));

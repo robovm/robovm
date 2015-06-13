@@ -38,7 +38,8 @@ import org.robovm.compiler.util.Executor;
  */
 public class DeviceType implements Comparable<DeviceType> {
     public static final String PREFIX = "com.apple.CoreSimulator.SimDeviceType.";
-    public static final String PREFERRED_DEVICE_NAME = PREFIX + "iPhone-6";
+    public static final String PREFERRED_IPHONE_SIM_NAME = PREFIX + "iPhone-6";
+    public static final String PREFERRED_IPAD_SIM_NAME = PREFIX + "iPad-Air";
 
     public static enum DeviceFamily {
         iPhone,
@@ -211,13 +212,17 @@ public class DeviceType implements Comparable<DeviceType> {
         if (deviceName == null && family == null) {
             family = DeviceFamily.iPhone;
         }
+        String preferredDeciveName = PREFERRED_IPHONE_SIM_NAME;
+        if (family == DeviceFamily.iPad) {
+            preferredDeciveName = PREFERRED_IPAD_SIM_NAME;
+        }
 
         DeviceType best = null;
         for (DeviceType type : filter(listDeviceTypes(), arch, family, deviceName, sdkVersion)) {
             if (best == null) {
                 best = type;
             } else if (type.getSdk().compareTo(best.getSdk()) > 0 ||
-                    type.getSdk().compareTo(best.getSdk()) == 0 && type.getDeviceName().equals(PREFERRED_DEVICE_NAME)) {
+                    type.getSdk().compareTo(best.getSdk()) == 0 && type.getDeviceName().equals(preferredDeciveName)) {
                 best = type;
             }
         }

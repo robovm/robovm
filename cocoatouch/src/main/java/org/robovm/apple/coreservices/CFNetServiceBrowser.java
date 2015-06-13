@@ -91,13 +91,13 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     public void scheduleInRunLoop(CFRunLoop runLoop, CFRunLoopMode runLoopMode) {
-        scheduleInRunLoop(runLoop, runLoopMode.value());
+        scheduleInRunLoop(runLoop, runLoopMode.value().toString());
     }
     /**
      * @since Available in iOS 2.0 and later.
      */
     public void unscheduleFromRunLoop(CFRunLoop runLoop, CFRunLoopMode runLoopMode) {
-        unscheduleFromRunLoop(runLoop, runLoopMode.value());
+        unscheduleFromRunLoop(runLoop, runLoopMode.value().toString());
     }
     /*<methods>*/
     /**

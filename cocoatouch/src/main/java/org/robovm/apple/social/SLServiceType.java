@@ -35,12 +35,15 @@ import org.robovm.apple.accounts.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(SLServiceType.Marshaler.class)
-/*<annotations>*/@Library("Social")/*</annotations>*/
+/*<annotations>*/@Library("Social") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/SLServiceType/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SLServiceType/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/SLServiceType/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static SLServiceType toObject(Class<SLServiceType> cls, long handle, long flags) {
@@ -58,43 +61,61 @@ import org.robovm.apple.accounts.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(SLServiceType.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<SLServiceType> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<SLServiceType> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(SLServiceType.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<SLServiceType> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (SLServiceType i : l) {
+                array.add(i.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public static final SLServiceType Twitter = new SLServiceType("TwitterValue");
+    public static final SLServiceType Twitter = new SLServiceType("Twitter");
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public static final SLServiceType Facebook = new SLServiceType("FacebookValue");
+    public static final SLServiceType Facebook = new SLServiceType("Facebook");
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public static final SLServiceType SinaWeibo = new SLServiceType("SinaWeiboValue");
+    public static final SLServiceType SinaWeibo = new SLServiceType("SinaWeibo");
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public static final SLServiceType TencentWeibo = new SLServiceType("TencentWeiboValue");
-    private static SLServiceType[] values = new SLServiceType[] {Twitter, Facebook, SinaWeibo, TencentWeibo};
+    public static final SLServiceType TencentWeibo = new SLServiceType("TencentWeibo");
+    /*</constants>*/
     
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    private static /*<name>*/SLServiceType/*</name>*/[] values = new /*<name>*/SLServiceType/*</name>*/[] {/*<value_list>*/Twitter, Facebook, SinaWeibo, TencentWeibo/*</value_list>*/};
     
-    private SLServiceType (String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/SLServiceType/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static SLServiceType valueOf(NSString value) {
-        for (SLServiceType v : values) {
+    public static /*<name>*/SLServiceType/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/SLServiceType/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -102,26 +123,34 @@ import org.robovm.apple.accounts.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/SLServiceType/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="SLServiceTypeTwitter", optional=true)
-    protected static native NSString TwitterValue();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="SLServiceTypeFacebook", optional=true)
-    protected static native NSString FacebookValue();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="SLServiceTypeSinaWeibo", optional=true)
-    protected static native NSString SinaWeiboValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="SLServiceTypeTencentWeibo", optional=true)
-    protected static native NSString TencentWeiboValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("Social") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        @GlobalValue(symbol="SLServiceTypeTwitter", optional=true)
+        public static native NSString Twitter();
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        @GlobalValue(symbol="SLServiceTypeFacebook", optional=true)
+        public static native NSString Facebook();
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        @GlobalValue(symbol="SLServiceTypeSinaWeibo", optional=true)
+        public static native NSString SinaWeibo();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="SLServiceTypeTencentWeibo", optional=true)
+        public static native NSString TencentWeibo();
+        /*</values>*/
+    }
 }

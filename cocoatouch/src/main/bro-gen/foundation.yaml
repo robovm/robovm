@@ -4330,10 +4330,9 @@ values:
 
     # NSCalendar
     NSCalendarIdentifier(.*):
-        class: NSCalendarIdentifier
-        name: '#{g[0]}Value'
+        enum: NSCalendarIdentifier
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     NS.*Calendar: # NSCalendarIdentifier values should be used instead
         exclude: true 
     NSCalendar(DayChangedNotification):
@@ -4349,10 +4348,10 @@ values:
 
     # NSExtensionContext
     NS(ExtensionItemsAndErrorsKey):
-        class: NSExtensionContextErrorUserInfoKey
+        enum: NSExtensionContextErrorUserInfoKey
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        extends: NSErrorUserInfoKey
     NSExtension(.*Notification):
         class: NSExtensionContext
         name: '#{g[0]}'
@@ -4380,15 +4379,13 @@ values:
         type: NSString
         visibility: protected
     NSFileType(.*):
-        class: NSFileType
-        name: '#{g[0]}Value'
+        enum: NSFileType
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     NSFileProtection(.*):
-        class: NSFileProtection
-        name: '#{g[0]}Value'
+        enum: NSFileProtection
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     NSFileSystem(.*):
         class: NSFileSystemAttribute
         name: '#{g[0]}Attribute'

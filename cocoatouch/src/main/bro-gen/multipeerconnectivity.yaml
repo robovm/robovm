@@ -23,13 +23,15 @@ classes:
     MCAdvertiserAssistant: # DONE
         properties:
             'discoveryInfo':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>'
+                type: 'Map<String, String>'
+                marshaler: NSDictionary.AsStringStringMapMarshaler
         methods:
             '-initWithServiceType:discoveryInfo:session:':
                 name: init
                 parameters:
                     info:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>'
+                        type: 'Map<String, String>'
+                        marshaler: NSDictionary.AsStringStringMapMarshaler
     MCBrowserViewController: # DONE
         methods:
             '-init.*':
@@ -38,7 +40,8 @@ classes:
                 name: foundPeer
                 parameters:
                     info:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>'
+                        type: 'Map<String, String>'
+                        marshaler: NSDictionary.AsStringStringMapMarshaler
             '-browser:lostPeer:':
                 name: lostPeer
             '-browser:didNotStartBrowsingForPeers:':
@@ -46,13 +49,15 @@ classes:
     MCNearbyServiceAdvertiser: # DONE
         properties:
             'discoveryInfo':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>'
+                type: 'Map<String, String>'
+                marshaler: NSDictionary.AsStringStringMapMarshaler
         methods:
             '-initWithPeer:discoveryInfo:serviceType:':
                 name: init
                 parameters:
                     info:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>'
+                        type: 'Map<String, String>'
+                        marshaler: NSDictionary.AsStringStringMapMarshaler
     MCNearbyServiceBrowser: # DONE
         methods:
             '-init.*':
@@ -83,7 +88,8 @@ classes:
                 annotations: ['@WeaklyLinked']
                 parameters:
                     identity:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<SecIdentity>'
+                        type: List<SecIdentity>
+                        marshaler: NSArray.AsListMarshaler
             '-sendData:toPeers:withMode:error:':
                 trim_after_first_colon: true
                 throws: NSErrorException
@@ -119,7 +125,8 @@ protocols:
                 name: shouldPresentNearbyPeer
                 parameters:
                     info:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>'
+                        type: 'Map<String, String>'
+                        marshaler: NSDictionary.AsStringStringMapMarshaler
     MCNearbyServiceAdvertiserDelegate: # DONE
         methods:
             '-advertiser:didReceiveInvitationFromPeer:withContext:invitationHandler:':
@@ -132,7 +139,8 @@ protocols:
                 name: foundPeer
                 parameters:
                     info:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>'
+                        type: 'Map<String, String>'
+                        marshaler: NSDictionary.AsStringStringMapMarshaler
             '-browser:lostPeer:':
                 name: lostPeer
             '-browser:didNotStartBrowsingForPeers:':
@@ -154,7 +162,8 @@ protocols:
                 annotations: ['@WeaklyLinked']
                 parameters:
                     certificate:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<SecIdentity>'
+                        type: List<SecIdentity>
+                        marshaler: NSArray.AsListMarshaler
 
 functions:
     # Make sure we don't miss any functions if new ones are introduced in a later version

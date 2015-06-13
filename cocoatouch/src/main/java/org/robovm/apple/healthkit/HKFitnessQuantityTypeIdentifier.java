@@ -32,101 +32,149 @@ import org.robovm.apple.foundation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("HealthKit")/*</annotations>*/
+/*<annotations>*/@Library("HealthKit") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/HKFitnessQuantityTypeIdentifier/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/HKFitnessQuantityTypeIdentifier/*</name>*/ 
-    extends /*<extends>*/HKQuantityTypeIdentifier/*</extends>*/ 
+    extends /*<extends>*/HKQuantityTypeIdentifier/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(HKFitnessQuantityTypeIdentifier.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKFitnessQuantityTypeIdentifier StepCount = new HKFitnessQuantityTypeIdentifier("StepCountValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKFitnessQuantityTypeIdentifier DistanceWalkingRunning = new HKFitnessQuantityTypeIdentifier("DistanceWalkingRunningValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKFitnessQuantityTypeIdentifier DistanceCycling = new HKFitnessQuantityTypeIdentifier("DistanceCyclingValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKFitnessQuantityTypeIdentifier BasalEnergyBurned = new HKFitnessQuantityTypeIdentifier("BasalEnergyBurnedValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKFitnessQuantityTypeIdentifier ActiveEnergyBurned = new HKFitnessQuantityTypeIdentifier("ActiveEnergyBurnedValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKFitnessQuantityTypeIdentifier FlightsClimbed = new HKFitnessQuantityTypeIdentifier("FlightsClimbedValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKFitnessQuantityTypeIdentifier NikeFuel = new HKFitnessQuantityTypeIdentifier("NikeFuelValue");
-    
-    private static HKFitnessQuantityTypeIdentifier[] values = new HKFitnessQuantityTypeIdentifier[] {StepCount, DistanceWalkingRunning, DistanceCycling, BasalEnergyBurned, 
-        ActiveEnergyBurned, FlightsClimbed, NikeFuel};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private HKFitnessQuantityTypeIdentifier(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    static { Bro.bind(/*<name>*/HKFitnessQuantityTypeIdentifier/*</name>*/.class); }
+
+    /*<marshalers>*/
+    public static class Marshaler {
+        @MarshalsPointer
+        public static HKFitnessQuantityTypeIdentifier toObject(Class<HKFitnessQuantityTypeIdentifier> cls, long handle, long flags) {
+            NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return HKFitnessQuantityTypeIdentifier.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(HKFitnessQuantityTypeIdentifier o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(o.value(), flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<HKFitnessQuantityTypeIdentifier> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<HKFitnessQuantityTypeIdentifier> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(HKFitnessQuantityTypeIdentifier.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<HKFitnessQuantityTypeIdentifier> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (HKFitnessQuantityTypeIdentifier i : l) {
+                array.add(i.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKFitnessQuantityTypeIdentifier StepCount = new HKFitnessQuantityTypeIdentifier("StepCount");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKFitnessQuantityTypeIdentifier DistanceWalkingRunning = new HKFitnessQuantityTypeIdentifier("DistanceWalkingRunning");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKFitnessQuantityTypeIdentifier DistanceCycling = new HKFitnessQuantityTypeIdentifier("DistanceCycling");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKFitnessQuantityTypeIdentifier BasalEnergyBurned = new HKFitnessQuantityTypeIdentifier("BasalEnergyBurned");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKFitnessQuantityTypeIdentifier ActiveEnergyBurned = new HKFitnessQuantityTypeIdentifier("ActiveEnergyBurned");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKFitnessQuantityTypeIdentifier FlightsClimbed = new HKFitnessQuantityTypeIdentifier("FlightsClimbed");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKFitnessQuantityTypeIdentifier NikeFuel = new HKFitnessQuantityTypeIdentifier("NikeFuel");
+    /*</constants>*/
+    
+    private static /*<name>*/HKFitnessQuantityTypeIdentifier/*</name>*/[] values = new /*<name>*/HKFitnessQuantityTypeIdentifier/*</name>*/[] {/*<value_list>*/StepCount, DistanceWalkingRunning, DistanceCycling, BasalEnergyBurned, ActiveEnergyBurned, FlightsClimbed, NikeFuel/*</value_list>*/};
+    
+    /*<name>*/HKFitnessQuantityTypeIdentifier/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static HKFitnessQuantityTypeIdentifier valueOf(NSString value) {
-        for (HKFitnessQuantityTypeIdentifier v : values) {
+    public static /*<name>*/HKFitnessQuantityTypeIdentifier/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/HKFitnessQuantityTypeIdentifier/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
         }
-        return null;
+        throw new IllegalArgumentException("No constant with value " + value + " found in " 
+            + /*<name>*/HKFitnessQuantityTypeIdentifier/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierStepCount", optional=true)
-    protected static native NSString StepCountValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierDistanceWalkingRunning", optional=true)
-    protected static native NSString DistanceWalkingRunningValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierDistanceCycling", optional=true)
-    protected static native NSString DistanceCyclingValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierBasalEnergyBurned", optional=true)
-    protected static native NSString BasalEnergyBurnedValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierActiveEnergyBurned", optional=true)
-    protected static native NSString ActiveEnergyBurnedValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierFlightsClimbed", optional=true)
-    protected static native NSString FlightsClimbedValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierNikeFuel", optional=true)
-    protected static native NSString NikeFuelValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("HealthKit") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierStepCount", optional=true)
+        public static native NSString StepCount();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierDistanceWalkingRunning", optional=true)
+        public static native NSString DistanceWalkingRunning();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierDistanceCycling", optional=true)
+        public static native NSString DistanceCycling();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierBasalEnergyBurned", optional=true)
+        public static native NSString BasalEnergyBurned();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierActiveEnergyBurned", optional=true)
+        public static native NSString ActiveEnergyBurned();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierFlightsClimbed", optional=true)
+        public static native NSString FlightsClimbed();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierNikeFuel", optional=true)
+        public static native NSString NikeFuel();
+        /*</values>*/
+    }
 }

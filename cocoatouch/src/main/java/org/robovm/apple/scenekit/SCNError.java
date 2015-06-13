@@ -79,15 +79,15 @@ import org.robovm.apple.opengles.*;
         }
         return code;
     }
-    
-    @SuppressWarnings("unchecked")
-    public SCNConsistencyErrorUserInfo getConsistencyError() {
-        if (getCachedUserInfo().has(SCNErrorUserInfoKey.DetailedErrors)) {
-            NSDictionary<NSString, NSObject> val = (NSDictionary<NSString, NSObject>) getCachedUserInfo().get(SCNErrorUserInfoKey.DetailedErrors);
-            return new SCNConsistencyErrorUserInfo(val);
-        }
-        return null;
-    }
+//    
+//    @SuppressWarnings("unchecked")
+//    public NSErrorUserInfo getConsistencyError() {
+//        if (getCachedUserInfo().has(SCNErrorUserInfoKey.DetailedErrors)) {
+//            NSDictionary<NSString, NSObject> val = (NSDictionary<NSString, NSObject>) getCachedUserInfo().get(SCNErrorUserInfoKey.DetailedErrors);
+//            return new NSErrorUserInfo(val);
+//        }
+//        return null;
+//    }
     /*<methods>*/
     @GlobalValue(symbol="SCNErrorDomain", optional=true)
     public static native String getClassDomain();

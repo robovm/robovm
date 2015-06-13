@@ -37,12 +37,15 @@ import org.robovm.apple.metal.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CATextTruncationMode.Marshaler.class)
-/*<annotations>*/@Library("QuartzCore")/*</annotations>*/
+/*<annotations>*/@Library("QuartzCore") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/CATextTruncationMode/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CATextTruncationMode/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/CATextTruncationMode/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CATextTruncationMode toObject(Class<CATextTruncationMode> cls, long handle, long flags) {
@@ -60,43 +63,61 @@ import org.robovm.apple.metal.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(CATextTruncationMode.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    public static final CATextTruncationMode None = new CATextTruncationMode("NoneValue");
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    public static final CATextTruncationMode Start = new CATextTruncationMode("StartValue");
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    public static final CATextTruncationMode End = new CATextTruncationMode("EndValue");
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    public static final CATextTruncationMode Middle = new CATextTruncationMode("MiddleValue");
-    
-    private static CATextTruncationMode[] values = new CATextTruncationMode[] {None, Start, End, Middle};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private CATextTruncationMode(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<CATextTruncationMode> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CATextTruncationMode> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(CATextTruncationMode.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CATextTruncationMode> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (CATextTruncationMode o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*</marshalers>*/
+
+    /*<constants>*/
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
+    public static final CATextTruncationMode None = new CATextTruncationMode("None");
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
+    public static final CATextTruncationMode Start = new CATextTruncationMode("Start");
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
+    public static final CATextTruncationMode End = new CATextTruncationMode("End");
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
+    public static final CATextTruncationMode Middle = new CATextTruncationMode("Middle");
+    /*</constants>*/
+    
+    private static /*<name>*/CATextTruncationMode/*</name>*/[] values = new /*<name>*/CATextTruncationMode/*</name>*/[] {/*<value_list>*/None, Start, End, Middle/*</value_list>*/};
+    
+    /*<name>*/CATextTruncationMode/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static CATextTruncationMode valueOf(NSString value) {
-        for (CATextTruncationMode v : values) {
+    public static /*<name>*/CATextTruncationMode/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/CATextTruncationMode/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -104,26 +125,34 @@ import org.robovm.apple.metal.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/CATextTruncationMode/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @GlobalValue(symbol="kCATruncationNone", optional=true)
-    protected static native NSString NoneValue();
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @GlobalValue(symbol="kCATruncationStart", optional=true)
-    protected static native NSString StartValue();
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @GlobalValue(symbol="kCATruncationEnd", optional=true)
-    protected static native NSString EndValue();
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @GlobalValue(symbol="kCATruncationMiddle", optional=true)
-    protected static native NSString MiddleValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("QuartzCore") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 3.2 and later.
+         */
+        @GlobalValue(symbol="kCATruncationNone", optional=true)
+        public static native NSString None();
+        /**
+         * @since Available in iOS 3.2 and later.
+         */
+        @GlobalValue(symbol="kCATruncationStart", optional=true)
+        public static native NSString Start();
+        /**
+         * @since Available in iOS 3.2 and later.
+         */
+        @GlobalValue(symbol="kCATruncationEnd", optional=true)
+        public static native NSString End();
+        /**
+         * @since Available in iOS 3.2 and later.
+         */
+        @GlobalValue(symbol="kCATruncationMiddle", optional=true)
+        public static native NSString Middle();
+        /*</values>*/
+    }
 }

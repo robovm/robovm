@@ -32,109 +32,147 @@ import org.robovm.apple.foundation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("HealthKit")/*</annotations>*/
+/*<annotations>*/@Library("HealthKit") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/HKMetadataKey/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/HKMetadataKey/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(HKMetadataKey.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKMetadataKey DeviceSerialNumber = new HKMetadataKey("DeviceSerialNumberKey");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKMetadataKey BodyTemperatureSensorLocation = new HKMetadataKey("BodyTemperatureSensorLocationKey");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKMetadataKey HeartRateSensorLocation = new HKMetadataKey("HeartRateSensorLocationKey");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKMetadataKey FoodType = new HKMetadataKey("FoodTypeKey");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKMetadataKey UDIDeviceIdentifier = new HKMetadataKey("UDIDeviceIdentifierKey");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKMetadataKey UDIProductionIdentifier = new HKMetadataKey("UDIProductionIdentifierKey");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKMetadataKey DigitalSignature = new HKMetadataKey("DigitalSignatureKey");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKMetadataKey ExternalUUID = new HKMetadataKey("ExternalUUIDKey");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKMetadataKey TimeZone = new HKMetadataKey("TimeZoneKey");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKMetadataKey DeviceName = new HKMetadataKey("DeviceNameKey");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKMetadataKey DeviceManufacturerName = new HKMetadataKey("DeviceManufacturerNameKey");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKMetadataKey WasTakenInLab = new HKMetadataKey("WasTakenInLabKey");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKMetadataKey ReferenceRangeLowerLimit = new HKMetadataKey("ReferenceRangeLowerLimitKey");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKMetadataKey ReferenceRangeUpperLimit = new HKMetadataKey("ReferenceRangeUpperLimitKey");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKMetadataKey WasUserEntered = new HKMetadataKey("WasUserEnteredKey");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKMetadataKey WorkoutBrandName = new HKMetadataKey("WorkoutBrandNameKey");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKMetadataKey GroupFitness = new HKMetadataKey("GroupFitnessKey");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKMetadataKey IndoorWorkout = new HKMetadataKey("IndoorWorkoutKey");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKMetadataKey CoachedWorkout = new HKMetadataKey("CoachedWorkoutKey");
-    
-    private static HKMetadataKey[] values = new HKMetadataKey[] {DeviceSerialNumber, BodyTemperatureSensorLocation, HeartRateSensorLocation, FoodType, 
-        UDIDeviceIdentifier, UDIProductionIdentifier, DigitalSignature, ExternalUUID, TimeZone, DeviceName, DeviceManufacturerName, WasTakenInLab, ReferenceRangeLowerLimit, 
-        ReferenceRangeUpperLimit, WasUserEntered, WorkoutBrandName, GroupFitness, IndoorWorkout, CoachedWorkout};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private HKMetadataKey(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    static { Bro.bind(/*<name>*/HKMetadataKey/*</name>*/.class); }
+
+    /*<marshalers>*/
+    public static class Marshaler {
+        @MarshalsPointer
+        public static HKMetadataKey toObject(Class<HKMetadataKey> cls, long handle, long flags) {
+            NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return HKMetadataKey.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(HKMetadataKey o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(o.value(), flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<HKMetadataKey> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<HKMetadataKey> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(HKMetadataKey.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<HKMetadataKey> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (HKMetadataKey i : l) {
+                array.add(i.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKMetadataKey DeviceSerialNumber = new HKMetadataKey("DeviceSerialNumber");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKMetadataKey BodyTemperatureSensorLocation = new HKMetadataKey("BodyTemperatureSensorLocation");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKMetadataKey HeartRateSensorLocation = new HKMetadataKey("HeartRateSensorLocation");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKMetadataKey FoodType = new HKMetadataKey("FoodType");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKMetadataKey UDIDeviceIdentifier = new HKMetadataKey("UDIDeviceIdentifier");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKMetadataKey UDIProductionIdentifier = new HKMetadataKey("UDIProductionIdentifier");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKMetadataKey DigitalSignature = new HKMetadataKey("DigitalSignature");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKMetadataKey ExternalUUID = new HKMetadataKey("ExternalUUID");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKMetadataKey TimeZone = new HKMetadataKey("TimeZone");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKMetadataKey DeviceName = new HKMetadataKey("DeviceName");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKMetadataKey DeviceManufacturerName = new HKMetadataKey("DeviceManufacturerName");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKMetadataKey WasTakenInLab = new HKMetadataKey("WasTakenInLab");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKMetadataKey ReferenceRangeLowerLimit = new HKMetadataKey("ReferenceRangeLowerLimit");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKMetadataKey ReferenceRangeUpperLimit = new HKMetadataKey("ReferenceRangeUpperLimit");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKMetadataKey WasUserEntered = new HKMetadataKey("WasUserEntered");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKMetadataKey WorkoutBrandName = new HKMetadataKey("WorkoutBrandName");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKMetadataKey GroupFitness = new HKMetadataKey("GroupFitness");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKMetadataKey IndoorWorkout = new HKMetadataKey("IndoorWorkout");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKMetadataKey CoachedWorkout = new HKMetadataKey("CoachedWorkout");
+    /*</constants>*/
+    
+    private static /*<name>*/HKMetadataKey/*</name>*/[] values = new /*<name>*/HKMetadataKey/*</name>*/[] {/*<value_list>*/DeviceSerialNumber, BodyTemperatureSensorLocation, HeartRateSensorLocation, FoodType, UDIDeviceIdentifier, UDIProductionIdentifier, DigitalSignature, ExternalUUID, TimeZone, DeviceName, DeviceManufacturerName, WasTakenInLab, ReferenceRangeLowerLimit, ReferenceRangeUpperLimit, WasUserEntered, WorkoutBrandName, GroupFitness, IndoorWorkout, CoachedWorkout/*</value_list>*/};
+    
+    /*<name>*/HKMetadataKey/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static HKMetadataKey valueOf(NSString value) {
-        for (HKMetadataKey v : values) {
+    public static /*<name>*/HKMetadataKey/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/HKMetadataKey/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -142,101 +180,109 @@ import org.robovm.apple.foundation.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/HKMetadataKey/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKMetadataKeyDeviceSerialNumber", optional=true)
-    protected static native NSString DeviceSerialNumberKey();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKMetadataKeyBodyTemperatureSensorLocation", optional=true)
-    protected static native NSString BodyTemperatureSensorLocationKey();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKMetadataKeyHeartRateSensorLocation", optional=true)
-    protected static native NSString HeartRateSensorLocationKey();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKMetadataKeyFoodType", optional=true)
-    protected static native NSString FoodTypeKey();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKMetadataKeyUDIDeviceIdentifier", optional=true)
-    protected static native NSString UDIDeviceIdentifierKey();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKMetadataKeyUDIProductionIdentifier", optional=true)
-    protected static native NSString UDIProductionIdentifierKey();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKMetadataKeyDigitalSignature", optional=true)
-    protected static native NSString DigitalSignatureKey();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKMetadataKeyExternalUUID", optional=true)
-    protected static native NSString ExternalUUIDKey();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKMetadataKeyTimeZone", optional=true)
-    protected static native NSString TimeZoneKey();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKMetadataKeyDeviceName", optional=true)
-    protected static native NSString DeviceNameKey();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKMetadataKeyDeviceManufacturerName", optional=true)
-    protected static native NSString DeviceManufacturerNameKey();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKMetadataKeyWasTakenInLab", optional=true)
-    protected static native NSString WasTakenInLabKey();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKMetadataKeyReferenceRangeLowerLimit", optional=true)
-    protected static native NSString ReferenceRangeLowerLimitKey();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKMetadataKeyReferenceRangeUpperLimit", optional=true)
-    protected static native NSString ReferenceRangeUpperLimitKey();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKMetadataKeyWasUserEntered", optional=true)
-    protected static native NSString WasUserEnteredKey();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKMetadataKeyWorkoutBrandName", optional=true)
-    protected static native NSString WorkoutBrandNameKey();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKMetadataKeyGroupFitness", optional=true)
-    protected static native NSString GroupFitnessKey();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKMetadataKeyIndoorWorkout", optional=true)
-    protected static native NSString IndoorWorkoutKey();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKMetadataKeyCoachedWorkout", optional=true)
-    protected static native NSString CoachedWorkoutKey();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("HealthKit") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKMetadataKeyDeviceSerialNumber", optional=true)
+        public static native NSString DeviceSerialNumber();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKMetadataKeyBodyTemperatureSensorLocation", optional=true)
+        public static native NSString BodyTemperatureSensorLocation();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKMetadataKeyHeartRateSensorLocation", optional=true)
+        public static native NSString HeartRateSensorLocation();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKMetadataKeyFoodType", optional=true)
+        public static native NSString FoodType();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKMetadataKeyUDIDeviceIdentifier", optional=true)
+        public static native NSString UDIDeviceIdentifier();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKMetadataKeyUDIProductionIdentifier", optional=true)
+        public static native NSString UDIProductionIdentifier();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKMetadataKeyDigitalSignature", optional=true)
+        public static native NSString DigitalSignature();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKMetadataKeyExternalUUID", optional=true)
+        public static native NSString ExternalUUID();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKMetadataKeyTimeZone", optional=true)
+        public static native NSString TimeZone();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKMetadataKeyDeviceName", optional=true)
+        public static native NSString DeviceName();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKMetadataKeyDeviceManufacturerName", optional=true)
+        public static native NSString DeviceManufacturerName();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKMetadataKeyWasTakenInLab", optional=true)
+        public static native NSString WasTakenInLab();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKMetadataKeyReferenceRangeLowerLimit", optional=true)
+        public static native NSString ReferenceRangeLowerLimit();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKMetadataKeyReferenceRangeUpperLimit", optional=true)
+        public static native NSString ReferenceRangeUpperLimit();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKMetadataKeyWasUserEntered", optional=true)
+        public static native NSString WasUserEntered();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKMetadataKeyWorkoutBrandName", optional=true)
+        public static native NSString WorkoutBrandName();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKMetadataKeyGroupFitness", optional=true)
+        public static native NSString GroupFitness();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKMetadataKeyIndoorWorkout", optional=true)
+        public static native NSString IndoorWorkout();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKMetadataKeyCoachedWorkout", optional=true)
+        public static native NSString CoachedWorkout();
+        /*</values>*/
+    }
 }

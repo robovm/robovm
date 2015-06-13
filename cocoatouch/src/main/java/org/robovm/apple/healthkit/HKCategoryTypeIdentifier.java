@@ -32,46 +32,95 @@ import org.robovm.apple.foundation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("HealthKit")/*</annotations>*/
+/*<annotations>*/@Library("HealthKit") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/HKCategoryTypeIdentifier/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/HKCategoryTypeIdentifier/*</name>*/ 
-    extends /*<extends>*/HKTypeIdentifier/*</extends>*/ 
+    extends /*<extends>*/HKTypeIdentifier/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(HKCategoryTypeIdentifier.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    static { Bro.bind(/*<name>*/HKCategoryTypeIdentifier/*</name>*/.class); }
+
+    /*<marshalers>*/
+    public static class Marshaler {
+        @MarshalsPointer
+        public static HKCategoryTypeIdentifier toObject(Class<HKCategoryTypeIdentifier> cls, long handle, long flags) {
+            NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return HKCategoryTypeIdentifier.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(HKCategoryTypeIdentifier o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(o.value(), flags);
+        }
+    }
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<HKCategoryTypeIdentifier> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<HKCategoryTypeIdentifier> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(HKCategoryTypeIdentifier.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<HKCategoryTypeIdentifier> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (HKCategoryTypeIdentifier i : l) {
+                array.add(i.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final HKCategoryTypeIdentifier SleepAnalysis = new HKCategoryTypeIdentifier("SleepAnalysisValue");
+    public static final HKCategoryTypeIdentifier SleepAnalysis = new HKCategoryTypeIdentifier("SleepAnalysis");
+    /*</constants>*/
     
-    private static HKCategoryTypeIdentifier[] values = new HKCategoryTypeIdentifier[] {SleepAnalysis};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    private static /*<name>*/HKCategoryTypeIdentifier/*</name>*/[] values = new /*<name>*/HKCategoryTypeIdentifier/*</name>*/[] {/*<value_list>*/SleepAnalysis/*</value_list>*/};
     
-    private HKCategoryTypeIdentifier(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/HKCategoryTypeIdentifier/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static HKCategoryTypeIdentifier valueOf(NSString value) {
-        for (HKCategoryTypeIdentifier v : values) {
+    public static /*<name>*/HKCategoryTypeIdentifier/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/HKCategoryTypeIdentifier/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
         }
-        return null;
+        throw new IllegalArgumentException("No constant with value " + value + " found in " 
+            + /*<name>*/HKCategoryTypeIdentifier/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKCategoryTypeIdentifierSleepAnalysis", optional=true)
-    protected static native NSString SleepAnalysisValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("HealthKit") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKCategoryTypeIdentifierSleepAnalysis", optional=true)
+        public static native NSString SleepAnalysis();
+        /*</values>*/
+    }
 }

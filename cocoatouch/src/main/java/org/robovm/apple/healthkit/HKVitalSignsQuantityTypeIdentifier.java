@@ -32,82 +32,131 @@ import org.robovm.apple.foundation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("HealthKit")/*</annotations>*/
+/*<annotations>*/@Library("HealthKit") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/HKVitalSignsQuantityTypeIdentifier/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/HKVitalSignsQuantityTypeIdentifier/*</name>*/ 
-    extends /*<extends>*/HKQuantityTypeIdentifier/*</extends>*/ 
+    extends /*<extends>*/HKQuantityTypeIdentifier/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(HKVitalSignsQuantityTypeIdentifier.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKVitalSignsQuantityTypeIdentifier HeartRate = new HKVitalSignsQuantityTypeIdentifier("HeartRateValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKVitalSignsQuantityTypeIdentifier BodyTemperature = new HKVitalSignsQuantityTypeIdentifier("BodyTemperatureValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKVitalSignsQuantityTypeIdentifier BloodPressureSystolic = new HKVitalSignsQuantityTypeIdentifier("BloodPressureSystolicValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKVitalSignsQuantityTypeIdentifier BloodPressureDiastolic = new HKVitalSignsQuantityTypeIdentifier("BloodPressureDiastolicValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKVitalSignsQuantityTypeIdentifier RespiratoryRate = new HKVitalSignsQuantityTypeIdentifier("RespiratoryRateValue");
-    
-    private static HKVitalSignsQuantityTypeIdentifier[] values = new HKVitalSignsQuantityTypeIdentifier[] {HeartRate, BodyTemperature, BloodPressureSystolic, BloodPressureDiastolic, RespiratoryRate};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private HKVitalSignsQuantityTypeIdentifier(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    static { Bro.bind(/*<name>*/HKVitalSignsQuantityTypeIdentifier/*</name>*/.class); }
+
+    /*<marshalers>*/
+    public static class Marshaler {
+        @MarshalsPointer
+        public static HKVitalSignsQuantityTypeIdentifier toObject(Class<HKVitalSignsQuantityTypeIdentifier> cls, long handle, long flags) {
+            NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return HKVitalSignsQuantityTypeIdentifier.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(HKVitalSignsQuantityTypeIdentifier o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(o.value(), flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<HKVitalSignsQuantityTypeIdentifier> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<HKVitalSignsQuantityTypeIdentifier> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(HKVitalSignsQuantityTypeIdentifier.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<HKVitalSignsQuantityTypeIdentifier> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (HKVitalSignsQuantityTypeIdentifier i : l) {
+                array.add(i.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKVitalSignsQuantityTypeIdentifier HeartRate = new HKVitalSignsQuantityTypeIdentifier("HeartRate");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKVitalSignsQuantityTypeIdentifier BodyTemperature = new HKVitalSignsQuantityTypeIdentifier("BodyTemperature");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKVitalSignsQuantityTypeIdentifier BloodPressureSystolic = new HKVitalSignsQuantityTypeIdentifier("BloodPressureSystolic");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKVitalSignsQuantityTypeIdentifier BloodPressureDiastolic = new HKVitalSignsQuantityTypeIdentifier("BloodPressureDiastolic");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKVitalSignsQuantityTypeIdentifier RespiratoryRate = new HKVitalSignsQuantityTypeIdentifier("RespiratoryRate");
+    /*</constants>*/
+    
+    private static /*<name>*/HKVitalSignsQuantityTypeIdentifier/*</name>*/[] values = new /*<name>*/HKVitalSignsQuantityTypeIdentifier/*</name>*/[] {/*<value_list>*/HeartRate, BodyTemperature, BloodPressureSystolic, BloodPressureDiastolic, RespiratoryRate/*</value_list>*/};
+    
+    /*<name>*/HKVitalSignsQuantityTypeIdentifier/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static HKVitalSignsQuantityTypeIdentifier valueOf(NSString value) {
-        for (HKVitalSignsQuantityTypeIdentifier v : values) {
+    public static /*<name>*/HKVitalSignsQuantityTypeIdentifier/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/HKVitalSignsQuantityTypeIdentifier/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
         }
-        return null;
+        throw new IllegalArgumentException("No constant with value " + value + " found in " 
+            + /*<name>*/HKVitalSignsQuantityTypeIdentifier/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierHeartRate", optional=true)
-    protected static native NSString HeartRateValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierBodyTemperature", optional=true)
-    protected static native NSString BodyTemperatureValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierBloodPressureSystolic", optional=true)
-    protected static native NSString BloodPressureSystolicValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierBloodPressureDiastolic", optional=true)
-    protected static native NSString BloodPressureDiastolicValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierRespiratoryRate", optional=true)
-    protected static native NSString RespiratoryRateValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("HealthKit") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierHeartRate", optional=true)
+        public static native NSString HeartRate();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierBodyTemperature", optional=true)
+        public static native NSString BodyTemperature();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierBloodPressureSystolic", optional=true)
+        public static native NSString BloodPressureSystolic();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierBloodPressureDiastolic", optional=true)
+        public static native NSString BloodPressureDiastolic();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierRespiratoryRate", optional=true)
+        public static native NSString RespiratoryRate();
+        /*</values>*/
+    }
 }

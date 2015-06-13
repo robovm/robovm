@@ -32,381 +32,428 @@ import org.robovm.apple.foundation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("HealthKit")/*</annotations>*/
+/*<annotations>*/@Library("HealthKit") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/HKDietaryQuantityTypeIdentifier/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/HKDietaryQuantityTypeIdentifier/*</name>*/ 
-    extends /*<extends>*/HKQuantityTypeIdentifier/*</extends>*/ 
+    extends /*<extends>*/HKQuantityTypeIdentifier/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(HKDietaryQuantityTypeIdentifier.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKDietaryQuantityTypeIdentifier FatTotal = new HKDietaryQuantityTypeIdentifier("FatTotalValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKDietaryQuantityTypeIdentifier FatPolyunsaturated = new HKDietaryQuantityTypeIdentifier("FatPolyunsaturatedValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKDietaryQuantityTypeIdentifier FatMonounsaturated = new HKDietaryQuantityTypeIdentifier("FatMonounsaturatedValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKDietaryQuantityTypeIdentifier FatSaturated = new HKDietaryQuantityTypeIdentifier("FatSaturatedValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKDietaryQuantityTypeIdentifier Cholesterol = new HKDietaryQuantityTypeIdentifier("CholesterolValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKDietaryQuantityTypeIdentifier Sodium = new HKDietaryQuantityTypeIdentifier("SodiumValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKDietaryQuantityTypeIdentifier Carbohydrates = new HKDietaryQuantityTypeIdentifier("CarbohydratesValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKDietaryQuantityTypeIdentifier Fiber = new HKDietaryQuantityTypeIdentifier("FiberValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKDietaryQuantityTypeIdentifier Sugar = new HKDietaryQuantityTypeIdentifier("SugarValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKDietaryQuantityTypeIdentifier EnergyConsumed = new HKDietaryQuantityTypeIdentifier("EnergyConsumedValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKDietaryQuantityTypeIdentifier Protein = new HKDietaryQuantityTypeIdentifier("ProteinValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKDietaryQuantityTypeIdentifier VitaminA = new HKDietaryQuantityTypeIdentifier("VitaminAValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKDietaryQuantityTypeIdentifier VitaminB6 = new HKDietaryQuantityTypeIdentifier("VitaminB6Value");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKDietaryQuantityTypeIdentifier VitaminB12 = new HKDietaryQuantityTypeIdentifier("VitaminB12Value");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKDietaryQuantityTypeIdentifier VitaminC = new HKDietaryQuantityTypeIdentifier("VitaminCValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKDietaryQuantityTypeIdentifier VitaminD = new HKDietaryQuantityTypeIdentifier("VitaminDValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKDietaryQuantityTypeIdentifier VitaminE = new HKDietaryQuantityTypeIdentifier("VitaminEValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKDietaryQuantityTypeIdentifier VitaminK = new HKDietaryQuantityTypeIdentifier("VitaminKValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKDietaryQuantityTypeIdentifier Calcium = new HKDietaryQuantityTypeIdentifier("CalciumValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKDietaryQuantityTypeIdentifier Iron = new HKDietaryQuantityTypeIdentifier("IronValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKDietaryQuantityTypeIdentifier Thiamin = new HKDietaryQuantityTypeIdentifier("ThiaminValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKDietaryQuantityTypeIdentifier Riboflavin = new HKDietaryQuantityTypeIdentifier("RiboflavinValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKDietaryQuantityTypeIdentifier Niacin = new HKDietaryQuantityTypeIdentifier("NiacinValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKDietaryQuantityTypeIdentifier Folate = new HKDietaryQuantityTypeIdentifier("FolateValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKDietaryQuantityTypeIdentifier Biotin = new HKDietaryQuantityTypeIdentifier("BiotinValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKDietaryQuantityTypeIdentifier PantothenicAcid = new HKDietaryQuantityTypeIdentifier("PantothenicAcidValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKDietaryQuantityTypeIdentifier Phosphorus = new HKDietaryQuantityTypeIdentifier("PhosphorusValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKDietaryQuantityTypeIdentifier Iodine = new HKDietaryQuantityTypeIdentifier("IodineValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKDietaryQuantityTypeIdentifier Magnesium = new HKDietaryQuantityTypeIdentifier("MagnesiumValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKDietaryQuantityTypeIdentifier Zinc = new HKDietaryQuantityTypeIdentifier("ZincValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKDietaryQuantityTypeIdentifier Selenium = new HKDietaryQuantityTypeIdentifier("SeleniumValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKDietaryQuantityTypeIdentifier Copper = new HKDietaryQuantityTypeIdentifier("CopperValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKDietaryQuantityTypeIdentifier Manganese = new HKDietaryQuantityTypeIdentifier("ManganeseValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKDietaryQuantityTypeIdentifier Chromium = new HKDietaryQuantityTypeIdentifier("ChromiumValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKDietaryQuantityTypeIdentifier Molybdenum = new HKDietaryQuantityTypeIdentifier("MolybdenumValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKDietaryQuantityTypeIdentifier Chloride = new HKDietaryQuantityTypeIdentifier("ChlorideValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKDietaryQuantityTypeIdentifier Potassium = new HKDietaryQuantityTypeIdentifier("PotassiumValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKDietaryQuantityTypeIdentifier Caffeine = new HKDietaryQuantityTypeIdentifier("CaffeineValue");
-    
-    private static HKDietaryQuantityTypeIdentifier[] values = new HKDietaryQuantityTypeIdentifier[] {FatTotal, FatPolyunsaturated, FatMonounsaturated, FatSaturated, Cholesterol, 
-        Sodium, Carbohydrates, Fiber, Sugar, EnergyConsumed, Protein, VitaminA, VitaminB6, VitaminB12, VitaminC, VitaminD, VitaminE, VitaminK, Calcium, Iron, Thiamin, Riboflavin, 
-        Niacin, Folate, Biotin, PantothenicAcid, Phosphorus, Iodine, Magnesium, Zinc, Selenium, Copper, Manganese, Chromium, Molybdenum, Chloride, Potassium, Caffeine};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private HKDietaryQuantityTypeIdentifier(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    static { Bro.bind(/*<name>*/HKDietaryQuantityTypeIdentifier/*</name>*/.class); }
+
+    /*<marshalers>*/
+    public static class Marshaler {
+        @MarshalsPointer
+        public static HKDietaryQuantityTypeIdentifier toObject(Class<HKDietaryQuantityTypeIdentifier> cls, long handle, long flags) {
+            NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return HKDietaryQuantityTypeIdentifier.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(HKDietaryQuantityTypeIdentifier o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(o.value(), flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<HKDietaryQuantityTypeIdentifier> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<HKDietaryQuantityTypeIdentifier> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(HKDietaryQuantityTypeIdentifier.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<HKDietaryQuantityTypeIdentifier> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (HKDietaryQuantityTypeIdentifier i : l) {
+                array.add(i.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKDietaryQuantityTypeIdentifier FatTotal = new HKDietaryQuantityTypeIdentifier("FatTotal");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKDietaryQuantityTypeIdentifier FatPolyunsaturated = new HKDietaryQuantityTypeIdentifier("FatPolyunsaturated");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKDietaryQuantityTypeIdentifier FatMonounsaturated = new HKDietaryQuantityTypeIdentifier("FatMonounsaturated");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKDietaryQuantityTypeIdentifier FatSaturated = new HKDietaryQuantityTypeIdentifier("FatSaturated");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKDietaryQuantityTypeIdentifier Cholesterol = new HKDietaryQuantityTypeIdentifier("Cholesterol");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKDietaryQuantityTypeIdentifier Sodium = new HKDietaryQuantityTypeIdentifier("Sodium");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKDietaryQuantityTypeIdentifier Carbohydrates = new HKDietaryQuantityTypeIdentifier("Carbohydrates");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKDietaryQuantityTypeIdentifier Fiber = new HKDietaryQuantityTypeIdentifier("Fiber");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKDietaryQuantityTypeIdentifier Sugar = new HKDietaryQuantityTypeIdentifier("Sugar");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKDietaryQuantityTypeIdentifier EnergyConsumed = new HKDietaryQuantityTypeIdentifier("EnergyConsumed");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKDietaryQuantityTypeIdentifier Protein = new HKDietaryQuantityTypeIdentifier("Protein");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKDietaryQuantityTypeIdentifier VitaminA = new HKDietaryQuantityTypeIdentifier("VitaminA");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKDietaryQuantityTypeIdentifier VitaminB6 = new HKDietaryQuantityTypeIdentifier("VitaminB6");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKDietaryQuantityTypeIdentifier VitaminB12 = new HKDietaryQuantityTypeIdentifier("VitaminB12");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKDietaryQuantityTypeIdentifier VitaminC = new HKDietaryQuantityTypeIdentifier("VitaminC");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKDietaryQuantityTypeIdentifier VitaminD = new HKDietaryQuantityTypeIdentifier("VitaminD");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKDietaryQuantityTypeIdentifier VitaminE = new HKDietaryQuantityTypeIdentifier("VitaminE");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKDietaryQuantityTypeIdentifier VitaminK = new HKDietaryQuantityTypeIdentifier("VitaminK");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKDietaryQuantityTypeIdentifier Calcium = new HKDietaryQuantityTypeIdentifier("Calcium");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKDietaryQuantityTypeIdentifier Iron = new HKDietaryQuantityTypeIdentifier("Iron");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKDietaryQuantityTypeIdentifier Thiamin = new HKDietaryQuantityTypeIdentifier("Thiamin");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKDietaryQuantityTypeIdentifier Riboflavin = new HKDietaryQuantityTypeIdentifier("Riboflavin");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKDietaryQuantityTypeIdentifier Niacin = new HKDietaryQuantityTypeIdentifier("Niacin");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKDietaryQuantityTypeIdentifier Folate = new HKDietaryQuantityTypeIdentifier("Folate");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKDietaryQuantityTypeIdentifier Biotin = new HKDietaryQuantityTypeIdentifier("Biotin");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKDietaryQuantityTypeIdentifier PantothenicAcid = new HKDietaryQuantityTypeIdentifier("PantothenicAcid");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKDietaryQuantityTypeIdentifier Phosphorus = new HKDietaryQuantityTypeIdentifier("Phosphorus");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKDietaryQuantityTypeIdentifier Iodine = new HKDietaryQuantityTypeIdentifier("Iodine");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKDietaryQuantityTypeIdentifier Magnesium = new HKDietaryQuantityTypeIdentifier("Magnesium");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKDietaryQuantityTypeIdentifier Zinc = new HKDietaryQuantityTypeIdentifier("Zinc");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKDietaryQuantityTypeIdentifier Selenium = new HKDietaryQuantityTypeIdentifier("Selenium");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKDietaryQuantityTypeIdentifier Copper = new HKDietaryQuantityTypeIdentifier("Copper");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKDietaryQuantityTypeIdentifier Manganese = new HKDietaryQuantityTypeIdentifier("Manganese");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKDietaryQuantityTypeIdentifier Chromium = new HKDietaryQuantityTypeIdentifier("Chromium");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKDietaryQuantityTypeIdentifier Molybdenum = new HKDietaryQuantityTypeIdentifier("Molybdenum");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKDietaryQuantityTypeIdentifier Chloride = new HKDietaryQuantityTypeIdentifier("Chloride");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKDietaryQuantityTypeIdentifier Potassium = new HKDietaryQuantityTypeIdentifier("Potassium");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKDietaryQuantityTypeIdentifier Caffeine = new HKDietaryQuantityTypeIdentifier("Caffeine");
+    /*</constants>*/
+    
+    private static /*<name>*/HKDietaryQuantityTypeIdentifier/*</name>*/[] values = new /*<name>*/HKDietaryQuantityTypeIdentifier/*</name>*/[] {/*<value_list>*/FatTotal, FatPolyunsaturated, FatMonounsaturated, FatSaturated, Cholesterol, Sodium, Carbohydrates, Fiber, Sugar, EnergyConsumed, Protein, VitaminA, VitaminB6, VitaminB12, VitaminC, VitaminD, VitaminE, VitaminK, Calcium, Iron, Thiamin, Riboflavin, Niacin, Folate, Biotin, PantothenicAcid, Phosphorus, Iodine, Magnesium, Zinc, Selenium, Copper, Manganese, Chromium, Molybdenum, Chloride, Potassium, Caffeine/*</value_list>*/};
+    
+    /*<name>*/HKDietaryQuantityTypeIdentifier/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static HKDietaryQuantityTypeIdentifier valueOf(NSString value) {
-        for (HKDietaryQuantityTypeIdentifier v : values) {
+    public static /*<name>*/HKDietaryQuantityTypeIdentifier/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/HKDietaryQuantityTypeIdentifier/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
         }
-        return null;
+        throw new IllegalArgumentException("No constant with value " + value + " found in " 
+            + /*<name>*/HKDietaryQuantityTypeIdentifier/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryFatTotal", optional=true)
-    protected static native NSString FatTotalValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryFatPolyunsaturated", optional=true)
-    protected static native NSString FatPolyunsaturatedValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryFatMonounsaturated", optional=true)
-    protected static native NSString FatMonounsaturatedValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryFatSaturated", optional=true)
-    protected static native NSString FatSaturatedValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryCholesterol", optional=true)
-    protected static native NSString CholesterolValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierDietarySodium", optional=true)
-    protected static native NSString SodiumValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryCarbohydrates", optional=true)
-    protected static native NSString CarbohydratesValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryFiber", optional=true)
-    protected static native NSString FiberValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierDietarySugar", optional=true)
-    protected static native NSString SugarValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryEnergyConsumed", optional=true)
-    protected static native NSString EnergyConsumedValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryProtein", optional=true)
-    protected static native NSString ProteinValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryVitaminA", optional=true)
-    protected static native NSString VitaminAValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryVitaminB6", optional=true)
-    protected static native NSString VitaminB6Value();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryVitaminB12", optional=true)
-    protected static native NSString VitaminB12Value();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryVitaminC", optional=true)
-    protected static native NSString VitaminCValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryVitaminD", optional=true)
-    protected static native NSString VitaminDValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryVitaminE", optional=true)
-    protected static native NSString VitaminEValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryVitaminK", optional=true)
-    protected static native NSString VitaminKValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryCalcium", optional=true)
-    protected static native NSString CalciumValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryIron", optional=true)
-    protected static native NSString IronValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryThiamin", optional=true)
-    protected static native NSString ThiaminValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryRiboflavin", optional=true)
-    protected static native NSString RiboflavinValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryNiacin", optional=true)
-    protected static native NSString NiacinValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryFolate", optional=true)
-    protected static native NSString FolateValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryBiotin", optional=true)
-    protected static native NSString BiotinValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryPantothenicAcid", optional=true)
-    protected static native NSString PantothenicAcidValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryPhosphorus", optional=true)
-    protected static native NSString PhosphorusValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryIodine", optional=true)
-    protected static native NSString IodineValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryMagnesium", optional=true)
-    protected static native NSString MagnesiumValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryZinc", optional=true)
-    protected static native NSString ZincValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierDietarySelenium", optional=true)
-    protected static native NSString SeleniumValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryCopper", optional=true)
-    protected static native NSString CopperValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryManganese", optional=true)
-    protected static native NSString ManganeseValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryChromium", optional=true)
-    protected static native NSString ChromiumValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryMolybdenum", optional=true)
-    protected static native NSString MolybdenumValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryChloride", optional=true)
-    protected static native NSString ChlorideValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryPotassium", optional=true)
-    protected static native NSString PotassiumValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryCaffeine", optional=true)
-    protected static native NSString CaffeineValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("HealthKit") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryFatTotal", optional=true)
+        public static native NSString FatTotal();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryFatPolyunsaturated", optional=true)
+        public static native NSString FatPolyunsaturated();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryFatMonounsaturated", optional=true)
+        public static native NSString FatMonounsaturated();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryFatSaturated", optional=true)
+        public static native NSString FatSaturated();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryCholesterol", optional=true)
+        public static native NSString Cholesterol();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierDietarySodium", optional=true)
+        public static native NSString Sodium();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryCarbohydrates", optional=true)
+        public static native NSString Carbohydrates();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryFiber", optional=true)
+        public static native NSString Fiber();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierDietarySugar", optional=true)
+        public static native NSString Sugar();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryEnergyConsumed", optional=true)
+        public static native NSString EnergyConsumed();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryProtein", optional=true)
+        public static native NSString Protein();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryVitaminA", optional=true)
+        public static native NSString VitaminA();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryVitaminB6", optional=true)
+        public static native NSString VitaminB6();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryVitaminB12", optional=true)
+        public static native NSString VitaminB12();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryVitaminC", optional=true)
+        public static native NSString VitaminC();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryVitaminD", optional=true)
+        public static native NSString VitaminD();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryVitaminE", optional=true)
+        public static native NSString VitaminE();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryVitaminK", optional=true)
+        public static native NSString VitaminK();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryCalcium", optional=true)
+        public static native NSString Calcium();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryIron", optional=true)
+        public static native NSString Iron();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryThiamin", optional=true)
+        public static native NSString Thiamin();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryRiboflavin", optional=true)
+        public static native NSString Riboflavin();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryNiacin", optional=true)
+        public static native NSString Niacin();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryFolate", optional=true)
+        public static native NSString Folate();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryBiotin", optional=true)
+        public static native NSString Biotin();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryPantothenicAcid", optional=true)
+        public static native NSString PantothenicAcid();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryPhosphorus", optional=true)
+        public static native NSString Phosphorus();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryIodine", optional=true)
+        public static native NSString Iodine();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryMagnesium", optional=true)
+        public static native NSString Magnesium();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryZinc", optional=true)
+        public static native NSString Zinc();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierDietarySelenium", optional=true)
+        public static native NSString Selenium();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryCopper", optional=true)
+        public static native NSString Copper();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryManganese", optional=true)
+        public static native NSString Manganese();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryChromium", optional=true)
+        public static native NSString Chromium();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryMolybdenum", optional=true)
+        public static native NSString Molybdenum();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryChloride", optional=true)
+        public static native NSString Chloride();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryPotassium", optional=true)
+        public static native NSString Potassium();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierDietaryCaffeine", optional=true)
+        public static native NSString Caffeine();
+        /*</values>*/
+    }
 }

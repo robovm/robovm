@@ -38,17 +38,17 @@ import org.robovm.apple.uikit.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CIContextOptions.Marshaler.class)
 /*<annotations>*/@Library("CoreImage")/*</annotations>*/
+@Marshaler(/*<name>*/CIContextOptions/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CIContextOptions/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static CIContextOptions toObject(Class<CIContextOptions> cls, long handle, long flags) {
-            CFDictionary o = (CFDictionary) CFType.Marshaler.toObject(CFDictionary.class, handle, flags);
+            NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
             if (o == null) {
                 return null;
             }
@@ -59,58 +59,87 @@ import org.robovm.apple.uikit.*;
             if (o == null) {
                 return 0L;
             }
-            return CFType.Marshaler.toNative(o.data, flags);
+            return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private CFDictionary data;
-    
-    protected CIContextOptions(CFDictionary data) {
-        this.data = data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CIContextOptions> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CIContextOptions> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new CIContextOptions(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CIContextOptions> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (CIContextOptions i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    public CIContextOptions() {
-        this.data = CFMutableDictionary.create();
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    CIContextOptions(NSDictionary<NSString, NSObject> data) {
+        super(data);
     }
-    /*<bind>*/static { Bro.bind(CIContextOptions.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public CFDictionary getDictionary() {
-        return data;
+    public CIContextOptions() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
+    }
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
+    }
+    public CIContextOptions set(NSString key, NSObject value) {
+        data.put(key, value);
+        return this;
     }
     
 
     public CGColorSpace getOutputColorSpace() {
-        if (data.containsKey(OutputColorSpaceKey())) {
-            CGColorSpace val = data.get(OutputColorSpaceKey(), CGColorSpace.class);
+        if (has(Keys.OutputColorSpace())) {
+            CGColorSpace val = get(Keys.OutputColorSpace()).as(CGColorSpace.class);
             return val;
         }
         return null;
     }
-    public CIContextOptions setOutputColorSpace(CGColorSpace colorSpace) {
-        data.put(OutputColorSpaceKey(), colorSpace != null ? colorSpace : NSNull.getNull());
+    public CIContextOptions setOutputColorSpace(CGColorSpace outputColorSpace) {
+        set(Keys.OutputColorSpace(), outputColorSpace.as(NSObject.class));
         return this;
     }
     public CGColorSpace getWorkingColorSpace() {
-        if (data.containsKey(WorkingColorSpaceKey())) {
-            CGColorSpace val = data.get(WorkingColorSpaceKey(), CGColorSpace.class);
+        if (has(Keys.WorkingColorSpace())) {
+            CGColorSpace val = get(Keys.WorkingColorSpace()).as(CGColorSpace.class);
             return val;
         }
         return null;
     }
-    public CIContextOptions setWorkingColorSpace(CGColorSpace colorSpace) {
-        data.put(WorkingColorSpaceKey(), colorSpace != null ? colorSpace : NSNull.getNull());
+    public CIContextOptions setWorkingColorSpace(CGColorSpace workingColorSpace) {
+        set(Keys.WorkingColorSpace(), workingColorSpace.as(NSObject.class));
         return this;
     }
     /**
      * @since Available in iOS 8.0 and later.
      */
     public CIFormat getWorkingFormat() {
-        if (data.containsKey(WorkingFormatKey())) {
-            NSNumber val = data.get(WorkingFormatKey(), NSNumber.class);
+        if (has(Keys.WorkingFormat())) {
+            NSNumber val = (NSNumber) get(Keys.WorkingFormat());
             return CIFormat.valueOf(val.intValue());
         }
         return null;
@@ -118,27 +147,27 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public CIContextOptions setWorkingFormat(CIFormat format) {
-        data.put(WorkingFormatKey(), NSNumber.valueOf(format.value()));
+    public CIContextOptions setWorkingFormat(CIFormat workingFormat) {
+        set(Keys.WorkingFormat(), NSNumber.valueOf(workingFormat.value()));
         return this;
     }
-    public boolean isUsingSoftwareRenderer() {
-        if (data.containsKey(UseSoftwareRendererKey())) {
-            NSNumber val = data.get(UseSoftwareRendererKey(), NSNumber.class);
+    public boolean usesSoftwareRenderer() {
+        if (has(Keys.UseSoftwareRenderer())) {
+            NSNumber val = (NSNumber) get(Keys.UseSoftwareRenderer());
             return val.booleanValue();
         }
         return false;
     }
-    public CIContextOptions setUseSoftwareRenderer(boolean softwareRenderer) {
-        data.put(UseSoftwareRendererKey(), NSNumber.valueOf(softwareRenderer));
+    public CIContextOptions setUsesSoftwareRenderer(boolean usesSoftwareRenderer) {
+        set(Keys.UseSoftwareRenderer(), NSNumber.valueOf(usesSoftwareRenderer));
         return this;
     }
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public boolean isRequestingLowPriority() {
-        if (data.containsKey(PriorityRequestLowKey())) {
-            NSNumber val = data.get(PriorityRequestLowKey(), NSNumber.class);
+    public boolean requestsLowPriority() {
+        if (has(Keys.PriorityRequestLow())) {
+            NSNumber val = (NSNumber) get(Keys.PriorityRequestLow());
             return val.booleanValue();
         }
         return false;
@@ -146,31 +175,32 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public CIContextOptions setRequestLowPriority(boolean requestLowPriority) {
-        data.put(PriorityRequestLowKey(), NSNumber.valueOf(requestLowPriority));
+    public CIContextOptions setRequestsLowPriority(boolean requestsLowPriority) {
+        set(Keys.PriorityRequestLow(), NSNumber.valueOf(requestsLowPriority));
         return this;
     }
-    /*<methods>*/
-    @GlobalValue(symbol="kCIContextOutputColorSpace", optional=true)
-    protected static native NSString OutputColorSpaceKey();
-    @GlobalValue(symbol="kCIContextWorkingColorSpace", optional=true)
-    protected static native NSString WorkingColorSpaceKey();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="kCIContextWorkingFormat", optional=true)
-    protected static native NSString WorkingFormatKey();
-    @GlobalValue(symbol="kCIContextUseSoftwareRenderer", optional=true)
-    protected static native NSString UseSoftwareRendererKey();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="kCIContextPriorityRequestLow", optional=true)
-    protected static native NSString PriorityRequestLowKey();
     /*</methods>*/
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    
+    /*<keys>*/
+    @Library("CoreImage")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        @GlobalValue(symbol="kCIContextOutputColorSpace", optional=true)
+        public static native NSString OutputColorSpace();
+        @GlobalValue(symbol="kCIContextWorkingColorSpace", optional=true)
+        public static native NSString WorkingColorSpace();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="kCIContextWorkingFormat", optional=true)
+        public static native NSString WorkingFormat();
+        @GlobalValue(symbol="kCIContextUseSoftwareRenderer", optional=true)
+        public static native NSString UseSoftwareRenderer();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="kCIContextPriorityRequestLow", optional=true)
+        public static native NSString PriorityRequestLow();
     }
+    /*</keys>*/
 }

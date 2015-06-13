@@ -39,14 +39,14 @@ import org.robovm.apple.opengles.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(SCNSceneSourceContributor.Marshaler.class)
 /*<annotations>*/@Library("SceneKit")/*</annotations>*/
+@Marshaler(/*<name>*/SCNSceneSourceContributor/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SCNSceneSourceContributor/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static SCNSceneSourceContributor toObject(Class<SCNSceneSourceContributor> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -63,47 +63,88 @@ import org.robovm.apple.opengles.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected SCNSceneSourceContributor(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<SCNSceneSourceContributor> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<SCNSceneSourceContributor> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new SCNSceneSourceContributor(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<SCNSceneSourceContributor> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (SCNSceneSourceContributor i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    /*<bind>*/static { Bro.bind(SCNSceneSourceContributor.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    SCNSceneSourceContributor(NSDictionary<NSString, NSObject> data) {
+        super(data);
+    }
+    public SCNSceneSourceContributor() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
+    }
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
+    }
+    public SCNSceneSourceContributor set(NSString key, NSObject value) {
+        data.put(key, value);
+        return this;
     }
     
-    
+
     public String getAuthoringTool() {
-        if (data.containsKey(AuthoringToolKey())) {
-            NSString val = (NSString) data.get(AuthoringToolKey());
+        if (has(Keys.AuthoringTool())) {
+            NSString val = (NSString) get(Keys.AuthoringTool());
             return val.toString();
         }
         return null;
+    }
+    public SCNSceneSourceContributor setAuthoringTool(String authoringTool) {
+        set(Keys.AuthoringTool(), new NSString(authoringTool));
+        return this;
     }
     public String getAuthor() {
-        if (data.containsKey(AuthorKey())) {
-            NSString val = (NSString) data.get(AuthorKey());
+        if (has(Keys.Author())) {
+            NSString val = (NSString) get(Keys.Author());
             return val.toString();
         }
         return null;
     }
-    /*<methods>*/
-    @GlobalValue(symbol="SCNSceneSourceAssetAuthoringToolKey", optional=true)
-    protected static native NSString AuthoringToolKey();
-    @GlobalValue(symbol="SCNSceneSourceAssetAuthorKey", optional=true)
-    protected static native NSString AuthorKey();
-    /*</methods>*/
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    public SCNSceneSourceContributor setAuthor(String author) {
+        set(Keys.Author(), new NSString(author));
+        return this;
     }
+    /*</methods>*/
+    
+    /*<keys>*/
+    @Library("SceneKit")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        @GlobalValue(symbol="SCNSceneSourceAssetAuthoringToolKey", optional=true)
+        public static native NSString AuthoringTool();
+        @GlobalValue(symbol="SCNSceneSourceAssetAuthorKey", optional=true)
+        public static native NSString Author();
+    }
+    /*</keys>*/
 }

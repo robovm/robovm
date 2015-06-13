@@ -42,14 +42,14 @@ import org.robovm.apple.audiounit.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(AVVideoCompressionSettings.Marshaler.class)
 /*<annotations>*/@Library("AVFoundation")/*</annotations>*/
+@Marshaler(/*<name>*/AVVideoCompressionSettings/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/AVVideoCompressionSettings/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static AVVideoCompressionSettings toObject(Class<AVVideoCompressionSettings> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -66,33 +66,62 @@ import org.robovm.apple.audiounit.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected AVVideoCompressionSettings(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<AVVideoCompressionSettings> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<AVVideoCompressionSettings> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new AVVideoCompressionSettings(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<AVVideoCompressionSettings> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (AVVideoCompressionSettings i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    public AVVideoCompressionSettings() {
-        data = new NSMutableDictionary<>();
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    AVVideoCompressionSettings(NSDictionary<NSString, NSObject> data) {
+        super(data);
     }
-    /*<bind>*/static { Bro.bind(AVVideoCompressionSettings.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
+    public AVVideoCompressionSettings() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
+    }
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
+    }
+    public AVVideoCompressionSettings set(NSString key, NSObject value) {
+        data.put(key, value);
+        return this;
     }
     
-    
+
     /**
      * @since Available in iOS 4.0 and later.
      */
     public double getAverageBitRate() {
-        if (data.containsKey(AverageBitRateKey())) {
-            NSNumber val = (NSNumber) data.get(AverageBitRateKey());
+        if (has(Keys.AverageBitRate())) {
+            NSNumber val = (NSNumber) get(Keys.AverageBitRate());
             return val.doubleValue();
         }
         return 0;
@@ -100,16 +129,16 @@ import org.robovm.apple.audiounit.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public AVVideoCompressionSettings setAverageBitRate(double bitRate) {
-        data.put(AverageBitRateKey(), NSNumber.valueOf(bitRate));
+    public AVVideoCompressionSettings setAverageBitRate(double averageBitRate) {
+        set(Keys.AverageBitRate(), NSNumber.valueOf(averageBitRate));
         return this;
     }
     /**
      * @since Available in iOS 5.0 and later.
      */
     public double getQuality() {
-        if (data.containsKey(QualityKey())) {
-            NSNumber val = (NSNumber) data.get(QualityKey());
+        if (has(Keys.Quality())) {
+            NSNumber val = (NSNumber) get(Keys.Quality());
             return val.doubleValue();
         }
         return 0;
@@ -118,15 +147,15 @@ import org.robovm.apple.audiounit.*;
      * @since Available in iOS 5.0 and later.
      */
     public AVVideoCompressionSettings setQuality(double quality) {
-        data.put(QualityKey(), NSNumber.valueOf(quality));
+        set(Keys.Quality(), NSNumber.valueOf(quality));
         return this;
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     public double getMaxKeyFrameInterval() {
-        if (data.containsKey(MaxKeyFrameIntervalKey())) {
-            NSNumber val = (NSNumber) data.get(MaxKeyFrameIntervalKey());
+        if (has(Keys.MaxKeyFrameInterval())) {
+            NSNumber val = (NSNumber) get(Keys.MaxKeyFrameInterval());
             return val.doubleValue();
         }
         return 0;
@@ -134,16 +163,16 @@ import org.robovm.apple.audiounit.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public AVVideoCompressionSettings setMaxKeyFrameInterval(double interval) {
-        data.put(MaxKeyFrameIntervalKey(), NSNumber.valueOf(interval));
+    public AVVideoCompressionSettings setMaxKeyFrameInterval(double maxKeyFrameInterval) {
+        set(Keys.MaxKeyFrameInterval(), NSNumber.valueOf(maxKeyFrameInterval));
         return this;
     }
     /**
      * @since Available in iOS 7.0 and later.
      */
     public double getMaxKeyFrameIntervalDuration() {
-        if (data.containsKey(MaxKeyFrameIntervalDurationKey())) {
-            NSNumber val = (NSNumber) data.get(MaxKeyFrameIntervalDurationKey());
+        if (has(Keys.MaxKeyFrameIntervalDuration())) {
+            NSNumber val = (NSNumber) get(Keys.MaxKeyFrameIntervalDuration());
             return val.doubleValue();
         }
         return 0;
@@ -151,35 +180,36 @@ import org.robovm.apple.audiounit.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public AVVideoCompressionSettings setMaxKeyFrameIntervalDuration(double duration) {
-        data.put(MaxKeyFrameIntervalDurationKey(), NSNumber.valueOf(duration));
+    public AVVideoCompressionSettings setMaxKeyFrameIntervalDuration(double maxKeyFrameIntervalDuration) {
+        set(Keys.MaxKeyFrameIntervalDuration(), NSNumber.valueOf(maxKeyFrameIntervalDuration));
         return this;
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="AVVideoAverageBitRateKey", optional=true)
-    protected static native NSString AverageBitRateKey();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="AVVideoQualityKey", optional=true)
-    protected static native NSString QualityKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="AVVideoMaxKeyFrameIntervalKey", optional=true)
-    protected static native NSString MaxKeyFrameIntervalKey();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="AVVideoMaxKeyFrameIntervalDurationKey", optional=true)
-    protected static native NSString MaxKeyFrameIntervalDurationKey();
     /*</methods>*/
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    
+    /*<keys>*/
+    @Library("AVFoundation")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="AVVideoAverageBitRateKey", optional=true)
+        public static native NSString AverageBitRate();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="AVVideoQualityKey", optional=true)
+        public static native NSString Quality();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="AVVideoMaxKeyFrameIntervalKey", optional=true)
+        public static native NSString MaxKeyFrameInterval();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="AVVideoMaxKeyFrameIntervalDurationKey", optional=true)
+        public static native NSString MaxKeyFrameIntervalDuration();
     }
+    /*</keys>*/
 }

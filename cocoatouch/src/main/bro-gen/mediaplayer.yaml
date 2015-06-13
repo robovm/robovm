@@ -356,29 +356,29 @@ values:
 
     MPMediaLibrary(DidChangeNotification):
         class: MPMediaLibrary
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
     MPMediaPlayback(IsPreparedToPlayDidChangeNotification):
         class: MPMusicPlayerController
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
     MPMoviePlayerContentPreloadDidFinishNotification:
         exclude: true
     MPMoviePlayer(.*Notification):
         class: MPMoviePlayerController
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
     MPMovie(.*Notification):
         class: MPMoviePlayerController
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
     MPMusicPlayerController(.*Notification):
         class: MPMusicPlayerController
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
     MPVolumeView(.*Notification):
         class: MPVolumeView
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
         
     MPMoviePlayer(PlaybackDidFinishReasonUserInfoKey):
@@ -405,11 +405,11 @@ values:
     # Make sure we don't miss any values if new ones are introduced in a later version
     (k?MP.*):
         class: MediaPlayer
-        name: "Value__#{g[0]}"
+        name: 'Value__#{g[0]}'
 
 constants:
 
     # Make sure we don't miss any constants if new ones are introduced in a later version
     (k?MP.*):
         class: MediaPlayer
-        name: "Constant__#{g[0]}"
+        name: 'Constant__#{g[0]}'

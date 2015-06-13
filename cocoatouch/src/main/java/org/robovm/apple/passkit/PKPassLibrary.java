@@ -43,11 +43,16 @@ import org.robovm.apple.addressbook.*;
     /*<implements>*//*</implements>*/ {
 
     public static class Notifications {
-        public static NSObject observeDidChange(final VoidBlock1<PKPassLibraryNotificationArgs> block) {
+        public static NSObject observeDidChange(final VoidBlock1<PKPassLibraryNotification> block) {
             return NSNotificationCenter.getDefaultCenter().addObserver(DidChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke (NSNotification a) {
-                    block.invoke(new PKPassLibraryNotificationArgs(a));
+                    NSDictionary<NSString, NSObject> userInfo = a.getUserInfo();
+                    PKPassLibraryNotification data = null;
+                    if (userInfo != null) {
+                        data = new PKPassLibraryNotification(userInfo);
+                    }
+                    block.invoke(data);
                 }
             });
         }

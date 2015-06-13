@@ -38,12 +38,13 @@ import org.robovm.apple.uikit.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CIImageOptions.Marshaler.class)
 /*<annotations>*/@Library("CoreImage")/*</annotations>*/
+@Marshaler(/*<name>*/CIImageOptions/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CIImageOptions/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/CFDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CIImageOptions toObject(Class<CIImageOptions> cls, long handle, long flags) {
@@ -61,36 +62,65 @@ import org.robovm.apple.uikit.*;
             return CFType.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private CFDictionary data;
-    
-    protected CIImageOptions(CFDictionary data) {
-        this.data = data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CIImageOptions> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CIImageOptions> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new CIImageOptions(o.get(i, CFDictionary.class)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CIImageOptions> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray array = CFMutableArray.create();
+            for (CIImageOptions i : l) {
+                array.add(i.getDictionary());
+            }
+            return CFType.Marshaler.toNative(array, flags);
+        }
     }
-    public CIImageOptions() {
-        this.data = CFMutableDictionary.create();
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    CIImageOptions(CFDictionary data) {
+        super(data);
     }
-    /*<bind>*/static { Bro.bind(CIImageOptions.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public CFDictionary getDictionary() {
-        return data;
+    public CIImageOptions() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(CFString key) {
+        return data.containsKey(key);
+    }
+    public <T extends NativeObject> T get(CFString key, Class<T> type) {
+        if (has(key)) {
+            return data.get(key, type);
+        }
+        return null;
+    }
+    public CIImageOptions set(CFString key, NativeObject value) {
+        data.put(key, value);
+        return this;
     }
     
-    
+
     public CGColorSpace getColorSpace() {
-        if (data.containsKey(ColorSpaceKey())) {
-            CGColorSpace val = data.get(ColorSpaceKey(), CGColorSpace.class);
+        if (has(Keys.ColorSpace())) {
+            CGColorSpace val = get(Keys.ColorSpace(), CGColorSpace.class);
             return val;
         }
         return null;
     }
     public CIImageOptions setColorSpace(CGColorSpace colorSpace) {
-        data.put(ColorSpaceKey(), colorSpace);
+        set(Keys.ColorSpace(), colorSpace);
         return this;
     }
     /**
@@ -98,8 +128,8 @@ import org.robovm.apple.uikit.*;
      */
     @WeaklyLinked
     public CGImageProperties getProperties() {
-        if (data.containsKey(PropertiesKey())) {
-            CFDictionary val = data.get(PropertiesKey(), CFDictionary.class);
+        if (has(Keys.Properties())) {
+            CFDictionary val = get(Keys.Properties(), CFDictionary.class);
             return new CGImageProperties(val);
         }
         return null;
@@ -109,21 +139,22 @@ import org.robovm.apple.uikit.*;
      */
     @WeaklyLinked
     public CIImageOptions setProperties(CGImageProperties properties) {
-        data.put(PropertiesKey(), properties.getDictionary());
+        set(Keys.Properties(), properties.getDictionary());
         return this;
     }
-    /*<methods>*/
-    @GlobalValue(symbol="kCIImageColorSpace", optional=true)
-    protected static native CFString ColorSpaceKey();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="kCIImageProperties", optional=true)
-    protected static native CFString PropertiesKey();
     /*</methods>*/
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    
+    /*<keys>*/
+    @Library("CoreImage")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        @GlobalValue(symbol="kCIImageColorSpace", optional=true)
+        public static native CFString ColorSpace();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="kCIImageProperties", optional=true)
+        public static native CFString Properties();
     }
+    /*</keys>*/
 }

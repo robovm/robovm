@@ -40,38 +40,78 @@ import org.robovm.apple.dispatch.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("Foundation")/*</annotations>*/
+/*<annotations>*/@Library("Foundation") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/NSFileType/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSFileType/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(NSFileType.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    public static final NSFileType Directory = new NSFileType("DirectoryValue");
-    public static final NSFileType Regular = new NSFileType("RegularValue");
-    public static final NSFileType SymbolicLink = new NSFileType("SymbolicLinkValue");
-    public static final NSFileType Socket = new NSFileType("SocketValue");
-    public static final NSFileType CharacterSpecial = new NSFileType("CharacterSpecialValue");
-    public static final NSFileType BlockSpecial = new NSFileType("BlockSpecialValue");
-    public static final NSFileType Unknown = new NSFileType("UnknownValue");
-    private static NSFileType[] values = new NSFileType[] {Directory, Regular, SymbolicLink, Socket, CharacterSpecial, BlockSpecial, Unknown};
-    
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private NSFileType(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    static { Bro.bind(/*<name>*/NSFileType/*</name>*/.class); }
+
+    /*<marshalers>*/
+    public static class Marshaler {
+        @MarshalsPointer
+        public static NSFileType toObject(Class<NSFileType> cls, long handle, long flags) {
+            NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return NSFileType.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(NSFileType o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(o.value(), flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<NSFileType> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<NSFileType> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(NSFileType.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<NSFileType> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (NSFileType o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
+    public static final NSFileType Directory = new NSFileType("Directory");
+    public static final NSFileType Regular = new NSFileType("Regular");
+    public static final NSFileType SymbolicLink = new NSFileType("SymbolicLink");
+    public static final NSFileType Socket = new NSFileType("Socket");
+    public static final NSFileType CharacterSpecial = new NSFileType("CharacterSpecial");
+    public static final NSFileType BlockSpecial = new NSFileType("BlockSpecial");
+    public static final NSFileType Unknown = new NSFileType("Unknown");
+    /*</constants>*/
+    
+    private static /*<name>*/NSFileType/*</name>*/[] values = new /*<name>*/NSFileType/*</name>*/[] {/*<value_list>*/Directory, Regular, SymbolicLink, Socket, CharacterSpecial, BlockSpecial, Unknown/*</value_list>*/};
+    
+    /*<name>*/NSFileType/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static NSFileType valueOf(NSString value) {
-        for (NSFileType v : values) {
+    public static /*<name>*/NSFileType/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/NSFileType/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -79,20 +119,28 @@ import org.robovm.apple.dispatch.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/NSFileType/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    @GlobalValue(symbol="NSFileTypeDirectory", optional=true)
-    protected static native NSString DirectoryValue();
-    @GlobalValue(symbol="NSFileTypeRegular", optional=true)
-    protected static native NSString RegularValue();
-    @GlobalValue(symbol="NSFileTypeSymbolicLink", optional=true)
-    protected static native NSString SymbolicLinkValue();
-    @GlobalValue(symbol="NSFileTypeSocket", optional=true)
-    protected static native NSString SocketValue();
-    @GlobalValue(symbol="NSFileTypeCharacterSpecial", optional=true)
-    protected static native NSString CharacterSpecialValue();
-    @GlobalValue(symbol="NSFileTypeBlockSpecial", optional=true)
-    protected static native NSString BlockSpecialValue();
-    @GlobalValue(symbol="NSFileTypeUnknown", optional=true)
-    protected static native NSString UnknownValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("Foundation") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        @GlobalValue(symbol="NSFileTypeDirectory", optional=true)
+        public static native NSString Directory();
+        @GlobalValue(symbol="NSFileTypeRegular", optional=true)
+        public static native NSString Regular();
+        @GlobalValue(symbol="NSFileTypeSymbolicLink", optional=true)
+        public static native NSString SymbolicLink();
+        @GlobalValue(symbol="NSFileTypeSocket", optional=true)
+        public static native NSString Socket();
+        @GlobalValue(symbol="NSFileTypeCharacterSpecial", optional=true)
+        public static native NSString CharacterSpecial();
+        @GlobalValue(symbol="NSFileTypeBlockSpecial", optional=true)
+        public static native NSString BlockSpecial();
+        @GlobalValue(symbol="NSFileTypeUnknown", optional=true)
+        public static native NSString Unknown();
+        /*</values>*/
+    }
 }

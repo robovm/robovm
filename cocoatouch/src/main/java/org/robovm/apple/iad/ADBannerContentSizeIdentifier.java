@@ -36,12 +36,15 @@ import org.robovm.apple.avkit.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(ADBannerContentSizeIdentifier.Marshaler.class)
-/*<annotations>*/@Library("iAd")/*</annotations>*/
+/*<annotations>*/@Library("iAd") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/ADBannerContentSizeIdentifier/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/ADBannerContentSizeIdentifier/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/ADBannerContentSizeIdentifier/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static ADBannerContentSizeIdentifier toObject(Class<ADBannerContentSizeIdentifier> cls, long handle, long flags) {
@@ -59,7 +62,6 @@ import org.robovm.apple.avkit.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
     public static class AsListMarshaler {
         @SuppressWarnings("unchecked")
         @MarshalsPointer
@@ -69,8 +71,8 @@ import org.robovm.apple.avkit.*;
                 return null;
             }
             List<ADBannerContentSizeIdentifier> list = new ArrayList<>();
-            for (NSString str : o) {
-                list.add(ADBannerContentSizeIdentifier.valueOf(str));
+            for (int i = 0; i < o.size(); i++) {
+                list.add(ADBannerContentSizeIdentifier.valueOf(o.get(i)));
             }
             return list;
         }
@@ -79,55 +81,38 @@ import org.robovm.apple.avkit.*;
             if (l == null) {
                 return 0L;
             }
-            NSMutableArray<NSString> array = new NSMutableArray<>();
+            NSArray<NSString> array = new NSMutableArray<>();
             for (ADBannerContentSizeIdentifier i : l) {
                 array.add(i.value());
             }
             return NSObject.Marshaler.toNative(array, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(ADBannerContentSizeIdentifier.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    /*</marshalers>*/
+
+    /*<constants>*/
     /**
      * @since Available in iOS 4.2 and later.
      * @deprecated Deprecated in iOS 6.0.
      */
     @Deprecated
-    public static final ADBannerContentSizeIdentifier SizePortrait = new ADBannerContentSizeIdentifier("SizePortraitValue");
+    public static final ADBannerContentSizeIdentifier Portrait = new ADBannerContentSizeIdentifier("Portrait");
     /**
      * @since Available in iOS 4.2 and later.
      * @deprecated Deprecated in iOS 6.0.
      */
     @Deprecated
-    public static final ADBannerContentSizeIdentifier SizeLandscape = new ADBannerContentSizeIdentifier("SizeLandscapeValue");
+    public static final ADBannerContentSizeIdentifier Landscape = new ADBannerContentSizeIdentifier("Landscape");
+    /*</constants>*/
     
-    private static ADBannerContentSizeIdentifier[] values = new ADBannerContentSizeIdentifier[] {SizePortrait, SizeLandscape};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    private static /*<name>*/ADBannerContentSizeIdentifier/*</name>*/[] values = new /*<name>*/ADBannerContentSizeIdentifier/*</name>*/[] {/*<value_list>*/Portrait, Landscape/*</value_list>*/};
     
-    private ADBannerContentSizeIdentifier (String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
-    }
-    /**
-     * @since Available in iOS 4.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @WeaklyLinked
-    @Deprecated
-    public @ByVal CGSize toCGSize() {
-        return ADBannerView.getSizeForIdentifier(value());
+    /*<name>*/ADBannerContentSizeIdentifier/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static ADBannerContentSizeIdentifier valueOf(NSString value) {
-        for (ADBannerContentSizeIdentifier v : values) {
+    public static /*<name>*/ADBannerContentSizeIdentifier/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/ADBannerContentSizeIdentifier/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -135,20 +120,28 @@ import org.robovm.apple.avkit.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/ADBannerContentSizeIdentifier/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 4.2 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    @GlobalValue(symbol="ADBannerContentSizeIdentifierPortrait", optional=true)
-    protected static native NSString SizePortraitValue();
-    /**
-     * @since Available in iOS 4.2 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    @GlobalValue(symbol="ADBannerContentSizeIdentifierLandscape", optional=true)
-    protected static native NSString SizeLandscapeValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("iAd") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 4.2 and later.
+         * @deprecated Deprecated in iOS 6.0.
+         */
+        @Deprecated
+        @GlobalValue(symbol="ADBannerContentSizeIdentifierPortrait", optional=true)
+        public static native NSString Portrait();
+        /**
+         * @since Available in iOS 4.2 and later.
+         * @deprecated Deprecated in iOS 6.0.
+         */
+        @Deprecated
+        @GlobalValue(symbol="ADBannerContentSizeIdentifierLandscape", optional=true)
+        public static native NSString Landscape();
+        /*</values>*/
+    }
 }

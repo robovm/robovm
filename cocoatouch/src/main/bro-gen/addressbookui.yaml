@@ -116,10 +116,10 @@ functions:
 
 values:
     ABPerson(.*)Property:
-        class: ABPersonPredicateKeyPath
-        name: '#{g[0]}Value'
+        enum: ABPersonPredicateKeyPath
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        extends: NSPredicateKeyPath
 
     # Make sure we don't miss any values if new ones are introduced in a later version
     (k?AB.*):

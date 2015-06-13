@@ -628,17 +628,30 @@ values:
         name: getClassDomain
         readonly: true
         
-    MKLaunchOptions(.*Key):
-        class: MKLaunchOptions
+    MKLaunchOptions(.*)Key:
+        dictionary: MKLaunchOptions
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
-        
+        methods:
+            DirectionsMode:
+                type: MKDirectionsMode
+            MapType:
+                type: MKMapType
+            ShowsTraffic:
+                name: showsTraffic
+                type: boolean
+            MapCenter:
+                type: CLLocationCoordinate2D
+                hint: Struct<?>
+            MapSpan:
+                type: MKCoordinateSpan
+                hint: Struct<?>
+            Camera:
+                type: MKMapCamera
     MKLaunchOptionsDirectionsMode(.*):
-        class: MKDirectionsMode
-        name: '#{g[0]}Value'
+        enum: MKDirectionsMode
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     
     MKAnnotationCalloutInfoDidChangeNotification: # Deprecated in favor of KVO notifications
         exclude: true

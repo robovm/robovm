@@ -32,55 +32,104 @@ import org.robovm.apple.foundation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("HealthKit")/*</annotations>*/
+/*<annotations>*/@Library("HealthKit") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/HKCorrelationTypeIdentifier/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/HKCorrelationTypeIdentifier/*</name>*/ 
-    extends /*<extends>*/HKTypeIdentifier/*</extends>*/ 
+    extends /*<extends>*/HKTypeIdentifier/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(HKCorrelationTypeIdentifier.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    static { Bro.bind(/*<name>*/HKCorrelationTypeIdentifier/*</name>*/.class); }
+
+    /*<marshalers>*/
+    public static class Marshaler {
+        @MarshalsPointer
+        public static HKCorrelationTypeIdentifier toObject(Class<HKCorrelationTypeIdentifier> cls, long handle, long flags) {
+            NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return HKCorrelationTypeIdentifier.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(HKCorrelationTypeIdentifier o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(o.value(), flags);
+        }
+    }
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<HKCorrelationTypeIdentifier> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<HKCorrelationTypeIdentifier> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(HKCorrelationTypeIdentifier.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<HKCorrelationTypeIdentifier> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (HKCorrelationTypeIdentifier i : l) {
+                array.add(i.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final HKCorrelationTypeIdentifier BloodPressure = new HKCorrelationTypeIdentifier("BloodPressureValue");
+    public static final HKCorrelationTypeIdentifier BloodPressure = new HKCorrelationTypeIdentifier("BloodPressure");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final HKCorrelationTypeIdentifier Food = new HKCorrelationTypeIdentifier("FoodValue");
+    public static final HKCorrelationTypeIdentifier Food = new HKCorrelationTypeIdentifier("Food");
+    /*</constants>*/
     
-    private static HKCorrelationTypeIdentifier[] values = new HKCorrelationTypeIdentifier[] {BloodPressure, Food};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    private static /*<name>*/HKCorrelationTypeIdentifier/*</name>*/[] values = new /*<name>*/HKCorrelationTypeIdentifier/*</name>*/[] {/*<value_list>*/BloodPressure, Food/*</value_list>*/};
     
-    private HKCorrelationTypeIdentifier(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/HKCorrelationTypeIdentifier/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static HKCorrelationTypeIdentifier valueOf(NSString value) {
-        for (HKCorrelationTypeIdentifier v : values) {
+    public static /*<name>*/HKCorrelationTypeIdentifier/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/HKCorrelationTypeIdentifier/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
         }
-        return null;
+        throw new IllegalArgumentException("No constant with value " + value + " found in " 
+            + /*<name>*/HKCorrelationTypeIdentifier/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKCorrelationTypeIdentifierBloodPressure", optional=true)
-    protected static native NSString BloodPressureValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKCorrelationTypeIdentifierFood", optional=true)
-    protected static native NSString FoodValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("HealthKit") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKCorrelationTypeIdentifierBloodPressure", optional=true)
+        public static native NSString BloodPressure();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKCorrelationTypeIdentifierFood", optional=true)
+        public static native NSString Food();
+        /*</values>*/
+    }
 }

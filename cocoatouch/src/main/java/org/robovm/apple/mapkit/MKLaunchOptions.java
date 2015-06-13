@@ -36,14 +36,14 @@ import org.robovm.apple.dispatch.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(MKLaunchOptions.Marshaler.class)
 /*<annotations>*/@Library("MapKit")/*</annotations>*/
+@Marshaler(/*<name>*/MKLaunchOptions/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/MKLaunchOptions/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
-    
+
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static MKLaunchOptions toObject(Class<MKLaunchOptions> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -60,32 +60,62 @@ import org.robovm.apple.dispatch.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<MKLaunchOptions> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<MKLaunchOptions> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new MKLaunchOptions(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<MKLaunchOptions> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (MKLaunchOptions i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
 
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
+    /*<constructors>*/
+    MKLaunchOptions(NSDictionary<NSString, NSObject> data) {
+        super(data);
+    }
+    public MKLaunchOptions() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
+    }
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
+    }
+    public MKLaunchOptions set(NSString key, NSObject value) {
+        data.put(key, value);
+        return this;
+    }
     
-    public MKLaunchOptions() {
-        this.data = new NSMutableDictionary<>();
-    }
-    protected MKLaunchOptions(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
-    }
-    /*<bind>*/static { Bro.bind(MKLaunchOptions.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
-    }
-    
+
     /**
      * @since Available in iOS 6.0 and later.
      */
     public MKDirectionsMode getDirectionsMode() {
-        if (data.containsKey(DirectionsModeKey())) {
-            NSString val = (NSString)data.get(DirectionsModeKey());
+        if (has(Keys.DirectionsMode())) {
+            NSString val = (NSString) get(Keys.DirectionsMode());
             return MKDirectionsMode.valueOf(val);
         }
         return null;
@@ -93,33 +123,33 @@ import org.robovm.apple.dispatch.*;
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public MKLaunchOptions setDirectionsMode(MKDirectionsMode mode) {
-        data.put(DirectionsModeKey(), mode.value());
+    public MKLaunchOptions setDirectionsMode(MKDirectionsMode directionsMode) {
+        set(Keys.DirectionsMode(), directionsMode.value());
         return this;
     }
     /**
      * @since Available in iOS 6.0 and later.
      */
     public MKMapType getMapType() {
-        if (data.containsKey(MapTypeKey())) {
-            NSNumber val = (NSNumber)data.get(MapTypeKey());
-            return MKMapType.valueOf(val.intValue());
+        if (has(Keys.MapType())) {
+            NSNumber val = (NSNumber) get(Keys.MapType());
+            return MKMapType.valueOf(val.longValue());
         }
         return null;
     }
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public MKLaunchOptions setMapType(MKMapType type) {
-        data.put(MapTypeKey(), NSNumber.valueOf((int)type.value()));
+    public MKLaunchOptions setMapType(MKMapType mapType) {
+        set(Keys.MapType(), NSNumber.valueOf(mapType.value()));
         return this;
     }
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public boolean isShowingTraffic() {
-        if (data.containsKey(ShowsTrafficKey())) {
-            NSNumber val = (NSNumber)data.get(ShowsTrafficKey());
+    public boolean showsTraffic() {
+        if (has(Keys.ShowsTraffic())) {
+            NSNumber val = (NSNumber) get(Keys.ShowsTraffic());
             return val.booleanValue();
         }
         return false;
@@ -128,95 +158,96 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 6.0 and later.
      */
     public MKLaunchOptions setShowsTraffic(boolean showsTraffic) {
-        data.put(ShowsTrafficKey(), NSNumber.valueOf(showsTraffic));
+        set(Keys.ShowsTraffic(), NSNumber.valueOf(showsTraffic));
         return this;
     }
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public @ByVal CLLocationCoordinate2D getMapCenter() {
-        if (data.containsKey(MapCenterKey())) {
-            NSValue val = (NSValue)data.get(MapCenterKey());
-            return NSValueExtensions.getMKCoordinateValue(val);
+    public CLLocationCoordinate2D getMapCenter() {
+        if (has(Keys.MapCenter())) {
+            NSData val = (NSData) get(Keys.MapCenter());
+            return val.getStructData(CLLocationCoordinate2D.class);
         }
         return null;
     }
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public MKLaunchOptions setMapCenter(@ByVal CLLocationCoordinate2D center) {
-        data.put(MapCenterKey(), NSValueExtensions.create(center));
+    public MKLaunchOptions setMapCenter(CLLocationCoordinate2D mapCenter) {
+        set(Keys.MapCenter(), new NSData(mapCenter));
         return this;
     }
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public @ByVal MKCoordinateSpan getMapSpan() {
-        if (data.containsKey(MapSpanKey())) {
-            NSValue val = (NSValue)data.get(MapSpanKey());
-            return NSValueExtensions.getMKCoordinateSpanValue(val);
+    public MKCoordinateSpan getMapSpan() {
+        if (has(Keys.MapSpan())) {
+            NSData val = (NSData) get(Keys.MapSpan());
+            return val.getStructData(MKCoordinateSpan.class);
         }
         return null;
     }
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public MKLaunchOptions setMapSpan(@ByVal MKCoordinateSpan span) {
-        data.put(MapSpanKey(), NSValueExtensions.create(span));
+    public MKLaunchOptions setMapSpan(MKCoordinateSpan mapSpan) {
+        set(Keys.MapSpan(), new NSData(mapSpan));
         return this;
     }
     /**
-     * @since Available in iOS 7.0 and later.
+     * @since Available in iOS 7.1 and later.
      */
     public MKMapCamera getCamera() {
-        if (data.containsKey(CameraKey())) {
-            MKMapCamera val = (MKMapCamera)data.get(CameraKey());
+        if (has(Keys.Camera())) {
+            MKMapCamera val = (MKMapCamera) get(Keys.Camera());
             return val;
         }
         return null;
     }
     /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public MKLaunchOptions setCamera(MKMapCamera camera) {
-        data.put(CameraKey(), camera);
-        return this;
-    }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="MKLaunchOptionsDirectionsModeKey", optional=true)
-    protected static native NSString DirectionsModeKey();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="MKLaunchOptionsMapTypeKey", optional=true)
-    protected static native NSString MapTypeKey();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="MKLaunchOptionsShowsTrafficKey", optional=true)
-    protected static native NSString ShowsTrafficKey();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="MKLaunchOptionsMapCenterKey", optional=true)
-    protected static native NSString MapCenterKey();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="MKLaunchOptionsMapSpanKey", optional=true)
-    protected static native NSString MapSpanKey();
-    /**
      * @since Available in iOS 7.1 and later.
      */
-    @GlobalValue(symbol="MKLaunchOptionsCameraKey", optional=true)
-    protected static native NSString CameraKey();
-    /*</methods>*/
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    public MKLaunchOptions setCamera(MKMapCamera camera) {
+        set(Keys.Camera(), camera);
+        return this;
     }
+    /*</methods>*/
+    
+    /*<keys>*/
+    @Library("MapKit")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        @GlobalValue(symbol="MKLaunchOptionsDirectionsModeKey", optional=true)
+        public static native NSString DirectionsMode();
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        @GlobalValue(symbol="MKLaunchOptionsMapTypeKey", optional=true)
+        public static native NSString MapType();
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        @GlobalValue(symbol="MKLaunchOptionsShowsTrafficKey", optional=true)
+        public static native NSString ShowsTraffic();
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        @GlobalValue(symbol="MKLaunchOptionsMapCenterKey", optional=true)
+        public static native NSString MapCenter();
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        @GlobalValue(symbol="MKLaunchOptionsMapSpanKey", optional=true)
+        public static native NSString MapSpan();
+        /**
+         * @since Available in iOS 7.1 and later.
+         */
+        @GlobalValue(symbol="MKLaunchOptionsCameraKey", optional=true)
+        public static native NSString Camera();
+    }
+    /*</keys>*/
 }

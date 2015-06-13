@@ -68,16 +68,14 @@ values:
         type: NSString
         
     CTRadioAccessTechnology(.*):
-        class: CTRadioAccessTechnology
-        name: '#{g[0]}Value'
+        enum: CTRadioAccessTechnology
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
         
     CTCallState(.*):
-        class: CTCallState
-        name: '#{g[0]}Value'
+        enum: CTCallState
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
    
     # Make sure we don't miss any values if new ones are introduced in a later version
     (k?CT.*):

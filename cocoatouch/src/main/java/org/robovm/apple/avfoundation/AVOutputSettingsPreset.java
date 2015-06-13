@@ -42,12 +42,15 @@ import org.robovm.apple.audiounit.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(AVOutputSettingsPreset.Marshaler.class)
-/*<annotations>*/@Library("AVFoundation")/*</annotations>*/
+/*<annotations>*/@Library("AVFoundation") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/AVOutputSettingsPreset/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/AVOutputSettingsPreset/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/AVOutputSettingsPreset/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static AVOutputSettingsPreset toObject(Class<AVOutputSettingsPreset> cls, long handle, long flags) {
@@ -65,7 +68,6 @@ import org.robovm.apple.audiounit.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
     public static class AsListMarshaler {
         @SuppressWarnings("unchecked")
         @MarshalsPointer
@@ -75,8 +77,8 @@ import org.robovm.apple.audiounit.*;
                 return null;
             }
             List<AVOutputSettingsPreset> list = new ArrayList<>();
-            for (NSString str : o) {
-                list.add(AVOutputSettingsPreset.valueOf(str));
+            for (int i = 0; i < o.size(); i++) {
+                list.add(AVOutputSettingsPreset.valueOf(o.get(i)));
             }
             return list;
         }
@@ -85,50 +87,42 @@ import org.robovm.apple.audiounit.*;
             if (l == null) {
                 return 0L;
             }
-            NSMutableArray<NSString> array = new NSMutableArray<>();
-            for (AVOutputSettingsPreset i : l) {
-                array.add(i.value());
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (AVOutputSettingsPreset o : l) {
+                array.add(o.value());
             }
             return NSObject.Marshaler.toNative(array, flags);
         }
     }
+    /*</marshalers>*/
+
+    /*<constants>*/
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final AVOutputSettingsPreset Size640x480 = new AVOutputSettingsPreset("Size640x480");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final AVOutputSettingsPreset Size960x540 = new AVOutputSettingsPreset("Size960x540");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final AVOutputSettingsPreset Size1280x720 = new AVOutputSettingsPreset("Size1280x720");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final AVOutputSettingsPreset Size1920x1080 = new AVOutputSettingsPreset("Size1920x1080");
+    /*</constants>*/
     
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(AVOutputSettingsPreset.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static final AVOutputSettingsPreset Size_640x480 = new AVOutputSettingsPreset("_640x480Value");
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static final AVOutputSettingsPreset Size_960x540 = new AVOutputSettingsPreset("_960x540Value");
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static final AVOutputSettingsPreset Size_1280x720 = new AVOutputSettingsPreset("_1280x720Value");
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static final AVOutputSettingsPreset Size_1920x1080 = new AVOutputSettingsPreset("_1920x1080Value");
+    private static /*<name>*/AVOutputSettingsPreset/*</name>*/[] values = new /*<name>*/AVOutputSettingsPreset/*</name>*/[] {/*<value_list>*/Size640x480, Size960x540, Size1280x720, Size1920x1080/*</value_list>*/};
     
-    private static AVOutputSettingsPreset[] values = new AVOutputSettingsPreset[] {Size_640x480, Size_960x540, Size_1280x720, Size_1920x1080};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private AVOutputSettingsPreset(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/AVOutputSettingsPreset/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static AVOutputSettingsPreset valueOf(NSString value) {
-        for (AVOutputSettingsPreset v : values) {
+    public static /*<name>*/AVOutputSettingsPreset/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/AVOutputSettingsPreset/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -136,26 +130,34 @@ import org.robovm.apple.audiounit.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/AVOutputSettingsPreset/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="AVOutputSettingsPreset640x480", optional=true)
-    protected static native NSString _640x480Value();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="AVOutputSettingsPreset960x540", optional=true)
-    protected static native NSString _960x540Value();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="AVOutputSettingsPreset1280x720", optional=true)
-    protected static native NSString _1280x720Value();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="AVOutputSettingsPreset1920x1080", optional=true)
-    protected static native NSString _1920x1080Value();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("AVFoundation") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="AVOutputSettingsPreset640x480", optional=true)
+        public static native NSString Size640x480();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="AVOutputSettingsPreset960x540", optional=true)
+        public static native NSString Size960x540();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="AVOutputSettingsPreset1280x720", optional=true)
+        public static native NSString Size1280x720();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="AVOutputSettingsPreset1920x1080", optional=true)
+        public static native NSString Size1920x1080();
+        /*</values>*/
+    }
 }

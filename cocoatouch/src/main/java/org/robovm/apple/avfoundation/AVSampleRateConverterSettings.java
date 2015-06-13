@@ -42,14 +42,14 @@ import org.robovm.apple.audiounit.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(AVSampleRateConverterSettings.Marshaler.class)
 /*<annotations>*/@Library("AVFoundation")/*</annotations>*/
+@Marshaler(/*<name>*/AVSampleRateConverterSettings/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/AVSampleRateConverterSettings/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static AVSampleRateConverterSettings toObject(Class<AVSampleRateConverterSettings> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -66,33 +66,62 @@ import org.robovm.apple.audiounit.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected AVSampleRateConverterSettings(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<AVSampleRateConverterSettings> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<AVSampleRateConverterSettings> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new AVSampleRateConverterSettings(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<AVSampleRateConverterSettings> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (AVSampleRateConverterSettings i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    public AVSampleRateConverterSettings() {
-        data = new NSMutableDictionary<>();
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    AVSampleRateConverterSettings(NSDictionary<NSString, NSObject> data) {
+        super(data);
     }
-    /*<bind>*/static { Bro.bind(AVSampleRateConverterSettings.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
+    public AVSampleRateConverterSettings() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
+    }
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
+    }
+    public AVSampleRateConverterSettings set(NSString key, NSObject value) {
+        data.put(key, value);
+        return this;
     }
     
-    
+
     /**
      * @since Available in iOS 7.0 and later.
      */
     public AVSampleRateConverterAlgorithm getAlgorithm() {
-        if (data.containsKey(AlgorithmKey())) {
-            NSString val = (NSString) data.get(AlgorithmKey());
+        if (has(Keys.Algorithm())) {
+            NSString val = (NSString) get(Keys.Algorithm());
             return AVSampleRateConverterAlgorithm.valueOf(val);
         }
         return null;
@@ -101,32 +130,33 @@ import org.robovm.apple.audiounit.*;
      * @since Available in iOS 7.0 and later.
      */
     public AVSampleRateConverterSettings setAlgorithm(AVSampleRateConverterAlgorithm algorithm) {
-        data.put(AlgorithmKey(), algorithm.value());
+        set(Keys.Algorithm(), algorithm.value());
         return this;
     }
     public AVAudioQuality getAudioQuality() {
-        if (data.containsKey(AudioQualityKey())) {
-            NSNumber val = (NSNumber) data.get(AudioQualityKey());
+        if (has(Keys.AudioQuality())) {
+            NSNumber val = (NSNumber) get(Keys.AudioQuality());
             return AVAudioQuality.valueOf(val.longValue());
         }
         return null;
     }
-    public AVSampleRateConverterSettings setAudioQuality(AVAudioQuality quality) {
-        data.put(AudioQualityKey(), NSNumber.valueOf(quality.value()));
+    public AVSampleRateConverterSettings setAudioQuality(AVAudioQuality audioQuality) {
+        set(Keys.AudioQuality(), NSNumber.valueOf(audioQuality.value()));
         return this;
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="AVSampleRateConverterAlgorithmKey", optional=true)
-    protected static native NSString AlgorithmKey();
-    @GlobalValue(symbol="AVSampleRateConverterAudioQualityKey", optional=true)
-    protected static native NSString AudioQualityKey();
     /*</methods>*/
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    
+    /*<keys>*/
+    @Library("AVFoundation")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="AVSampleRateConverterAlgorithmKey", optional=true)
+        public static native NSString Algorithm();
+        @GlobalValue(symbol="AVSampleRateConverterAudioQualityKey", optional=true)
+        public static native NSString AudioQuality();
     }
+    /*</keys>*/
 }

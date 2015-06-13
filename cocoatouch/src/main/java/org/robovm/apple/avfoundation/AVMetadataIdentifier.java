@@ -44,9 +44,13 @@ import org.robovm.apple.mediatoolbox.*;
 @Marshaler(AVMetadataIdentifier.Marshaler.class)
 /*<annotations>*/@Library("AVFoundation")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/abstract class /*<name>*/AVMetadataIdentifier/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    protected AVMetadataIdentifier(Class<?> clazz, String getterName) {
+        super(clazz, getterName);
+    }
+    
     public static class Marshaler {
         @MarshalsPointer
         public static AVMetadataIdentifier toObject(Class<AVMetadataIdentifier> cls, long handle, long flags) {
@@ -113,8 +117,6 @@ import org.robovm.apple.mediatoolbox.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
-    public abstract NSString value();
-    
     public static AVMetadataIdentifier valueOf(NSString value) {
         Class<?>[] args = new Class<?>[] {NSString.class};
         for (Class<? extends AVMetadataIdentifier> cls : allSubClasses) {

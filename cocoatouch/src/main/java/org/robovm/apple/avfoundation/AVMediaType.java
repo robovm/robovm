@@ -42,12 +42,15 @@ import org.robovm.apple.audiounit.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(AVMediaType.Marshaler.class)
-/*<annotations>*/@Library("AVFoundation")/*</annotations>*/
+/*<annotations>*/@Library("AVFoundation") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/AVMediaType/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/AVMediaType/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/AVMediaType/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static AVMediaType toObject(Class<AVMediaType> cls, long handle, long flags) {
@@ -65,7 +68,6 @@ import org.robovm.apple.audiounit.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
     public static class AsListMarshaler {
         @SuppressWarnings("unchecked")
         @MarshalsPointer
@@ -75,8 +77,8 @@ import org.robovm.apple.audiounit.*;
                 return null;
             }
             List<AVMediaType> list = new ArrayList<>();
-            for (NSString str : o) {
-                list.add(AVMediaType.valueOf(str));
+            for (int i = 0; i < o.size(); i++) {
+                list.add(AVMediaType.valueOf(o.get(i)));
             }
             return list;
         }
@@ -85,67 +87,58 @@ import org.robovm.apple.audiounit.*;
             if (l == null) {
                 return 0L;
             }
-            NSMutableArray<NSString> array = new NSMutableArray<>();
-            for (AVMediaType i : l) {
-                array.add(i.value());
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (AVMediaType o : l) {
+                array.add(o.value());
             }
             return NSObject.Marshaler.toNative(array, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(AVMediaType.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    /*</marshalers>*/
+
+    /*<constants>*/
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final AVMediaType Video = new AVMediaType("VideoValue");
+    public static final AVMediaType Video = new AVMediaType("Video");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final AVMediaType Audio = new AVMediaType("AudioValue");
+    public static final AVMediaType Audio = new AVMediaType("Audio");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final AVMediaType Text = new AVMediaType("TextValue");
+    public static final AVMediaType Text = new AVMediaType("Text");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final AVMediaType ClosedCaption = new AVMediaType("ClosedCaptionValue");
+    public static final AVMediaType ClosedCaption = new AVMediaType("ClosedCaption");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final AVMediaType Subtitle = new AVMediaType("SubtitleValue");
+    public static final AVMediaType Subtitle = new AVMediaType("Subtitle");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final AVMediaType Timecode = new AVMediaType("TimecodeValue");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final AVMediaType Muxed = new AVMediaType("MuxedValue");
+    public static final AVMediaType Timecode = new AVMediaType("Timecode");
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public static final AVMediaType Metadata = new AVMediaType("MetadataValue");
+    public static final AVMediaType Metadata = new AVMediaType("Metadata");
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final AVMediaType Muxed = new AVMediaType("Muxed");
+    /*</constants>*/
     
-    private static AVMediaType[] values = new AVMediaType[] {Video, Audio, Text, ClosedCaption, Subtitle, Timecode, 
-        Muxed, Metadata};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    private static /*<name>*/AVMediaType/*</name>*/[] values = new /*<name>*/AVMediaType/*</name>*/[] {/*<value_list>*/Video, Audio, Text, ClosedCaption, Subtitle, Timecode, Metadata, Muxed/*</value_list>*/};
     
-    private AVMediaType(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/AVMediaType/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static AVMediaType valueOf(NSString value) {
-        for (AVMediaType v : values) {
+    public static /*<name>*/AVMediaType/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/AVMediaType/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -153,46 +146,54 @@ import org.robovm.apple.audiounit.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/AVMediaType/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="AVMediaTypeVideo", optional=true)
-    protected static native NSString VideoValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="AVMediaTypeAudio", optional=true)
-    protected static native NSString AudioValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="AVMediaTypeText", optional=true)
-    protected static native NSString TextValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="AVMediaTypeClosedCaption", optional=true)
-    protected static native NSString ClosedCaptionValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="AVMediaTypeSubtitle", optional=true)
-    protected static native NSString SubtitleValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="AVMediaTypeTimecode", optional=true)
-    protected static native NSString TimecodeValue();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="AVMediaTypeMetadata", optional=true)
-    protected static native NSString MetadataValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="AVMediaTypeMuxed", optional=true)
-    protected static native NSString MuxedValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("AVFoundation") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="AVMediaTypeVideo", optional=true)
+        public static native NSString Video();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="AVMediaTypeAudio", optional=true)
+        public static native NSString Audio();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="AVMediaTypeText", optional=true)
+        public static native NSString Text();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="AVMediaTypeClosedCaption", optional=true)
+        public static native NSString ClosedCaption();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="AVMediaTypeSubtitle", optional=true)
+        public static native NSString Subtitle();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="AVMediaTypeTimecode", optional=true)
+        public static native NSString Timecode();
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        @GlobalValue(symbol="AVMediaTypeMetadata", optional=true)
+        public static native NSString Metadata();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="AVMediaTypeMuxed", optional=true)
+        public static native NSString Muxed();
+        /*</values>*/
+    }
 }

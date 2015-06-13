@@ -161,10 +161,15 @@ values:
             SerialNumber:
                 type: String
     PKPassLibrary(.*)UserInfoKey:
-        class: PKPassLibraryNotificationArgs
-        name: '#{g[0]}Key'
+        dictionary: PKPassLibraryNotification
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        mutable: false
+        methods:
+            AddedPasses:
+                type: NSArray<PKPass>
+            ReplacementPasses:
+                type: NSArray<PKPass>
 
     # PKPayment
     PKPaymentNetwork(.*):

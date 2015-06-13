@@ -69,7 +69,8 @@ classes:
             'characteristicType':
                 type: HMCharacteristicType
             'properties':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(HMCharacteristicProperty.AsListMarshaler.class) List<HMCharacteristicProperty>'
+                type: List<HMCharacteristicProperty>
+                marshaler: HMCharacteristicProperty.AsListMarshaler
         methods:
             '-writeValue:completionHandler:':
                 trim_after_first_colon: true
@@ -117,7 +118,8 @@ classes:
                 return_type: NSArray<HMService>
                 parameters:
                     serviceTypes:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(HMServiceType.AsListMarshaler.class) List<HMServiceType>'
+                        type: List<HMServiceType>
+                        marshaler: HMServiceType.AsListMarshaler
             '-unblockAccessory:completionHandler:':
                 trim_after_first_colon: true
             '-addUserWithCompletionHandler:':

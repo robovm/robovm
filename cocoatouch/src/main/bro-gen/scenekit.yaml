@@ -56,11 +56,6 @@ classes:
     SCNError:
         extends: NSError
         annotations: ['@StronglyLinked']
-        
-    SCNGeometrySourceSemantic:
-        extends: SCNProgramSemantic
-    SCNRenderingTransform:
-        extends: SCNProgramSemantic
 
     # Structs
     SCNVector3: {}
@@ -822,6 +817,16 @@ values:
     SCNErrorDomain:
         class: SCNError
         name: getClassDomain
+    SCNConsistency(.*)ErrorKey:
+        enum: SCNConsistencyErrorUserInfoKey
+        name: '#{g[0]}'
+        type: NSString
+        extends: NSErrorUserInfoKey
+    SCN(DetailedErrors)Key:
+        enum: SCNErrorUserInfoKey
+        name: '#{g[0]}'
+        type: NSString
+        extends: NSErrorUserInfoKey
 
     # SCNTypes
     SCNMatrix4(Identity):
@@ -836,127 +841,174 @@ values:
 
     # SCNGeometrySource
     SCNGeometrySourceSemantic(.*):
-        class: SCNGeometrySourceSemantic
-        name: '#{g[0]}Value'
+        enum: SCNGeometrySourceSemantic
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        extends: SCNProgramSemantic
     SCN(.*)Transform:
-        class: SCNRenderingTransform
-        name: '#{g[0]}Value'
+        enum: SCNRenderingTransform
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        extends: SCNProgramSemantic
 
     # SCNLight
     SCNLightType(.*):
-        class: SCNLightType
-        name: '#{g[0]}Value'
+        enum: SCNLightType
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
 
     # SCNMaterial
     SCNLightingModel(.*):
-        class: SCNLightingModel
-        name: '#{g[0]}Value'
+        enum: SCNLightingModel
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
 
     # SCNParticleSystem
     SCNParticleProperty(.*):
-        class: SCNParticleProperty
-        name: '#{g[0]}Value'
+        enum: SCNParticleProperty
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     
     # SCNPhysicsShape
-    SCNPhysicsShape(.*Key):
-        class: SCNPhysicsShapeOptions
+    SCNPhysicsShape(.*)Key:
+        dictionary: SCNPhysicsShapeOptions
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        methods:
+            Type:
+                type: SCNPhysicsShapeType
+            KeepAsCompound:
+                name: keepsAsCompound
+                type: boolean
+            Scale:
+                type: SCNVector3
     SCNPhysicsShapeType(.*):
-        class: SCNPhysicsShapeType
-        name: '#{g[0]}Value'
+        enum: SCNPhysicsShapeType
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
 
     # SCNPhysicsWorld
-    SCNPhysicsTest(.*Key):
-        class: SCNPhysicsTestOptions
+    SCNPhysicsTest(.*)Key:
+        dictionary: SCNPhysicsTestOptions
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        methods:
+            CollisionBitMask:
+                type: SCNPhysicsCollisionCategory
+            SearchMode:
+                type: SCNPhysicsTestSearchMode
+            BackfaceCulling:
+                type: boolean
     SCNPhysicsTestSearchMode(.*):
-        class: SCNPhysicsTestSearchMode
-        name: '#{g[0]}Value'
+        enum: SCNPhysicsTestSearchMode
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
 
     # SCNProgram
-    SCNProgram(MappingChannelKey):
-        class: SCNProgramSemanticOptions
+    SCNProgram(MappingChannel)Key:
+        dictionary: SCNProgramSemanticOptions
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        methods:
+            MappingChannel:
+                type: long
     
     # SCNScene
     SCNScene(.*)AttributeKey:
-        class: SCNSceneAttribute
-        name: '#{g[0]}Value'
+        enum: SCNSceneAttribute
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     SCNSceneExportDestinationURL: # not available on iOS
         exclude: true
 
     # SCNSceneRenderer
-    SCNHitTest(.*Key):
-        class: SCNHitTestOptions
+    SCNHitTest(.*)Key:
+        dictionary: SCNHitTestOptions
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        methods:
+            FirstFoundOnly:
+                name: returnsFirstFoundOnly
+                type: boolean
+            SortResults:
+                name: sortsResults
+                type: boolean
+            ClipToZRange:
+                name: clipsToZRange
+                type: boolean
+            BackFaceCulling:
+                type: boolean
+            BoundingBoxOnly:
+                name: searchesBoundingBoxOnly
+                type: boolean
+            IgnoreChildNodes:
+                name: ignoresChildNodes
+                type: boolean
+            RootNode:
+                type: SCNNode
+            IgnoreHiddenNodes:
+                name: ignoresHiddenNodes
+                type: boolean
     
     # SCNSceneSource
     SCNSceneSourceAsset(Contributors|CreatedDate|ModifiedDate|UpAxis|Unit)Key:
-        class: SCNSceneSourceProperty
-        name: '#{g[0]}Value'
+        enum: SCNSceneSourceProperty
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     SCNSceneSourceAsset(AuthoringTool|Author)Key:
-        class: SCNSceneSourceContributor
-        name: '#{g[0]}Key'
-        type: NSString
-        visibility: protected
-    SCNSceneSourceAsset(UnitName|UnitMeter)Key:
-        class: SCNSceneSourceUnit
-        name: '#{g[0]}Key'
-        type: NSString
-        visibility: protected
-    SCNSceneSource(.*Key):
-        class: SCNSceneSourceOptions
+        dictionary: SCNSceneSourceContributor
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        methods:
+            AuthoringTool:
+                type: String
+            Author:
+                type: String
+    SCNSceneSourceAssetUnit(Name|Meter)Key:
+        dictionary: SCNSceneSourceUnit
+        name: '#{g[0]}'
+        type: NSString
+        methods:
+            Name:
+                type: String
+            Meter:
+                name: metersPerUnit
+                type: double
+    SCNSceneSource(.*)Key:
+        dictionary: SCNSceneSourceOptions
+        name: '#{g[0]}'
+        type: NSString
+        methods:
+            CreateNormalsIfAbsent:
+                name: createsNormalsIfAbsent
+                type: boolean
+            CheckConsistency:
+                name: checksConsistency
+                type: boolean
+            FlattenScene:
+                name: flattensScene
+                type: boolean
+            UseSafeMode:
+                name: usesSafeMode
+            AssetDirectoryURLs:
+                type: NSArray<NSURL>
+            OverrideAssetURLs:
+                name: overridesAssetURLs
+                type: boolean
+            StrictConformance:
+                type: boolean
+            AnimationImportPolicy:
+                type: SCNSceneSourceAnimationImportPolicy
     SCNSceneSourceAnimationImportPolicy(.*):
-        class: SCNSceneSourceAnimationImportPolicy
-        name: '#{g[0]}Value'
-        type: NSString
-        visibility: protected
-    SCN(Consistency.*ErrorKey):
-        class: SCNConsistencyErrorUserInfo
+        enum: SCNSceneSourceAnimationImportPolicy
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
-    SCN(DetailedErrors)Key:
-        enum: SCNErrorUserInfoKey
-        name: '#{g[0]}'
-        type: NSString
-        extends: NSErrorUserInfoKey
 
     # SCNShadable
     SCNShaderModifierEntryPoint(.*):
-        class: SCNShaderModifierEntryPoint
-        name: '#{g[0]}Value'
+        enum: SCNShaderModifierEntryPoint
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
    
     # Make sure we don't miss any values if new ones are introduced in a later version
     (k?SCN.*):

@@ -39,14 +39,14 @@ import org.robovm.apple.opengles.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(SCNHitTestOptions.Marshaler.class)
 /*<annotations>*/@Library("SceneKit")/*</annotations>*/
+@Marshaler(/*<name>*/SCNHitTestOptions/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SCNHitTestOptions/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static SCNHitTestOptions toObject(Class<SCNHitTestOptions> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -63,138 +63,175 @@ import org.robovm.apple.opengles.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected SCNHitTestOptions(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<SCNHitTestOptions> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<SCNHitTestOptions> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new SCNHitTestOptions(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<SCNHitTestOptions> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (SCNHitTestOptions i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    public SCNHitTestOptions() {
-        data = new NSMutableDictionary<>();
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    SCNHitTestOptions(NSDictionary<NSString, NSObject> data) {
+        super(data);
     }
-    /*<bind>*/static { Bro.bind(SCNHitTestOptions.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
+    public SCNHitTestOptions() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
+    }
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
+    }
+    public SCNHitTestOptions set(NSString key, NSObject value) {
+        data.put(key, value);
+        return this;
     }
     
-    public boolean isReturningFirstFoundOnly() {
-        if (data.containsKey(FirstFoundOnlyKey())) {
-            NSNumber val = (NSNumber) data.get(FirstFoundOnlyKey());
+
+    public boolean returnsFirstFoundOnly() {
+        if (has(Keys.FirstFoundOnly())) {
+            NSNumber val = (NSNumber) get(Keys.FirstFoundOnly());
             return val.booleanValue();
         }
         return false;
     }
-    public SCNHitTestOptions setReturnFirstFoundOnly(boolean firstOnly) {
-        data.put(FirstFoundOnlyKey(), NSNumber.valueOf(firstOnly));
+    public SCNHitTestOptions setReturnsFirstFoundOnly(boolean returnsFirstFoundOnly) {
+        set(Keys.FirstFoundOnly(), NSNumber.valueOf(returnsFirstFoundOnly));
         return this;
     }
-    public boolean isSortingResults() {
-        if (data.containsKey(SortResultsKey())) {
-            NSNumber val = (NSNumber) data.get(SortResultsKey());
+    public boolean sortsResults() {
+        if (has(Keys.SortResults())) {
+            NSNumber val = (NSNumber) get(Keys.SortResults());
             return val.booleanValue();
         }
-        return true;
+        return false;
     }
-    public SCNHitTestOptions setSortResults(boolean sort) {
-        data.put(SortResultsKey(), NSNumber.valueOf(sort));
+    public SCNHitTestOptions setSortsResults(boolean sortsResults) {
+        set(Keys.SortResults(), NSNumber.valueOf(sortsResults));
         return this;
     }
-    public boolean isClippingToZRange() {
-        if (data.containsKey(ClipToZRangeKey())) {
-            NSNumber val = (NSNumber) data.get(ClipToZRangeKey());
+    public boolean clipsToZRange() {
+        if (has(Keys.ClipToZRange())) {
+            NSNumber val = (NSNumber) get(Keys.ClipToZRange());
             return val.booleanValue();
         }
-        return true;
+        return false;
     }
-    public SCNHitTestOptions setClipToZRange(boolean clip) {
-        data.put(ClipToZRangeKey(), NSNumber.valueOf(clip));
+    public SCNHitTestOptions setClipsToZRange(boolean clipsToZRange) {
+        set(Keys.ClipToZRange(), NSNumber.valueOf(clipsToZRange));
         return this;
     }
     public boolean isBackFaceCulling() {
-        if (data.containsKey(BackFaceCullingKey())) {
-            NSNumber val = (NSNumber) data.get(BackFaceCullingKey());
+        if (has(Keys.BackFaceCulling())) {
+            NSNumber val = (NSNumber) get(Keys.BackFaceCulling());
             return val.booleanValue();
         }
-        return true;
+        return false;
     }
     public SCNHitTestOptions setBackFaceCulling(boolean backFaceCulling) {
-        data.put(BackFaceCullingKey(), NSNumber.valueOf(backFaceCulling));
+        set(Keys.BackFaceCulling(), NSNumber.valueOf(backFaceCulling));
         return this;
     }
-    public boolean isSearchingByBoundingBoxOnly() {
-        if (data.containsKey(BoundingBoxOnlyKey())) {
-            NSNumber val = (NSNumber) data.get(BoundingBoxOnlyKey());
+    public boolean searchesBoundingBoxOnly() {
+        if (has(Keys.BoundingBoxOnly())) {
+            NSNumber val = (NSNumber) get(Keys.BoundingBoxOnly());
             return val.booleanValue();
         }
         return false;
     }
-    public SCNHitTestOptions setSearchByBoundingBoxOnly(boolean boundingBoxOnly) {
-        data.put(BoundingBoxOnlyKey(), NSNumber.valueOf(boundingBoxOnly));
+    public SCNHitTestOptions setSearchesBoundingBoxOnly(boolean searchesBoundingBoxOnly) {
+        set(Keys.BoundingBoxOnly(), NSNumber.valueOf(searchesBoundingBoxOnly));
         return this;
     }
-    public boolean isIgnoringChildNodes() {
-        if (data.containsKey(IgnoreChildNodesKey())) {
-            NSNumber val = (NSNumber) data.get(IgnoreChildNodesKey());
+    public boolean ignoresChildNodes() {
+        if (has(Keys.IgnoreChildNodes())) {
+            NSNumber val = (NSNumber) get(Keys.IgnoreChildNodes());
             return val.booleanValue();
         }
         return false;
     }
-    public SCNHitTestOptions setIgnoreChildNodes(boolean ignoreChildNodes) {
-        data.put(IgnoreChildNodesKey(), NSNumber.valueOf(ignoreChildNodes));
+    public SCNHitTestOptions setIgnoresChildNodes(boolean ignoresChildNodes) {
+        set(Keys.IgnoreChildNodes(), NSNumber.valueOf(ignoresChildNodes));
         return this;
     }
     public SCNNode getRootNode() {
-        if (data.containsKey(RootNodeKey())) {
-            SCNNode val = (SCNNode) data.get(RootNodeKey());
+        if (has(Keys.RootNode())) {
+            SCNNode val = (SCNNode) get(Keys.RootNode());
             return val;
         }
         return null;
     }
     public SCNHitTestOptions setRootNode(SCNNode rootNode) {
-        data.put(RootNodeKey(), rootNode);
+        set(Keys.RootNode(), rootNode);
         return this;
     }
-    public boolean isIgnoringHiddenNodes() {
-        if (data.containsKey(IgnoreHiddenNodesKey())) {
-            NSNumber val = (NSNumber) data.get(IgnoreHiddenNodesKey());
-            return val.booleanValue();
-        }
-        return true;
-    }
-    public SCNHitTestOptions setIgnoreHiddenNodes(boolean ignoreHiddenNodes) {
-        data.put(IgnoreHiddenNodesKey(), NSNumber.valueOf(ignoreHiddenNodes));
-        return this;
-    }
-    /*<methods>*/
-    @GlobalValue(symbol="SCNHitTestFirstFoundOnlyKey", optional=true)
-    protected static native NSString FirstFoundOnlyKey();
-    @GlobalValue(symbol="SCNHitTestSortResultsKey", optional=true)
-    protected static native NSString SortResultsKey();
-    @GlobalValue(symbol="SCNHitTestClipToZRangeKey", optional=true)
-    protected static native NSString ClipToZRangeKey();
-    @GlobalValue(symbol="SCNHitTestBackFaceCullingKey", optional=true)
-    protected static native NSString BackFaceCullingKey();
-    @GlobalValue(symbol="SCNHitTestBoundingBoxOnlyKey", optional=true)
-    protected static native NSString BoundingBoxOnlyKey();
-    @GlobalValue(symbol="SCNHitTestIgnoreChildNodesKey", optional=true)
-    protected static native NSString IgnoreChildNodesKey();
-    @GlobalValue(symbol="SCNHitTestRootNodeKey", optional=true)
-    protected static native NSString RootNodeKey();
     /**
      * @since Available in iOS 8.0 and later.
      */
-    @GlobalValue(symbol="SCNHitTestIgnoreHiddenNodesKey", optional=true)
-    protected static native NSString IgnoreHiddenNodesKey();
-    /*</methods>*/
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    public boolean ignoresHiddenNodes() {
+        if (has(Keys.IgnoreHiddenNodes())) {
+            NSNumber val = (NSNumber) get(Keys.IgnoreHiddenNodes());
+            return val.booleanValue();
+        }
+        return false;
     }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public SCNHitTestOptions setIgnoresHiddenNodes(boolean ignoresHiddenNodes) {
+        set(Keys.IgnoreHiddenNodes(), NSNumber.valueOf(ignoresHiddenNodes));
+        return this;
+    }
+    /*</methods>*/
+    
+    /*<keys>*/
+    @Library("SceneKit")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        @GlobalValue(symbol="SCNHitTestFirstFoundOnlyKey", optional=true)
+        public static native NSString FirstFoundOnly();
+        @GlobalValue(symbol="SCNHitTestSortResultsKey", optional=true)
+        public static native NSString SortResults();
+        @GlobalValue(symbol="SCNHitTestClipToZRangeKey", optional=true)
+        public static native NSString ClipToZRange();
+        @GlobalValue(symbol="SCNHitTestBackFaceCullingKey", optional=true)
+        public static native NSString BackFaceCulling();
+        @GlobalValue(symbol="SCNHitTestBoundingBoxOnlyKey", optional=true)
+        public static native NSString BoundingBoxOnly();
+        @GlobalValue(symbol="SCNHitTestIgnoreChildNodesKey", optional=true)
+        public static native NSString IgnoreChildNodes();
+        @GlobalValue(symbol="SCNHitTestRootNodeKey", optional=true)
+        public static native NSString RootNode();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="SCNHitTestIgnoreHiddenNodesKey", optional=true)
+        public static native NSString IgnoreHiddenNodes();
+    }
+    /*</keys>*/
 }

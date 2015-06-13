@@ -42,12 +42,15 @@ import org.robovm.apple.audiounit.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(AVSampleRateConverterAlgorithm.Marshaler.class)
-/*<annotations>*/@Library("AVFoundation")/*</annotations>*/
+/*<annotations>*/@Library("AVFoundation") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/AVSampleRateConverterAlgorithm/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/AVSampleRateConverterAlgorithm/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/AVSampleRateConverterAlgorithm/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static AVSampleRateConverterAlgorithm toObject(Class<AVSampleRateConverterAlgorithm> cls, long handle, long flags) {
@@ -65,35 +68,53 @@ import org.robovm.apple.audiounit.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(AVSampleRateConverterAlgorithm.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<AVSampleRateConverterAlgorithm> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<AVSampleRateConverterAlgorithm> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(AVSampleRateConverterAlgorithm.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<AVSampleRateConverterAlgorithm> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (AVSampleRateConverterAlgorithm o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public static final AVSampleRateConverterAlgorithm Normal = new AVSampleRateConverterAlgorithm("NormalValue");
+    public static final AVSampleRateConverterAlgorithm Normal = new AVSampleRateConverterAlgorithm("Normal");
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public static final AVSampleRateConverterAlgorithm Mastering = new AVSampleRateConverterAlgorithm("MasteringValue");
+    public static final AVSampleRateConverterAlgorithm Mastering = new AVSampleRateConverterAlgorithm("Mastering");
+    /*</constants>*/
     
-    private static AVSampleRateConverterAlgorithm[] values = new AVSampleRateConverterAlgorithm[] {Normal, Mastering};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    private static /*<name>*/AVSampleRateConverterAlgorithm/*</name>*/[] values = new /*<name>*/AVSampleRateConverterAlgorithm/*</name>*/[] {/*<value_list>*/Normal, Mastering/*</value_list>*/};
     
-    private AVSampleRateConverterAlgorithm(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/AVSampleRateConverterAlgorithm/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static AVSampleRateConverterAlgorithm valueOf(NSString value) {
-        for (AVSampleRateConverterAlgorithm v : values) {
+    public static /*<name>*/AVSampleRateConverterAlgorithm/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/AVSampleRateConverterAlgorithm/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -101,16 +122,24 @@ import org.robovm.apple.audiounit.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/AVSampleRateConverterAlgorithm/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="AVSampleRateConverterAlgorithm_Normal", optional=true)
-    protected static native NSString NormalValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="AVSampleRateConverterAlgorithm_Mastering", optional=true)
-    protected static native NSString MasteringValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("AVFoundation") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="AVSampleRateConverterAlgorithm_Normal", optional=true)
+        public static native NSString Normal();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="AVSampleRateConverterAlgorithm_Mastering", optional=true)
+        public static native NSString Mastering();
+        /*</values>*/
+    }
 }

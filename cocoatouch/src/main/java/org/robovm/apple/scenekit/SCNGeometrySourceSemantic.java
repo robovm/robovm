@@ -39,12 +39,15 @@ import org.robovm.apple.opengles.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(SCNGeometrySourceSemantic.Marshaler.class)
-/*<annotations>*/@Library("SceneKit")/*</annotations>*/
+/*<annotations>*/@Library("SceneKit") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/SCNGeometrySourceSemantic/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SCNGeometrySourceSemantic/*</name>*/ 
-    extends /*<extends>*/SCNProgramSemantic/*</extends>*/ 
+    extends /*<extends>*/SCNProgramSemantic/*</extends>*/
     /*<implements>*//*</implements>*/ {
-    
+
+    static { Bro.bind(/*<name>*/SCNGeometrySourceSemantic/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static SCNGeometrySourceSemantic toObject(Class<SCNGeometrySourceSemantic> cls, long handle, long flags) {
@@ -62,72 +65,108 @@ import org.robovm.apple.opengles.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<SCNGeometrySourceSemantic> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<SCNGeometrySourceSemantic> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(SCNGeometrySourceSemantic.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<SCNGeometrySourceSemantic> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (SCNGeometrySourceSemantic i : l) {
+                array.add(i.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(SCNGeometrySourceSemantic.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    public static final SCNGeometrySourceSemantic Vertex = new SCNGeometrySourceSemantic("VertexValue");
-    public static final SCNGeometrySourceSemantic Normal = new SCNGeometrySourceSemantic("NormalValue");
-    public static final SCNGeometrySourceSemantic Color = new SCNGeometrySourceSemantic("ColorValue");
-    public static final SCNGeometrySourceSemantic Texcoord = new SCNGeometrySourceSemantic("TexcoordValue");
-    public static final SCNGeometrySourceSemantic VertexCrease = new SCNGeometrySourceSemantic("VertexCreaseValue");
-    public static final SCNGeometrySourceSemantic EdgeCrease = new SCNGeometrySourceSemantic("EdgeCreaseValue");
-    public static final SCNGeometrySourceSemantic BoneWeights = new SCNGeometrySourceSemantic("BoneWeightsValue");
-    public static final SCNGeometrySourceSemantic BoneIndices = new SCNGeometrySourceSemantic("BoneIndicesValue");
+    /*<constants>*/
+    public static final SCNGeometrySourceSemantic Vertex = new SCNGeometrySourceSemantic("Vertex");
+    public static final SCNGeometrySourceSemantic Normal = new SCNGeometrySourceSemantic("Normal");
+    public static final SCNGeometrySourceSemantic Color = new SCNGeometrySourceSemantic("Color");
+    public static final SCNGeometrySourceSemantic Texcoord = new SCNGeometrySourceSemantic("Texcoord");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final SCNGeometrySourceSemantic VertexCrease = new SCNGeometrySourceSemantic("VertexCrease");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final SCNGeometrySourceSemantic EdgeCrease = new SCNGeometrySourceSemantic("EdgeCrease");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final SCNGeometrySourceSemantic BoneWeights = new SCNGeometrySourceSemantic("BoneWeights");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final SCNGeometrySourceSemantic BoneIndices = new SCNGeometrySourceSemantic("BoneIndices");
+    /*</constants>*/
     
-    private static SCNGeometrySourceSemantic[] values = new SCNGeometrySourceSemantic[] {Vertex, Normal, Color, Texcoord, 
-        VertexCrease, EdgeCrease, BoneWeights, BoneIndices};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    private static /*<name>*/SCNGeometrySourceSemantic/*</name>*/[] values = new /*<name>*/SCNGeometrySourceSemantic/*</name>*/[] {/*<value_list>*/Vertex, Normal, Color, Texcoord, VertexCrease, EdgeCrease, BoneWeights, BoneIndices/*</value_list>*/};
     
-    private SCNGeometrySourceSemantic(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    /*<name>*/SCNGeometrySourceSemantic/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
-    }
     
-    public static SCNGeometrySourceSemantic valueOf(NSString value) {
-        for (SCNGeometrySourceSemantic v : values) {
+    public static /*<name>*/SCNGeometrySourceSemantic/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/SCNGeometrySourceSemantic/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
         }
-        return null;
-//        throw new IllegalArgumentException("No constant with value " + value + " found in " 
-//            + /*<name>*/SCNGeometrySourceSemantic/*</name>*/.class.getName());
+        throw new IllegalArgumentException("No constant with value " + value + " found in " 
+            + /*<name>*/SCNGeometrySourceSemantic/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    @GlobalValue(symbol="SCNGeometrySourceSemanticVertex", optional=true)
-    protected static native NSString VertexValue();
-    @GlobalValue(symbol="SCNGeometrySourceSemanticNormal", optional=true)
-    protected static native NSString NormalValue();
-    @GlobalValue(symbol="SCNGeometrySourceSemanticColor", optional=true)
-    protected static native NSString ColorValue();
-    @GlobalValue(symbol="SCNGeometrySourceSemanticTexcoord", optional=true)
-    protected static native NSString TexcoordValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="SCNGeometrySourceSemanticVertexCrease", optional=true)
-    protected static native NSString VertexCreaseValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="SCNGeometrySourceSemanticEdgeCrease", optional=true)
-    protected static native NSString EdgeCreaseValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="SCNGeometrySourceSemanticBoneWeights", optional=true)
-    protected static native NSString BoneWeightsValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="SCNGeometrySourceSemanticBoneIndices", optional=true)
-    protected static native NSString BoneIndicesValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("SceneKit") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        @GlobalValue(symbol="SCNGeometrySourceSemanticVertex", optional=true)
+        public static native NSString Vertex();
+        @GlobalValue(symbol="SCNGeometrySourceSemanticNormal", optional=true)
+        public static native NSString Normal();
+        @GlobalValue(symbol="SCNGeometrySourceSemanticColor", optional=true)
+        public static native NSString Color();
+        @GlobalValue(symbol="SCNGeometrySourceSemanticTexcoord", optional=true)
+        public static native NSString Texcoord();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="SCNGeometrySourceSemanticVertexCrease", optional=true)
+        public static native NSString VertexCrease();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="SCNGeometrySourceSemanticEdgeCrease", optional=true)
+        public static native NSString EdgeCrease();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="SCNGeometrySourceSemanticBoneWeights", optional=true)
+        public static native NSString BoneWeights();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="SCNGeometrySourceSemanticBoneIndices", optional=true)
+        public static native NSString BoneIndices();
+        /*</values>*/
+    }
 }

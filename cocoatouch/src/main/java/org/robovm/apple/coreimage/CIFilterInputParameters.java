@@ -192,7 +192,7 @@ import org.robovm.apple.uikit.*;
     }
     
     /*<keys>*/
-    @Library("CoreImage") @StronglyLinked
+    @Library("CoreImage")
     public static class Keys {
         static { Bro.bind(Keys.class); }
         /**

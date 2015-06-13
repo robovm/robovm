@@ -39,12 +39,15 @@ import org.robovm.apple.opengles.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(SCNSceneAttribute.Marshaler.class)
-/*<annotations>*/@Library("SceneKit")/*</annotations>*/
+/*<annotations>*/@Library("SceneKit") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/SCNSceneAttribute/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SCNSceneAttribute/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/SCNSceneAttribute/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static SCNSceneAttribute toObject(Class<SCNSceneAttribute> cls, long handle, long flags) {
@@ -62,31 +65,52 @@ import org.robovm.apple.opengles.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(SCNSceneAttribute.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    public static final SCNSceneAttribute StartTime = new SCNSceneAttribute("StartTimeValue");
-    public static final SCNSceneAttribute EndTime = new SCNSceneAttribute("EndTimeValue");
-    public static final SCNSceneAttribute FrameRate = new SCNSceneAttribute("FrameRateValue");
-    public static final SCNSceneAttribute UpAxis = new SCNSceneAttribute("UpAxisValue");
-    
-    private static SCNSceneAttribute[] values = new SCNSceneAttribute[] {StartTime, EndTime, FrameRate, UpAxis};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private SCNSceneAttribute(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<SCNSceneAttribute> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<SCNSceneAttribute> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(SCNSceneAttribute.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<SCNSceneAttribute> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (SCNSceneAttribute i : l) {
+                array.add(i.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*</marshalers>*/
+
+    /*<constants>*/
+    public static final SCNSceneAttribute StartTime = new SCNSceneAttribute("StartTime");
+    public static final SCNSceneAttribute EndTime = new SCNSceneAttribute("EndTime");
+    public static final SCNSceneAttribute FrameRate = new SCNSceneAttribute("FrameRate");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final SCNSceneAttribute UpAxis = new SCNSceneAttribute("UpAxis");
+    /*</constants>*/
+    
+    private static /*<name>*/SCNSceneAttribute/*</name>*/[] values = new /*<name>*/SCNSceneAttribute/*</name>*/[] {/*<value_list>*/StartTime, EndTime, FrameRate, UpAxis/*</value_list>*/};
+    
+    /*<name>*/SCNSceneAttribute/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static SCNSceneAttribute valueOf(NSString value) {
-        for (SCNSceneAttribute v : values) {
+    public static /*<name>*/SCNSceneAttribute/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/SCNSceneAttribute/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -94,17 +118,25 @@ import org.robovm.apple.opengles.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/SCNSceneAttribute/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    @GlobalValue(symbol="SCNSceneStartTimeAttributeKey", optional=true)
-    protected static native NSString StartTimeValue();
-    @GlobalValue(symbol="SCNSceneEndTimeAttributeKey", optional=true)
-    protected static native NSString EndTimeValue();
-    @GlobalValue(symbol="SCNSceneFrameRateAttributeKey", optional=true)
-    protected static native NSString FrameRateValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="SCNSceneUpAxisAttributeKey", optional=true)
-    protected static native NSString UpAxisValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("SceneKit") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        @GlobalValue(symbol="SCNSceneStartTimeAttributeKey", optional=true)
+        public static native NSString StartTime();
+        @GlobalValue(symbol="SCNSceneEndTimeAttributeKey", optional=true)
+        public static native NSString EndTime();
+        @GlobalValue(symbol="SCNSceneFrameRateAttributeKey", optional=true)
+        public static native NSString FrameRate();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="SCNSceneUpAxisAttributeKey", optional=true)
+        public static native NSString UpAxis();
+        /*</values>*/
+    }
 }

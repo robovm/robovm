@@ -39,12 +39,15 @@ import org.robovm.apple.opengles.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(SCNSceneSourceProperty.Marshaler.class)
-/*<annotations>*/@Library("SceneKit")/*</annotations>*/
+/*<annotations>*/@Library("SceneKit") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/SCNSceneSourceProperty/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SCNSceneSourceProperty/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/SCNSceneSourceProperty/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static SCNSceneSourceProperty toObject(Class<SCNSceneSourceProperty> cls, long handle, long flags) {
@@ -62,33 +65,50 @@ import org.robovm.apple.opengles.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(SCNSceneSourceProperty.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    public static final SCNSceneSourceProperty Contributors = new SCNSceneSourceProperty("ContributorsValue");
-    public static final SCNSceneSourceProperty CreatedDate = new SCNSceneSourceProperty("CreatedDateValue");
-    public static final SCNSceneSourceProperty ModifiedDate = new SCNSceneSourceProperty("ModifiedDateValue");
-    public static final SCNSceneSourceProperty UpAxis = new SCNSceneSourceProperty("UpAxisValue");
-    public static final SCNSceneSourceProperty Unit = new SCNSceneSourceProperty("UnitValue");
-    
-    private static SCNSceneSourceProperty[] values = new SCNSceneSourceProperty[] {Contributors, CreatedDate, ModifiedDate, 
-        UpAxis, Unit};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private SCNSceneSourceProperty(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<SCNSceneSourceProperty> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<SCNSceneSourceProperty> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(SCNSceneSourceProperty.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<SCNSceneSourceProperty> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (SCNSceneSourceProperty i : l) {
+                array.add(i.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*</marshalers>*/
+
+    /*<constants>*/
+    public static final SCNSceneSourceProperty Contributors = new SCNSceneSourceProperty("Contributors");
+    public static final SCNSceneSourceProperty CreatedDate = new SCNSceneSourceProperty("CreatedDate");
+    public static final SCNSceneSourceProperty ModifiedDate = new SCNSceneSourceProperty("ModifiedDate");
+    public static final SCNSceneSourceProperty UpAxis = new SCNSceneSourceProperty("UpAxis");
+    public static final SCNSceneSourceProperty Unit = new SCNSceneSourceProperty("Unit");
+    /*</constants>*/
+    
+    private static /*<name>*/SCNSceneSourceProperty/*</name>*/[] values = new /*<name>*/SCNSceneSourceProperty/*</name>*/[] {/*<value_list>*/Contributors, CreatedDate, ModifiedDate, UpAxis, Unit/*</value_list>*/};
+    
+    /*<name>*/SCNSceneSourceProperty/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static SCNSceneSourceProperty valueOf(NSString value) {
-        for (SCNSceneSourceProperty v : values) {
+    public static /*<name>*/SCNSceneSourceProperty/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/SCNSceneSourceProperty/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -96,16 +116,24 @@ import org.robovm.apple.opengles.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/SCNSceneSourceProperty/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    @GlobalValue(symbol="SCNSceneSourceAssetContributorsKey", optional=true)
-    protected static native NSString ContributorsValue();
-    @GlobalValue(symbol="SCNSceneSourceAssetCreatedDateKey", optional=true)
-    protected static native NSString CreatedDateValue();
-    @GlobalValue(symbol="SCNSceneSourceAssetModifiedDateKey", optional=true)
-    protected static native NSString ModifiedDateValue();
-    @GlobalValue(symbol="SCNSceneSourceAssetUpAxisKey", optional=true)
-    protected static native NSString UpAxisValue();
-    @GlobalValue(symbol="SCNSceneSourceAssetUnitKey", optional=true)
-    protected static native NSString UnitValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("SceneKit") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        @GlobalValue(symbol="SCNSceneSourceAssetContributorsKey", optional=true)
+        public static native NSString Contributors();
+        @GlobalValue(symbol="SCNSceneSourceAssetCreatedDateKey", optional=true)
+        public static native NSString CreatedDate();
+        @GlobalValue(symbol="SCNSceneSourceAssetModifiedDateKey", optional=true)
+        public static native NSString ModifiedDate();
+        @GlobalValue(symbol="SCNSceneSourceAssetUpAxisKey", optional=true)
+        public static native NSString UpAxis();
+        @GlobalValue(symbol="SCNSceneSourceAssetUnitKey", optional=true)
+        public static native NSString Unit();
+        /*</values>*/
+    }
 }

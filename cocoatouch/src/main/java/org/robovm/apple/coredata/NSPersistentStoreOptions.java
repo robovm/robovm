@@ -32,14 +32,14 @@ import org.robovm.apple.foundation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(NSPersistentStoreOptions.Marshaler.class)
 /*<annotations>*/@Library("CoreData")/*</annotations>*/
+@Marshaler(/*<name>*/NSPersistentStoreOptions/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSPersistentStoreOptions/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static NSPersistentStoreOptions toObject(Class<NSPersistentStoreOptions> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -56,32 +56,62 @@ import org.robovm.apple.foundation.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected NSPersistentStoreOptions(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<NSPersistentStoreOptions> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<NSPersistentStoreOptions> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new NSPersistentStoreOptions(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<NSPersistentStoreOptions> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (NSPersistentStoreOptions i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    public NSPersistentStoreOptions() {
-    	this.data = new NSMutableDictionary<>();
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    NSPersistentStoreOptions(NSDictionary<NSString, NSObject> data) {
+        super(data);
     }
-    /*<bind>*/static { Bro.bind(NSPersistentStoreOptions.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
+    public NSPersistentStoreOptions() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
+    }
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
+    }
+    public NSPersistentStoreOptions set(NSString key, NSObject value) {
+        data.put(key, value);
+        return this;
     }
     
+
     /**
      * @since Available in iOS 3.0 and later.
      */
     public boolean isReadOnly() {
-        if (data.containsKey(ReadOnlyOption())) {
-            NSNumber val = (NSNumber)data.get(ReadOnlyOption());
+        if (has(Keys.ReadOnly())) {
+            NSNumber val = (NSNumber) get(Keys.ReadOnly());
             return val.booleanValue();
         }
         return false;
@@ -90,15 +120,15 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 3.0 and later.
      */
     public NSPersistentStoreOptions setReadOnly(boolean readOnly) {
-        data.put(ReadOnlyOption(), NSNumber.valueOf(readOnly));
+        set(Keys.ReadOnly(), NSNumber.valueOf(readOnly));
         return this;
     }
     /**
      * @since Available in iOS 3.0 and later.
      */
     public long getTimeout() {
-        if (data.containsKey(TimeoutOption())) {
-            NSNumber val = (NSNumber)data.get(TimeoutOption());
+        if (has(Keys.Timeout())) {
+            NSNumber val = (NSNumber) get(Keys.Timeout());
             return val.longValue();
         }
         return 0;
@@ -107,16 +137,15 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 3.0 and later.
      */
     public NSPersistentStoreOptions setTimeout(long timeout) {
-        data.put(TimeoutOption(), NSNumber.valueOf(timeout));
+        set(Keys.Timeout(), NSNumber.valueOf(timeout));
         return this;
     }
     /**
      * @since Available in iOS 3.0 and later.
      */
-    @SuppressWarnings("unchecked")
     public Map<String, NSObject> getSQLitePragmas() {
-        if (data.containsKey(SQLitePragmasOption())) {
-            NSDictionary<NSString, NSObject> val = (NSDictionary<NSString, NSObject>)data.get(SQLitePragmasOption());
+        if (has(Keys.SQLitePragmas())) {
+            NSDictionary val = (NSDictionary) get(Keys.SQLitePragmas());
             return val.asStringMap();
         }
         return null;
@@ -124,16 +153,16 @@ import org.robovm.apple.foundation.*;
     /**
      * @since Available in iOS 3.0 and later.
      */
-    public NSPersistentStoreOptions setSQLitePragmas(Map<String, NSObject> pragmas) {
-        data.put(SQLitePragmasOption(), NSDictionary.fromStringMap(pragmas));
+    public NSPersistentStoreOptions setSQLitePragmas(Map<String, NSObject> sQLitePragmas) {
+        set(Keys.SQLitePragmas(), NSDictionary.fromStringMap(sQLitePragmas));
         return this;
     }
     /**
      * @since Available in iOS 3.0 and later.
      */
     public boolean isSQLiteAnalyzeEnabled() {
-        if (data.containsKey(SQLiteAnalyzeOption())) {
-            NSNumber val = (NSNumber)data.get(SQLiteAnalyzeOption());
+        if (has(Keys.SQLiteAnalyze())) {
+            NSNumber val = (NSNumber) get(Keys.SQLiteAnalyze());
             return val.booleanValue();
         }
         return false;
@@ -141,16 +170,16 @@ import org.robovm.apple.foundation.*;
     /**
      * @since Available in iOS 3.0 and later.
      */
-    public NSPersistentStoreOptions setSQLiteAnalyzeEnabled(boolean enable) {
-        data.put(SQLiteAnalyzeOption(), NSNumber.valueOf(enable));
+    public NSPersistentStoreOptions setSQLiteAnalyzeEnabled(boolean sQLiteAnalyzeEnabled) {
+        set(Keys.SQLiteAnalyze(), NSNumber.valueOf(sQLiteAnalyzeEnabled));
         return this;
     }
     /**
      * @since Available in iOS 3.0 and later.
      */
     public boolean isSQLiteManualVacuumEnabled() {
-        if (data.containsKey(SQLiteManualVacuumOption())) {
-            NSNumber val = (NSNumber)data.get(SQLiteManualVacuumOption());
+        if (has(Keys.SQLiteManualVacuum())) {
+            NSNumber val = (NSNumber) get(Keys.SQLiteManualVacuum());
             return val.booleanValue();
         }
         return false;
@@ -158,16 +187,169 @@ import org.robovm.apple.foundation.*;
     /**
      * @since Available in iOS 3.0 and later.
      */
-    public NSPersistentStoreOptions setSQLiteManualVacuumEnabled(boolean enable) {
-        data.put(SQLiteManualVacuumOption(), NSNumber.valueOf(enable));
+    public NSPersistentStoreOptions setSQLiteManualVacuumEnabled(boolean sQLiteManualVacuumEnabled) {
+        set(Keys.SQLiteManualVacuum(), NSNumber.valueOf(sQLiteManualVacuumEnabled));
+        return this;
+    }
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    public boolean ignoresPersistentStoreVersioning() {
+        if (has(Keys.IgnorePersistentStoreVersioning())) {
+            NSNumber val = (NSNumber) get(Keys.IgnorePersistentStoreVersioning());
+            return val.booleanValue();
+        }
+        return false;
+    }
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    public NSPersistentStoreOptions setIgnoresPersistentStoreVersioning(boolean ignoresPersistentStoreVersioning) {
+        set(Keys.IgnorePersistentStoreVersioning(), NSNumber.valueOf(ignoresPersistentStoreVersioning));
+        return this;
+    }
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    public boolean migratesPersistentStoresAutomatically() {
+        if (has(Keys.MigratePersistentStoresAutomatically())) {
+            NSNumber val = (NSNumber) get(Keys.MigratePersistentStoresAutomatically());
+            return val.booleanValue();
+        }
+        return false;
+    }
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    public NSPersistentStoreOptions setMigratesPersistentStoresAutomatically(boolean migratesPersistentStoresAutomatically) {
+        set(Keys.MigratePersistentStoresAutomatically(), NSNumber.valueOf(migratesPersistentStoresAutomatically));
+        return this;
+    }
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    public boolean infersMappingModelAutomatically() {
+        if (has(Keys.InferMappingModelAutomatically())) {
+            NSNumber val = (NSNumber) get(Keys.InferMappingModelAutomatically());
+            return val.booleanValue();
+        }
+        return false;
+    }
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    public NSPersistentStoreOptions setInfersMappingModelAutomatically(boolean infersMappingModelAutomatically) {
+        set(Keys.InferMappingModelAutomatically(), NSNumber.valueOf(infersMappingModelAutomatically));
+        return this;
+    }
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public String getUbiquitousContentName() {
+        if (has(Keys.UbiquitousContentName())) {
+            NSString val = (NSString) get(Keys.UbiquitousContentName());
+            return val.toString();
+        }
+        return null;
+    }
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public NSPersistentStoreOptions setUbiquitousContentName(String ubiquitousContentName) {
+        set(Keys.UbiquitousContentName(), new NSString(ubiquitousContentName));
+        return this;
+    }
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public String getUbiquitousContentURL() {
+        if (has(Keys.UbiquitousContentURL())) {
+            NSString val = (NSString) get(Keys.UbiquitousContentURL());
+            return val.toString();
+        }
+        return null;
+    }
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public NSPersistentStoreOptions setUbiquitousContentURL(String ubiquitousContentURL) {
+        set(Keys.UbiquitousContentURL(), new NSString(ubiquitousContentURL));
+        return this;
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public String getUbiquitousPeerToken() {
+        if (has(Keys.UbiquitousPeerToken())) {
+            NSString val = (NSString) get(Keys.UbiquitousPeerToken());
+            return val.toString();
+        }
+        return null;
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public NSPersistentStoreOptions setUbiquitousPeerToken(String ubiquitousPeerToken) {
+        set(Keys.UbiquitousPeerToken(), new NSString(ubiquitousPeerToken));
+        return this;
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public boolean shouldRemoveUbiquitousMetadata() {
+        if (has(Keys.RemoveUbiquitousMetadata())) {
+            NSNumber val = (NSNumber) get(Keys.RemoveUbiquitousMetadata());
+            return val.booleanValue();
+        }
+        return false;
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public NSPersistentStoreOptions setShouldRemoveUbiquitousMetadata(boolean shouldRemoveUbiquitousMetadata) {
+        set(Keys.RemoveUbiquitousMetadata(), NSNumber.valueOf(shouldRemoveUbiquitousMetadata));
+        return this;
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public String getUbiquitousContainerIdentifier() {
+        if (has(Keys.UbiquitousContainerIdentifier())) {
+            NSString val = (NSString) get(Keys.UbiquitousContainerIdentifier());
+            return val.toString();
+        }
+        return null;
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public NSPersistentStoreOptions setUbiquitousContainerIdentifier(String ubiquitousContainerIdentifier) {
+        set(Keys.UbiquitousContainerIdentifier(), new NSString(ubiquitousContainerIdentifier));
+        return this;
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public boolean shouldRebuildFromUbiquitousContent() {
+        if (has(Keys.RebuildFromUbiquitousContent())) {
+            NSNumber val = (NSNumber) get(Keys.RebuildFromUbiquitousContent());
+            return val.booleanValue();
+        }
+        return false;
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public NSPersistentStoreOptions setShouldRebuildFromUbiquitousContent(boolean shouldRebuildFromUbiquitousContent) {
+        set(Keys.RebuildFromUbiquitousContent(), NSNumber.valueOf(shouldRebuildFromUbiquitousContent));
         return this;
     }
     /**
      * @since Available in iOS 5.0 and later.
      */
     public NSFileProtection getFileProtection() {
-        if (data.containsKey(FileProtectionOption())) {
-            NSString val = (NSString)data.get(FileProtectionOption());
+        if (has(Keys.FileProtection())) {
+            NSString val = (NSString) get(Keys.FileProtection());
             return NSFileProtection.valueOf(val);
         }
         return null;
@@ -176,191 +358,90 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 5.0 and later.
      */
     public NSPersistentStoreOptions setFileProtection(NSFileProtection fileProtection) {
-        data.put(FileProtectionOption(), fileProtection.value());
+        set(Keys.FileProtection(), fileProtection.value());
         return this;
     }
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    public String getUbiquitousContentName() {
-        if (data.containsKey(UbiquitousContentNameOption())) {
-            NSString val = (NSString)data.get(UbiquitousContentNameOption());
-            return val.toString();
-        }
-        return null;
-    }
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    public NSPersistentStoreOptions setUbiquitousContentName(String name) {
-        data.put(UbiquitousContentNameOption(), new NSString(name));
-        return this;
-    }
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    public String getUbiquitousContentURL() {
-        if (data.containsKey(UbiquitousContentURLOption())) {
-            NSString val = (NSString)data.get(UbiquitousContentURLOption());
-            return val.toString();
-        }
-        return null;
-    }
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    public NSPersistentStoreOptions setUbiquitousContentURL(String url) {
-        data.put(UbiquitousContentURLOption(), new NSString(url));
-        return this;
-    }
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public String getUbiquitousPeerToken() {
-        if (data.containsKey(UbiquitousPeerTokenOption())) {
-            NSString val = (NSString)data.get(UbiquitousPeerTokenOption());
-            return val.toString();
-        }
-        return null;
-    }
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public NSPersistentStoreOptions setUbiquitousPeerToken(String peerToken) {
-        data.put(UbiquitousPeerTokenOption(), new NSString(peerToken));
-        return this;
-    }
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public boolean shouldRemoveUbiquitousMetadata() {
-        if (data.containsKey(RemoveUbiquitousMetadataOption())) {
-            NSNumber val = (NSNumber)data.get(RemoveUbiquitousMetadataOption());
-            return val.booleanValue();
-        }
-        return false;
-    }
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public NSPersistentStoreOptions setShouldRemoveUbiquitousMetadata(boolean remove) {
-        data.put(RemoveUbiquitousMetadataOption(), NSNumber.valueOf(remove));
-        return this;
-    }
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public String getUbiquitousContainerIdentifier() {
-        if (data.containsKey(UbiquitousContainerIdentifierOption())) {
-            NSString val = (NSString)data.get(UbiquitousContainerIdentifierOption());
-            return val.toString();
-        }
-        return null;
-    }
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public NSPersistentStoreOptions setUbiquitousContainerIdentifier(String identifier) {
-        data.put(UbiquitousContainerIdentifierOption(), new NSString(identifier));
-        return this;
-    }
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public boolean shouldRebuildFromUbiquitousContent() {
-        if (data.containsKey(RebuildFromUbiquitousContentOption())) {
-            NSNumber val = (NSNumber)data.get(RebuildFromUbiquitousContentOption());
-            return val.booleanValue();
-        }
-        return false;
-    }
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public NSPersistentStoreOptions setShouldRebuildFromUbiquitousContent(boolean rebuild) {
-        data.put(RebuildFromUbiquitousContentOption(), NSNumber.valueOf(rebuild));
-        return this;
-    }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSReadOnlyPersistentStoreOption", optional=true)
-    protected static native NSString ReadOnlyOption();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSPersistentStoreTimeoutOption", optional=true)
-    protected static native NSString TimeoutOption();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSSQLitePragmasOption", optional=true)
-    protected static native NSString SQLitePragmasOption();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSSQLiteAnalyzeOption", optional=true)
-    protected static native NSString SQLiteAnalyzeOption();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSSQLiteManualVacuumOption", optional=true)
-    protected static native NSString SQLiteManualVacuumOption();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSIgnorePersistentStoreVersioningOption", optional=true)
-    protected static native NSString IgnorePersistentStoreVersioningOption();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSMigratePersistentStoresAutomaticallyOption", optional=true)
-    protected static native NSString MigratePersistentStoresAutomaticallyOption();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSInferMappingModelAutomaticallyOption", optional=true)
-    protected static native NSString InferMappingModelAutomaticallyOption();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSPersistentStoreUbiquitousContentNameKey", optional=true)
-    protected static native NSString UbiquitousContentNameOption();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSPersistentStoreUbiquitousContentURLKey", optional=true)
-    protected static native NSString UbiquitousContentURLOption();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSPersistentStoreUbiquitousPeerTokenOption", optional=true)
-    protected static native NSString UbiquitousPeerTokenOption();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSPersistentStoreRemoveUbiquitousMetadataOption", optional=true)
-    protected static native NSString RemoveUbiquitousMetadataOption();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSPersistentStoreUbiquitousContainerIdentifierKey", optional=true)
-    protected static native NSString UbiquitousContainerIdentifierOption();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSPersistentStoreRebuildFromUbiquitousContentOption", optional=true)
-    protected static native NSString RebuildFromUbiquitousContentOption();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSPersistentStoreFileProtectionKey", optional=true)
-    protected static native NSString FileProtectionOption();
     /*</methods>*/
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    
+    /*<keys>*/
+    @Library("CoreData")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="NSReadOnlyPersistentStoreOption", optional=true)
+        public static native NSString ReadOnly();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="NSPersistentStoreTimeoutOption", optional=true)
+        public static native NSString Timeout();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="NSSQLitePragmasOption", optional=true)
+        public static native NSString SQLitePragmas();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="NSSQLiteAnalyzeOption", optional=true)
+        public static native NSString SQLiteAnalyze();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="NSSQLiteManualVacuumOption", optional=true)
+        public static native NSString SQLiteManualVacuum();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="NSIgnorePersistentStoreVersioningOption", optional=true)
+        public static native NSString IgnorePersistentStoreVersioning();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="NSMigratePersistentStoresAutomaticallyOption", optional=true)
+        public static native NSString MigratePersistentStoresAutomatically();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="NSInferMappingModelAutomaticallyOption", optional=true)
+        public static native NSString InferMappingModelAutomatically();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSPersistentStoreUbiquitousContentNameKey", optional=true)
+        public static native NSString UbiquitousContentName();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSPersistentStoreUbiquitousContentURLKey", optional=true)
+        public static native NSString UbiquitousContentURL();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="NSPersistentStoreUbiquitousPeerTokenOption", optional=true)
+        public static native NSString UbiquitousPeerToken();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="NSPersistentStoreRemoveUbiquitousMetadataOption", optional=true)
+        public static native NSString RemoveUbiquitousMetadata();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="NSPersistentStoreUbiquitousContainerIdentifierKey", optional=true)
+        public static native NSString UbiquitousContainerIdentifier();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="NSPersistentStoreRebuildFromUbiquitousContentOption", optional=true)
+        public static native NSString RebuildFromUbiquitousContent();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSPersistentStoreFileProtectionKey", optional=true)
+        public static native NSString FileProtection();
     }
+    /*</keys>*/
 }

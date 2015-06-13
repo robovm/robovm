@@ -38,12 +38,13 @@ import org.robovm.apple.uikit.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CIImageAutoAdjustOptions.Marshaler.class)
 /*<annotations>*/@Library("CoreImage")/*</annotations>*/
+@Marshaler(/*<name>*/CIImageAutoAdjustOptions/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CIImageAutoAdjustOptions/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/CFDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CIImageAutoAdjustOptions toObject(Class<CIImageAutoAdjustOptions> cls, long handle, long flags) {
@@ -61,67 +62,96 @@ import org.robovm.apple.uikit.*;
             return CFType.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private CFDictionary data;
-    
-    protected CIImageAutoAdjustOptions(CFDictionary data) {
-        this.data = data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CIImageAutoAdjustOptions> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CIImageAutoAdjustOptions> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new CIImageAutoAdjustOptions(o.get(i, CFDictionary.class)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CIImageAutoAdjustOptions> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray array = CFMutableArray.create();
+            for (CIImageAutoAdjustOptions i : l) {
+                array.add(i.getDictionary());
+            }
+            return CFType.Marshaler.toNative(array, flags);
+        }
     }
-    public CIImageAutoAdjustOptions() {
-        data = CFMutableDictionary.create();
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    CIImageAutoAdjustOptions(CFDictionary data) {
+        super(data);
     }
-    /*<bind>*/static { Bro.bind(CIImageAutoAdjustOptions.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public CFDictionary getDictionary() {
-        return data;
+    public CIImageAutoAdjustOptions() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(CFString key) {
+        return data.containsKey(key);
+    }
+    public <T extends NativeObject> T get(CFString key, Class<T> type) {
+        if (has(key)) {
+            return data.get(key, type);
+        }
+        return null;
+    }
+    public CIImageAutoAdjustOptions set(CFString key, NativeObject value) {
+        data.put(key, value);
+        return this;
     }
     
-    
+
     /**
      * @since Available in iOS 5.0 and later.
      */
     public boolean appliesEnhancementFilter() {
-        if (data.containsKey(EnhanceKey())) {
-            CFBoolean val = data.get(EnhanceKey(), CFBoolean.class);
+        if (has(Keys.Enhance())) {
+            CFBoolean val = get(Keys.Enhance(), CFBoolean.class);
             return val.booleanValue();
         }
-        return true;
+        return false;
     }
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public CIImageAutoAdjustOptions setAppliesEnhancementFilter(boolean apply) {
-        data.put(EnhanceKey(), CFBoolean.valueOf(apply));
+    public CIImageAutoAdjustOptions setAppliesEnhancementFilter(boolean appliesEnhancementFilter) {
+        set(Keys.Enhance(), CFBoolean.valueOf(appliesEnhancementFilter));
         return this;
     }
     /**
      * @since Available in iOS 5.0 and later.
      */
     public boolean appliesRedEyeFilter() {
-        if (data.containsKey(RedEyeKey())) {
-            CFBoolean val = data.get(RedEyeKey(), CFBoolean.class);
+        if (has(Keys.RedEye())) {
+            CFBoolean val = get(Keys.RedEye(), CFBoolean.class);
             return val.booleanValue();
         }
-        return true;
+        return false;
     }
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public CIImageAutoAdjustOptions setAppliesRedEyeFilter(boolean apply) {
-        data.put(RedEyeKey(), CFBoolean.valueOf(apply));
+    public CIImageAutoAdjustOptions setAppliesRedEyeFilter(boolean appliesRedEyeFilter) {
+        set(Keys.RedEye(), CFBoolean.valueOf(appliesRedEyeFilter));
         return this;
     }
     /**
      * @since Available in iOS 5.0 and later.
      */
     public List<CIFeature> getFeatures() {
-        if (data.containsKey(FeaturesKey())) {
-            CFArray val = data.get(FeaturesKey(), CFArray.class);
+        if (has(Keys.Features())) {
+            CFArray val = get(Keys.Features(), CFArray.class);
             return val.toList(CIFeature.class);
         }
         return null;
@@ -130,15 +160,15 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 5.0 and later.
      */
     public CIImageAutoAdjustOptions setFeatures(List<CIFeature> features) {
-        data.put(FeaturesKey(), CFArray.create(features));
+        set(Keys.Features(), CFArray.create(features));
         return this;
     }
     /**
      * @since Available in iOS 8.0 and later.
      */
     public boolean appliesCropFilter() {
-        if (data.containsKey(CropKey())) {
-            CFBoolean val = data.get(CropKey(), CFBoolean.class);
+        if (has(Keys.Crop())) {
+            CFBoolean val = get(Keys.Crop(), CFBoolean.class);
             return val.booleanValue();
         }
         return false;
@@ -146,16 +176,16 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public CIImageAutoAdjustOptions setAppliesCropFilter(boolean apply) {
-        data.put(CropKey(), CFBoolean.valueOf(apply));
+    public CIImageAutoAdjustOptions setAppliesCropFilter(boolean appliesCropFilter) {
+        set(Keys.Crop(), CFBoolean.valueOf(appliesCropFilter));
         return this;
     }
     /**
      * @since Available in iOS 8.0 and later.
      */
     public boolean appliesAutoLevel() {
-        if (data.containsKey(LevelKey())) {
-            CFBoolean val = data.get(LevelKey(), CFBoolean.class);
+        if (has(Keys.Level())) {
+            CFBoolean val = get(Keys.Level(), CFBoolean.class);
             return val.booleanValue();
         }
         return false;
@@ -163,40 +193,41 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public CIImageAutoAdjustOptions setAppliesAutoLevel(boolean apply) {
-        data.put(LevelKey(), CFBoolean.valueOf(apply));
+    public CIImageAutoAdjustOptions setAppliesAutoLevel(boolean appliesAutoLevel) {
+        set(Keys.Level(), CFBoolean.valueOf(appliesAutoLevel));
         return this;
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="kCIImageAutoAdjustEnhance", optional=true)
-    protected static native CFString EnhanceKey();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="kCIImageAutoAdjustRedEye", optional=true)
-    protected static native CFString RedEyeKey();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="kCIImageAutoAdjustFeatures", optional=true)
-    protected static native CFString FeaturesKey();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="kCIImageAutoAdjustCrop", optional=true)
-    protected static native CFString CropKey();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="kCIImageAutoAdjustLevel", optional=true)
-    protected static native CFString LevelKey();
     /*</methods>*/
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    
+    /*<keys>*/
+    @Library("CoreImage")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="kCIImageAutoAdjustEnhance", optional=true)
+        public static native CFString Enhance();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="kCIImageAutoAdjustRedEye", optional=true)
+        public static native CFString RedEye();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="kCIImageAutoAdjustFeatures", optional=true)
+        public static native CFString Features();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="kCIImageAutoAdjustCrop", optional=true)
+        public static native CFString Crop();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="kCIImageAutoAdjustLevel", optional=true)
+        public static native CFString Level();
     }
+    /*</keys>*/
 }

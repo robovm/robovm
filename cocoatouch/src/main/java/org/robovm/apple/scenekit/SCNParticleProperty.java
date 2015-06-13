@@ -39,12 +39,15 @@ import org.robovm.apple.opengles.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(SCNParticleProperty.Marshaler.class)
-/*<annotations>*/@Library("SceneKit")/*</annotations>*/
+/*<annotations>*/@Library("SceneKit") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/SCNParticleProperty/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SCNParticleProperty/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/SCNParticleProperty/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static SCNParticleProperty toObject(Class<SCNParticleProperty> cls, long handle, long flags) {
@@ -62,7 +65,6 @@ import org.robovm.apple.opengles.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
     public static class AsListMarshaler {
         @SuppressWarnings("unchecked")
         @MarshalsPointer
@@ -72,8 +74,8 @@ import org.robovm.apple.opengles.*;
                 return null;
             }
             List<SCNParticleProperty> list = new ArrayList<>();
-            for (NSString str : o) {
-                list.add(SCNParticleProperty.valueOf(str));
+            for (int i = 0; i < o.size(); i++) {
+                list.add(SCNParticleProperty.valueOf(o.get(i)));
             }
             return list;
         }
@@ -82,14 +84,14 @@ import org.robovm.apple.opengles.*;
             if (l == null) {
                 return 0L;
             }
-            NSMutableArray<NSString> array = new NSMutableArray<>();
+            NSArray<NSString> array = new NSMutableArray<>();
             for (SCNParticleProperty i : l) {
                 array.add(i.value());
             }
             return NSObject.Marshaler.toNative(array, flags);
         }
     }
-    
+    /*</marshalers>*/
     public static class AsPropertyControllerMapMarshaler {
         @SuppressWarnings("unchecked")
         @MarshalsPointer
@@ -117,44 +119,34 @@ import org.robovm.apple.opengles.*;
             return NSObject.Marshaler.toNative(dict, flags);
         }
     }
+
+    /*<constants>*/
+    public static final SCNParticleProperty Position = new SCNParticleProperty("Position");
+    public static final SCNParticleProperty Angle = new SCNParticleProperty("Angle");
+    public static final SCNParticleProperty RotationAxis = new SCNParticleProperty("RotationAxis");
+    public static final SCNParticleProperty Velocity = new SCNParticleProperty("Velocity");
+    public static final SCNParticleProperty AngularVelocity = new SCNParticleProperty("AngularVelocity");
+    public static final SCNParticleProperty Life = new SCNParticleProperty("Life");
+    public static final SCNParticleProperty Color = new SCNParticleProperty("Color");
+    public static final SCNParticleProperty Opacity = new SCNParticleProperty("Opacity");
+    public static final SCNParticleProperty Size = new SCNParticleProperty("Size");
+    public static final SCNParticleProperty Frame = new SCNParticleProperty("Frame");
+    public static final SCNParticleProperty FrameRate = new SCNParticleProperty("FrameRate");
+    public static final SCNParticleProperty Bounce = new SCNParticleProperty("Bounce");
+    public static final SCNParticleProperty Charge = new SCNParticleProperty("Charge");
+    public static final SCNParticleProperty Friction = new SCNParticleProperty("Friction");
+    public static final SCNParticleProperty ContactPoint = new SCNParticleProperty("ContactPoint");
+    public static final SCNParticleProperty ContactNormal = new SCNParticleProperty("ContactNormal");
+    /*</constants>*/
     
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(SCNParticleProperty.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    public static final SCNParticleProperty Position = new SCNParticleProperty("PositionValue");
-    public static final SCNParticleProperty Angle = new SCNParticleProperty("AngleValue");
-    public static final SCNParticleProperty RotationAxis = new SCNParticleProperty("RotationAxisValue");
-    public static final SCNParticleProperty Velocity = new SCNParticleProperty("VelocityValue");
-    public static final SCNParticleProperty AngularVelocity = new SCNParticleProperty("AngularVelocityValue");
-    public static final SCNParticleProperty Life = new SCNParticleProperty("LifeValue");
-    public static final SCNParticleProperty Color = new SCNParticleProperty("ColorValue");
-    public static final SCNParticleProperty Opacity = new SCNParticleProperty("OpacityValue");
-    public static final SCNParticleProperty Size = new SCNParticleProperty("SizeValue");
-    public static final SCNParticleProperty Frame = new SCNParticleProperty("FrameValue");
-    public static final SCNParticleProperty FrameRate = new SCNParticleProperty("FrameRateValue");
-    public static final SCNParticleProperty Bounce = new SCNParticleProperty("BounceValue");
-    public static final SCNParticleProperty Charge = new SCNParticleProperty("ChargeValue");
-    public static final SCNParticleProperty Friction = new SCNParticleProperty("FrictionValue");
-    public static final SCNParticleProperty ContactPoint = new SCNParticleProperty("ContactPointValue");
-    public static final SCNParticleProperty ContactNormal = new SCNParticleProperty("ContactNormalValue");
+    private static /*<name>*/SCNParticleProperty/*</name>*/[] values = new /*<name>*/SCNParticleProperty/*</name>*/[] {/*<value_list>*/Position, Angle, RotationAxis, Velocity, AngularVelocity, Life, Color, Opacity, Size, Frame, FrameRate, Bounce, Charge, Friction, ContactPoint, ContactNormal/*</value_list>*/};
     
-    private static SCNParticleProperty[] values = new SCNParticleProperty[] {Position, Angle, RotationAxis, Velocity, AngularVelocity, 
-        Life, Color, Opacity, Size, Frame, FrameRate, Bounce, Charge, Friction, ContactPoint, ContactNormal};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private SCNParticleProperty(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/SCNParticleProperty/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static SCNParticleProperty valueOf(NSString value) {
-        for (SCNParticleProperty v : values) {
+    public static /*<name>*/SCNParticleProperty/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/SCNParticleProperty/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -162,38 +154,46 @@ import org.robovm.apple.opengles.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/SCNParticleProperty/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    @GlobalValue(symbol="SCNParticlePropertyPosition", optional=true)
-    protected static native NSString PositionValue();
-    @GlobalValue(symbol="SCNParticlePropertyAngle", optional=true)
-    protected static native NSString AngleValue();
-    @GlobalValue(symbol="SCNParticlePropertyRotationAxis", optional=true)
-    protected static native NSString RotationAxisValue();
-    @GlobalValue(symbol="SCNParticlePropertyVelocity", optional=true)
-    protected static native NSString VelocityValue();
-    @GlobalValue(symbol="SCNParticlePropertyAngularVelocity", optional=true)
-    protected static native NSString AngularVelocityValue();
-    @GlobalValue(symbol="SCNParticlePropertyLife", optional=true)
-    protected static native NSString LifeValue();
-    @GlobalValue(symbol="SCNParticlePropertyColor", optional=true)
-    protected static native NSString ColorValue();
-    @GlobalValue(symbol="SCNParticlePropertyOpacity", optional=true)
-    protected static native NSString OpacityValue();
-    @GlobalValue(symbol="SCNParticlePropertySize", optional=true)
-    protected static native NSString SizeValue();
-    @GlobalValue(symbol="SCNParticlePropertyFrame", optional=true)
-    protected static native NSString FrameValue();
-    @GlobalValue(symbol="SCNParticlePropertyFrameRate", optional=true)
-    protected static native NSString FrameRateValue();
-    @GlobalValue(symbol="SCNParticlePropertyBounce", optional=true)
-    protected static native NSString BounceValue();
-    @GlobalValue(symbol="SCNParticlePropertyCharge", optional=true)
-    protected static native NSString ChargeValue();
-    @GlobalValue(symbol="SCNParticlePropertyFriction", optional=true)
-    protected static native NSString FrictionValue();
-    @GlobalValue(symbol="SCNParticlePropertyContactPoint", optional=true)
-    protected static native NSString ContactPointValue();
-    @GlobalValue(symbol="SCNParticlePropertyContactNormal", optional=true)
-    protected static native NSString ContactNormalValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("SceneKit") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        @GlobalValue(symbol="SCNParticlePropertyPosition", optional=true)
+        public static native NSString Position();
+        @GlobalValue(symbol="SCNParticlePropertyAngle", optional=true)
+        public static native NSString Angle();
+        @GlobalValue(symbol="SCNParticlePropertyRotationAxis", optional=true)
+        public static native NSString RotationAxis();
+        @GlobalValue(symbol="SCNParticlePropertyVelocity", optional=true)
+        public static native NSString Velocity();
+        @GlobalValue(symbol="SCNParticlePropertyAngularVelocity", optional=true)
+        public static native NSString AngularVelocity();
+        @GlobalValue(symbol="SCNParticlePropertyLife", optional=true)
+        public static native NSString Life();
+        @GlobalValue(symbol="SCNParticlePropertyColor", optional=true)
+        public static native NSString Color();
+        @GlobalValue(symbol="SCNParticlePropertyOpacity", optional=true)
+        public static native NSString Opacity();
+        @GlobalValue(symbol="SCNParticlePropertySize", optional=true)
+        public static native NSString Size();
+        @GlobalValue(symbol="SCNParticlePropertyFrame", optional=true)
+        public static native NSString Frame();
+        @GlobalValue(symbol="SCNParticlePropertyFrameRate", optional=true)
+        public static native NSString FrameRate();
+        @GlobalValue(symbol="SCNParticlePropertyBounce", optional=true)
+        public static native NSString Bounce();
+        @GlobalValue(symbol="SCNParticlePropertyCharge", optional=true)
+        public static native NSString Charge();
+        @GlobalValue(symbol="SCNParticlePropertyFriction", optional=true)
+        public static native NSString Friction();
+        @GlobalValue(symbol="SCNParticlePropertyContactPoint", optional=true)
+        public static native NSString ContactPoint();
+        @GlobalValue(symbol="SCNParticlePropertyContactNormal", optional=true)
+        public static native NSString ContactNormal();
+        /*</values>*/
+    }
 }

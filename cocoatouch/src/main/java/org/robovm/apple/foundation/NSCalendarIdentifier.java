@@ -40,12 +40,15 @@ import org.robovm.apple.dispatch.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(NSCalendarIdentifier.Marshaler.class)
-/*<annotations>*/@Library("Foundation")/*</annotations>*/
+/*<annotations>*/@Library("Foundation") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/NSCalendarIdentifier/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSCalendarIdentifier/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/NSCalendarIdentifier/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static NSCalendarIdentifier toObject(Class<NSCalendarIdentifier> cls, long handle, long flags) {
@@ -63,92 +66,109 @@ import org.robovm.apple.dispatch.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(NSCalendarIdentifier.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<NSCalendarIdentifier> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<NSCalendarIdentifier> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(NSCalendarIdentifier.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<NSCalendarIdentifier> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (NSCalendarIdentifier o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSCalendarIdentifier Gregorian = new NSCalendarIdentifier("GregorianValue");
+    public static final NSCalendarIdentifier Gregorian = new NSCalendarIdentifier("Gregorian");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSCalendarIdentifier Buddhist = new NSCalendarIdentifier("BuddhistValue");
+    public static final NSCalendarIdentifier Buddhist = new NSCalendarIdentifier("Buddhist");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSCalendarIdentifier Chinese = new NSCalendarIdentifier("ChineseValue");
+    public static final NSCalendarIdentifier Chinese = new NSCalendarIdentifier("Chinese");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSCalendarIdentifier Coptic = new NSCalendarIdentifier("CopticValue");
+    public static final NSCalendarIdentifier Coptic = new NSCalendarIdentifier("Coptic");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSCalendarIdentifier EthiopicAmeteMihret = new NSCalendarIdentifier("EthiopicAmeteMihretValue");
+    public static final NSCalendarIdentifier EthiopicAmeteMihret = new NSCalendarIdentifier("EthiopicAmeteMihret");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSCalendarIdentifier EthiopicAmeteAlem = new NSCalendarIdentifier("EthiopicAmeteAlemValue");
+    public static final NSCalendarIdentifier EthiopicAmeteAlem = new NSCalendarIdentifier("EthiopicAmeteAlem");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSCalendarIdentifier Hebrew = new NSCalendarIdentifier("HebrewValue");
+    public static final NSCalendarIdentifier Hebrew = new NSCalendarIdentifier("Hebrew");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSCalendarIdentifier ISO8601 = new NSCalendarIdentifier("ISO8601Value");
+    public static final NSCalendarIdentifier ISO8601 = new NSCalendarIdentifier("ISO8601");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSCalendarIdentifier Indian = new NSCalendarIdentifier("IndianValue");
+    public static final NSCalendarIdentifier Indian = new NSCalendarIdentifier("Indian");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSCalendarIdentifier Islamic = new NSCalendarIdentifier("IslamicValue");
+    public static final NSCalendarIdentifier Islamic = new NSCalendarIdentifier("Islamic");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSCalendarIdentifier IslamicCivil = new NSCalendarIdentifier("IslamicCivilValue");
+    public static final NSCalendarIdentifier IslamicCivil = new NSCalendarIdentifier("IslamicCivil");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSCalendarIdentifier Japanese = new NSCalendarIdentifier("JapaneseValue");
+    public static final NSCalendarIdentifier Japanese = new NSCalendarIdentifier("Japanese");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSCalendarIdentifier Persian = new NSCalendarIdentifier("PersianValue");
+    public static final NSCalendarIdentifier Persian = new NSCalendarIdentifier("Persian");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSCalendarIdentifier RepublicOfChina = new NSCalendarIdentifier("RepublicOfChinaValue");
+    public static final NSCalendarIdentifier RepublicOfChina = new NSCalendarIdentifier("RepublicOfChina");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final NSCalendarIdentifier IslamicTabular = new NSCalendarIdentifier("IslamicTabularValue");
+    public static final NSCalendarIdentifier IslamicTabular = new NSCalendarIdentifier("IslamicTabular");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final NSCalendarIdentifier IslamicUmmAlQura = new NSCalendarIdentifier("IslamicUmmAlQuraValue");
+    public static final NSCalendarIdentifier IslamicUmmAlQura = new NSCalendarIdentifier("IslamicUmmAlQura");
+    /*</constants>*/
     
-    private static NSCalendarIdentifier[] values = new NSCalendarIdentifier[] {Gregorian, Buddhist, Chinese, Coptic, EthiopicAmeteMihret, EthiopicAmeteAlem, Hebrew, ISO8601, Indian, Islamic, IslamicCivil, 
-        Japanese, Persian, RepublicOfChina, IslamicTabular, IslamicUmmAlQura};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    private static /*<name>*/NSCalendarIdentifier/*</name>*/[] values = new /*<name>*/NSCalendarIdentifier/*</name>*/[] {/*<value_list>*/Gregorian, Buddhist, Chinese, Coptic, EthiopicAmeteMihret, EthiopicAmeteAlem, Hebrew, ISO8601, Indian, Islamic, IslamicCivil, Japanese, Persian, RepublicOfChina, IslamicTabular, IslamicUmmAlQura/*</value_list>*/};
     
-    private NSCalendarIdentifier(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/NSCalendarIdentifier/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static NSCalendarIdentifier valueOf(NSString value) {
-        for (NSCalendarIdentifier v : values) {
+    public static /*<name>*/NSCalendarIdentifier/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/NSCalendarIdentifier/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -156,86 +176,94 @@ import org.robovm.apple.dispatch.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/NSCalendarIdentifier/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSCalendarIdentifierGregorian", optional=true)
-    protected static native NSString GregorianValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSCalendarIdentifierBuddhist", optional=true)
-    protected static native NSString BuddhistValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSCalendarIdentifierChinese", optional=true)
-    protected static native NSString ChineseValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSCalendarIdentifierCoptic", optional=true)
-    protected static native NSString CopticValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSCalendarIdentifierEthiopicAmeteMihret", optional=true)
-    protected static native NSString EthiopicAmeteMihretValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSCalendarIdentifierEthiopicAmeteAlem", optional=true)
-    protected static native NSString EthiopicAmeteAlemValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSCalendarIdentifierHebrew", optional=true)
-    protected static native NSString HebrewValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSCalendarIdentifierISO8601", optional=true)
-    protected static native NSString ISO8601Value();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSCalendarIdentifierIndian", optional=true)
-    protected static native NSString IndianValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSCalendarIdentifierIslamic", optional=true)
-    protected static native NSString IslamicValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSCalendarIdentifierIslamicCivil", optional=true)
-    protected static native NSString IslamicCivilValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSCalendarIdentifierJapanese", optional=true)
-    protected static native NSString JapaneseValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSCalendarIdentifierPersian", optional=true)
-    protected static native NSString PersianValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSCalendarIdentifierRepublicOfChina", optional=true)
-    protected static native NSString RepublicOfChinaValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="NSCalendarIdentifierIslamicTabular", optional=true)
-    protected static native NSString IslamicTabularValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="NSCalendarIdentifierIslamicUmmAlQura", optional=true)
-    protected static native NSString IslamicUmmAlQuraValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("Foundation") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSCalendarIdentifierGregorian", optional=true)
+        public static native NSString Gregorian();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSCalendarIdentifierBuddhist", optional=true)
+        public static native NSString Buddhist();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSCalendarIdentifierChinese", optional=true)
+        public static native NSString Chinese();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSCalendarIdentifierCoptic", optional=true)
+        public static native NSString Coptic();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSCalendarIdentifierEthiopicAmeteMihret", optional=true)
+        public static native NSString EthiopicAmeteMihret();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSCalendarIdentifierEthiopicAmeteAlem", optional=true)
+        public static native NSString EthiopicAmeteAlem();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSCalendarIdentifierHebrew", optional=true)
+        public static native NSString Hebrew();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSCalendarIdentifierISO8601", optional=true)
+        public static native NSString ISO8601();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSCalendarIdentifierIndian", optional=true)
+        public static native NSString Indian();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSCalendarIdentifierIslamic", optional=true)
+        public static native NSString Islamic();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSCalendarIdentifierIslamicCivil", optional=true)
+        public static native NSString IslamicCivil();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSCalendarIdentifierJapanese", optional=true)
+        public static native NSString Japanese();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSCalendarIdentifierPersian", optional=true)
+        public static native NSString Persian();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSCalendarIdentifierRepublicOfChina", optional=true)
+        public static native NSString RepublicOfChina();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="NSCalendarIdentifierIslamicTabular", optional=true)
+        public static native NSString IslamicTabular();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="NSCalendarIdentifierIslamicUmmAlQura", optional=true)
+        public static native NSString IslamicUmmAlQura();
+        /*</values>*/
+    }
 }

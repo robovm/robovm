@@ -687,34 +687,57 @@ values:
         class: NSPersistentStoreCoordinator
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
     NSPersistentStore(DidImportUbiquitousContentChangesNotification):
         class: NSPersistentStoreCoordinator
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
     NS(.*)PersistentStoresKey:
-        class: NSPersistentStoreCoordinatorChangeNotificationInfo
-        name: '#{g[0]}Key'
+        dictionary: NSPersistentStoreCoordinatorChangeNotification
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        mutable: false
+        methods:
+            Added:
+                name: addedStores
+                type: NSArray<NSPersistentStore>
+            Removed:
+                name: removedStores
+                type: NSArray<NSPersistentStore>
+            UUIDChanged:
+                name: UUIDChangedStores
+                type: NSArray<NSPersistentStore>
+            UbiquitousTransitionType:
+                type: NSPersistentStoreUbiquitousTransitionType
     NSPersistentStore(UbiquitousTransitionType)Key:
-        class: NSPersistentStoreCoordinatorChangeNotificationInfo
-        name: '#{g[0]}Key'
+        dictionary: NSPersistentStoreCoordinatorChangeNotification
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        mutable: false
 
     # NSManagedObjectContext
     NSManagedObjectContext(.*Notification):
         class: NSManagedObjectContext
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
-    NS(.*ObjectsKey):
-        class: NSManagedObjectContextNotificationInfo
+    NS(.*Objects)Key:
+        dictionary: NSManagedObjectContextNotification
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        mutable: false
+        methods:
+            InsertedObjects:
+                type: NSSet<NSManagedObject>
+            UpdatedObjects:
+                type: NSSet<NSManagedObject>
+            DeletedObjects:
+                type: NSSet<NSManagedObject>
+            RefreshedObjects:
+                type: NSSet<NSManagedObject>
+            InvalidatedObjects:
+                type: NSSet<NSManagedObject>
+            InvalidatedAllObjects:
+                name: AllInvalidatedObjects
+                type: NSArray<NSManagedObjectID>
 
     # NSMergePolicy
     NS(.*MergePolicy):
@@ -725,67 +748,108 @@ values:
 
     # NSPersistentStoreCoordinator
     NS(ReadOnly)PersistentStoreOption:
-        class: NSPersistentStoreOptions
-        name: '#{g[0]}Option'
+        dictionary: NSPersistentStoreOptions
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        methods:
+            ReadOnly:
+                type: boolean
+            Timeout:
+                type: long
+            SQLitePragmas:
+                type: Map<String, NSObject>
+            SQLiteAnalyze:
+                name: SQLiteAnalyzeEnabled
+                type: boolean
+            SQLiteManualVacuum:
+                name: SQLiteManualVacuumEnabled
+                type: boolean
+            IgnorePersistentStoreVersioning:
+                name: ignoresPersistentStoreVersioning
+                type: boolean
+            MigratePersistentStoresAutomatically:
+                name: migratesPersistentStoresAutomatically
+                type: boolean
+            InferMappingModelAutomatically:
+                name: infersMappingModelAutomatically
+                type: boolean
+            UbiquitousContentName:
+                type: String
+            UbiquitousContentURL:
+                type: String
+            UbiquitousPeerToken:
+                type: String
+            RemoveUbiquitousMetadata:
+                name: shouldRemoveUbiquitousMetadata
+                type: boolean
+            UbiquitousContainerIdentifier:
+                type: String
+            RebuildFromUbiquitousContent:
+                name: shouldRebuildFromUbiquitousContent
+                type: boolean
+            FileProtection:
+                type: NSFileProtection
+                hint: GlobalValueEnumeration<NSString>
     NSPersistentStore(Timeout)Option:
-        class: NSPersistentStoreOptions
-        name: '#{g[0]}Option'
+        dictionary: NSPersistentStoreOptions
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     NS(SQLite.*)Option:
-        class: NSPersistentStoreOptions
-        name: '#{g[0]}Option'
+        dictionary: NSPersistentStoreOptions
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     NSPersistentStore(.*)Key:
-        class: NSPersistentStoreOptions
-        name: '#{g[0]}Option'
+        dictionary: NSPersistentStoreOptions
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     NSPersistentStore(.*Ubiquitous.*)Option:
-        class: NSPersistentStoreOptions
-        name: '#{g[0]}Option'
+        dictionary: NSPersistentStoreOptions
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     NS(IgnorePersistentStoreVersioning)Option:
-        class: NSPersistentStoreOptions
-        name: '#{g[0]}Option'
+        dictionary: NSPersistentStoreOptions
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     NS(MigratePersistentStoresAutomatically)Option:
-        class: NSPersistentStoreOptions
-        name: '#{g[0]}Option'
+        dictionary: NSPersistentStoreOptions
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     NS(InferMappingModelAutomatically)Option:
-        class: NSPersistentStoreOptions
-        name: '#{g[0]}Option'
+        dictionary: NSPersistentStoreOptions
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
-        
     NSStore(.*)Key:
-        class: NSPersistentStoreMetadata
-        name: '#{g[0]}Value'
+        dictionary: NSPersistentStoreMetadata
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        methods:
+            Type:
+                type: String
+            UUID:
+                type: NSUUID
+            ModelVersionHashes:
+                type: 'NSDictionary<?, ?>'
+                mutable: false
+            ModelVersionIdentifiers:
+                type: NSSet<?>
+                mutable: false
+            OSCompatibility:
+                type: long
+                mutable: false
     NSPersistentStore(OSCompatibility):
-        class: NSPersistentStoreMetadata
-        name: '#{g[0]}Value'
+        dictionary: NSPersistentStoreMetadata
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
-    
     NS(.*)StoreType:
-        class: NSPersistentStoreType
-        name: '#{g[0]}Value'
-        visibility: protected
+        enum: NSPersistentStoreType
+        name: '#{g[0]}'
+        type: NSString
 
     # NSExpression
     NSMigration(.*):
-        class: NSExpressionMigrationKey
-        name: '#{g[0]}Value'
-        visibility: protected
+        enum: NSExpressionMigrationKey
+        name: '#{g[0]}'
+        type: NSString
 
     # Make sure we don't miss any values if new ones are introduced in a later version
     (k?NS.*):

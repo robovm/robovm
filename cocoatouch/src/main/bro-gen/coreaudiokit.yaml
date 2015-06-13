@@ -27,7 +27,6 @@ functions:
         name: 'Function__#{g[0]}'
 
 values:
-   
     # Make sure we don't miss any values if new ones are introduced in a later version
     (k?CA.*):
         class: CoreAudioKit

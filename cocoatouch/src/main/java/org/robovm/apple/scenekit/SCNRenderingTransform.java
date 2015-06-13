@@ -39,12 +39,15 @@ import org.robovm.apple.opengles.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(SCNRenderingTransform.Marshaler.class)
-/*<annotations>*/@Library("SceneKit")/*</annotations>*/
+/*<annotations>*/@Library("SceneKit") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/SCNRenderingTransform/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SCNRenderingTransform/*</name>*/ 
-    extends /*<extends>*/SCNProgramSemantic/*</extends>*/ 
+    extends /*<extends>*/SCNProgramSemantic/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/SCNRenderingTransform/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static SCNRenderingTransform toObject(Class<SCNRenderingTransform> cls, long handle, long flags) {
@@ -62,7 +65,33 @@ import org.robovm.apple.opengles.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<SCNRenderingTransform> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<SCNRenderingTransform> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(SCNRenderingTransform.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<SCNRenderingTransform> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (SCNRenderingTransform i : l) {
+                array.add(i.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
     public static class AsTransform3DMapMarshaler {
         @SuppressWarnings("unchecked")
         @MarshalsPointer
@@ -90,54 +119,51 @@ import org.robovm.apple.opengles.*;
             return NSObject.Marshaler.toNative(dict, flags);
         }
     }
+
+    /*<constants>*/
+    public static final SCNRenderingTransform Model = new SCNRenderingTransform("Model");
+    public static final SCNRenderingTransform View = new SCNRenderingTransform("View");
+    public static final SCNRenderingTransform Projection = new SCNRenderingTransform("Projection");
+    public static final SCNRenderingTransform Normal = new SCNRenderingTransform("Normal");
+    public static final SCNRenderingTransform ModelView = new SCNRenderingTransform("ModelView");
+    public static final SCNRenderingTransform ModelViewProjection = new SCNRenderingTransform("ModelViewProjection");
+    /*</constants>*/
     
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(SCNRenderingTransform.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    public static final SCNRenderingTransform Model = new SCNRenderingTransform("ModelValue");
-    public static final SCNRenderingTransform View = new SCNRenderingTransform("ViewValue");
-    public static final SCNRenderingTransform Projection = new SCNRenderingTransform("ProjectionValue");
-    public static final SCNRenderingTransform Normal = new SCNRenderingTransform("NormalValue");
-    public static final SCNRenderingTransform ModelView = new SCNRenderingTransform("ModelViewValue");
-    public static final SCNRenderingTransform ModelViewProjection = new SCNRenderingTransform("ModelViewProjectionValue");
+    private static /*<name>*/SCNRenderingTransform/*</name>*/[] values = new /*<name>*/SCNRenderingTransform/*</name>*/[] {/*<value_list>*/Model, View, Projection, Normal, ModelView, ModelViewProjection/*</value_list>*/};
     
-    private static SCNRenderingTransform[] values = new SCNRenderingTransform[] {Model, View, Projection, Normal, 
-        ModelView, ModelViewProjection};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private SCNRenderingTransform(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/SCNRenderingTransform/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static SCNRenderingTransform valueOf(NSString value) {
-        for (SCNRenderingTransform v : values) {
+    public static /*<name>*/SCNRenderingTransform/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/SCNRenderingTransform/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
         }
-        return null;
-//        throw new IllegalArgumentException("No constant with value " + value + " found in " 
-//            + /*<name>*/SCNRenderingTransform/*</name>*/.class.getName());
+        throw new IllegalArgumentException("No constant with value " + value + " found in " 
+            + /*<name>*/SCNRenderingTransform/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    @GlobalValue(symbol="SCNModelTransform", optional=true)
-    protected static native NSString ModelValue();
-    @GlobalValue(symbol="SCNViewTransform", optional=true)
-    protected static native NSString ViewValue();
-    @GlobalValue(symbol="SCNProjectionTransform", optional=true)
-    protected static native NSString ProjectionValue();
-    @GlobalValue(symbol="SCNNormalTransform", optional=true)
-    protected static native NSString NormalValue();
-    @GlobalValue(symbol="SCNModelViewTransform", optional=true)
-    protected static native NSString ModelViewValue();
-    @GlobalValue(symbol="SCNModelViewProjectionTransform", optional=true)
-    protected static native NSString ModelViewProjectionValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("SceneKit") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        @GlobalValue(symbol="SCNModelTransform", optional=true)
+        public static native NSString Model();
+        @GlobalValue(symbol="SCNViewTransform", optional=true)
+        public static native NSString View();
+        @GlobalValue(symbol="SCNProjectionTransform", optional=true)
+        public static native NSString Projection();
+        @GlobalValue(symbol="SCNNormalTransform", optional=true)
+        public static native NSString Normal();
+        @GlobalValue(symbol="SCNModelViewTransform", optional=true)
+        public static native NSString ModelView();
+        @GlobalValue(symbol="SCNModelViewProjectionTransform", optional=true)
+        public static native NSString ModelViewProjection();
+        /*</values>*/
+    }
 }

@@ -42,12 +42,15 @@ import org.robovm.apple.audiounit.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(AVCaptureSessionPreset.Marshaler.class)
-/*<annotations>*/@Library("AVFoundation")/*</annotations>*/
+/*<annotations>*/@Library("AVFoundation") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/AVCaptureSessionPreset/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/AVCaptureSessionPreset/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/AVCaptureSessionPreset/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static AVCaptureSessionPreset toObject(Class<AVCaptureSessionPreset> cls, long handle, long flags) {
@@ -65,72 +68,89 @@ import org.robovm.apple.audiounit.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(AVCaptureSessionPreset.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<AVCaptureSessionPreset> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<AVCaptureSessionPreset> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(AVCaptureSessionPreset.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<AVCaptureSessionPreset> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (AVCaptureSessionPreset o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final AVCaptureSessionPreset Photo = new AVCaptureSessionPreset("PhotoValue");
+    public static final AVCaptureSessionPreset Photo = new AVCaptureSessionPreset("Photo");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final AVCaptureSessionPreset High = new AVCaptureSessionPreset("HighValue");
+    public static final AVCaptureSessionPreset High = new AVCaptureSessionPreset("High");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final AVCaptureSessionPreset Medium = new AVCaptureSessionPreset("MediumValue");
+    public static final AVCaptureSessionPreset Medium = new AVCaptureSessionPreset("Medium");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final AVCaptureSessionPreset Low = new AVCaptureSessionPreset("LowValue");
+    public static final AVCaptureSessionPreset Low = new AVCaptureSessionPreset("Low");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final AVCaptureSessionPreset _352x288 = new AVCaptureSessionPreset("_352x288Value");
+    public static final AVCaptureSessionPreset Size352x288 = new AVCaptureSessionPreset("Size352x288");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final AVCaptureSessionPreset _640x480 = new AVCaptureSessionPreset("_640x480Value");
+    public static final AVCaptureSessionPreset Size640x480 = new AVCaptureSessionPreset("Size640x480");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final AVCaptureSessionPreset _1280x720 = new AVCaptureSessionPreset("_1280x720Value");
+    public static final AVCaptureSessionPreset Size1280x720 = new AVCaptureSessionPreset("Size1280x720");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final AVCaptureSessionPreset _1920x1080 = new AVCaptureSessionPreset("_1920x1080Value");
+    public static final AVCaptureSessionPreset Size1920x1080 = new AVCaptureSessionPreset("Size1920x1080");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final AVCaptureSessionPreset iFrame960x540 = new AVCaptureSessionPreset("iFrame960x540Value");
+    public static final AVCaptureSessionPreset iFrame960x540 = new AVCaptureSessionPreset("iFrame960x540");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final AVCaptureSessionPreset iFrame1280x720 = new AVCaptureSessionPreset("iFrame1280x720Value");
+    public static final AVCaptureSessionPreset iFrame1280x720 = new AVCaptureSessionPreset("iFrame1280x720");
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public static final AVCaptureSessionPreset InputPriority = new AVCaptureSessionPreset("InputPriorityValue");
+    public static final AVCaptureSessionPreset InputPriority = new AVCaptureSessionPreset("InputPriority");
+    /*</constants>*/
     
-    private static AVCaptureSessionPreset[] values = new AVCaptureSessionPreset[] {Photo, High, Medium, Low, _352x288, 
-        _640x480, _1280x720, _1920x1080, iFrame960x540, iFrame1280x720, InputPriority};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    private static /*<name>*/AVCaptureSessionPreset/*</name>*/[] values = new /*<name>*/AVCaptureSessionPreset/*</name>*/[] {/*<value_list>*/Photo, High, Medium, Low, Size352x288, Size640x480, Size1280x720, Size1920x1080, iFrame960x540, iFrame1280x720, InputPriority/*</value_list>*/};
     
-    private AVCaptureSessionPreset(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/AVCaptureSessionPreset/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static AVCaptureSessionPreset valueOf(NSString value) {
-        for (AVCaptureSessionPreset v : values) {
+    public static /*<name>*/AVCaptureSessionPreset/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/AVCaptureSessionPreset/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -138,61 +158,69 @@ import org.robovm.apple.audiounit.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/AVCaptureSessionPreset/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="AVCaptureSessionPresetPhoto", optional=true)
-    protected static native NSString PhotoValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="AVCaptureSessionPresetHigh", optional=true)
-    protected static native NSString HighValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="AVCaptureSessionPresetMedium", optional=true)
-    protected static native NSString MediumValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="AVCaptureSessionPresetLow", optional=true)
-    protected static native NSString LowValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="AVCaptureSessionPreset352x288", optional=true)
-    protected static native NSString _352x288Value();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="AVCaptureSessionPreset640x480", optional=true)
-    protected static native NSString _640x480Value();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="AVCaptureSessionPreset1280x720", optional=true)
-    protected static native NSString _1280x720Value();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="AVCaptureSessionPreset1920x1080", optional=true)
-    protected static native NSString _1920x1080Value();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="AVCaptureSessionPresetiFrame960x540", optional=true)
-    protected static native NSString iFrame960x540Value();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="AVCaptureSessionPresetiFrame1280x720", optional=true)
-    protected static native NSString iFrame1280x720Value();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="AVCaptureSessionPresetInputPriority", optional=true)
-    protected static native NSString InputPriorityValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("AVFoundation") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="AVCaptureSessionPresetPhoto", optional=true)
+        public static native NSString Photo();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="AVCaptureSessionPresetHigh", optional=true)
+        public static native NSString High();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="AVCaptureSessionPresetMedium", optional=true)
+        public static native NSString Medium();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="AVCaptureSessionPresetLow", optional=true)
+        public static native NSString Low();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="AVCaptureSessionPreset352x288", optional=true)
+        public static native NSString Size352x288();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="AVCaptureSessionPreset640x480", optional=true)
+        public static native NSString Size640x480();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="AVCaptureSessionPreset1280x720", optional=true)
+        public static native NSString Size1280x720();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="AVCaptureSessionPreset1920x1080", optional=true)
+        public static native NSString Size1920x1080();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="AVCaptureSessionPresetiFrame960x540", optional=true)
+        public static native NSString iFrame960x540();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="AVCaptureSessionPresetiFrame1280x720", optional=true)
+        public static native NSString iFrame1280x720();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="AVCaptureSessionPresetInputPriority", optional=true)
+        public static native NSString InputPriority();
+        /*</values>*/
+    }
 }

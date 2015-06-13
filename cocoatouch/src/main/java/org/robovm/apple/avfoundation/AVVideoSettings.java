@@ -42,14 +42,14 @@ import org.robovm.apple.audiounit.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(AVVideoSettings.Marshaler.class)
 /*<annotations>*/@Library("AVFoundation")/*</annotations>*/
+@Marshaler(/*<name>*/AVVideoSettings/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/AVVideoSettings/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static AVVideoSettings toObject(Class<AVVideoSettings> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -66,50 +66,81 @@ import org.robovm.apple.audiounit.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected AVVideoSettings(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<AVVideoSettings> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<AVVideoSettings> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new AVVideoSettings(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<AVVideoSettings> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (AVVideoSettings i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    public AVVideoSettings() {
-        data = new NSMutableDictionary<>();
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    AVVideoSettings(NSDictionary<NSString, NSObject> data) {
+        super(data);
     }
-    /*<bind>*/static { Bro.bind(AVVideoSettings.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
+    public AVVideoSettings() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
+    }
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
+    }
+    public AVVideoSettings set(NSString key, NSObject value) {
+        data.put(key, value);
+        return this;
     }
     
-    
+
     /**
      * @since Available in iOS 4.0 and later.
      */
+    @WeaklyLinked
     public CMVideoCodecType getCodec() {
-        if (data.containsKey(CodecKey())) {
-            NSString val = (NSString) data.get(CodecKey());
-            return CMVideoCodecType.valueOf(val);
+        if (has(Keys.Codec())) {
+            NSNumber val = (NSNumber) get(Keys.Codec());
+            return CMVideoCodecType.valueOf(val.longValue());
         }
         return null;
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
+    @WeaklyLinked
     public AVVideoSettings setCodec(CMVideoCodecType codec) {
-        data.put(CodecKey(), new NSString(codec.asFourCharCode()));
+        set(Keys.Codec(), NSNumber.valueOf(codec.value()));
         return this;
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     public long getWidth() {
-        if (data.containsKey(WidthKey())) {
-            NSNumber val = (NSNumber) data.get(WidthKey());
+        if (has(Keys.Width())) {
+            NSNumber val = (NSNumber) get(Keys.Width());
             return val.longValue();
         }
         return 0;
@@ -118,15 +149,15 @@ import org.robovm.apple.audiounit.*;
      * @since Available in iOS 4.0 and later.
      */
     public AVVideoSettings setWidth(long width) {
-        data.put(WidthKey(), NSNumber.valueOf(width));
+        set(Keys.Width(), NSNumber.valueOf(width));
         return this;
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     public long getHeight() {
-        if (data.containsKey(HeightKey())) {
-            NSNumber val = (NSNumber) data.get(HeightKey());
+        if (has(Keys.Height())) {
+            NSNumber val = (NSNumber) get(Keys.Height());
             return val.longValue();
         }
         return 0;
@@ -135,74 +166,15 @@ import org.robovm.apple.audiounit.*;
      * @since Available in iOS 4.0 and later.
      */
     public AVVideoSettings setHeight(long height) {
-        data.put(HeightKey(), NSNumber.valueOf(height));
+        set(Keys.Height(), NSNumber.valueOf(height));
         return this;
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
-    @SuppressWarnings("unchecked")
-    public double getPixelAspectRatioHorizontalSpacing() {
-        if (data.containsKey(PixelAspectRatioKey())) {
-            NSDictionary<NSString, NSObject> val = (NSDictionary<NSString, NSObject>) data.get(PixelAspectRatioKey());
-            if (val.containsKey(PixelAspectRatioHorizontalSpacingKey())) {
-                NSNumber n = (NSNumber) val.get(PixelAspectRatioHorizontalSpacingKey());
-                return n.doubleValue();
-            }
-        }
-        return 0;
-    }
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @SuppressWarnings("unchecked")
-    public AVVideoSettings setPixelAspectRatioHorizontalSpacing(double spacing) {
-        NSDictionary<NSString, NSObject> val = null;
-        if (data.containsKey(PixelAspectRatioKey())) {
-            val = (NSDictionary<NSString, NSObject>) data.get(PixelAspectRatioKey());
-        } else {
-            val = new NSMutableDictionary<>();
-        }
-        val.put(PixelAspectRatioHorizontalSpacingKey(), NSNumber.valueOf(spacing));
-        data.put(PixelAspectRatioKey(), val);
-        return this;
-    }
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @SuppressWarnings("unchecked")
-    public double getPixelAspectRatioVerticalSpacing() {
-        if (data.containsKey(PixelAspectRatioKey())) {
-            NSDictionary<NSString, NSObject> val = (NSDictionary<NSString, NSObject>) data.get(PixelAspectRatioKey());
-            if (val.containsKey(PixelAspectRatioVerticalSpacingKey())) {
-                NSNumber n = (NSNumber) val.get(PixelAspectRatioVerticalSpacingKey());
-                return n.doubleValue();
-            }
-        }
-        return 0;
-    }
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @SuppressWarnings("unchecked")
-    public AVVideoSettings setPixelAspectRatioVerticalSpacing(double spacing) {
-        NSDictionary<NSString, NSObject> val = null;
-        if (data.containsKey(PixelAspectRatioKey())) {
-            val = (NSDictionary<NSString, NSObject>) data.get(PixelAspectRatioKey());
-        } else {
-            val = new NSMutableDictionary<>();
-        }
-        val.put(PixelAspectRatioVerticalSpacingKey(), NSNumber.valueOf(spacing));
-        data.put(PixelAspectRatioKey(), val);
-        return this;
-    }
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @SuppressWarnings("unchecked")
     public AVVideoCleanAperture getCleanAperture() {
-        if (data.containsKey(CleanApertureKey())) {
-            NSDictionary<NSString, NSObject> val = (NSDictionary<NSString, NSObject>) data.get(CleanApertureKey());
+        if (has(Keys.CleanAperture())) {
+            NSDictionary<NSString, NSObject> val = (NSDictionary<NSString, NSObject>) get(Keys.CleanAperture());
             return new AVVideoCleanAperture(val);
         }
         return null;
@@ -211,15 +183,15 @@ import org.robovm.apple.audiounit.*;
      * @since Available in iOS 4.0 and later.
      */
     public AVVideoSettings setCleanAperture(AVVideoCleanAperture cleanAperture) {
-        data.put(CleanApertureKey(), cleanAperture.getDictionary());
+        set(Keys.CleanAperture(), cleanAperture.getDictionary());
         return this;
     }
     /**
      * @since Available in iOS 5.0 and later.
      */
     public AVVideoScalingMode getScalingMode() {
-        if (data.containsKey(ScalingModeKey())) {
-            NSString val = (NSString) data.get(ScalingModeKey());
+        if (has(Keys.ScalingMode())) {
+            NSString val = (NSString) get(Keys.ScalingMode());
             return AVVideoScalingMode.valueOf(val);
         }
         return null;
@@ -228,33 +200,15 @@ import org.robovm.apple.audiounit.*;
      * @since Available in iOS 5.0 and later.
      */
     public AVVideoSettings setScalingMode(AVVideoScalingMode scalingMode) {
-        data.put(ScalingModeKey(), scalingMode.value());
-        return this;
-    }
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @SuppressWarnings("unchecked")
-    public AVVideoCompressionSettings getCompressionSettings() {
-        if (data.containsKey(CompressionPropertiesKey())) {
-            NSDictionary<NSString, NSObject> val = (NSDictionary<NSString, NSObject>) data.get(CompressionPropertiesKey());
-            return new AVVideoCompressionSettings(val);
-        }
-        return null;
-    }
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public AVVideoSettings setCompressionSettings(AVVideoCompressionSettings settings) {
-        data.put(CompressionPropertiesKey(), settings.getDictionary());
+        set(Keys.ScalingMode(), scalingMode.value());
         return this;
     }
     /**
      * @since Available in iOS 7.0 and later.
      */
     public boolean allowsFrameReordering() {
-        if (data.containsKey(AllowFrameReorderingKey())) {
-            NSNumber val = (NSNumber) data.get(AllowFrameReorderingKey());
+        if (has(Keys.AllowFrameReordering())) {
+            NSNumber val = (NSNumber) get(Keys.AllowFrameReordering());
             return val.booleanValue();
         }
         return false;
@@ -262,16 +216,16 @@ import org.robovm.apple.audiounit.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public AVVideoSettings setAllowsFrameReordering(boolean frameReordering) {
-        data.put(AllowFrameReorderingKey(), NSNumber.valueOf(frameReordering));
+    public AVVideoSettings setAllowsFrameReordering(boolean allowsFrameReordering) {
+        set(Keys.AllowFrameReordering(), NSNumber.valueOf(allowsFrameReordering));
         return this;
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     public AVVideoProfileLevel getProfileLevel() {
-        if (data.containsKey(ProfileLevelKey())) {
-            NSString val = (NSString) data.get(ProfileLevelKey());
+        if (has(Keys.ProfileLevel())) {
+            NSString val = (NSString) get(Keys.ProfileLevel());
             return AVVideoProfileLevel.valueOf(val);
         }
         return null;
@@ -280,15 +234,15 @@ import org.robovm.apple.audiounit.*;
      * @since Available in iOS 4.0 and later.
      */
     public AVVideoSettings setProfileLevel(AVVideoProfileLevel profileLevel) {
-        data.put(ProfileLevelKey(), profileLevel.value());
+        set(Keys.ProfileLevel(), profileLevel.value());
         return this;
     }
     /**
      * @since Available in iOS 7.0 and later.
      */
     public AVVideoH264EntropyMode getH264EntropyMode() {
-        if (data.containsKey(H264EntropyModeKey())) {
-            NSString val = (NSString) data.get(H264EntropyModeKey());
+        if (has(Keys.H264EntropyMode())) {
+            NSString val = (NSString) get(Keys.H264EntropyMode());
             return AVVideoH264EntropyMode.valueOf(val);
         }
         return null;
@@ -296,16 +250,16 @@ import org.robovm.apple.audiounit.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public AVVideoSettings setH264EntropyMode(AVVideoH264EntropyMode mode) {
-        data.put(H264EntropyModeKey(), mode.value());
+    public AVVideoSettings setH264EntropyMode(AVVideoH264EntropyMode h264EntropyMode) {
+        set(Keys.H264EntropyMode(), h264EntropyMode.value());
         return this;
     }
     /**
      * @since Available in iOS 7.0 and later.
      */
     public double getExpectedSourceFrameRate() {
-        if (data.containsKey(ExpectedSourceFrameRateKey())) {
-            NSNumber val = (NSNumber) data.get(ExpectedSourceFrameRateKey());
+        if (has(Keys.ExpectedSourceFrameRate())) {
+            NSNumber val = (NSNumber) get(Keys.ExpectedSourceFrameRate());
             return val.doubleValue();
         }
         return 0;
@@ -313,16 +267,16 @@ import org.robovm.apple.audiounit.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public AVVideoSettings setExpectedSourceFrameRate(double frameRate) {
-        data.put(ExpectedSourceFrameRateKey(), NSNumber.valueOf(frameRate));
+    public AVVideoSettings setExpectedSourceFrameRate(double expectedSourceFrameRate) {
+        set(Keys.ExpectedSourceFrameRate(), NSNumber.valueOf(expectedSourceFrameRate));
         return this;
     }
     /**
      * @since Available in iOS 7.0 and later.
      */
     public double getAverageNonDroppableFrameRate() {
-        if (data.containsKey(AverageNonDroppableFrameRateKey())) {
-            NSNumber val = (NSNumber) data.get(AverageNonDroppableFrameRateKey());
+        if (has(Keys.AverageNonDroppableFrameRate())) {
+            NSNumber val = (NSNumber) get(Keys.AverageNonDroppableFrameRate());
             return val.doubleValue();
         }
         return 0;
@@ -330,85 +284,97 @@ import org.robovm.apple.audiounit.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public AVVideoSettings setAverageNonDroppableFrameRate(double frameRate) {
-        data.put(AverageNonDroppableFrameRateKey(), NSNumber.valueOf(frameRate));
+    public AVVideoSettings setAverageNonDroppableFrameRate(double averageNonDroppableFrameRate) {
+        set(Keys.AverageNonDroppableFrameRate(), NSNumber.valueOf(averageNonDroppableFrameRate));
         return this;
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="AVVideoCodecKey", optional=true)
-    protected static native NSString CodecKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="AVVideoWidthKey", optional=true)
-    protected static native NSString WidthKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="AVVideoHeightKey", optional=true)
-    protected static native NSString HeightKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="AVVideoPixelAspectRatioKey", optional=true)
-    protected static native NSString PixelAspectRatioKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="AVVideoPixelAspectRatioHorizontalSpacingKey", optional=true)
-    protected static native NSString PixelAspectRatioHorizontalSpacingKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="AVVideoPixelAspectRatioVerticalSpacingKey", optional=true)
-    protected static native NSString PixelAspectRatioVerticalSpacingKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="AVVideoCleanApertureKey", optional=true)
-    protected static native NSString CleanApertureKey();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="AVVideoScalingModeKey", optional=true)
-    protected static native NSString ScalingModeKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="AVVideoCompressionPropertiesKey", optional=true)
-    protected static native NSString CompressionPropertiesKey();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="AVVideoAllowFrameReorderingKey", optional=true)
-    protected static native NSString AllowFrameReorderingKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="AVVideoProfileLevelKey", optional=true)
-    protected static native NSString ProfileLevelKey();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="AVVideoH264EntropyModeKey", optional=true)
-    protected static native NSString H264EntropyModeKey();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="AVVideoExpectedSourceFrameRateKey", optional=true)
-    protected static native NSString ExpectedSourceFrameRateKey();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="AVVideoAverageNonDroppableFrameRateKey", optional=true)
-    protected static native NSString AverageNonDroppableFrameRateKey();
     /*</methods>*/
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public AVPixelAspectRatio getPixelAspectRatio() {
+        if (has(Keys.PixelAspectRatio())) {
+            NSDictionary<NSString, NSObject> val = (NSDictionary<NSString, NSObject>) get(Keys.PixelAspectRatio());
+            AVPixelAspectRatio result = new AVPixelAspectRatio(val.getLong(AVPixelAspectRatio.HorizontalSpacing(), 0), val.getLong(AVPixelAspectRatio.VerticalSpacing(), 0));
+            return result;
+        }
+        return null;
     }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public AVVideoSettings setPixelAspectRatio(AVPixelAspectRatio pixelAspectRatio) {
+        NSDictionary<NSString, NSObject> val = new NSMutableDictionary<>();
+        val.put(AVPixelAspectRatio.HorizontalSpacing(), pixelAspectRatio.getHorizontalSpacing());
+        val.put(AVPixelAspectRatio.VerticalSpacing(), pixelAspectRatio.getVerticalSpacing());
+        set(Keys.PixelAspectRatio(), val);
+        return this;
+    }
+    
+    /*<keys>*/
+    @Library("AVFoundation")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="AVVideoCodecKey", optional=true)
+        public static native NSString Codec();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="AVVideoWidthKey", optional=true)
+        public static native NSString Width();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="AVVideoHeightKey", optional=true)
+        public static native NSString Height();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="AVVideoPixelAspectRatioKey", optional=true)
+        public static native NSString PixelAspectRatio();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="AVVideoCleanApertureKey", optional=true)
+        public static native NSString CleanAperture();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="AVVideoScalingModeKey", optional=true)
+        public static native NSString ScalingMode();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="AVVideoCompressionPropertiesKey", optional=true)
+        public static native NSString CompressionProperties();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="AVVideoAllowFrameReorderingKey", optional=true)
+        public static native NSString AllowFrameReordering();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="AVVideoProfileLevelKey", optional=true)
+        public static native NSString ProfileLevel();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="AVVideoH264EntropyModeKey", optional=true)
+        public static native NSString H264EntropyMode();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="AVVideoExpectedSourceFrameRateKey", optional=true)
+        public static native NSString ExpectedSourceFrameRate();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="AVVideoAverageNonDroppableFrameRateKey", optional=true)
+        public static native NSString AverageNonDroppableFrameRate();
+    }
+    /*</keys>*/
 }

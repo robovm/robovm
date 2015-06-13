@@ -37,7 +37,8 @@ classes:
     ADBannerView: # DONE
         properties:
             'requiredContentSizeIdentifiers':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(ADBannerContentSizeIdentifier.AsListMarshaler.class) List<ADBannerContentSizeIdentifier>'
+                type: List<ADBannerContentSizeIdentifier>
+                marshaler: ADBannerContentSizeIdentifier.AsListMarshaler
             'currentContentSizeIdentifier':
                 type: ADBannerContentSizeIdentifier
         methods:
@@ -63,7 +64,8 @@ classes:
                 trim_after_first_colon: true
                 parameters:
                     segmentIdentifiers:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: List<String>
+                        marshaler: NSArray.AsStringListMarshaler
     ADInterstitialAd: # DONE
         visibility: 'public final'
         methods:
@@ -110,10 +112,9 @@ values:
         name: getClassDomain
 
     ADBannerContentSizeIdentifier(.*):
-        class: ADBannerContentSizeIdentifier
-        name: 'Size#{g[0]}Value'
+        enum: ADBannerContentSizeIdentifier
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
 
     # Make sure we don't miss any values if new ones are introduced in a later version
     (AD.*):

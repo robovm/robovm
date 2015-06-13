@@ -42,12 +42,15 @@ import org.robovm.apple.audiounit.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(AVPlayerItemLegibleOutputTextStylingResolution.Marshaler.class)
-/*<annotations>*/@Library("AVFoundation")/*</annotations>*/
+/*<annotations>*/@Library("AVFoundation") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/AVPlayerItemLegibleOutputTextStylingResolution/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/AVPlayerItemLegibleOutputTextStylingResolution/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
-    
+
+    static { Bro.bind(/*<name>*/AVPlayerItemLegibleOutputTextStylingResolution/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static AVPlayerItemLegibleOutputTextStylingResolution toObject(Class<AVPlayerItemLegibleOutputTextStylingResolution> cls, long handle, long flags) {
@@ -65,35 +68,53 @@ import org.robovm.apple.audiounit.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<AVPlayerItemLegibleOutputTextStylingResolution> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<AVPlayerItemLegibleOutputTextStylingResolution> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(AVPlayerItemLegibleOutputTextStylingResolution.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<AVPlayerItemLegibleOutputTextStylingResolution> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (AVPlayerItemLegibleOutputTextStylingResolution o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(AVPlayerItemLegibleOutputTextStylingResolution.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    /*<constants>*/
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public static final AVPlayerItemLegibleOutputTextStylingResolution Default = new AVPlayerItemLegibleOutputTextStylingResolution("DefaultValue");
+    public static final AVPlayerItemLegibleOutputTextStylingResolution Default = new AVPlayerItemLegibleOutputTextStylingResolution("Default");
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public static final AVPlayerItemLegibleOutputTextStylingResolution SourceAndRulesOnly = new AVPlayerItemLegibleOutputTextStylingResolution("SourceAndRulesOnlyValue");
+    public static final AVPlayerItemLegibleOutputTextStylingResolution SourceAndRulesOnly = new AVPlayerItemLegibleOutputTextStylingResolution("SourceAndRulesOnly");
+    /*</constants>*/
     
-    private static AVPlayerItemLegibleOutputTextStylingResolution[] values = new AVPlayerItemLegibleOutputTextStylingResolution[] {Default, SourceAndRulesOnly};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    private static /*<name>*/AVPlayerItemLegibleOutputTextStylingResolution/*</name>*/[] values = new /*<name>*/AVPlayerItemLegibleOutputTextStylingResolution/*</name>*/[] {/*<value_list>*/Default, SourceAndRulesOnly/*</value_list>*/};
     
-    private AVPlayerItemLegibleOutputTextStylingResolution(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/AVPlayerItemLegibleOutputTextStylingResolution/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static AVPlayerItemLegibleOutputTextStylingResolution valueOf(NSString value) {
-        for (AVPlayerItemLegibleOutputTextStylingResolution v : values) {
+    public static /*<name>*/AVPlayerItemLegibleOutputTextStylingResolution/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/AVPlayerItemLegibleOutputTextStylingResolution/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -101,16 +122,24 @@ import org.robovm.apple.audiounit.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/AVPlayerItemLegibleOutputTextStylingResolution/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="AVPlayerItemLegibleOutputTextStylingResolutionDefault", optional=true)
-    protected static native NSString DefaultValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="AVPlayerItemLegibleOutputTextStylingResolutionSourceAndRulesOnly", optional=true)
-    protected static native NSString SourceAndRulesOnlyValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("AVFoundation") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="AVPlayerItemLegibleOutputTextStylingResolutionDefault", optional=true)
+        public static native NSString Default();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="AVPlayerItemLegibleOutputTextStylingResolutionSourceAndRulesOnly", optional=true)
+        public static native NSString SourceAndRulesOnly();
+        /*</values>*/
+    }
 }

@@ -32,46 +32,104 @@ import org.robovm.apple.foundation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("HealthKit")/*</annotations>*/
+/*<annotations>*/@Library("HealthKit") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/HKSampleSortIdentifier/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/HKSampleSortIdentifier/*</name>*/ 
-    extends /*<extends>*/NSSortIdentifier/*</extends>*/ 
+    extends /*<extends>*/NSSortIdentifier/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(HKSampleSortIdentifier.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKSampleSortIdentifier StartDate = new HKSampleSortIdentifier("StartDateValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKSampleSortIdentifier EndDate = new HKSampleSortIdentifier("EndDateValue");
-    
-    private final LazyGlobalValue<String> lazyGlobalValue;
-    
-    private HKSampleSortIdentifier(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    static { Bro.bind(/*<name>*/HKSampleSortIdentifier/*</name>*/.class); }
+
+    /*<marshalers>*/
+    public static class Marshaler {
+        @MarshalsPointer
+        public static HKSampleSortIdentifier toObject(Class<HKSampleSortIdentifier> cls, long handle, long flags) {
+            NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return HKSampleSortIdentifier.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(HKSampleSortIdentifier o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(o.value(), flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    @Override
-    public String value() {
-        return lazyGlobalValue.value();
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<HKSampleSortIdentifier> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<HKSampleSortIdentifier> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(HKSampleSortIdentifier.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<HKSampleSortIdentifier> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (HKSampleSortIdentifier i : l) {
+                array.add(i.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    /*<methods>*/
+    /*</marshalers>*/
+
+    /*<constants>*/
     /**
      * @since Available in iOS 8.0 and later.
      */
-    @GlobalValue(symbol="HKSampleSortIdentifierStartDate", optional=true)
-    protected static native String StartDateValue();
+    public static final HKSampleSortIdentifier StartDate = new HKSampleSortIdentifier("StartDate");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    @GlobalValue(symbol="HKSampleSortIdentifierEndDate", optional=true)
-    protected static native String EndDateValue();
-    /*</methods>*/
+    public static final HKSampleSortIdentifier EndDate = new HKSampleSortIdentifier("EndDate");
+    /*</constants>*/
+    
+    private static /*<name>*/HKSampleSortIdentifier/*</name>*/[] values = new /*<name>*/HKSampleSortIdentifier/*</name>*/[] {/*<value_list>*/StartDate, EndDate/*</value_list>*/};
+    
+    /*<name>*/HKSampleSortIdentifier/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
+    }
+    
+    public static /*<name>*/HKSampleSortIdentifier/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/HKSampleSortIdentifier/*</name>*/ v : values) {
+            if (v.value().equals(value)) {
+                return v;
+            }
+        }
+        throw new IllegalArgumentException("No constant with value " + value + " found in " 
+            + /*<name>*/HKSampleSortIdentifier/*</name>*/.class.getName());
+    }
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("HealthKit") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKSampleSortIdentifierStartDate", optional=true)
+        public static native NSString StartDate();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKSampleSortIdentifierEndDate", optional=true)
+        public static native NSString EndDate();
+        /*</values>*/
+    }
 }

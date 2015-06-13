@@ -37,12 +37,15 @@ import org.robovm.apple.metal.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CAEmitterShape.Marshaler.class)
-/*<annotations>*/@Library("QuartzCore")/*</annotations>*/
+/*<annotations>*/@Library("QuartzCore") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/CAEmitterShape/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CAEmitterShape/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/CAEmitterShape/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CAEmitterShape toObject(Class<CAEmitterShape> cls, long handle, long flags) {
@@ -60,51 +63,69 @@ import org.robovm.apple.metal.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(CAEmitterShape.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    public static final CAEmitterShape Point = new CAEmitterShape("PointValue");
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    public static final CAEmitterShape Line = new CAEmitterShape("LineValue");
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    public static final CAEmitterShape Rectangle = new CAEmitterShape("RectangleValue");
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    public static final CAEmitterShape Cuboid = new CAEmitterShape("CuboidValue");
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    public static final CAEmitterShape Circle = new CAEmitterShape("CircleValue");
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    public static final CAEmitterShape Sphere = new CAEmitterShape("SphereValue");
-    
-    private static CAEmitterShape[] values = new CAEmitterShape[] {Point, Line, Rectangle, Cuboid, Circle, Sphere};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private CAEmitterShape(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<CAEmitterShape> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CAEmitterShape> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(CAEmitterShape.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CAEmitterShape> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (CAEmitterShape o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*</marshalers>*/
+
+    /*<constants>*/
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static final CAEmitterShape Point = new CAEmitterShape("Point");
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static final CAEmitterShape Line = new CAEmitterShape("Line");
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static final CAEmitterShape Rectangle = new CAEmitterShape("Rectangle");
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static final CAEmitterShape Cuboid = new CAEmitterShape("Cuboid");
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static final CAEmitterShape Circle = new CAEmitterShape("Circle");
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static final CAEmitterShape Sphere = new CAEmitterShape("Sphere");
+    /*</constants>*/
+    
+    private static /*<name>*/CAEmitterShape/*</name>*/[] values = new /*<name>*/CAEmitterShape/*</name>*/[] {/*<value_list>*/Point, Line, Rectangle, Cuboid, Circle, Sphere/*</value_list>*/};
+    
+    /*<name>*/CAEmitterShape/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static CAEmitterShape valueOf(NSString value) {
-        for (CAEmitterShape v : values) {
+    public static /*<name>*/CAEmitterShape/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/CAEmitterShape/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -112,36 +133,44 @@ import org.robovm.apple.metal.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/CAEmitterShape/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="kCAEmitterLayerPoint", optional=true)
-    protected static native NSString PointValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="kCAEmitterLayerLine", optional=true)
-    protected static native NSString LineValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="kCAEmitterLayerRectangle", optional=true)
-    protected static native NSString RectangleValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="kCAEmitterLayerCuboid", optional=true)
-    protected static native NSString CuboidValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="kCAEmitterLayerCircle", optional=true)
-    protected static native NSString CircleValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="kCAEmitterLayerSphere", optional=true)
-    protected static native NSString SphereValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("QuartzCore") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="kCAEmitterLayerPoint", optional=true)
+        public static native NSString Point();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="kCAEmitterLayerLine", optional=true)
+        public static native NSString Line();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="kCAEmitterLayerRectangle", optional=true)
+        public static native NSString Rectangle();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="kCAEmitterLayerCuboid", optional=true)
+        public static native NSString Cuboid();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="kCAEmitterLayerCircle", optional=true)
+        public static native NSString Circle();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="kCAEmitterLayerSphere", optional=true)
+        public static native NSString Sphere();
+        /*</values>*/
+    }
 }

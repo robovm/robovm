@@ -55,6 +55,7 @@ import org.robovm.compiler.clazz.MethodInfo;
 import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.config.OS;
+import org.robovm.compiler.llvm.Alias;
 import org.robovm.compiler.llvm.AliasRef;
 import org.robovm.compiler.llvm.And;
 import org.robovm.compiler.llvm.ArrayConstantBuilder;
@@ -731,24 +732,6 @@ public class ClassCompiler {
         // After this point no changes to methods/fields may be done by CompilerPlugins.
         ci.initClassInfo(); 
 
-        Global classInfoStruct = null;
-        try {
-            if (!sootClass.isInterface()) {
-                config.getVTableCache().get(sootClass);
-            }
-            classInfoStruct = new Global(Symbols.infoStructSymbol(clazz.getInternalName()), Linkage.weak, createClassInfoStruct());
-        } catch (IllegalArgumentException e) {
-            // VTable throws this if any of the superclasses of the class is actually an interface.
-            // Shouldn't happen frequently but the DRLVM test suite has some tests for this.
-            // The Linker will take care of making sure the class cannot be loaded at runtime.
-            classInfoStruct = new Global(Symbols.infoStructSymbol(clazz.getInternalName()), I8_PTR, true);
-        }
-        mb.addGlobal(classInfoStruct);
-        
-        Function infoFn = FunctionBuilder.infoStruct(sootClass);
-        infoFn.add(new Ret(new ConstantBitcast(classInfoStruct.ref(), I8_PTR_PTR)));
-        mb.addFunction(infoFn);
-
         for (SootMethod method : sootClass.getMethods()) {
             
             for (CompilerPlugin compilerPlugin : config.getCompilerPlugins()) {
@@ -861,6 +844,31 @@ public class ClassCompiler {
             }
         }
 
+        Global classInfoStruct = null;
+        try {
+            if (!sootClass.isInterface()) {
+                config.getVTableCache().get(sootClass);
+            }
+            classInfoStruct = new Global(Symbols.infoStructSymbol(clazz.getInternalName()), Linkage.weak, createClassInfoStruct());
+        } catch (IllegalArgumentException e) {
+            // VTable throws this if any of the superclasses of the class is actually an interface.
+            // Shouldn't happen frequently but the DRLVM test suite has some tests for this.
+            // The Linker will take care of making sure the class cannot be loaded at runtime.
+            classInfoStruct = new Global(Symbols.infoStructSymbol(clazz.getInternalName()), I8_PTR, true);
+        }
+        mb.addGlobal(classInfoStruct);
+        /*
+         * Emit an internal i8* alias for the info struct which MethodCompiler
+         * can use when referencing this info struct in exception landing pads
+         * in methods in the same class. See #1007.
+         */
+        mb.addAlias(new Alias(classInfoStruct.getName() + "_i8ptr", Linkage._private, new ConstantBitcast(
+                classInfoStruct.ref(), I8_PTR)));
+        
+        Function infoFn = FunctionBuilder.infoStruct(sootClass);
+        infoFn.add(new Ret(new ConstantBitcast(classInfoStruct.ref(), I8_PTR_PTR)));
+        mb.addFunction(infoFn);
+        
         for (CompilerPlugin compilerPlugin : config.getCompilerPlugins()) {
             compilerPlugin.afterClass(config, clazz, mb);
         }
@@ -1042,11 +1050,9 @@ public class ClassCompiler {
         VTable vtable = config.getVTableCache().get(sootClass);
         String name = Symbols.vtableSymbol(getInternalName(sootClass));
         for (VTable.Entry entry : vtable.getEntries()) {
-            if (!entry.getDeclaringClass().equals(sootClass.getName())) {
-                FunctionRef fref = entry.getFunctionRef();
-                if (fref != null && !mb.hasSymbol(fref.getName())) {
-                    mb.addFunctionDeclaration(new FunctionDeclaration(fref));
-                }
+            FunctionRef fref = entry.getFunctionRef();
+            if (fref != null && !mb.hasSymbol(fref.getName())) {
+                mb.addFunctionDeclaration(new FunctionDeclaration(fref));
             }
         }
         Global vtableStruct = new Global(name, Linkage._private, vtable.getStruct(), true);

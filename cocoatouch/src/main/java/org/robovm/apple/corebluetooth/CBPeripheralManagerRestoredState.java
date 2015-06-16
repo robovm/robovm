@@ -34,14 +34,14 @@ import org.robovm.apple.dispatch.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CBPeripheralManagerRestoredState.Marshaler.class)
 /*<annotations>*/@Library("CoreBluetooth")/*</annotations>*/
+@Marshaler(/*<name>*/CBPeripheralManagerRestoredState/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CBPeripheralManagerRestoredState/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static CBPeripheralManagerRestoredState toObject(Class<CBPeripheralManagerRestoredState> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -58,31 +58,57 @@ import org.robovm.apple.dispatch.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected CBPeripheralManagerRestoredState(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CBPeripheralManagerRestoredState> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CBPeripheralManagerRestoredState> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new CBPeripheralManagerRestoredState(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CBPeripheralManagerRestoredState> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (CBPeripheralManagerRestoredState i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    /*<bind>*/static { Bro.bind(CBPeripheralManagerRestoredState.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    CBPeripheralManagerRestoredState(NSDictionary<NSString, NSObject> data) {
+        super(data);
+    }
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
+    }
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
     }
     
-    
+
     /**
      * @since Available in iOS 7.0 and later.
      */
-    @SuppressWarnings("unchecked")
     public NSArray<CBMutableService> getServices() {
-        if (data.containsKey(ServicesKey())) {
-            NSArray<CBMutableService> val = (NSArray<CBMutableService>)data.get(ServicesKey());
+        if (has(Keys.Services())) {
+            NSArray<CBMutableService> val = (NSArray<CBMutableService>) get(Keys.Services());
             return val;
         }
         return null;
@@ -90,29 +116,29 @@ import org.robovm.apple.dispatch.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    @SuppressWarnings("unchecked")
     public CBAdvertisementData getAdvertisementData() {
-        if (data.containsKey(AdvertisementDataKey())) {
-            NSDictionary<NSString, NSObject> val = (NSDictionary<NSString, NSObject>)data.get(AdvertisementDataKey());
+        if (has(Keys.AdvertisementData())) {
+            NSDictionary<NSString, NSObject> val = (NSDictionary<NSString, NSObject>) get(Keys.AdvertisementData());
             return new CBAdvertisementData(val);
         }
         return null;
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="CBPeripheralManagerRestoredStateServicesKey", optional=true)
-    protected static native NSString ServicesKey();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="CBPeripheralManagerRestoredStateAdvertisementDataKey", optional=true)
-    protected static native NSString AdvertisementDataKey();
     /*</methods>*/
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    
+    /*<keys>*/
+    @Library("CoreBluetooth")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="CBPeripheralManagerRestoredStateServicesKey", optional=true)
+        public static native NSString Services();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="CBPeripheralManagerRestoredStateAdvertisementDataKey", optional=true)
+        public static native NSString AdvertisementData();
     }
+    /*</keys>*/
 }

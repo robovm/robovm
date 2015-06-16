@@ -34,12 +34,15 @@ import org.robovm.apple.coregraphics.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CGImagePropertyGIF.Marshaler.class)
-/*<annotations>*/@Library("ImageIO")/*</annotations>*/
+/*<annotations>*/@Library("ImageIO") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/CGImagePropertyGIF/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CGImagePropertyGIF/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<CFString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/CGImagePropertyGIF/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CGImagePropertyGIF toObject(Class<CGImagePropertyGIF> cls, long handle, long flags) {
@@ -57,48 +60,64 @@ import org.robovm.apple.coregraphics.*;
             return CFType.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(CGImagePropertyGIF.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final CGImagePropertyGIF LoopCount = new CGImagePropertyGIF("LoopCountKey");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final CGImagePropertyGIF DelayTime = new CGImagePropertyGIF("DelayTimeKey");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final CGImagePropertyGIF ImageColorMap = new CGImagePropertyGIF("ImageColorMapKey");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final CGImagePropertyGIF HasGlobalColorMap = new CGImagePropertyGIF("HasGlobalColorMapKey");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final CGImagePropertyGIF UnclampedDelayTime = new CGImagePropertyGIF("UnclampedDelayTimeKey");
-    
-    private static CGImagePropertyGIF[] values = new CGImagePropertyGIF[] {LoopCount, DelayTime, ImageColorMap, 
-        HasGlobalColorMap, UnclampedDelayTime};
-    private final LazyGlobalValue<CFString> lazyGlobalValue;
-    
-    private CGImagePropertyGIF(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CGImagePropertyGIF> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CGImagePropertyGIF> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(CGImagePropertyGIF.valueOf(o.get(i, CFString.class)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CGImagePropertyGIF> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray array = CFMutableArray.create();
+            for (CGImagePropertyGIF o : l) {
+                array.add(o.value());
+            }
+            return CFType.Marshaler.toNative(array, flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public CFString value() {
-        return lazyGlobalValue.value();
+    /*</marshalers>*/
+
+    /*<constants>*/
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final CGImagePropertyGIF LoopCount = new CGImagePropertyGIF("LoopCount");
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final CGImagePropertyGIF DelayTime = new CGImagePropertyGIF("DelayTime");
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final CGImagePropertyGIF ImageColorMap = new CGImagePropertyGIF("ImageColorMap");
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final CGImagePropertyGIF HasGlobalColorMap = new CGImagePropertyGIF("HasGlobalColorMap");
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final CGImagePropertyGIF UnclampedDelayTime = new CGImagePropertyGIF("UnclampedDelayTime");
+    /*</constants>*/
+    
+    private static /*<name>*/CGImagePropertyGIF/*</name>*/[] values = new /*<name>*/CGImagePropertyGIF/*</name>*/[] {/*<value_list>*/LoopCount, DelayTime, ImageColorMap, HasGlobalColorMap, UnclampedDelayTime/*</value_list>*/};
+    
+    /*<name>*/CGImagePropertyGIF/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static CGImagePropertyGIF valueOf(CFString value) {
-        for (CGImagePropertyGIF v : values) {
+    public static /*<name>*/CGImagePropertyGIF/*</name>*/ valueOf(/*<type>*/CFString/*</type>*/ value) {
+        for (/*<name>*/CGImagePropertyGIF/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -106,31 +125,39 @@ import org.robovm.apple.coregraphics.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/CGImagePropertyGIF/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyGIFLoopCount", optional=true)
-    protected static native CFString LoopCountKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyGIFDelayTime", optional=true)
-    protected static native CFString DelayTimeKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyGIFImageColorMap", optional=true)
-    protected static native CFString ImageColorMapKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyGIFHasGlobalColorMap", optional=true)
-    protected static native CFString HasGlobalColorMapKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyGIFUnclampedDelayTime", optional=true)
-    protected static native CFString UnclampedDelayTimeKey();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("ImageIO") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyGIFLoopCount", optional=true)
+        public static native CFString LoopCount();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyGIFDelayTime", optional=true)
+        public static native CFString DelayTime();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyGIFImageColorMap", optional=true)
+        public static native CFString ImageColorMap();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyGIFHasGlobalColorMap", optional=true)
+        public static native CFString HasGlobalColorMap();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyGIFUnclampedDelayTime", optional=true)
+        public static native CFString UnclampedDelayTime();
+        /*</values>*/
+    }
 }

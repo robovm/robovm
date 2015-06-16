@@ -34,12 +34,13 @@ import org.robovm.apple.coregraphics.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CGImageMetadataEnumerationOptions.Marshaler.class)
 /*<annotations>*/@Library("ImageIO")/*</annotations>*/
+@Marshaler(/*<name>*/CGImageMetadataEnumerationOptions/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CGImageMetadataEnumerationOptions/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/CFDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CGImageMetadataEnumerationOptions toObject(Class<CGImageMetadataEnumerationOptions> cls, long handle, long flags) {
@@ -57,32 +58,62 @@ import org.robovm.apple.coregraphics.*;
             return CFType.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private CFDictionary data;
-    
-    protected CGImageMetadataEnumerationOptions(CFDictionary data) {
-        this.data = data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CGImageMetadataEnumerationOptions> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CGImageMetadataEnumerationOptions> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new CGImageMetadataEnumerationOptions(o.get(i, CFDictionary.class)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CGImageMetadataEnumerationOptions> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray array = CFMutableArray.create();
+            for (CGImageMetadataEnumerationOptions i : l) {
+                array.add(i.getDictionary());
+            }
+            return CFType.Marshaler.toNative(array, flags);
+        }
     }
-    public CGImageMetadataEnumerationOptions() {
-        this.data = CFMutableDictionary.create();
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    CGImageMetadataEnumerationOptions(CFDictionary data) {
+        super(data);
     }
-    /*<bind>*/static { Bro.bind(CGImageMetadataEnumerationOptions.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public CFDictionary getDictionary() {
-        return data;
+    public CGImageMetadataEnumerationOptions() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(CFString key) {
+        return data.containsKey(key);
+    }
+    public <T extends NativeObject> T get(CFString key, Class<T> type) {
+        if (has(key)) {
+            return data.get(key, type);
+        }
+        return null;
+    }
+    public CGImageMetadataEnumerationOptions set(CFString key, NativeObject value) {
+        data.put(key, value);
+        return this;
     }
     
+
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public boolean isEnumeratingRecursively() {
-        if (data.containsKey(EnumerateRecursivelyKey())) {
-            CFBoolean val = data.get(EnumerateRecursivelyKey(), CFBoolean.class);
+    public boolean enumeratesRecursively() {
+        if (has(Keys.EnumerateRecursively())) {
+            CFBoolean val = get(Keys.EnumerateRecursively(), CFBoolean.class);
             return val.booleanValue();
         }
         return false;
@@ -90,20 +121,21 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public CGImageMetadataEnumerationOptions setEnumerateRecursively(boolean recursive) {
-        data.put(EnumerateRecursivelyKey(), CFBoolean.valueOf(recursive));
+    public CGImageMetadataEnumerationOptions setEnumeratesRecursively(boolean enumeratesRecursively) {
+        set(Keys.EnumerateRecursively(), CFBoolean.valueOf(enumeratesRecursively));
         return this;
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="kCGImageMetadataEnumerateRecursively", optional=true)
-    protected static native CFString EnumerateRecursivelyKey();
     /*</methods>*/
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    
+    /*<keys>*/
+    @Library("ImageIO")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="kCGImageMetadataEnumerateRecursively", optional=true)
+        public static native CFString EnumerateRecursively();
     }
+    /*</keys>*/
 }

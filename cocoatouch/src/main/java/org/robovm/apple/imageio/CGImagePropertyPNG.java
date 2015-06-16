@@ -34,12 +34,15 @@ import org.robovm.apple.coregraphics.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CGImagePropertyPNG.Marshaler.class)
-/*<annotations>*/@Library("ImageIO")/*</annotations>*/
+/*<annotations>*/@Library("ImageIO") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/CGImagePropertyPNG/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CGImagePropertyPNG/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<CFString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
-    
+
+    static { Bro.bind(/*<name>*/CGImagePropertyPNG/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CGImagePropertyPNG toObject(Class<CGImagePropertyPNG> cls, long handle, long flags) {
@@ -57,93 +60,108 @@ import org.robovm.apple.coregraphics.*;
             return CFType.Marshaler.toNative(o.value(), flags);
         }
     }
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CGImagePropertyPNG> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CGImagePropertyPNG> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(CGImagePropertyPNG.valueOf(o.get(i, CFString.class)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CGImagePropertyPNG> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray array = CFMutableArray.create();
+            for (CGImagePropertyPNG o : l) {
+                array.add(o.value());
+            }
+            return CFType.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(CGImagePropertyPNG.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    /*<constants>*/
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyPNG Gamma = new CGImagePropertyPNG("GammaKey");
+    public static final CGImagePropertyPNG Gamma = new CGImagePropertyPNG("Gamma");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyPNG InterlaceType = new CGImagePropertyPNG("InterlaceTypeKey");
+    public static final CGImagePropertyPNG InterlaceType = new CGImagePropertyPNG("InterlaceType");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyPNG XPixelsPerMeter = new CGImagePropertyPNG("XPixelsPerMeterKey");
+    public static final CGImagePropertyPNG XPixelsPerMeter = new CGImagePropertyPNG("XPixelsPerMeter");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyPNG YPixelsPerMeter = new CGImagePropertyPNG("YPixelsPerMeterKey");
+    public static final CGImagePropertyPNG YPixelsPerMeter = new CGImagePropertyPNG("YPixelsPerMeter");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyPNG sRGBIntent = new CGImagePropertyPNG("sRGBIntentKey");
+    public static final CGImagePropertyPNG sRGBIntent = new CGImagePropertyPNG("sRGBIntent");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyPNG Chromaticities = new CGImagePropertyPNG("ChromaticitiesKey");
+    public static final CGImagePropertyPNG Chromaticities = new CGImagePropertyPNG("Chromaticities");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final CGImagePropertyPNG Author = new CGImagePropertyPNG("AuthorKey");
+    public static final CGImagePropertyPNG Author = new CGImagePropertyPNG("Author");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final CGImagePropertyPNG Copyright = new CGImagePropertyPNG("CopyrightKey");
+    public static final CGImagePropertyPNG Copyright = new CGImagePropertyPNG("Copyright");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final CGImagePropertyPNG CreationTime = new CGImagePropertyPNG("CreationTimeKey");
+    public static final CGImagePropertyPNG CreationTime = new CGImagePropertyPNG("CreationTime");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final CGImagePropertyPNG Description = new CGImagePropertyPNG("DescriptionKey");
+    public static final CGImagePropertyPNG Description = new CGImagePropertyPNG("Description");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final CGImagePropertyPNG ModificationTime = new CGImagePropertyPNG("ModificationTimeKey");
+    public static final CGImagePropertyPNG ModificationTime = new CGImagePropertyPNG("ModificationTime");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final CGImagePropertyPNG Software = new CGImagePropertyPNG("SoftwareKey");
+    public static final CGImagePropertyPNG Software = new CGImagePropertyPNG("Software");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final CGImagePropertyPNG Title = new CGImagePropertyPNG("TitleKey");
+    public static final CGImagePropertyPNG Title = new CGImagePropertyPNG("Title");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final CGImagePropertyPNG LoopCount = new CGImagePropertyPNG("LoopCountKey");
+    public static final CGImagePropertyPNG LoopCount = new CGImagePropertyPNG("LoopCount");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final CGImagePropertyPNG DelayTime = new CGImagePropertyPNG("DelayTimeKey");
+    public static final CGImagePropertyPNG DelayTime = new CGImagePropertyPNG("DelayTime");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final CGImagePropertyPNG UnclampedDelayTime = new CGImagePropertyPNG("UnclampedDelayTimeKey");
+    public static final CGImagePropertyPNG UnclampedDelayTime = new CGImagePropertyPNG("UnclampedDelayTime");
+    /*</constants>*/
     
-    private static CGImagePropertyPNG[] values = new CGImagePropertyPNG[] {Gamma, InterlaceType, XPixelsPerMeter, YPixelsPerMeter, 
-        sRGBIntent, Chromaticities, Author, Copyright, CreationTime, Description, ModificationTime, Software, Title, LoopCount, 
-        DelayTime, UnclampedDelayTime};
-    private final LazyGlobalValue<CFString> lazyGlobalValue;
+    private static /*<name>*/CGImagePropertyPNG/*</name>*/[] values = new /*<name>*/CGImagePropertyPNG/*</name>*/[] {/*<value_list>*/Gamma, InterlaceType, XPixelsPerMeter, YPixelsPerMeter, sRGBIntent, Chromaticities, Author, Copyright, CreationTime, Description, ModificationTime, Software, Title, LoopCount, DelayTime, UnclampedDelayTime/*</value_list>*/};
     
-    private CGImagePropertyPNG(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public CFString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/CGImagePropertyPNG/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static CGImagePropertyPNG valueOf(CFString value) {
-        for (CGImagePropertyPNG v : values) {
+    public static /*<name>*/CGImagePropertyPNG/*</name>*/ valueOf(/*<type>*/CFString/*</type>*/ value) {
+        for (/*<name>*/CGImagePropertyPNG/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -151,86 +169,94 @@ import org.robovm.apple.coregraphics.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/CGImagePropertyPNG/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyPNGGamma", optional=true)
-    protected static native CFString GammaKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyPNGInterlaceType", optional=true)
-    protected static native CFString InterlaceTypeKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyPNGXPixelsPerMeter", optional=true)
-    protected static native CFString XPixelsPerMeterKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyPNGYPixelsPerMeter", optional=true)
-    protected static native CFString YPixelsPerMeterKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyPNGsRGBIntent", optional=true)
-    protected static native CFString sRGBIntentKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyPNGChromaticities", optional=true)
-    protected static native CFString ChromaticitiesKey();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyPNGAuthor", optional=true)
-    protected static native CFString AuthorKey();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyPNGCopyright", optional=true)
-    protected static native CFString CopyrightKey();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyPNGCreationTime", optional=true)
-    protected static native CFString CreationTimeKey();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyPNGDescription", optional=true)
-    protected static native CFString DescriptionKey();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyPNGModificationTime", optional=true)
-    protected static native CFString ModificationTimeKey();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyPNGSoftware", optional=true)
-    protected static native CFString SoftwareKey();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyPNGTitle", optional=true)
-    protected static native CFString TitleKey();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyAPNGLoopCount", optional=true)
-    protected static native CFString LoopCountKey();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyAPNGDelayTime", optional=true)
-    protected static native CFString DelayTimeKey();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyAPNGUnclampedDelayTime", optional=true)
-    protected static native CFString UnclampedDelayTimeKey();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("ImageIO") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyPNGGamma", optional=true)
+        public static native CFString Gamma();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyPNGInterlaceType", optional=true)
+        public static native CFString InterlaceType();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyPNGXPixelsPerMeter", optional=true)
+        public static native CFString XPixelsPerMeter();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyPNGYPixelsPerMeter", optional=true)
+        public static native CFString YPixelsPerMeter();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyPNGsRGBIntent", optional=true)
+        public static native CFString sRGBIntent();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyPNGChromaticities", optional=true)
+        public static native CFString Chromaticities();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyPNGAuthor", optional=true)
+        public static native CFString Author();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyPNGCopyright", optional=true)
+        public static native CFString Copyright();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyPNGCreationTime", optional=true)
+        public static native CFString CreationTime();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyPNGDescription", optional=true)
+        public static native CFString Description();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyPNGModificationTime", optional=true)
+        public static native CFString ModificationTime();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyPNGSoftware", optional=true)
+        public static native CFString Software();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyPNGTitle", optional=true)
+        public static native CFString Title();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyAPNGLoopCount", optional=true)
+        public static native CFString LoopCount();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyAPNGDelayTime", optional=true)
+        public static native CFString DelayTime();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyAPNGUnclampedDelayTime", optional=true)
+        public static native CFString UnclampedDelayTime();
+        /*</values>*/
+    }
 }

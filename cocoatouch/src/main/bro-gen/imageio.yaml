@@ -21,9 +21,6 @@ enums:
     CGImageSourceStatus: {}
         
 classes:
-    CGImageDestinationProperties:
-        extends: CGImageProperties
-
     # Opaque types
     CGImageDestination:
         extends: CFType
@@ -207,146 +204,274 @@ functions:
 values:
     # CGImageDestination
     kCGImage(DestinationMetadata|DestinationMergeMetadata|MetadataShouldExcludeXMP|MetadataShouldExcludeGPS|DestinationDateTime|DestinationOrientation):
-        class: CGImageDestinationCopySourceOptions
-        name: '#{g[0]}Key'
+        dictionary: CGImageDestinationCopySourceOptions
+        name: '#{g[0]}'
         type: CFString
-        visibility: protected
+        methods:
+            DestinationMetadata:
+                name: metadata
+                type: CGImageMetadata
+            DestinationMergeMetadata:
+                name: mergesMetadata
+                type: boolean
+            MetadataShouldExcludeXMP:
+                name: shouldExcludeXMP
+                type: boolean
+            MetadataShouldExcludeGPS:
+                name: shouldExcludeGPS
+                type: boolean
+            DestinationDateTime:
+                name: dateTime
+                type: String
+            DestinationOrientation:
+                name: orientation
+                type: CGImagePropertyOrientation
     kCGImageDestination(.*):
-        class: CGImageDestinationProperties
-        name: '#{g[0]}Key'
+        dictionary: CGImageDestinationProperties
+        name: '#{g[0]}'
         type: CFString
-        visibility: protected
+        extends: CGImageProperties
+        methods:
+            LossyCompressionQuality:
+                type: double
+                default: 1
+            BackgroundColor:
+                type: CGColor
+            ImageMaxPixelSize:
+                name: maxPixelSize
+                type: long
+            EmbedThumbnail:
+                name: embedsThumbnail
+                type: boolean
 
     # CGImageMetadata
     kCGImageMetadata(EnumerateRecursively):
-        class: CGImageMetadataEnumerationOptions
-        name: '#{g[0]}Key'
+        dictionary: CGImageMetadataEnumerationOptions
+        name: '#{g[0]}'
         type: CFString
-        visibility: protected
+        methods:
+            EnumerateRecursively:
+                name: enumeratesRecursively
+                type: boolean
     kCGImageMetadataNamespace(.*):
-        class: CGImageMetadataNamespace
-        name: '#{g[0]}Value'
+        enum: CGImageMetadataNamespace
+        name: '#{g[0]}'
         type: CFString
-        visibility: protected
     kCGImageMetadataPrefix(.*):
-        class: CGImageMetadataPrefix
-        name: '#{g[0]}Value'
+        enum: CGImageMetadataPrefix
+        name: '#{g[0]}'
         type: CFString
-        visibility: protected
 
     # CGImageSource
     kCGImageSource(.*):
-        class: CGImageSourceOptions
-        name: '#{g[0]}Key'
+        dictionary: CGImageSourceOptions
+        name: '#{g[0]}'
         type: CFString
-        visibility: protected
+        methods:
+            TypeIdentifierHint:
+                type: String
+            ShouldCache:
+                type: boolean
+            ShouldCacheImmediately:
+                type: boolean
+            ShouldAllowFloat:
+                type: boolean
+            CreateThumbnailFromImageIfAbsent:
+                name: shouldCreateThumbnailFromImageIfAbsent
+                type: boolean
+            CreateThumbnailFromImageAlwaysKey:
+                name: shouldCreateThumbnailAlwaysFromImage
+                type: boolean
+            ThumbnailMaxPixelSize:
+                type: long
+            CreateThumbnailWithTransform:
+                name: shouldCreateThumbnailWithTransform
+                type: boolean
 
     # CGImageProperty
     kCGImageProperty(8BIMDictionary):
-        class: CGImageProperties
-        name: '_#{g[0]}Key'
+        dictionary: CGImageProperties
+        name: '_#{g[0]}'
         type: CFString
-        visibility: protected
     kCGImageProperty(.*Dictionary):
-        class: CGImageProperties
-        name: '#{g[0]}Key'
+        dictionary: CGImageProperties
+        name: '#{g[0]}'
         type: CFString
-        visibility: protected
-    kCGImageProperty(ColorModel):
-        class: CGImageProperties
-        name: '#{g[0]}Key'
+        constructor_visibility: public
+        methods:
+            TIFFDictionary:
+                name: TIFFData
+                type: CGImagePropertyTIFFData
+            GIFDictionary:
+                name: GIFData
+                type: CGImagePropertyGIFData
+            JFIFDictionary:
+                name: JFIFData
+                type: CGImagePropertyJFIFData
+            ExifDictionary:
+                name: ExifData
+                type: CGImagePropertyExifData
+            PNGDictionary:
+                name: PNGData
+                type: CGImagePropertyPNGData
+            IPTCDictionary:
+                name: IPTCData
+                type: CGImagePropertyIPTCData
+            GPSDictionary:
+                name: GPSData
+                type: CGImagePropertyGPSData
+            RawDictionary:
+                name: RawData
+                type: CFDictionary
+            CIFFDictionary:
+                name: CIFFData
+                type: CGImagePropertyCIFFData
+            _8BIMDictionary:
+                name: 8BIMData
+                param_name: data
+                type: CGImageProperty8BIMData
+            DNGDictionary:
+                name: DNGData
+                type: CGImagePropertyDNGData
+            ExifAuxDictionary:
+                name: ExifAuxData
+                type: CGImagePropertyExifAuxData
+            MakerCanonDictionary:
+                name: MakerCanonData
+                type: CGImagePropertyCanonData
+            MakerNikonDictionary:
+                name: MakerNikonData
+                type: CGImagePropertyNikonData
+            MakerMinoltaDictionary:
+                name: MakerMinoltaData
+                type: CFDictionary
+            MakerFujiDictionary:
+                name: MakerFujiData
+                type: CFDictionary
+            MakerOlympusDictionary:
+                name: MakerOlympusData
+                type: CFDictionary
+            MakerPentaxDictionary:
+                name: MakerPentaxData
+                type: CFDictionary
+            FileSize:
+                type: long
+            DPIHeight:
+                type: long
+            DPIWidth:
+                type: long
+            PixelWidth:
+                type: long
+            PixelHeight:
+                type: long
+            Depth:
+                type: int
+            Orientation:
+                type: CGImagePropertyOrientation
+            IsFloat:
+                name: containsFloatingPointPixels
+                type: boolean
+            IsIndexed:
+                type: boolean
+            HasAlpha:
+                name: hasAlphaChannel
+                type: boolean
+            ColorModel:
+                type: CGImagePropertyColorModel
+            ProfileName:
+                name: ICCProfile
+                type: String
+    kCGImagePropertyColorModel(.+):
+        enum: CGImagePropertyColorModel
+        name: '#{g[0]}'
         type: CFString
-        visibility: protected
-    kCGImagePropertyColorModel(.*):
-        class: CGImagePropertyColorModel
-        name: '#{g[0]}Value'
-        type: CFString
-        visibility: protected
     kCGImagePropertyTIFF(.*):
-        class: CGImagePropertyTIFF
-        name: '#{g[0]}Key'
+        dictionary: CGImagePropertyTIFFData
+        enum: CGImagePropertyTIFF
+        name: '#{g[0]}'
         type: CFString
-        visibility: protected
     kCGImagePropertyJFIF(.*):
-        class: CGImagePropertyJFIF
-        name: '#{g[0]}Key'
+        dictionary: CGImagePropertyJFIFData
+        enum: CGImagePropertyJFIF
+        name: '#{g[0]}'
         type: CFString
-        visibility: protected
     kCGImagePropertyExifAux(.*):
-        class: CGImagePropertyExifAux
-        name: '#{g[0]}Key'
+        dictionary: CGImagePropertyExifAuxData
+        enum: CGImagePropertyExifAux
+        name: '#{g[0]}'
         type: CFString
-        visibility: protected
     kCGImagePropertyExif(.*):
-        class: CGImagePropertyExif
-        name: '#{g[0]}Key'
+        dictionary: CGImagePropertyExifData
+        enum: CGImagePropertyExif
+        name: '#{g[0]}'
         type: CFString
-        visibility: protected
     kCGImagePropertyGIF(.*):
-        class: CGImagePropertyGIF
-        name: '#{g[0]}Key'
+        dictionary: CGImagePropertyGIFData
+        enum: CGImagePropertyGIF
+        name: '#{g[0]}'
         type: CFString
-        visibility: protected
     kCGImagePropertyAPNG(.*):
-        class: CGImagePropertyPNG
-        name: '#{g[0]}Key'
+        dictionary: CGImagePropertyPNGData
+        enum: CGImagePropertyPNG
+        name: '#{g[0]}'
         type: CFString
-        visibility: protected
     kCGImagePropertyPNG(.*):
-        class: CGImagePropertyPNG
-        name: '#{g[0]}Key'
+        dictionary: CGImagePropertyPNGData
+        enum: CGImagePropertyPNG
+        name: '#{g[0]}'
         type: CFString
-        visibility: protected  
     kCGImagePropertyIPTCContactInfo(.*):
-        class: CGImagePropertyIPTCContactInfo
-        name: '#{g[0]}Key'
+        dictionary: CGImagePropertyIPTCContactInfoData
+        enum: CGImagePropertyIPTCContactInfo
+        name: '#{g[0]}'
         type: CFString
-        visibility: protected
     kCGImagePropertyIPTC(.*):
-        class: CGImagePropertyIPTC
-        name: '#{g[0]}Key'
+        dictionary: CGImagePropertyIPTCData
+        enum: CGImagePropertyIPTC
+        name: '#{g[0]}'
         type: CFString
-        visibility: protected
+        methods:
+            CreatorContactInfo:
+                type: CGImagePropertyIPTCContactInfoData
     kCGImageProperty8BIM(.*):
-        class: CGImageProperty8BIM
-        name: '#{g[0]}Key'
+        dictionary: CGImageProperty8BIMData
+        enum: CGImageProperty8BIM
+        name: '#{g[0]}'
         type: CFString
-        visibility: protected
     kCGImagePropertyGPS(.*):
-        class: CGImagePropertyGPS
-        name: '#{g[0]}Key'
+        dictionary: CGImagePropertyGPSData
+        enum: CGImagePropertyGPS
+        name: '#{g[0]}'
         type: CFString
-        visibility: protected
     kCGImagePropertyDNG(.*):
-        class: CGImagePropertyDNG
-        name: '#{g[0]}Key'
+        dictionary: CGImagePropertyDNGData
+        enum: CGImagePropertyDNG
+        name: '#{g[0]}'
         type: CFString
-        visibility: protected
     kCGImagePropertyCIFF(.*):
-        class: CGImagePropertyCIFF
-        name: '#{g[0]}Key'
+        dictionary: CGImagePropertyCIFFData
+        enum: CGImagePropertyCIFF
+        name: '#{g[0]}'
         type: CFString
-        visibility: protected
     kCGImagePropertyMakerNikon(.*):
-        class: CGImagePropertyNikon
-        name: '#{g[0]}Key'
+        dictionary: CGImagePropertyNikonData
+        enum: CGImagePropertyNikon
+        name: '#{g[0]}'
         type: CFString
-        visibility: protected
     kCGImagePropertyMakerCanon(.*):
-        class: CGImagePropertyCanon
-        name: '#{g[0]}Key'
+        dictionary: CGImagePropertyCanonData
+        enum: CGImagePropertyCanon
+        name: '#{g[0]}'
         type: CFString
-        visibility: protected
     kCGImagePropertyOpenEXR(.*):
-        class: CGImagePropertyOpenEXR
-        name: '#{g[0]}Key'
+        dictionary: CGImagePropertyOpenEXRData
+        enum: CGImagePropertyOpenEXR
+        name: '#{g[0]}'
         type: CFString
-        visibility: protected
     kCGImageProperty(.*):
-        class: CGImageProperties
-        name: '#{g[0]}Key'
+        dictionary: CGImageProperties
+        name: '#{g[0]}'
         type: CFString
-        visibility: protected
    
     # Make sure we don't miss any values if new ones are introduced in a later version
     (k?CG.*):

@@ -35,23 +35,23 @@ import org.robovm.apple.coregraphics.*;
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("ImageIO")/*</annotations>*/
-@Marshaler(/*<name>*/CGImagePropertyGPSData/*</name>*/.Marshaler.class)
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/CGImagePropertyGPSData/*</name>*/ 
+@Marshaler(/*<name>*/CGImagePropertyOpenEXRData/*</name>*/.Marshaler.class)
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/CGImagePropertyOpenEXRData/*</name>*/ 
     extends /*<extends>*/CFDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
     /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
-        public static CGImagePropertyGPSData toObject(Class<CGImagePropertyGPSData> cls, long handle, long flags) {
+        public static CGImagePropertyOpenEXRData toObject(Class<CGImagePropertyOpenEXRData> cls, long handle, long flags) {
             CFDictionary o = (CFDictionary) CFType.Marshaler.toObject(CFDictionary.class, handle, flags);
             if (o == null) {
                 return null;
             }
-            return new CGImagePropertyGPSData(o);
+            return new CGImagePropertyOpenEXRData(o);
         }
         @MarshalsPointer
-        public static long toNative(CGImagePropertyGPSData o, long flags) {
+        public static long toNative(CGImagePropertyOpenEXRData o, long flags) {
             if (o == null) {
                 return 0L;
             }
@@ -60,24 +60,24 @@ import org.robovm.apple.coregraphics.*;
     }
     public static class AsListMarshaler {
         @MarshalsPointer
-        public static List<CGImagePropertyGPSData> toObject(Class<? extends CFType> cls, long handle, long flags) {
+        public static List<CGImagePropertyOpenEXRData> toObject(Class<? extends CFType> cls, long handle, long flags) {
             CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
             if (o == null) {
                 return null;
             }
-            List<CGImagePropertyGPSData> list = new ArrayList<>();
+            List<CGImagePropertyOpenEXRData> list = new ArrayList<>();
             for (int i = 0; i < o.size(); i++) {
-                list.add(new CGImagePropertyGPSData(o.get(i, CFDictionary.class)));
+                list.add(new CGImagePropertyOpenEXRData(o.get(i, CFDictionary.class)));
             }
             return list;
         }
         @MarshalsPointer
-        public static long toNative(List<CGImagePropertyGPSData> l, long flags) {
+        public static long toNative(List<CGImagePropertyOpenEXRData> l, long flags) {
             if (l == null) {
                 return 0L;
             }
             CFArray array = CFMutableArray.create();
-            for (CGImagePropertyGPSData i : l) {
+            for (CGImagePropertyOpenEXRData i : l) {
                 array.add(i.getDictionary());
             }
             return CFType.Marshaler.toNative(array, flags);
@@ -86,46 +86,46 @@ import org.robovm.apple.coregraphics.*;
     /*</marshalers>*/
 
     /*<constructors>*/
-    CGImagePropertyGPSData(CFDictionary data) {
+    CGImagePropertyOpenEXRData(CFDictionary data) {
         super(data);
     }
-    public CGImagePropertyGPSData() {}
+    public CGImagePropertyOpenEXRData() {}
     /*</constructors>*/
 
     /*<methods>*/
-    public boolean has(CGImagePropertyGPS key) {
+    public boolean has(CGImagePropertyOpenEXR key) {
         return data.containsKey(key.value());
     }
-    public <T extends NativeObject> T get(CGImagePropertyGPS key, Class<T> type) {
+    public <T extends NativeObject> T get(CGImagePropertyOpenEXR key, Class<T> type) {
         if (has(key)) {
             return data.get(key.value(), type);
         }
         return null;
     }
-    public CGImagePropertyGPSData set(CGImagePropertyGPS key, NativeObject value) {
+    public CGImagePropertyOpenEXRData set(CGImagePropertyOpenEXR key, NativeObject value) {
         data.put(key.value(), value);
         return this;
     }
     /*</methods>*/
-    public String getString(CGImagePropertyGPS property) {
+    public String getString(CGImagePropertyOpenEXR property) {
         if (has(property)) {
             CFString val = get(property, CFString.class);
             return val.toString();
         }
         return null;
     }
-    public double getNumber(CGImagePropertyGPS property) {
+    public double getNumber(CGImagePropertyOpenEXR property) {
         if (has(property)) {
             CFNumber val = get(property, CFNumber.class);
             return val.doubleValue();
         }
         return 0;
     }
-    public CGImagePropertyGPSData set(CGImagePropertyGPS property, String value) {
+    public CGImagePropertyOpenEXRData set(CGImagePropertyOpenEXR property, String value) {
         set(property, new CFString(value));
         return this;
     }
-    public CGImagePropertyGPSData set(CGImagePropertyGPS property, double value) {
+    public CGImagePropertyOpenEXRData set(CGImagePropertyOpenEXR property, double value) {
         set(property, CFNumber.valueOf(value));
         return this;
     }

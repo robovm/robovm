@@ -34,12 +34,15 @@ import org.robovm.apple.coregraphics.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CGImagePropertyCIFF.Marshaler.class)
-/*<annotations>*/@Library("ImageIO")/*</annotations>*/
+/*<annotations>*/@Library("ImageIO") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/CGImagePropertyCIFF/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CGImagePropertyCIFF/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<CFString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/CGImagePropertyCIFF/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CGImagePropertyCIFF toObject(Class<CGImagePropertyCIFF> cls, long handle, long flags) {
@@ -57,114 +60,128 @@ import org.robovm.apple.coregraphics.*;
             return CFType.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(CGImagePropertyCIFF.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final CGImagePropertyCIFF Description = new CGImagePropertyCIFF("DescriptionKey");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final CGImagePropertyCIFF Firmware = new CGImagePropertyCIFF("FirmwareKey");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final CGImagePropertyCIFF OwnerName = new CGImagePropertyCIFF("OwnerNameKey");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final CGImagePropertyCIFF ImageName = new CGImagePropertyCIFF("ImageNameKey");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final CGImagePropertyCIFF ImageFileName = new CGImagePropertyCIFF("ImageFileNameKey");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final CGImagePropertyCIFF ReleaseMethod = new CGImagePropertyCIFF("ReleaseMethodKey");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final CGImagePropertyCIFF ReleaseTiming = new CGImagePropertyCIFF("ReleaseTimingKey");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final CGImagePropertyCIFF RecordID = new CGImagePropertyCIFF("RecordIDKey");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final CGImagePropertyCIFF SelfTimingTime = new CGImagePropertyCIFF("SelfTimingTimeKey");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final CGImagePropertyCIFF CameraSerialNumber = new CGImagePropertyCIFF("CameraSerialNumberKey");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final CGImagePropertyCIFF ImageSerialNumber = new CGImagePropertyCIFF("ImageSerialNumberKey");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final CGImagePropertyCIFF ContinuousDrive = new CGImagePropertyCIFF("ContinuousDriveKey");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final CGImagePropertyCIFF FocusMode = new CGImagePropertyCIFF("FocusModeKey");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final CGImagePropertyCIFF MeteringMode = new CGImagePropertyCIFF("MeteringModeKey");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final CGImagePropertyCIFF ShootingMode = new CGImagePropertyCIFF("ShootingModeKey");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final CGImagePropertyCIFF LensModel = new CGImagePropertyCIFF("LensModelKey");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final CGImagePropertyCIFF LensMaxMM = new CGImagePropertyCIFF("LensMaxMMKey");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final CGImagePropertyCIFF LensMinMM = new CGImagePropertyCIFF("LensMinMMKey");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final CGImagePropertyCIFF WhiteBalanceIndex = new CGImagePropertyCIFF("WhiteBalanceIndexKey");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final CGImagePropertyCIFF FlashExposureComp = new CGImagePropertyCIFF("FlashExposureCompKey");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final CGImagePropertyCIFF MeasuredEV = new CGImagePropertyCIFF("MeasuredEVKey");
-    
-    private static CGImagePropertyCIFF[] values = new CGImagePropertyCIFF[] {Description, Firmware, OwnerName, ImageName, 
-        ImageFileName, ReleaseMethod, ReleaseTiming, RecordID, SelfTimingTime, CameraSerialNumber, ImageSerialNumber, 
-        ContinuousDrive, FocusMode, MeteringMode, ShootingMode, LensModel, LensMaxMM, LensMinMM, WhiteBalanceIndex, 
-        FlashExposureComp, MeasuredEV};
-    private final LazyGlobalValue<CFString> lazyGlobalValue;
-    
-    private CGImagePropertyCIFF(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CGImagePropertyCIFF> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CGImagePropertyCIFF> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(CGImagePropertyCIFF.valueOf(o.get(i, CFString.class)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CGImagePropertyCIFF> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray array = CFMutableArray.create();
+            for (CGImagePropertyCIFF o : l) {
+                array.add(o.value());
+            }
+            return CFType.Marshaler.toNative(array, flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public CFString value() {
-        return lazyGlobalValue.value();
+    /*</marshalers>*/
+
+    /*<constants>*/
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final CGImagePropertyCIFF Description = new CGImagePropertyCIFF("Description");
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final CGImagePropertyCIFF Firmware = new CGImagePropertyCIFF("Firmware");
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final CGImagePropertyCIFF OwnerName = new CGImagePropertyCIFF("OwnerName");
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final CGImagePropertyCIFF ImageName = new CGImagePropertyCIFF("ImageName");
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final CGImagePropertyCIFF ImageFileName = new CGImagePropertyCIFF("ImageFileName");
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final CGImagePropertyCIFF ReleaseMethod = new CGImagePropertyCIFF("ReleaseMethod");
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final CGImagePropertyCIFF ReleaseTiming = new CGImagePropertyCIFF("ReleaseTiming");
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final CGImagePropertyCIFF RecordID = new CGImagePropertyCIFF("RecordID");
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final CGImagePropertyCIFF SelfTimingTime = new CGImagePropertyCIFF("SelfTimingTime");
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final CGImagePropertyCIFF CameraSerialNumber = new CGImagePropertyCIFF("CameraSerialNumber");
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final CGImagePropertyCIFF ImageSerialNumber = new CGImagePropertyCIFF("ImageSerialNumber");
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final CGImagePropertyCIFF ContinuousDrive = new CGImagePropertyCIFF("ContinuousDrive");
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final CGImagePropertyCIFF FocusMode = new CGImagePropertyCIFF("FocusMode");
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final CGImagePropertyCIFF MeteringMode = new CGImagePropertyCIFF("MeteringMode");
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final CGImagePropertyCIFF ShootingMode = new CGImagePropertyCIFF("ShootingMode");
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final CGImagePropertyCIFF LensModel = new CGImagePropertyCIFF("LensModel");
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final CGImagePropertyCIFF LensMaxMM = new CGImagePropertyCIFF("LensMaxMM");
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final CGImagePropertyCIFF LensMinMM = new CGImagePropertyCIFF("LensMinMM");
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final CGImagePropertyCIFF WhiteBalanceIndex = new CGImagePropertyCIFF("WhiteBalanceIndex");
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final CGImagePropertyCIFF FlashExposureComp = new CGImagePropertyCIFF("FlashExposureComp");
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final CGImagePropertyCIFF MeasuredEV = new CGImagePropertyCIFF("MeasuredEV");
+    /*</constants>*/
+    
+    private static /*<name>*/CGImagePropertyCIFF/*</name>*/[] values = new /*<name>*/CGImagePropertyCIFF/*</name>*/[] {/*<value_list>*/Description, Firmware, OwnerName, ImageName, ImageFileName, ReleaseMethod, ReleaseTiming, RecordID, SelfTimingTime, CameraSerialNumber, ImageSerialNumber, ContinuousDrive, FocusMode, MeteringMode, ShootingMode, LensModel, LensMaxMM, LensMinMM, WhiteBalanceIndex, FlashExposureComp, MeasuredEV/*</value_list>*/};
+    
+    /*<name>*/CGImagePropertyCIFF/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static CGImagePropertyCIFF valueOf(CFString value) {
-        for (CGImagePropertyCIFF v : values) {
+    public static /*<name>*/CGImagePropertyCIFF/*</name>*/ valueOf(/*<type>*/CFString/*</type>*/ value) {
+        for (/*<name>*/CGImagePropertyCIFF/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -172,111 +189,119 @@ import org.robovm.apple.coregraphics.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/CGImagePropertyCIFF/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyCIFFDescription", optional=true)
-    protected static native CFString DescriptionKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyCIFFFirmware", optional=true)
-    protected static native CFString FirmwareKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyCIFFOwnerName", optional=true)
-    protected static native CFString OwnerNameKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyCIFFImageName", optional=true)
-    protected static native CFString ImageNameKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyCIFFImageFileName", optional=true)
-    protected static native CFString ImageFileNameKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyCIFFReleaseMethod", optional=true)
-    protected static native CFString ReleaseMethodKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyCIFFReleaseTiming", optional=true)
-    protected static native CFString ReleaseTimingKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyCIFFRecordID", optional=true)
-    protected static native CFString RecordIDKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyCIFFSelfTimingTime", optional=true)
-    protected static native CFString SelfTimingTimeKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyCIFFCameraSerialNumber", optional=true)
-    protected static native CFString CameraSerialNumberKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyCIFFImageSerialNumber", optional=true)
-    protected static native CFString ImageSerialNumberKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyCIFFContinuousDrive", optional=true)
-    protected static native CFString ContinuousDriveKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyCIFFFocusMode", optional=true)
-    protected static native CFString FocusModeKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyCIFFMeteringMode", optional=true)
-    protected static native CFString MeteringModeKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyCIFFShootingMode", optional=true)
-    protected static native CFString ShootingModeKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyCIFFLensModel", optional=true)
-    protected static native CFString LensModelKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyCIFFLensMaxMM", optional=true)
-    protected static native CFString LensMaxMMKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyCIFFLensMinMM", optional=true)
-    protected static native CFString LensMinMMKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyCIFFWhiteBalanceIndex", optional=true)
-    protected static native CFString WhiteBalanceIndexKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyCIFFFlashExposureComp", optional=true)
-    protected static native CFString FlashExposureCompKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyCIFFMeasuredEV", optional=true)
-    protected static native CFString MeasuredEVKey();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("ImageIO") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyCIFFDescription", optional=true)
+        public static native CFString Description();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyCIFFFirmware", optional=true)
+        public static native CFString Firmware();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyCIFFOwnerName", optional=true)
+        public static native CFString OwnerName();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyCIFFImageName", optional=true)
+        public static native CFString ImageName();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyCIFFImageFileName", optional=true)
+        public static native CFString ImageFileName();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyCIFFReleaseMethod", optional=true)
+        public static native CFString ReleaseMethod();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyCIFFReleaseTiming", optional=true)
+        public static native CFString ReleaseTiming();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyCIFFRecordID", optional=true)
+        public static native CFString RecordID();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyCIFFSelfTimingTime", optional=true)
+        public static native CFString SelfTimingTime();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyCIFFCameraSerialNumber", optional=true)
+        public static native CFString CameraSerialNumber();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyCIFFImageSerialNumber", optional=true)
+        public static native CFString ImageSerialNumber();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyCIFFContinuousDrive", optional=true)
+        public static native CFString ContinuousDrive();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyCIFFFocusMode", optional=true)
+        public static native CFString FocusMode();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyCIFFMeteringMode", optional=true)
+        public static native CFString MeteringMode();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyCIFFShootingMode", optional=true)
+        public static native CFString ShootingMode();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyCIFFLensModel", optional=true)
+        public static native CFString LensModel();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyCIFFLensMaxMM", optional=true)
+        public static native CFString LensMaxMM();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyCIFFLensMinMM", optional=true)
+        public static native CFString LensMinMM();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyCIFFWhiteBalanceIndex", optional=true)
+        public static native CFString WhiteBalanceIndex();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyCIFFFlashExposureComp", optional=true)
+        public static native CFString FlashExposureComp();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyCIFFMeasuredEV", optional=true)
+        public static native CFString MeasuredEV();
+        /*</values>*/
+    }
 }

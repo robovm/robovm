@@ -34,12 +34,15 @@ import org.robovm.apple.coregraphics.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CGImagePropertyJFIF.Marshaler.class)
-/*<annotations>*/@Library("ImageIO")/*</annotations>*/
+/*<annotations>*/@Library("ImageIO") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/CGImagePropertyJFIF/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CGImagePropertyJFIF/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<CFString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/CGImagePropertyJFIF/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CGImagePropertyJFIF toObject(Class<CGImagePropertyJFIF> cls, long handle, long flags) {
@@ -57,47 +60,64 @@ import org.robovm.apple.coregraphics.*;
             return CFType.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(CGImagePropertyJFIF.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final CGImagePropertyJFIF Version = new CGImagePropertyJFIF("VersionKey");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final CGImagePropertyJFIF XDensity = new CGImagePropertyJFIF("XDensityKey");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final CGImagePropertyJFIF YDensity = new CGImagePropertyJFIF("YDensityKey");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final CGImagePropertyJFIF DensityUnit = new CGImagePropertyJFIF("DensityUnitKey");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final CGImagePropertyJFIF IsProgressive = new CGImagePropertyJFIF("IsProgressiveKey");
-    
-    private static CGImagePropertyJFIF[] values = new CGImagePropertyJFIF[] {Version, XDensity, YDensity, DensityUnit, IsProgressive};
-    private final LazyGlobalValue<CFString> lazyGlobalValue;
-    
-    private CGImagePropertyJFIF(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CGImagePropertyJFIF> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CGImagePropertyJFIF> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(CGImagePropertyJFIF.valueOf(o.get(i, CFString.class)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CGImagePropertyJFIF> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray array = CFMutableArray.create();
+            for (CGImagePropertyJFIF o : l) {
+                array.add(o.value());
+            }
+            return CFType.Marshaler.toNative(array, flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public CFString value() {
-        return lazyGlobalValue.value();
+    /*</marshalers>*/
+
+    /*<constants>*/
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final CGImagePropertyJFIF Version = new CGImagePropertyJFIF("Version");
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final CGImagePropertyJFIF XDensity = new CGImagePropertyJFIF("XDensity");
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final CGImagePropertyJFIF YDensity = new CGImagePropertyJFIF("YDensity");
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final CGImagePropertyJFIF DensityUnit = new CGImagePropertyJFIF("DensityUnit");
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final CGImagePropertyJFIF IsProgressive = new CGImagePropertyJFIF("IsProgressive");
+    /*</constants>*/
+    
+    private static /*<name>*/CGImagePropertyJFIF/*</name>*/[] values = new /*<name>*/CGImagePropertyJFIF/*</name>*/[] {/*<value_list>*/Version, XDensity, YDensity, DensityUnit, IsProgressive/*</value_list>*/};
+    
+    /*<name>*/CGImagePropertyJFIF/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static CGImagePropertyJFIF valueOf(CFString value) {
-        for (CGImagePropertyJFIF v : values) {
+    public static /*<name>*/CGImagePropertyJFIF/*</name>*/ valueOf(/*<type>*/CFString/*</type>*/ value) {
+        for (/*<name>*/CGImagePropertyJFIF/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -105,31 +125,39 @@ import org.robovm.apple.coregraphics.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/CGImagePropertyJFIF/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyJFIFVersion", optional=true)
-    protected static native CFString VersionKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyJFIFXDensity", optional=true)
-    protected static native CFString XDensityKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyJFIFYDensity", optional=true)
-    protected static native CFString YDensityKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyJFIFDensityUnit", optional=true)
-    protected static native CFString DensityUnitKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyJFIFIsProgressive", optional=true)
-    protected static native CFString IsProgressiveKey();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("ImageIO") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyJFIFVersion", optional=true)
+        public static native CFString Version();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyJFIFXDensity", optional=true)
+        public static native CFString XDensity();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyJFIFYDensity", optional=true)
+        public static native CFString YDensity();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyJFIFDensityUnit", optional=true)
+        public static native CFString DensityUnit();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyJFIFIsProgressive", optional=true)
+        public static native CFString IsProgressive();
+        /*</values>*/
+    }
 }

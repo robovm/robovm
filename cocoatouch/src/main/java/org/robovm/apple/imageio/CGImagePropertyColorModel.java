@@ -34,12 +34,15 @@ import org.robovm.apple.coregraphics.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CGImagePropertyColorModel.Marshaler.class)
-/*<annotations>*/@Library("ImageIO")/*</annotations>*/
+/*<annotations>*/@Library("ImageIO") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/CGImagePropertyColorModel/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CGImagePropertyColorModel/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<CFString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/CGImagePropertyColorModel/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CGImagePropertyColorModel toObject(Class<CGImagePropertyColorModel> cls, long handle, long flags) {
@@ -57,43 +60,60 @@ import org.robovm.apple.coregraphics.*;
             return CFType.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(CGImagePropertyColorModel.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final CGImagePropertyColorModel RGB = new CGImagePropertyColorModel("RGBValue");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final CGImagePropertyColorModel Gray = new CGImagePropertyColorModel("GrayValue");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final CGImagePropertyColorModel CMYK = new CGImagePropertyColorModel("CMYKValue");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final CGImagePropertyColorModel Lab = new CGImagePropertyColorModel("LabValue");
-    
-    private static CGImagePropertyColorModel[] values = new CGImagePropertyColorModel[] {RGB, Gray, CMYK, Lab};
-    private final LazyGlobalValue<CFString> lazyGlobalValue;
-    
-    private CGImagePropertyColorModel(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CGImagePropertyColorModel> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CGImagePropertyColorModel> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(CGImagePropertyColorModel.valueOf(o.get(i, CFString.class)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CGImagePropertyColorModel> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray array = CFMutableArray.create();
+            for (CGImagePropertyColorModel o : l) {
+                array.add(o.value());
+            }
+            return CFType.Marshaler.toNative(array, flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public CFString value() {
-        return lazyGlobalValue.value();
+    /*</marshalers>*/
+
+    /*<constants>*/
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final CGImagePropertyColorModel RGB = new CGImagePropertyColorModel("RGB");
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final CGImagePropertyColorModel Gray = new CGImagePropertyColorModel("Gray");
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final CGImagePropertyColorModel CMYK = new CGImagePropertyColorModel("CMYK");
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final CGImagePropertyColorModel Lab = new CGImagePropertyColorModel("Lab");
+    /*</constants>*/
+    
+    private static /*<name>*/CGImagePropertyColorModel/*</name>*/[] values = new /*<name>*/CGImagePropertyColorModel/*</name>*/[] {/*<value_list>*/RGB, Gray, CMYK, Lab/*</value_list>*/};
+    
+    /*<name>*/CGImagePropertyColorModel/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static CGImagePropertyColorModel valueOf(CFString value) {
-        for (CGImagePropertyColorModel v : values) {
+    public static /*<name>*/CGImagePropertyColorModel/*</name>*/ valueOf(/*<type>*/CFString/*</type>*/ value) {
+        for (/*<name>*/CGImagePropertyColorModel/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -101,26 +121,34 @@ import org.robovm.apple.coregraphics.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/CGImagePropertyColorModel/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyColorModelRGB", optional=true)
-    protected static native CFString RGBValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyColorModelGray", optional=true)
-    protected static native CFString GrayValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyColorModelCMYK", optional=true)
-    protected static native CFString CMYKValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyColorModelLab", optional=true)
-    protected static native CFString LabValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("ImageIO") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyColorModelRGB", optional=true)
+        public static native CFString RGB();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyColorModelGray", optional=true)
+        public static native CFString Gray();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyColorModelCMYK", optional=true)
+        public static native CFString CMYK();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyColorModelLab", optional=true)
+        public static native CFString Lab();
+        /*</values>*/
+    }
 }

@@ -34,12 +34,15 @@ import org.robovm.apple.coregraphics.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CGImagePropertyExifAux.Marshaler.class)
-/*<annotations>*/@Library("ImageIO")/*</annotations>*/
+/*<annotations>*/@Library("ImageIO") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/CGImagePropertyExifAux/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CGImagePropertyExifAux/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<CFString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/CGImagePropertyExifAux/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CGImagePropertyExifAux toObject(Class<CGImagePropertyExifAux> cls, long handle, long flags) {
@@ -57,64 +60,80 @@ import org.robovm.apple.coregraphics.*;
             return CFType.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(CGImagePropertyExifAux.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final CGImagePropertyExifAux LensInfo = new CGImagePropertyExifAux("LensInfoKey");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final CGImagePropertyExifAux LensModel = new CGImagePropertyExifAux("LensModelKey");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final CGImagePropertyExifAux SerialNumber = new CGImagePropertyExifAux("SerialNumberKey");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final CGImagePropertyExifAux LensID = new CGImagePropertyExifAux("LensIDKey");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final CGImagePropertyExifAux LensSerialNumber = new CGImagePropertyExifAux("LensSerialNumberKey");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final CGImagePropertyExifAux ImageNumber = new CGImagePropertyExifAux("ImageNumberKey");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final CGImagePropertyExifAux FlashCompensation = new CGImagePropertyExifAux("FlashCompensationKey");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final CGImagePropertyExifAux OwnerName = new CGImagePropertyExifAux("OwnerNameKey");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final CGImagePropertyExifAux Firmware = new CGImagePropertyExifAux("FirmwareKey");
-    
-    private static CGImagePropertyExifAux[] values = new CGImagePropertyExifAux[] {LensInfo, LensModel, SerialNumber, 
-        LensID, LensSerialNumber, ImageNumber, FlashCompensation, OwnerName, Firmware};
-    private final LazyGlobalValue<CFString> lazyGlobalValue;
-    
-    private CGImagePropertyExifAux(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CGImagePropertyExifAux> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CGImagePropertyExifAux> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(CGImagePropertyExifAux.valueOf(o.get(i, CFString.class)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CGImagePropertyExifAux> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray array = CFMutableArray.create();
+            for (CGImagePropertyExifAux o : l) {
+                array.add(o.value());
+            }
+            return CFType.Marshaler.toNative(array, flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public CFString value() {
-        return lazyGlobalValue.value();
+    /*</marshalers>*/
+
+    /*<constants>*/
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final CGImagePropertyExifAux LensInfo = new CGImagePropertyExifAux("LensInfo");
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final CGImagePropertyExifAux LensModel = new CGImagePropertyExifAux("LensModel");
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final CGImagePropertyExifAux SerialNumber = new CGImagePropertyExifAux("SerialNumber");
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final CGImagePropertyExifAux LensID = new CGImagePropertyExifAux("LensID");
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final CGImagePropertyExifAux LensSerialNumber = new CGImagePropertyExifAux("LensSerialNumber");
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final CGImagePropertyExifAux ImageNumber = new CGImagePropertyExifAux("ImageNumber");
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final CGImagePropertyExifAux FlashCompensation = new CGImagePropertyExifAux("FlashCompensation");
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final CGImagePropertyExifAux OwnerName = new CGImagePropertyExifAux("OwnerName");
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final CGImagePropertyExifAux Firmware = new CGImagePropertyExifAux("Firmware");
+    /*</constants>*/
+    
+    private static /*<name>*/CGImagePropertyExifAux/*</name>*/[] values = new /*<name>*/CGImagePropertyExifAux/*</name>*/[] {/*<value_list>*/LensInfo, LensModel, SerialNumber, LensID, LensSerialNumber, ImageNumber, FlashCompensation, OwnerName, Firmware/*</value_list>*/};
+    
+    /*<name>*/CGImagePropertyExifAux/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static CGImagePropertyExifAux valueOf(CFString value) {
-        for (CGImagePropertyExifAux v : values) {
+    public static /*<name>*/CGImagePropertyExifAux/*</name>*/ valueOf(/*<type>*/CFString/*</type>*/ value) {
+        for (/*<name>*/CGImagePropertyExifAux/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -122,51 +141,59 @@ import org.robovm.apple.coregraphics.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/CGImagePropertyExifAux/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyExifAuxLensInfo", optional=true)
-    protected static native CFString LensInfoKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyExifAuxLensModel", optional=true)
-    protected static native CFString LensModelKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyExifAuxSerialNumber", optional=true)
-    protected static native CFString SerialNumberKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyExifAuxLensID", optional=true)
-    protected static native CFString LensIDKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyExifAuxLensSerialNumber", optional=true)
-    protected static native CFString LensSerialNumberKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyExifAuxImageNumber", optional=true)
-    protected static native CFString ImageNumberKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyExifAuxFlashCompensation", optional=true)
-    protected static native CFString FlashCompensationKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyExifAuxOwnerName", optional=true)
-    protected static native CFString OwnerNameKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyExifAuxFirmware", optional=true)
-    protected static native CFString FirmwareKey();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("ImageIO") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyExifAuxLensInfo", optional=true)
+        public static native CFString LensInfo();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyExifAuxLensModel", optional=true)
+        public static native CFString LensModel();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyExifAuxSerialNumber", optional=true)
+        public static native CFString SerialNumber();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyExifAuxLensID", optional=true)
+        public static native CFString LensID();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyExifAuxLensSerialNumber", optional=true)
+        public static native CFString LensSerialNumber();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyExifAuxImageNumber", optional=true)
+        public static native CFString ImageNumber();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyExifAuxFlashCompensation", optional=true)
+        public static native CFString FlashCompensation();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyExifAuxOwnerName", optional=true)
+        public static native CFString OwnerName();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyExifAuxFirmware", optional=true)
+        public static native CFString Firmware();
+        /*</values>*/
+    }
 }

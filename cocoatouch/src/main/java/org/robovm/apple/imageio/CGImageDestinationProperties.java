@@ -34,12 +34,13 @@ import org.robovm.apple.coregraphics.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CGImageDestinationProperties.Marshaler.class)
 /*<annotations>*/@Library("ImageIO")/*</annotations>*/
+@Marshaler(/*<name>*/CGImageDestinationProperties/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CGImageDestinationProperties/*</name>*/ 
-    extends /*<extends>*/CGImageProperties/*</extends>*/ 
+    extends /*<extends>*/CGImageProperties/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CGImageDestinationProperties toObject(Class<CGImageDestinationProperties> cls, long handle, long flags) {
@@ -57,26 +58,62 @@ import org.robovm.apple.coregraphics.*;
             return CFType.Marshaler.toNative(o.data, flags);
         }
     }
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CGImageDestinationProperties> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CGImageDestinationProperties> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new CGImageDestinationProperties(o.get(i, CFDictionary.class)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CGImageDestinationProperties> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray array = CFMutableArray.create();
+            for (CGImageDestinationProperties i : l) {
+                array.add(i.getDictionary());
+            }
+            return CFType.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    CGImageDestinationProperties(CFDictionary data) {
+        super(data);
+    }
+    public CGImageDestinationProperties() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(CFString key) {
+        return data.containsKey(key);
+    }
+    public <T extends NativeObject> T get(CFString key, Class<T> type) {
+        if (has(key)) {
+            return data.get(key, type);
+        }
+        return null;
+    }
+    public CGImageDestinationProperties set(CFString key, NativeObject value) {
+        data.put(key, value);
+        return this;
+    }
     
-    /*<ptr>*/
-    /*</ptr>*/
-    public CGImageDestinationProperties(CFDictionary data) {
-        this.data = data;
-    }
-    public CGImageDestinationProperties() {
-        this.data = CFMutableDictionary.create();
-    }
-    /*<bind>*/static { Bro.bind(CGImageDestinationProperties.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
+
     /**
      * @since Available in iOS 4.0 and later.
      */
     public double getLossyCompressionQuality() {
-        if (data.containsKey(LossyCompressionQualityKey())) {
-            CFNumber val = data.get(LossyCompressionQualityKey(), CFNumber.class);
+        if (has(Keys.LossyCompressionQuality())) {
+            CFNumber val = get(Keys.LossyCompressionQuality(), CFNumber.class);
             return val.doubleValue();
         }
         return 1;
@@ -84,16 +121,16 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public CGImageDestinationProperties setLossyCompressionQuality(double quality) {
-        data.put(LossyCompressionQualityKey(), CFNumber.valueOf(quality));
+    public CGImageDestinationProperties setLossyCompressionQuality(double lossyCompressionQuality) {
+        set(Keys.LossyCompressionQuality(), CFNumber.valueOf(lossyCompressionQuality));
         return this;
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     public CGColor getBackgroundColor() {
-        if (data.containsKey(BackgroundColorKey())) {
-            CGColor val = data.get(BackgroundColorKey(), CGColor.class);
+        if (has(Keys.BackgroundColor())) {
+            CGColor val = get(Keys.BackgroundColor(), CGColor.class);
             return val;
         }
         return null;
@@ -101,16 +138,16 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public CGImageDestinationProperties setBackgroundColor(CGColor color) {
-        data.put(BackgroundColorKey(), color);
+    public CGImageDestinationProperties setBackgroundColor(CGColor backgroundColor) {
+        set(Keys.BackgroundColor(), backgroundColor);
         return this;
     }
     /**
      * @since Available in iOS 8.0 and later.
      */
     public long getMaxPixelSize() {
-        if (data.containsKey(ImageMaxPixelSizeKey())) {
-            CFNumber val = data.get(ImageMaxPixelSizeKey(), CFNumber.class);
+        if (has(Keys.ImageMaxPixelSize())) {
+            CFNumber val = get(Keys.ImageMaxPixelSize(), CFNumber.class);
             return val.longValue();
         }
         return 0;
@@ -118,16 +155,16 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public CGImageDestinationProperties setMaxPixelSize(long size) {
-        data.put(ImageMaxPixelSizeKey(), CFNumber.valueOf(size));
+    public CGImageDestinationProperties setMaxPixelSize(long maxPixelSize) {
+        set(Keys.ImageMaxPixelSize(), CFNumber.valueOf(maxPixelSize));
         return this;
     }
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public boolean isEmbeddingThumbnail() {
-        if (data.containsKey(EmbedThumbnailKey())) {
-            CFBoolean val = data.get(EmbedThumbnailKey(), CFBoolean.class);
+    public boolean embedsThumbnail() {
+        if (has(Keys.EmbedThumbnail())) {
+            CFBoolean val = get(Keys.EmbedThumbnail(), CFBoolean.class);
             return val.booleanValue();
         }
         return false;
@@ -135,30 +172,36 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public CGImageDestinationProperties setEmbedThumbnail(boolean embed) {
-        data.put(EmbedThumbnailKey(), CFBoolean.valueOf(embed));
+    public CGImageDestinationProperties setEmbedsThumbnail(boolean embedsThumbnail) {
+        set(Keys.EmbedThumbnail(), CFBoolean.valueOf(embedsThumbnail));
         return this;
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImageDestinationLossyCompressionQuality", optional=true)
-    protected static native CFString LossyCompressionQualityKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImageDestinationBackgroundColor", optional=true)
-    protected static native CFString BackgroundColorKey();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="kCGImageDestinationImageMaxPixelSize", optional=true)
-    protected static native CFString ImageMaxPixelSizeKey();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="kCGImageDestinationEmbedThumbnail", optional=true)
-    protected static native CFString EmbedThumbnailKey();
     /*</methods>*/
+    
+    /*<keys>*/
+    @Library("ImageIO")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImageDestinationLossyCompressionQuality", optional=true)
+        public static native CFString LossyCompressionQuality();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImageDestinationBackgroundColor", optional=true)
+        public static native CFString BackgroundColor();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="kCGImageDestinationImageMaxPixelSize", optional=true)
+        public static native CFString ImageMaxPixelSize();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="kCGImageDestinationEmbedThumbnail", optional=true)
+        public static native CFString EmbedThumbnail();
+    }
+    /*</keys>*/
 }

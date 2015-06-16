@@ -309,51 +309,107 @@ values:
         name: getClassDomain
 
     # CBCentralManager
-    CBCentralManagerScanOption(.*):
-        class: CBCentralManagerScanOptions
+    CBCentralManagerScanOption(.*)Key:
+        dictionary: CBCentralManagerScanOptions
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
-    CBConnectPeripheralOption(.*):
-        class: CBConnectPeripheralOptions
+        methods:
+            AllowDuplicates:
+                name: allowsDuplicates
+                type: boolean
+            SolicitedServiceUUIDs:
+                type: NSArray<CBUUID>
+    CBConnectPeripheralOption(.*)Key:
+        dictionary: CBConnectPeripheralOptions
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
-    CBCentralManagerOption(.*Key):
-        class: CBCentralManagerOptions
+        methods:
+            NotifyOnConnection:
+                name: notifiesOnConnection
+                type: boolean
+            NotifyOnDisconnection:
+                name: notifiesOnDisconnection
+                type: boolean
+            NotifyOnNotification:
+                name: notifiesOnNotification
+                type: boolean
+    CBCentralManagerOption(.*)Key:
+        dictionary: CBCentralManagerOptions
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        methods:
+            ShowPowerAlert:
+                name: showsPowerAlert
+                type: boolean
+            RestoreIdentifier:
+                type: String
     
     # CBCentralManagerDelegate
-    CBAdvertisementData(.*):
-        class: CBAdvertisementData
+    CBAdvertisementData(IsConnectable):
+        dictionary: CBAdvertisementData
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
-    CBCentralManagerRestoredState(.*Key):
-        class: CBCentralManagerRestoredState
+        mutable: false
+    CBAdvertisementData(.*)Key:
+        dictionary: CBAdvertisementData
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        mutable: false
+        methods:
+            LocalName:
+                type: String
+            TxPowerLevel:
+                type: double
+            ServiceUUIDs:
+                type: NSArray
+            ManufacturerData:
+                type: NSData
+            OverflowServiceUUIDs:
+                type: NSArray<CBUUID>
+            IsConnectable:
+                type: boolean
+            SolicitedServiceUUIDs:
+                type: NSArray<CBUUID>
+    CBCentralManagerRestoredState(.*)Key:
+        dictionary: CBCentralManagerRestoredState
+        name: '#{g[0]}'
+        type: NSString
+        mutable: false
+        methods:
+            Peripherals:
+                type: NSArray<CBPeripheral>
+            ScanServices:
+                type: NSArray<CBUUID>
+            ScanOptions:
+                type: CBCentralManagerScanOptions
 
     # CBPeripheralManager
-    CBPeripheralManagerOption(.*Key):
-        class: CBPeripheralManagerOptions
+    CBPeripheralManagerOption(.*)Key:
+        dictionary: CBPeripheralManagerOptions
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
-    CBPeripheralManagerRestoredState(.*Key):
-        class: CBPeripheralManagerRestoredState
+        methods:
+            ShowPowerAlert:
+                name: showsPowerAlert
+                type: boolean
+            RestoreIdentifier:
+                type: String
+    CBPeripheralManagerRestoredState(.*)Key:
+        dictionary: CBPeripheralManagerRestoredState
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        mutable: false
+        methods:
+            Services:
+                type: NSArray<CBMutableService>
+            AdvertisementData:
+                type: CBAdvertisementData
 
     # CBUUID
     CBUUID(.*)String:
-        class: CBUUIDIdentifier
-        name: '#{g[0]}Value'
-        visibility: protected
+        enum: CBUUIDIdentifier
+        name: '#{g[0]}'
+        type: NSString
 
     # Make sure we don't miss any values if new ones are introduced in a later version
     (CB.*):

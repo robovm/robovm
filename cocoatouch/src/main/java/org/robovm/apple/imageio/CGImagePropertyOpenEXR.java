@@ -35,25 +35,25 @@ import org.robovm.apple.coregraphics.*;
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("ImageIO") @StronglyLinked/*</annotations>*/
-@Marshaler(/*<name>*/CGImageProperty8BIM/*</name>*/.Marshaler.class)
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/CGImageProperty8BIM/*</name>*/ 
+@Marshaler(/*<name>*/CGImagePropertyOpenEXR/*</name>*/.Marshaler.class)
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/CGImagePropertyOpenEXR/*</name>*/ 
     extends /*<extends>*/GlobalValueEnumeration<CFString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
-    static { Bro.bind(/*<name>*/CGImageProperty8BIM/*</name>*/.class); }
+    static { Bro.bind(/*<name>*/CGImagePropertyOpenEXR/*</name>*/.class); }
 
     /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
-        public static CGImageProperty8BIM toObject(Class<CGImageProperty8BIM> cls, long handle, long flags) {
+        public static CGImagePropertyOpenEXR toObject(Class<CGImagePropertyOpenEXR> cls, long handle, long flags) {
             CFString o = (CFString) CFType.Marshaler.toObject(CFString.class, handle, flags);
             if (o == null) {
                 return null;
             }
-            return CGImageProperty8BIM.valueOf(o);
+            return CGImagePropertyOpenEXR.valueOf(o);
         }
         @MarshalsPointer
-        public static long toNative(CGImageProperty8BIM o, long flags) {
+        public static long toNative(CGImagePropertyOpenEXR o, long flags) {
             if (o == null) {
                 return 0L;
             }
@@ -62,24 +62,24 @@ import org.robovm.apple.coregraphics.*;
     }
     public static class AsListMarshaler {
         @MarshalsPointer
-        public static List<CGImageProperty8BIM> toObject(Class<? extends CFType> cls, long handle, long flags) {
+        public static List<CGImagePropertyOpenEXR> toObject(Class<? extends CFType> cls, long handle, long flags) {
             CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
             if (o == null) {
                 return null;
             }
-            List<CGImageProperty8BIM> list = new ArrayList<>();
+            List<CGImagePropertyOpenEXR> list = new ArrayList<>();
             for (int i = 0; i < o.size(); i++) {
-                list.add(CGImageProperty8BIM.valueOf(o.get(i, CFString.class)));
+                list.add(CGImagePropertyOpenEXR.valueOf(o.get(i, CFString.class)));
             }
             return list;
         }
         @MarshalsPointer
-        public static long toNative(List<CGImageProperty8BIM> l, long flags) {
+        public static long toNative(List<CGImagePropertyOpenEXR> l, long flags) {
             if (l == null) {
                 return 0L;
             }
             CFArray array = CFMutableArray.create();
-            for (CGImageProperty8BIM o : l) {
+            for (CGImagePropertyOpenEXR o : l) {
                 array.add(o.value());
             }
             return CFType.Marshaler.toNative(array, flags);
@@ -88,30 +88,23 @@ import org.robovm.apple.coregraphics.*;
     /*</marshalers>*/
 
     /*<constants>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final CGImageProperty8BIM LayerNames = new CGImageProperty8BIM("LayerNames");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final CGImageProperty8BIM Version = new CGImageProperty8BIM("Version");
+    
     /*</constants>*/
     
-    private static /*<name>*/CGImageProperty8BIM/*</name>*/[] values = new /*<name>*/CGImageProperty8BIM/*</name>*/[] {/*<value_list>*/LayerNames, Version/*</value_list>*/};
+    private static /*<name>*/CGImagePropertyOpenEXR/*</name>*/[] values = new /*<name>*/CGImagePropertyOpenEXR/*</name>*/[] {/*<value_list>*//*</value_list>*/};
     
-    /*<name>*/CGImageProperty8BIM/*</name>*/ (String getterName) {
+    /*<name>*/CGImagePropertyOpenEXR/*</name>*/ (String getterName) {
         super(Values.class, getterName);
     }
     
-    public static /*<name>*/CGImageProperty8BIM/*</name>*/ valueOf(/*<type>*/CFString/*</type>*/ value) {
-        for (/*<name>*/CGImageProperty8BIM/*</name>*/ v : values) {
+    public static /*<name>*/CGImagePropertyOpenEXR/*</name>*/ valueOf(/*<type>*/CFString/*</type>*/ value) {
+        for (/*<name>*/CGImagePropertyOpenEXR/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
-            + /*<name>*/CGImageProperty8BIM/*</name>*/.class.getName());
+            + /*<name>*/CGImagePropertyOpenEXR/*</name>*/.class.getName());
     }
     
     /*<methods>*//*</methods>*/
@@ -121,16 +114,7 @@ import org.robovm.apple.coregraphics.*;
     	static { Bro.bind(Values.class); }
 
         /*<values>*/
-        /**
-         * @since Available in iOS 4.0 and later.
-         */
-        @GlobalValue(symbol="kCGImageProperty8BIMLayerNames", optional=true)
-        public static native CFString LayerNames();
-        /**
-         * @since Available in iOS 8.0 and later.
-         */
-        @GlobalValue(symbol="kCGImageProperty8BIMVersion", optional=true)
-        public static native CFString Version();
+    
         /*</values>*/
     }
 }

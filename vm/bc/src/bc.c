@@ -19,9 +19,19 @@
 #include "MurmurHash3.h"
 #include "classinfo.h"
 
+#if defined(__APPLE__)
+#include <mach-o/dyld.h> // for _NSGetExecutablePath()
+#include <libgen.h>      // for dirname()
+#include <dlfcn.h>
+#elif defined(__linux__)
+#include <unistd.h>
+#endif
+
 #define LOG_TAG "bc"
 
 #define ALLOC_NATIVE_FRAMES_SIZE 8
+
+static const int MAX_PATH = 1024;
 
 typedef struct {
     ClassInfoHeader* classInfoHeader;
@@ -64,7 +74,7 @@ static VM* vm = NULL;
 static jint addressClassLookupsCount = 0;
 static AddressClassLookup* addressClassLookups = NULL;
 
-int main(int argc, char* argv[]) {
+static void initOptions() {
     options.mainClass = (char*) _bcMainClass;
     options.rawBootclasspath = _bcBootclasspath;
     options.rawClasspath = _bcClasspath;
@@ -81,6 +91,13 @@ int main(int argc, char* argv[]) {
     options.runtimeData = &_bcRuntimeData;
     options.listBootClasses = listBootClasses;
     options.listUserClasses = listUserClasses;
+}
+
+
+int bcmain(int argc, char* argv[]) {
+
+    initOptions();
+
     if (!rvmInitOptions(argc, argv, &options, FALSE)) {
         fprintf(stderr, "rvmInitOptions(...) failed!\n");
         return 1;
@@ -94,6 +111,11 @@ int main(int argc, char* argv[]) {
     jint result = rvmRun(env) ? 0 : 1;
     rvmShutdown(env, result);
     return result;
+}
+
+//__attribute__ ((weak)) main;
+int __attribute__ ((weak)) main(int argc, char* argv[]) {
+    bcmain( argc, argv );
 }
 
 static ClassInfoHeader** getClassInfosBase(void* hash) {
@@ -1046,4 +1068,273 @@ void _bcHookInstrumented(DebugEnv* debugEnv, jint lineNumber, jint lineNumberOff
     rvmPopGatewayFrame(env);
     // Restore the exception if one had been thrown when this function was called.
     env->throwable = throwable;
+}
+
+jint JNI_GetDefaultJavaVMInitArgs(void* vm_args) {
+    return JNI_OK;
+}
+
+#if (__APPLE__)
+char *getExecutablePath(char * const buf, const int maxlen) {
+    unsigned int size = maxlen;
+    //Mac OS X: _NSGetExecutablePath() (man 3 dyld)
+    if (_NSGetExecutablePath(buf, &size) == 0) {
+        fprintf(stderr, "executable path is %s\n", buf);
+        return buf;
+    }
+    else {
+        fprintf(stderr, "buffer too small; need size %u\n", size);
+        return NULL;
+    }
+
+}
+#elif defined(__linux__)
+#include <unistd.h>
+char *getExecutablePath(char * const buf, const int maxlen) {
+
+    size_t len = readlink("/proc/self/exe", buf, maxlen - 1);
+    if (len != -1) {
+        buf[len] = '\0';
+        return buf;
+    } else {
+        return NULL;
+    }
+}
+#else
+//Solaris: getexecname()
+//FreeBSD: sysctl CTL_KERN KERN_PROC KERN_PROC_PATHNAME -1
+//FreeBSD if it has procfs: readlink /proc/curproc/file (FreeBSD doesn't have procfs by default)
+//NetBSD: readlink /proc/curproc/exe
+//DragonFly BSD: readlink /proc/curproc/file
+//Windows: GetModuleFileName() with hModule = NULL
+char *getExecutablePath(char * const buf, const int maxlen) {
+	fprintf(stderr, "getExecutablePath() returning NULL\n");
+	return NULL;
+}
+#endif
+
+
+// Custom parameters are passed in with "-x", "-X", or "_"
+static char * allocRvmCmdsForCustomCmds(const char * const p_cmd_start) {
+    char* prval = NULL;
+    if (p_cmd_start == strstr(p_cmd_start, "rvm:")) {
+        // Is a custom RVM command.
+        const int prmLen = strlen(p_cmd_start);
+        prval = malloc(sizeof(char) * (prmLen + 2));
+        prval[0] = '-';
+        memcpy(&prval[1], p_cmd_start, prmLen);
+        prval[prmLen + 1] = '\0';
+    }
+
+    return prval;
+}
+
+static char * getRVMOptionForJvmOption(const JavaVMOption* const p_opt) {
+    char * p_rval = NULL;
+    if (NULL == p_opt || NULL == p_opt->optionString)
+        return NULL;
+
+    if ('-' == p_opt->optionString[0] || '_' == p_opt->optionString[0]) {
+        switch (p_opt->optionString[1]) {
+        case 'd':
+        case 'D':
+            // http://docs.oracle.com/javase/7/docs/technotes/guides/jni/spec/invocation.html
+            // -D<name>=<value>	Set a system property
+            fprintf(stderr, "%s:\n\t-D option not yet supported!\n",
+                    p_opt->optionString);
+            break;
+        case 'x':
+        case 'X':
+            // http://docs.oracle.com/javase/7/docs/technotes/guides/jni/spec/invocation.html
+            // Non-standard option names must begin with "-X" or an underscore ("_"). For example,
+            // the JDK/JRE supports -Xms and -Xmx options to allow programmers specify the initial
+            // and maximum heap size. Options that begin with "-X" are accessible from the "java"
+            // command line.
+            p_rval = allocRvmCmdsForCustomCmds(&p_opt->optionString[2]);
+            break;
+        case 'v':
+            if (&p_opt->optionString[1]
+                    == strstr(&p_opt->optionString[1], "verbose")) {
+                // http://docs.oracle.com/javase/7/docs/technotes/guides/jni/spec/invocation.html
+                // -verbose[:class|gc|jni]	Enable verbose output. The options can be followed by a
+                // comma-separated list of names indicating what kind of messages will be printed
+                // by the VM. For example, "-verbose:gc,class" instructs the VM to print GC and
+                // class loading related messages. Standard names include: gc, class, and jni. All
+                // nonstandard (VM-specific) names must begin with "X".
+                fprintf(stderr,
+                        "%s:\n\t-verbose[:class|gc|jni] option not yet supported!\n",
+                        p_opt->optionString);
+
+            }
+            break;
+        default:
+            break;
+        }
+
+    } else if (0 == strcmp(p_opt->optionString, "vfprintf")) {
+        // extraInfo is a pointer to the vfprintf hook.
+        fprintf(stderr, "vfprintf() hook not yet supported!");
+    } else if (0 == strcmp(p_opt->optionString, "exit")) {
+        // extraInfo is a pointer to the exit hook.
+        fprintf(stderr, "exit() hook not yet supported!");
+    } else if (0 == strcmp(p_opt->optionString, "abort")) {
+        // extraInfo is a pointer to the abort hook.
+        fprintf(stderr, "abort() hook not yet supported!");
+    }
+
+    return p_rval;
+}
+
+static void swapCharPtrs(char **ppC0, char **ppC1) {
+    char *tmp = *ppC0;
+    *ppC0 = *ppC1;
+    *ppC1 = tmp;
+}
+
+static jboolean createMainArgumentsFromVmArgs(
+        const JavaVMInitArgs* const p_vm_args, int *r_argc, char ***r_argv) {
+    jboolean ok = FALSE;
+
+    // Arg0 to robovm always is the path to the exe
+    const int num_options = (p_vm_args) ? p_vm_args->nOptions : 1;
+    const int n_argc_alloc = 1 + num_options;
+
+    // We allocate an argv for every incoming option.
+    char **pp_argv = malloc(sizeof(char*) * n_argc_alloc);
+    if (NULL == pp_argv) {
+        fprintf(stderr,
+                "createMainArgumentsFromVmArgs(...) failed to allocate memory!\n");
+        return FALSE;
+    }
+
+    // Argv[0] points to the exe path.
+    pp_argv[0] = malloc(sizeof(char) * MAX_PATH);
+    pp_argv[0] = getExecutablePath(pp_argv[0], MAX_PATH);
+
+    // Argv[1..n_argc] are converted forms of the options flags.
+    if (p_vm_args) {
+        ok = TRUE;
+        fprintf( stderr, "nOptions = %d\n", num_options );
+        for (int i = 0; i < num_options; i++) {
+            const JavaVMOption* const p_opt = &p_vm_args->options[i];
+            pp_argv[1 + i] = getRVMOptionForJvmOption(p_opt);
+            ok &= (NULL != pp_argv[1 + i]);
+        }
+        ok |= p_vm_args->ignoreUnrecognized;
+    }
+
+    // Move any NULL pointers to the end of pp_argv (bubble sort since it's dead simple
+    // and we won't ever be passing too many parameters.)
+    {
+        jboolean sorted;
+        do {
+            sorted = TRUE;
+            for (int i = 0; i < num_options; i++) {
+                if ((NULL == pp_argv[i]) && (NULL != pp_argv[i + 1])) {
+                    swapCharPtrs(&pp_argv[i], &pp_argv[i + 1]);
+                    sorted = FALSE;
+                }
+            }
+        } while (!sorted);
+    }
+    // DONE -- Move any NULL pointers to the end of pp_argv (bubble sort - meh.)
+
+    // Count the number of contiguous parameters;
+    {
+        int n_argc = 0;
+        while (pp_argv[n_argc] && n_argc < n_argc_alloc) {
+            fprintf(stderr, "found argv[%d] = %s\n", n_argc, pp_argv[n_argc]);
+            n_argc++;
+        }
+        if (r_argc)
+            *r_argc = n_argc;
+    }
+    // DONE -- Count the number of contiguous parameters;
+
+    if (r_argv)
+        *r_argv = pp_argv;
+
+    return ok;
+}
+
+void deallocArgCArgV(char ** argv, const int argc) {
+    if (NULL == argv)
+        return;
+    int i = 0;
+    while ((i < argc) && (NULL != argv[i])) {
+        free(argv[i]);
+        argv[i++] = NULL;
+    }
+    free(argv);
+}
+
+
+__attribute__((visibility("default")))
+jint JNI_CreateJavaVM(JavaVM** p_vm, JNIEnv** p_env, void* pvm_args) {
+
+    initOptions();
+
+    JavaVMInitArgs *vm_args = (JavaVMInitArgs *) pvm_args;
+    if (NULL != vm_args) {
+        int argc = 0;
+        char **argv = NULL;
+        if (!createMainArgumentsFromVmArgs(vm_args, &argc, &argv)) {
+            fprintf(stderr, "createMainArgumentsFromVmArgs(...) failed!\n");
+            deallocArgCArgV(argv, argc);
+            return 1;
+        }
+        if (!rvmInitOptions(argc, argv, &options, FALSE)) {
+            fprintf(stderr, "rvmInitOptions(...) failed!\n");
+            deallocArgCArgV(argv, argc);
+            return 1;
+        }
+
+        deallocArgCArgV(argv, argc);
+    } else {
+        // TODO: Do with real code that maps natively, rather than adding faked argc, argv.
+        const int argc = 1;
+        char path[MAX_PATH];
+        char *argv1 = getExecutablePath(path, sizeof(path));
+        char *argv[2] = { argv1, NULL };
+
+        if (!rvmInitOptions(argc, argv, &options, FALSE)) {
+            fprintf(stderr, "rvmInitOptions(...) failed!\n");
+            return 1;
+        }
+    }
+
+    // Start up robovm (JNI)
+    Env* env = rvmStartup(&options);
+    if (!env) {
+        fprintf(stderr, "rvmStartup(...) failed!\n");
+        return JNI_ERR;
+    }
+
+    vm = env->vm;
+
+    // Return values.
+    if (p_vm) {
+        *p_vm = &vm->javaVM;
+    }
+    if (p_env) {
+        *p_env = &env->jni;
+    }
+
+    return JNI_OK;
+}
+
+__attribute__((visibility("default")))
+jint JNI_GetCreatedJavaVMs(JavaVM** vmBuf, jsize bufLen, jsize* nVMs) {
+    int numVms = (vm) ? 1 : 0;
+    numVms = (bufLen < 1) ? bufLen : 1;
+    if ((NULL == vmBuf) || (NULL == vm)) {
+        return JNI_ERR;
+    }
+    if (bufLen >= 1) {
+        *vmBuf = &vm->javaVM;
+    }
+    if (NULL != nVMs) {
+        *nVMs = numVms;
+    }
+    return JNI_OK;
 }

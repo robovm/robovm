@@ -107,9 +107,10 @@ if(DARWIN)
 endif()
 
 # Set up global C and C++ compiler flags
-set(C_FLAGS "${C_FLAGS} -std=gnu99")
-set(CXX_FLAGS "${CXX_FLAGS} -std=gnu++11")
-set(C_CXX_FLAGS "${C_CXX_FLAGS} -Wall -fdata-sections -ffunction-sections")
+set(C_FLAGS "${C_FLAGS} -std=gnu99 -fPIC")
+set(CXX_FLAGS "${CXX_FLAGS} -std=gnu++11 -fPIC")
+#set(C_CXX_FLAGS "${C_CXX_FLAGS} -Wall -fvisibility=hidden -fdata-sections -ffunction-sections -fPIC")
+set(C_CXX_FLAGS "${C_CXX_FLAGS} -Wall -fdata-sections -ffunction-sections -fPIC")
 if(CARCH)
   set(C_CXX_FLAGS "${C_CXX_FLAGS} -arch ${CARCH}")
 elseif(64_BIT)
@@ -131,6 +132,7 @@ elseif(IOS)
 endif()
 
 # Linker flags
+set(LD_FLAGS "${LD_FLAGS} -fPIC")
 if(CARCH)
   set(LD_FLAGS "${LD_FLAGS} -arch ${CARCH}")
 elseif(64_BIT)
@@ -160,6 +162,7 @@ set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${LD_FLAGS}")
 set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} ${LD_FLAGS}")
 
 # Assembler flags
+set(ASM_FLAGS "${ASM_FLAGS} -fPIC")
 if(CARCH)
   set(ASM_FLAGS "${ASM_FLAGS} -c -arch ${CARCH}")
 elseif(64_BIT)
@@ -259,7 +262,7 @@ ExternalProject_Add(extgc
   GIT_TAG 330797462474976093d631058f784c843040e294
   UPDATE_COMMAND ""
   PATCH_COMMAND bash -c "rm -rf libatomic_ops && ln -s ../../../libatomic_ops-prefix/src/libatomic_ops libatomic_ops"
-  CONFIGURE_COMMAND bash -c "CC=${CMAKE_C_COMPILER} CFLAGS='${EXTGC_C_FLAGS}' LDFLAGS='${EXTGC_LD_FLAGS}' ./configure ${EXT_HOST} ${EXTGC_PARAMS} --prefix=${CMAKE_BINARY_DIR}/gc"
+  CONFIGURE_COMMAND bash -c "CC=${CMAKE_C_COMPILER} CFLAGS='${EXTGC_C_FLAGS} -fPIC' LDFLAGS='${EXTGC_LD_FLAGS} -fPIC' ./configure ${EXT_HOST} ${EXTGC_PARAMS} --prefix=${CMAKE_BINARY_DIR}/gc"
   BUILD_IN_SOURCE 1
 )
 install(FILES ${CMAKE_BINARY_DIR}/gc/lib/libgc.a DESTINATION ${INSTALL_DIR} RENAME libgc${LIB_SUFFIX})

@@ -164,7 +164,7 @@ classes:
                 trim_after_first_colon: true
                 parameters:
                     advertisementData:
-                        type: CBAdvertisementData
+                        type: CBAdvertisementData   
             '-setDesiredConnectionLatency:forCentral:':
                 trim_after_first_colon: true
             '-addService:':
@@ -173,6 +173,9 @@ classes:
                 trim_after_first_colon: true
             '-respondToRequest:withResult:':
                 trim_after_first_colon: true
+                parameters:
+                    result:
+                        type: CBATTErrorCode
             '-updateValue:forCharacteristic:onSubscribedCentrals:':
                 trim_after_first_colon: true
                 parameters:

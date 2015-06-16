@@ -88,7 +88,7 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "removeAllServices")
     public native void removeAllServices();
     @Method(selector = "respondToRequest:withResult:")
-    public native void respondToRequest(CBATTRequest request, CBATTError result);
+    public native void respondToRequest(CBATTRequest request, CBATTErrorCode result);
     @Method(selector = "updateValue:forCharacteristic:onSubscribedCentrals:")
     public native boolean updateValue(NSData value, CBMutableCharacteristic characteristic, NSArray<CBCentral> centrals);
     /**

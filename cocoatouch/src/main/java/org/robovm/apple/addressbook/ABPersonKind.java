@@ -78,8 +78,8 @@ import org.robovm.apple.corefoundation.*;
                 return 0L;
             }
             CFArray array = CFMutableArray.create();
-            for (ABPersonKind i : l) {
-                array.add(i.value());
+            for (ABPersonKind o : l) {
+                array.add(o.value());
             }
             return CFType.Marshaler.toNative(array, flags);
         }

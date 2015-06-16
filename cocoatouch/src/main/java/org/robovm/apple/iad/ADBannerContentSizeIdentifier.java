@@ -82,8 +82,8 @@ import org.robovm.apple.avkit.*;
                 return 0L;
             }
             NSArray<NSString> array = new NSMutableArray<>();
-            for (ADBannerContentSizeIdentifier i : l) {
-                array.add(i.value());
+            for (ADBannerContentSizeIdentifier o : l) {
+                array.add(o.value());
             }
             return NSObject.Marshaler.toNative(array, flags);
         }

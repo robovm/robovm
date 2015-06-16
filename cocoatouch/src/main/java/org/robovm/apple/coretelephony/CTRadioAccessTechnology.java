@@ -79,8 +79,8 @@ import org.robovm.apple.corefoundation.*;
                 return 0L;
             }
             NSArray<NSString> array = new NSMutableArray<>();
-            for (CTRadioAccessTechnology i : l) {
-                array.add(i.value());
+            for (CTRadioAccessTechnology o : l) {
+                array.add(o.value());
             }
             return NSObject.Marshaler.toNative(array, flags);
         }

@@ -79,8 +79,8 @@ import org.robovm.apple.dispatch.*;
                 return 0L;
             }
             CFArray array = CFMutableArray.create();
-            for (SecMatchLimit i : l) {
-                array.add(i.value());
+            for (SecMatchLimit o : l) {
+                array.add(o.value());
             }
             return CFType.Marshaler.toNative(array, flags);
         }

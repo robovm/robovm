@@ -79,8 +79,8 @@ import org.robovm.apple.corelocation.*;
                 return 0L;
             }
             NSArray<NSString> array = new NSMutableArray<>();
-            for (CKErrorUserInfoKey i : l) {
-                array.add(i.value());
+            for (CKErrorUserInfoKey o : l) {
+                array.add(o.value());
             }
             return NSObject.Marshaler.toNative(array, flags);
         }

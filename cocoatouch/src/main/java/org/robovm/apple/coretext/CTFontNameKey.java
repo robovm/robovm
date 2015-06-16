@@ -81,8 +81,8 @@ import org.robovm.apple.uikit.*;
                 return 0L;
             }
             CFArray array = CFMutableArray.create();
-            for (CTFontNameKey i : l) {
-                array.add(i.value());
+            for (CTFontNameKey o : l) {
+                array.add(o.value());
             }
             return CFType.Marshaler.toNative(array, flags);
         }

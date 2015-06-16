@@ -147,7 +147,7 @@ import org.robovm.apple.metal.*;
     /*</methods>*/
     
     /*<keys>*/
-    @Library("CoreVideo") @StronglyLinked
+    @Library("CoreVideo")
     public static class Keys {
         static { Bro.bind(Keys.class); }
         /**

@@ -47,6 +47,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public CKLocationSortDescriptor() {}
     protected CKLocationSortDescriptor(SkipInit skipInit) { super(skipInit); }
+    @WeaklyLinked
     public CKLocationSortDescriptor(String key, CLLocation relativeLocation) { super((SkipInit) null); initObject(init(key, relativeLocation)); }
     public CKLocationSortDescriptor(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/

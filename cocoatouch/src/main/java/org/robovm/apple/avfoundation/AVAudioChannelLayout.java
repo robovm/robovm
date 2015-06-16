@@ -57,6 +57,7 @@ import org.robovm.apple.audiounit.*;
     public AVAudioChannelLayout() {}
     protected AVAudioChannelLayout(SkipInit skipInit) { super(skipInit); }
     public AVAudioChannelLayout(AudioChannelLayoutTag layoutTag) { super((SkipInit) null); initObject(init(layoutTag)); }
+    @WeaklyLinked
     public AVAudioChannelLayout(AudioChannelLayout layout) { super((SkipInit) null); initObject(init(layout)); }
     /*</constructors>*/
     /*<properties>*/

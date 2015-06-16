@@ -108,7 +108,7 @@ import org.robovm.apple.imageio.*;
      */
     public NSSet<NSURL> getUpdatedAssets() {
         if (has(Keys.UpdatedAssets())) {
-            NSSet<NSURL> val = (NSSet) get(Keys.UpdatedAssets());
+            NSSet<NSURL> val = (NSSet<NSURL>) get(Keys.UpdatedAssets());
             return val;
         }
         return null;
@@ -118,7 +118,7 @@ import org.robovm.apple.imageio.*;
      */
     public NSSet<NSURL> getInsertedAssetGroups() {
         if (has(Keys.InsertedAssetGroups())) {
-            NSSet<NSURL> val = (NSSet) get(Keys.InsertedAssetGroups());
+            NSSet<NSURL> val = (NSSet<NSURL>) get(Keys.InsertedAssetGroups());
             return val;
         }
         return null;
@@ -128,7 +128,7 @@ import org.robovm.apple.imageio.*;
      */
     public NSSet<NSURL> getUpdatedAssetGroups() {
         if (has(Keys.UpdatedAssetGroups())) {
-            NSSet<NSURL> val = (NSSet) get(Keys.UpdatedAssetGroups());
+            NSSet<NSURL> val = (NSSet<NSURL>) get(Keys.UpdatedAssetGroups());
             return val;
         }
         return null;
@@ -138,7 +138,7 @@ import org.robovm.apple.imageio.*;
      */
     public NSSet<NSURL> getDeletedAssetGroups() {
         if (has(Keys.DeletedAssetGroups())) {
-            NSSet<NSURL> val = (NSSet) get(Keys.DeletedAssetGroups());
+            NSSet<NSURL> val = (NSSet<NSURL>) get(Keys.DeletedAssetGroups());
             return val;
         }
         return null;
@@ -146,7 +146,7 @@ import org.robovm.apple.imageio.*;
     /*</methods>*/
     
     /*<keys>*/
-    @Library("AssetsLibrary") @StronglyLinked
+    @Library("AssetsLibrary")
     public static class Keys {
         static { Bro.bind(Keys.class); }
         /**

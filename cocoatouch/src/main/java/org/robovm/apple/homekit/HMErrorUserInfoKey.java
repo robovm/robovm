@@ -78,8 +78,8 @@ import org.robovm.apple.foundation.*;
                 return 0L;
             }
             NSArray<NSString> array = new NSMutableArray<>();
-            for (HMErrorUserInfoKey i : l) {
-                array.add(i.value());
+            for (HMErrorUserInfoKey o : l) {
+                array.add(o.value());
             }
             return NSObject.Marshaler.toNative(array, flags);
         }

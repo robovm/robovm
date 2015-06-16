@@ -81,8 +81,8 @@ import org.robovm.apple.metal.*;
                 return 0L;
             }
             CFArray array = CFMutableArray.create();
-            for (CVImageBufferColorPrimaries i : l) {
-                array.add(i.value());
+            for (CVImageBufferColorPrimaries o : l) {
+                array.add(o.value());
             }
             return CFType.Marshaler.toNative(array, flags);
         }

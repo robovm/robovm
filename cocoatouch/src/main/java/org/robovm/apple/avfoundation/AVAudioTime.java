@@ -56,6 +56,7 @@ import org.robovm.apple.audiounit.*;
     /*<constructors>*/
     public AVAudioTime() {}
     protected AVAudioTime(SkipInit skipInit) { super(skipInit); }
+    @WeaklyLinked
     public AVAudioTime(AudioTimeStamp ts, double sampleRate) { super((SkipInit) null); initObject(init(ts, sampleRate)); }
     public AVAudioTime(long hostTime) { super((SkipInit) null); initObject(init(hostTime)); }
     public AVAudioTime(long sampleTime, double sampleRate) { super((SkipInit) null); initObject(init(sampleTime, sampleRate)); }

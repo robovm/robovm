@@ -79,8 +79,8 @@ import org.robovm.apple.corefoundation.*;
                 return 0L;
             }
             NSArray<NSString> array = new NSMutableArray<>();
-            for (CTCallState i : l) {
-                array.add(i.value());
+            for (CTCallState o : l) {
+                array.add(o.value());
             }
             return NSObject.Marshaler.toNative(array, flags);
         }

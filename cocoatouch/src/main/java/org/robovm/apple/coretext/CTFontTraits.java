@@ -181,7 +181,7 @@ import org.robovm.apple.uikit.*;
     /*</methods>*/
     
     /*<keys>*/
-    @Library("CoreText") @StronglyLinked
+    @Library("CoreText")
     public static class Keys {
         static { Bro.bind(Keys.class); }
         /**

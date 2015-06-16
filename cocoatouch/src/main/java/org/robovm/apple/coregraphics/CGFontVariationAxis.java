@@ -179,7 +179,7 @@ import org.robovm.apple.uikit.*;
     /*</methods>*/
     
     /*<keys>*/
-    @Library("CoreGraphics") @StronglyLinked
+    @Library("CoreGraphics")
     public static class Keys {
         static { Bro.bind(Keys.class); }
         /**

@@ -80,8 +80,8 @@ import org.robovm.apple.imageio.*;
                 return 0L;
             }
             NSArray<NSString> array = new NSMutableArray<>();
-            for (ALAssetProperty i : l) {
-                array.add(i.value());
+            for (ALAssetProperty o : l) {
+                array.add(o.value());
             }
             return NSObject.Marshaler.toNative(array, flags);
         }

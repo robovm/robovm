@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -32,7 +33,7 @@ import org.robovm.apple.corefoundation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("CFNetwork")/*</annotations>*/
+/*<annotations>*/@Library("CFNetwork") @StronglyLinked/*</annotations>*/
 @Marshaler(/*<name>*/CFNetworkErrorUserInfoKey/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CFNetworkErrorUserInfoKey/*</name>*/ 
     extends /*<extends>*/NSErrorUserInfoKey/*</extends>*/
@@ -78,8 +79,8 @@ import org.robovm.apple.corefoundation.*;
                 return 0L;
             }
             NSArray<NSString> array = new NSMutableArray<>();
-            for (CFNetworkErrorUserInfoKey i : l) {
-                array.add(i.value());
+            for (CFNetworkErrorUserInfoKey o : l) {
+                array.add(o.value());
             }
             return NSObject.Marshaler.toNative(array, flags);
         }
@@ -139,7 +140,7 @@ import org.robovm.apple.corefoundation.*;
     
     /*<methods>*//*</methods>*/
     
-    /*<annotations>*/@Library("CFNetwork")/*</annotations>*/
+    /*<annotations>*/@Library("CFNetwork") @StronglyLinked/*</annotations>*/
     public static class Values {
     	static { Bro.bind(Values.class); }
 

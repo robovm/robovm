@@ -85,8 +85,8 @@ import org.robovm.apple.opengles.*;
                 return 0L;
             }
             NSArray<NSString> array = new NSMutableArray<>();
-            for (SCNSceneSourceAnimationImportPolicy i : l) {
-                array.add(i.value());
+            for (SCNSceneSourceAnimationImportPolicy o : l) {
+                array.add(o.value());
             }
             return NSObject.Marshaler.toNative(array, flags);
         }

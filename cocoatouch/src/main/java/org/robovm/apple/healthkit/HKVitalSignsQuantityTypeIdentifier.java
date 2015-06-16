@@ -78,8 +78,8 @@ import org.robovm.apple.foundation.*;
                 return 0L;
             }
             NSArray<NSString> array = new NSMutableArray<>();
-            for (HKVitalSignsQuantityTypeIdentifier i : l) {
-                array.add(i.value());
+            for (HKVitalSignsQuantityTypeIdentifier o : l) {
+                array.add(o.value());
             }
             return NSObject.Marshaler.toNative(array, flags);
         }

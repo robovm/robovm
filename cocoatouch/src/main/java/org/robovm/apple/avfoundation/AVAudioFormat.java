@@ -56,6 +56,7 @@ import org.robovm.apple.audiounit.*;
     /*<constructors>*/
     public AVAudioFormat() {}
     protected AVAudioFormat(SkipInit skipInit) { super(skipInit); }
+    @WeaklyLinked
     public AVAudioFormat(AudioStreamBasicDescription asbd) { super((SkipInit) null); initObject(init(asbd)); }
     public AVAudioFormat(AudioStreamBasicDescription asbd, AVAudioChannelLayout layout) { super((SkipInit) null); initObject(init(asbd, layout)); }
     public AVAudioFormat(double sampleRate, int channels) { super((SkipInit) null); initObject(init(sampleRate, channels)); }

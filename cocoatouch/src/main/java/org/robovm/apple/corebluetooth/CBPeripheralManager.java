@@ -48,10 +48,12 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public CBPeripheralManager() {}
     protected CBPeripheralManager(SkipInit skipInit) { super(skipInit); }
+    @WeaklyLinked
     public CBPeripheralManager(CBPeripheralManagerDelegate delegate, DispatchQueue queue) { super((SkipInit) null); initObject(init(delegate, queue)); }
     /**
      * @since Available in iOS 7.0 and later.
      */
+    @WeaklyLinked
     public CBPeripheralManager(CBPeripheralManagerDelegate delegate, DispatchQueue queue, CBPeripheralManagerOptions options) { super((SkipInit) null); initObject(init(delegate, queue, options)); }
     /*</constructors>*/
     /*<properties>*/

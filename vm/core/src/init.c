@@ -175,6 +175,9 @@ static void parseArg(char* arg, Options* options) {
         property->key = key;
         property->value = s;
         DL_APPEND(options->properties, property);
+    } else if (startsWith(arg, "exepath=")) {
+        fprintf(stderr, "processing executable path.");
+        strncpy( options->executablePath, &arg[8], PATH_MAX);
     }
 }
 
@@ -184,7 +187,7 @@ jboolean rvmInitOptions(int argc, char* argv[], Options* options, jboolean ignor
         return FALSE;
     }
 
-    strcpy(options->executablePath, path);
+    strncpy(options->executablePath, path, PATH_MAX);
 
     jint i = strlen(path);
     while (i >= 0 && path[i] != '/') {
@@ -369,25 +372,12 @@ Env* rvmStartup(Options* options) {
     if (rvmExceptionCheck(env)) goto error_daemons;
     TRACE("Daemons started");
 
-    return env;
-
-error_daemons:
-error_system_ClassLoader:
-    rvmDetachCurrentThread(env->vm, TRUE, FALSE);
-
-    return NULL;
-}
-
-jboolean rvmRun(Env* env) {
-    Options* options = env->vm->options;
-    Class* clazz = NULL;
-
     jboolean errorDuringSetup = FALSE;
 
     //If our options has any properties, let's set them before we call our main.
     if (options->properties) {
         //First, find java.lang.System, which has the setProperty method.
-        clazz = rvmFindClassUsingLoader(env, "java/lang/System", NULL);
+        Class* clazz = rvmFindClassUsingLoader(env, "java/lang/System", NULL);
         if (clazz) {
             //Get the setProperty method.
             Method* method = rvmGetClassMethod(env, clazz, "setProperty", "(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;");
@@ -430,31 +420,51 @@ jboolean rvmRun(Env* env) {
         }
     }
 
-    if (!errorDuringSetup) {
-        rvmHookBeforeAppEntryPoint(env, options->mainClass);
-        clazz = rvmFindClassUsingLoader(env, options->mainClass, systemClassLoader);
-        if (clazz) {
-            Method* method = rvmGetClassMethod(env, clazz, "main", "([Ljava/lang/String;)V");
-            if (method) {
-                ObjectArray* args = rvmNewObjectArray(env, options->commandLineArgsCount, java_lang_String, NULL, NULL);
+    return (errorDuringSetup) ? NULL : env;
+
+error_daemons:
+error_system_ClassLoader:
+    rvmDetachCurrentThread(env->vm, TRUE, FALSE);
+
+    return NULL;
+}
+
+jboolean rvmRun(Env* env) {
+    Options* options = env->vm->options;
+    Class* clazz = NULL;
+
+    rvmHookBeforeAppEntryPoint(env, options->mainClass);
+    clazz = rvmFindClassUsingLoader(env, options->mainClass, systemClassLoader);
+    if (clazz) {
+        Method* method = rvmGetClassMethod(env, clazz, "main", "([Ljava/lang/String;)V");
+        if (method) {
+            ObjectArray* args = rvmNewObjectArray(env, options->commandLineArgsCount, java_lang_String, NULL, NULL);
+            if (args) {
+                jint i = 0;
+                for (i = 0; i < args->length; i++) {
+                    // TODO: Don't assume modified UTF-8
+                    args->values[i] = rvmNewStringUTF(env, options->commandLineArgs[i], -1);
+                    if (!args->values[i]) {
+                        args = NULL;
+                        break;
+                    }
+                }
                 if (args) {
-                    jint i = 0;
-                    for (i = 0; i < args->length; i++) {
-                        // TODO: Don't assume modified UTF-8
-                        args->values[i] = rvmNewStringUTF(env, options->commandLineArgs[i], -1);
-                        if (!args->values[i]) {
-                            args = NULL;
-                            break;
-                        }
-                    }
-                    if (args) {
-                        rvmCallVoidClassMethod(env, clazz, method, args);
-                    }
+                    rvmCallVoidClassMethod(env, clazz, method, args);
                 }
             }
         }
     }
 
+    return rvmDestroy(env->vm);
+}
+
+jboolean rvmDestroy(VM * vm) {
+    Env * env;
+    if (JNI_OK != rvmAttachCurrentThread(vm, &env, NULL, NULL) ) {
+        WARN("rvmDestroy() failed to attach current thread.");
+        return FALSE;
+    }
     Object* throwable = rvmExceptionOccurred(env);
     rvmDetachCurrentThread(env->vm, TRUE, FALSE);
 

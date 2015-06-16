@@ -133,7 +133,7 @@ import org.robovm.apple.foundation.*;
     @Method(selector = "entityForName:inManagedObjectContext:")
     public static native NSEntityDescription getEntityByNameInContext(String entityName, NSManagedObjectContext context);
     @Method(selector = "insertNewObjectForEntityForName:inManagedObjectContext:")
-    public static native NSEntityDescription insertNewEntityInContext(String entityName, NSManagedObjectContext context);
+    public static native NSManagedObject insertNewEntityInContext(String entityName, NSManagedObjectContext context);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder coder);
     @Method(selector = "initWithCoder:")

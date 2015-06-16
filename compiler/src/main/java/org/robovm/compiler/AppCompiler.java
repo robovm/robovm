@@ -704,7 +704,7 @@ public class AppCompiler {
                     .tmpDir(new File(this.config.getTmpDir(), arch.toString()))
                     .build();
             new AppCompiler(sliceConfig).compile();
-            slices.add(new File(sliceConfig.getTmpDir(), sliceConfig.getExecutableName()));
+            slices.add(new File(sliceConfig.getTmpDir(), sliceConfig.getBinaryName()));
             for (Path path : sliceConfig.getResourcesPaths()) {
                 if (!this.config.getResourcesPaths().contains(path)) {
                     this.config.addResourcesPath(path);

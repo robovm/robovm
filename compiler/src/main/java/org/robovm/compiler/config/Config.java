@@ -253,11 +253,24 @@ public class Config {
     public String getExecutableName() {
         return executableName;
     }
+    
+    public String getBinaryName() {
+    	String s = new String();
+    	s = executableName;
+    	if (targetBinary == TargetBinary.dynamic_lib) {
+    		s += (os == OS.ios) ? ".dylib" : ".so";
+    	}
+    	return s;
+    }
 
     public File getExecutablePath() {
         return new File(installDir, getExecutableName());
     }
 
+    public File getBinaryPath() {
+        return new File(installDir, getBinaryName());
+    }    
+    
     public File getCacheDir() {
         return osArchCacheDir;
     }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.mediaplayer;
+package org.robovm.apple.uikit;
 
 /*<imports>*/
 import java.io.*;
@@ -28,33 +28,38 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
-import org.robovm.apple.uikit.*;
+import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.coredata.*;
+import org.robovm.apple.coreimage.*;
+import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
-/**
- * @since Available in iOS 7.1 and later.
- */
 /*</javadoc>*/
-/*<annotations>*/@Library("MediaPlayer") @NativeClass/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/MPFeedbackCommandEvent/*</name>*/ 
-    extends /*<extends>*/MPRemoteCommandEvent/*</extends>*/ 
+/*<annotations>*/@Library("UIKit")/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/UIKit/*</name>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/public static class MPFeedbackCommandEventPtr extends Ptr<MPFeedbackCommandEvent, MPFeedbackCommandEventPtr> {}/*</ptr>*/
-    /*<bind>*/static { ObjCRuntime.bind(MPFeedbackCommandEvent.class); }/*</bind>*/
+    /*<ptr>*/
+    /*</ptr>*/
+    /*<bind>*/static { Bro.bind(UIKit.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*/
-    public MPFeedbackCommandEvent() {}
-    protected MPFeedbackCommandEvent(SkipInit skipInit) { super(skipInit); }
-    /*</constructors>*/
-    /*<properties>*/
-    @Property(selector = "isNegative")
-    public native boolean isNegative();
-    /*</properties>*/
+    /*<constructors>*//*</constructors>*/
+    /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @GlobalValue(symbol="UIFontFeatureTypeIdentifierKey", optional=true)
+    public static native String Value__UIFontFeatureTypeIdentifierKey();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @GlobalValue(symbol="UIFontFeatureSelectorIdentifierKey", optional=true)
+    public static native String Value__UIFontFeatureSelectorIdentifierKey();
     /*</methods>*/
 }

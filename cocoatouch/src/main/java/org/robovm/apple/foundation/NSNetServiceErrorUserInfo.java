@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.uikit;
+package org.robovm.apple.foundation;
 
 /*<imports>*/
 import java.io.*;
@@ -27,35 +27,37 @@ import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
-import org.robovm.apple.foundation.*;
-import org.robovm.apple.coreanimation.*;
-import org.robovm.apple.coregraphics.*;
-import org.robovm.apple.coredata.*;
-import org.robovm.apple.coreimage.*;
+import org.robovm.apple.corefoundation.*;
+import org.robovm.apple.uikit.*;
 import org.robovm.apple.coretext.*;
-import org.robovm.apple.corelocation.*;
+import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coredata.*;
+import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.coremedia.*;
+import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("UIKit")/*</annotations>*/
-@Marshaler(/*<name>*/UIApplicationLaunchOptionsUserActivityInfo/*</name>*/.Marshaler.class)
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/UIApplicationLaunchOptionsUserActivityInfo/*</name>*/ 
+/*<annotations>*/@Library("Foundation")/*</annotations>*/
+@Marshaler(/*<name>*/NSNetServiceErrorUserInfo/*</name>*/.Marshaler.class)
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/NSNetServiceErrorUserInfo/*</name>*/ 
     extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
     /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
-        public static UIApplicationLaunchOptionsUserActivityInfo toObject(Class<UIApplicationLaunchOptionsUserActivityInfo> cls, long handle, long flags) {
+        public static NSNetServiceErrorUserInfo toObject(Class<NSNetServiceErrorUserInfo> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
             if (o == null) {
                 return null;
             }
-            return new UIApplicationLaunchOptionsUserActivityInfo(o);
+            return new NSNetServiceErrorUserInfo(o);
         }
         @MarshalsPointer
-        public static long toNative(UIApplicationLaunchOptionsUserActivityInfo o, long flags) {
+        public static long toNative(NSNetServiceErrorUserInfo o, long flags) {
             if (o == null) {
                 return 0L;
             }
@@ -64,24 +66,24 @@ import org.robovm.apple.corelocation.*;
     }
     public static class AsListMarshaler {
         @MarshalsPointer
-        public static List<UIApplicationLaunchOptionsUserActivityInfo> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+        public static List<NSNetServiceErrorUserInfo> toObject(Class<? extends NSObject> cls, long handle, long flags) {
             NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
             if (o == null) {
                 return null;
             }
-            List<UIApplicationLaunchOptionsUserActivityInfo> list = new ArrayList<>();
+            List<NSNetServiceErrorUserInfo> list = new ArrayList<>();
             for (int i = 0; i < o.size(); i++) {
-                list.add(new UIApplicationLaunchOptionsUserActivityInfo(o.get(i)));
+                list.add(new NSNetServiceErrorUserInfo(o.get(i)));
             }
             return list;
         }
         @MarshalsPointer
-        public static long toNative(List<UIApplicationLaunchOptionsUserActivityInfo> l, long flags) {
+        public static long toNative(List<NSNetServiceErrorUserInfo> l, long flags) {
             if (l == null) {
                 return 0L;
             }
             NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
-            for (UIApplicationLaunchOptionsUserActivityInfo i : l) {
+            for (NSNetServiceErrorUserInfo i : l) {
                 array.add(i.getDictionary());
             }
             return NSObject.Marshaler.toNative(array, flags);
@@ -90,9 +92,10 @@ import org.robovm.apple.corelocation.*;
     /*</marshalers>*/
 
     /*<constructors>*/
-    UIApplicationLaunchOptionsUserActivityInfo(NSDictionary<NSString, NSObject> data) {
+    NSNetServiceErrorUserInfo(NSDictionary<NSString, NSObject> data) {
         super(data);
     }
+    public NSNetServiceErrorUserInfo() {}
     /*</constructors>*/
 
     /*<methods>*/
@@ -105,29 +108,44 @@ import org.robovm.apple.corelocation.*;
         }
         return null;
     }
+    public NSNetServiceErrorUserInfo set(NSString key, NSObject value) {
+        data.put(key, value);
+        return this;
+    }
     
 
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public String getType() {
-        if (has(Keys.Type())) {
-            NSString val = (NSString) get(Keys.Type());
+    public NSNetServiceErrorCode getErrorCode() {
+        if (has(Keys.ErrorCode())) {
+            NSNumber val = (NSNumber) get(Keys.ErrorCode());
+            return NSNetServiceErrorCode.valueOf(val.longValue());
+        }
+        return null;
+    }
+    public NSNetServiceErrorUserInfo setErrorCode(NSNetServiceErrorCode errorCode) {
+        set(Keys.ErrorCode(), NSNumber.valueOf(errorCode.value()));
+        return this;
+    }
+    public String getErrorDomain() {
+        if (has(Keys.ErrorDomain())) {
+            NSString val = (NSString) get(Keys.ErrorDomain());
             return val.toString();
         }
         return null;
     }
+    public NSNetServiceErrorUserInfo setErrorDomain(String errorDomain) {
+        set(Keys.ErrorDomain(), new NSString(errorDomain));
+        return this;
+    }
     /*</methods>*/
     
     /*<keys>*/
-    @Library("UIKit")
+    @Library("Foundation")
     public static class Keys {
         static { Bro.bind(Keys.class); }
-        /**
-         * @since Available in iOS 8.0 and later.
-         */
-        @GlobalValue(symbol="UIApplicationLaunchOptionsUserActivityTypeKey", optional=true)
-        public static native NSString Type();
+        @GlobalValue(symbol="NSNetServicesErrorCode", optional=true)
+        public static native NSString ErrorCode();
+        @GlobalValue(symbol="NSNetServicesErrorDomain", optional=true)
+        public static native NSString ErrorDomain();
     }
     /*</keys>*/
 }

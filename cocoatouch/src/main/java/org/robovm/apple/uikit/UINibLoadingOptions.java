@@ -38,14 +38,14 @@ import org.robovm.apple.corelocation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(UINibLoadingOptions.Marshaler.class)
 /*<annotations>*/@Library("UIKit")/*</annotations>*/
+@Marshaler(/*<name>*/UINibLoadingOptions/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UINibLoadingOptions/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static UINibLoadingOptions toObject(Class<UINibLoadingOptions> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -62,29 +62,62 @@ import org.robovm.apple.corelocation.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected UINibLoadingOptions(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<UINibLoadingOptions> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<UINibLoadingOptions> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new UINibLoadingOptions(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<UINibLoadingOptions> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (UINibLoadingOptions i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    public UINibLoadingOptions() {
-        this.data = new NSMutableDictionary<>();
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    UINibLoadingOptions(NSDictionary<NSString, NSObject> data) {
+        super(data);
     }
-    /*<bind>*/static { Bro.bind(UINibLoadingOptions.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
+    public UINibLoadingOptions() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
+    }
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
+    }
+    public UINibLoadingOptions set(NSString key, NSObject value) {
+        data.put(key, value);
+        return this;
+    }
+    
+
     /**
      * @since Available in iOS 3.0 and later.
      */
-    @SuppressWarnings("unchecked")
     public Map<String, NSObject> getExternalObjects() {
-        if (data.containsKey(ExternalObjectsKey())) {
-            NSDictionary<NSString, NSObject> val = (NSDictionary<NSString, NSObject>)data.get(ExternalObjectsKey());
+        if (has(Keys.ExternalObjects())) {
+            NSDictionary val = (NSDictionary) get(Keys.ExternalObjects());
             return val.asStringMap();
         }
         return null;
@@ -93,20 +126,20 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 3.0 and later.
      */
     public UINibLoadingOptions setExternalObjects(Map<String, NSObject> externalObjects) {
-        data.put(ExternalObjectsKey(), NSDictionary.fromStringMap(externalObjects));
+        set(Keys.ExternalObjects(), NSDictionary.fromStringMap(externalObjects));
         return this;
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="UINibExternalObjects", optional=true)
-    protected static native NSString ExternalObjectsKey();
     /*</methods>*/
     
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    /*<keys>*/
+    @Library("UIKit")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="UINibExternalObjects", optional=true)
+        public static native NSString ExternalObjects();
     }
+    /*</keys>*/
 }

@@ -40,14 +40,14 @@ import org.robovm.apple.dispatch.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(NSURLCredentialStorageRemovalOptions.Marshaler.class)
 /*<annotations>*/@Library("Foundation")/*</annotations>*/
+@Marshaler(/*<name>*/NSURLCredentialStorageRemovalOptions/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSURLCredentialStorageRemovalOptions/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static NSURLCredentialStorageRemovalOptions toObject(Class<NSURLCredentialStorageRemovalOptions> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -64,38 +64,84 @@ import org.robovm.apple.dispatch.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected NSURLCredentialStorageRemovalOptions(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<NSURLCredentialStorageRemovalOptions> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<NSURLCredentialStorageRemovalOptions> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new NSURLCredentialStorageRemovalOptions(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<NSURLCredentialStorageRemovalOptions> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (NSURLCredentialStorageRemovalOptions i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    public NSURLCredentialStorageRemovalOptions() {
-        this.data = new NSMutableDictionary<>();
-    }   
-    /*<bind>*/static { Bro.bind(NSURLCredentialStorageRemovalOptions.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    NSURLCredentialStorageRemovalOptions(NSDictionary<NSString, NSObject> data) {
+        super(data);
+    }
+    public NSURLCredentialStorageRemovalOptions() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
+    }
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
+    }
+    public NSURLCredentialStorageRemovalOptions set(NSString key, NSObject value) {
+        data.put(key, value);
+        return this;
+    }
+    
+
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public boolean shouldRemoveSynchronizableCredentials() {
-        if (data.containsKey(RemoveSynchronizableCredentials())) {
-            NSNumber val = (NSNumber)data.get(RemoveSynchronizableCredentials());
+        if (has(Keys.RemoveSynchronizableCredentials())) {
+            NSNumber val = (NSNumber) get(Keys.RemoveSynchronizableCredentials());
             return val.booleanValue();
         }
         return false;
     }
-    public NSURLCredentialStorageRemovalOptions setShouldRemoveSynchronizableCredentials(boolean remove) {
-        data.put(RemoveSynchronizableCredentials(), NSNumber.valueOf(remove));
-        return this;
-    }
-    /*<methods>*/
     /**
      * @since Available in iOS 7.0 and later.
      */
-    @GlobalValue(symbol="NSURLCredentialStorageRemoveSynchronizableCredentials", optional=true)
-    protected static native NSString RemoveSynchronizableCredentials();
+    public NSURLCredentialStorageRemovalOptions setShouldRemoveSynchronizableCredentials(boolean shouldRemoveSynchronizableCredentials) {
+        set(Keys.RemoveSynchronizableCredentials(), NSNumber.valueOf(shouldRemoveSynchronizableCredentials));
+        return this;
+    }
     /*</methods>*/
+    
+    /*<keys>*/
+    @Library("Foundation")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="NSURLCredentialStorageRemoveSynchronizableCredentials", optional=true)
+        public static native NSString RemoveSynchronizableCredentials();
+    }
+    /*</keys>*/
 }

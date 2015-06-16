@@ -38,12 +38,15 @@ import org.robovm.apple.corelocation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(UIApplicationExtensionPointIdentifier.Marshaler.class)
-/*<annotations>*/@Library("UIKit")/*</annotations>*/
+/*<annotations>*/@Library("UIKit") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/UIApplicationExtensionPointIdentifier/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIApplicationExtensionPointIdentifier/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
-    
+
+    static { Bro.bind(/*<name>*/UIApplicationExtensionPointIdentifier/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static UIApplicationExtensionPointIdentifier toObject(Class<UIApplicationExtensionPointIdentifier> cls, long handle, long flags) {
@@ -61,31 +64,49 @@ import org.robovm.apple.corelocation.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<UIApplicationExtensionPointIdentifier> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<UIApplicationExtensionPointIdentifier> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(UIApplicationExtensionPointIdentifier.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<UIApplicationExtensionPointIdentifier> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (UIApplicationExtensionPointIdentifier o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(UIApplicationExtensionPointIdentifier.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    /*<constants>*/
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final UIApplicationExtensionPointIdentifier Keyboard = new UIApplicationExtensionPointIdentifier("KeyboardValue");
+    public static final UIApplicationExtensionPointIdentifier Keyboard = new UIApplicationExtensionPointIdentifier("Keyboard");
+    /*</constants>*/
     
-    private static UIApplicationExtensionPointIdentifier[] values = new UIApplicationExtensionPointIdentifier[] {Keyboard};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    private static /*<name>*/UIApplicationExtensionPointIdentifier/*</name>*/[] values = new /*<name>*/UIApplicationExtensionPointIdentifier/*</name>*/[] {/*<value_list>*/Keyboard/*</value_list>*/};
     
-    private UIApplicationExtensionPointIdentifier(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/UIApplicationExtensionPointIdentifier/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static UIApplicationExtensionPointIdentifier valueOf(NSString value) {
-        for (UIApplicationExtensionPointIdentifier v : values) {
+    public static /*<name>*/UIApplicationExtensionPointIdentifier/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/UIApplicationExtensionPointIdentifier/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -93,11 +114,19 @@ import org.robovm.apple.corelocation.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/UIApplicationExtensionPointIdentifier/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="UIApplicationKeyboardExtensionPointIdentifier", optional=true)
-    protected static native NSString KeyboardValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("UIKit") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="UIApplicationKeyboardExtensionPointIdentifier", optional=true)
+        public static native NSString Keyboard();
+        /*</values>*/
+    }
 }

@@ -40,12 +40,15 @@ import org.robovm.apple.dispatch.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(NSUserActivityType.Marshaler.class)
-/*<annotations>*/@Library("Foundation")/*</annotations>*/
+/*<annotations>*/@Library("Foundation") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/NSUserActivityType/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSUserActivityType/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/NSUserActivityType/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static NSUserActivityType toObject(Class<NSUserActivityType> cls, long handle, long flags) {
@@ -60,30 +63,52 @@ import org.robovm.apple.dispatch.*;
             if (o == null) {
                 return 0L;
             }
-            return NSObject.Marshaler.toNative(new NSString(o.value()), flags);
+            return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(NSUserActivityType.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    
-    private static NSUserActivityType[] values = new NSUserActivityType[] {};
-    private final LazyGlobalValue<String> lazyGlobalValue;
-    
-    private NSUserActivityType(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<NSUserActivityType> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<NSUserActivityType> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(NSUserActivityType.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<NSUserActivityType> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (NSUserActivityType o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public String value() {
-        return lazyGlobalValue.value();
+    /*</marshalers>*/
+
+    /*<constants>*/
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final NSUserActivityType BrowsingWeb = new NSUserActivityType("BrowsingWeb");
+    /*</constants>*/
+    
+    private static /*<name>*/NSUserActivityType/*</name>*/[] values = new /*<name>*/NSUserActivityType/*</name>*/[] {/*<value_list>*/BrowsingWeb/*</value_list>*/};
+    
+    /*<name>*/NSUserActivityType/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static NSUserActivityType valueOf(NSString value) {
-        for (NSUserActivityType v : values) {
+    public static /*<name>*/NSUserActivityType/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/NSUserActivityType/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -91,11 +116,19 @@ import org.robovm.apple.dispatch.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/NSUserActivityType/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="NSUserActivityTypeBrowsingWeb", optional=true)
-    protected static native String BrowsingWebValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("Foundation") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="NSUserActivityTypeBrowsingWeb", optional=true)
+        public static native NSString BrowsingWeb();
+        /*</values>*/
+    }
 }

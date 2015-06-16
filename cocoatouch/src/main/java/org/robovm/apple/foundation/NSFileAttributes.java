@@ -19,32 +19,35 @@ package org.robovm.apple.foundation;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
-
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.uikit.*;
+import org.robovm.apple.coretext.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coredata.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(NSFileAttributes.Marshaler.class)
 /*<annotations>*/@Library("Foundation")/*</annotations>*/
+@Marshaler(/*<name>*/NSFileAttributes/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSFileAttributes/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
-    
+
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static NSFileAttributes toObject(Class<NSFileAttributes> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -61,41 +64,59 @@ import org.robovm.apple.security.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<NSFileAttributes> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<NSFileAttributes> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new NSFileAttributes(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<NSFileAttributes> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (NSFileAttributes i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
 
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected NSFileAttributes(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
+    /*<constructors>*/
+    NSFileAttributes(NSDictionary<NSString, NSObject> data) {
+        super(data);
     }
-    public NSFileAttributes() {
-        this.data = new NSMutableDictionary<>();
+    public NSFileAttributes() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSFileAttribute key) {
+        return data.containsKey(key.value());
     }
-    /*<bind>*/static { Bro.bind(NSFileAttributes.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
+    public NSObject get(NSFileAttribute key) {
+        if (has(key)) {
+            return data.get(key.value());
+        }
+        return null;
     }
-    
-    public NSFileAttributes set(NSFileAttribute attribute, NSObject value) {
-        data.put(attribute.value(), value);
+    public NSFileAttributes set(NSFileAttribute key, NSObject value) {
+        data.put(key.value(), value);
         return this;
     }
-    public NSObject get(NSFileAttribute attribute) {
-        return data.get(attribute.value());
-    }
-    public boolean contains(NSFileAttribute attribute) {
-        return data.containsKey(attribute.value());
-    }
     
-    
+
     public NSFileType getType() {
-        if (contains(NSFileAttribute.Type)) {
-            NSString val = (NSString)get(NSFileAttribute.Type);
+        if (has(NSFileAttribute.Type)) {
+            NSString val = (NSString) get(NSFileAttribute.Type);
             return NSFileType.valueOf(val);
         }
         return null;
@@ -105,8 +126,8 @@ import org.robovm.apple.security.*;
         return this;
     }
     public long getSize() {
-        if (contains(NSFileAttribute.Size)) {
-            NSNumber val = (NSNumber)get(NSFileAttribute.Size);
+        if (has(NSFileAttribute.Size)) {
+            NSNumber val = (NSNumber) get(NSFileAttribute.Size);
             return val.longValue();
         }
         return 0;
@@ -116,118 +137,118 @@ import org.robovm.apple.security.*;
         return this;
     }
     public NSDate getModificationDate() {
-        if (contains(NSFileAttribute.ModificationDate)) {
-            NSDate val = (NSDate)get(NSFileAttribute.ModificationDate);
+        if (has(NSFileAttribute.ModificationDate)) {
+            NSDate val = (NSDate) get(NSFileAttribute.ModificationDate);
             return val;
         }
         return null;
     }
-    public NSFileAttributes setModificationDate(NSDate date) {
-        set(NSFileAttribute.ModificationDate, date);
+    public NSFileAttributes setModificationDate(NSDate modificationDate) {
+        set(NSFileAttribute.ModificationDate, modificationDate);
         return this;
     }
     public long getReferenceCount() {
-        if (contains(NSFileAttribute.ReferenceCount)) {
-            NSNumber val = (NSNumber)get(NSFileAttribute.ReferenceCount);
+        if (has(NSFileAttribute.ReferenceCount)) {
+            NSNumber val = (NSNumber) get(NSFileAttribute.ReferenceCount);
             return val.longValue();
         }
         return 0;
     }
-    public NSFileAttributes setReferenceCount(long count) {
-        set(NSFileAttribute.ReferenceCount, NSNumber.valueOf(count));
+    public NSFileAttributes setReferenceCount(long referenceCount) {
+        set(NSFileAttribute.ReferenceCount, NSNumber.valueOf(referenceCount));
         return this;
     }
     public long getDeviceIdentifier() {
-        if (contains(NSFileAttribute.DeviceIdentifier)) {
-            NSNumber val = (NSNumber)get(NSFileAttribute.DeviceIdentifier);
+        if (has(NSFileAttribute.DeviceIdentifier)) {
+            NSNumber val = (NSNumber) get(NSFileAttribute.DeviceIdentifier);
             return val.longValue();
         }
         return 0;
     }
-    public NSFileAttributes setDeviceIdentifier(long id) {
-        set(NSFileAttribute.DeviceIdentifier, NSNumber.valueOf(id));
+    public NSFileAttributes setDeviceIdentifier(long deviceIdentifier) {
+        set(NSFileAttribute.DeviceIdentifier, NSNumber.valueOf(deviceIdentifier));
         return this;
     }
     public String getOwnerAccountName() {
-        if (contains(NSFileAttribute.OwnerAccountName)) {
-            NSString val = (NSString)get(NSFileAttribute.OwnerAccountName);
+        if (has(NSFileAttribute.OwnerAccountName)) {
+            NSString val = (NSString) get(NSFileAttribute.OwnerAccountName);
             return val.toString();
         }
         return null;
     }
-    public NSFileAttributes setOwnerAccountName(String name) {
-        set(NSFileAttribute.OwnerAccountName, new NSString(name));
+    public NSFileAttributes setOwnerAccountName(String ownerAccountName) {
+        set(NSFileAttribute.OwnerAccountName, new NSString(ownerAccountName));
         return this;
     }
     public String getGroupOwnerAccountName() {
-        if (contains(NSFileAttribute.GroupOwnerAccountName)) {
-            NSString val = (NSString)get(NSFileAttribute.GroupOwnerAccountName);
+        if (has(NSFileAttribute.GroupOwnerAccountName)) {
+            NSString val = (NSString) get(NSFileAttribute.GroupOwnerAccountName);
             return val.toString();
         }
         return null;
     }
-    public NSFileAttributes setGroupOwnerAccountName(String name) {
-        set(NSFileAttribute.GroupOwnerAccountName, new NSString(name));
+    public NSFileAttributes setGroupOwnerAccountName(String groupOwnerAccountName) {
+        set(NSFileAttribute.GroupOwnerAccountName, new NSString(groupOwnerAccountName));
         return this;
     }
     public short getPosixPermissions() {
-        if (contains(NSFileAttribute.PosixPermissions)) {
-            NSNumber val = (NSNumber)get(NSFileAttribute.PosixPermissions);
+        if (has(NSFileAttribute.PosixPermissions)) {
+            NSNumber val = (NSNumber) get(NSFileAttribute.PosixPermissions);
             return val.shortValue();
         }
         return 0;
     }
-    public NSFileAttributes setPosixPermissions(short permissions) {
-        set(NSFileAttribute.PosixPermissions, NSNumber.valueOf(permissions));
+    public NSFileAttributes setPosixPermissions(short posixPermissions) {
+        set(NSFileAttribute.PosixPermissions, NSNumber.valueOf(posixPermissions));
         return this;
     }
     public long getSystemFileNumber() {
-        if (contains(NSFileAttribute.SystemFileNumber)) {
-            NSNumber val = (NSNumber)get(NSFileAttribute.SystemFileNumber);
+        if (has(NSFileAttribute.SystemFileNumber)) {
+            NSNumber val = (NSNumber) get(NSFileAttribute.SystemFileNumber);
             return val.longValue();
         }
         return 0;
     }
-    public NSFileAttributes setSystemFileNumber(long number) {
-        set(NSFileAttribute.SystemFileNumber, NSNumber.valueOf(number));
+    public NSFileAttributes setSystemFileNumber(long systemFileNumber) {
+        set(NSFileAttribute.SystemFileNumber, NSNumber.valueOf(systemFileNumber));
         return this;
     }
     public boolean isExtensionHidden() {
-        if (contains(NSFileAttribute.ExtensionHidden)) {
-            NSNumber val = (NSNumber)get(NSFileAttribute.ExtensionHidden);
+        if (has(NSFileAttribute.ExtensionHidden)) {
+            NSNumber val = (NSNumber) get(NSFileAttribute.ExtensionHidden);
             return val.booleanValue();
         }
         return false;
     }
-    public NSFileAttributes setExtensionHidden(boolean hideExtension) {
-        set(NSFileAttribute.ExtensionHidden, NSNumber.valueOf(hideExtension));
+    public NSFileAttributes setExtensionHidden(boolean extensionHidden) {
+        set(NSFileAttribute.ExtensionHidden, NSNumber.valueOf(extensionHidden));
         return this;
     }
     public long getHFSCreatorCode() {
-        if (contains(NSFileAttribute.HFSCreatorCode)) {
-            NSNumber val = (NSNumber)get(NSFileAttribute.HFSCreatorCode);
+        if (has(NSFileAttribute.HFSCreatorCode)) {
+            NSNumber val = (NSNumber) get(NSFileAttribute.HFSCreatorCode);
             return val.longValue();
         }
         return 0;
     }
-    public NSFileAttributes setHFSCreatorCode(long code) {
-        set(NSFileAttribute.HFSCreatorCode, NSNumber.valueOf(code));
+    public NSFileAttributes setHFSCreatorCode(long hFSCreatorCode) {
+        set(NSFileAttribute.HFSCreatorCode, NSNumber.valueOf(hFSCreatorCode));
         return this;
     }
     public long getHFSTypeCode() {
-        if (contains(NSFileAttribute.HFSTypeCode)) {
-            NSNumber val = (NSNumber)get(NSFileAttribute.HFSTypeCode);
+        if (has(NSFileAttribute.HFSTypeCode)) {
+            NSNumber val = (NSNumber) get(NSFileAttribute.HFSTypeCode);
             return val.longValue();
         }
         return 0;
     }
-    public NSFileAttributes setHFSTypeCode(long code) {
-        set(NSFileAttribute.HFSTypeCode, NSNumber.valueOf(code));
+    public NSFileAttributes setHFSTypeCode(long hFSTypeCode) {
+        set(NSFileAttribute.HFSTypeCode, NSNumber.valueOf(hFSTypeCode));
         return this;
     }
     public boolean isImmutable() {
-        if (contains(NSFileAttribute.Immutable)) {
-            NSNumber val = (NSNumber)get(NSFileAttribute.Immutable);
+        if (has(NSFileAttribute.Immutable)) {
+            NSNumber val = (NSNumber) get(NSFileAttribute.Immutable);
             return val.booleanValue();
         }
         return false;
@@ -236,53 +257,53 @@ import org.robovm.apple.security.*;
         set(NSFileAttribute.Immutable, NSNumber.valueOf(immutable));
         return this;
     }
-    public boolean isAppendOnly() {
-        if (contains(NSFileAttribute.AppendOnly)) {
-            NSNumber val = (NSNumber)get(NSFileAttribute.AppendOnly);
+    public boolean appendsOnly() {
+        if (has(NSFileAttribute.AppendOnly)) {
+            NSNumber val = (NSNumber) get(NSFileAttribute.AppendOnly);
             return val.booleanValue();
         }
         return false;
     }
-    public NSFileAttributes setAppendOnly(boolean appendOnly) {
-        set(NSFileAttribute.AppendOnly, NSNumber.valueOf(appendOnly));
+    public NSFileAttributes setAppendsOnly(boolean appendsOnly) {
+        set(NSFileAttribute.AppendOnly, NSNumber.valueOf(appendsOnly));
         return this;
     }
     public NSDate getCreationDate() {
-        if (contains(NSFileAttribute.CreationDate)) {
-            NSDate val = (NSDate)get(NSFileAttribute.CreationDate);
+        if (has(NSFileAttribute.CreationDate)) {
+            NSDate val = (NSDate) get(NSFileAttribute.CreationDate);
             return val;
         }
         return null;
     }
-    public NSFileAttributes setCreationDate(NSDate date) {
-        set(NSFileAttribute.CreationDate, date);
+    public NSFileAttributes setCreationDate(NSDate creationDate) {
+        set(NSFileAttribute.CreationDate, creationDate);
         return this;
     }
     public long getOwnerAccountID() {
-        if (contains(NSFileAttribute.OwnerAccountID)) {
-            NSNumber val = (NSNumber)get(NSFileAttribute.OwnerAccountID);
+        if (has(NSFileAttribute.OwnerAccountID)) {
+            NSNumber val = (NSNumber) get(NSFileAttribute.OwnerAccountID);
             return val.longValue();
         }
         return 0;
     }
-    public NSFileAttributes setOwnerAccountID(long id) {
-        set(NSFileAttribute.OwnerAccountID, NSNumber.valueOf(id));
+    public NSFileAttributes setOwnerAccountID(long ownerAccountID) {
+        set(NSFileAttribute.OwnerAccountID, NSNumber.valueOf(ownerAccountID));
         return this;
     }
     public long getGroupOwnerAccountID() {
-        if (contains(NSFileAttribute.GroupOwnerAccountID)) {
-            NSNumber val = (NSNumber)get(NSFileAttribute.GroupOwnerAccountID);
+        if (has(NSFileAttribute.GroupOwnerAccountID)) {
+            NSNumber val = (NSNumber) get(NSFileAttribute.GroupOwnerAccountID);
             return val.longValue();
         }
         return 0;
     }
-    public NSFileAttributes setGroupOwnerAccountID(long id) {
-        set(NSFileAttribute.GroupOwnerAccountID, NSNumber.valueOf(id));
+    public NSFileAttributes setGroupOwnerAccountID(long groupOwnerAccountID) {
+        set(NSFileAttribute.GroupOwnerAccountID, NSNumber.valueOf(groupOwnerAccountID));
         return this;
     }
     public boolean isBusy() {
-        if (contains(NSFileAttribute.Busy)) {
-            NSNumber val = (NSNumber)get(NSFileAttribute.Busy);
+        if (has(NSFileAttribute.Busy)) {
+            NSNumber val = (NSNumber) get(NSFileAttribute.Busy);
             return val.booleanValue();
         }
         return false;
@@ -295,8 +316,8 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 4.0 and later.
      */
     public NSFileProtection getProtection() {
-        if (contains(NSFileAttribute.ProtectionKey)) {
-            NSString val = (NSString)get(NSFileAttribute.ProtectionKey);
+        if (has(NSFileAttribute.ProtectionKey)) {
+            NSString val = (NSString) get(NSFileAttribute.ProtectionKey);
             return NSFileProtection.valueOf(val);
         }
         return null;
@@ -308,12 +329,8 @@ import org.robovm.apple.security.*;
         set(NSFileAttribute.ProtectionKey, protection.value());
         return this;
     }
-    /*<methods>*/
     /*</methods>*/
     
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
-    }
+    /*<keys>*/
+    /*</keys>*/
 }

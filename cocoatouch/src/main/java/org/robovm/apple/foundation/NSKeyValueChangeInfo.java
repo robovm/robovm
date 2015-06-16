@@ -40,14 +40,14 @@ import org.robovm.apple.dispatch.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(NSKeyValueChangeInfo.Marshaler.class)
 /*<annotations>*/@Library("Foundation")/*</annotations>*/
+@Marshaler(/*<name>*/NSKeyValueChangeInfo/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSKeyValueChangeInfo/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static NSKeyValueChangeInfo toObject(Class<NSKeyValueChangeInfo> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -64,48 +64,75 @@ import org.robovm.apple.dispatch.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected NSKeyValueChangeInfo(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<NSKeyValueChangeInfo> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<NSKeyValueChangeInfo> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new NSKeyValueChangeInfo(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<NSKeyValueChangeInfo> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (NSKeyValueChangeInfo i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    /*<bind>*/static { Bro.bind(NSKeyValueChangeInfo.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    NSKeyValueChangeInfo(NSDictionary<NSString, NSObject> data) {
+        super(data);
+    }
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
+    }
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
     }
     
-    
+
     public NSKeyValueChange getKind() {
-        if (data.containsKey(KindKey())) {
-            NSNumber val = (NSNumber)data.get(KindKey());
-            return NSKeyValueChange.valueOf(val.intValue());
+        if (has(Keys.Kind())) {
+            NSNumber val = (NSNumber) get(Keys.Kind());
+            return NSKeyValueChange.valueOf(val.longValue());
         }
         return null;
     }
     public NSObject getNew() {
-        if (data.containsKey(NewKey())) {
-            NSObject val = data.get(NewKey());
+        if (has(Keys.New())) {
+            NSObject val = (NSObject) get(Keys.New());
             return val;
         }
         return null;
     }
     public NSObject getOld() {
-        if (data.containsKey(OldKey())) {
-            NSObject val = data.get(OldKey());
+        if (has(Keys.Old())) {
+            NSObject val = (NSObject) get(Keys.Old());
             return val;
         }
         return null;
     }
-    public NSIndexSet getIndexes(){
-        if (data.containsKey(IndexesKey())) {
-            NSIndexSet val = (NSIndexSet)data.get(IndexesKey());
+    public NSIndexSet getIndexes() {
+        if (has(Keys.Indexes())) {
+            NSIndexSet val = (NSIndexSet) get(Keys.Indexes());
             return val;
         }
         return null;
@@ -114,30 +141,31 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 2.0 and later.
      */
     public boolean isNotificationSentPriorToChange() {
-        if (data.containsKey(NotificationIsPriorKey())) {
-            NSNumber val = (NSNumber)data.get(NotificationIsPriorKey());
+        if (has(Keys.NotificationIsPrior())) {
+            NSNumber val = (NSNumber) get(Keys.NotificationIsPrior());
             return val.booleanValue();
         }
         return false;
     }
-    /*<methods>*/
-    @GlobalValue(symbol="NSKeyValueChangeKindKey", optional=true)
-    protected static native NSString KindKey();
-    @GlobalValue(symbol="NSKeyValueChangeNewKey", optional=true)
-    protected static native NSString NewKey();
-    @GlobalValue(symbol="NSKeyValueChangeOldKey", optional=true)
-    protected static native NSString OldKey();
-    @GlobalValue(symbol="NSKeyValueChangeIndexesKey", optional=true)
-    protected static native NSString IndexesKey();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="NSKeyValueChangeNotificationIsPriorKey", optional=true)
-    protected static native NSString NotificationIsPriorKey();
     /*</methods>*/
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    
+    /*<keys>*/
+    @Library("Foundation")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        @GlobalValue(symbol="NSKeyValueChangeKindKey", optional=true)
+        public static native NSString Kind();
+        @GlobalValue(symbol="NSKeyValueChangeNewKey", optional=true)
+        public static native NSString New();
+        @GlobalValue(symbol="NSKeyValueChangeOldKey", optional=true)
+        public static native NSString Old();
+        @GlobalValue(symbol="NSKeyValueChangeIndexesKey", optional=true)
+        public static native NSString Indexes();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="NSKeyValueChangeNotificationIsPriorKey", optional=true)
+        public static native NSString NotificationIsPrior();
     }
+    /*</keys>*/
 }

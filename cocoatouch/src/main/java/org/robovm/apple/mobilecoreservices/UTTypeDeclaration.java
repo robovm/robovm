@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -32,14 +33,14 @@ import org.robovm.apple.corefoundation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(UTTypeDeclaration.Marshaler.class)
 /*<annotations>*/@Library("MobileCoreServices")/*</annotations>*/
+@Marshaler(/*<name>*/UTTypeDeclaration/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UTTypeDeclaration/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static UTTypeDeclaration toObject(Class<UTTypeDeclaration> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -56,34 +57,62 @@ import org.robovm.apple.corefoundation.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected UTTypeDeclaration(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<UTTypeDeclaration> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<UTTypeDeclaration> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new UTTypeDeclaration(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<UTTypeDeclaration> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (UTTypeDeclaration i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    public UTTypeDeclaration() {
-        this.data = new NSMutableDictionary<>();
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    UTTypeDeclaration(NSDictionary<NSString, NSObject> data) {
+        super(data);
     }
-    /*<bind>*/static { Bro.bind(UTTypeDeclaration.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
+    public UTTypeDeclaration() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
+    }
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
+    }
+    public UTTypeDeclaration set(NSString key, NSObject value) {
+        data.put(key, value);
+        return this;
     }
     
-    
+
     /**
      * @since Available in iOS 3.0 and later.
      */
-    @SuppressWarnings("unchecked")
     public List<String> getExportedTypeDeclarations() {
-        if (data.containsKey(ExportedTypeDeclarationsKey())) {
-            NSArray<NSString> val = (NSArray<NSString>) data.get(ExportedTypeDeclarationsKey());
+        if (has(Keys.ExportedTypeDeclarations())) {
+            NSArray<NSString> val = (NSArray<NSString>) get(Keys.ExportedTypeDeclarations());
             return val.asStringList();
         }
         return null;
@@ -91,17 +120,16 @@ import org.robovm.apple.corefoundation.*;
     /**
      * @since Available in iOS 3.0 and later.
      */
-    public UTTypeDeclaration setExportedTypeDeclarations(List<String> typeDeclarations) {
-        data.put(ExportedTypeDeclarationsKey(), NSArray.fromStrings(typeDeclarations));
+    public UTTypeDeclaration setExportedTypeDeclarations(List<String> exportedTypeDeclarations) {
+        set(Keys.ExportedTypeDeclarations(), NSArray.fromStrings(exportedTypeDeclarations));
         return this;
     }
     /**
      * @since Available in iOS 3.0 and later.
      */
-    @SuppressWarnings("unchecked")
     public List<String> getImportedTypeDeclarations() {
-        if (data.containsKey(ImportedTypeDeclarationsKey())) {
-            NSArray<NSString> val = (NSArray<NSString>) data.get(ImportedTypeDeclarationsKey());
+        if (has(Keys.ImportedTypeDeclarations())) {
+            NSArray<NSString> val = (NSArray<NSString>) get(Keys.ImportedTypeDeclarations());
             return val.asStringList();
         }
         return null;
@@ -109,16 +137,16 @@ import org.robovm.apple.corefoundation.*;
     /**
      * @since Available in iOS 3.0 and later.
      */
-    public UTTypeDeclaration setImportedTypeDeclarations(List<String> typeDeclarations) {
-        data.put(ImportedTypeDeclarationsKey(), NSArray.fromStrings(typeDeclarations));
+    public UTTypeDeclaration setImportedTypeDeclarations(List<String> importedTypeDeclarations) {
+        set(Keys.ImportedTypeDeclarations(), NSArray.fromStrings(importedTypeDeclarations));
         return this;
     }
     /**
      * @since Available in iOS 3.0 and later.
      */
     public String getTypeIdentifier() {
-        if (data.containsKey(TypeIdentifierKey())) {
-            NSString val = (NSString) data.get(TypeIdentifierKey());
+        if (has(Keys.TypeIdentifier())) {
+            NSString val = (NSString) get(Keys.TypeIdentifier());
             return val.toString();
         }
         return null;
@@ -126,17 +154,16 @@ import org.robovm.apple.corefoundation.*;
     /**
      * @since Available in iOS 3.0 and later.
      */
-    public UTTypeDeclaration setTypeIdentifier(String identifier) {
-        data.put(TypeIdentifierKey(), new NSString(identifier));
+    public UTTypeDeclaration setTypeIdentifier(String typeIdentifier) {
+        set(Keys.TypeIdentifier(), new NSString(typeIdentifier));
         return this;
     }
     /**
      * @since Available in iOS 3.0 and later.
      */
-    @SuppressWarnings("unchecked")
     public NSDictionary<NSString, NSObject> getTagSpecification() {
-        if (data.containsKey(TypeTagSpecificationKey())) {
-            NSDictionary<NSString, NSObject> val = (NSDictionary<NSString, NSObject>) data.get(TypeTagSpecificationKey());
+        if (has(Keys.TypeTagSpecification())) {
+            NSDictionary<NSString, NSObject> val = (NSDictionary<NSString, NSObject>) get(Keys.TypeTagSpecification());
             return val;
         }
         return null;
@@ -144,17 +171,16 @@ import org.robovm.apple.corefoundation.*;
     /**
      * @since Available in iOS 3.0 and later.
      */
-    public UTTypeDeclaration setTagSpecification(NSDictionary<NSString, NSObject> specification) {
-        data.put(TypeTagSpecificationKey(), specification);
+    public UTTypeDeclaration setTagSpecification(NSDictionary<NSString, NSObject> tagSpecification) {
+        set(Keys.TypeTagSpecification(), tagSpecification);
         return this;
     }
     /**
      * @since Available in iOS 3.0 and later.
      */
-    @SuppressWarnings("unchecked")
     public List<String> getConformingTypes() {
-        if (data.containsKey(TypeConformsToKey())) {
-            NSArray<NSString> val = (NSArray<NSString>) data.get(TypeConformsToKey());
+        if (has(Keys.TypeConformsTo())) {
+            NSArray<NSString> val = (NSArray<NSString>) get(Keys.TypeConformsTo());
             return val.asStringList();
         }
         return null;
@@ -163,15 +189,15 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 3.0 and later.
      */
     public UTTypeDeclaration setConformingTypes(List<String> conformingTypes) {
-        data.put(TypeConformsToKey(), NSArray.fromStrings(conformingTypes));
+        set(Keys.TypeConformsTo(), NSArray.fromStrings(conformingTypes));
         return this;
     }
     /**
      * @since Available in iOS 3.0 and later.
      */
     public String getDescription() {
-        if (data.containsKey(TypeDescriptionKey())) {
-            NSString val = (NSString) data.get(TypeDescriptionKey());
+        if (has(Keys.TypeDescription())) {
+            NSString val = (NSString) get(Keys.TypeDescription());
             return val.toString();
         }
         return null;
@@ -180,15 +206,15 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 3.0 and later.
      */
     public UTTypeDeclaration setDescription(String description) {
-        data.put(TypeDescriptionKey(), new NSString(description));
+        set(Keys.TypeDescription(), new NSString(description));
         return this;
     }
     /**
      * @since Available in iOS 3.0 and later.
      */
     public String getIconFileName() {
-        if (data.containsKey(TypeIconFileKey())) {
-            NSString val = (NSString) data.get(TypeIconFileKey());
+        if (has(Keys.TypeIconFile())) {
+            NSString val = (NSString) get(Keys.TypeIconFile());
             return val.toString();
         }
         return null;
@@ -196,16 +222,16 @@ import org.robovm.apple.corefoundation.*;
     /**
      * @since Available in iOS 3.0 and later.
      */
-    public UTTypeDeclaration setIconFileName(String fileName) {
-        data.put(TypeIconFileKey(), new NSString(fileName));
+    public UTTypeDeclaration setIconFileName(String iconFileName) {
+        set(Keys.TypeIconFile(), new NSString(iconFileName));
         return this;
     }
     /**
      * @since Available in iOS 3.0 and later.
      */
     public String getReferenceURL() {
-        if (data.containsKey(TypeReferenceURLKey())) {
-            NSString val = (NSString) data.get(TypeReferenceURLKey());
+        if (has(Keys.TypeReferenceURL())) {
+            NSString val = (NSString) get(Keys.TypeReferenceURL());
             return val.toString();
         }
         return null;
@@ -213,16 +239,16 @@ import org.robovm.apple.corefoundation.*;
     /**
      * @since Available in iOS 3.0 and later.
      */
-    public UTTypeDeclaration setReferenceURL(String url) {
-        data.put(TypeReferenceURLKey(), new NSString(url));
+    public UTTypeDeclaration setReferenceURL(String referenceURL) {
+        set(Keys.TypeReferenceURL(), new NSString(referenceURL));
         return this;
     }
     /**
      * @since Available in iOS 3.0 and later.
      */
     public String getVersion() {
-        if (data.containsKey(TypeVersionKey())) {
-            NSString val = (NSString) data.get(TypeVersionKey());
+        if (has(Keys.TypeVersion())) {
+            NSString val = (NSString) get(Keys.TypeVersion());
             return val.toString();
         }
         return null;
@@ -231,59 +257,60 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 3.0 and later.
      */
     public UTTypeDeclaration setVersion(String version) {
-        data.put(TypeVersionKey(), new NSString(version));
+        set(Keys.TypeVersion(), new NSString(version));
         return this;
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="kUTExportedTypeDeclarationsKey", optional=true)
-    protected static native NSString ExportedTypeDeclarationsKey();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="kUTImportedTypeDeclarationsKey", optional=true)
-    protected static native NSString ImportedTypeDeclarationsKey();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="kUTTypeIdentifierKey", optional=true)
-    protected static native NSString TypeIdentifierKey();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="kUTTypeTagSpecificationKey", optional=true)
-    protected static native NSString TypeTagSpecificationKey();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="kUTTypeConformsToKey", optional=true)
-    protected static native NSString TypeConformsToKey();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="kUTTypeDescriptionKey", optional=true)
-    protected static native NSString TypeDescriptionKey();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="kUTTypeIconFileKey", optional=true)
-    protected static native NSString TypeIconFileKey();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="kUTTypeReferenceURLKey", optional=true)
-    protected static native NSString TypeReferenceURLKey();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="kUTTypeVersionKey", optional=true)
-    protected static native NSString TypeVersionKey();
     /*</methods>*/
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    
+    /*<keys>*/
+    @Library("MobileCoreServices")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="kUTExportedTypeDeclarationsKey", optional=true)
+        public static native NSString ExportedTypeDeclarations();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="kUTImportedTypeDeclarationsKey", optional=true)
+        public static native NSString ImportedTypeDeclarations();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="kUTTypeIdentifierKey", optional=true)
+        public static native NSString TypeIdentifier();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="kUTTypeTagSpecificationKey", optional=true)
+        public static native NSString TypeTagSpecification();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="kUTTypeConformsToKey", optional=true)
+        public static native NSString TypeConformsTo();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="kUTTypeDescriptionKey", optional=true)
+        public static native NSString TypeDescription();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="kUTTypeIconFileKey", optional=true)
+        public static native NSString TypeIconFile();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="kUTTypeReferenceURLKey", optional=true)
+        public static native NSString TypeReferenceURL();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="kUTTypeVersionKey", optional=true)
+        public static native NSString TypeVersion();
     }
+    /*</keys>*/
 }

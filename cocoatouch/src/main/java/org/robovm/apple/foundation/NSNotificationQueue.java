@@ -60,7 +60,7 @@ import org.robovm.apple.dispatch.*;
     public void enqueueNotification(NSNotification notification, NSPostingStyle postingStyle, NSNotificationCoalescing coalesceMask, NSRunLoopMode...modes) {
         List<String> list = new ArrayList<>();
         for (NSRunLoopMode mode : modes) {
-            list.add(mode.value());
+            list.add(mode.value().toString());
         }
         enqueueNotification(notification, postingStyle, coalesceMask, list);
     }

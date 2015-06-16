@@ -40,32 +40,72 @@ import org.robovm.apple.dispatch.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("Foundation")/*</annotations>*/
+/*<annotations>*/@Library("Foundation") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/NSURLScheme/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSURLScheme/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(NSURLScheme.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    public static final NSURLScheme File = new NSURLScheme("FileValue");
-    
-    private static NSURLScheme[] values = new NSURLScheme[] {File};
-    private final LazyGlobalValue<String> lazyGlobalValue;
-    
-    private NSURLScheme(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    static { Bro.bind(/*<name>*/NSURLScheme/*</name>*/.class); }
+
+    /*<marshalers>*/
+    public static class Marshaler {
+        @MarshalsPointer
+        public static NSURLScheme toObject(Class<NSURLScheme> cls, long handle, long flags) {
+            NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return NSURLScheme.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(NSURLScheme o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(o.value(), flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public String value() {
-        return lazyGlobalValue.value();
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<NSURLScheme> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<NSURLScheme> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(NSURLScheme.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<NSURLScheme> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (NSURLScheme o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
+    public static final NSURLScheme File = new NSURLScheme("File");
+    /*</constants>*/
+    
+    private static /*<name>*/NSURLScheme/*</name>*/[] values = new /*<name>*/NSURLScheme/*</name>*/[] {/*<value_list>*/File/*</value_list>*/};
+    
+    /*<name>*/NSURLScheme/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static NSURLScheme valueOf(String value) {
-        for (NSURLScheme v : values) {
+    public static /*<name>*/NSURLScheme/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/NSURLScheme/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -73,8 +113,16 @@ import org.robovm.apple.dispatch.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/NSURLScheme/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    @GlobalValue(symbol="NSURLFileScheme", optional=true)
-    protected static native NSString FileValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("Foundation") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        @GlobalValue(symbol="NSURLFileScheme", optional=true)
+        public static native NSString File();
+        /*</values>*/
+    }
 }

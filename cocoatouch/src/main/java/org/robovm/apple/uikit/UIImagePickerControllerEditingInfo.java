@@ -38,14 +38,14 @@ import org.robovm.apple.corelocation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(UIImagePickerControllerEditingInfo.Marshaler.class)
 /*<annotations>*/@Library("UIKit")/*</annotations>*/
+@Marshaler(/*<name>*/UIImagePickerControllerEditingInfo/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIImagePickerControllerEditingInfo/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static UIImagePickerControllerEditingInfo toObject(Class<UIImagePickerControllerEditingInfo> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -62,88 +62,117 @@ import org.robovm.apple.corelocation.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected UIImagePickerControllerEditingInfo(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<UIImagePickerControllerEditingInfo> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<UIImagePickerControllerEditingInfo> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new UIImagePickerControllerEditingInfo(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<UIImagePickerControllerEditingInfo> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (UIImagePickerControllerEditingInfo i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    public UIImagePickerControllerEditingInfo() {
-        this.data = new NSMutableDictionary<>();
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    UIImagePickerControllerEditingInfo(NSDictionary<NSString, NSObject> data) {
+        super(data);
     }
-    /*<bind>*/static { Bro.bind(UIImagePickerControllerEditingInfo.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
+    public UIImagePickerControllerEditingInfo() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
+    }
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
+    }
+    public UIImagePickerControllerEditingInfo set(NSString key, NSObject value) {
+        data.put(key, value);
+        return this;
     }
     
-    
+
     public String getMediaType() {
-        if (data.containsKey(MediaTypeKey())) {
-            NSString val = (NSString)data.get(MediaTypeKey());
+        if (has(Keys.MediaType())) {
+            NSString val = (NSString) get(Keys.MediaType());
             return val.toString();
         }
         return null;
     }
     public UIImagePickerControllerEditingInfo setMediaType(String mediaType) {
-        data.put(MediaTypeKey(), new NSString(mediaType));
+        set(Keys.MediaType(), new NSString(mediaType));
         return this;
     }
     public UIImage getOriginalImage() {
-        if (data.containsKey(OriginalImageKey())) {
-            UIImage val = (UIImage)data.get(OriginalImageKey());
+        if (has(Keys.OriginalImage())) {
+            UIImage val = (UIImage) get(Keys.OriginalImage());
             return val;
         }
         return null;
     }
-    public UIImagePickerControllerEditingInfo setOriginalImage(UIImage image) {
-        data.put(OriginalImageKey(), image);
+    public UIImagePickerControllerEditingInfo setOriginalImage(UIImage originalImage) {
+        set(Keys.OriginalImage(), originalImage);
         return this;
     }
     public UIImage getEditedImage() {
-        if (data.containsKey(EditedImageKey())) {
-            UIImage val = (UIImage)data.get(EditedImageKey());
+        if (has(Keys.EditedImage())) {
+            UIImage val = (UIImage) get(Keys.EditedImage());
             return val;
         }
         return null;
     }
-    public UIImagePickerControllerEditingInfo setEditedImage(UIImage image) {
-        data.put(EditedImageKey(), image);
+    public UIImagePickerControllerEditingInfo setEditedImage(UIImage editedImage) {
+        set(Keys.EditedImage(), editedImage);
         return this;
     }
-    public @ByVal CGRect getCropRect() {
-        if (data.containsKey(CropRectKey())) {
-            NSValue val = (NSValue)data.get(CropRectKey());
+    public CGRect getCropRect() {
+        if (has(Keys.CropRect())) {
+            NSValue val = (NSValue) get(Keys.CropRect());
             return val.rectValue();
         }
         return null;
     }
-    public UIImagePickerControllerEditingInfo setCropRect(@ByVal CGRect cropRect) {
-        data.put(CropRectKey(), NSValue.valueOf(cropRect));
+    public UIImagePickerControllerEditingInfo setCropRect(CGRect cropRect) {
+        set(Keys.CropRect(), NSValue.valueOf(cropRect));
         return this;
     }
     public NSURL getMediaURL() {
-        if (data.containsKey(MediaURLKey())) {
-            NSURL val = (NSURL)data.get(MediaURLKey());
+        if (has(Keys.MediaURL())) {
+            NSURL val = (NSURL) get(Keys.MediaURL());
             return val;
         }
         return null;
     }
-    public UIImagePickerControllerEditingInfo setMediaURL(NSURL url) {
-        data.put(MediaURLKey(), url);
+    public UIImagePickerControllerEditingInfo setMediaURL(NSURL mediaURL) {
+        set(Keys.MediaURL(), mediaURL);
         return this;
     }
     /**
      * @since Available in iOS 4.1 and later.
      */
     public NSURL getReferenceURL() {
-        if (data.containsKey(ReferenceURLKey())) {
-            NSURL val = (NSURL)data.get(ReferenceURLKey());
+        if (has(Keys.ReferenceURL())) {
+            NSURL val = (NSURL) get(Keys.ReferenceURL());
             return val;
         }
         return null;
@@ -151,17 +180,16 @@ import org.robovm.apple.corelocation.*;
     /**
      * @since Available in iOS 4.1 and later.
      */
-    public UIImagePickerControllerEditingInfo setReferenceURL(NSURL url) {
-        data.put(ReferenceURLKey(), url);
+    public UIImagePickerControllerEditingInfo setReferenceURL(NSURL referenceURL) {
+        set(Keys.ReferenceURL(), referenceURL);
         return this;
     }
     /**
      * @since Available in iOS 4.1 and later.
      */
-    @SuppressWarnings("unchecked")
     public Map<String, NSObject> getMediaMetadata() {
-        if (data.containsKey(MediaMetadataKey())) {
-            NSDictionary<NSString, NSObject> val = (NSDictionary<NSString, NSObject>)data.get(MediaMetadataKey());
+        if (has(Keys.MediaMetadata())) {
+            NSDictionary val = (NSDictionary) get(Keys.MediaMetadata());
             return val.asStringMap();
         }
         return null;
@@ -169,36 +197,36 @@ import org.robovm.apple.corelocation.*;
     /**
      * @since Available in iOS 4.1 and later.
      */
-    public UIImagePickerControllerEditingInfo setMediaMetadata(Map<String, NSObject> metadata) {
-        data.put(MediaMetadataKey(), NSDictionary.fromStringMap(metadata));
+    public UIImagePickerControllerEditingInfo setMediaMetadata(Map<String, NSObject> mediaMetadata) {
+        set(Keys.MediaMetadata(), NSDictionary.fromStringMap(mediaMetadata));
         return this;
     }
-    /*<methods>*/
-    @GlobalValue(symbol="UIImagePickerControllerMediaType", optional=true)
-    protected static native NSString MediaTypeKey();
-    @GlobalValue(symbol="UIImagePickerControllerOriginalImage", optional=true)
-    protected static native NSString OriginalImageKey();
-    @GlobalValue(symbol="UIImagePickerControllerEditedImage", optional=true)
-    protected static native NSString EditedImageKey();
-    @GlobalValue(symbol="UIImagePickerControllerCropRect", optional=true)
-    protected static native NSString CropRectKey();
-    @GlobalValue(symbol="UIImagePickerControllerMediaURL", optional=true)
-    protected static native NSString MediaURLKey();
-    /**
-     * @since Available in iOS 4.1 and later.
-     */
-    @GlobalValue(symbol="UIImagePickerControllerReferenceURL", optional=true)
-    protected static native NSString ReferenceURLKey();
-    /**
-     * @since Available in iOS 4.1 and later.
-     */
-    @GlobalValue(symbol="UIImagePickerControllerMediaMetadata", optional=true)
-    protected static native NSString MediaMetadataKey();
     /*</methods>*/
     
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    /*<keys>*/
+    @Library("UIKit")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        @GlobalValue(symbol="UIImagePickerControllerMediaType", optional=true)
+        public static native NSString MediaType();
+        @GlobalValue(symbol="UIImagePickerControllerOriginalImage", optional=true)
+        public static native NSString OriginalImage();
+        @GlobalValue(symbol="UIImagePickerControllerEditedImage", optional=true)
+        public static native NSString EditedImage();
+        @GlobalValue(symbol="UIImagePickerControllerCropRect", optional=true)
+        public static native NSString CropRect();
+        @GlobalValue(symbol="UIImagePickerControllerMediaURL", optional=true)
+        public static native NSString MediaURL();
+        /**
+         * @since Available in iOS 4.1 and later.
+         */
+        @GlobalValue(symbol="UIImagePickerControllerReferenceURL", optional=true)
+        public static native NSString ReferenceURL();
+        /**
+         * @since Available in iOS 4.1 and later.
+         */
+        @GlobalValue(symbol="UIImagePickerControllerMediaMetadata", optional=true)
+        public static native NSString MediaMetadata();
     }
+    /*</keys>*/
 }

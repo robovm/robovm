@@ -40,82 +40,131 @@ import org.robovm.apple.dispatch.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("Foundation")/*</annotations>*/
+/*<annotations>*/@Library("Foundation") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/NSURLFileProperty/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSURLFileProperty/*</name>*/ 
-    extends /*<extends>*/NSURLProperty/*</extends>*/ 
+    extends /*<extends>*/NSURLProperty/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(NSURLFileProperty.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    static { Bro.bind(/*<name>*/NSURLFileProperty/*</name>*/.class); }
+
+    /*<marshalers>*/
+    public static class Marshaler {
+        @MarshalsPointer
+        public static NSURLFileProperty toObject(Class<NSURLFileProperty> cls, long handle, long flags) {
+            NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return NSURLFileProperty.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(NSURLFileProperty o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(o.value(), flags);
+        }
+    }
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<NSURLFileProperty> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<NSURLFileProperty> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(NSURLFileProperty.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<NSURLFileProperty> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (NSURLFileProperty o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSURLFileProperty FileSize = new NSURLFileProperty("FileSizeValue");
+    public static final NSURLFileProperty FileSize = new NSURLFileProperty("FileSize");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSURLFileProperty FileAllocatedSize = new NSURLFileProperty("FileAllocatedSizeValue");
+    public static final NSURLFileProperty FileAllocatedSize = new NSURLFileProperty("FileAllocatedSize");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final NSURLFileProperty TotalFileSize = new NSURLFileProperty("TotalFileSizeValue");
+    public static final NSURLFileProperty TotalFileSize = new NSURLFileProperty("TotalFileSize");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final NSURLFileProperty TotalFileAllocatedSize = new NSURLFileProperty("TotalFileAllocatedSizeValue");
+    public static final NSURLFileProperty TotalFileAllocatedSize = new NSURLFileProperty("TotalFileAllocatedSize");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSURLFileProperty IsAliasFile = new NSURLFileProperty("IsAliasFileValue");
+    public static final NSURLFileProperty IsAliasFile = new NSURLFileProperty("IsAliasFile");
+    /*</constants>*/
     
-    private static NSURLFileProperty[] values = new NSURLFileProperty[] {FileSize, FileAllocatedSize, TotalFileSize, TotalFileAllocatedSize, IsAliasFile};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    private static /*<name>*/NSURLFileProperty/*</name>*/[] values = new /*<name>*/NSURLFileProperty/*</name>*/[] {/*<value_list>*/FileSize, FileAllocatedSize, TotalFileSize, TotalFileAllocatedSize, IsAliasFile/*</value_list>*/};
     
-    private NSURLFileProperty(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/NSURLFileProperty/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static NSURLFileProperty valueOf(NSString value) {
-        for (NSURLFileProperty v : values) {
+    public static /*<name>*/NSURLFileProperty/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/NSURLFileProperty/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
         }
-        return null;
+        throw new IllegalArgumentException("No constant with value " + value + " found in " 
+            + /*<name>*/NSURLFileProperty/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSURLFileSizeKey", optional=true)
-    protected static native NSString FileSizeValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSURLFileAllocatedSizeKey", optional=true)
-    protected static native NSString FileAllocatedSizeValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSURLTotalFileSizeKey", optional=true)
-    protected static native NSString TotalFileSizeValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSURLTotalFileAllocatedSizeKey", optional=true)
-    protected static native NSString TotalFileAllocatedSizeValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSURLIsAliasFileKey", optional=true)
-    protected static native NSString IsAliasFileValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("Foundation") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSURLFileSizeKey", optional=true)
+        public static native NSString FileSize();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSURLFileAllocatedSizeKey", optional=true)
+        public static native NSString FileAllocatedSize();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSURLTotalFileSizeKey", optional=true)
+        public static native NSString TotalFileSize();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSURLTotalFileAllocatedSizeKey", optional=true)
+        public static native NSString TotalFileAllocatedSize();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSURLIsAliasFileKey", optional=true)
+        public static native NSString IsAliasFile();
+        /*</values>*/
+    }
 }

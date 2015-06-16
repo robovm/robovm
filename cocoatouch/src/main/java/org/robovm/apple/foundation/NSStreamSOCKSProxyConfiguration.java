@@ -40,14 +40,14 @@ import org.robovm.apple.dispatch.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(NSStreamSOCKSProxyConfiguration.Marshaler.class)
 /*<annotations>*/@Library("Foundation")/*</annotations>*/
+@Marshaler(/*<name>*/NSStreamSOCKSProxyConfiguration/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSStreamSOCKSProxyConfiguration/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static NSStreamSOCKSProxyConfiguration toObject(Class<NSStreamSOCKSProxyConfiguration> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -64,32 +64,62 @@ import org.robovm.apple.dispatch.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected NSStreamSOCKSProxyConfiguration(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<NSStreamSOCKSProxyConfiguration> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<NSStreamSOCKSProxyConfiguration> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new NSStreamSOCKSProxyConfiguration(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<NSStreamSOCKSProxyConfiguration> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (NSStreamSOCKSProxyConfiguration i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    public NSStreamSOCKSProxyConfiguration() {
-        this.data = new NSMutableDictionary<>();
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    NSStreamSOCKSProxyConfiguration(NSDictionary<NSString, NSObject> data) {
+        super(data);
     }
-    /*<bind>*/static { Bro.bind(NSStreamSOCKSProxyConfiguration.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
+    public NSStreamSOCKSProxyConfiguration() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
+    }
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
+    }
+    public NSStreamSOCKSProxyConfiguration set(NSString key, NSObject value) {
+        data.put(key, value);
+        return this;
     }
     
+
     /**
      * @since Available in iOS 2.0 and later.
      */
     public String getHost() {
-        if (data.containsKey(HostKey())) {
-            NSString val = (NSString)data.get(HostKey());
+        if (has(Keys.Host())) {
+            NSString val = (NSString) get(Keys.Host());
             return val.toString();
         }
         return null;
@@ -98,15 +128,15 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 2.0 and later.
      */
     public NSStreamSOCKSProxyConfiguration setHost(String host) {
-        data.put(HostKey(), new NSString(host));
+        set(Keys.Host(), new NSString(host));
         return this;
     }
     /**
      * @since Available in iOS 2.0 and later.
      */
     public int getPort() {
-        if (data.containsKey(PortKey())) {
-            NSNumber val = (NSNumber)data.get(PortKey());
+        if (has(Keys.Port())) {
+            NSNumber val = (NSNumber) get(Keys.Port());
             return val.intValue();
         }
         return 0;
@@ -115,15 +145,15 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 2.0 and later.
      */
     public NSStreamSOCKSProxyConfiguration setPort(int port) {
-        data.put(PortKey(), NSNumber.valueOf(port));
+        set(Keys.Port(), NSNumber.valueOf(port));
         return this;
     }
     /**
      * @since Available in iOS 2.0 and later.
      */
     public NSStreamSOCKSProxyVersion getVersion() {
-        if (data.containsKey(VersionKey())) {
-            NSString val = (NSString)data.get(VersionKey());
+        if (has(Keys.Version())) {
+            NSString val = (NSString) get(Keys.Version());
             return NSStreamSOCKSProxyVersion.valueOf(val);
         }
         return null;
@@ -132,15 +162,15 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 2.0 and later.
      */
     public NSStreamSOCKSProxyConfiguration setVersion(NSStreamSOCKSProxyVersion version) {
-        data.put(VersionKey(), version.value());
+        set(Keys.Version(), version.value());
         return this;
     }
     /**
      * @since Available in iOS 2.0 and later.
      */
     public String getUser() {
-        if (data.containsKey(UserKey())) {
-            NSString val = (NSString)data.get(UserKey());
+        if (has(Keys.User())) {
+            NSString val = (NSString) get(Keys.User());
             return val.toString();
         }
         return null;
@@ -148,16 +178,16 @@ import org.robovm.apple.dispatch.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public NSStreamSOCKSProxyConfiguration setUser(String host) {
-        data.put(UserKey(), new NSString(host));
+    public NSStreamSOCKSProxyConfiguration setUser(String user) {
+        set(Keys.User(), new NSString(user));
         return this;
     }
     /**
      * @since Available in iOS 2.0 and later.
      */
     public String getPassword() {
-        if (data.containsKey(PasswordKey())) {
-            NSString val = (NSString)data.get(PasswordKey());
+        if (has(Keys.Password())) {
+            NSString val = (NSString) get(Keys.Password());
             return val.toString();
         }
         return null;
@@ -165,41 +195,41 @@ import org.robovm.apple.dispatch.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public NSStreamSOCKSProxyConfiguration setPassword(String host) {
-        data.put(PasswordKey(), new NSString(host));
+    public NSStreamSOCKSProxyConfiguration setPassword(String password) {
+        set(Keys.Password(), new NSString(password));
         return this;
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="NSStreamSOCKSProxyHostKey", optional=true)
-    protected static native NSString HostKey();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="NSStreamSOCKSProxyPortKey", optional=true)
-    protected static native NSString PortKey();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="NSStreamSOCKSProxyVersionKey", optional=true)
-    protected static native NSString VersionKey();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="NSStreamSOCKSProxyUserKey", optional=true)
-    protected static native NSString UserKey();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="NSStreamSOCKSProxyPasswordKey", optional=true)
-    protected static native NSString PasswordKey();
     /*</methods>*/
     
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    /*<keys>*/
+    @Library("Foundation")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="NSStreamSOCKSProxyHostKey", optional=true)
+        public static native NSString Host();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="NSStreamSOCKSProxyPortKey", optional=true)
+        public static native NSString Port();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="NSStreamSOCKSProxyVersionKey", optional=true)
+        public static native NSString Version();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="NSStreamSOCKSProxyUserKey", optional=true)
+        public static native NSString User();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="NSStreamSOCKSProxyPasswordKey", optional=true)
+        public static native NSString Password();
     }
+    /*</keys>*/
 }

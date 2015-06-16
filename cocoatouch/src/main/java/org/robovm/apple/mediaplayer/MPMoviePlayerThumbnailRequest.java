@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -33,14 +34,14 @@ import org.robovm.apple.coregraphics.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(MPMoviePlayerThumbnailRequest.Marshaler.class)
 /*<annotations>*/@Library("MediaPlayer")/*</annotations>*/
+@Marshaler(/*<name>*/MPMoviePlayerThumbnailRequest/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/MPMoviePlayerThumbnailRequest/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
-    
+
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static MPMoviePlayerThumbnailRequest toObject(Class<MPMoviePlayerThumbnailRequest> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -57,30 +58,57 @@ import org.robovm.apple.coregraphics.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected MPMoviePlayerThumbnailRequest(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<MPMoviePlayerThumbnailRequest> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<MPMoviePlayerThumbnailRequest> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new MPMoviePlayerThumbnailRequest(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<MPMoviePlayerThumbnailRequest> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (MPMoviePlayerThumbnailRequest i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    MPMoviePlayerThumbnailRequest(NSDictionary<NSString, NSObject> data) {
+        super(data);
+    }
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
+    }
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
     }
     
-    /*<bind>*/static { Bro.bind(MPMoviePlayerThumbnailRequest.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
-    }
-    
+
     /**
      * @since Available in iOS 3.2 and later.
      */
     public UIImage getImage() {
-        if (data.containsKey(ImageKey())) {
-            UIImage val = (UIImage)data.get(ImageKey());
+        if (has(Keys.Image())) {
+            UIImage val = (UIImage) get(Keys.Image());
             return val;
         }
         return null;
@@ -89,8 +117,8 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 3.2 and later.
      */
     public double getTime() {
-        if (data.containsKey(TimeKey())) {
-            NSNumber val = (NSNumber)data.get(TimeKey());
+        if (has(Keys.Time())) {
+            NSNumber val = (NSNumber) get(Keys.Time());
             return val.doubleValue();
         }
         return 0;
@@ -99,33 +127,33 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 3.2 and later.
      */
     public NSError getError() {
-        if (data.containsKey(ErrorKey())) {
-            NSError val = (NSError)data.get(ErrorKey());
+        if (has(Keys.Error())) {
+            NSError val = (NSError) get(Keys.Error());
             return val;
         }
         return null;
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @GlobalValue(symbol="MPMoviePlayerThumbnailImageKey", optional=true)
-    protected static native NSString ImageKey();
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @GlobalValue(symbol="MPMoviePlayerThumbnailTimeKey", optional=true)
-    protected static native NSString TimeKey();
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @GlobalValue(symbol="MPMoviePlayerThumbnailErrorKey", optional=true)
-    protected static native NSString ErrorKey();
     /*</methods>*/
     
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    /*<keys>*/
+    @Library("MediaPlayer")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        /**
+         * @since Available in iOS 3.2 and later.
+         */
+        @GlobalValue(symbol="MPMoviePlayerThumbnailImageKey", optional=true)
+        public static native NSString Image();
+        /**
+         * @since Available in iOS 3.2 and later.
+         */
+        @GlobalValue(symbol="MPMoviePlayerThumbnailTimeKey", optional=true)
+        public static native NSString Time();
+        /**
+         * @since Available in iOS 3.2 and later.
+         */
+        @GlobalValue(symbol="MPMoviePlayerThumbnailErrorKey", optional=true)
+        public static native NSString Error();
     }
+    /*</keys>*/
 }

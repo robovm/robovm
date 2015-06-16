@@ -50,7 +50,7 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
     /*<ptr>*/public static class NSURLPtr extends Ptr<NSURL, NSURLPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSURL.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    public NSURL(NSURLScheme scheme, String host, String path) { super((SkipInit) null); initObject(init(scheme.value(), host, path)); }
+    public NSURL(NSURLScheme scheme, String host, String path) { super((SkipInit) null); initObject(init(scheme.value().toString(), host, path)); }
     public NSURL(NSData bookmarkData, NSURLBookmarkResolutionOptions options, NSURL relativeURL) throws NSErrorException {
         this(bookmarkData, options, relativeURL, new BooleanPtr());
     }

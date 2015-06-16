@@ -57,7 +57,7 @@ import org.robovm.apple.dispatch.*;
     public NSUserActivity(String activityType) { super((SkipInit) null); initObject(init(activityType)); }
     /*</constructors>*/
     public NSUserActivity(NSUserActivityType activityType) {
-        this(activityType.value());
+        this(activityType.value().toString());
     }
     /*<properties>*/
     @Property(selector = "activityType")

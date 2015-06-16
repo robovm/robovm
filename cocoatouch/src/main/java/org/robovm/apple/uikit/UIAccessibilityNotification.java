@@ -38,81 +38,128 @@ import org.robovm.apple.corelocation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("UIKit")/*</annotations>*/
+/*<annotations>*/@Library("UIKit") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/UIAccessibilityNotification/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIAccessibilityNotification/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<Integer>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(UIAccessibilityNotification.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    public static final UIAccessibilityNotification ScreenChanged = new UIAccessibilityNotification("ScreenChangedNotification");
-    public static final UIAccessibilityNotification LayoutChanged = new UIAccessibilityNotification("LayoutChangedNotification");
+    static { Bro.bind(/*<name>*/UIAccessibilityNotification/*</name>*/.class); }
+
+    /*<marshalers>*/
+    public static class Marshaler {
+        @MarshalsPointer
+        public static UIAccessibilityNotification toObject(Class<UIAccessibilityNotification> cls, long handle, long flags) {
+            NSNumber o = (NSNumber) NSObject.Marshaler.toObject(NSNumber.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return UIAccessibilityNotification.valueOf(o.intValue());
+        }
+        @MarshalsPointer
+        public static long toNative(UIAccessibilityNotification o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(NSNumber.valueOf(o.value()), flags);
+        }
+    }
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<UIAccessibilityNotification> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSNumber> o = (NSArray<NSNumber>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<UIAccessibilityNotification> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(UIAccessibilityNotification.valueOf(o.get(i).intValue()));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<UIAccessibilityNotification> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSNumber> array = new NSMutableArray<>();
+            for (UIAccessibilityNotification o : l) {
+                array.add(NSNumber.valueOf(o.value()));
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
+    public static final UIAccessibilityNotification ScreenChangedNotification = new UIAccessibilityNotification("ScreenChangedNotification");
+    public static final UIAccessibilityNotification LayoutChangedNotification = new UIAccessibilityNotification("LayoutChangedNotification");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final UIAccessibilityNotification Announcement = new UIAccessibilityNotification("AnnouncementNotification");
+    public static final UIAccessibilityNotification AnnouncementNotification = new UIAccessibilityNotification("AnnouncementNotification");
     /**
      * @since Available in iOS 4.2 and later.
      */
-    public static final UIAccessibilityNotification PageScrolled = new UIAccessibilityNotification("PageScrolledNotification");
+    public static final UIAccessibilityNotification PageScrolledNotification = new UIAccessibilityNotification("PageScrolledNotification");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final UIAccessibilityNotification PauseAssistiveTechnology = new UIAccessibilityNotification("PauseAssistiveTechnologyNotification");
+    public static final UIAccessibilityNotification PauseAssistiveTechnologyNotification = new UIAccessibilityNotification("PauseAssistiveTechnologyNotification");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final UIAccessibilityNotification ResumeAssistiveTechnology = new UIAccessibilityNotification("ResumeAssistiveTechnologyNotification");
+    public static final UIAccessibilityNotification ResumeAssistiveTechnologyNotification = new UIAccessibilityNotification("ResumeAssistiveTechnologyNotification");
+    /*</constants>*/
     
-    private static UIAccessibilityNotification[] values = new UIAccessibilityNotification[] {ScreenChanged, LayoutChanged, Announcement, PageScrolled, 
-        PauseAssistiveTechnology, ResumeAssistiveTechnology};
-    private final LazyGlobalValue<Integer> lazyGlobalValue;
+    private static /*<name>*/UIAccessibilityNotification/*</name>*/[] values = new /*<name>*/UIAccessibilityNotification/*</name>*/[] {/*<value_list>*/ScreenChangedNotification, LayoutChangedNotification, AnnouncementNotification, PageScrolledNotification, PauseAssistiveTechnologyNotification, ResumeAssistiveTechnologyNotification/*</value_list>*/};
     
-    private UIAccessibilityNotification(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public Integer value() {
-        return lazyGlobalValue.value();
+    /*<name>*/UIAccessibilityNotification/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static UIAccessibilityNotification valueOf(Integer value) {
-        for (UIAccessibilityNotification v : values) {
-            if (v.value() == value) {
+    public static /*<name>*/UIAccessibilityNotification/*</name>*/ valueOf(/*<type>*/int/*</type>*/ value) {
+        for (/*<name>*/UIAccessibilityNotification/*</name>*/ v : values) {
+            if (v.value().equals(value)) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/UIAccessibilityNotification/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    @GlobalValue(symbol="UIAccessibilityScreenChangedNotification", optional=true)
-    protected static native int ScreenChangedNotification();
-    @GlobalValue(symbol="UIAccessibilityLayoutChangedNotification", optional=true)
-    protected static native int LayoutChangedNotification();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="UIAccessibilityAnnouncementNotification", optional=true)
-    protected static native int AnnouncementNotification();
-    /**
-     * @since Available in iOS 4.2 and later.
-     */
-    @GlobalValue(symbol="UIAccessibilityPageScrolledNotification", optional=true)
-    protected static native int PageScrolledNotification();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="UIAccessibilityPauseAssistiveTechnologyNotification", optional=true)
-    protected static native int PauseAssistiveTechnologyNotification();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="UIAccessibilityResumeAssistiveTechnologyNotification", optional=true)
-    protected static native int ResumeAssistiveTechnologyNotification();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("UIKit") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        @GlobalValue(symbol="UIAccessibilityScreenChangedNotification", optional=true)
+        public static native int ScreenChangedNotification();
+        @GlobalValue(symbol="UIAccessibilityLayoutChangedNotification", optional=true)
+        public static native int LayoutChangedNotification();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="UIAccessibilityAnnouncementNotification", optional=true)
+        public static native int AnnouncementNotification();
+        /**
+         * @since Available in iOS 4.2 and later.
+         */
+        @GlobalValue(symbol="UIAccessibilityPageScrolledNotification", optional=true)
+        public static native int PageScrolledNotification();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="UIAccessibilityPauseAssistiveTechnologyNotification", optional=true)
+        public static native int PauseAssistiveTechnologyNotification();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="UIAccessibilityResumeAssistiveTechnologyNotification", optional=true)
+        public static native int ResumeAssistiveTechnologyNotification();
+        /*</values>*/
+    }
 }

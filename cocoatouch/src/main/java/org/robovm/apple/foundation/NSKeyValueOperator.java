@@ -40,12 +40,15 @@ import org.robovm.apple.dispatch.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(NSKeyValueOperator.Marshaler.class)
-/*<annotations>*/@Library("Foundation")/*</annotations>*/
+/*<annotations>*/@Library("Foundation") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/NSKeyValueOperator/*</name>*/.Marshaler.class)
 /*<visibility>*/public final/*</visibility>*/ class /*<name>*/NSKeyValueOperator/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/NSKeyValueOperator/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static NSKeyValueOperator toObject(Class<NSKeyValueOperator> cls, long handle, long flags) {
@@ -63,39 +66,56 @@ import org.robovm.apple.dispatch.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(NSKeyValueOperator.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    public static final NSKeyValueOperator Average = new NSKeyValueOperator("AverageValue");
-    public static final NSKeyValueOperator Count = new NSKeyValueOperator("CountValue");
-    public static final NSKeyValueOperator DistinctUnionOfArrays = new NSKeyValueOperator("DistinctUnionOfArraysValue");
-    public static final NSKeyValueOperator DistinctUnionOfObjects = new NSKeyValueOperator("DistinctUnionOfObjectsValue");
-    public static final NSKeyValueOperator DistinctUnionOfSets = new NSKeyValueOperator("DistinctUnionOfSetsValue");
-    public static final NSKeyValueOperator Maximum = new NSKeyValueOperator("MaximumValue");
-    public static final NSKeyValueOperator Minimum = new NSKeyValueOperator("MinimumValue");
-    public static final NSKeyValueOperator Sum = new NSKeyValueOperator("SumValue");
-    public static final NSKeyValueOperator UnionOfArrays = new NSKeyValueOperator("UnionOfArraysValue");
-    public static final NSKeyValueOperator UnionOfObjects = new NSKeyValueOperator("UnionOfObjectsValue");
-    public static final NSKeyValueOperator UnionOfSets = new NSKeyValueOperator("UnionOfSetsValue");
-    
-    private static NSKeyValueOperator[] values = new NSKeyValueOperator[] {Average, Count, DistinctUnionOfArrays, DistinctUnionOfObjects, 
-        DistinctUnionOfSets, Maximum, Minimum, Sum, UnionOfArrays, UnionOfObjects, UnionOfSets};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private NSKeyValueOperator(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<NSKeyValueOperator> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<NSKeyValueOperator> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(NSKeyValueOperator.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<NSKeyValueOperator> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (NSKeyValueOperator o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*</marshalers>*/
+
+    /*<constants>*/
+    public static final NSKeyValueOperator Average = new NSKeyValueOperator("Average");
+    public static final NSKeyValueOperator Count = new NSKeyValueOperator("Count");
+    public static final NSKeyValueOperator DistinctUnionOfArrays = new NSKeyValueOperator("DistinctUnionOfArrays");
+    public static final NSKeyValueOperator DistinctUnionOfObjects = new NSKeyValueOperator("DistinctUnionOfObjects");
+    public static final NSKeyValueOperator DistinctUnionOfSets = new NSKeyValueOperator("DistinctUnionOfSets");
+    public static final NSKeyValueOperator Maximum = new NSKeyValueOperator("Maximum");
+    public static final NSKeyValueOperator Minimum = new NSKeyValueOperator("Minimum");
+    public static final NSKeyValueOperator Sum = new NSKeyValueOperator("Sum");
+    public static final NSKeyValueOperator UnionOfArrays = new NSKeyValueOperator("UnionOfArrays");
+    public static final NSKeyValueOperator UnionOfObjects = new NSKeyValueOperator("UnionOfObjects");
+    public static final NSKeyValueOperator UnionOfSets = new NSKeyValueOperator("UnionOfSets");
+    /*</constants>*/
+    
+    private static /*<name>*/NSKeyValueOperator/*</name>*/[] values = new /*<name>*/NSKeyValueOperator/*</name>*/[] {/*<value_list>*/Average, Count, DistinctUnionOfArrays, DistinctUnionOfObjects, DistinctUnionOfSets, Maximum, Minimum, Sum, UnionOfArrays, UnionOfObjects, UnionOfSets/*</value_list>*/};
+    
+    /*<name>*/NSKeyValueOperator/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static NSKeyValueOperator valueOf(NSString value) {
-        for (NSKeyValueOperator v : values) {
+    public static /*<name>*/NSKeyValueOperator/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/NSKeyValueOperator/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -103,28 +123,36 @@ import org.robovm.apple.dispatch.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/NSKeyValueOperator/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    @GlobalValue(symbol="NSAverageKeyValueOperator", optional=true)
-    protected static native NSString AverageValue();
-    @GlobalValue(symbol="NSCountKeyValueOperator", optional=true)
-    protected static native NSString CountValue();
-    @GlobalValue(symbol="NSDistinctUnionOfArraysKeyValueOperator", optional=true)
-    protected static native NSString DistinctUnionOfArraysValue();
-    @GlobalValue(symbol="NSDistinctUnionOfObjectsKeyValueOperator", optional=true)
-    protected static native NSString DistinctUnionOfObjectsValue();
-    @GlobalValue(symbol="NSDistinctUnionOfSetsKeyValueOperator", optional=true)
-    protected static native NSString DistinctUnionOfSetsValue();
-    @GlobalValue(symbol="NSMaximumKeyValueOperator", optional=true)
-    protected static native NSString MaximumValue();
-    @GlobalValue(symbol="NSMinimumKeyValueOperator", optional=true)
-    protected static native NSString MinimumValue();
-    @GlobalValue(symbol="NSSumKeyValueOperator", optional=true)
-    protected static native NSString SumValue();
-    @GlobalValue(symbol="NSUnionOfArraysKeyValueOperator", optional=true)
-    protected static native NSString UnionOfArraysValue();
-    @GlobalValue(symbol="NSUnionOfObjectsKeyValueOperator", optional=true)
-    protected static native NSString UnionOfObjectsValue();
-    @GlobalValue(symbol="NSUnionOfSetsKeyValueOperator", optional=true)
-    protected static native NSString UnionOfSetsValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("Foundation") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        @GlobalValue(symbol="NSAverageKeyValueOperator", optional=true)
+        public static native NSString Average();
+        @GlobalValue(symbol="NSCountKeyValueOperator", optional=true)
+        public static native NSString Count();
+        @GlobalValue(symbol="NSDistinctUnionOfArraysKeyValueOperator", optional=true)
+        public static native NSString DistinctUnionOfArrays();
+        @GlobalValue(symbol="NSDistinctUnionOfObjectsKeyValueOperator", optional=true)
+        public static native NSString DistinctUnionOfObjects();
+        @GlobalValue(symbol="NSDistinctUnionOfSetsKeyValueOperator", optional=true)
+        public static native NSString DistinctUnionOfSets();
+        @GlobalValue(symbol="NSMaximumKeyValueOperator", optional=true)
+        public static native NSString Maximum();
+        @GlobalValue(symbol="NSMinimumKeyValueOperator", optional=true)
+        public static native NSString Minimum();
+        @GlobalValue(symbol="NSSumKeyValueOperator", optional=true)
+        public static native NSString Sum();
+        @GlobalValue(symbol="NSUnionOfArraysKeyValueOperator", optional=true)
+        public static native NSString UnionOfArrays();
+        @GlobalValue(symbol="NSUnionOfObjectsKeyValueOperator", optional=true)
+        public static native NSString UnionOfObjects();
+        @GlobalValue(symbol="NSUnionOfSetsKeyValueOperator", optional=true)
+        public static native NSString UnionOfSets();
+        /*</values>*/
+    }
 }

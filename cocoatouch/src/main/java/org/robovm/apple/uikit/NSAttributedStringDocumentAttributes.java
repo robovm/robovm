@@ -19,29 +19,33 @@ package org.robovm.apple.uikit;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
-
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
-import org.robovm.apple.coregraphics.CGSize;
 import org.robovm.apple.foundation.*;
-import org.robovm.apple.uikit.*;
+import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.coredata.*;
+import org.robovm.apple.coreimage.*;
+import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(NSAttributedStringDocumentAttributes.Marshaler.class)
 /*<annotations>*/@Library("UIKit")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class NSAttributedStringDocumentAttributes 
-    extends /*<extends>*/Object/*</extends>*/ 
+@Marshaler(/*<name>*/NSAttributedStringDocumentAttributes/*</name>*/.Marshaler.class)
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/NSAttributedStringDocumentAttributes/*</name>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static NSAttributedStringDocumentAttributes toObject(Class<NSAttributedStringDocumentAttributes> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -58,53 +62,75 @@ import org.robovm.apple.uikit.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    public NSAttributedStringDocumentAttributes(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<NSAttributedStringDocumentAttributes> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<NSAttributedStringDocumentAttributes> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new NSAttributedStringDocumentAttributes(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<NSAttributedStringDocumentAttributes> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (NSAttributedStringDocumentAttributes i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    public NSAttributedStringDocumentAttributes() {
-        this.data = new NSMutableDictionary<>();
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    NSAttributedStringDocumentAttributes(NSDictionary<NSString, NSObject> data) {
+        super(data);
     }
-    /*<bind>*/static { Bro.bind(NSAttributedStringDocumentAttributes.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
+    public NSAttributedStringDocumentAttributes() {}
+    /*</constructors>*/
+
+    public boolean has(String key) {
+        return data.containsKey(new NSString(key));
     }
-    
-    public NSAttributedStringDocumentAttributes set(String attribute, NSObject value) {
-        data.put(new NSString(attribute), value);
+    public NSObject get(String key) {
+        if (has(key)) {
+            return data.get(new NSString(key));
+        }
+        return null;
+    }
+    public NSAttributedStringDocumentAttributes set(String key, NSObject value) {
+        data.put(new NSString(key), value);
         return this;
     }
-    public NSAttributedStringDocumentAttributes set(NSAttributedStringDocumentAttribute attribute, NSObject value) {
-        data.put(attribute.value(), value);
+    /*<methods>*/
+    public boolean has(NSAttributedStringDocumentAttribute key) {
+        return data.containsKey(key.value());
+    }
+    public NSObject get(NSAttributedStringDocumentAttribute key) {
+        if (has(key)) {
+            return data.get(key.value());
+        }
+        return null;
+    }
+    public NSAttributedStringDocumentAttributes set(NSAttributedStringDocumentAttribute key, NSObject value) {
+        data.put(key.value(), value);
         return this;
     }
-    public NSObject get(String attribute) {
-        return data.get(new NSString(attribute));
-    }
-    public NSObject get(NSAttributedStringDocumentAttribute attribute) {
-        return data.get(attribute.value());
-    }
-    public boolean contains(String attribute) {
-        return data.containsKey(new NSString(attribute));
-    }
-    public boolean contains(NSAttributedStringDocumentAttribute attribute) {
-        return data.containsKey(attribute.value());
-    }
     
+
     /**
      * @since Available in iOS 7.0 and later.
      */
     public NSDocumentType getDocumentType() {
-        if (contains(NSAttributedStringDocumentAttribute.DocumentType)) {
-            NSString val = (NSString)get(NSAttributedStringDocumentAttribute.DocumentType);
+        if (has(NSAttributedStringDocumentAttribute.DocumentType)) {
+            NSString val = (NSString) get(NSAttributedStringDocumentAttribute.DocumentType);
             return NSDocumentType.valueOf(val);
         }
         return null;
@@ -112,34 +138,33 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public NSAttributedStringDocumentAttributes setDocumentType(NSDocumentType type) {
-        set(NSAttributedStringDocumentAttribute.DocumentType, type.value());
+    public NSAttributedStringDocumentAttributes setDocumentType(NSDocumentType documentType) {
+        set(NSAttributedStringDocumentAttribute.DocumentType, documentType.value());
         return this;
     }
     /**
      * @since Available in iOS 7.0 and later.
      */
     public NSStringEncoding getCharacterEncoding() {
-        if (contains(NSAttributedStringDocumentAttribute.CharacterEncoding)) {
-            NSNumber val = (NSNumber)get(NSAttributedStringDocumentAttribute.CharacterEncoding);
-            return NSStringEncoding.valueOf(val.intValue());
+        if (has(NSAttributedStringDocumentAttribute.CharacterEncoding)) {
+            NSNumber val = (NSNumber) get(NSAttributedStringDocumentAttribute.CharacterEncoding);
+            return NSStringEncoding.valueOf(val.longValue());
         }
         return null;
     }
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public NSAttributedStringDocumentAttributes setCharacterEncoding(NSStringEncoding encoding) {
-        set(NSAttributedStringDocumentAttribute.CharacterEncoding, NSNumber.valueOf((int)encoding.value()));
+    public NSAttributedStringDocumentAttributes setCharacterEncoding(NSStringEncoding characterEncoding) {
+        set(NSAttributedStringDocumentAttribute.CharacterEncoding, NSNumber.valueOf(characterEncoding.value()));
         return this;
     }
     /**
      * @since Available in iOS 7.0 and later.
      */
-    @SuppressWarnings("unchecked")
     public NSAttributedStringAttributes getDefaultAttributes() {
-        if (contains(NSAttributedStringDocumentAttribute.DefaultAttributes)) {
-            NSDictionary<NSString, NSObject> val = (NSDictionary<NSString, NSObject>)get(NSAttributedStringDocumentAttribute.DefaultAttributes);
+        if (has(NSAttributedStringDocumentAttribute.DefaultAttributes)) {
+            NSDictionary<NSString, NSObject> val = (NSDictionary<NSString, NSObject>) get(NSAttributedStringDocumentAttribute.DefaultAttributes);
             return new NSAttributedStringAttributes(val);
         }
         return null;
@@ -147,16 +172,16 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public NSAttributedStringDocumentAttributes setDefaultAttributes(NSAttributedStringAttributes attributes) {
-        set(NSAttributedStringDocumentAttribute.DefaultAttributes, attributes.getDictionary());
+    public NSAttributedStringDocumentAttributes setDefaultAttributes(NSAttributedStringAttributes defaultAttributes) {
+        set(NSAttributedStringDocumentAttribute.DefaultAttributes, defaultAttributes.getDictionary());
         return this;
     }
     /**
      * @since Available in iOS 7.0 and later.
      */
     public CGSize getPaperSize() {
-        if (contains(NSAttributedStringDocumentAttribute.PaperSize)) {
-            NSValue val = (NSValue)get(NSAttributedStringDocumentAttribute.PaperSize);
+        if (has(NSAttributedStringDocumentAttribute.PaperSize)) {
+            NSValue val = (NSValue) get(NSAttributedStringDocumentAttribute.PaperSize);
             return val.sizeValue();
         }
         return null;
@@ -172,8 +197,8 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 7.0 and later.
      */
     public UIEdgeInsets getPaperMargin() {
-        if (contains(NSAttributedStringDocumentAttribute.PaperMargin)) {
-            NSValue val = (NSValue)get(NSAttributedStringDocumentAttribute.PaperMargin);
+        if (has(NSAttributedStringDocumentAttribute.PaperMargin)) {
+            NSValue val = (NSValue) get(NSAttributedStringDocumentAttribute.PaperMargin);
             return val.edgeInsetsValue();
         }
         return null;
@@ -189,8 +214,8 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 7.0 and later.
      */
     public CGSize getViewSize() {
-        if (contains(NSAttributedStringDocumentAttribute.ViewSize)) {
-            NSValue val = (NSValue)get(NSAttributedStringDocumentAttribute.ViewSize);
+        if (has(NSAttributedStringDocumentAttribute.ViewSize)) {
+            NSValue val = (NSValue) get(NSAttributedStringDocumentAttribute.ViewSize);
             return val.sizeValue();
         }
         return null;
@@ -206,11 +231,11 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 7.0 and later.
      */
     public double getViewZoom() {
-        if (contains(NSAttributedStringDocumentAttribute.ViewZoom)) {
-            NSNumber val = (NSNumber)get(NSAttributedStringDocumentAttribute.ViewZoom);
+        if (has(NSAttributedStringDocumentAttribute.ViewZoom)) {
+            NSNumber val = (NSNumber) get(NSAttributedStringDocumentAttribute.ViewZoom);
             return val.doubleValue();
         }
-        return 100;
+        return 0;
     }
     /**
      * @since Available in iOS 7.0 and later.
@@ -222,27 +247,10 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public NSDocumentViewMode getViewMode() {
-        if (contains(NSAttributedStringDocumentAttribute.ViewMode)) {
-            NSNumber val = (NSNumber)get(NSAttributedStringDocumentAttribute.ViewMode);
-            return NSDocumentViewMode.values()[val.intValue()];
-        }
-        return null;
-    }
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public NSAttributedStringDocumentAttributes setViewMode(NSDocumentViewMode viewMode) {
-        set(NSAttributedStringDocumentAttribute.ViewMode, NSNumber.valueOf(viewMode.ordinal()));
-        return this;
-    }
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     public boolean isReadOnly() {
-        if (contains(NSAttributedStringDocumentAttribute.ReadOnly)) {
-            NSNumber val = (NSNumber)get(NSAttributedStringDocumentAttribute.ReadOnly);
-            return val.intValue() != 0;
+        if (has(NSAttributedStringDocumentAttribute.ReadOnly)) {
+            NSNumber val = (NSNumber) get(NSAttributedStringDocumentAttribute.ReadOnly);
+            return val.booleanValue();
         }
         return false;
     }
@@ -250,15 +258,15 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 7.0 and later.
      */
     public NSAttributedStringDocumentAttributes setReadOnly(boolean readOnly) {
-        set(NSAttributedStringDocumentAttribute.ReadOnly, NSNumber.valueOf(readOnly ? 1 : 0));
+        set(NSAttributedStringDocumentAttribute.ReadOnly, NSNumber.valueOf(readOnly));
         return this;
     }
     /**
      * @since Available in iOS 7.0 and later.
      */
     public UIColor getBackgroundColor() {
-        if (contains(NSAttributedStringDocumentAttribute.BackgroundColor)) {
-            UIColor val = (UIColor)get(NSAttributedStringDocumentAttribute.BackgroundColor);
+        if (has(NSAttributedStringDocumentAttribute.BackgroundColor)) {
+            UIColor val = (UIColor) get(NSAttributedStringDocumentAttribute.BackgroundColor);
             return val;
         }
         return null;
@@ -274,8 +282,8 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 7.0 and later.
      */
     public double getHyphenationFactor() {
-        if (contains(NSAttributedStringDocumentAttribute.HyphenationFactor)) {
-            NSNumber val = (NSNumber)get(NSAttributedStringDocumentAttribute.HyphenationFactor);
+        if (has(NSAttributedStringDocumentAttribute.HyphenationFactor)) {
+            NSNumber val = (NSNumber) get(NSAttributedStringDocumentAttribute.HyphenationFactor);
             return val.doubleValue();
         }
         return 0;
@@ -283,16 +291,16 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public NSAttributedStringDocumentAttributes setHyphenationFactor(double factor) {
-        set(NSAttributedStringDocumentAttribute.HyphenationFactor, NSNumber.valueOf(factor));
+    public NSAttributedStringDocumentAttributes setHyphenationFactor(double hyphenationFactor) {
+        set(NSAttributedStringDocumentAttribute.HyphenationFactor, NSNumber.valueOf(hyphenationFactor));
         return this;
     }
     /**
      * @since Available in iOS 7.0 and later.
      */
     public double getDefaultTabInterval() {
-        if (contains(NSAttributedStringDocumentAttribute.DefaultTabInterval)) {
-            NSNumber val = (NSNumber)get(NSAttributedStringDocumentAttribute.DefaultTabInterval);
+        if (has(NSAttributedStringDocumentAttribute.DefaultTabInterval)) {
+            NSNumber val = (NSNumber) get(NSAttributedStringDocumentAttribute.DefaultTabInterval);
             return val.doubleValue();
         }
         return 0;
@@ -300,17 +308,33 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public NSAttributedStringDocumentAttributes setDefaultTabInterval(double interval) {
-        set(NSAttributedStringDocumentAttribute.DefaultTabInterval, NSNumber.valueOf(interval));
+    public NSAttributedStringDocumentAttributes setDefaultTabInterval(double defaultTabInterval) {
+        set(NSAttributedStringDocumentAttribute.DefaultTabInterval, NSNumber.valueOf(defaultTabInterval));
         return this;
+    }
+    /*</methods>*/
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public NSDocumentViewMode getViewMode() {
+        if (has(NSAttributedStringDocumentAttribute.ViewMode)) {
+            NSNumber val = (NSNumber) get(NSAttributedStringDocumentAttribute.ViewMode);
+            return NSDocumentViewMode.values()[val.intValue()];
+        }
+        return null;
     }
     /**
      * @since Available in iOS 7.0 and later.
      */
+    public NSAttributedStringDocumentAttributes setViewMode(NSDocumentViewMode viewMode) {
+        set(NSAttributedStringDocumentAttribute.ViewMode, NSNumber.valueOf(viewMode.ordinal()));
+        return this;
+    }
+    
     @SuppressWarnings("unchecked")
     public List<NSTextLayoutSection> getTextLayoutSections() {
         List<NSTextLayoutSection> list = new ArrayList<>();
-        if (contains(NSAttributedStringDocumentAttribute.TextLayoutSections)) {
+        if (has(NSAttributedStringDocumentAttribute.TextLayoutSections)) {
             NSArray<NSDictionary<NSString, NSObject>> val = (NSArray<NSDictionary<NSString, NSObject>>)get(NSAttributedStringDocumentAttribute.TextLayoutSections);
             for (NSDictionary<NSString, NSObject> e : val) {
                 list.add(new NSTextLayoutSection(e));
@@ -330,9 +354,6 @@ import org.robovm.apple.uikit.*;
         return this;
     }
     
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
-    }
+    /*<keys>*/
+    /*</keys>*/
 }

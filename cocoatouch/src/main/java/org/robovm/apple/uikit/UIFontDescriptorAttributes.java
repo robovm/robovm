@@ -38,17 +38,14 @@ import org.robovm.apple.corelocation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/**
- * @since Available in iOS 7.0 and later.
- */
-@Marshaler(UIFontDescriptorAttributes.Marshaler.class)
 /*<annotations>*/@Library("UIKit")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class UIFontDescriptorAttributes 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+@Marshaler(/*<name>*/UIFontDescriptorAttributes/*</name>*/.Marshaler.class)
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/UIFontDescriptorAttributes/*</name>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static UIFontDescriptorAttributes toObject(Class<UIFontDescriptorAttributes> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -65,53 +62,62 @@ import org.robovm.apple.corelocation.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected UIFontDescriptorAttributes(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<UIFontDescriptorAttributes> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<UIFontDescriptorAttributes> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new UIFontDescriptorAttributes(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<UIFontDescriptorAttributes> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (UIFontDescriptorAttributes i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    public UIFontDescriptorAttributes() {
-        this.data = new NSMutableDictionary<>();
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    UIFontDescriptorAttributes(NSDictionary<NSString, NSObject> data) {
+        super(data);
     }
-    /*<bind>*/static { Bro.bind(UIFontDescriptorAttributes.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
+    public UIFontDescriptorAttributes() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(UIFontDescriptorAttribute key) {
+        return data.containsKey(key.value());
     }
-    
-    public UIFontDescriptorAttributes set(String attribute, NSObject value) {
-        data.put(new NSString(attribute), value);
+    public NSObject get(UIFontDescriptorAttribute key) {
+        if (has(key)) {
+            return data.get(key.value());
+        }
+        return null;
+    }
+    public UIFontDescriptorAttributes set(UIFontDescriptorAttribute key, NSObject value) {
+        data.put(key.value(), value);
         return this;
     }
-    public UIFontDescriptorAttributes set(UIFontDescriptorAttribute attribute, NSObject value) {
-        data.put(attribute.value(), value);
-        return this;
-    }
-    public NSObject get(String attribute) {
-        return data.get(new NSString(attribute));
-    }
-    public NSObject get(UIFontDescriptorAttribute attribute) {
-        return data.get(attribute.value());
-    }
-    public boolean contains(String attribute) {
-        return data.containsKey(new NSString(attribute));
-    }
-    public boolean contains(UIFontDescriptorAttribute attribute) {
-        return data.containsKey(attribute.value());
-    }
     
+
     /**
      * @since Available in iOS 7.0 and later.
      */
     public String getFamily() {
-        if (contains(UIFontDescriptorAttribute.Family)) {
-            NSString val = (NSString)get(UIFontDescriptorAttribute.Family);
+        if (has(UIFontDescriptorAttribute.Family)) {
+            NSString val = (NSString) get(UIFontDescriptorAttribute.Family);
             return val.toString();
         }
         return null;
@@ -127,8 +133,8 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 7.0 and later.
      */
     public String getName() {
-        if (contains(UIFontDescriptorAttribute.Name)) {
-            NSString val = (NSString)get(UIFontDescriptorAttribute.Name);
+        if (has(UIFontDescriptorAttribute.Name)) {
+            NSString val = (NSString) get(UIFontDescriptorAttribute.Name);
             return val.toString();
         }
         return null;
@@ -144,8 +150,8 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 7.0 and later.
      */
     public String getFace() {
-        if (contains(UIFontDescriptorAttribute.Face)) {
-            NSString val = (NSString)get(UIFontDescriptorAttribute.Face);
+        if (has(UIFontDescriptorAttribute.Face)) {
+            NSString val = (NSString) get(UIFontDescriptorAttribute.Face);
             return val.toString();
         }
         return null;
@@ -161,8 +167,8 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 7.0 and later.
      */
     public double getSize() {
-        if (contains(UIFontDescriptorAttribute.Size)) {
-            NSNumber val = (NSNumber)get(UIFontDescriptorAttribute.Face);
+        if (has(UIFontDescriptorAttribute.Size)) {
+            NSNumber val = (NSNumber) get(UIFontDescriptorAttribute.Size);
             return val.doubleValue();
         }
         return 0;
@@ -171,15 +177,15 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 7.0 and later.
      */
     public UIFontDescriptorAttributes setSize(double size) {
-        set(UIFontDescriptorAttribute.Face, NSNumber.valueOf(size));
+        set(UIFontDescriptorAttribute.Size, NSNumber.valueOf(size));
         return this;
     }
     /**
      * @since Available in iOS 7.0 and later.
      */
     public String getVisibleName() {
-        if (contains(UIFontDescriptorAttribute.VisibleName)) {
-            NSString val = (NSString)get(UIFontDescriptorAttribute.VisibleName);
+        if (has(UIFontDescriptorAttribute.VisibleName)) {
+            NSString val = (NSString) get(UIFontDescriptorAttribute.VisibleName);
             return val.toString();
         }
         return null;
@@ -187,16 +193,16 @@ import org.robovm.apple.corelocation.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public UIFontDescriptorAttributes setVisibleName(String name) {
-        set(UIFontDescriptorAttribute.VisibleName, new NSString(name));
+    public UIFontDescriptorAttributes setVisibleName(String visibleName) {
+        set(UIFontDescriptorAttribute.VisibleName, new NSString(visibleName));
         return this;
     }
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public @ByVal CGAffineTransform getMatrix() {
-        if (contains(UIFontDescriptorAttribute.Matrix)) {
-            NSValue val = (NSValue)get(UIFontDescriptorAttribute.Matrix);
+    public CGAffineTransform getMatrix() {
+        if (has(UIFontDescriptorAttribute.Matrix)) {
+            NSValue val = (NSValue) get(UIFontDescriptorAttribute.Matrix);
             return val.affineTransformValue();
         }
         return null;
@@ -204,7 +210,7 @@ import org.robovm.apple.corelocation.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public UIFontDescriptorAttributes setMatrix(@ByVal CGAffineTransform matrix) {
+    public UIFontDescriptorAttributes setMatrix(CGAffineTransform matrix) {
         set(UIFontDescriptorAttribute.Matrix, NSValue.valueOf(matrix));
         return this;
     }
@@ -212,8 +218,8 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 7.0 and later.
      */
     public NSCharacterSet getCharacterSet() {
-        if (contains(UIFontDescriptorAttribute.CharacterSet)) {
-            NSCharacterSet val = (NSCharacterSet)get(UIFontDescriptorAttribute.CharacterSet);
+        if (has(UIFontDescriptorAttribute.CharacterSet)) {
+            NSCharacterSet val = (NSCharacterSet) get(UIFontDescriptorAttribute.CharacterSet);
             return val;
         }
         return null;
@@ -228,10 +234,9 @@ import org.robovm.apple.corelocation.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    @SuppressWarnings("unchecked")
     public NSArray<UIFontDescriptor> getCascadeList() {
-        if (contains(UIFontDescriptorAttribute.CascadeList)) {
-            NSArray<UIFontDescriptor> val = (NSArray<UIFontDescriptor>)get(UIFontDescriptorAttribute.CascadeList);
+        if (has(UIFontDescriptorAttribute.CascadeList)) {
+            NSArray<UIFontDescriptor> val = (NSArray<UIFontDescriptor>) get(UIFontDescriptorAttribute.CascadeList);
             return val;
         }
         return null;
@@ -246,13 +251,12 @@ import org.robovm.apple.corelocation.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    @SuppressWarnings("unchecked")
     public UIFontDescriptorTraits getTraits() {
-        if (contains(UIFontDescriptorAttribute.Traits)) {
-            NSDictionary<NSString, NSObject> val = (NSDictionary<NSString, NSObject>)get(UIFontDescriptorAttribute.Traits);
+        if (has(UIFontDescriptorAttribute.Traits)) {
+            NSDictionary<NSString, NSObject> val = (NSDictionary<NSString, NSObject>) get(UIFontDescriptorAttribute.Traits);
             return new UIFontDescriptorTraits(val);
         }
-        return new UIFontDescriptorTraits();
+        return null;
     }
     /**
      * @since Available in iOS 7.0 and later.
@@ -265,8 +269,8 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 7.0 and later.
      */
     public double getFixedAdvance() {
-        if (contains(UIFontDescriptorAttribute.FixedAdvance)) {
-            NSNumber val = (NSNumber)get(UIFontDescriptorAttribute.FixedAdvance);
+        if (has(UIFontDescriptorAttribute.FixedAdvance)) {
+            NSNumber val = (NSNumber) get(UIFontDescriptorAttribute.FixedAdvance);
             return val.doubleValue();
         }
         return 0;
@@ -278,15 +282,12 @@ import org.robovm.apple.corelocation.*;
         set(UIFontDescriptorAttribute.FixedAdvance, NSNumber.valueOf(fixedAdvance));
         return this;
     }
-
-    //    public static UIFontDescriptorAttribute FeatureSettings = new UIFontDescriptorAttribute("FeatureSettingsValue"); TODO
-    
     /**
      * @since Available in iOS 7.0 and later.
      */
     public UIFontTextStyle getTextStyle() {
-        if (contains(UIFontDescriptorAttribute.TextStyle)) {
-            NSString val = (NSString)get(UIFontDescriptorAttribute.TextStyle);
+        if (has(UIFontDescriptorAttribute.TextStyle)) {
+            NSString val = (NSString) get(UIFontDescriptorAttribute.TextStyle);
             return UIFontTextStyle.valueOf(val);
         }
         return null;
@@ -298,21 +299,8 @@ import org.robovm.apple.corelocation.*;
         set(UIFontDescriptorAttribute.TextStyle, textStyle.value());
         return this;
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIFontFeatureTypeIdentifierKey", optional=true)
-    protected static native NSString TypeIdentifierKey();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIFontFeatureSelectorIdentifierKey", optional=true)
-    protected static native NSString SelectorIdentifierKey();
     /*</methods>*/
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
-    }
+    
+    /*<keys>*/
+    /*</keys>*/
 }

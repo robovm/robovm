@@ -19,32 +19,35 @@ package org.robovm.apple.foundation;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
-
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.uikit.*;
+import org.robovm.apple.coretext.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coredata.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(NSHTTPCookieAttributes.Marshaler.class)
 /*<annotations>*/@Library("Foundation")/*</annotations>*/
+@Marshaler(/*<name>*/NSHTTPCookieAttributes/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSHTTPCookieAttributes/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
-    
+
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static NSHTTPCookieAttributes toObject(Class<NSHTTPCookieAttributes> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -61,40 +64,136 @@ import org.robovm.apple.security.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<NSHTTPCookieAttributes> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<NSHTTPCookieAttributes> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new NSHTTPCookieAttributes(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<NSHTTPCookieAttributes> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (NSHTTPCookieAttributes i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
 
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected NSHTTPCookieAttributes(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
+    /*<constructors>*/
+    NSHTTPCookieAttributes(NSDictionary<NSString, NSObject> data) {
+        super(data);
     }
-    public NSHTTPCookieAttributes() {
-        this.data = new NSMutableDictionary<>();
+    public NSHTTPCookieAttributes() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSHTTPCookieAttribute key) {
+        return data.containsKey(key.value());
     }
-    /*<bind>*/static { Bro.bind(NSHTTPCookieAttributes.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
+    public NSObject get(NSHTTPCookieAttribute key) {
+        if (has(key)) {
+            return data.get(key.value());
+        }
+        return null;
     }
-    
-    public NSHTTPCookieAttributes set(NSHTTPCookieAttribute attribute, NSObject value) {
-        data.put(attribute.value(), value);
+    public NSHTTPCookieAttributes set(NSHTTPCookieAttribute key, NSObject value) {
+        data.put(key.value(), value);
         return this;
     }
-    public NSObject get(NSHTTPCookieAttribute attribute) {
-        return data.get(attribute.value());
-    }
-    public boolean contains(NSHTTPCookieAttribute attribute) {
-        return data.containsKey(attribute.value());
-    }
     
+
+    public String getName() {
+        if (has(NSHTTPCookieAttribute.Name)) {
+            NSString val = (NSString) get(NSHTTPCookieAttribute.Name);
+            return val.toString();
+        }
+        return null;
+    }
+    public NSHTTPCookieAttributes setName(String name) {
+        set(NSHTTPCookieAttribute.Name, new NSString(name));
+        return this;
+    }
+    public String getValue() {
+        if (has(NSHTTPCookieAttribute.Value)) {
+            NSString val = (NSString) get(NSHTTPCookieAttribute.Value);
+            return val.toString();
+        }
+        return null;
+    }
+    public NSHTTPCookieAttributes setValue(String value) {
+        set(NSHTTPCookieAttribute.Value, new NSString(value));
+        return this;
+    }
+    public NSURL getOriginURL() {
+        if (has(NSHTTPCookieAttribute.OriginURL)) {
+            NSURL val = (NSURL) get(NSHTTPCookieAttribute.OriginURL);
+            return val;
+        }
+        return null;
+    }
+    public NSHTTPCookieAttributes setOriginURL(NSURL originURL) {
+        set(NSHTTPCookieAttribute.OriginURL, originURL);
+        return this;
+    }
+    public int getVersion() {
+        if (has(NSHTTPCookieAttribute.Version)) {
+            NSNumber val = (NSNumber) get(NSHTTPCookieAttribute.Version);
+            return val.intValue();
+        }
+        return 0;
+    }
+    public NSHTTPCookieAttributes setVersion(int version) {
+        set(NSHTTPCookieAttribute.Version, NSNumber.valueOf(version));
+        return this;
+    }
+    public String getDomain() {
+        if (has(NSHTTPCookieAttribute.Domain)) {
+            NSString val = (NSString) get(NSHTTPCookieAttribute.Domain);
+            return val.toString();
+        }
+        return null;
+    }
+    public NSHTTPCookieAttributes setDomain(String domain) {
+        set(NSHTTPCookieAttribute.Domain, new NSString(domain));
+        return this;
+    }
+    public String getPath() {
+        if (has(NSHTTPCookieAttribute.Path)) {
+            NSString val = (NSString) get(NSHTTPCookieAttribute.Path);
+            return val.toString();
+        }
+        return null;
+    }
+    public NSHTTPCookieAttributes setPath(String path) {
+        set(NSHTTPCookieAttribute.Path, new NSString(path));
+        return this;
+    }
+    public NSDate getExpireDate() {
+        if (has(NSHTTPCookieAttribute.Expires)) {
+            NSDate val = (NSDate) get(NSHTTPCookieAttribute.Expires);
+            return val;
+        }
+        return null;
+    }
+    public NSHTTPCookieAttributes setExpireDate(NSDate expireDate) {
+        set(NSHTTPCookieAttribute.Expires, expireDate);
+        return this;
+    }
     public String getComment() {
-        if (contains(NSHTTPCookieAttribute.Comment)) {
-            NSString val = (NSString)get(NSHTTPCookieAttribute.Comment);
+        if (has(NSHTTPCookieAttribute.Comment)) {
+            NSString val = (NSString) get(NSHTTPCookieAttribute.Comment);
             return val.toString();
         }
         return null;
@@ -104,98 +203,30 @@ import org.robovm.apple.security.*;
         return this;
     }
     public NSURL getCommentURL() {
-        if (contains(NSHTTPCookieAttribute.CommentURL)) {
-            NSURL val = (NSURL)get(NSHTTPCookieAttribute.CommentURL);
+        if (has(NSHTTPCookieAttribute.CommentURL)) {
+            NSURL val = (NSURL) get(NSHTTPCookieAttribute.CommentURL);
             return val;
         }
         return null;
     }
-    public NSHTTPCookieAttributes setCommentURL(NSURL url) {
-        set(NSHTTPCookieAttribute.CommentURL, url);
-        return this;
-    }
-    public boolean isDiscard() {
-        if (contains(NSHTTPCookieAttribute.Discard)) {
-            NSString val = (NSString)get(NSHTTPCookieAttribute.Discard);
-            return val.toString().equals("TRUE");
-        }
-        
-        if (getVersion() >= 1 && getMaximumAge() == 0) return true; 
-        return false;
-    }
-    public NSHTTPCookieAttributes setDiscard(boolean discard) {
-        set(NSHTTPCookieAttribute.Discard, discard ? new NSString("TRUE") : new NSString("FALSE"));
-        return this;
-    }
-    public String getDomain() {
-        if (contains(NSHTTPCookieAttribute.Domain)) {
-            NSString val = (NSString)get(NSHTTPCookieAttribute.Domain);
-            return val.toString();
-        }
-        return null;
-    }
-    public NSHTTPCookieAttributes setDomain(String domain) {
-        set(NSHTTPCookieAttribute.Domain, new NSString(domain));
-        return this;
-    }
-    public NSDate getExpireDate() {
-        if (contains(NSHTTPCookieAttribute.Expires)) {
-            NSDate val = (NSDate)get(NSHTTPCookieAttribute.Expires);
-            return val;
-        }
-        return null;
-    }
-    public NSHTTPCookieAttributes setExpireDate(NSDate expires) {
-        set(NSHTTPCookieAttribute.Expires, expires);
+    public NSHTTPCookieAttributes setCommentURL(NSURL commentURL) {
+        set(NSHTTPCookieAttribute.CommentURL, commentURL);
         return this;
     }
     public int getMaximumAge() {
-        if (contains(NSHTTPCookieAttribute.MaximumAge)) {
-            NSString val = (NSString)get(NSHTTPCookieAttribute.MaximumAge);
-            return Integer.valueOf(val.toString());
+        if (has(NSHTTPCookieAttribute.MaximumAge)) {
+            NSNumber val = (NSNumber) get(NSHTTPCookieAttribute.MaximumAge);
+            return val.intValue();
         }
         return 0;
     }
-    public NSHTTPCookieAttributes setMaximumAge(int age) {
-        set(NSHTTPCookieAttribute.MaximumAge, new NSString(String.valueOf(age)));
-        return this;
-    }
-    public String getName() {
-        if (contains(NSHTTPCookieAttribute.Name)) {
-            NSString val = (NSString)get(NSHTTPCookieAttribute.Name);
-            return val.toString();
-        }
-        return null;
-    }
-    public NSHTTPCookieAttributes setName(String name) {
-        set(NSHTTPCookieAttribute.Name, new NSString(name));
-        return this;
-    }
-    public NSURL getOriginURL() {
-        if (contains(NSHTTPCookieAttribute.OriginURL)) {
-            NSURL val = (NSURL)get(NSHTTPCookieAttribute.OriginURL);
-            return val;
-        }
-        return null;
-    }
-    public NSHTTPCookieAttributes setOriginURL(NSURL url) {
-        set(NSHTTPCookieAttribute.OriginURL, url);
-        return this;
-    }
-    public String getPath() {
-        if (contains(NSHTTPCookieAttribute.Path)) {
-            NSString val = (NSString)get(NSHTTPCookieAttribute.Path);
-            return val.toString();
-        }
-        return null;
-    }
-    public NSHTTPCookieAttributes setPath(String path) {
-        set(NSHTTPCookieAttribute.Path, new NSString(path));
+    public NSHTTPCookieAttributes setMaximumAge(int maximumAge) {
+        set(NSHTTPCookieAttribute.MaximumAge, NSNumber.valueOf(maximumAge));
         return this;
     }
     public String getPort() {
-        if (contains(NSHTTPCookieAttribute.Port)) {
-            NSString val = (NSString)get(NSHTTPCookieAttribute.Port);
+        if (has(NSHTTPCookieAttribute.Port)) {
+            NSString val = (NSString) get(NSHTTPCookieAttribute.Port);
             return val.toString();
         }
         return null;
@@ -204,8 +235,23 @@ import org.robovm.apple.security.*;
         set(NSHTTPCookieAttribute.Port, new NSString(port));
         return this;
     }
+    /*</methods>*/
+    
+    public boolean discards() {
+        if (has(NSHTTPCookieAttribute.Discard)) {
+            NSString val = (NSString)get(NSHTTPCookieAttribute.Discard);
+            return val.toString().equals("TRUE");
+        }
+        
+        if (getVersion() >= 1 && getMaximumAge() == 0) return true; 
+        return false;
+    }
+    public NSHTTPCookieAttributes setDiscards(boolean discard) {
+        set(NSHTTPCookieAttribute.Discard, discard ? new NSString("TRUE") : new NSString("FALSE"));
+        return this;
+    }
     public boolean isSecure() {
-        if (contains(NSHTTPCookieAttribute.Secure)) {
+        if (has(NSHTTPCookieAttribute.Secure)) {
             return true;
         }
         return false;
@@ -214,34 +260,7 @@ import org.robovm.apple.security.*;
         set(NSHTTPCookieAttribute.Secure, secure ? new NSString("secure") : null);
         return this;
     }
-    public String getValue() {
-        if (contains(NSHTTPCookieAttribute.Value)) {
-            NSString val = (NSString)get(NSHTTPCookieAttribute.Value);
-            return val.toString();
-        }
-        return null;
-    }
-    public NSHTTPCookieAttributes setValue(String value) {
-        set(NSHTTPCookieAttribute.Value, new NSString(value));
-        return this;
-    }
-    public int getVersion() {
-        if (contains(NSHTTPCookieAttribute.Version)) {
-            NSString val = (NSString)get(NSHTTPCookieAttribute.Version);
-            return Integer.valueOf(val.toString());
-        }
-        return 0;
-    }
-    public NSHTTPCookieAttributes setVersion(int version) {
-        set(NSHTTPCookieAttribute.Version, new NSString(String.valueOf(version)));
-        return this;
-    }
-    /*<methods>*/
-    /*</methods>*/
     
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
-    }
+    /*<keys>*/
+    /*</keys>*/
 }

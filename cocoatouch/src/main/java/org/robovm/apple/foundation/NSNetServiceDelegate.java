@@ -59,13 +59,13 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "netServiceDidPublish:")
     void didPublish(NSNetService sender);
     @Method(selector = "netService:didNotPublish:")
-    void didNotPublish(NSNetService sender, NSNetServiceErrorInfo errorDict);
+    void didNotPublish(NSNetService sender, NSNetServiceErrorUserInfo errorDict);
     @Method(selector = "netServiceWillResolve:")
     void willResolve(NSNetService sender);
     @Method(selector = "netServiceDidResolveAddress:")
     void didResolve(NSNetService sender);
     @Method(selector = "netService:didNotResolve:")
-    void didNotResolve(NSNetService sender, NSNetServiceErrorInfo errorDict);
+    void didNotResolve(NSNetService sender, NSNetServiceErrorUserInfo errorDict);
     @Method(selector = "netServiceDidStop:")
     void didStop(NSNetService sender);
     @Method(selector = "netService:didUpdateTXTRecordData:")

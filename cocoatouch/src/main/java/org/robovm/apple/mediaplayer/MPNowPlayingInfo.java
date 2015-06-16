@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -33,14 +34,14 @@ import org.robovm.apple.coregraphics.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(MPNowPlayingInfo.Marshaler.class)
 /*<annotations>*/@Library("MediaPlayer")/*</annotations>*/
+@Marshaler(/*<name>*/MPNowPlayingInfo/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/MPNowPlayingInfo/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static MPNowPlayingInfo toObject(Class<MPNowPlayingInfo> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -57,166 +58,62 @@ import org.robovm.apple.coregraphics.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    public MPNowPlayingInfo() {
-        data = new NSMutableDictionary<>();
-    }
-    protected MPNowPlayingInfo(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
-    }
-    /*<bind>*/static { Bro.bind(MPNowPlayingInfo.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
-    }
-    
-    
-    public long getPersistentID() {
-        if (data.containsKey(MPMediaItemProperty.ItemPersistentIDValue())) {
-            NSNumber val = (NSNumber) data.get(MPMediaItemProperty.ItemPersistentIDValue());
-            return val.longValue();
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<MPNowPlayingInfo> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<MPNowPlayingInfo> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new MPNowPlayingInfo(o.get(i)));
+            }
+            return list;
         }
-        return 0;
-    }
-    public MPNowPlayingInfo setPersistentID(long id) {
-        data.put(MPMediaItemProperty.ItemPersistentIDValue(), NSNumber.valueOf(id));
-        return this;
-    }
-    public String getTitle() {
-        if (data.containsKey(MPMediaItemProperty.TitleValue())) {
-            NSString val = (NSString) data.get(MPMediaItemProperty.TitleValue());
-            return val.toString();
+        @MarshalsPointer
+        public static long toNative(List<MPNowPlayingInfo> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (MPNowPlayingInfo i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
         }
-        return null;
     }
-    public MPNowPlayingInfo setTitle(String title) {
-        data.put(MPMediaItemProperty.TitleValue(), new NSString(title));
-        return this;
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    MPNowPlayingInfo(NSDictionary<NSString, NSObject> data) {
+        super(data);
     }
-    public String getAlbumTitle() {
-        if (data.containsKey(MPMediaItemProperty.AlbumTitleValue())) {
-            NSString val = (NSString) data.get(MPMediaItemProperty.AlbumTitleValue());
-            return val.toString();
+    public MPNowPlayingInfo() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
+    }
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
         }
         return null;
     }
-    public MPNowPlayingInfo setAlbumTitle(String albumTitle) {
-        data.put(MPMediaItemProperty.AlbumTitleValue(), new NSString(albumTitle));
-        return this;
-    }
-    public String getArtist() {
-        if (data.containsKey(MPMediaItemProperty.ArtistValue())) {
-            NSString val = (NSString) data.get(MPMediaItemProperty.ArtistValue());
-            return val.toString();
-        }
-        return null;
-    }
-    public MPNowPlayingInfo setArtist(String artist) {
-        data.put(MPMediaItemProperty.ArtistValue(), new NSString(artist));
-        return this;
-    }
-    public String getGenre() {
-        if (data.containsKey(MPMediaItemProperty.GenreValue())) {
-            NSString val = (NSString) data.get(MPMediaItemProperty.GenreValue());
-            return val.toString();
-        }
-        return null;
-    }
-    public MPNowPlayingInfo setGenre(String genre) {
-        data.put(MPMediaItemProperty.GenreValue(), new NSString(genre));
-        return this;
-    }
-    public String getComposer() {
-        if (data.containsKey(MPMediaItemProperty.ComposerValue())) {
-            NSString val = (NSString) data.get(MPMediaItemProperty.ComposerValue());
-            return val.toString();
-        }
-        return null;
-    }
-    public MPNowPlayingInfo setComposer(String composer) {
-        data.put(MPMediaItemProperty.ComposerValue(), new NSString(composer));
-        return this;
-    }
-    public double getPlaybackDuration() {
-        if (data.containsKey(MPMediaItemProperty.PlaybackDurationValue())) {
-            NSNumber val = (NSNumber) data.get(MPMediaItemProperty.PlaybackDurationValue());
-            return val.doubleValue();
-        }
-        return 0;
-    }
-    public MPNowPlayingInfo setPlaybackDuration(double playbackDuration) {
-        data.put(MPMediaItemProperty.PlaybackDurationValue(), NSNumber.valueOf(playbackDuration));
-        return this;
-    }
-    public int getAlbumTrackNumber() {
-        if (data.containsKey(MPMediaItemProperty.AlbumTrackNumberValue())) {
-            NSNumber val = (NSNumber) data.get(MPMediaItemProperty.AlbumTrackNumberValue());
-            return val.intValue();
-        }
-        return 0;
-    }
-    public MPNowPlayingInfo setAlbumTrackNumber(int albumTrackNumber) {
-        data.put(MPMediaItemProperty.AlbumTrackNumberValue(), NSNumber.valueOf(albumTrackNumber));
-        return this;
-    }
-    public int getAlbumTrackCount() {
-        if (data.containsKey(MPMediaItemProperty.AlbumTrackCountValue())) {
-            NSNumber val = (NSNumber) data.get(MPMediaItemProperty.AlbumTrackCountValue());
-            return val.intValue();
-        }
-        return 0;
-    }
-    public MPNowPlayingInfo setAlbumTrackCount(int albumTrackCount) {
-        data.put(MPMediaItemProperty.AlbumTrackCountValue(), NSNumber.valueOf(albumTrackCount));
-        return this;
-    }
-    public int getDiscNumber() {
-        if (data.containsKey(MPMediaItemProperty.DiscNumberValue())) {
-            NSNumber val = (NSNumber) data.get(MPMediaItemProperty.DiscNumberValue());
-            return val.intValue();
-        }
-        return 0;
-    }
-    public MPNowPlayingInfo setDiscNumber(int discNumber) {
-        data.put(MPMediaItemProperty.DiscNumberValue(), NSNumber.valueOf(discNumber));
-        return this;
-    }
-    public int getDiscCount() {
-        if (data.containsKey(MPMediaItemProperty.DiscCountValue())) {
-            NSNumber val = (NSNumber) data.get(MPMediaItemProperty.DiscCountValue());
-            return val.intValue();
-        }
-        return 0;
-    }
-    public MPNowPlayingInfo setDiscCount(int discCount) {
-        data.put(MPMediaItemProperty.DiscCountValue(), NSNumber.valueOf(discCount));
-        return this;
-    }
-    public MPMediaItemArtwork getArtwork() {
-        if (data.containsKey(MPMediaItemProperty.ArtworkValue())) {
-            MPMediaItemArtwork val = (MPMediaItemArtwork) data.get(MPMediaItemProperty.ArtworkValue());
-            return val;
-        }
-        return null;
-    }
-    public MPNowPlayingInfo setArtwork(MPMediaItemArtwork artwork) {
-        data.put(MPMediaItemProperty.ArtworkValue(), artwork);
+    public MPNowPlayingInfo set(NSString key, NSObject value) {
+        data.put(key, value);
         return this;
     }
     
+
     /**
      * @since Available in iOS 5.0 and later.
      */
     public double getElapsedPlaybackTime() {
-        if (data.containsKey(ElapsedPlaybackTime())) {
-            NSNumber val = (NSNumber) data.get(ElapsedPlaybackTime());
+        if (has(Keys.ElapsedPlaybackTime())) {
+            NSNumber val = (NSNumber) get(Keys.ElapsedPlaybackTime());
             return val.doubleValue();
         }
         return 0;
@@ -225,15 +122,15 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 5.0 and later.
      */
     public MPNowPlayingInfo setElapsedPlaybackTime(double elapsedPlaybackTime) {
-        data.put(ElapsedPlaybackTime(), NSNumber.valueOf(elapsedPlaybackTime));
+        set(Keys.ElapsedPlaybackTime(), NSNumber.valueOf(elapsedPlaybackTime));
         return this;
     }
     /**
      * @since Available in iOS 5.0 and later.
      */
     public double getPlaybackRate() {
-        if (data.containsKey(PlaybackRate())) {
-            NSNumber val = (NSNumber) data.get(PlaybackRate());
+        if (has(Keys.PlaybackRate())) {
+            NSNumber val = (NSNumber) get(Keys.PlaybackRate());
             return val.doubleValue();
         }
         return 0;
@@ -242,15 +139,32 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 5.0 and later.
      */
     public MPNowPlayingInfo setPlaybackRate(double playbackRate) {
-        data.put(PlaybackRate(), NSNumber.valueOf(playbackRate));
+        set(Keys.PlaybackRate(), NSNumber.valueOf(playbackRate));
+        return this;
+    }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public double getDefaultPlaybackRate() {
+        if (has(Keys.DefaultPlaybackRate())) {
+            NSNumber val = (NSNumber) get(Keys.DefaultPlaybackRate());
+            return val.doubleValue();
+        }
+        return 0;
+    }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public MPNowPlayingInfo setDefaultPlaybackRate(double defaultPlaybackRate) {
+        set(Keys.DefaultPlaybackRate(), NSNumber.valueOf(defaultPlaybackRate));
         return this;
     }
     /**
      * @since Available in iOS 5.0 and later.
      */
     public int getPlaybackQueueIndex() {
-        if (data.containsKey(PlaybackQueueIndex())) {
-            NSNumber val = (NSNumber) data.get(PlaybackQueueIndex());
+        if (has(Keys.PlaybackQueueIndex())) {
+            NSNumber val = (NSNumber) get(Keys.PlaybackQueueIndex());
             return val.intValue();
         }
         return 0;
@@ -259,15 +173,15 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 5.0 and later.
      */
     public MPNowPlayingInfo setPlaybackQueueIndex(int playbackQueueIndex) {
-        data.put(PlaybackQueueIndex(), NSNumber.valueOf(playbackQueueIndex));
+        set(Keys.PlaybackQueueIndex(), NSNumber.valueOf(playbackQueueIndex));
         return this;
     }
     /**
      * @since Available in iOS 5.0 and later.
      */
     public int getPlaybackQueueCount() {
-        if (data.containsKey(PlaybackQueueCount())) {
-            NSNumber val = (NSNumber) data.get(PlaybackQueueCount());
+        if (has(Keys.PlaybackQueueCount())) {
+            NSNumber val = (NSNumber) get(Keys.PlaybackQueueCount());
             return val.intValue();
         }
         return 0;
@@ -276,15 +190,15 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 5.0 and later.
      */
     public MPNowPlayingInfo setPlaybackQueueCount(int playbackQueueCount) {
-        data.put(PlaybackQueueCount(), NSNumber.valueOf(playbackQueueCount));
+        set(Keys.PlaybackQueueCount(), NSNumber.valueOf(playbackQueueCount));
         return this;
     }
     /**
      * @since Available in iOS 5.0 and later.
      */
     public int getChapterNumber() {
-        if (data.containsKey(ChapterNumber())) {
-            NSNumber val = (NSNumber) data.get(ChapterNumber());
+        if (has(Keys.ChapterNumber())) {
+            NSNumber val = (NSNumber) get(Keys.ChapterNumber());
             return val.intValue();
         }
         return 0;
@@ -293,15 +207,15 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 5.0 and later.
      */
     public MPNowPlayingInfo setChapterNumber(int chapterNumber) {
-        data.put(ChapterNumber(), NSNumber.valueOf(chapterNumber));
+        set(Keys.ChapterNumber(), NSNumber.valueOf(chapterNumber));
         return this;
     }
     /**
      * @since Available in iOS 5.0 and later.
      */
     public int getChapterCount() {
-        if (data.containsKey(ChapterCount())) {
-            NSNumber val = (NSNumber) data.get(ChapterCount());
+        if (has(Keys.ChapterCount())) {
+            NSNumber val = (NSNumber) get(Keys.ChapterCount());
             return val.intValue();
         }
         return 0;
@@ -310,67 +224,196 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 5.0 and later.
      */
     public MPNowPlayingInfo setChapterCount(int chapterCount) {
-        data.put(ChapterCount(), NSNumber.valueOf(chapterCount));
+        set(Keys.ChapterCount(), NSNumber.valueOf(chapterCount));
         return this;
     }
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public double getDefaultPlaybackRate() {
-        if (data.containsKey(DefaultPlaybackRate())) {
-            NSNumber val = (NSNumber) data.get(DefaultPlaybackRate());
+    /*</methods>*/
+    public boolean has(MPMediaEntityProperty key) {
+        return data.containsKey(key.value());
+    }
+    public NSObject get(MPMediaEntityProperty key) {
+        if (has(key)) {
+            return data.get(key.value());
+        }
+        return null;
+    }
+    public MPNowPlayingInfo set(MPMediaEntityProperty key, NSObject value) {
+        data.put(key.value(), value);
+        return this;
+    }
+    
+    public long getPersistentID() {
+        if (has(MPMediaItemProperty.ItemPersistentID)) {
+            NSNumber val = (NSNumber) get(MPMediaItemProperty.ItemPersistentID);
+            return val.longValue();
+        }
+        return 0;
+    }
+    public MPNowPlayingInfo setPersistentID(long id) {
+        set(MPMediaItemProperty.ItemPersistentID, NSNumber.valueOf(id));
+        return this;
+    }
+    public String getTitle() {
+        if (has(MPMediaItemProperty.Title)) {
+            NSString val = (NSString) get(MPMediaItemProperty.Title);
+            return val.toString();
+        }
+        return null;
+    }
+    public MPNowPlayingInfo setTitle(String title) {
+        set(MPMediaItemProperty.Title, new NSString(title));
+        return this;
+    }
+    public String getAlbumTitle() {
+        if (has(MPMediaItemProperty.AlbumTitle)) {
+            NSString val = (NSString) get(MPMediaItemProperty.AlbumTitle);
+            return val.toString();
+        }
+        return null;
+    }
+    public MPNowPlayingInfo setAlbumTitle(String albumTitle) {
+        set(MPMediaItemProperty.AlbumTitle, new NSString(albumTitle));
+        return this;
+    }
+    public String getArtist() {
+        if (has(MPMediaItemProperty.Artist)) {
+            NSString val = (NSString) get(MPMediaItemProperty.Artist);
+            return val.toString();
+        }
+        return null;
+    }
+    public MPNowPlayingInfo setArtist(String artist) {
+        set(MPMediaItemProperty.Artist, new NSString(artist));
+        return this;
+    }
+    public String getGenre() {
+        if (has(MPMediaItemProperty.Genre)) {
+            NSString val = (NSString) get(MPMediaItemProperty.Genre);
+            return val.toString();
+        }
+        return null;
+    }
+    public MPNowPlayingInfo setGenre(String genre) {
+        set(MPMediaItemProperty.Genre, new NSString(genre));
+        return this;
+    }
+    public String getComposer() {
+        if (has(MPMediaItemProperty.Composer)) {
+            NSString val = (NSString) get(MPMediaItemProperty.Composer);
+            return val.toString();
+        }
+        return null;
+    }
+    public MPNowPlayingInfo setComposer(String composer) {
+        set(MPMediaItemProperty.Composer, new NSString(composer));
+        return this;
+    }
+    public double getPlaybackDuration() {
+        if (has(MPMediaItemProperty.PlaybackDuration)) {
+            NSNumber val = (NSNumber) get(MPMediaItemProperty.PlaybackDuration);
             return val.doubleValue();
         }
         return 0;
     }
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public MPNowPlayingInfo setDefaultPlaybackRate(double playbackRate) {
-        data.put(DefaultPlaybackRate(), NSNumber.valueOf(playbackRate));
+    public MPNowPlayingInfo setPlaybackDuration(double playbackDuration) {
+        set(MPMediaItemProperty.PlaybackDuration, NSNumber.valueOf(playbackDuration));
         return this;
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="MPNowPlayingInfoPropertyElapsedPlaybackTime", optional=true)
-    protected static native NSString ElapsedPlaybackTime();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="MPNowPlayingInfoPropertyPlaybackRate", optional=true)
-    protected static native NSString PlaybackRate();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="MPNowPlayingInfoPropertyDefaultPlaybackRate", optional=true)
-    protected static native NSString DefaultPlaybackRate();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="MPNowPlayingInfoPropertyPlaybackQueueIndex", optional=true)
-    protected static native NSString PlaybackQueueIndex();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="MPNowPlayingInfoPropertyPlaybackQueueCount", optional=true)
-    protected static native NSString PlaybackQueueCount();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="MPNowPlayingInfoPropertyChapterNumber", optional=true)
-    protected static native NSString ChapterNumber();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="MPNowPlayingInfoPropertyChapterCount", optional=true)
-    protected static native NSString ChapterCount();
-    /*</methods>*/
-    
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    public int getAlbumTrackNumber() {
+        if (has(MPMediaItemProperty.AlbumTrackNumber)) {
+            NSNumber val = (NSNumber) get(MPMediaItemProperty.AlbumTrackNumber);
+            return val.intValue();
+        }
+        return 0;
     }
+    public MPNowPlayingInfo setAlbumTrackNumber(int albumTrackNumber) {
+        set(MPMediaItemProperty.AlbumTrackNumber, NSNumber.valueOf(albumTrackNumber));
+        return this;
+    }
+    public int getAlbumTrackCount() {
+        if (has(MPMediaItemProperty.AlbumTrackCount)) {
+            NSNumber val = (NSNumber) get(MPMediaItemProperty.AlbumTrackCount);
+            return val.intValue();
+        }
+        return 0;
+    }
+    public MPNowPlayingInfo setAlbumTrackCount(int albumTrackCount) {
+        set(MPMediaItemProperty.AlbumTrackCount, NSNumber.valueOf(albumTrackCount));
+        return this;
+    }
+    public int getDiscNumber() {
+        if (has(MPMediaItemProperty.DiscNumber)) {
+            NSNumber val = (NSNumber) get(MPMediaItemProperty.DiscNumber);
+            return val.intValue();
+        }
+        return 0;
+    }
+    public MPNowPlayingInfo setDiscNumber(int discNumber) {
+        set(MPMediaItemProperty.DiscNumber, NSNumber.valueOf(discNumber));
+        return this;
+    }
+    public int getDiscCount() {
+        if (has(MPMediaItemProperty.DiscCount)) {
+            NSNumber val = (NSNumber) get(MPMediaItemProperty.DiscCount);
+            return val.intValue();
+        }
+        return 0;
+    }
+    public MPNowPlayingInfo setDiscCount(int discCount) {
+        set(MPMediaItemProperty.DiscCount, NSNumber.valueOf(discCount));
+        return this;
+    }
+    public MPMediaItemArtwork getArtwork() {
+        if (has(MPMediaItemProperty.Artwork)) {
+            MPMediaItemArtwork val = (MPMediaItemArtwork) get(MPMediaItemProperty.Artwork);
+            return val;
+        }
+        return null;
+    }
+    public MPNowPlayingInfo setArtwork(MPMediaItemArtwork artwork) {
+        set(MPMediaItemProperty.Artwork, artwork);
+        return this;
+    }
+    
+    /*<keys>*/
+    @Library("MediaPlayer")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="MPNowPlayingInfoPropertyElapsedPlaybackTime", optional=true)
+        public static native NSString ElapsedPlaybackTime();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="MPNowPlayingInfoPropertyPlaybackRate", optional=true)
+        public static native NSString PlaybackRate();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="MPNowPlayingInfoPropertyDefaultPlaybackRate", optional=true)
+        public static native NSString DefaultPlaybackRate();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="MPNowPlayingInfoPropertyPlaybackQueueIndex", optional=true)
+        public static native NSString PlaybackQueueIndex();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="MPNowPlayingInfoPropertyPlaybackQueueCount", optional=true)
+        public static native NSString PlaybackQueueCount();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="MPNowPlayingInfoPropertyChapterNumber", optional=true)
+        public static native NSString ChapterNumber();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="MPNowPlayingInfoPropertyChapterCount", optional=true)
+        public static native NSString ChapterCount();
+    }
+    /*</keys>*/
 }

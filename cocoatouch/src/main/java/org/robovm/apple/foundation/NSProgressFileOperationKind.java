@@ -38,17 +38,17 @@ import org.robovm.apple.security.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
-/**
- * @since Available in iOS 7.0 and later.
- */
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(NSProgressFileOperationKind.Marshaler.class)
-/*<annotations>*/@Library("Foundation")/*</annotations>*/
+/*<annotations>*/@Library("Foundation") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/NSProgressFileOperationKind/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSProgressFileOperationKind/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/NSProgressFileOperationKind/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static NSProgressFileOperationKind toObject(Class<NSProgressFileOperationKind> cls, long handle, long flags) {
@@ -66,43 +66,61 @@ import org.robovm.apple.dispatch.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(NSProgressFileOperationKind.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static final NSProgressFileOperationKind Downloading = new NSProgressFileOperationKind("DownloadingValue");
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static final NSProgressFileOperationKind DecompressingAfterDownloading = new NSProgressFileOperationKind("DecompressingAfterDownloadingValue");
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static final NSProgressFileOperationKind Receiving = new NSProgressFileOperationKind("ReceivingValue");
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static final NSProgressFileOperationKind Copying = new NSProgressFileOperationKind("CopyingValue");
-    
-    private static NSProgressFileOperationKind[] values = new NSProgressFileOperationKind[] {Downloading, DecompressingAfterDownloading, Receiving, Copying};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private NSProgressFileOperationKind(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<NSProgressFileOperationKind> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<NSProgressFileOperationKind> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(NSProgressFileOperationKind.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<NSProgressFileOperationKind> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (NSProgressFileOperationKind o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*</marshalers>*/
+
+    /*<constants>*/
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final NSProgressFileOperationKind Downloading = new NSProgressFileOperationKind("Downloading");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final NSProgressFileOperationKind DecompressingAfterDownloading = new NSProgressFileOperationKind("DecompressingAfterDownloading");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final NSProgressFileOperationKind Receiving = new NSProgressFileOperationKind("Receiving");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final NSProgressFileOperationKind Copying = new NSProgressFileOperationKind("Copying");
+    /*</constants>*/
+    
+    private static /*<name>*/NSProgressFileOperationKind/*</name>*/[] values = new /*<name>*/NSProgressFileOperationKind/*</name>*/[] {/*<value_list>*/Downloading, DecompressingAfterDownloading, Receiving, Copying/*</value_list>*/};
+    
+    /*<name>*/NSProgressFileOperationKind/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static NSProgressFileOperationKind valueOf(NSString value) {
-        for (NSProgressFileOperationKind v : values) {
+    public static /*<name>*/NSProgressFileOperationKind/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/NSProgressFileOperationKind/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -110,26 +128,34 @@ import org.robovm.apple.dispatch.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/NSProgressFileOperationKind/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSProgressFileOperationKindDownloading", optional=true)
-    protected static native NSString DownloadingValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSProgressFileOperationKindDecompressingAfterDownloading", optional=true)
-    protected static native NSString DecompressingAfterDownloadingValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSProgressFileOperationKindReceiving", optional=true)
-    protected static native NSString ReceivingValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSProgressFileOperationKindCopying", optional=true)
-    protected static native NSString CopyingValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("Foundation") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="NSProgressFileOperationKindDownloading", optional=true)
+        public static native NSString Downloading();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="NSProgressFileOperationKindDecompressingAfterDownloading", optional=true)
+        public static native NSString DecompressingAfterDownloading();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="NSProgressFileOperationKindReceiving", optional=true)
+        public static native NSString Receiving();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="NSProgressFileOperationKindCopying", optional=true)
+        public static native NSString Copying();
+        /*</values>*/
+    }
 }

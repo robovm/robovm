@@ -139,28 +139,28 @@ import org.robovm.apple.dispatch.*;
     public void readInBackgroundAndNotify(NSRunLoopMode...modes) {
         List<String> list = new ArrayList<>();
         for (NSRunLoopMode mode : modes) {
-            list.add(mode.value());
+            list.add(mode.value().toString());
         }
         readInBackgroundAndNotify(list);
     }
     public void readToEndOfFileInBackgroundAndNotify(NSRunLoopMode...modes) {
         List<String> list = new ArrayList<>();
         for (NSRunLoopMode mode : modes) {
-            list.add(mode.value());
+            list.add(mode.value().toString());
         }
         readToEndOfFileInBackgroundAndNotify(list);
     }
     public void acceptConnectionInBackgroundAndNotify(NSRunLoopMode...modes) {
         List<String> list = new ArrayList<>();
         for (NSRunLoopMode mode : modes) {
-            list.add(mode.value());
+            list.add(mode.value().toString());
         }
         acceptConnectionInBackgroundAndNotify(list);
     }
     public void waitForDataInBackgroundAndNotify(NSRunLoopMode...modes) {
         List<String> list = new ArrayList<>();
         for (NSRunLoopMode mode : modes) {
-            list.add(mode.value());
+            list.add(mode.value().toString());
         }
         waitForDataInBackgroundAndNotify(list);
     }

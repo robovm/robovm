@@ -73,10 +73,10 @@ import org.robovm.apple.dispatch.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     public void scheduleInRunLoop(NSRunLoop runLoop, NSRunLoopMode mode) {
-        scheduleInRunLoop(runLoop, mode.value());
+        scheduleInRunLoop(runLoop, mode.value().toString());
     }
     public void removeFromRunLoop(NSRunLoop runLoop, NSRunLoopMode mode) {
-        removeFromRunLoop(runLoop, mode.value());
+        removeFromRunLoop(runLoop, mode.value().toString());
     }
     /*<methods>*/
     @GlobalValue(symbol="NSPortDidBecomeInvalidNotification", optional=true)

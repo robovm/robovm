@@ -40,14 +40,14 @@ import org.robovm.apple.dispatch.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(NSItemProviderOptions.Marshaler.class)
 /*<annotations>*/@Library("Foundation")/*</annotations>*/
+@Marshaler(/*<name>*/NSItemProviderOptions/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSItemProviderOptions/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static NSItemProviderOptions toObject(Class<NSItemProviderOptions> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -64,48 +64,63 @@ import org.robovm.apple.dispatch.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected NSItemProviderOptions(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<NSItemProviderOptions> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<NSItemProviderOptions> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new NSItemProviderOptions(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<NSItemProviderOptions> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (NSItemProviderOptions i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    public NSItemProviderOptions() {
-    	this.data = new NSMutableDictionary<>();
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    NSItemProviderOptions(NSDictionary<NSString, NSObject> data) {
+        super(data);
     }
-    /*<bind>*/static { Bro.bind(NSItemProviderOptions.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
+    public NSItemProviderOptions() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
     }
-    
-    public NSObject get(String key) {
-        if (contains(key)) {
-            return data.get(new NSString(key));
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
         }
         return null;
     }
-    public NSItemProviderOptions put(String key, NSObject value) {
-        data.put(new NSString(key), value);
+    public NSItemProviderOptions set(NSString key, NSObject value) {
+        data.put(key, value);
         return this;
     }
-    public boolean contains(String key) {
-        return data.containsKey(new NSString(key));
-    }
     
-    
+
     /**
      * @since Available in iOS 8.0 and later.
      */
     @WeaklyLinked
     public CGSize getPreferredImageSize() {
-        if (data.containsKey(PreferredImageSizeKey())) {
-            NSValue val = (NSValue)data.get(PreferredImageSizeKey());
+        if (has(Keys.PreferredImageSize())) {
+            NSValue val = (NSValue) get(Keys.PreferredImageSize());
             return val.sizeValue();
         }
         return null;
@@ -114,20 +129,21 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 8.0 and later.
      */
     @WeaklyLinked
-    public NSItemProviderOptions setPreferredImageSize(CGSize size) {
-        data.put(PreferredImageSizeKey(), NSValue.valueOf(size));
+    public NSItemProviderOptions setPreferredImageSize(CGSize preferredImageSize) {
+        set(Keys.PreferredImageSize(), NSValue.valueOf(preferredImageSize));
         return this;
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="NSItemProviderPreferredImageSizeKey", optional=true)
-    protected static native NSString PreferredImageSizeKey();
     /*</methods>*/
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    
+    /*<keys>*/
+    @Library("Foundation")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="NSItemProviderPreferredImageSizeKey", optional=true)
+        public static native NSString PreferredImageSize();
     }
+    /*</keys>*/
 }

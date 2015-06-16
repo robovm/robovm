@@ -38,28 +38,89 @@ import org.robovm.apple.corelocation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("UIKit")/*</annotations>*/
+/*<annotations>*/@Library("UIKit") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/UIRunLoopMode/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIRunLoopMode/*</name>*/ 
-    extends /*<extends>*/NSRunLoopMode/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(UIRunLoopMode.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    public static final UIRunLoopMode Tracking = new UIRunLoopMode("TrackingValue");
-    
-    private static UIRunLoopMode[] values = new UIRunLoopMode[] {Tracking};
-    private final LazyGlobalValue<String> lazyGlobalValue;
-    
-    private UIRunLoopMode(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    static { Bro.bind(/*<name>*/UIRunLoopMode/*</name>*/.class); }
+
+    /*<marshalers>*/
+    public static class Marshaler {
+        @MarshalsPointer
+        public static UIRunLoopMode toObject(Class<UIRunLoopMode> cls, long handle, long flags) {
+            NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return UIRunLoopMode.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(UIRunLoopMode o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(o.value(), flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    /*<methods>*/
-    @GlobalValue(symbol="UITrackingRunLoopMode", optional=true)
-    protected static native String TrackingValue();
-    /*</methods>*/
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<UIRunLoopMode> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<UIRunLoopMode> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(UIRunLoopMode.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<UIRunLoopMode> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (UIRunLoopMode o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
+    public static final UIRunLoopMode Tracking = new UIRunLoopMode("Tracking");
+    /*</constants>*/
+    
+    private static /*<name>*/UIRunLoopMode/*</name>*/[] values = new /*<name>*/UIRunLoopMode/*</name>*/[] {/*<value_list>*/Tracking/*</value_list>*/};
+    
+    /*<name>*/UIRunLoopMode/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
+    }
+    
+    public static /*<name>*/UIRunLoopMode/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/UIRunLoopMode/*</name>*/ v : values) {
+            if (v.value().equals(value)) {
+                return v;
+            }
+        }
+        throw new IllegalArgumentException("No constant with value " + value + " found in " 
+            + /*<name>*/UIRunLoopMode/*</name>*/.class.getName());
+    }
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("UIKit") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        @GlobalValue(symbol="UITrackingRunLoopMode", optional=true)
+        public static native NSString Tracking();
+        /*</values>*/
+    }
 }

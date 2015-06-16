@@ -40,46 +40,83 @@ import org.robovm.apple.dispatch.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/**
- * @since Available in iOS 7.0 and later.
- */
-/*<annotations>*/@Library("Foundation")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class NSMetadataItemDownloadingStatus 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+/*<annotations>*/@Library("Foundation") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/NSMetadataItemDownloadingStatus/*</name>*/.Marshaler.class)
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/NSMetadataItemDownloadingStatus/*</name>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(NSMetadataItemDownloadingStatus.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static final NSMetadataItemDownloadingStatus NotDownloaded = new NSMetadataItemDownloadingStatus("NotDownloadedValue");
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static final NSMetadataItemDownloadingStatus Downloaded = new NSMetadataItemDownloadingStatus("DownloadedValue");
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static final NSMetadataItemDownloadingStatus Current = new NSMetadataItemDownloadingStatus("CurrentValue");
-    
-    private static NSMetadataItemDownloadingStatus[] values = new NSMetadataItemDownloadingStatus[] {NotDownloaded, Downloaded, Current};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private NSMetadataItemDownloadingStatus(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    static { Bro.bind(/*<name>*/NSMetadataItemDownloadingStatus/*</name>*/.class); }
+
+    /*<marshalers>*/
+    public static class Marshaler {
+        @MarshalsPointer
+        public static NSMetadataItemDownloadingStatus toObject(Class<NSMetadataItemDownloadingStatus> cls, long handle, long flags) {
+            NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return NSMetadataItemDownloadingStatus.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(NSMetadataItemDownloadingStatus o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(o.value(), flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<NSMetadataItemDownloadingStatus> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<NSMetadataItemDownloadingStatus> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(NSMetadataItemDownloadingStatus.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<NSMetadataItemDownloadingStatus> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (NSMetadataItemDownloadingStatus o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final NSMetadataItemDownloadingStatus NotDownloaded = new NSMetadataItemDownloadingStatus("NotDownloaded");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final NSMetadataItemDownloadingStatus Downloaded = new NSMetadataItemDownloadingStatus("Downloaded");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final NSMetadataItemDownloadingStatus Current = new NSMetadataItemDownloadingStatus("Current");
+    /*</constants>*/
+    
+    private static /*<name>*/NSMetadataItemDownloadingStatus/*</name>*/[] values = new /*<name>*/NSMetadataItemDownloadingStatus/*</name>*/[] {/*<value_list>*/NotDownloaded, Downloaded, Current/*</value_list>*/};
+    
+    /*<name>*/NSMetadataItemDownloadingStatus/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static NSMetadataItemDownloadingStatus valueOf(NSString value) {
-        for (NSMetadataItemDownloadingStatus v : values) {
+    public static /*<name>*/NSMetadataItemDownloadingStatus/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/NSMetadataItemDownloadingStatus/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -87,21 +124,29 @@ import org.robovm.apple.dispatch.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/NSMetadataItemDownloadingStatus/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSMetadataUbiquitousItemDownloadingStatusNotDownloaded", optional=true)
-    protected static native NSString NotDownloadedValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSMetadataUbiquitousItemDownloadingStatusDownloaded", optional=true)
-    protected static native NSString DownloadedValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSMetadataUbiquitousItemDownloadingStatusCurrent", optional=true)
-    protected static native NSString CurrentValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("Foundation") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="NSMetadataUbiquitousItemDownloadingStatusNotDownloaded", optional=true)
+        public static native NSString NotDownloaded();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="NSMetadataUbiquitousItemDownloadingStatusDownloaded", optional=true)
+        public static native NSString Downloaded();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="NSMetadataUbiquitousItemDownloadingStatusCurrent", optional=true)
+        public static native NSString Current();
+        /*</values>*/
+    }
 }

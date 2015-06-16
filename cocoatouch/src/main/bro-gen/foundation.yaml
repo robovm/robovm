@@ -146,7 +146,7 @@ enums:
     NSStringEncodingConversionOptions: {}
     NSStringEncoding: { first: NSASCIIStringEncoding, suffix: StringEncoding }
     NSStringEncoding2: {first: NSProprietaryStringEncoding, merge_with: NSStringEncoding, prefix: NS, suffix: StringEncoding }
-    NSStringEnumerationOptions: {}
+    NSStringEnumerationOptions: {skip_none: true}
     NSTextCheckingType: {}
     NSTimeZoneNameStyle: {}
     NSUbiquitousKeyValueStoreChangeReason: { first: NSUbiquitousKeyValueStoreServerChange }
@@ -170,9 +170,6 @@ categories:
     NSErrorRecoveryAttempting@NSObject: {protocol: true}
 
 classes:
-    Foundation:
-        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
-
     NSRange: {}
     NSDecimal: {}
     NSZone:
@@ -186,16 +183,6 @@ classes:
     NSKeyValueChangeKey: { visibility: 'public final' }
 
     NS.*Internal: { exclude: true }
-
-    NSURLProperty: {}
-    NSURLFileSystemProperty:
-        extends: NSURLProperty
-    NSURLFileProperty:
-        extends: NSURLProperty
-    NSURLVolumeProperty:
-        extends: NSURLProperty
-    NSURLUbiquitousItemProperty:
-        extends: NSURLProperty
         
     NSCocoaError:
         extends: NSError
@@ -3954,7 +3941,7 @@ protocols:
                 name: didNotPublish
                 parameters:
                     errorDict:
-                        type: NSNetServiceErrorInfo
+                        type: NSNetServiceErrorUserInfo
             '-netServiceWillResolve:':
                 name: willResolve
             '-netServiceDidResolveAddress:':
@@ -3963,7 +3950,7 @@ protocols:
                 name: didNotResolve
                 parameters:
                     errorDict:
-                        type: NSNetServiceErrorInfo
+                        type: NSNetServiceErrorUserInfo
             '-netServiceDidStop:':
                 name: didStop
             '-netService:didUpdateTXTRecordData:':
@@ -4363,21 +4350,52 @@ values:
         name: '#{g[0]}'
 
     # NSFile
-    NSFile((AppendOnly|Busy|CreationDate|DeviceIdentifier|ExtensionHidden|GroupOwnerAccountID|GroupOwnerAccountName)):
-        class: NSFileAttribute
-        name: '#{g[0]}Attribute'
+    NSFile(AppendOnly|Busy|CreationDate|DeviceIdentifier|ExtensionHidden|GroupOwnerAccountID|GroupOwnerAccountName|HFSCreatorCode|HFSTypeCode|Immutable|ModificationDate|OwnerAccountID|OwnerAccountName|PosixPermissions|ReferenceCount|Size|SystemFileNumber|Type|ProtectionKey):
+        dictionary: NSFileAttributes
+        enum: NSFileAttribute
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
-    NSFile((HFSCreatorCode|HFSTypeCode|Immutable|ModificationDate|OwnerAccountID|OwnerAccountName|PosixPermissions)):
-        class: NSFileAttribute
-        name: '#{g[0]}Attribute'
-        type: NSString
-        visibility: protected
-    NSFile((ReferenceCount|Size|SystemFileNumber|Type|ProtectionKey)):
-        class: NSFileAttribute
-        name: '#{g[0]}Attribute'
-        type: NSString
-        visibility: protected
+        methods:
+            Type:
+                type: NSFileType
+            Size:
+                type: long
+            ModificationDate:
+                type: NSDate
+            ReferenceCount:
+                type: long
+            DeviceIdentifier:
+                type: long
+            OwnerAccountName:
+                type: String
+            GroupOwnerAccountName:
+                type: String
+            PosixPermissions:
+                type: short
+            SystemFileNumber:
+                type: long
+            ExtensionHidden:
+                type: boolean
+            HFSCreatorCode:
+                type: long
+            HFSTypeCode:
+                type: long
+            Immutable:
+                type: boolean
+            AppendOnly:
+                name: appendsOnly
+                type: boolean
+            CreationDate:
+                type: NSDate
+            OwnerAccountID:
+                type: long
+            GroupOwnerAccountID:
+                type: long
+            Busy:
+                type: boolean
+            ProtectionKey:
+                name: protection
+                type: NSFileProtection
     NSFileType(.*):
         enum: NSFileType
         name: '#{g[0]}'
@@ -4387,10 +4405,22 @@ values:
         name: '#{g[0]}'
         type: NSString
     NSFileSystem(.*):
-        class: NSFileSystemAttribute
-        name: '#{g[0]}Attribute'
+        dictionary: NSFileSystemAttributes
+        enum: NSFileSystemAttribute
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        methods:
+            Size:
+                type: long
+            FreeSize:
+                type: long
+            Nodes:
+                type: long
+            FreeNodes:
+                type: long
+            Number:
+                name: systemNumber
+                type: long
 
     # NSFileHandle
     NSFileHandle(.*Notification):
@@ -4419,17 +4449,45 @@ values:
 
     # NSHTTPCookie
     NSHTTPCookie(.*):
-        class: NSHTTPCookieAttribute
-        name: '#{g[0]}Attribute'
-        type: NSString
-        visibility: protected
-
-    # NSItemProvider
-    NSItemProvider(.*Key):
-        class: NSItemProviderOptions
+        dictionary: NSHTTPCookieAttributes
+        enum: NSHTTPCookieAttribute
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        methods:
+            Comment:
+                type: String
+            CommentURL:
+                type: NSURL
+            Domain:
+                type: String
+            Expires:
+                name: expireDate
+                type: NSDate
+            MaximumAge:
+                type: int
+            Name:
+                type: String
+            OriginURL:
+                type: NSURL
+            Path:
+                type: String
+            Port:
+                type: String
+            Value:
+                type: String
+            Version:
+                type: int
+
+    # NSItemProvider
+    NSItemProvider(.*)Key:
+        dictionary: NSItemProviderOptions
+        name: '#{g[0]}'
+        type: NSString
+        methods:
+            PreferredImageSize:
+                type: CGSize
+                hint: Struct<?>
+                annotations: ['@WeaklyLinked']
     NSExtension(JavaScript.*Key):
         class: NSItemProvider
         name: '#{g[0]}'
@@ -4441,29 +4499,38 @@ values:
 
     # NSKeyValueCoding
     NS(.*)KeyValueOperator:
-        class: NSKeyValueOperator
-        name: '#{g[0]}Value'
-        type: NSString
-        visibility: protected
-
-    # NSKeyValueObserving
-    NSKeyValueChange(.*Key):
-        class: NSKeyValueChangeInfo
+        enum: NSKeyValueOperator
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
+
+    # NSKeyValueObserving
+    NSKeyValueChange(.*)Key:
+        dictionary: NSKeyValueChangeInfo
+        name: '#{g[0]}'
+        type: NSString
+        mutable: false
+        methods:
+            Kind:
+                type: NSKeyValueChange
+            New:
+                type: NSObject
+            Old:
+                type: NSObject
+            Indexes:
+                type: NSIndexSet
+            NotificationIsPrior:
+                name: notificationSentPriorToChange
+                type: boolean
 
     # NSLinguisticTagger
     NSLinguisticTagScheme(.*):
-        class: NSLinguisticTagScheme
-        name: '#{g[0]}Value'
+        enum: NSLinguisticTagScheme
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     NSLinguisticTag(.*):
-        class: NSLinguisticTag
-        name: '#{g[0]}Value'
+        enum: NSLinguisticTag
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
 
     # NSLocale
     NSLocale(.*):
@@ -4478,48 +4545,114 @@ values:
 
     # NSMetadataItem
     NSMetadataItem(.*)Key:
-        class: NSMetadataItemAttribute
-        name: '#{g[0]}Value'
+        dictionary: NSMetadataItemAttributes
+        enum: NSMetadataItemAttribute
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        mutable: false
+        methods:
+            FSName:
+                type: String
+            DisplayName:
+                type: String
+            URL:
+                type: NSURL
+            Path:
+                type: String
+            FSSize:
+                type: long
+            FSCreationDate:
+                type: NSDate
+            FSContentChangeDate:
+                type: NSDate
+            IsUbiquitous:
+                type: boolean
+            HasUnresolvedConflicts:
+                type: boolean
+            IsDownloaded:
+                type: boolean
+            DownloadingStatus:
+                type: NSMetadataItemDownloadingStatus
+            IsDownloading:
+                type: boolean
+            IsUploaded:
+                type: boolean
+            IsUploading:
+                type: boolean
+            PercentDownloaded:
+                type: double
+            PercentUploaded:
+                type: double
+            DownloadingError:
+                type: NSError
+            UploadingError:
+                type: NSError
+            ContentRelevance:
+                type: double
+            DownloadRequested:
+                type: boolean
+            IsExternalDocument:
+                type: boolean
+            ContainerDisplayName:
+                type: String
+            URLInLocalContainer:
+                type: NSURL
+            ContentType:
+                type: String
+            ContentTypeTree:
+                type: List<String>
     NSMetadataUbiquitousItem(.*)Key:
-        class: NSMetadataItemAttribute
-        name: '#{g[0]}Value'
+        dictionary: NSMetadataItemAttributes
+        enum: NSMetadataItemAttribute
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        mutable: false
     NSMetadataUbiquitousItemDownloadingStatus(.*):
-        class: NSMetadataItemDownloadingStatus
-        name: '#{g[0]}Value'
+        enum: NSMetadataItemDownloadingStatus
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
 
     # NSNetService
     NSNetServices(Error.*):
-        class: NSNetServiceErrorInfo
-        name: '#{g[0]}Key'
+        dictionary: NSNetServiceErrorUserInfo
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        methods:
+            ErrorCode:
+                type: NSNetServiceErrorCode
+            ErrorDomain:
+                type: String
 
     # NSMetadataQuery
     NSMetadataQuery(.*)Scope:
-        class: NSMetadataQueryScope
-        name: '#{g[0]}Value'
+        enum: NSMetadataQueryScope
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     NSMetadataQuery(.*Notification):
         class: NSMetadataQuery
         name: '#{g[0]}'
         type: NSString
-    NSMetadataQuery(.*Key):
-        class: NSMetadataQueryUpdatedItems
+    NSMetadataQuery(.*)Key:
+        dictionary: NSMetadataQueryUpdatedItems
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        mutable: false
+        methods:
+            UpdateAddedItems:
+                name: addedItems
+                type: NSArray<NSMetadataItem>
+            UpdateChangedItems:
+                name: changedItems
+                type: NSArray<NSMetadataItem>
+            UpdateRemovedItems:
+                name: removedItems
+                type: NSArray<NSMetadataItem>
     NSMetadataQueryResult(ContentRelevance)Attribute:
-        class: NSMetadataItemAttribute
-        name: '#{g[0]}Value'
+        dictionary: NSMetadataItemAttributes
+        enum: NSMetadataItemAttribute
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        mutable: false
 
     # NSPort
     NSPort(.*Notification):
@@ -4529,67 +4662,84 @@ values:
 
     # NSProgress
     NSProgress(.*)Key:
-        class: NSProgressUserInfoKey
-        name: '#{g[0]}Value'
+        dictionary: NSProgressUserInfo
+        enum: NSProgressUserInfoKey
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        methods:
+            EstimatedTimeRemaining:
+                type: double
+            Throughput:
+                type: long
+            FileOperationKind:
+                type: NSProgressFileOperationKind
+            FileURL:
+                type: NSURL
+            FileTotalCount:
+                name: totalFileCount
+                type: long
+            FileCompletedCount:
+                name: completedFileCount
+                type: long
     NSProgressFileOperationKind(.*):
-        class: NSProgressFileOperationKind
-        name: '#{g[0]}Value'
+        enum: NSProgressFileOperationKind
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     NSProgressKind(.*):
-        class: NSProgressKind
-        name: '#{g[0]}Value'
+        enum: NSProgressKind
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
 
     # NSRunLoop
     NS(Default)RunLoopMode:
-        class: NSRunLoopMode
-        name: '#{g[0]}Value'
-        visibility: protected
+        enum: NSRunLoopMode
+        name: '#{g[0]}'
+        type: NSString
     NSRunLoop(Common)Modes:
-        class: NSRunLoopMode
-        name: '#{g[0]}Value'
-        visibility: protected
+        enum: NSRunLoopMode
+        name: '#{g[0]}'
+        type: NSString
 
     # NSStream
     NSStream(SOCKSProxyConfiguration)Key:
-        class: NSStreamProperty
-        name: '#{g[0]}Value'
-        type: NSString
-        visibility: protected
-    NSStreamSOCKSProxy(.*Key):
-        class: NSStreamSOCKSProxyConfiguration
+        enum: NSStreamProperty
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
+    NSStreamSOCKSProxy(.*)Key:
+        dictionary: NSStreamSOCKSProxyConfiguration
+        name: '#{g[0]}'
+        type: NSString
+        methods:
+            Host:
+                type: String
+            Port:
+                type: int
+            Version:
+                type: NSStreamSOCKSProxyVersion
+            User:
+                type: String
+            Password:
+                type: String
     NSStream(.*)Key:
-        class: NSStreamProperty
-        name: '#{g[0]}Value'
+        enum: NSStreamProperty
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     NSStream(NetworkServiceType):
-        class: NSStreamProperty
-        name: '#{g[0]}Value'
+        enum: NSStreamProperty
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     NSStreamNetworkServiceType(.*):
-        class: NSStreamNetworkServiceType
-        name: '#{g[0]}Value'
+        enum: NSStreamNetworkServiceType
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     NSStreamSocketSecurityLevel(.*):
-        class: NSStreamSocketSecurityLevel
-        name: '#{g[0]}Value'
+        enum: NSStreamSocketSecurityLevel
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     NSStreamSOCKSProxyVersion(.*):
-        class: NSStreamSOCKSProxyVersion
-        name: '_#{g[0]}Value'
+        enum: NSStreamSOCKSProxyVersion
+        name: 'Version#{g[0]}'
         type: NSString
-        visibility: protected
 
     # NSString
     NSStringEncodingDetection(.*Key*):
@@ -4597,15 +4747,39 @@ values:
 
     # NSTextCheckingResult
     NSTextChecking(Airline|Flight)Key:
-        class: NSTextCheckingTransitComponents
-        name: '#{g[0]}Key'
-        type: NSString
-        visibility: protected
-    NSTextChecking(.*Key):
-        class: NSTextCheckingAddressComponents
+        dictionary: NSTextCheckingTransitComponents
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        mutable: false
+        methods:
+            Airline:
+                type: String
+            Flight:
+                type: String
+    NSTextChecking(.*)Key:
+        dictionary: NSTextCheckingAddressComponents
+        name: '#{g[0]}'
+        type: NSString
+        mutable: false
+        methods:
+            Name:
+                type: String
+            JobTitle:
+                type: String
+            Organization:
+                type: String
+            Street:
+                type: String
+            City:
+                type: String
+            State:
+                type: String
+            ZIP:
+                type: String
+            Country:
+                type: String
+            Phone:
+                type: String
 
     # NSThread
     NS(WillBecomeMultiThreadedNotification|DidBecomeSingleThreadedNotification):
@@ -4656,78 +4830,77 @@ values:
         name: '#{g[0]}'
         type: NSString
     NSURL(FileResourceType|VolumeIdentifier|VolumeURL)Key:
-        class: NSURLFileSystemProperty
-        name: '#{g[0]}Value'
+        enum: NSURLFileSystemProperty
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        extends: NSURLProperty
     NSURLFileResourceType(.*):
-        class: NSURLFileResourceType
-        name: '#{g[0]}Value'
+        enum: NSURLFileResourceType
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     NSURL(FileSize|FileAllocatedSize|IsAliasFile|TotalFileAllocatedSize|TotalFileSize)Key:
-        class: NSURLFileProperty
-        name: '#{g[0]}Value'
+        enum: NSURLFileProperty
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        extends: NSURLProperty
     NSURLVolume(.*)Key:
-        class: NSURLVolumeProperty
-        name: '#{g[0]}Value'
+        enum: NSURLVolumeProperty
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        extends: NSURLProperty
     NSURL(IsUbiquitousItem)Key:
-        class: NSURLUbiquitousItemProperty
-        name: '#{g[0]}Value'
+        enum: NSURLUbiquitousItemProperty
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        extends: NSURLProperty
     NSURLUbiquitousItem(.*)Key:
-        class: NSURLUbiquitousItemProperty
-        name: '#{g[0]}Value'
+        enum: NSURLUbiquitousItemProperty
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        extends: NSURLProperty
     NSURLUbiquitousItemDownloadingStatus(.*):
-        class: NSURLUbiquitousItemDownloadingStatus
-        name: '#{g[0]}Value'
+        enum: NSURLUbiquitousItemDownloadingStatus
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     NSURL(.*)Key:
-        class: NSURLFileSystemProperty
-        name: '#{g[0]}Value'
+        enum: NSURLFileSystemProperty
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        extends: NSURLProperty
     NSURLAuthenticationMethod(.*):
-        class: NSURLAuthenticationMethod
-        name: '#{g[0]}Value'
+        enum: NSURLAuthenticationMethod
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     NSURLProtectionSpace(.*)Proxy:
-        class: NSURLProtectionSpaceProxyType
-        name: '#{g[0]}Value'
+        enum: NSURLProtectionSpaceProxyType
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     NSURLProtectionSpace(.*):
-        class: NSURLProtectionSpaceProtocol
-        name: '#{g[0]}Value'
+        enum: NSURLProtectionSpaceProtocol
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     NSURL(.*)Scheme:
-        class: NSURLScheme
-        name: '#{g[0]}Value'
+        enum: NSURLScheme
+        name: '#{g[0]}'
         type: NSString
-        readonly: true
-        visibility: protected
-    NSThumbnail(1024x1024SizeKey):
-        class: NSURLThumbnail
-        name: '_#{g[0]}'
+    NSThumbnail(1024x1024)SizeKey:
+        dictionary: NSURLThumbnail
+        name: 'Size#{g[0]}'
         type: NSString
-        visibility: protected
+        methods:
+            Size1024x1024:
+                type: UIImage
+                annotations: ['@WeaklyLinked']
 
     # NSURLCredentialStorage
     NSURLCredentialStorage(RemoveSynchronizableCredentials):
-        class: NSURLCredentialStorageRemovalOptions
+        dictionary: NSURLCredentialStorageRemovalOptions
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        methods:
+            RemoveSynchronizableCredentials:
+                name: shouldRemoveSynchronizableCredentials
+                type: boolean
     NSURLCredentialStorage(ChangedNotification):
         class: NSURLCredentialStorage
         name: '#{g[0]}'
@@ -4743,9 +4916,9 @@ values:
 
     # NSUserActivity
     NSUserActivityType(.*):
-        class: NSUserActivityType
-        name: '#{g[0]}Value'
-        visibility: protected
+        enum: NSUserActivityType
+        name: '#{g[0]}'
+        type: NSString
 
     # NSUserDefaults
     NSUserDefaults(.*Notification):
@@ -4753,15 +4926,15 @@ values:
         name: '#{g[0]}'
         type: NSString
     NS(Global|Argument|Registration)Domain:
-        class: NSUserDefaultsDomain
-        name: '#{g[0]}Value'
-        visibility: protected
+        enum: NSUserDefaultsDomain
+        name: '#{g[0]}'
+        type: NSString
 
     # NSValueTransformer
     NS(.*)TransformerName:
-        class: NSValueTransformerName
-        name: '#{g[0]}Value'
-        visibility: protected
+        enum: NSValueTransformerName
+        name: '#{g[0]}'
+        type: NSString
 
     # Foundation
     NSFoundationVersionNumber:

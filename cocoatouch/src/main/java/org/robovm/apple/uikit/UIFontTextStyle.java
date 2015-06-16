@@ -38,55 +38,95 @@ import org.robovm.apple.corelocation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("UIKit")/*</annotations>*/
+/*<annotations>*/@Library("UIKit") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/UIFontTextStyle/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIFontTextStyle/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(UIFontTextStyle.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static UIFontTextStyle Headline = new UIFontTextStyle("HeadlineValue");
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static UIFontTextStyle Body = new UIFontTextStyle("BodyValue");
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static UIFontTextStyle Subheadline = new UIFontTextStyle("SubheadlineValue");
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static UIFontTextStyle Footnote = new UIFontTextStyle("FootnoteValue");
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static UIFontTextStyle Caption1 = new UIFontTextStyle("Caption1Value");
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static UIFontTextStyle Caption2 = new UIFontTextStyle("Caption2Value");
-    private static UIFontTextStyle[] values = new UIFontTextStyle[] {Headline, Body, Subheadline, Footnote, Caption1, Caption2};
-    
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private UIFontTextStyle(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    static { Bro.bind(/*<name>*/UIFontTextStyle/*</name>*/.class); }
+
+    /*<marshalers>*/
+    public static class Marshaler {
+        @MarshalsPointer
+        public static UIFontTextStyle toObject(Class<UIFontTextStyle> cls, long handle, long flags) {
+            NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return UIFontTextStyle.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(UIFontTextStyle o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(o.value(), flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<UIFontTextStyle> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<UIFontTextStyle> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(UIFontTextStyle.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<UIFontTextStyle> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (UIFontTextStyle o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final UIFontTextStyle Headline = new UIFontTextStyle("Headline");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final UIFontTextStyle Body = new UIFontTextStyle("Body");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final UIFontTextStyle Subheadline = new UIFontTextStyle("Subheadline");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final UIFontTextStyle Footnote = new UIFontTextStyle("Footnote");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final UIFontTextStyle Caption1 = new UIFontTextStyle("Caption1");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final UIFontTextStyle Caption2 = new UIFontTextStyle("Caption2");
+    /*</constants>*/
+    
+    private static /*<name>*/UIFontTextStyle/*</name>*/[] values = new /*<name>*/UIFontTextStyle/*</name>*/[] {/*<value_list>*/Headline, Body, Subheadline, Footnote, Caption1, Caption2/*</value_list>*/};
+    
+    /*<name>*/UIFontTextStyle/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static UIFontTextStyle valueOf(NSString value) {
-        for (UIFontTextStyle v : values) {
+    public static /*<name>*/UIFontTextStyle/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/UIFontTextStyle/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -94,36 +134,44 @@ import org.robovm.apple.corelocation.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/UIFontTextStyle/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIFontTextStyleHeadline", optional=true)
-    protected static native NSString HeadlineValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIFontTextStyleBody", optional=true)
-    protected static native NSString BodyValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIFontTextStyleSubheadline", optional=true)
-    protected static native NSString SubheadlineValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIFontTextStyleFootnote", optional=true)
-    protected static native NSString FootnoteValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIFontTextStyleCaption1", optional=true)
-    protected static native NSString Caption1Value();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIFontTextStyleCaption2", optional=true)
-    protected static native NSString Caption2Value();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("UIKit") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="UIFontTextStyleHeadline", optional=true)
+        public static native NSString Headline();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="UIFontTextStyleBody", optional=true)
+        public static native NSString Body();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="UIFontTextStyleSubheadline", optional=true)
+        public static native NSString Subheadline();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="UIFontTextStyleFootnote", optional=true)
+        public static native NSString Footnote();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="UIFontTextStyleCaption1", optional=true)
+        public static native NSString Caption1();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="UIFontTextStyleCaption2", optional=true)
+        public static native NSString Caption2();
+        /*</values>*/
+    }
 }

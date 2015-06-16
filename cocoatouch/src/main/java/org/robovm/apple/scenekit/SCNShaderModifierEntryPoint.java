@@ -39,12 +39,15 @@ import org.robovm.apple.opengles.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(SCNShaderModifierEntryPoint.Marshaler.class)
-/*<annotations>*/@Library("SceneKit")/*</annotations>*/
+/*<annotations>*/@Library("SceneKit") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/SCNShaderModifierEntryPoint/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SCNShaderModifierEntryPoint/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/SCNShaderModifierEntryPoint/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static SCNShaderModifierEntryPoint toObject(Class<SCNShaderModifierEntryPoint> cls, long handle, long flags) {
@@ -62,7 +65,33 @@ import org.robovm.apple.opengles.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<SCNShaderModifierEntryPoint> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<SCNShaderModifierEntryPoint> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(SCNShaderModifierEntryPoint.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<SCNShaderModifierEntryPoint> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (SCNShaderModifierEntryPoint o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
     public static class AsStringMapMarshaler {
         @SuppressWarnings("unchecked")
         @MarshalsPointer
@@ -90,32 +119,34 @@ import org.robovm.apple.opengles.*;
             return NSObject.Marshaler.toNative(dict, flags);
         }
     }
+
+    /*<constants>*/
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final SCNShaderModifierEntryPoint Geometry = new SCNShaderModifierEntryPoint("Geometry");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final SCNShaderModifierEntryPoint Surface = new SCNShaderModifierEntryPoint("Surface");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final SCNShaderModifierEntryPoint LightingModel = new SCNShaderModifierEntryPoint("LightingModel");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final SCNShaderModifierEntryPoint Fragment = new SCNShaderModifierEntryPoint("Fragment");
+    /*</constants>*/
     
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(SCNShaderModifierEntryPoint.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    public static final SCNShaderModifierEntryPoint Geometry = new SCNShaderModifierEntryPoint("GeometryValue");
-    public static final SCNShaderModifierEntryPoint Surface = new SCNShaderModifierEntryPoint("SurfaceValue");
-    public static final SCNShaderModifierEntryPoint LightingModel = new SCNShaderModifierEntryPoint("LightingModelValue");
-    public static final SCNShaderModifierEntryPoint Fragment = new SCNShaderModifierEntryPoint("FragmentValue");
+    private static /*<name>*/SCNShaderModifierEntryPoint/*</name>*/[] values = new /*<name>*/SCNShaderModifierEntryPoint/*</name>*/[] {/*<value_list>*/Geometry, Surface, LightingModel, Fragment/*</value_list>*/};
     
-    private static SCNShaderModifierEntryPoint[] values = new SCNShaderModifierEntryPoint[] {Geometry, Surface, 
-        LightingModel, Fragment};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private SCNShaderModifierEntryPoint(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    /*<name>*/SCNShaderModifierEntryPoint/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
-    }
     
-    public static SCNShaderModifierEntryPoint valueOf(NSString value) {
-        for (SCNShaderModifierEntryPoint v : values) {
+    public static /*<name>*/SCNShaderModifierEntryPoint/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/SCNShaderModifierEntryPoint/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -123,26 +154,34 @@ import org.robovm.apple.opengles.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/SCNShaderModifierEntryPoint/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="SCNShaderModifierEntryPointGeometry", optional=true)
-    protected static native NSString GeometryValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="SCNShaderModifierEntryPointSurface", optional=true)
-    protected static native NSString SurfaceValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="SCNShaderModifierEntryPointLightingModel", optional=true)
-    protected static native NSString LightingModelValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="SCNShaderModifierEntryPointFragment", optional=true)
-    protected static native NSString FragmentValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("SceneKit") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="SCNShaderModifierEntryPointGeometry", optional=true)
+        public static native NSString Geometry();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="SCNShaderModifierEntryPointSurface", optional=true)
+        public static native NSString Surface();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="SCNShaderModifierEntryPointLightingModel", optional=true)
+        public static native NSString LightingModel();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="SCNShaderModifierEntryPointFragment", optional=true)
+        public static native NSString Fragment();
+        /*</values>*/
+    }
 }

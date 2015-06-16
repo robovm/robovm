@@ -41,70 +41,125 @@ import org.robovm.apple.dispatch.*;
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("Foundation")/*</annotations>*/
+@Marshaler(/*<name>*/NSMetadataQueryUpdatedItems/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSMetadataQueryUpdatedItems/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected NSMetadataQueryUpdatedItems(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
-    }
-    /*<bind>*/static { Bro.bind(NSMetadataQueryUpdatedItems.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @SuppressWarnings("unchecked")
-    public NSArray<NSMetadataItem> getAddedItems() {
-        if (data.containsKey(UpdateAddedItemsKey())) {
-            NSArray<NSMetadataItem> val = (NSArray<NSMetadataItem>)data.get(UpdateAddedItemsKey());
-            return val;
+    /*<marshalers>*/
+    public static class Marshaler {
+        @MarshalsPointer
+        public static NSMetadataQueryUpdatedItems toObject(Class<NSMetadataQueryUpdatedItems> cls, long handle, long flags) {
+            NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return new NSMetadataQueryUpdatedItems(o);
         }
-        return null;
-    }
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @SuppressWarnings("unchecked")
-    public NSArray<NSMetadataItem> getChangedItems() {
-        if (data.containsKey(UpdateChangedItemsKey())) {
-            NSArray<NSMetadataItem> val = (NSArray<NSMetadataItem>)data.get(UpdateChangedItemsKey());
-            return val;
+        @MarshalsPointer
+        public static long toNative(NSMetadataQueryUpdatedItems o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(o.data, flags);
         }
-        return null;
     }
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @SuppressWarnings("unchecked")
-    public NSArray<NSMetadataItem> getRemovedItems() {
-        if (data.containsKey(UpdateRemovedItemsKey())) {
-            NSArray<NSMetadataItem> val = (NSArray<NSMetadataItem>)data.get(UpdateRemovedItemsKey());
-            return val;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<NSMetadataQueryUpdatedItems> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<NSMetadataQueryUpdatedItems> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new NSMetadataQueryUpdatedItems(o.get(i)));
+            }
+            return list;
         }
-        return null;
+        @MarshalsPointer
+        public static long toNative(List<NSMetadataQueryUpdatedItems> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (NSMetadataQueryUpdatedItems i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    NSMetadataQueryUpdatedItems(NSDictionary<NSString, NSObject> data) {
+        super(data);
+    }
+    /*</constructors>*/
+
     /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
+    }
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
+    }
+    
+
     /**
      * @since Available in iOS 8.0 and later.
      */
-    @GlobalValue(symbol="NSMetadataQueryUpdateAddedItemsKey", optional=true)
-    protected static native NSString UpdateAddedItemsKey();
+    public NSArray<NSMetadataItem> getAddedItems() {
+        if (has(Keys.UpdateAddedItems())) {
+            NSArray<NSMetadataItem> val = (NSArray<NSMetadataItem>) get(Keys.UpdateAddedItems());
+            return val;
+        }
+        return null;
+    }
     /**
      * @since Available in iOS 8.0 and later.
      */
-    @GlobalValue(symbol="NSMetadataQueryUpdateChangedItemsKey", optional=true)
-    protected static native NSString UpdateChangedItemsKey();
+    public NSArray<NSMetadataItem> getChangedItems() {
+        if (has(Keys.UpdateChangedItems())) {
+            NSArray<NSMetadataItem> val = (NSArray<NSMetadataItem>) get(Keys.UpdateChangedItems());
+            return val;
+        }
+        return null;
+    }
     /**
      * @since Available in iOS 8.0 and later.
      */
-    @GlobalValue(symbol="NSMetadataQueryUpdateRemovedItemsKey", optional=true)
-    protected static native NSString UpdateRemovedItemsKey();
+    public NSArray<NSMetadataItem> getRemovedItems() {
+        if (has(Keys.UpdateRemovedItems())) {
+            NSArray<NSMetadataItem> val = (NSArray<NSMetadataItem>) get(Keys.UpdateRemovedItems());
+            return val;
+        }
+        return null;
+    }
     /*</methods>*/
+    
+    /*<keys>*/
+    @Library("Foundation")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="NSMetadataQueryUpdateAddedItemsKey", optional=true)
+        public static native NSString UpdateAddedItems();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="NSMetadataQueryUpdateChangedItemsKey", optional=true)
+        public static native NSString UpdateChangedItems();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="NSMetadataQueryUpdateRemovedItemsKey", optional=true)
+        public static native NSString UpdateRemovedItems();
+    }
+    /*</keys>*/
 }

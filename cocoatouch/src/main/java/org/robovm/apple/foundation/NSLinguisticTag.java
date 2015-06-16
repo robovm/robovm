@@ -40,12 +40,15 @@ import org.robovm.apple.dispatch.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(NSLinguisticTag.Marshaler.class)
-/*<annotations>*/@Library("Foundation")/*</annotations>*/
+/*<annotations>*/@Library("Foundation") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/NSLinguisticTag/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSLinguisticTag/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/NSLinguisticTag/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static NSLinguisticTag toObject(Class<NSLinguisticTag> cls, long handle, long flags) {
@@ -63,153 +66,169 @@ import org.robovm.apple.dispatch.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(NSLinguisticTag.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    public static final NSLinguisticTag Word = new NSLinguisticTag("WordValue");
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    public static final NSLinguisticTag Punctuation = new NSLinguisticTag("PunctuationValue");
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    public static final NSLinguisticTag Whitespace = new NSLinguisticTag("WhitespaceValue");
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    public static final NSLinguisticTag Other = new NSLinguisticTag("OtherValue");
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    public static final NSLinguisticTag Noun = new NSLinguisticTag("NounValue");
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    public static final NSLinguisticTag Verb = new NSLinguisticTag("VerbValue");
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    public static final NSLinguisticTag Adjective = new NSLinguisticTag("AdjectiveValue");
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    public static final NSLinguisticTag Adverb = new NSLinguisticTag("AdverbValue");
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    public static final NSLinguisticTag Pronoun = new NSLinguisticTag("PronounValue");
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    public static final NSLinguisticTag Determiner = new NSLinguisticTag("DeterminerValue");
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    public static final NSLinguisticTag Particle = new NSLinguisticTag("ParticleValue");
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    public static final NSLinguisticTag Preposition = new NSLinguisticTag("PrepositionValue");
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    public static final NSLinguisticTag Number = new NSLinguisticTag("NumberValue");
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    public static final NSLinguisticTag Conjunction = new NSLinguisticTag("ConjunctionValue");
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    public static final NSLinguisticTag Interjection = new NSLinguisticTag("InterjectionValue");
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    public static final NSLinguisticTag Classifier = new NSLinguisticTag("ClassifierValue");
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    public static final NSLinguisticTag Idiom = new NSLinguisticTag("IdiomValue");
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    public static final NSLinguisticTag OtherWord = new NSLinguisticTag("OtherWordValue");
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    public static final NSLinguisticTag SentenceTerminator = new NSLinguisticTag("SentenceTerminatorValue");
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    public static final NSLinguisticTag OpenQuote = new NSLinguisticTag("OpenQuoteValue");
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    public static final NSLinguisticTag CloseQuote = new NSLinguisticTag("CloseQuoteValue");
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    public static final NSLinguisticTag OpenParenthesis = new NSLinguisticTag("OpenParenthesisValue");
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    public static final NSLinguisticTag CloseParenthesis = new NSLinguisticTag("CloseParenthesisValue");
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    public static final NSLinguisticTag WordJoiner = new NSLinguisticTag("WordJoinerValue");
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    public static final NSLinguisticTag Dash = new NSLinguisticTag("DashValue");
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    public static final NSLinguisticTag OtherPunctuation = new NSLinguisticTag("OtherPunctuationValue");
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    public static final NSLinguisticTag ParagraphBreak = new NSLinguisticTag("ParagraphBreakValue");
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    public static final NSLinguisticTag OtherWhitespace = new NSLinguisticTag("OtherWhitespaceValue");    
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    public static final NSLinguisticTag PersonalName = new NSLinguisticTag("PersonalNameValue");
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    public static final NSLinguisticTag PlaceName = new NSLinguisticTag("PlaceNameValue");
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    public static final NSLinguisticTag OrganizationName = new NSLinguisticTag("OrganizationNameValue");
-    
-    private static NSLinguisticTag[] values = new NSLinguisticTag[] {Word, Punctuation, Whitespace, Other, Noun, Verb, Adjective, Adverb, Pronoun, 
-        Determiner, Particle, Preposition, Number, Conjunction, Interjection, Classifier, Idiom, OtherWord, SentenceTerminator, OpenQuote, CloseQuote, 
-        OpenParenthesis, CloseParenthesis, WordJoiner, Dash, OtherPunctuation, ParagraphBreak, OtherWhitespace, PersonalName, PlaceName, OrganizationName};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private NSLinguisticTag(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<NSLinguisticTag> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<NSLinguisticTag> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(NSLinguisticTag.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<NSLinguisticTag> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (NSLinguisticTag o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*</marshalers>*/
+
+    /*<constants>*/
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static final NSLinguisticTag Word = new NSLinguisticTag("Word");
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static final NSLinguisticTag Punctuation = new NSLinguisticTag("Punctuation");
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static final NSLinguisticTag Whitespace = new NSLinguisticTag("Whitespace");
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static final NSLinguisticTag Other = new NSLinguisticTag("Other");
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static final NSLinguisticTag Noun = new NSLinguisticTag("Noun");
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static final NSLinguisticTag Verb = new NSLinguisticTag("Verb");
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static final NSLinguisticTag Adjective = new NSLinguisticTag("Adjective");
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static final NSLinguisticTag Adverb = new NSLinguisticTag("Adverb");
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static final NSLinguisticTag Pronoun = new NSLinguisticTag("Pronoun");
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static final NSLinguisticTag Determiner = new NSLinguisticTag("Determiner");
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static final NSLinguisticTag Particle = new NSLinguisticTag("Particle");
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static final NSLinguisticTag Preposition = new NSLinguisticTag("Preposition");
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static final NSLinguisticTag Number = new NSLinguisticTag("Number");
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static final NSLinguisticTag Conjunction = new NSLinguisticTag("Conjunction");
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static final NSLinguisticTag Interjection = new NSLinguisticTag("Interjection");
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static final NSLinguisticTag Classifier = new NSLinguisticTag("Classifier");
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static final NSLinguisticTag Idiom = new NSLinguisticTag("Idiom");
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static final NSLinguisticTag OtherWord = new NSLinguisticTag("OtherWord");
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static final NSLinguisticTag SentenceTerminator = new NSLinguisticTag("SentenceTerminator");
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static final NSLinguisticTag OpenQuote = new NSLinguisticTag("OpenQuote");
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static final NSLinguisticTag CloseQuote = new NSLinguisticTag("CloseQuote");
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static final NSLinguisticTag OpenParenthesis = new NSLinguisticTag("OpenParenthesis");
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static final NSLinguisticTag CloseParenthesis = new NSLinguisticTag("CloseParenthesis");
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static final NSLinguisticTag WordJoiner = new NSLinguisticTag("WordJoiner");
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static final NSLinguisticTag Dash = new NSLinguisticTag("Dash");
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static final NSLinguisticTag OtherPunctuation = new NSLinguisticTag("OtherPunctuation");
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static final NSLinguisticTag ParagraphBreak = new NSLinguisticTag("ParagraphBreak");
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static final NSLinguisticTag OtherWhitespace = new NSLinguisticTag("OtherWhitespace");
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static final NSLinguisticTag PersonalName = new NSLinguisticTag("PersonalName");
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static final NSLinguisticTag PlaceName = new NSLinguisticTag("PlaceName");
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static final NSLinguisticTag OrganizationName = new NSLinguisticTag("OrganizationName");
+    /*</constants>*/
+    
+    private static /*<name>*/NSLinguisticTag/*</name>*/[] values = new /*<name>*/NSLinguisticTag/*</name>*/[] {/*<value_list>*/Word, Punctuation, Whitespace, Other, Noun, Verb, Adjective, Adverb, Pronoun, Determiner, Particle, Preposition, Number, Conjunction, Interjection, Classifier, Idiom, OtherWord, SentenceTerminator, OpenQuote, CloseQuote, OpenParenthesis, CloseParenthesis, WordJoiner, Dash, OtherPunctuation, ParagraphBreak, OtherWhitespace, PersonalName, PlaceName, OrganizationName/*</value_list>*/};
+    
+    /*<name>*/NSLinguisticTag/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static NSLinguisticTag valueOf(NSString value) {
-        for (NSLinguisticTag v : values) {
+    public static /*<name>*/NSLinguisticTag/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/NSLinguisticTag/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -217,161 +236,169 @@ import org.robovm.apple.dispatch.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/NSLinguisticTag/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSLinguisticTagWord", optional=true)
-    protected static native NSString WordValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSLinguisticTagPunctuation", optional=true)
-    protected static native NSString PunctuationValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSLinguisticTagWhitespace", optional=true)
-    protected static native NSString WhitespaceValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSLinguisticTagOther", optional=true)
-    protected static native NSString OtherValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSLinguisticTagNoun", optional=true)
-    protected static native NSString NounValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSLinguisticTagVerb", optional=true)
-    protected static native NSString VerbValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSLinguisticTagAdjective", optional=true)
-    protected static native NSString AdjectiveValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSLinguisticTagAdverb", optional=true)
-    protected static native NSString AdverbValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSLinguisticTagPronoun", optional=true)
-    protected static native NSString PronounValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSLinguisticTagDeterminer", optional=true)
-    protected static native NSString DeterminerValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSLinguisticTagParticle", optional=true)
-    protected static native NSString ParticleValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSLinguisticTagPreposition", optional=true)
-    protected static native NSString PrepositionValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSLinguisticTagNumber", optional=true)
-    protected static native NSString NumberValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSLinguisticTagConjunction", optional=true)
-    protected static native NSString ConjunctionValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSLinguisticTagInterjection", optional=true)
-    protected static native NSString InterjectionValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSLinguisticTagClassifier", optional=true)
-    protected static native NSString ClassifierValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSLinguisticTagIdiom", optional=true)
-    protected static native NSString IdiomValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSLinguisticTagOtherWord", optional=true)
-    protected static native NSString OtherWordValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSLinguisticTagSentenceTerminator", optional=true)
-    protected static native NSString SentenceTerminatorValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSLinguisticTagOpenQuote", optional=true)
-    protected static native NSString OpenQuoteValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSLinguisticTagCloseQuote", optional=true)
-    protected static native NSString CloseQuoteValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSLinguisticTagOpenParenthesis", optional=true)
-    protected static native NSString OpenParenthesisValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSLinguisticTagCloseParenthesis", optional=true)
-    protected static native NSString CloseParenthesisValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSLinguisticTagWordJoiner", optional=true)
-    protected static native NSString WordJoinerValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSLinguisticTagDash", optional=true)
-    protected static native NSString DashValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSLinguisticTagOtherPunctuation", optional=true)
-    protected static native NSString OtherPunctuationValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSLinguisticTagParagraphBreak", optional=true)
-    protected static native NSString ParagraphBreakValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSLinguisticTagOtherWhitespace", optional=true)
-    protected static native NSString OtherWhitespaceValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSLinguisticTagPersonalName", optional=true)
-    protected static native NSString PersonalNameValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSLinguisticTagPlaceName", optional=true)
-    protected static native NSString PlaceNameValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSLinguisticTagOrganizationName", optional=true)
-    protected static native NSString OrganizationNameValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("Foundation") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSLinguisticTagWord", optional=true)
+        public static native NSString Word();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSLinguisticTagPunctuation", optional=true)
+        public static native NSString Punctuation();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSLinguisticTagWhitespace", optional=true)
+        public static native NSString Whitespace();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSLinguisticTagOther", optional=true)
+        public static native NSString Other();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSLinguisticTagNoun", optional=true)
+        public static native NSString Noun();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSLinguisticTagVerb", optional=true)
+        public static native NSString Verb();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSLinguisticTagAdjective", optional=true)
+        public static native NSString Adjective();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSLinguisticTagAdverb", optional=true)
+        public static native NSString Adverb();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSLinguisticTagPronoun", optional=true)
+        public static native NSString Pronoun();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSLinguisticTagDeterminer", optional=true)
+        public static native NSString Determiner();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSLinguisticTagParticle", optional=true)
+        public static native NSString Particle();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSLinguisticTagPreposition", optional=true)
+        public static native NSString Preposition();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSLinguisticTagNumber", optional=true)
+        public static native NSString Number();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSLinguisticTagConjunction", optional=true)
+        public static native NSString Conjunction();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSLinguisticTagInterjection", optional=true)
+        public static native NSString Interjection();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSLinguisticTagClassifier", optional=true)
+        public static native NSString Classifier();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSLinguisticTagIdiom", optional=true)
+        public static native NSString Idiom();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSLinguisticTagOtherWord", optional=true)
+        public static native NSString OtherWord();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSLinguisticTagSentenceTerminator", optional=true)
+        public static native NSString SentenceTerminator();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSLinguisticTagOpenQuote", optional=true)
+        public static native NSString OpenQuote();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSLinguisticTagCloseQuote", optional=true)
+        public static native NSString CloseQuote();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSLinguisticTagOpenParenthesis", optional=true)
+        public static native NSString OpenParenthesis();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSLinguisticTagCloseParenthesis", optional=true)
+        public static native NSString CloseParenthesis();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSLinguisticTagWordJoiner", optional=true)
+        public static native NSString WordJoiner();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSLinguisticTagDash", optional=true)
+        public static native NSString Dash();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSLinguisticTagOtherPunctuation", optional=true)
+        public static native NSString OtherPunctuation();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSLinguisticTagParagraphBreak", optional=true)
+        public static native NSString ParagraphBreak();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSLinguisticTagOtherWhitespace", optional=true)
+        public static native NSString OtherWhitespace();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSLinguisticTagPersonalName", optional=true)
+        public static native NSString PersonalName();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSLinguisticTagPlaceName", optional=true)
+        public static native NSString PlaceName();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSLinguisticTagOrganizationName", optional=true)
+        public static native NSString OrganizationName();
+        /*</values>*/
+    }
 }

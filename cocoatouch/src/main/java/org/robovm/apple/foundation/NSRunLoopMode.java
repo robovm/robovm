@@ -40,38 +40,76 @@ import org.robovm.apple.dispatch.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("Foundation")/*</annotations>*/
+/*<annotations>*/@Library("Foundation") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/NSRunLoopMode/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSRunLoopMode/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(NSRunLoopMode.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    public static final NSRunLoopMode Default = new NSRunLoopMode("DefaultValue");
+
+    static { Bro.bind(/*<name>*/NSRunLoopMode/*</name>*/.class); }
+
+    /*<marshalers>*/
+    public static class Marshaler {
+        @MarshalsPointer
+        public static NSRunLoopMode toObject(Class<NSRunLoopMode> cls, long handle, long flags) {
+            NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return NSRunLoopMode.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(NSRunLoopMode o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(o.value(), flags);
+        }
+    }
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<NSRunLoopMode> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<NSRunLoopMode> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(NSRunLoopMode.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<NSRunLoopMode> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (NSRunLoopMode o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
+    public static final NSRunLoopMode Default = new NSRunLoopMode("Default");
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static final NSRunLoopMode Common = new NSRunLoopMode("CommonValue");
+    public static final NSRunLoopMode Common = new NSRunLoopMode("Common");
+    /*</constants>*/
     
-    private static NSRunLoopMode[] values = new NSRunLoopMode[] {Default, Common};
-    private LazyGlobalValue<String> lazyGlobalValue;
+    private static /*<name>*/NSRunLoopMode/*</name>*/[] values = new /*<name>*/NSRunLoopMode/*</name>*/[] {/*<value_list>*/Default, Common/*</value_list>*/};
     
-    public NSRunLoopMode() {}
-    
-    private NSRunLoopMode(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public String value() {
-        return lazyGlobalValue.value();
+    /*<name>*/NSRunLoopMode/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static NSRunLoopMode valueOf(String value) {
-        for (NSRunLoopMode v : values) {
+    public static /*<name>*/NSRunLoopMode/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/NSRunLoopMode/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -79,13 +117,21 @@ import org.robovm.apple.dispatch.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/NSRunLoopMode/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    @GlobalValue(symbol="NSDefaultRunLoopMode", optional=true)
-    protected static native String DefaultValue();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="NSRunLoopCommonModes", optional=true)
-    protected static native String CommonValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("Foundation") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        @GlobalValue(symbol="NSDefaultRunLoopMode", optional=true)
+        public static native NSString Default();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="NSRunLoopCommonModes", optional=true)
+        public static native NSString Common();
+        /*</values>*/
+    }
 }

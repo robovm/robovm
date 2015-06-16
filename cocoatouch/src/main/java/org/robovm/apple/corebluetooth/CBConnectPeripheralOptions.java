@@ -34,14 +34,14 @@ import org.robovm.apple.dispatch.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CBConnectPeripheralOptions.Marshaler.class)
 /*<annotations>*/@Library("CoreBluetooth")/*</annotations>*/
+@Marshaler(/*<name>*/CBConnectPeripheralOptions/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CBConnectPeripheralOptions/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static CBConnectPeripheralOptions toObject(Class<CBConnectPeripheralOptions> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -58,88 +58,119 @@ import org.robovm.apple.dispatch.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected CBConnectPeripheralOptions(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
-    }
-    public CBConnectPeripheralOptions() {
-    	this.data = new NSMutableDictionary<>();
-    }
-    /*<bind>*/static { Bro.bind(CBConnectPeripheralOptions.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
-    }
-    
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    public boolean isNotifyingOnConnection() {
-        if (data.containsKey(NotifyOnConnectionKey())) {
-            NSNumber val = (NSNumber)data.get(NotifyOnConnectionKey());
-            return val.booleanValue();
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CBConnectPeripheralOptions> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CBConnectPeripheralOptions> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new CBConnectPeripheralOptions(o.get(i)));
+            }
+            return list;
         }
-        return false;
-    }
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    public CBConnectPeripheralOptions setNotifyOnConnection(boolean notify) {
-        data.put(NotifyOnConnectionKey(), NSNumber.valueOf(notify));
-        return this;
-    }
-    public boolean isNotifyingOnDisconnection() {
-        if (data.containsKey(NotifyOnDisconnectionKey())) {
-            NSNumber val = (NSNumber)data.get(NotifyOnDisconnectionKey());
-            return val.booleanValue();
+        @MarshalsPointer
+        public static long toNative(List<CBConnectPeripheralOptions> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (CBConnectPeripheralOptions i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
         }
-        return false;
     }
-    public CBConnectPeripheralOptions setNotifyOnDisconnection(boolean notify) {
-        data.put(NotifyOnDisconnectionKey(), NSNumber.valueOf(notify));
-        return this;
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    CBConnectPeripheralOptions(NSDictionary<NSString, NSObject> data) {
+        super(data);
     }
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    public boolean isNotifyingOnNotification() {
-        if (data.containsKey(NotifyOnNotificationKey())) {
-            NSNumber val = (NSNumber)data.get(NotifyOnNotificationKey());
-            return val.booleanValue();
-        }
-        return false;
-    }
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    public CBConnectPeripheralOptions setNotifyOnNotification(boolean notify) {
-        data.put(NotifyOnNotificationKey(), NSNumber.valueOf(notify));
-        return this;
-    }
+    public CBConnectPeripheralOptions() {}
+    /*</constructors>*/
+
     /*<methods>*/
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="CBConnectPeripheralOptionNotifyOnConnectionKey", optional=true)
-    protected static native NSString NotifyOnConnectionKey();
-    @GlobalValue(symbol="CBConnectPeripheralOptionNotifyOnDisconnectionKey", optional=true)
-    protected static native NSString NotifyOnDisconnectionKey();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="CBConnectPeripheralOptionNotifyOnNotificationKey", optional=true)
-    protected static native NSString NotifyOnNotificationKey();
-    /*</methods>*/
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    public boolean has(NSString key) {
+        return data.containsKey(key);
     }
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
+    }
+    public CBConnectPeripheralOptions set(NSString key, NSObject value) {
+        data.put(key, value);
+        return this;
+    }
+    
+
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public boolean notifiesOnConnection() {
+        if (has(Keys.NotifyOnConnection())) {
+            NSNumber val = (NSNumber) get(Keys.NotifyOnConnection());
+            return val.booleanValue();
+        }
+        return false;
+    }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public CBConnectPeripheralOptions setNotifiesOnConnection(boolean notifiesOnConnection) {
+        set(Keys.NotifyOnConnection(), NSNumber.valueOf(notifiesOnConnection));
+        return this;
+    }
+    public boolean notifiesOnDisconnection() {
+        if (has(Keys.NotifyOnDisconnection())) {
+            NSNumber val = (NSNumber) get(Keys.NotifyOnDisconnection());
+            return val.booleanValue();
+        }
+        return false;
+    }
+    public CBConnectPeripheralOptions setNotifiesOnDisconnection(boolean notifiesOnDisconnection) {
+        set(Keys.NotifyOnDisconnection(), NSNumber.valueOf(notifiesOnDisconnection));
+        return this;
+    }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public boolean notifiesOnNotification() {
+        if (has(Keys.NotifyOnNotification())) {
+            NSNumber val = (NSNumber) get(Keys.NotifyOnNotification());
+            return val.booleanValue();
+        }
+        return false;
+    }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public CBConnectPeripheralOptions setNotifiesOnNotification(boolean notifiesOnNotification) {
+        set(Keys.NotifyOnNotification(), NSNumber.valueOf(notifiesOnNotification));
+        return this;
+    }
+    /*</methods>*/
+    
+    /*<keys>*/
+    @Library("CoreBluetooth")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        @GlobalValue(symbol="CBConnectPeripheralOptionNotifyOnConnectionKey", optional=true)
+        public static native NSString NotifyOnConnection();
+        @GlobalValue(symbol="CBConnectPeripheralOptionNotifyOnDisconnectionKey", optional=true)
+        public static native NSString NotifyOnDisconnection();
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        @GlobalValue(symbol="CBConnectPeripheralOptionNotifyOnNotificationKey", optional=true)
+        public static native NSString NotifyOnNotification();
+    }
+    /*</keys>*/
 }

@@ -39,14 +39,14 @@ import org.robovm.apple.opengles.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(SCNPhysicsTestOptions.Marshaler.class)
 /*<annotations>*/@Library("SceneKit")/*</annotations>*/
+@Marshaler(/*<name>*/SCNPhysicsTestOptions/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SCNPhysicsTestOptions/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static SCNPhysicsTestOptions toObject(Class<SCNPhysicsTestOptions> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -63,70 +63,101 @@ import org.robovm.apple.opengles.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<SCNPhysicsTestOptions> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<SCNPhysicsTestOptions> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new SCNPhysicsTestOptions(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<SCNPhysicsTestOptions> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (SCNPhysicsTestOptions i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    SCNPhysicsTestOptions(NSDictionary<NSString, NSObject> data) {
+        super(data);
+    }
+    public SCNPhysicsTestOptions() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
+    }
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
+    }
+    public SCNPhysicsTestOptions set(NSString key, NSObject value) {
+        data.put(key, value);
+        return this;
+    }
     
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected SCNPhysicsTestOptions(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
-    }
-    public SCNPhysicsTestOptions() {
-        data = new NSMutableDictionary<>();
-    }
-    /*<bind>*/static { Bro.bind(SCNPhysicsTestOptions.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
-    }
 
     public SCNPhysicsCollisionCategory getCollisionBitMask() {
-        if (data.containsKey(CollisionBitMaskKey())) {
-            NSNumber val = (NSNumber) data.get(CollisionBitMaskKey());
+        if (has(Keys.CollisionBitMask())) {
+            NSNumber val = (NSNumber) get(Keys.CollisionBitMask());
             return new SCNPhysicsCollisionCategory(val.longValue());
         }
         return null;
     }
-    public SCNPhysicsTestOptions setCollisionBitMask(SCNPhysicsCollisionCategory mask) {
-        data.put(CollisionBitMaskKey(), NSNumber.valueOf(mask.value()));
+    public SCNPhysicsTestOptions setCollisionBitMask(SCNPhysicsCollisionCategory collisionBitMask) {
+        set(Keys.CollisionBitMask(), NSNumber.valueOf(collisionBitMask.value()));
         return this;
     }
     public SCNPhysicsTestSearchMode getSearchMode() {
-        if (data.containsKey(SearchModeKey())) {
-            NSString val = (NSString) data.get(SearchModeKey());
+        if (has(Keys.SearchMode())) {
+            NSString val = (NSString) get(Keys.SearchMode());
             return SCNPhysicsTestSearchMode.valueOf(val);
         }
         return null;
     }
     public SCNPhysicsTestOptions setSearchMode(SCNPhysicsTestSearchMode searchMode) {
-        data.put(SearchModeKey(), searchMode.value());
+        set(Keys.SearchMode(), searchMode.value());
         return this;
     }
-    public boolean getBackfaceCulling() {
-        if (data.containsKey(BackfaceCullingKey())) {
-            NSNumber val = (NSNumber) data.get(BackfaceCullingKey());
+    public boolean isBackfaceCulling() {
+        if (has(Keys.BackfaceCulling())) {
+            NSNumber val = (NSNumber) get(Keys.BackfaceCulling());
             return val.booleanValue();
         }
-        return true;
+        return false;
     }
     public SCNPhysicsTestOptions setBackfaceCulling(boolean backfaceCulling) {
-        data.put(BackfaceCullingKey(), NSNumber.valueOf(backfaceCulling));
+        set(Keys.BackfaceCulling(), NSNumber.valueOf(backfaceCulling));
         return this;
     }
-    /*<methods>*/
-    @GlobalValue(symbol="SCNPhysicsTestCollisionBitMaskKey", optional=true)
-    protected static native NSString CollisionBitMaskKey();
-    @GlobalValue(symbol="SCNPhysicsTestSearchModeKey", optional=true)
-    protected static native NSString SearchModeKey();
-    @GlobalValue(symbol="SCNPhysicsTestBackfaceCullingKey", optional=true)
-    protected static native NSString BackfaceCullingKey();
     /*</methods>*/
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    
+    /*<keys>*/
+    @Library("SceneKit")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        @GlobalValue(symbol="SCNPhysicsTestCollisionBitMaskKey", optional=true)
+        public static native NSString CollisionBitMask();
+        @GlobalValue(symbol="SCNPhysicsTestSearchModeKey", optional=true)
+        public static native NSString SearchMode();
+        @GlobalValue(symbol="SCNPhysicsTestBackfaceCullingKey", optional=true)
+        public static native NSString BackfaceCulling();
     }
+    /*</keys>*/
 }

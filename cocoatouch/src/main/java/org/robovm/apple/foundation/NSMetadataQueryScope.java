@@ -40,12 +40,15 @@ import org.robovm.apple.dispatch.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(NSMetadataQueryScope.Marshaler.class)
-/*<annotations>*/@Library("Foundation")/*</annotations>*/
+/*<annotations>*/@Library("Foundation") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/NSMetadataQueryScope/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSMetadataQueryScope/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
-    
+
+    static { Bro.bind(/*<name>*/NSMetadataQueryScope/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static NSMetadataQueryScope toObject(Class<NSMetadataQueryScope> cls, long handle, long flags) {
@@ -63,39 +66,57 @@ import org.robovm.apple.dispatch.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<NSMetadataQueryScope> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<NSMetadataQueryScope> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(NSMetadataQueryScope.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<NSMetadataQueryScope> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (NSMetadataQueryScope o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(NSMetadataQueryScope.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    /*<constants>*/
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final NSMetadataQueryScope UbiquitousDocuments = new NSMetadataQueryScope("UbiquitousDocumentsValue");
+    public static final NSMetadataQueryScope UbiquitousDocuments = new NSMetadataQueryScope("UbiquitousDocuments");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final NSMetadataQueryScope UbiquitousData = new NSMetadataQueryScope("UbiquitousDataValue");
+    public static final NSMetadataQueryScope UbiquitousData = new NSMetadataQueryScope("UbiquitousData");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final NSMetadataQueryScope AccessibleUbiquitousExternalDocuments = new NSMetadataQueryScope("AccessibleUbiquitousExternalDocumentsValue");
+    public static final NSMetadataQueryScope AccessibleUbiquitousExternalDocuments = new NSMetadataQueryScope("AccessibleUbiquitousExternalDocuments");
+    /*</constants>*/
     
-    private static NSMetadataQueryScope[] values = new NSMetadataQueryScope[] {UbiquitousDocuments, UbiquitousData, AccessibleUbiquitousExternalDocuments};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    private static /*<name>*/NSMetadataQueryScope/*</name>*/[] values = new /*<name>*/NSMetadataQueryScope/*</name>*/[] {/*<value_list>*/UbiquitousDocuments, UbiquitousData, AccessibleUbiquitousExternalDocuments/*</value_list>*/};
     
-    private NSMetadataQueryScope(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/NSMetadataQueryScope/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static NSMetadataQueryScope valueOf(NSString value) {
-        for (NSMetadataQueryScope v : values) {
+    public static /*<name>*/NSMetadataQueryScope/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/NSMetadataQueryScope/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -103,21 +124,29 @@ import org.robovm.apple.dispatch.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/NSMetadataQueryScope/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSMetadataQueryUbiquitousDocumentsScope", optional=true)
-    protected static native NSString UbiquitousDocumentsValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSMetadataQueryUbiquitousDataScope", optional=true)
-    protected static native NSString UbiquitousDataValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="NSMetadataQueryAccessibleUbiquitousExternalDocumentsScope", optional=true)
-    protected static native NSString AccessibleUbiquitousExternalDocumentsValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("Foundation") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSMetadataQueryUbiquitousDocumentsScope", optional=true)
+        public static native NSString UbiquitousDocuments();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSMetadataQueryUbiquitousDataScope", optional=true)
+        public static native NSString UbiquitousData();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="NSMetadataQueryAccessibleUbiquitousExternalDocumentsScope", optional=true)
+        public static native NSString AccessibleUbiquitousExternalDocuments();
+        /*</values>*/
+    }
 }

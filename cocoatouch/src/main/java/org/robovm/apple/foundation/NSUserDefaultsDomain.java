@@ -40,34 +40,74 @@ import org.robovm.apple.dispatch.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("Foundation")/*</annotations>*/
+/*<annotations>*/@Library("Foundation") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/NSUserDefaultsDomain/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSUserDefaultsDomain/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(NSUserDefaultsDomain.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    public static final NSUserDefaultsDomain Global = new NSUserDefaultsDomain("GlobalValue");
-    public static final NSUserDefaultsDomain Argument = new NSUserDefaultsDomain("ArgumentValue");
-    public static final NSUserDefaultsDomain Registration = new NSUserDefaultsDomain("RegistrationValue");
-    
-    private static NSUserDefaultsDomain[] values = new NSUserDefaultsDomain[] {Global, Argument, Registration};
-    private final LazyGlobalValue<String> lazyGlobalValue;
-    
-    private NSUserDefaultsDomain(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    static { Bro.bind(/*<name>*/NSUserDefaultsDomain/*</name>*/.class); }
+
+    /*<marshalers>*/
+    public static class Marshaler {
+        @MarshalsPointer
+        public static NSUserDefaultsDomain toObject(Class<NSUserDefaultsDomain> cls, long handle, long flags) {
+            NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return NSUserDefaultsDomain.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(NSUserDefaultsDomain o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(o.value(), flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public String value() {
-        return lazyGlobalValue.value();
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<NSUserDefaultsDomain> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<NSUserDefaultsDomain> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(NSUserDefaultsDomain.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<NSUserDefaultsDomain> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (NSUserDefaultsDomain o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
+    public static final NSUserDefaultsDomain Global = new NSUserDefaultsDomain("Global");
+    public static final NSUserDefaultsDomain Argument = new NSUserDefaultsDomain("Argument");
+    public static final NSUserDefaultsDomain Registration = new NSUserDefaultsDomain("Registration");
+    /*</constants>*/
+    
+    private static /*<name>*/NSUserDefaultsDomain/*</name>*/[] values = new /*<name>*/NSUserDefaultsDomain/*</name>*/[] {/*<value_list>*/Global, Argument, Registration/*</value_list>*/};
+    
+    /*<name>*/NSUserDefaultsDomain/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static NSUserDefaultsDomain valueOf(String value) {
-        for (NSUserDefaultsDomain v : values) {
+    public static /*<name>*/NSUserDefaultsDomain/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/NSUserDefaultsDomain/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -75,12 +115,20 @@ import org.robovm.apple.dispatch.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/NSUserDefaultsDomain/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    @GlobalValue(symbol="NSGlobalDomain", optional=true)
-    protected static native String GlobalValue();
-    @GlobalValue(symbol="NSArgumentDomain", optional=true)
-    protected static native String ArgumentValue();
-    @GlobalValue(symbol="NSRegistrationDomain", optional=true)
-    protected static native String RegistrationValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("Foundation") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        @GlobalValue(symbol="NSGlobalDomain", optional=true)
+        public static native NSString Global();
+        @GlobalValue(symbol="NSArgumentDomain", optional=true)
+        public static native NSString Argument();
+        @GlobalValue(symbol="NSRegistrationDomain", optional=true)
+        public static native NSString Registration();
+        /*</values>*/
+    }
 }

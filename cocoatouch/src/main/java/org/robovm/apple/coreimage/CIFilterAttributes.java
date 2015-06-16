@@ -38,14 +38,14 @@ import org.robovm.apple.uikit.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CIFilterAttributes.Marshaler.class)
 /*<annotations>*/@Library("CoreImage")/*</annotations>*/
+@Marshaler(/*<name>*/CIFilterAttributes/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CIFilterAttributes/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static CIFilterAttributes toObject(Class<CIFilterAttributes> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -62,52 +62,80 @@ import org.robovm.apple.uikit.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected CIFilterAttributes(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CIFilterAttributes> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CIFilterAttributes> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new CIFilterAttributes(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CIFilterAttributes> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (CIFilterAttributes i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    /*<bind>*/static { Bro.bind(CIFilterAttributes.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    CIFilterAttributes(NSDictionary<NSString, NSObject> data) {
+        super(data);
     }
-    
-    
-    @SuppressWarnings("unchecked")
-    public CIFilterAttribute getAttribute(String name) {
-        NSString str = new NSString(name);
-        if (data.containsKey(str)) {
-            NSDictionary<NSString, NSObject> val = (NSDictionary<NSString, NSObject>)data.get(str);
-            return new CIFilterAttribute(val);
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
+    }
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
         }
         return null;
     }
     
+
     public String getName() {
-        if (data.containsKey(NameKey())) {
-            NSString val = (NSString)data.get(NameKey());
+        if (has(Keys.Name())) {
+            NSString val = (NSString) get(Keys.Name());
             return val.toString();
         }
         return null;
     }
     public String getDisplayName() {
-        if (data.containsKey(DisplayNameKey())) {
-            NSString val = (NSString)data.get(DisplayNameKey());
+        if (has(Keys.DisplayName())) {
+            NSString val = (NSString) get(Keys.DisplayName());
             return val.toString();
+        }
+        return null;
+    }
+    /*</methods>*/
+    
+    @SuppressWarnings("unchecked")
+    public CIFilterAttribute getAttribute(String name) {
+        NSString str = new NSString(name);
+        if (has(str)) {
+            NSDictionary<NSString, NSObject> val = (NSDictionary<NSString, NSObject>)get(str);
+            return new CIFilterAttribute(val);
         }
         return null;
     }
     @SuppressWarnings("unchecked")
     public List<CIFilterCategory> getCategories() {
-        if (data.containsKey(CategoriesKey())) {
-            NSArray<NSString> val = (NSArray<NSString>)data.get(CategoriesKey());
+        if (has(Keys.Categories())) {
+            NSArray<NSString> val = (NSArray<NSString>)get(Keys.Categories());
             List<CIFilterCategory> list = new ArrayList<>();
             for (NSString str : val) {
                 list.add(CIFilterCategory.valueOf(str));
@@ -117,17 +145,16 @@ import org.robovm.apple.uikit.*;
         return null;
     }
     
-    /*<methods>*/
-    @GlobalValue(symbol="kCIAttributeFilterName", optional=true)
-    protected static native NSString NameKey();
-    @GlobalValue(symbol="kCIAttributeFilterDisplayName", optional=true)
-    protected static native NSString DisplayNameKey();
-    @GlobalValue(symbol="kCIAttributeFilterCategories", optional=true)
-    protected static native NSString CategoriesKey();
-    /*</methods>*/
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    /*<keys>*/
+    @Library("CoreImage")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        @GlobalValue(symbol="kCIAttributeFilterName", optional=true)
+        public static native NSString Name();
+        @GlobalValue(symbol="kCIAttributeFilterDisplayName", optional=true)
+        public static native NSString DisplayName();
+        @GlobalValue(symbol="kCIAttributeFilterCategories", optional=true)
+        public static native NSString Categories();
     }
+    /*</keys>*/
 }

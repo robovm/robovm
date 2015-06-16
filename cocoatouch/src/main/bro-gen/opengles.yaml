@@ -46,7 +46,6 @@ functions:
         name: 'Function__#{g[0]}'
 
 values:
-
     kEAGLColorFormat(.*):
         enum: EAGLColorFormat
         name: '#{g[0]}'

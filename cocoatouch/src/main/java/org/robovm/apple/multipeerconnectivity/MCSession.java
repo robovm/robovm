@@ -49,6 +49,7 @@ import org.robovm.apple.security.*;
     public MCSession() {}
     protected MCSession(SkipInit skipInit) { super(skipInit); }
     public MCSession(MCPeerID myPeerID) { super((SkipInit) null); initObject(init(myPeerID)); }
+    @WeaklyLinked
     public MCSession(MCPeerID myPeerID, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<SecIdentity> identity, MCEncryptionPreference encryptionPreference) { super((SkipInit) null); initObject(init(myPeerID, identity, encryptionPreference)); }
     /*</constructors>*/
     /*<properties>*/

@@ -34,14 +34,14 @@ import org.robovm.apple.dispatch.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CBCentralManagerRestoredState.Marshaler.class)
 /*<annotations>*/@Library("CoreBluetooth")/*</annotations>*/
+@Marshaler(/*<name>*/CBCentralManagerRestoredState/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CBCentralManagerRestoredState/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static CBCentralManagerRestoredState toObject(Class<CBCentralManagerRestoredState> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -58,31 +58,57 @@ import org.robovm.apple.dispatch.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected CBCentralManagerRestoredState(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CBCentralManagerRestoredState> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CBCentralManagerRestoredState> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new CBCentralManagerRestoredState(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CBCentralManagerRestoredState> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (CBCentralManagerRestoredState i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    /*<bind>*/static { Bro.bind(CBCentralManagerRestoredState.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    CBCentralManagerRestoredState(NSDictionary<NSString, NSObject> data) {
+        super(data);
+    }
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
+    }
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
     }
     
-    
+
     /**
      * @since Available in iOS 7.0 and later.
      */
-    @SuppressWarnings("unchecked")
     public NSArray<CBPeripheral> getPeripherals() {
-        if (data.containsKey(PeripheralsKey())) {
-            NSArray<CBPeripheral> val = (NSArray<CBPeripheral>)data.get(PeripheralsKey());
+        if (has(Keys.Peripherals())) {
+            NSArray<CBPeripheral> val = (NSArray<CBPeripheral>) get(Keys.Peripherals());
             return val;
         }
         return null;
@@ -90,10 +116,9 @@ import org.robovm.apple.dispatch.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    @SuppressWarnings("unchecked")
     public NSArray<CBUUID> getScanServices() {
-        if (data.containsKey(ScanServicesKey())) {
-            NSArray<CBUUID> val = (NSArray<CBUUID>)data.get(ScanServicesKey());
+        if (has(Keys.ScanServices())) {
+            NSArray<CBUUID> val = (NSArray<CBUUID>) get(Keys.ScanServices());
             return val;
         }
         return null;
@@ -101,34 +126,34 @@ import org.robovm.apple.dispatch.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    @SuppressWarnings("unchecked")
     public CBCentralManagerScanOptions getScanOptions() {
-        if (data.containsKey(ScanOptionsKey())) {
-            NSDictionary<NSString, NSObject> val = (NSDictionary<NSString, NSObject>)data.get(ScanOptionsKey());
+        if (has(Keys.ScanOptions())) {
+            NSDictionary<NSString, NSObject> val = (NSDictionary<NSString, NSObject>) get(Keys.ScanOptions());
             return new CBCentralManagerScanOptions(val);
         }
         return null;
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="CBCentralManagerRestoredStatePeripheralsKey", optional=true)
-    protected static native NSString PeripheralsKey();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="CBCentralManagerRestoredStateScanServicesKey", optional=true)
-    protected static native NSString ScanServicesKey();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="CBCentralManagerRestoredStateScanOptionsKey", optional=true)
-    protected static native NSString ScanOptionsKey();
     /*</methods>*/
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    
+    /*<keys>*/
+    @Library("CoreBluetooth")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="CBCentralManagerRestoredStatePeripheralsKey", optional=true)
+        public static native NSString Peripherals();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="CBCentralManagerRestoredStateScanServicesKey", optional=true)
+        public static native NSString ScanServices();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="CBCentralManagerRestoredStateScanOptionsKey", optional=true)
+        public static native NSString ScanOptions();
     }
+    /*</keys>*/
 }

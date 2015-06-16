@@ -90,7 +90,7 @@ import org.robovm.apple.coremidi.*;
      */
     @Deprecated
     public static void initialize(NSRunLoop runLoop, NSRunLoopMode runLoopMode, InterruptionListener interruptionListener) throws OSStatusException {
-        initialize(runLoop, runLoopMode == null ? null : runLoopMode.value(), interruptionListener);
+        initialize(runLoop, runLoopMode == null ? null : runLoopMode.value().toString(), interruptionListener);
     }
     /**
      * @throws OSStatusException 

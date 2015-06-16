@@ -51,13 +51,13 @@ import org.robovm.apple.coretext.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     public void addCommonMode(CFRunLoopMode mode) {
-        addCommonMode(mode.value());
+        addCommonMode(mode.value().toString());
     }
     public double getNextTimerFireDate(CFRunLoopMode mode) {
-        return getNextTimerFireDate(mode.value());
+        return getNextTimerFireDate(mode.value().toString());
     }
     public static CFRunLoopExitReason runInMode(CFRunLoopMode mode, double seconds, boolean returnAfterSourceHandled) {
-        return runInMode(mode.value(), seconds, returnAfterSourceHandled);
+        return runInMode(mode.value().toString(), seconds, returnAfterSourceHandled);
     }
     /**
      * @since Available in iOS 4.0 and later.
@@ -72,31 +72,31 @@ import org.robovm.apple.coretext.*;
         performBlock(CFArray.fromStrings(mode), block);
     }
     public boolean containsSource(CFRunLoopSource source, CFRunLoopMode mode) {
-        return containsSource(source, mode.value());
+        return containsSource(source, mode.value().toString());
     }
     public void addSource(CFRunLoopSource source, CFRunLoopMode mode) {
-        addSource(source, mode.value());
+        addSource(source, mode.value().toString());
     }
     public void removeSource(CFRunLoopSource source, CFRunLoopMode mode) {
-        removeSource(source, mode.value());
+        removeSource(source, mode.value().toString());
     }
     public boolean containsObserver(CFRunLoopObserver observer, CFRunLoopMode mode) {
-        return containsObserver(observer, mode.value());
+        return containsObserver(observer, mode.value().toString());
     }
     public void addObserver(CFRunLoopObserver observer, CFRunLoopMode mode) {
-        addObserver(observer, mode.value());
+        addObserver(observer, mode.value().toString());
     }
     public void removeObserver(CFRunLoopObserver observer, CFRunLoopMode mode) {
-        removeObserver(observer, mode.value());
+        removeObserver(observer, mode.value().toString());
     }
     public boolean containsTimer(CFRunLoopTimer timer, CFRunLoopMode mode) {
-        return containsTimer(timer, mode.value());
+        return containsTimer(timer, mode.value().toString());
     }
     public void addTimer(CFRunLoopTimer timer, CFRunLoopMode mode) {
-        addTimer(timer, mode.value());
+        addTimer(timer, mode.value().toString());
     }
     public void removeTimer(CFRunLoopTimer timer, CFRunLoopMode mode) {
-        removeTimer(timer, mode.value());
+        removeTimer(timer, mode.value().toString());
     }
     /*<methods>*/
     @Bridge(symbol="CFRunLoopGetTypeID", optional=true)

@@ -39,14 +39,14 @@ import org.robovm.apple.opengles.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(SCNPhysicsShapeOptions.Marshaler.class)
 /*<annotations>*/@Library("SceneKit")/*</annotations>*/
+@Marshaler(/*<name>*/SCNPhysicsShapeOptions/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SCNPhysicsShapeOptions/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static SCNPhysicsShapeOptions toObject(Class<SCNPhysicsShapeOptions> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -63,70 +63,101 @@ import org.robovm.apple.opengles.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected SCNPhysicsShapeOptions(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<SCNPhysicsShapeOptions> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<SCNPhysicsShapeOptions> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new SCNPhysicsShapeOptions(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<SCNPhysicsShapeOptions> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (SCNPhysicsShapeOptions i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    public SCNPhysicsShapeOptions() {
-        data = new NSMutableDictionary<>();
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    SCNPhysicsShapeOptions(NSDictionary<NSString, NSObject> data) {
+        super(data);
     }
-    /*<bind>*/static { Bro.bind(SCNPhysicsShapeOptions.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
+    public SCNPhysicsShapeOptions() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
+    }
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
+    }
+    public SCNPhysicsShapeOptions set(NSString key, NSObject value) {
+        data.put(key, value);
+        return this;
     }
     
+
     public SCNPhysicsShapeType getType() {
-        if (data.containsKey(TypeKey())) {
-            NSString val = (NSString) data.get(TypeKey());
+        if (has(Keys.Type())) {
+            NSString val = (NSString) get(Keys.Type());
             return SCNPhysicsShapeType.valueOf(val);
         }
         return null;
     }
     public SCNPhysicsShapeOptions setType(SCNPhysicsShapeType type) {
-        data.put(TypeKey(), type.value());
+        set(Keys.Type(), type.value());
         return this;
     }
-    public boolean isKeepingAsCompound() {
-        if (data.containsKey(KeepAsCompoundKey())) {
-            NSNumber val = (NSNumber) data.get(KeepAsCompoundKey());
+    public boolean keepsAsCompound() {
+        if (has(Keys.KeepAsCompound())) {
+            NSNumber val = (NSNumber) get(Keys.KeepAsCompound());
             return val.booleanValue();
         }
-        return true;
+        return false;
     }
-    public SCNPhysicsShapeOptions setKeepAsCompound(boolean keepAsCompound) {
-        data.put(KeepAsCompoundKey(), NSNumber.valueOf(keepAsCompound));
+    public SCNPhysicsShapeOptions setKeepsAsCompound(boolean keepsAsCompound) {
+        set(Keys.KeepAsCompound(), NSNumber.valueOf(keepsAsCompound));
         return this;
     }
     public SCNVector3 getScale() {
-        if (data.containsKey(ScaleKey())) {
-            NSValue val = (NSValue) data.get(ScaleKey());
-            return val.SCNVector3Value();
+        if (has(Keys.Scale())) {
+            NSData val = (NSData) get(Keys.Scale());
+            return val.getStructData(SCNVector3.class);
         }
         return null;
     }
     public SCNPhysicsShapeOptions setScale(SCNVector3 scale) {
-        data.put(ScaleKey(), NSValue.valueOf(scale));
+        set(Keys.Scale(), new NSData(scale));
         return this;
     }
-    /*<methods>*/
-    @GlobalValue(symbol="SCNPhysicsShapeTypeKey", optional=true)
-    protected static native NSString TypeKey();
-    @GlobalValue(symbol="SCNPhysicsShapeKeepAsCompoundKey", optional=true)
-    protected static native NSString KeepAsCompoundKey();
-    @GlobalValue(symbol="SCNPhysicsShapeScaleKey", optional=true)
-    protected static native NSString ScaleKey();
     /*</methods>*/
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    
+    /*<keys>*/
+    @Library("SceneKit")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        @GlobalValue(symbol="SCNPhysicsShapeTypeKey", optional=true)
+        public static native NSString Type();
+        @GlobalValue(symbol="SCNPhysicsShapeKeepAsCompoundKey", optional=true)
+        public static native NSString KeepAsCompound();
+        @GlobalValue(symbol="SCNPhysicsShapeScaleKey", optional=true)
+        public static native NSString Scale();
     }
+    /*</keys>*/
 }

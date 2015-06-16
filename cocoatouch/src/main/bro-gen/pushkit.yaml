@@ -16,7 +16,8 @@ classes:
     PKPushRegistry: # DONE
         properties:
             'desiredPushTypes':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSSet.AsStringSetMarshaler.class) Set<String>'
+                type: Set<String>
+                marshaler: NSSet.AsStringSetMarshaler
         methods:
             '-pushTokenForType:':
                 name: getPushTokenForType

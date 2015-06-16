@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -32,12 +33,15 @@ import org.robovm.apple.corefoundation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(UTTagClass.Marshaler.class)
-/*<annotations>*/@Library("MobileCoreServices")/*</annotations>*/
+/*<annotations>*/@Library("MobileCoreServices") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/UTTagClass/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UTTagClass/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<CFString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/UTTagClass/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static UTTagClass toObject(Class<UTTagClass> cls, long handle, long flags) {
@@ -55,35 +59,52 @@ import org.robovm.apple.corefoundation.*;
             return CFType.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(UTTagClass.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<UTTagClass> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<UTTagClass> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(UTTagClass.valueOf(o.get(i, CFString.class)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<UTTagClass> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray array = CFMutableArray.create();
+            for (UTTagClass o : l) {
+                array.add(o.value());
+            }
+            return CFType.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
     /**
      * @since Available in iOS 3.0 and later.
      */
-    public static final UTTagClass FilenameExtension = new UTTagClass("FilenameExtensionValue");
+    public static final UTTagClass FilenameExtension = new UTTagClass("FilenameExtension");
     /**
      * @since Available in iOS 3.0 and later.
      */
-    public static final UTTagClass MIMEType = new UTTagClass("MIMETypeValue");
+    public static final UTTagClass MIMEType = new UTTagClass("MIMEType");
+    /*</constants>*/
     
-    private static UTTagClass[] values = new UTTagClass[] {FilenameExtension, MIMEType};
-    private final LazyGlobalValue<CFString> lazyGlobalValue;
+    private static /*<name>*/UTTagClass/*</name>*/[] values = new /*<name>*/UTTagClass/*</name>*/[] {/*<value_list>*/FilenameExtension, MIMEType/*</value_list>*/};
     
-    private UTTagClass(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public CFString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/UTTagClass/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static UTTagClass valueOf(CFString value) {
-        for (UTTagClass v : values) {
+    public static /*<name>*/UTTagClass/*</name>*/ valueOf(/*<type>*/CFString/*</type>*/ value) {
+        for (/*<name>*/UTTagClass/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -91,16 +112,24 @@ import org.robovm.apple.corefoundation.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/UTTagClass/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="kUTTagClassFilenameExtension", optional=true)
-    protected static native CFString FilenameExtensionValue();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="kUTTagClassMIMEType", optional=true)
-    protected static native CFString MIMETypeValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("MobileCoreServices") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="kUTTagClassFilenameExtension", optional=true)
+        public static native CFString FilenameExtension();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="kUTTagClassMIMEType", optional=true)
+        public static native CFString MIMEType();
+        /*</values>*/
+    }
 }

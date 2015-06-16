@@ -40,14 +40,14 @@ import org.robovm.apple.dispatch.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(NSTextCheckingAddressComponents.Marshaler.class)
 /*<annotations>*/@Library("Foundation")/*</annotations>*/
+@Marshaler(/*<name>*/NSTextCheckingAddressComponents/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSTextCheckingAddressComponents/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static NSTextCheckingAddressComponents toObject(Class<NSTextCheckingAddressComponents> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -64,32 +64,57 @@ import org.robovm.apple.dispatch.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected NSTextCheckingAddressComponents(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<NSTextCheckingAddressComponents> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<NSTextCheckingAddressComponents> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new NSTextCheckingAddressComponents(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<NSTextCheckingAddressComponents> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (NSTextCheckingAddressComponents i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    public NSTextCheckingAddressComponents() {
-        this.data = new NSMutableDictionary<>();
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    NSTextCheckingAddressComponents(NSDictionary<NSString, NSObject> data) {
+        super(data);
     }
-    /*<bind>*/static { Bro.bind(NSTextCheckingAddressComponents.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
+    }
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
     }
     
+
     /**
      * @since Available in iOS 4.0 and later.
      */
     public String getName() {
-        if (data.containsKey(NameKey())) {
-            NSString val = (NSString)data.get(NameKey());
+        if (has(Keys.Name())) {
+            NSString val = (NSString) get(Keys.Name());
             return val.toString();
         }
         return null;
@@ -98,8 +123,8 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 4.0 and later.
      */
     public String getJobTitle() {
-        if (data.containsKey(JobTitleKey())) {
-            NSString val = (NSString)data.get(JobTitleKey());
+        if (has(Keys.JobTitle())) {
+            NSString val = (NSString) get(Keys.JobTitle());
             return val.toString();
         }
         return null;
@@ -108,8 +133,8 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 4.0 and later.
      */
     public String getOrganization() {
-        if (data.containsKey(OrganizationKey())) {
-            NSString val = (NSString)data.get(OrganizationKey());
+        if (has(Keys.Organization())) {
+            NSString val = (NSString) get(Keys.Organization());
             return val.toString();
         }
         return null;
@@ -118,8 +143,8 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 4.0 and later.
      */
     public String getStreet() {
-        if (data.containsKey(StreetKey())) {
-            NSString val = (NSString)data.get(StreetKey());
+        if (has(Keys.Street())) {
+            NSString val = (NSString) get(Keys.Street());
             return val.toString();
         }
         return null;
@@ -128,8 +153,8 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 4.0 and later.
      */
     public String getCity() {
-        if (data.containsKey(CityKey())) {
-            NSString val = (NSString)data.get(CityKey());
+        if (has(Keys.City())) {
+            NSString val = (NSString) get(Keys.City());
             return val.toString();
         }
         return null;
@@ -138,8 +163,8 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 4.0 and later.
      */
     public String getState() {
-        if (data.containsKey(StateKey())) {
-            NSString val = (NSString)data.get(StateKey());
+        if (has(Keys.State())) {
+            NSString val = (NSString) get(Keys.State());
             return val.toString();
         }
         return null;
@@ -148,8 +173,8 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 4.0 and later.
      */
     public String getZIP() {
-        if (data.containsKey(ZIPKey())) {
-            NSString val = (NSString)data.get(ZIPKey());
+        if (has(Keys.ZIP())) {
+            NSString val = (NSString) get(Keys.ZIP());
             return val.toString();
         }
         return null;
@@ -158,8 +183,8 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 4.0 and later.
      */
     public String getCountry() {
-        if (data.containsKey(CountryKey())) {
-            NSString val = (NSString)data.get(CountryKey());
+        if (has(Keys.Country())) {
+            NSString val = (NSString) get(Keys.Country());
             return val.toString();
         }
         return null;
@@ -168,62 +193,63 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 4.0 and later.
      */
     public String getPhone() {
-        if (data.containsKey(PhoneKey())) {
-            NSString val = (NSString)data.get(PhoneKey());
+        if (has(Keys.Phone())) {
+            NSString val = (NSString) get(Keys.Phone());
             return val.toString();
         }
         return null;
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSTextCheckingNameKey", optional=true)
-    protected static native NSString NameKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSTextCheckingJobTitleKey", optional=true)
-    protected static native NSString JobTitleKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSTextCheckingOrganizationKey", optional=true)
-    protected static native NSString OrganizationKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSTextCheckingStreetKey", optional=true)
-    protected static native NSString StreetKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSTextCheckingCityKey", optional=true)
-    protected static native NSString CityKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSTextCheckingStateKey", optional=true)
-    protected static native NSString StateKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSTextCheckingZIPKey", optional=true)
-    protected static native NSString ZIPKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSTextCheckingCountryKey", optional=true)
-    protected static native NSString CountryKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSTextCheckingPhoneKey", optional=true)
-    protected static native NSString PhoneKey();
     /*</methods>*/
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    
+    /*<keys>*/
+    @Library("Foundation")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSTextCheckingNameKey", optional=true)
+        public static native NSString Name();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSTextCheckingJobTitleKey", optional=true)
+        public static native NSString JobTitle();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSTextCheckingOrganizationKey", optional=true)
+        public static native NSString Organization();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSTextCheckingStreetKey", optional=true)
+        public static native NSString Street();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSTextCheckingCityKey", optional=true)
+        public static native NSString City();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSTextCheckingStateKey", optional=true)
+        public static native NSString State();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSTextCheckingZIPKey", optional=true)
+        public static native NSString ZIP();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSTextCheckingCountryKey", optional=true)
+        public static native NSString Country();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSTextCheckingPhoneKey", optional=true)
+        public static native NSString Phone();
     }
+    /*</keys>*/
 }

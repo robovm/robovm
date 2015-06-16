@@ -51,6 +51,7 @@ import org.robovm.apple.scenekit.*;
     /*<constructors>*/
     public SKVideoNode() {}
     protected SKVideoNode(SkipInit skipInit) { super(skipInit); }
+    @WeaklyLinked
     public SKVideoNode(AVPlayer player) { super((SkipInit) null); initObject(init(player)); }
     public SKVideoNode(String videoFile) { super((SkipInit) null); initObject(init(videoFile)); }
     public SKVideoNode(NSURL url) { super((SkipInit) null); initObject(init(url)); }

@@ -92,7 +92,7 @@ import org.robovm.apple.foundation.*;
      * @throws NSErrorException
      */
     public boolean migrateStore(NSURL sourceURL, NSPersistentStoreType sStoreType, NSPersistentStoreOptions sOptions, NSMappingModel mappings, NSURL dURL, NSPersistentStoreType dStoreType, NSPersistentStoreOptions dOptions) throws NSErrorException {
-        return migrateStore(sourceURL, sStoreType.value(), sOptions, mappings, dURL, dStoreType.value(), dOptions);
+        return migrateStore(sourceURL, sStoreType.value().toString(), sOptions, mappings, dURL, dStoreType.value().toString(), dOptions);
     }
     /*<methods>*/
     @Method(selector = "initWithSourceModel:destinationModel:")

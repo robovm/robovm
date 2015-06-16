@@ -19,11 +19,11 @@ package org.robovm.apple.imageio;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
-
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -34,12 +34,13 @@ import org.robovm.apple.coregraphics.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CGImageProperty8BIMData.Marshaler.class)
 /*<annotations>*/@Library("ImageIO")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class CGImageProperty8BIMData 
-    extends /*<extends>*/Object/*</extends>*/ 
+@Marshaler(/*<name>*/CGImageProperty8BIMData/*</name>*/.Marshaler.class)
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/CGImageProperty8BIMData/*</name>*/ 
+    extends /*<extends>*/CFDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CGImageProperty8BIMData toObject(Class<CGImageProperty8BIMData> cls, long handle, long flags) {
@@ -57,57 +58,78 @@ import org.robovm.apple.coregraphics.*;
             return CFType.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private CFDictionary data;
-    
-    protected CGImageProperty8BIMData(CFDictionary data) {
-        this.data = data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CGImageProperty8BIMData> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CGImageProperty8BIMData> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new CGImageProperty8BIMData(o.get(i, CFDictionary.class)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CGImageProperty8BIMData> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray array = CFMutableArray.create();
+            for (CGImageProperty8BIMData i : l) {
+                array.add(i.getDictionary());
+            }
+            return CFType.Marshaler.toNative(array, flags);
+        }
     }
-    public CGImageProperty8BIMData() {
-        this.data = CFMutableDictionary.create();
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    CGImageProperty8BIMData(CFDictionary data) {
+        super(data);
     }
-    /*<bind>*/static { Bro.bind(CGImageProperty8BIMData.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public CFDictionary getDictionary() {
-        return data;
+    public CGImageProperty8BIMData() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(CGImageProperty8BIM key) {
+        return data.containsKey(key.value());
     }
-    
-    public boolean has(CGImageProperty8BIM property) {
-        return data.containsKey(property.value());
+    public <T extends NativeObject> T get(CGImageProperty8BIM key, Class<T> type) {
+        if (has(key)) {
+            return data.get(key.value(), type);
+        }
+        return null;
     }
-    
+    public CGImageProperty8BIMData set(CGImageProperty8BIM key, NativeObject value) {
+        data.put(key.value(), value);
+        return this;
+    }
+    /*</methods>*/
     public String getString(CGImageProperty8BIM property) {
         if (has(property)) {
-            CFString val = data.get(property.value(), CFString.class);
+            CFString val = get(property, CFString.class);
             return val.toString();
         }
         return null;
     }
     public double getNumber(CGImageProperty8BIM property) {
         if (has(property)) {
-            CFNumber val = data.get(property.value(), CFNumber.class);
+            CFNumber val = get(property, CFNumber.class);
             return val.doubleValue();
         }
         return 0;
     }
     public CGImageProperty8BIMData set(CGImageProperty8BIM property, String value) {
-        data.put(property.value(), new CFString(value));
+        set(property, new CFString(value));
         return this;
     }
     public CGImageProperty8BIMData set(CGImageProperty8BIM property, double value) {
-        data.put(property.value(), CFNumber.valueOf(value));
+        set(property, CFNumber.valueOf(value));
         return this;
     }
-    /*<methods>*/
-    /*</methods>*/
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
-    }
+    
+    /*<keys>*/
+    /*</keys>*/
 }

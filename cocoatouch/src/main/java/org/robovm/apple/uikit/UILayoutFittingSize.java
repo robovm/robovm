@@ -38,12 +38,15 @@ import org.robovm.apple.corelocation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(UILayoutFittingSize.Marshaler.class)
-/*<annotations>*/@Library("UIKit")/*</annotations>*/
+/*<annotations>*/@Library("UIKit") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/UILayoutFittingSize/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UILayoutFittingSize/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<CGSize>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/UILayoutFittingSize/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static UILayoutFittingSize toObject(Class<UILayoutFittingSize> cls, long handle, long flags) {
@@ -61,35 +64,27 @@ import org.robovm.apple.corelocation.*;
             return Struct.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(UILayoutFittingSize.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    /*</marshalers>*/
+
+    /*<constants>*/
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public static final UILayoutFittingSize Compressed = new UILayoutFittingSize("CompressedValue");
+    public static final UILayoutFittingSize Compressed = new UILayoutFittingSize("Compressed");
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public static final UILayoutFittingSize Expanded = new UILayoutFittingSize("ExpandedValue");
-    private static UILayoutFittingSize[] values = new UILayoutFittingSize[] {Compressed, Expanded};
+    public static final UILayoutFittingSize Expanded = new UILayoutFittingSize("Expanded");
+    /*</constants>*/
     
-    private final LazyGlobalValue<CGSize> lazyGlobalValue;
+    private static /*<name>*/UILayoutFittingSize/*</name>*/[] values = new /*<name>*/UILayoutFittingSize/*</name>*/[] {/*<value_list>*/Compressed, Expanded/*</value_list>*/};
     
-    private UILayoutFittingSize(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public @ByVal CGSize value() {
-        return lazyGlobalValue.value();
+    /*<name>*/UILayoutFittingSize/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static UILayoutFittingSize valueOf(@ByVal CGSize value) {
-        for (UILayoutFittingSize v : values) {
+    public static /*<name>*/UILayoutFittingSize/*</name>*/ valueOf(/*<type>*/@ByVal CGSize/*</type>*/ value) {
+        for (/*<name>*/UILayoutFittingSize/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -97,16 +92,24 @@ import org.robovm.apple.corelocation.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/UILayoutFittingSize/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="UILayoutFittingCompressedSize", optional=true)
-    protected static native @ByVal CGSize CompressedValue();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="UILayoutFittingExpandedSize", optional=true)
-    protected static native @ByVal CGSize ExpandedValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("UIKit") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        @GlobalValue(symbol="UILayoutFittingCompressedSize", optional=true)
+        public static native @ByVal CGSize Compressed();
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        @GlobalValue(symbol="UILayoutFittingExpandedSize", optional=true)
+        public static native @ByVal CGSize Expanded();
+        /*</values>*/
+    }
 }

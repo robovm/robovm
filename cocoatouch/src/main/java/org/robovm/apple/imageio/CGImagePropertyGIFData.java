@@ -19,11 +19,11 @@ package org.robovm.apple.imageio;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
-
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -34,12 +34,13 @@ import org.robovm.apple.coregraphics.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CGImagePropertyGIFData.Marshaler.class)
 /*<annotations>*/@Library("ImageIO")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class CGImagePropertyGIFData 
-    extends /*<extends>*/Object/*</extends>*/ 
+@Marshaler(/*<name>*/CGImagePropertyGIFData/*</name>*/.Marshaler.class)
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/CGImagePropertyGIFData/*</name>*/ 
+    extends /*<extends>*/CFDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CGImagePropertyGIFData toObject(Class<CGImagePropertyGIFData> cls, long handle, long flags) {
@@ -57,57 +58,78 @@ import org.robovm.apple.coregraphics.*;
             return CFType.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private CFDictionary data;
-    
-    protected CGImagePropertyGIFData(CFDictionary data) {
-        this.data = data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CGImagePropertyGIFData> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CGImagePropertyGIFData> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new CGImagePropertyGIFData(o.get(i, CFDictionary.class)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CGImagePropertyGIFData> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray array = CFMutableArray.create();
+            for (CGImagePropertyGIFData i : l) {
+                array.add(i.getDictionary());
+            }
+            return CFType.Marshaler.toNative(array, flags);
+        }
     }
-    public CGImagePropertyGIFData() {
-        this.data = CFMutableDictionary.create();
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    CGImagePropertyGIFData(CFDictionary data) {
+        super(data);
     }
-    /*<bind>*/static { Bro.bind(CGImagePropertyGIFData.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public CFDictionary getDictionary() {
-        return data;
+    public CGImagePropertyGIFData() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(CGImagePropertyGIF key) {
+        return data.containsKey(key.value());
     }
-    
-    public boolean has(CGImagePropertyGIF property) {
-        return data.containsKey(property.value());
+    public <T extends NativeObject> T get(CGImagePropertyGIF key, Class<T> type) {
+        if (has(key)) {
+            return data.get(key.value(), type);
+        }
+        return null;
     }
-    
+    public CGImagePropertyGIFData set(CGImagePropertyGIF key, NativeObject value) {
+        data.put(key.value(), value);
+        return this;
+    }
+    /*</methods>*/
     public String getString(CGImagePropertyGIF property) {
         if (has(property)) {
-            CFString val = data.get(property.value(), CFString.class);
+            CFString val = get(property, CFString.class);
             return val.toString();
         }
         return null;
     }
     public double getNumber(CGImagePropertyGIF property) {
         if (has(property)) {
-            CFNumber val = data.get(property.value(), CFNumber.class);
+            CFNumber val = get(property, CFNumber.class);
             return val.doubleValue();
         }
         return 0;
     }
     public CGImagePropertyGIFData set(CGImagePropertyGIF property, String value) {
-        data.put(property.value(), new CFString(value));
+        set(property, new CFString(value));
         return this;
     }
     public CGImagePropertyGIFData set(CGImagePropertyGIF property, double value) {
-        data.put(property.value(), CFNumber.valueOf(value));
+        set(property, CFNumber.valueOf(value));
         return this;
     }
-    /*<methods>*/
-    /*</methods>*/
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
-    }
+    
+    /*<keys>*/
+    /*</keys>*/
 }

@@ -37,12 +37,15 @@ import org.robovm.apple.metal.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CAFilter.Marshaler.class)
-/*<annotations>*/@Library("QuartzCore")/*</annotations>*/
+/*<annotations>*/@Library("QuartzCore") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/CAFilter/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CAFilter/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/CAFilter/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CAFilter toObject(Class<CAFilter> cls, long handle, long flags) {
@@ -60,39 +63,57 @@ import org.robovm.apple.metal.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(CAFilter.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<CAFilter> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CAFilter> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(CAFilter.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CAFilter> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (CAFilter o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static final CAFilter Nearest = new CAFilter("NearestValue");
+    public static final CAFilter Nearest = new CAFilter("Nearest");
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static final CAFilter Linear = new CAFilter("LinearValue");
+    public static final CAFilter Linear = new CAFilter("Linear");
     /**
      * @since Available in iOS 3.0 and later.
      */
-    public static final CAFilter Trilinear = new CAFilter("TrilinearValue");
+    public static final CAFilter Trilinear = new CAFilter("Trilinear");
+    /*</constants>*/
     
-    private static CAFilter[] values = new CAFilter[] {Nearest, Linear, Trilinear};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    private static /*<name>*/CAFilter/*</name>*/[] values = new /*<name>*/CAFilter/*</name>*/[] {/*<value_list>*/Nearest, Linear, Trilinear/*</value_list>*/};
     
-    private CAFilter(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/CAFilter/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static CAFilter valueOf(NSString value) {
-        for (CAFilter v : values) {
+    public static /*<name>*/CAFilter/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/CAFilter/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -100,21 +121,29 @@ import org.robovm.apple.metal.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/CAFilter/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCAFilterNearest", optional=true)
-    protected static native NSString NearestValue();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCAFilterLinear", optional=true)
-    protected static native NSString LinearValue();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="kCAFilterTrilinear", optional=true)
-    protected static native NSString TrilinearValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("QuartzCore") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCAFilterNearest", optional=true)
+        public static native NSString Nearest();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCAFilterLinear", optional=true)
+        public static native NSString Linear();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="kCAFilterTrilinear", optional=true)
+        public static native NSString Trilinear();
+        /*</values>*/
+    }
 }

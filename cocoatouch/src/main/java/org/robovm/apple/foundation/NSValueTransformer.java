@@ -60,7 +60,7 @@ import org.robovm.apple.dispatch.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     public static NSValueTransformer getValueTransformer(NSValueTransformerName name) {
-        return getValueTransformer(name.value());
+        return getValueTransformer(name.value().toString());
     }
     /*<methods>*/
     @Method(selector = "transformedValue:")

@@ -82,8 +82,8 @@ import org.robovm.apple.coretext.*;
                 return 0L;
             }
             CFArray array = CFMutableArray.create();
-            for (CFStringTransform i : l) {
-                array.add(i.value());
+            for (CFStringTransform o : l) {
+                array.add(o.value());
             }
             return CFType.Marshaler.toNative(array, flags);
         }

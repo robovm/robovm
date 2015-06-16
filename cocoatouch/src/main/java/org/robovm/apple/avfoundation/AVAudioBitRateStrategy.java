@@ -42,12 +42,15 @@ import org.robovm.apple.audiounit.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(AVAudioBitRateStrategy.Marshaler.class)
-/*<annotations>*/@Library("AVFoundation")/*</annotations>*/
+/*<annotations>*/@Library("AVFoundation") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/AVAudioBitRateStrategy/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/AVAudioBitRateStrategy/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/AVAudioBitRateStrategy/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static AVAudioBitRateStrategy toObject(Class<AVAudioBitRateStrategy> cls, long handle, long flags) {
@@ -65,44 +68,61 @@ import org.robovm.apple.audiounit.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(AVAudioBitRateStrategy.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static final AVAudioBitRateStrategy Constant = new AVAudioBitRateStrategy("ConstantValue");
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static final AVAudioBitRateStrategy LongTermAverage = new AVAudioBitRateStrategy("LongTermAverageValue");
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static final AVAudioBitRateStrategy VariableConstrained = new AVAudioBitRateStrategy("VariableConstrainedValue");
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static final AVAudioBitRateStrategy Variable = new AVAudioBitRateStrategy("VariableValue");
-    
-    private static AVAudioBitRateStrategy[] values = new AVAudioBitRateStrategy[] {Constant, LongTermAverage, VariableConstrained, 
-        Variable};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private AVAudioBitRateStrategy(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<AVAudioBitRateStrategy> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<AVAudioBitRateStrategy> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(AVAudioBitRateStrategy.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<AVAudioBitRateStrategy> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (AVAudioBitRateStrategy o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*</marshalers>*/
+
+    /*<constants>*/
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final AVAudioBitRateStrategy Constant = new AVAudioBitRateStrategy("Constant");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final AVAudioBitRateStrategy LongTermAverage = new AVAudioBitRateStrategy("LongTermAverage");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final AVAudioBitRateStrategy VariableConstrained = new AVAudioBitRateStrategy("VariableConstrained");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final AVAudioBitRateStrategy Variable = new AVAudioBitRateStrategy("Variable");
+    /*</constants>*/
+    
+    private static /*<name>*/AVAudioBitRateStrategy/*</name>*/[] values = new /*<name>*/AVAudioBitRateStrategy/*</name>*/[] {/*<value_list>*/Constant, LongTermAverage, VariableConstrained, Variable/*</value_list>*/};
+    
+    /*<name>*/AVAudioBitRateStrategy/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static AVAudioBitRateStrategy valueOf(NSString value) {
-        for (AVAudioBitRateStrategy v : values) {
+    public static /*<name>*/AVAudioBitRateStrategy/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/AVAudioBitRateStrategy/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -110,26 +130,34 @@ import org.robovm.apple.audiounit.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/AVAudioBitRateStrategy/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="AVAudioBitRateStrategy_Constant", optional=true)
-    protected static native NSString ConstantValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="AVAudioBitRateStrategy_LongTermAverage", optional=true)
-    protected static native NSString LongTermAverageValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="AVAudioBitRateStrategy_VariableConstrained", optional=true)
-    protected static native NSString VariableConstrainedValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="AVAudioBitRateStrategy_Variable", optional=true)
-    protected static native NSString VariableValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("AVFoundation") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="AVAudioBitRateStrategy_Constant", optional=true)
+        public static native NSString Constant();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="AVAudioBitRateStrategy_LongTermAverage", optional=true)
+        public static native NSString LongTermAverage();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="AVAudioBitRateStrategy_VariableConstrained", optional=true)
+        public static native NSString VariableConstrained();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="AVAudioBitRateStrategy_Variable", optional=true)
+        public static native NSString Variable();
+        /*</values>*/
+    }
 }

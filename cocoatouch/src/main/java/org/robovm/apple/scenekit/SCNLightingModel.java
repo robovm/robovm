@@ -39,12 +39,15 @@ import org.robovm.apple.opengles.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(SCNLightingModel.Marshaler.class)
-/*<annotations>*/@Library("SceneKit")/*</annotations>*/
+/*<annotations>*/@Library("SceneKit") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/SCNLightingModel/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SCNLightingModel/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/SCNLightingModel/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static SCNLightingModel toObject(Class<SCNLightingModel> cls, long handle, long flags) {
@@ -62,31 +65,49 @@ import org.robovm.apple.opengles.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(SCNLightingModel.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    public static final SCNLightingModel Phong = new SCNLightingModel("PhongValue");
-    public static final SCNLightingModel Blinn = new SCNLightingModel("BlinnValue");
-    public static final SCNLightingModel Lambert = new SCNLightingModel("LambertValue");
-    public static final SCNLightingModel Constant = new SCNLightingModel("ConstantValue");
-    
-    private static SCNLightingModel[] values = new SCNLightingModel[] {Phong, Blinn, Lambert, Constant};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private SCNLightingModel(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<SCNLightingModel> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<SCNLightingModel> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(SCNLightingModel.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<SCNLightingModel> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (SCNLightingModel o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*</marshalers>*/
+
+    /*<constants>*/
+    public static final SCNLightingModel Phong = new SCNLightingModel("Phong");
+    public static final SCNLightingModel Blinn = new SCNLightingModel("Blinn");
+    public static final SCNLightingModel Lambert = new SCNLightingModel("Lambert");
+    public static final SCNLightingModel Constant = new SCNLightingModel("Constant");
+    /*</constants>*/
+    
+    private static /*<name>*/SCNLightingModel/*</name>*/[] values = new /*<name>*/SCNLightingModel/*</name>*/[] {/*<value_list>*/Phong, Blinn, Lambert, Constant/*</value_list>*/};
+    
+    /*<name>*/SCNLightingModel/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static SCNLightingModel valueOf(NSString value) {
-        for (SCNLightingModel v : values) {
+    public static /*<name>*/SCNLightingModel/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/SCNLightingModel/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -94,14 +115,22 @@ import org.robovm.apple.opengles.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/SCNLightingModel/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    @GlobalValue(symbol="SCNLightingModelPhong", optional=true)
-    protected static native NSString PhongValue();
-    @GlobalValue(symbol="SCNLightingModelBlinn", optional=true)
-    protected static native NSString BlinnValue();
-    @GlobalValue(symbol="SCNLightingModelLambert", optional=true)
-    protected static native NSString LambertValue();
-    @GlobalValue(symbol="SCNLightingModelConstant", optional=true)
-    protected static native NSString ConstantValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("SceneKit") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        @GlobalValue(symbol="SCNLightingModelPhong", optional=true)
+        public static native NSString Phong();
+        @GlobalValue(symbol="SCNLightingModelBlinn", optional=true)
+        public static native NSString Blinn();
+        @GlobalValue(symbol="SCNLightingModelLambert", optional=true)
+        public static native NSString Lambert();
+        @GlobalValue(symbol="SCNLightingModelConstant", optional=true)
+        public static native NSString Constant();
+        /*</values>*/
+    }
 }

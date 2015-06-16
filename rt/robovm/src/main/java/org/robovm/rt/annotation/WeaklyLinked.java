@@ -26,6 +26,6 @@ import java.lang.annotation.Target;
  * will be weakly linked except for those annotated with {@link StronglyLinked}.
  */
 @Retention(RetentionPolicy.CLASS)
-@Target({ElementType.TYPE, ElementType.METHOD})
+@Target({ElementType.TYPE, ElementType.METHOD, ElementType.CONSTRUCTOR})
 public @interface WeaklyLinked  {
 }

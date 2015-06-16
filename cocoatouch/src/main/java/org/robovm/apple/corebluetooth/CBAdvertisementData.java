@@ -34,14 +34,14 @@ import org.robovm.apple.dispatch.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CBAdvertisementData.Marshaler.class)
 /*<annotations>*/@Library("CoreBluetooth")/*</annotations>*/
+@Marshaler(/*<name>*/CBAdvertisementData/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CBAdvertisementData/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
-    
+
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static CBAdvertisementData toObject(Class<CBAdvertisementData> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -58,57 +58,75 @@ import org.robovm.apple.dispatch.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CBAdvertisementData> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CBAdvertisementData> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new CBAdvertisementData(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CBAdvertisementData> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (CBAdvertisementData i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
 
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected CBAdvertisementData(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
+    /*<constructors>*/
+    CBAdvertisementData(NSDictionary<NSString, NSObject> data) {
+        super(data);
     }
-    /*<bind>*/static { Bro.bind(CBAdvertisementData.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
+    }
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
     }
     
-    
+
     public String getLocalName() {
-        if (data.containsKey(LocalNameKey())) {
-            NSString val = (NSString)data.get(LocalNameKey());
+        if (has(Keys.LocalName())) {
+            NSString val = (NSString) get(Keys.LocalName());
             return val.toString();
         }
         return null;
     }
     public double getTxPowerLevel() {
-        if (data.containsKey(TxPowerLevelKey())) {
-            NSNumber val = (NSNumber)data.get(TxPowerLevelKey());
+        if (has(Keys.TxPowerLevel())) {
+            NSNumber val = (NSNumber) get(Keys.TxPowerLevel());
             return val.doubleValue();
         }
         return 0;
     }
-    @SuppressWarnings("unchecked")
-    public NSArray<CBUUID> getServiceUUIDs() {
-        if (data.containsKey(ServiceUUIDsKey())) {
-            NSArray<CBUUID> val = (NSArray<CBUUID>)data.get(ServiceUUIDsKey());
-            return val;
-        }
-        return null;
-    }
-    @SuppressWarnings("unchecked")
-    public NSDictionary<CBUUID, NSData> getServiceData() {
-        if (data.containsKey(ServiceDataKey())) {
-            NSDictionary<CBUUID, NSData> val = (NSDictionary<CBUUID, NSData>)data.get(ServiceDataKey());
+    public NSArray getServiceUUIDs() {
+        if (has(Keys.ServiceUUIDs())) {
+            NSArray val = (NSArray) get(Keys.ServiceUUIDs());
             return val;
         }
         return null;
     }
     public NSData getManufacturerData() {
-        if (data.containsKey(ManufacturerDataKey())) {
-            NSData val = (NSData)data.get(ManufacturerDataKey());
+        if (has(Keys.ManufacturerData())) {
+            NSData val = (NSData) get(Keys.ManufacturerData());
             return val;
         }
         return null;
@@ -116,10 +134,9 @@ import org.robovm.apple.dispatch.*;
     /**
      * @since Available in iOS 6.0 and later.
      */
-    @SuppressWarnings("unchecked")
     public NSArray<CBUUID> getOverflowServiceUUIDs() {
-        if (data.containsKey(OverflowServiceUUIDsKey())) {
-            NSArray<CBUUID> val = (NSArray<CBUUID>)data.get(OverflowServiceUUIDsKey());
+        if (has(Keys.OverflowServiceUUIDs())) {
+            NSArray<CBUUID> val = (NSArray<CBUUID>) get(Keys.OverflowServiceUUIDs());
             return val;
         }
         return null;
@@ -128,8 +145,8 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 7.0 and later.
      */
     public boolean isConnectable() {
-        if (data.containsKey(IsConnectable())) {
-            NSNumber val = (NSNumber)data.get(IsConnectable());
+        if (has(Keys.IsConnectable())) {
+            NSNumber val = (NSNumber) get(Keys.IsConnectable());
             return val.booleanValue();
         }
         return false;
@@ -137,44 +154,44 @@ import org.robovm.apple.dispatch.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    @SuppressWarnings("unchecked")
     public NSArray<CBUUID> getSolicitedServiceUUIDs() {
-        if (data.containsKey(SolicitedServiceUUIDsKey())) {
-            NSArray<CBUUID> val = (NSArray<CBUUID>)data.get(SolicitedServiceUUIDsKey());
+        if (has(Keys.SolicitedServiceUUIDs())) {
+            NSArray<CBUUID> val = (NSArray<CBUUID>) get(Keys.SolicitedServiceUUIDs());
             return val;
         }
         return null;
     }
-    /*<methods>*/
-    @GlobalValue(symbol="CBAdvertisementDataLocalNameKey", optional=true)
-    protected static native NSString LocalNameKey();
-    @GlobalValue(symbol="CBAdvertisementDataTxPowerLevelKey", optional=true)
-    protected static native NSString TxPowerLevelKey();
-    @GlobalValue(symbol="CBAdvertisementDataServiceUUIDsKey", optional=true)
-    protected static native NSString ServiceUUIDsKey();
-    @GlobalValue(symbol="CBAdvertisementDataServiceDataKey", optional=true)
-    protected static native NSString ServiceDataKey();
-    @GlobalValue(symbol="CBAdvertisementDataManufacturerDataKey", optional=true)
-    protected static native NSString ManufacturerDataKey();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="CBAdvertisementDataOverflowServiceUUIDsKey", optional=true)
-    protected static native NSString OverflowServiceUUIDsKey();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="CBAdvertisementDataIsConnectable", optional=true)
-    protected static native NSString IsConnectable();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="CBAdvertisementDataSolicitedServiceUUIDsKey", optional=true)
-    protected static native NSString SolicitedServiceUUIDsKey();
     /*</methods>*/
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    
+    /*<keys>*/
+    @Library("CoreBluetooth")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        @GlobalValue(symbol="CBAdvertisementDataLocalNameKey", optional=true)
+        public static native NSString LocalName();
+        @GlobalValue(symbol="CBAdvertisementDataTxPowerLevelKey", optional=true)
+        public static native NSString TxPowerLevel();
+        @GlobalValue(symbol="CBAdvertisementDataServiceUUIDsKey", optional=true)
+        public static native NSString ServiceUUIDs();
+        @GlobalValue(symbol="CBAdvertisementDataServiceDataKey", optional=true)
+        public static native NSString ServiceData();
+        @GlobalValue(symbol="CBAdvertisementDataManufacturerDataKey", optional=true)
+        public static native NSString ManufacturerData();
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        @GlobalValue(symbol="CBAdvertisementDataOverflowServiceUUIDsKey", optional=true)
+        public static native NSString OverflowServiceUUIDs();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="CBAdvertisementDataIsConnectable", optional=true)
+        public static native NSString IsConnectable();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="CBAdvertisementDataSolicitedServiceUUIDsKey", optional=true)
+        public static native NSString SolicitedServiceUUIDs();
     }
+    /*</keys>*/
 }

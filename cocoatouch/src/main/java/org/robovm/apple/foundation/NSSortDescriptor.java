@@ -50,13 +50,13 @@ import org.robovm.apple.dispatch.*;
     /*<bind>*/static { ObjCRuntime.bind(NSSortDescriptor.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     public NSSortDescriptor(NSSortIdentifier key, boolean ascending) {
-        this(key.value(), ascending);
+        this(key.value().toString(), ascending);
     }
     public NSSortDescriptor(NSSortIdentifier key, boolean ascending, Selector selector) {
-        this(key.value(), ascending, selector);
+        this(key.value().toString(), ascending, selector);
     }
     public NSSortDescriptor(NSSortIdentifier key, boolean ascending, @Block Block2<NSObject, NSObject, NSComparisonResult> cmptr) {
-        this(key.value(), ascending, cmptr);
+        this(key.value().toString(), ascending, cmptr);
     }
     /*<constructors>*/
     public NSSortDescriptor() {}

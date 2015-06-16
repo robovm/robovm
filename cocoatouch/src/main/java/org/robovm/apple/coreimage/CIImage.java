@@ -64,10 +64,12 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @WeaklyLinked
     public CIImage(CVPixelBuffer buffer) { super((SkipInit) null); initObject(init(buffer)); }
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @WeaklyLinked
     public CIImage(CVPixelBuffer buffer, NSDictionary<?, ?> dict) { super((SkipInit) null); initObject(init(buffer, dict)); }
     public CIImage(CIColor color) { super((SkipInit) null); initObject(init(color)); }
     public CIImage(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }

@@ -54,11 +54,16 @@ import org.robovm.apple.audiounit.*;
         /**
          * @since Available in iOS 6.0 and later.
          */
-        public static NSObject observeInterruption(final VoidBlock1<AVAudioSessionInterruptionNotificationUserInfo> block) {
+        public static NSObject observeInterruption(final VoidBlock1<AVAudioSessionInterruptionNotification> block) {
             return NSNotificationCenter.getDefaultCenter().addObserver(InterruptionNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke(NSNotification a) {
-                    block.invoke(new AVAudioSessionInterruptionNotificationUserInfo(a.getUserInfo()));
+                    NSDictionary<NSString, NSObject> userInfo = a.getUserInfo();
+                    AVAudioSessionInterruptionNotification data = null;
+                    if (userInfo != null) {
+                        data = new AVAudioSessionInterruptionNotification(userInfo);
+                    }
+                    block.invoke(data);
                 }
             });
         }
@@ -66,11 +71,16 @@ import org.robovm.apple.audiounit.*;
         /**
          * @since Available in iOS 6.0 and later.
          */
-        public static NSObject observeRouteChange(final VoidBlock1<AVAudioSessionRouteChangeNotificationUserInfo> block) {
+        public static NSObject observeRouteChange(final VoidBlock1<AVAudioSessionRouteChangeNotification> block) {
             return NSNotificationCenter.getDefaultCenter().addObserver(RouteChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke(NSNotification a) {
-                    block.invoke(new AVAudioSessionRouteChangeNotificationUserInfo(a.getUserInfo()));
+                    NSDictionary<NSString, NSObject> userInfo = a.getUserInfo();
+                    AVAudioSessionRouteChangeNotification data = null;
+                    if (userInfo != null) {
+                        data = new AVAudioSessionRouteChangeNotification(userInfo);
+                    }
+                    block.invoke(data);
                 }
             });
         }

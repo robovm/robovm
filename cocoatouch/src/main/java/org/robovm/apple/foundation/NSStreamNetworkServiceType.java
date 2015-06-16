@@ -40,12 +40,15 @@ import org.robovm.apple.dispatch.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(NSStreamNetworkServiceType.Marshaler.class)
-/*<annotations>*/@Library("Foundation")/*</annotations>*/
+/*<annotations>*/@Library("Foundation") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/NSStreamNetworkServiceType/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSStreamNetworkServiceType/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/NSStreamNetworkServiceType/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static NSStreamNetworkServiceType toObject(Class<NSStreamNetworkServiceType> cls, long handle, long flags) {
@@ -63,43 +66,61 @@ import org.robovm.apple.dispatch.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(NSStreamNetworkServiceType.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<NSStreamNetworkServiceType> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<NSStreamNetworkServiceType> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(NSStreamNetworkServiceType.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<NSStreamNetworkServiceType> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (NSStreamNetworkServiceType o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSStreamNetworkServiceType VoIP = new NSStreamNetworkServiceType("VoIPValue");
+    public static final NSStreamNetworkServiceType VoIP = new NSStreamNetworkServiceType("VoIP");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final NSStreamNetworkServiceType Video = new NSStreamNetworkServiceType("VideoValue");
+    public static final NSStreamNetworkServiceType Video = new NSStreamNetworkServiceType("Video");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final NSStreamNetworkServiceType Background = new NSStreamNetworkServiceType("BackgroundValue");
+    public static final NSStreamNetworkServiceType Background = new NSStreamNetworkServiceType("Background");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final NSStreamNetworkServiceType Voice = new NSStreamNetworkServiceType("VoiceValue");
+    public static final NSStreamNetworkServiceType Voice = new NSStreamNetworkServiceType("Voice");
+    /*</constants>*/
     
-    private static NSStreamNetworkServiceType[] values = new NSStreamNetworkServiceType[] {VoIP, Video, Background, Voice};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    private static /*<name>*/NSStreamNetworkServiceType/*</name>*/[] values = new /*<name>*/NSStreamNetworkServiceType/*</name>*/[] {/*<value_list>*/VoIP, Video, Background, Voice/*</value_list>*/};
     
-    private NSStreamNetworkServiceType(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/NSStreamNetworkServiceType/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static NSStreamNetworkServiceType valueOf(NSString value) {
-        for (NSStreamNetworkServiceType v : values) {
+    public static /*<name>*/NSStreamNetworkServiceType/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/NSStreamNetworkServiceType/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -107,26 +128,34 @@ import org.robovm.apple.dispatch.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/NSStreamNetworkServiceType/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSStreamNetworkServiceTypeVoIP", optional=true)
-    protected static native NSString VoIPValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSStreamNetworkServiceTypeVideo", optional=true)
-    protected static native NSString VideoValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSStreamNetworkServiceTypeBackground", optional=true)
-    protected static native NSString BackgroundValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSStreamNetworkServiceTypeVoice", optional=true)
-    protected static native NSString VoiceValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("Foundation") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSStreamNetworkServiceTypeVoIP", optional=true)
+        public static native NSString VoIP();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSStreamNetworkServiceTypeVideo", optional=true)
+        public static native NSString Video();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSStreamNetworkServiceTypeBackground", optional=true)
+        public static native NSString Background();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSStreamNetworkServiceTypeVoice", optional=true)
+        public static native NSString Voice();
+        /*</values>*/
+    }
 }

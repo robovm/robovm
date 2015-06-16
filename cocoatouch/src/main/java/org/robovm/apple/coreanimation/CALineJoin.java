@@ -37,12 +37,15 @@ import org.robovm.apple.metal.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CALineJoin.Marshaler.class)
-/*<annotations>*/@Library("QuartzCore")/*</annotations>*/
+/*<annotations>*/@Library("QuartzCore") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/CALineJoin/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CALineJoin/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/CALineJoin/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CALineJoin toObject(Class<CALineJoin> cls, long handle, long flags) {
@@ -60,39 +63,57 @@ import org.robovm.apple.metal.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(CALineJoin.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    public static final CALineJoin Miter = new CALineJoin("MiterValue");
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    public static final CALineJoin Round = new CALineJoin("RoundValue");
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    public static final CALineJoin Bevel = new CALineJoin("BevelValue");
-    
-    private static CALineJoin[] values = new CALineJoin[] {Miter, Round, Bevel};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private CALineJoin(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<CALineJoin> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CALineJoin> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(CALineJoin.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CALineJoin> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (CALineJoin o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*</marshalers>*/
+
+    /*<constants>*/
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    public static final CALineJoin Miter = new CALineJoin("Miter");
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    public static final CALineJoin Round = new CALineJoin("Round");
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    public static final CALineJoin Bevel = new CALineJoin("Bevel");
+    /*</constants>*/
+    
+    private static /*<name>*/CALineJoin/*</name>*/[] values = new /*<name>*/CALineJoin/*</name>*/[] {/*<value_list>*/Miter, Round, Bevel/*</value_list>*/};
+    
+    /*<name>*/CALineJoin/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static CALineJoin valueOf(NSString value) {
-        for (CALineJoin v : values) {
+    public static /*<name>*/CALineJoin/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/CALineJoin/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -100,21 +121,29 @@ import org.robovm.apple.metal.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/CALineJoin/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="kCALineJoinMiter", optional=true)
-    protected static native NSString MiterValue();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="kCALineJoinRound", optional=true)
-    protected static native NSString RoundValue();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="kCALineJoinBevel", optional=true)
-    protected static native NSString BevelValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("QuartzCore") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="kCALineJoinMiter", optional=true)
+        public static native NSString Miter();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="kCALineJoinRound", optional=true)
+        public static native NSString Round();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="kCALineJoinBevel", optional=true)
+        public static native NSString Bevel();
+        /*</values>*/
+    }
 }

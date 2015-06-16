@@ -15,8 +15,8 @@
  */
 package org.robovm.apple.foundation;
 
-public abstract class NSPredicateKeyPath {
-
-    public abstract NSString value();
-    
+public abstract class NSPredicateKeyPath extends GlobalValueEnumeration<NSString> {
+    protected NSPredicateKeyPath(Class<?> clazz, String getterName) {
+        super(clazz, getterName);
+    }
 }

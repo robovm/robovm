@@ -50,7 +50,8 @@ classes:
     SLRequest: # DONE
         properties:
             'parameters':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
+                type: 'Map<String, NSObject>'
+                marshaler: NSDictionary.AsStringMapMarshaler
             'account':
                 annotations: ['@WeaklyLinked']
         methods:
@@ -69,7 +70,8 @@ classes:
                     serviceType:
                         type: SLServiceType
                     parameters:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
+                        type: 'Map<String, NSObject>'
+                        marshaler: NSDictionary.AsStringMapMarshaler
 
 protocols: {}
 
@@ -81,10 +83,9 @@ functions:
 
 values:
     SLServiceType(.*):
-        class: SLServiceType
-        name: '#{g[0]}Value'
+        enum: SLServiceType
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
 
     # Make sure we don't miss any values if new ones are introduced in a later version
     (SL.*):

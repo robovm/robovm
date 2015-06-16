@@ -39,12 +39,15 @@ import org.robovm.apple.opengles.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(SCNSceneSourceAnimationImportPolicy.Marshaler.class)
-/*<annotations>*/@Library("SceneKit")/*</annotations>*/
+/*<annotations>*/@Library("SceneKit") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/SCNSceneSourceAnimationImportPolicy/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SCNSceneSourceAnimationImportPolicy/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/SCNSceneSourceAnimationImportPolicy/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static SCNSceneSourceAnimationImportPolicy toObject(Class<SCNSceneSourceAnimationImportPolicy> cls, long handle, long flags) {
@@ -62,32 +65,61 @@ import org.robovm.apple.opengles.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(SCNSceneSourceAnimationImportPolicy.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    public static final SCNSceneSourceAnimationImportPolicy Play = new SCNSceneSourceAnimationImportPolicy("PlayValue");
-    public static final SCNSceneSourceAnimationImportPolicy PlayRepeatedly = new SCNSceneSourceAnimationImportPolicy("PlayRepeatedlyValue");
-    public static final SCNSceneSourceAnimationImportPolicy DoNotPlay = new SCNSceneSourceAnimationImportPolicy("DoNotPlayValue");
-    public static final SCNSceneSourceAnimationImportPolicy PlayUsingSceneTimeBase = new SCNSceneSourceAnimationImportPolicy("PlayUsingSceneTimeBaseValue");
-    
-    private static SCNSceneSourceAnimationImportPolicy[] values = new SCNSceneSourceAnimationImportPolicy[] {Play, PlayRepeatedly, DoNotPlay, 
-        PlayUsingSceneTimeBase};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private SCNSceneSourceAnimationImportPolicy(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<SCNSceneSourceAnimationImportPolicy> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<SCNSceneSourceAnimationImportPolicy> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(SCNSceneSourceAnimationImportPolicy.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<SCNSceneSourceAnimationImportPolicy> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (SCNSceneSourceAnimationImportPolicy o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*</marshalers>*/
+
+    /*<constants>*/
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final SCNSceneSourceAnimationImportPolicy Play = new SCNSceneSourceAnimationImportPolicy("Play");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final SCNSceneSourceAnimationImportPolicy PlayRepeatedly = new SCNSceneSourceAnimationImportPolicy("PlayRepeatedly");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final SCNSceneSourceAnimationImportPolicy DoNotPlay = new SCNSceneSourceAnimationImportPolicy("DoNotPlay");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final SCNSceneSourceAnimationImportPolicy PlayUsingSceneTimeBase = new SCNSceneSourceAnimationImportPolicy("PlayUsingSceneTimeBase");
+    /*</constants>*/
+    
+    private static /*<name>*/SCNSceneSourceAnimationImportPolicy/*</name>*/[] values = new /*<name>*/SCNSceneSourceAnimationImportPolicy/*</name>*/[] {/*<value_list>*/Play, PlayRepeatedly, DoNotPlay, PlayUsingSceneTimeBase/*</value_list>*/};
+    
+    /*<name>*/SCNSceneSourceAnimationImportPolicy/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static SCNSceneSourceAnimationImportPolicy valueOf(NSString value) {
-        for (SCNSceneSourceAnimationImportPolicy v : values) {
+    public static /*<name>*/SCNSceneSourceAnimationImportPolicy/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/SCNSceneSourceAnimationImportPolicy/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -95,26 +127,34 @@ import org.robovm.apple.opengles.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/SCNSceneSourceAnimationImportPolicy/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="SCNSceneSourceAnimationImportPolicyPlay", optional=true)
-    protected static native NSString PlayValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="SCNSceneSourceAnimationImportPolicyPlayRepeatedly", optional=true)
-    protected static native NSString PlayRepeatedlyValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="SCNSceneSourceAnimationImportPolicyDoNotPlay", optional=true)
-    protected static native NSString DoNotPlayValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="SCNSceneSourceAnimationImportPolicyPlayUsingSceneTimeBase", optional=true)
-    protected static native NSString PlayUsingSceneTimeBaseValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("SceneKit") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="SCNSceneSourceAnimationImportPolicyPlay", optional=true)
+        public static native NSString Play();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="SCNSceneSourceAnimationImportPolicyPlayRepeatedly", optional=true)
+        public static native NSString PlayRepeatedly();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="SCNSceneSourceAnimationImportPolicyDoNotPlay", optional=true)
+        public static native NSString DoNotPlay();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="SCNSceneSourceAnimationImportPolicyPlayUsingSceneTimeBase", optional=true)
+        public static native NSString PlayUsingSceneTimeBase();
+        /*</values>*/
+    }
 }

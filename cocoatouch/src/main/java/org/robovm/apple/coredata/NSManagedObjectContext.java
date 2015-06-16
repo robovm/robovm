@@ -55,22 +55,32 @@ import org.robovm.apple.foundation.*;
         /**
          * @since Available in iOS 3.0 and later.
          */
-        public static NSObject observeDidSave(NSManagedObject object, final VoidBlock2<NSManagedObject, NSManagedObjectContextNotificationInfo> block) {
+        public static NSObject observeDidSave(NSManagedObject object, final VoidBlock2<NSManagedObject, NSManagedObjectContextNotification> block) {
             return NSNotificationCenter.getDefaultCenter().addObserver(DidSaveNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke(NSNotification a) {
-                    block.invoke((NSManagedObject)a.getObject(), new NSManagedObjectContextNotificationInfo(a.getUserInfo()));
+                    NSDictionary<NSString, NSObject> userInfo = a.getUserInfo();
+                    NSManagedObjectContextNotification data = null;
+                    if (userInfo != null) {
+                        data = new NSManagedObjectContextNotification(userInfo);
+                    }
+                    block.invoke((NSManagedObject)a.getObject(), data);
                 }
             });
         }
         /**
          * @since Available in iOS 3.0 and later.
          */
-        public static NSObject observeObjectsDidChange(NSManagedObject object, final VoidBlock3<NSManagedObject, NSManagedObjectContextNotificationInfo, NSNotification> block) {
+        public static NSObject observeObjectsDidChange(NSManagedObject object, final VoidBlock3<NSManagedObject, NSManagedObjectContextNotification, NSNotification> block) {
             return NSNotificationCenter.getDefaultCenter().addObserver(ObjectsDidChangeNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke(NSNotification a) {
-                    block.invoke((NSManagedObject)a.getObject(), new NSManagedObjectContextNotificationInfo(a.getUserInfo()), a);
+                    NSDictionary<NSString, NSObject> userInfo = a.getUserInfo();
+                    NSManagedObjectContextNotification data = null;
+                    if (userInfo != null) {
+                        data = new NSManagedObjectContextNotification(userInfo);
+                    }
+                    block.invoke((NSManagedObject)a.getObject(), data, a);
                 }
             });
         }
@@ -167,17 +177,17 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 3.0 and later.
      */
     @GlobalValue(symbol="NSManagedObjectContextWillSaveNotification", optional=true)
-    protected static native NSString WillSaveNotification();
+    public static native NSString WillSaveNotification();
     /**
      * @since Available in iOS 3.0 and later.
      */
     @GlobalValue(symbol="NSManagedObjectContextDidSaveNotification", optional=true)
-    protected static native NSString DidSaveNotification();
+    public static native NSString DidSaveNotification();
     /**
      * @since Available in iOS 3.0 and later.
      */
     @GlobalValue(symbol="NSManagedObjectContextObjectsDidChangeNotification", optional=true)
-    protected static native NSString ObjectsDidChangeNotification();
+    public static native NSString ObjectsDidChangeNotification();
     
     /**
      * @since Available in iOS 5.0 and later.

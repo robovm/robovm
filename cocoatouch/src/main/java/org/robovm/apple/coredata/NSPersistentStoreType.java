@@ -32,12 +32,15 @@ import org.robovm.apple.foundation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(NSPersistentStoreType.Marshaler.class)
-/*<annotations>*/@Library("CoreData")/*</annotations>*/
+/*<annotations>*/@Library("CoreData") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/NSPersistentStoreType/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSPersistentStoreType/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
-    
+
+    static { Bro.bind(/*<name>*/NSPersistentStoreType/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static NSPersistentStoreType toObject(Class<NSPersistentStoreType> cls, long handle, long flags) {
@@ -45,49 +48,67 @@ import org.robovm.apple.foundation.*;
             if (o == null) {
                 return null;
             }
-            return NSPersistentStoreType.valueOf(o.toString());
+            return NSPersistentStoreType.valueOf(o);
         }
         @MarshalsPointer
         public static long toNative(NSPersistentStoreType o, long flags) {
             if (o == null) {
                 return 0L;
             }
-            return NSObject.Marshaler.toNative(new NSString(o.value()), flags);
+            return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<NSPersistentStoreType> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<NSPersistentStoreType> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(NSPersistentStoreType.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<NSPersistentStoreType> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (NSPersistentStoreType o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(NSPersistentStoreType.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    /*<constants>*/
     /**
      * @since Available in iOS 3.0 and later.
      */
-    public static final NSPersistentStoreType SQLite = new NSPersistentStoreType("SQLiteValue");
+    public static final NSPersistentStoreType SQLite = new NSPersistentStoreType("SQLite");
     /**
      * @since Available in iOS 3.0 and later.
      */
-    public static final NSPersistentStoreType Binary = new NSPersistentStoreType("BinaryValue");
+    public static final NSPersistentStoreType Binary = new NSPersistentStoreType("Binary");
     /**
      * @since Available in iOS 3.0 and later.
      */
-    public static final NSPersistentStoreType InMemory = new NSPersistentStoreType("InMemoryValue");
+    public static final NSPersistentStoreType InMemory = new NSPersistentStoreType("InMemory");
+    /*</constants>*/
     
-    private static NSPersistentStoreType[] values = new NSPersistentStoreType[] {SQLite, Binary, InMemory};
-    private final LazyGlobalValue<String> lazyGlobalValue;
+    private static /*<name>*/NSPersistentStoreType/*</name>*/[] values = new /*<name>*/NSPersistentStoreType/*</name>*/[] {/*<value_list>*/SQLite, Binary, InMemory/*</value_list>*/};
     
-    private NSPersistentStoreType(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public String value() {
-        return lazyGlobalValue.value();
+    /*<name>*/NSPersistentStoreType/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static NSPersistentStoreType valueOf(String value) {
-        for (NSPersistentStoreType v : values) {
+    public static /*<name>*/NSPersistentStoreType/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/NSPersistentStoreType/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -95,21 +116,29 @@ import org.robovm.apple.foundation.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/NSPersistentStoreType/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSSQLiteStoreType", optional=true)
-    protected static native String SQLiteValue();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSBinaryStoreType", optional=true)
-    protected static native String BinaryValue();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSInMemoryStoreType", optional=true)
-    protected static native String InMemoryValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("CoreData") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="NSSQLiteStoreType", optional=true)
+        public static native NSString SQLite();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="NSBinaryStoreType", optional=true)
+        public static native NSString Binary();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="NSInMemoryStoreType", optional=true)
+        public static native NSString InMemory();
+        /*</values>*/
+    }
 }

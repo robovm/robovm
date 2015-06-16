@@ -183,7 +183,7 @@ import org.robovm.apple.audiotoolbox.*;
     /*</methods>*/
     
     /*<keys>*/
-    @Library("CoreMedia") @StronglyLinked
+    @Library("CoreMedia")
     public static class Keys {
         static { Bro.bind(Keys.class); }
         /**

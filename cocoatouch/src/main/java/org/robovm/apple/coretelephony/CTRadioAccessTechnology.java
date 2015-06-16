@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -32,12 +33,15 @@ import org.robovm.apple.corefoundation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CTRadioAccessTechnology.Marshaler.class)
-/*<annotations>*/@Library("CoreTelephony")/*</annotations>*/
+/*<annotations>*/@Library("CoreTelephony") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/CTRadioAccessTechnology/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CTRadioAccessTechnology/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
-    
+
+    static { Bro.bind(/*<name>*/CTRadioAccessTechnology/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CTRadioAccessTechnology toObject(Class<CTRadioAccessTechnology> cls, long handle, long flags) {
@@ -55,71 +59,89 @@ import org.robovm.apple.corefoundation.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(CTRadioAccessTechnology.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static final CTRadioAccessTechnology GPRS = new CTRadioAccessTechnology("GPRSValue");
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static final CTRadioAccessTechnology Edge = new CTRadioAccessTechnology("EdgeValue");
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static final CTRadioAccessTechnology WCDMA = new CTRadioAccessTechnology("WCDMAValue");
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static final CTRadioAccessTechnology HSDPA = new CTRadioAccessTechnology("HSDPAValue");
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static final CTRadioAccessTechnology HSUPA = new CTRadioAccessTechnology("HSUPAValue");
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static final CTRadioAccessTechnology CDMA1x = new CTRadioAccessTechnology("CDMA1xValue");
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static final CTRadioAccessTechnology CDMAEVDORev0 = new CTRadioAccessTechnology("CDMAEVDORev0Value");
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static final CTRadioAccessTechnology CDMAEVDORevA = new CTRadioAccessTechnology("CDMAEVDORevAValue");
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static final CTRadioAccessTechnology CDMAEVDORevB = new CTRadioAccessTechnology("CDMAEVDORevBValue");
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static final CTRadioAccessTechnology eHRPD = new CTRadioAccessTechnology("eHRPDValue");
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static final CTRadioAccessTechnology LTE = new CTRadioAccessTechnology("LTEValue");
-
-    private static CTRadioAccessTechnology[] values = new CTRadioAccessTechnology[] {GPRS, Edge, WCDMA, HSDPA, HSUPA, CDMA1x, CDMAEVDORev0, CDMAEVDORevA, CDMAEVDORevB, eHRPD, LTE};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private CTRadioAccessTechnology(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<CTRadioAccessTechnology> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CTRadioAccessTechnology> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(CTRadioAccessTechnology.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CTRadioAccessTechnology> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (CTRadioAccessTechnology o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*</marshalers>*/
+
+    /*<constants>*/
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final CTRadioAccessTechnology GPRS = new CTRadioAccessTechnology("GPRS");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final CTRadioAccessTechnology Edge = new CTRadioAccessTechnology("Edge");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final CTRadioAccessTechnology WCDMA = new CTRadioAccessTechnology("WCDMA");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final CTRadioAccessTechnology HSDPA = new CTRadioAccessTechnology("HSDPA");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final CTRadioAccessTechnology HSUPA = new CTRadioAccessTechnology("HSUPA");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final CTRadioAccessTechnology CDMA1x = new CTRadioAccessTechnology("CDMA1x");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final CTRadioAccessTechnology CDMAEVDORev0 = new CTRadioAccessTechnology("CDMAEVDORev0");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final CTRadioAccessTechnology CDMAEVDORevA = new CTRadioAccessTechnology("CDMAEVDORevA");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final CTRadioAccessTechnology CDMAEVDORevB = new CTRadioAccessTechnology("CDMAEVDORevB");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final CTRadioAccessTechnology eHRPD = new CTRadioAccessTechnology("eHRPD");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final CTRadioAccessTechnology LTE = new CTRadioAccessTechnology("LTE");
+    /*</constants>*/
+    
+    private static /*<name>*/CTRadioAccessTechnology/*</name>*/[] values = new /*<name>*/CTRadioAccessTechnology/*</name>*/[] {/*<value_list>*/GPRS, Edge, WCDMA, HSDPA, HSUPA, CDMA1x, CDMAEVDORev0, CDMAEVDORevA, CDMAEVDORevB, eHRPD, LTE/*</value_list>*/};
+    
+    /*<name>*/CTRadioAccessTechnology/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static CTRadioAccessTechnology valueOf(NSString value) {
-        for (CTRadioAccessTechnology v : values) {
+    public static /*<name>*/CTRadioAccessTechnology/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/CTRadioAccessTechnology/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -127,61 +149,69 @@ import org.robovm.apple.corefoundation.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/CTRadioAccessTechnology/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="CTRadioAccessTechnologyGPRS", optional=true)
-    protected static native NSString GPRSValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="CTRadioAccessTechnologyEdge", optional=true)
-    protected static native NSString EdgeValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="CTRadioAccessTechnologyWCDMA", optional=true)
-    protected static native NSString WCDMAValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="CTRadioAccessTechnologyHSDPA", optional=true)
-    protected static native NSString HSDPAValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="CTRadioAccessTechnologyHSUPA", optional=true)
-    protected static native NSString HSUPAValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="CTRadioAccessTechnologyCDMA1x", optional=true)
-    protected static native NSString CDMA1xValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="CTRadioAccessTechnologyCDMAEVDORev0", optional=true)
-    protected static native NSString CDMAEVDORev0Value();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="CTRadioAccessTechnologyCDMAEVDORevA", optional=true)
-    protected static native NSString CDMAEVDORevAValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="CTRadioAccessTechnologyCDMAEVDORevB", optional=true)
-    protected static native NSString CDMAEVDORevBValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="CTRadioAccessTechnologyeHRPD", optional=true)
-    protected static native NSString eHRPDValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="CTRadioAccessTechnologyLTE", optional=true)
-    protected static native NSString LTEValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("CoreTelephony") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="CTRadioAccessTechnologyGPRS", optional=true)
+        public static native NSString GPRS();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="CTRadioAccessTechnologyEdge", optional=true)
+        public static native NSString Edge();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="CTRadioAccessTechnologyWCDMA", optional=true)
+        public static native NSString WCDMA();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="CTRadioAccessTechnologyHSDPA", optional=true)
+        public static native NSString HSDPA();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="CTRadioAccessTechnologyHSUPA", optional=true)
+        public static native NSString HSUPA();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="CTRadioAccessTechnologyCDMA1x", optional=true)
+        public static native NSString CDMA1x();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="CTRadioAccessTechnologyCDMAEVDORev0", optional=true)
+        public static native NSString CDMAEVDORev0();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="CTRadioAccessTechnologyCDMAEVDORevA", optional=true)
+        public static native NSString CDMAEVDORevA();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="CTRadioAccessTechnologyCDMAEVDORevB", optional=true)
+        public static native NSString CDMAEVDORevB();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="CTRadioAccessTechnologyeHRPD", optional=true)
+        public static native NSString eHRPD();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="CTRadioAccessTechnologyLTE", optional=true)
+        public static native NSString LTE();
+        /*</values>*/
+    }
 }

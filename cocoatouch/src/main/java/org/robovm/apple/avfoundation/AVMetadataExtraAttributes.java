@@ -42,14 +42,14 @@ import org.robovm.apple.audiounit.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(AVMetadataExtraAttributes.Marshaler.class)
 /*<annotations>*/@Library("AVFoundation")/*</annotations>*/
+@Marshaler(/*<name>*/AVMetadataExtraAttributes/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/AVMetadataExtraAttributes/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static AVMetadataExtraAttributes toObject(Class<AVMetadataExtraAttributes> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -66,33 +66,62 @@ import org.robovm.apple.audiounit.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected AVMetadataExtraAttributes(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<AVMetadataExtraAttributes> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<AVMetadataExtraAttributes> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new AVMetadataExtraAttributes(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<AVMetadataExtraAttributes> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (AVMetadataExtraAttributes i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    public AVMetadataExtraAttributes() {
-        data = new NSMutableDictionary<>();
-    }   
-    /*<bind>*/static { Bro.bind(AVMetadataExtraAttributes.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    AVMetadataExtraAttributes(NSDictionary<NSString, NSObject> data) {
+        super(data);
+    }
+    public AVMetadataExtraAttributes() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
+    }
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
+    }
+    public AVMetadataExtraAttributes set(NSString key, NSObject value) {
+        data.put(key, value);
+        return this;
     }
     
-    
+
     /**
      * @since Available in iOS 8.0 and later.
      */
     public String getValueURI() {
-        if (data.containsKey(ValueURIKey())) {
-            NSString val = (NSString) data.get(ValueURIKey());
+        if (has(Keys.ValueURI())) {
+            NSString val = (NSString) get(Keys.ValueURI());
             return val.toString();
         }
         return null;
@@ -100,16 +129,16 @@ import org.robovm.apple.audiounit.*;
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public AVMetadataExtraAttributes setValueURI(String uri) {
-        data.put(ValueURIKey(), new NSString(uri));
+    public AVMetadataExtraAttributes setValueURI(String valueURI) {
+        set(Keys.ValueURI(), new NSString(valueURI));
         return this;
     }
     /**
      * @since Available in iOS 8.0 and later.
      */
     public String getBaseURI() {
-        if (data.containsKey(BaseURIKey())) {
-            NSString val = (NSString) data.get(BaseURIKey());
+        if (has(Keys.BaseURI())) {
+            NSString val = (NSString) get(Keys.BaseURI());
             return val.toString();
         }
         return null;
@@ -117,25 +146,26 @@ import org.robovm.apple.audiounit.*;
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public AVMetadataExtraAttributes setBaseURI(String uri) {
-        data.put(BaseURIKey(), new NSString(uri));
+    public AVMetadataExtraAttributes setBaseURI(String baseURI) {
+        set(Keys.BaseURI(), new NSString(baseURI));
         return this;
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="AVMetadataExtraAttributeValueURIKey", optional=true)
-    protected static native NSString ValueURIKey();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="AVMetadataExtraAttributeBaseURIKey", optional=true)
-    protected static native NSString BaseURIKey();
     /*</methods>*/
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    
+    /*<keys>*/
+    @Library("AVFoundation")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="AVMetadataExtraAttributeValueURIKey", optional=true)
+        public static native NSString ValueURI();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="AVMetadataExtraAttributeBaseURIKey", optional=true)
+        public static native NSString BaseURI();
     }
+    /*</keys>*/
 }

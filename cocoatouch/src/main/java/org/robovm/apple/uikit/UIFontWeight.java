@@ -46,7 +46,49 @@ import org.robovm.apple.corelocation.*;
     static { Bro.bind(/*<name>*/UIFontWeight/*</name>*/.class); }
 
     /*<marshalers>*/
-    
+    public static class Marshaler {
+        @MarshalsPointer
+        public static UIFontWeight toObject(Class<UIFontWeight> cls, long handle, long flags) {
+            NSNumber o = (NSNumber) NSObject.Marshaler.toObject(NSNumber.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return UIFontWeight.valueOf(o.doubleValue());
+        }
+        @MarshalsPointer
+        public static long toNative(UIFontWeight o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(NSNumber.valueOf(o.value()), flags);
+        }
+    }
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<UIFontWeight> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSNumber> o = (NSArray<NSNumber>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<UIFontWeight> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(UIFontWeight.valueOf(o.get(i).doubleValue()));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<UIFontWeight> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSNumber> array = new NSMutableArray<>();
+            for (UIFontWeight o : l) {
+                array.add(NSNumber.valueOf(o.value()));
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
     /*</marshalers>*/
 
     /*<constants>*/

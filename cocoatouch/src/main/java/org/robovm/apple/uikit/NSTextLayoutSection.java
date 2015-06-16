@@ -38,14 +38,14 @@ import org.robovm.apple.corelocation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(NSTextLayoutSection.Marshaler.class)
 /*<annotations>*/@Library("UIKit")/*</annotations>*/
+@Marshaler(/*<name>*/NSTextLayoutSection/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSTextLayoutSection/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
-    
+
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static NSTextLayoutSection toObject(Class<NSTextLayoutSection> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -62,32 +62,63 @@ import org.robovm.apple.corelocation.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<NSTextLayoutSection> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<NSTextLayoutSection> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new NSTextLayoutSection(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<NSTextLayoutSection> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (NSTextLayoutSection i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    NSTextLayoutSection(NSDictionary<NSString, NSObject> data) {
+        super(data);
+    }
+    public NSTextLayoutSection() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
+    }
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
+    }
+    public NSTextLayoutSection set(NSString key, NSObject value) {
+        data.put(key, value);
+        return this;
+    }
     
-    public NSTextLayoutSection(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
-    }
-    public NSTextLayoutSection() {
-        this.data = new NSMutableDictionary<>();
-    }
-    /*<bind>*/static { Bro.bind(NSTextLayoutSection.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
-    }
-    
+
     /**
      * @since Available in iOS 7.0 and later.
      */
     public NSTextLayoutOrientation getOrientation() {
-        if (data.containsKey(OrientationKey())) {
-            NSNumber val = (NSNumber)data.get(OrientationKey());
-            return NSTextLayoutOrientation.valueOf(val.intValue());
+        if (has(Keys.Orientation())) {
+            NSNumber val = (NSNumber) get(Keys.Orientation());
+            return NSTextLayoutOrientation.valueOf(val.longValue());
         }
         return null;
     }
@@ -95,15 +126,15 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 7.0 and later.
      */
     public NSTextLayoutSection setOrientation(NSTextLayoutOrientation orientation) {
-        data.put(OrientationKey(), NSNumber.valueOf((int)orientation.value()));
+        set(Keys.Orientation(), NSNumber.valueOf(orientation.value()));
         return this;
     }
     /**
      * @since Available in iOS 7.0 and later.
      */
     public NSRange getRange() {
-        if (data.containsKey(RangeKey())) {
-            NSValue val = (NSValue)data.get(RangeKey());
+        if (has(Keys.Range())) {
+            NSValue val = (NSValue) get(Keys.Range());
             return val.rangeValue();
         }
         return null;
@@ -112,25 +143,25 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 7.0 and later.
      */
     public NSTextLayoutSection setRange(NSRange range) {
-        data.put(RangeKey(), NSValue.valueOf(range));
+        set(Keys.Range(), NSValue.valueOf(range));
         return this;
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSTextLayoutSectionOrientation", optional=true)
-    protected static native NSString OrientationKey();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSTextLayoutSectionRange", optional=true)
-    protected static native NSString RangeKey();
     /*</methods>*/
     
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    /*<keys>*/
+    @Library("UIKit")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="NSTextLayoutSectionOrientation", optional=true)
+        public static native NSString Orientation();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="NSTextLayoutSectionRange", optional=true)
+        public static native NSString Range();
     }
+    /*</keys>*/
 }

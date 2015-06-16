@@ -47,6 +47,7 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public PKPushRegistry() {}
     protected PKPushRegistry(SkipInit skipInit) { super(skipInit); }
+    @WeaklyLinked
     public PKPushRegistry(DispatchQueue queue) { super((SkipInit) null); initObject(init(queue)); }
     /*</constructors>*/
     /*<properties>*/
@@ -57,7 +58,7 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "desiredPushTypes")
     public native @org.robovm.rt.bro.annotation.Marshaler(NSSet.AsStringSetMarshaler.class) Set<String> getDesiredPushTypes();
     @Property(selector = "setDesiredPushTypes:")
-    public native void setDesiredPushTypes(@org.robovm.rt.bro.annotation.Marshaler(NSSet.AsStringSetMarshaler.class) Set<String> v);
+    public native void setDesiredPushTypes(@org.robovm.rt.bro.annotation.Marshaler(NSSet.AsStringSetMarshaler.class)Set<String> v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

@@ -38,14 +38,14 @@ import org.robovm.apple.corelocation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(UITextInputTextStyle.Marshaler.class)
 /*<annotations>*/@Library("UIKit")/*</annotations>*/
+@Marshaler(/*<name>*/UITextInputTextStyle/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UITextInputTextStyle/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static UITextInputTextStyle toObject(Class<UITextInputTextStyle> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -62,86 +62,146 @@ import org.robovm.apple.corelocation.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected UITextInputTextStyle(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
-    }
-    public UITextInputTextStyle() {
-        this.data = new NSMutableDictionary<>();
-    }
-    /*<bind>*/static { Bro.bind(UITextInputTextStyle.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
-    }
-    
-    public UIColor getBackgroundColor() {
-        if (data.containsKey(BackgroundColorKey())) {
-            UIColor val = (UIColor)data.get(BackgroundColorKey());
-            return val;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<UITextInputTextStyle> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<UITextInputTextStyle> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new UITextInputTextStyle(o.get(i)));
+            }
+            return list;
         }
-        return null;
-    }
-    public UITextInputTextStyle setBackgroundColor(UIColor color) {
-        data.put(BackgroundColorKey(), color);
-        return this;
-    }
-    public UIColor getTextColor() {
-        if (data.containsKey(ColorKey())) {
-            UIColor val = (UIColor)data.get(ColorKey());
-            return val;
+        @MarshalsPointer
+        public static long toNative(List<UITextInputTextStyle> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (UITextInputTextStyle i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
         }
-        return null;
     }
-    public UITextInputTextStyle setTextColor(UIColor color) {
-        data.put(ColorKey(), color);
-        return this;
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    UITextInputTextStyle(NSDictionary<NSString, NSObject> data) {
+        super(data);
     }
-    public UIFont getFont() {
-        if (data.containsKey(FontKey())) {
-            UIFont val = (UIFont)data.get(FontKey());
-            return val;
-        }
-        return null;
-    }
-    public UITextInputTextStyle setFont(UIFont font) {
-        data.put(FontKey(), font);
-        return this;
-    }
+    public UITextInputTextStyle() {}
+    /*</constructors>*/
+
     /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
+    }
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
+    }
+    public UITextInputTextStyle set(NSString key, NSObject value) {
+        data.put(key, value);
+        return this;
+    }
+    
+
     /**
      * @since Available in iOS 3.2 and later.
      * @deprecated Deprecated in iOS 8.0.
      */
     @Deprecated
-    @GlobalValue(symbol="UITextInputTextBackgroundColorKey", optional=true)
-    protected static native NSString BackgroundColorKey();
+    public UIColor getBackgroundColor() {
+        if (has(Keys.BackgroundColor())) {
+            UIColor val = (UIColor) get(Keys.BackgroundColor());
+            return val;
+        }
+        return null;
+    }
     /**
      * @since Available in iOS 3.2 and later.
      * @deprecated Deprecated in iOS 8.0.
      */
     @Deprecated
-    @GlobalValue(symbol="UITextInputTextColorKey", optional=true)
-    protected static native NSString ColorKey();
+    public UITextInputTextStyle setBackgroundColor(UIColor backgroundColor) {
+        set(Keys.BackgroundColor(), backgroundColor);
+        return this;
+    }
     /**
      * @since Available in iOS 3.2 and later.
      * @deprecated Deprecated in iOS 8.0.
      */
     @Deprecated
-    @GlobalValue(symbol="UITextInputTextFontKey", optional=true)
-    protected static native NSString FontKey();
+    public UIColor getTextColor() {
+        if (has(Keys.Color())) {
+            UIColor val = (UIColor) get(Keys.Color());
+            return val;
+        }
+        return null;
+    }
+    /**
+     * @since Available in iOS 3.2 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
+    public UITextInputTextStyle setTextColor(UIColor textColor) {
+        set(Keys.Color(), textColor);
+        return this;
+    }
+    /**
+     * @since Available in iOS 3.2 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
+    public UIFont getFont() {
+        if (has(Keys.Font())) {
+            UIFont val = (UIFont) get(Keys.Font());
+            return val;
+        }
+        return null;
+    }
+    /**
+     * @since Available in iOS 3.2 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
+    public UITextInputTextStyle setFont(UIFont font) {
+        set(Keys.Font(), font);
+        return this;
+    }
     /*</methods>*/
     
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    /*<keys>*/
+    @Library("UIKit")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        /**
+         * @since Available in iOS 3.2 and later.
+         * @deprecated Deprecated in iOS 8.0.
+         */
+        @Deprecated
+        @GlobalValue(symbol="UITextInputTextBackgroundColorKey", optional=true)
+        public static native NSString BackgroundColor();
+        /**
+         * @since Available in iOS 3.2 and later.
+         * @deprecated Deprecated in iOS 8.0.
+         */
+        @Deprecated
+        @GlobalValue(symbol="UITextInputTextColorKey", optional=true)
+        public static native NSString Color();
+        /**
+         * @since Available in iOS 3.2 and later.
+         * @deprecated Deprecated in iOS 8.0.
+         */
+        @Deprecated
+        @GlobalValue(symbol="UITextInputTextFontKey", optional=true)
+        public static native NSString Font();
     }
+    /*</keys>*/
 }

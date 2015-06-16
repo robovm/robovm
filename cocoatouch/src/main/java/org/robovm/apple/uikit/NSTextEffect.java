@@ -38,35 +38,75 @@ import org.robovm.apple.corelocation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("UIKit")/*</annotations>*/
+/*<annotations>*/@Library("UIKit") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/NSTextEffect/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSTextEffect/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(NSTextEffect.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    static { Bro.bind(/*<name>*/NSTextEffect/*</name>*/.class); }
+
+    /*<marshalers>*/
+    public static class Marshaler {
+        @MarshalsPointer
+        public static NSTextEffect toObject(Class<NSTextEffect> cls, long handle, long flags) {
+            NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return NSTextEffect.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(NSTextEffect o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(o.value(), flags);
+        }
+    }
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<NSTextEffect> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<NSTextEffect> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(NSTextEffect.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<NSTextEffect> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (NSTextEffect o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public static NSTextEffect LetterpressStyle = new NSTextEffect("LetterpressStyleValue");
-    private static NSTextEffect[] values = new NSTextEffect[] {LetterpressStyle};
+    public static final NSTextEffect LetterpressStyle = new NSTextEffect("LetterpressStyle");
+    /*</constants>*/
     
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    private static /*<name>*/NSTextEffect/*</name>*/[] values = new /*<name>*/NSTextEffect/*</name>*/[] {/*<value_list>*/LetterpressStyle/*</value_list>*/};
     
-    private NSTextEffect(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/NSTextEffect/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static NSTextEffect valueOf(NSString value) {
-        for (NSTextEffect v : values) {
+    public static /*<name>*/NSTextEffect/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/NSTextEffect/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -74,11 +114,19 @@ import org.robovm.apple.corelocation.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/NSTextEffect/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSTextEffectLetterpressStyle", optional=true)
-    protected static native NSString LetterpressStyleValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("UIKit") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="NSTextEffectLetterpressStyle", optional=true)
+        public static native NSString LetterpressStyle();
+        /*</values>*/
+    }
 }

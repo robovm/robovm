@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -33,12 +34,15 @@ import org.robovm.apple.coregraphics.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(MPMediaEntityProperty.Marshaler.class)
-/*<annotations>*/@Library("MediaPlayer")/*</annotations>*/
+/*<annotations>*/@Library("MediaPlayer") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/MPMediaEntityProperty/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/MPMediaEntityProperty/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
-    
+
+    static { Bro.bind(/*<name>*/MPMediaEntityProperty/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static MPMediaEntityProperty toObject(Class<MPMediaEntityProperty> cls, long handle, long flags) {
@@ -56,55 +60,72 @@ import org.robovm.apple.coregraphics.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<MPMediaEntityProperty> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<MPMediaEntityProperty> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(MPMediaEntityProperty.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<MPMediaEntityProperty> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (MPMediaEntityProperty o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(MPMediaEntityProperty.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    /*<constants>*/
     /**
      * @since Available in iOS 4.2 and later.
      */
-    public static final MPMediaEntityProperty EntityPersistentID = new MPMediaEntityProperty("EntityPersistentIDValue", true);
-    private static MPMediaEntityProperty[] values = new MPMediaEntityProperty[] {EntityPersistentID};
+    public static final MPMediaEntityProperty EntityPersistentID = new MPMediaEntityProperty("EntityPersistentID");
+    /*</constants>*/
     
-    final LazyGlobalValue<NSString> lazyGlobalValue;
-    boolean filterable;
+    private static /*<name>*/MPMediaEntityProperty/*</name>*/[] values = new /*<name>*/MPMediaEntityProperty/*</name>*/[] {/*<value_list>*/EntityPersistentID/*</value_list>*/};
     
-    protected MPMediaEntityProperty(String getterName, boolean filterable) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-        this.filterable = filterable;
+    /*<name>*/MPMediaEntityProperty/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    MPMediaEntityProperty (Class<?> clazz, String getterName) {
+        super(clazz, getterName);
     }
     
-    public boolean isFilterable() {
-        return filterable;
-    }
-    
-    public static MPMediaEntityProperty valueOf(NSString value) {
-        for (MPMediaEntityProperty v : values) {
+    public static /*<name>*/MPMediaEntityProperty/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/MPMediaEntityProperty/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
         }
-        // Search in all subclasses of MPMediaEntityProperty.
-        MPMediaItemProperty item = MPMediaItemProperty.findValue(value);
-        if (item != null) return item;
-        MPMediaPlaylistProperty playlist = MPMediaPlaylistProperty.findValue(value);
-        if (playlist != null) return playlist;
-        
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/MPMediaEntityProperty/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 4.2 and later.
-     */
-    @GlobalValue(symbol="MPMediaEntityPropertyPersistentID", optional=true)
-    protected static native NSString EntityPersistentIDValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("MediaPlayer") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 4.2 and later.
+         */
+        @GlobalValue(symbol="MPMediaEntityPropertyPersistentID", optional=true)
+        public static native NSString EntityPersistentID();
+        /*</values>*/
+    }
 }

@@ -15,11 +15,9 @@
  */
 package org.robovm.apple.healthkit;
 
-import org.robovm.rt.bro.Bro;
-import org.robovm.rt.bro.annotation.Library;
-
-@Library("HealthKit")
 public abstract class HKQuantityTypeIdentifier extends HKTypeIdentifier {
 
-    static { Bro.bind(HKQuantityTypeIdentifier.class); }
+    protected HKQuantityTypeIdentifier(Class<?> clazz, String getterName) {
+        super(clazz, getterName);
+    }
 }

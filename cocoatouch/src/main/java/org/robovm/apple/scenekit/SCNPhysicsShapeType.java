@@ -39,12 +39,15 @@ import org.robovm.apple.opengles.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(SCNPhysicsShapeType.Marshaler.class)
-/*<annotations>*/@Library("SceneKit")/*</annotations>*/
+/*<annotations>*/@Library("SceneKit") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/SCNPhysicsShapeType/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SCNPhysicsShapeType/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/SCNPhysicsShapeType/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static SCNPhysicsShapeType toObject(Class<SCNPhysicsShapeType> cls, long handle, long flags) {
@@ -62,30 +65,48 @@ import org.robovm.apple.opengles.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(SCNPhysicsShapeType.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    public static final SCNPhysicsShapeType BoundingBox = new SCNPhysicsShapeType("BoundingBoxValue");
-    public static final SCNPhysicsShapeType ConvexHull = new SCNPhysicsShapeType("ConvexHullValue");
-    public static final SCNPhysicsShapeType ConcavePolyhedron = new SCNPhysicsShapeType("ConcavePolyhedronValue");
-    
-    private static SCNPhysicsShapeType[] values = new SCNPhysicsShapeType[] {BoundingBox, ConvexHull, ConcavePolyhedron};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private SCNPhysicsShapeType(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<SCNPhysicsShapeType> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<SCNPhysicsShapeType> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(SCNPhysicsShapeType.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<SCNPhysicsShapeType> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (SCNPhysicsShapeType o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*</marshalers>*/
+
+    /*<constants>*/
+    public static final SCNPhysicsShapeType BoundingBox = new SCNPhysicsShapeType("BoundingBox");
+    public static final SCNPhysicsShapeType ConvexHull = new SCNPhysicsShapeType("ConvexHull");
+    public static final SCNPhysicsShapeType ConcavePolyhedron = new SCNPhysicsShapeType("ConcavePolyhedron");
+    /*</constants>*/
+    
+    private static /*<name>*/SCNPhysicsShapeType/*</name>*/[] values = new /*<name>*/SCNPhysicsShapeType/*</name>*/[] {/*<value_list>*/BoundingBox, ConvexHull, ConcavePolyhedron/*</value_list>*/};
+    
+    /*<name>*/SCNPhysicsShapeType/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static SCNPhysicsShapeType valueOf(NSString value) {
-        for (SCNPhysicsShapeType v : values) {
+    public static /*<name>*/SCNPhysicsShapeType/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/SCNPhysicsShapeType/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -93,12 +114,20 @@ import org.robovm.apple.opengles.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/SCNPhysicsShapeType/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    @GlobalValue(symbol="SCNPhysicsShapeTypeBoundingBox", optional=true)
-    protected static native NSString BoundingBoxValue();
-    @GlobalValue(symbol="SCNPhysicsShapeTypeConvexHull", optional=true)
-    protected static native NSString ConvexHullValue();
-    @GlobalValue(symbol="SCNPhysicsShapeTypeConcavePolyhedron", optional=true)
-    protected static native NSString ConcavePolyhedronValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("SceneKit") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        @GlobalValue(symbol="SCNPhysicsShapeTypeBoundingBox", optional=true)
+        public static native NSString BoundingBox();
+        @GlobalValue(symbol="SCNPhysicsShapeTypeConvexHull", optional=true)
+        public static native NSString ConvexHull();
+        @GlobalValue(symbol="SCNPhysicsShapeTypeConcavePolyhedron", optional=true)
+        public static native NSString ConcavePolyhedron();
+        /*</values>*/
+    }
 }

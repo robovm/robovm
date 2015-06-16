@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -33,12 +34,15 @@ import org.robovm.apple.coregraphics.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CGImageProperty8BIM.Marshaler.class)
-/*<annotations>*/@Library("ImageIO")/*</annotations>*/
+/*<annotations>*/@Library("ImageIO") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/CGImageProperty8BIM/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CGImageProperty8BIM/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<CFString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/CGImageProperty8BIM/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CGImageProperty8BIM toObject(Class<CGImageProperty8BIM> cls, long handle, long flags) {
@@ -56,35 +60,52 @@ import org.robovm.apple.coregraphics.*;
             return CFType.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(CGImageProperty8BIM.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CGImageProperty8BIM> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CGImageProperty8BIM> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(CGImageProperty8BIM.valueOf(o.get(i, CFString.class)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CGImageProperty8BIM> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray array = CFMutableArray.create();
+            for (CGImageProperty8BIM o : l) {
+                array.add(o.value());
+            }
+            return CFType.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImageProperty8BIM LayerNames = new CGImageProperty8BIM("LayerNamesKey");
+    public static final CGImageProperty8BIM LayerNames = new CGImageProperty8BIM("LayerNames");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final CGImageProperty8BIM Version = new CGImageProperty8BIM("VersionKey");
+    public static final CGImageProperty8BIM Version = new CGImageProperty8BIM("Version");
+    /*</constants>*/
     
-    private static CGImageProperty8BIM[] values = new CGImageProperty8BIM[] {LayerNames, Version};
-    private final LazyGlobalValue<CFString> lazyGlobalValue;
+    private static /*<name>*/CGImageProperty8BIM/*</name>*/[] values = new /*<name>*/CGImageProperty8BIM/*</name>*/[] {/*<value_list>*/LayerNames, Version/*</value_list>*/};
     
-    private CGImageProperty8BIM(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public CFString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/CGImageProperty8BIM/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static CGImageProperty8BIM valueOf(CFString value) {
-        for (CGImageProperty8BIM v : values) {
+    public static /*<name>*/CGImageProperty8BIM/*</name>*/ valueOf(/*<type>*/CFString/*</type>*/ value) {
+        for (/*<name>*/CGImageProperty8BIM/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -92,16 +113,24 @@ import org.robovm.apple.coregraphics.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/CGImageProperty8BIM/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImageProperty8BIMLayerNames", optional=true)
-    protected static native CFString LayerNamesKey();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="kCGImageProperty8BIMVersion", optional=true)
-    protected static native CFString VersionKey();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("ImageIO") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImageProperty8BIMLayerNames", optional=true)
+        public static native CFString LayerNames();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="kCGImageProperty8BIMVersion", optional=true)
+        public static native CFString Version();
+        /*</values>*/
+    }
 }

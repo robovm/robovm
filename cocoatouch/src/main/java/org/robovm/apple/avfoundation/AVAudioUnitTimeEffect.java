@@ -56,6 +56,7 @@ import org.robovm.apple.audiounit.*;
     /*<constructors>*/
     public AVAudioUnitTimeEffect() {}
     protected AVAudioUnitTimeEffect(SkipInit skipInit) { super(skipInit); }
+    @WeaklyLinked
     public AVAudioUnitTimeEffect(@ByVal AudioComponentDescription audioComponentDescription) { super((SkipInit) null); initObject(init(audioComponentDescription)); }
     /*</constructors>*/
     /*<properties>*/

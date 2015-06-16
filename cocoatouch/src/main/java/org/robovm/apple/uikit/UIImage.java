@@ -89,10 +89,12 @@ import org.robovm.apple.corelocation.*;
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @WeaklyLinked
     public UIImage(CIImage ciImage) { super((SkipInit) null); initObject(init(ciImage)); }
     /**
      * @since Available in iOS 6.0 and later.
      */
+    @WeaklyLinked
     public UIImage(CIImage ciImage, @MachineSizedFloat double scale, UIImageOrientation orientation) { super((SkipInit) null); initObject(init(ciImage, scale, orientation)); }
     /*</constructors>*/
 

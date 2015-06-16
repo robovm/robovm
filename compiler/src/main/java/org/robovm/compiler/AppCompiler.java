@@ -76,23 +76,87 @@ import org.robovm.compiler.util.AntPathMatcher;
 public class AppCompiler {
 
     /**
-     * Patterns for root classes. Classes matching these patterns will always be
-     * linked in.
-     */
-    private static final String[] ROOT_CLASS_PATTERNS = {
-        "java.lang.**.*"
-    };
-    /**
-     * Names of root classes. These classes will always be linked in. Most of
-     * these are here because they are required by Android's libcore native
-     * code.
+     * Names of root classes. These classes will always be linked in. These are
+     * here because they are either required by the RoboVM specific native VM
+     * libraries or by the Android's libcore native code.
      */
     private static final String[] ROOT_CLASSES = {
-        "org/robovm/rt/bro/Struct",
         "java/io/FileDescriptor",
         "java/io/PrintWriter",
         "java/io/Serializable",
         "java/io/StringWriter",
+        "java/lang/AbstractMethodError",
+        "java/lang/annotation/Annotation",
+        "java/lang/annotation/AnnotationFormatError",
+        "java/lang/ArithmeticException",
+        "java/lang/ArrayIndexOutOfBoundsException",
+        "java/lang/ArrayStoreException",
+        "java/lang/Boolean",
+        "java/lang/Byte",
+        "java/lang/Character",
+        "java/lang/Class",
+        "java/lang/ClassCastException",
+        "java/lang/ClassLoader",
+        "java/lang/ClassLoader$SystemClassLoader",
+        "java/lang/ClassNotFoundException",
+        "java/lang/Cloneable",
+        "java/lang/Daemons",
+        "java/lang/Double",
+        "java/lang/Enum",
+        "java/lang/Error",
+        "java/lang/ExceptionInInitializerError",
+        "java/lang/Float",
+        "java/lang/IllegalAccessError",
+        "java/lang/IllegalArgumentException",
+        "java/lang/IllegalMonitorStateException",
+        "java/lang/IllegalStateException",
+        "java/lang/IncompatibleClassChangeError",
+        "java/lang/IndexOutOfBoundsException",
+        "java/lang/InstantiationError",
+        "java/lang/InstantiationException",
+        "java/lang/Integer",
+        "java/lang/InternalError",
+        "java/lang/InterruptedException",
+        "java/lang/LinkageError",
+        "java/lang/Long",
+        "java/lang/NegativeArraySizeException",
+        "java/lang/NoClassDefFoundError",
+        "java/lang/NoSuchFieldError",
+        "java/lang/NoSuchMethodError",
+        "java/lang/NullPointerException",
+        "java/lang/Object",
+        "java/lang/OutOfMemoryError",
+        "java/lang/RealToString",
+        "java/lang/ref/FinalizerReference",
+        "java/lang/ref/PhantomReference",
+        "java/lang/ref/Reference",
+        "java/lang/ref/ReferenceQueue",
+        "java/lang/ref/SoftReference",
+        "java/lang/ref/WeakReference",
+        "java/lang/reflect/AccessibleObject",
+        "java/lang/reflect/Constructor",
+        "java/lang/reflect/Field",
+        "java/lang/reflect/InvocationHandler",
+        "java/lang/reflect/InvocationTargetException",
+        "java/lang/reflect/Method",
+        "java/lang/reflect/Proxy",
+        "java/lang/reflect/UndeclaredThrowableException",
+        "java/lang/Runtime",
+        "java/lang/RuntimeException",
+        "java/lang/Short",
+        "java/lang/StackOverflowError",
+        "java/lang/StackTraceElement",
+        "java/lang/String",
+        "java/lang/System",
+        "java/lang/Thread",
+        "java/lang/Thread$UncaughtExceptionHandler",
+        "java/lang/ThreadGroup",
+        "java/lang/Throwable",
+        "java/lang/TypeNotPresentException",
+        "java/lang/UnsatisfiedLinkError",
+        "java/lang/UnsupportedOperationException",
+        "java/lang/VerifyError",
+        "java/lang/VMClassLoader",
         "java/math/BigDecimal",
         "java/net/Inet6Address",
         "java/net/InetAddress",
@@ -124,7 +188,8 @@ public class AppCompiler {
         "libcore/io/StructUcred",
         "libcore/io/StructUtsname",
         "libcore/util/MutableInt",
-        "libcore/util/MutableLong"
+        "libcore/util/MutableLong",
+        "org/robovm/rt/bro/Struct"
     };
 
     private static final String TRUSTED_CERTIFICATE_STORE_CLASS =
@@ -189,9 +254,6 @@ public class AppCompiler {
      */
     private TreeSet<Clazz> getRootClasses() {
         TreeSet<Clazz> classes = new TreeSet<Clazz>();
-        for (String rootClassPattern : ROOT_CLASS_PATTERNS) {
-            classes.addAll(getMatchingClasses(rootClassPattern));
-        }
         for (String rootClassName : ROOT_CLASSES) {
             Clazz clazz = config.getClazzes().load(rootClassName);
             if (clazz == null) {

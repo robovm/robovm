@@ -126,7 +126,7 @@ import org.robovm.apple.addressbook.*;
     /*</methods>*/
     
     /*<keys>*/
-    @Library("PassKit") @StronglyLinked
+    @Library("PassKit")
     public static class Keys {
         static { Bro.bind(Keys.class); }
         /**

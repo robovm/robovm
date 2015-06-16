@@ -42,12 +42,15 @@ import org.robovm.apple.audiounit.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(AVMetadataKeySpace.Marshaler.class)
-/*<annotations>*/@Library("AVFoundation")/*</annotations>*/
+/*<annotations>*/@Library("AVFoundation") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/AVMetadataKeySpace/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/AVMetadataKeySpace/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/AVMetadataKeySpace/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static AVMetadataKeySpace toObject(Class<AVMetadataKeySpace> cls, long handle, long flags) {
@@ -65,56 +68,73 @@ import org.robovm.apple.audiounit.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(AVMetadataKeySpace.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<AVMetadataKeySpace> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<AVMetadataKeySpace> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(AVMetadataKeySpace.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<AVMetadataKeySpace> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (AVMetadataKeySpace o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final AVMetadataKeySpace Common = new AVMetadataKeySpace("CommonValue");
+    public static final AVMetadataKeySpace Common = new AVMetadataKeySpace("Common");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final AVMetadataKeySpace QuickTimeUserData = new AVMetadataKeySpace("QuickTimeUserDataValue");
+    public static final AVMetadataKeySpace QuickTimeUserData = new AVMetadataKeySpace("QuickTimeUserData");
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public static final AVMetadataKeySpace ISOUserData = new AVMetadataKeySpace("ISOUserDataValue");
+    public static final AVMetadataKeySpace ISOUserData = new AVMetadataKeySpace("ISOUserData");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final AVMetadataKeySpace QuickTimeMetadata = new AVMetadataKeySpace("QuickTimeMetadataValue");
+    public static final AVMetadataKeySpace QuickTimeMetadata = new AVMetadataKeySpace("QuickTimeMetadata");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final AVMetadataKeySpace iTunes = new AVMetadataKeySpace("iTunesValue");
+    public static final AVMetadataKeySpace iTunes = new AVMetadataKeySpace("iTunes");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final AVMetadataKeySpace ID3 = new AVMetadataKeySpace("ID3Value");
+    public static final AVMetadataKeySpace ID3 = new AVMetadataKeySpace("ID3");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final AVMetadataKeySpace Icy = new AVMetadataKeySpace("IcyValue");
+    public static final AVMetadataKeySpace Icy = new AVMetadataKeySpace("Icy");
+    /*</constants>*/
     
-    private static AVMetadataKeySpace[] values = new AVMetadataKeySpace[] {Common, QuickTimeUserData, ISOUserData, 
-        QuickTimeMetadata, iTunes, ID3, Icy};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    private static /*<name>*/AVMetadataKeySpace/*</name>*/[] values = new /*<name>*/AVMetadataKeySpace/*</name>*/[] {/*<value_list>*/Common, QuickTimeUserData, ISOUserData, QuickTimeMetadata, iTunes, ID3, Icy/*</value_list>*/};
     
-    private AVMetadataKeySpace(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/AVMetadataKeySpace/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static AVMetadataKeySpace valueOf(NSString value) {
-        for (AVMetadataKeySpace v : values) {
+    public static /*<name>*/AVMetadataKeySpace/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/AVMetadataKeySpace/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -122,41 +142,49 @@ import org.robovm.apple.audiounit.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/AVMetadataKeySpace/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="AVMetadataKeySpaceCommon", optional=true)
-    protected static native NSString CommonValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="AVMetadataKeySpaceQuickTimeUserData", optional=true)
-    protected static native NSString QuickTimeUserDataValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="AVMetadataKeySpaceISOUserData", optional=true)
-    protected static native NSString ISOUserDataValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="AVMetadataKeySpaceQuickTimeMetadata", optional=true)
-    protected static native NSString QuickTimeMetadataValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="AVMetadataKeySpaceiTunes", optional=true)
-    protected static native NSString iTunesValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="AVMetadataKeySpaceID3", optional=true)
-    protected static native NSString ID3Value();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="AVMetadataKeySpaceIcy", optional=true)
-    protected static native NSString IcyValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("AVFoundation") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="AVMetadataKeySpaceCommon", optional=true)
+        public static native NSString Common();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="AVMetadataKeySpaceQuickTimeUserData", optional=true)
+        public static native NSString QuickTimeUserData();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="AVMetadataKeySpaceISOUserData", optional=true)
+        public static native NSString ISOUserData();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="AVMetadataKeySpaceQuickTimeMetadata", optional=true)
+        public static native NSString QuickTimeMetadata();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="AVMetadataKeySpaceiTunes", optional=true)
+        public static native NSString iTunes();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="AVMetadataKeySpaceID3", optional=true)
+        public static native NSString ID3();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="AVMetadataKeySpaceIcy", optional=true)
+        public static native NSString Icy();
+        /*</values>*/
+    }
 }

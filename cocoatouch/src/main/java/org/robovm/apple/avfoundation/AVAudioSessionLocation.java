@@ -42,12 +42,15 @@ import org.robovm.apple.audiounit.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(AVAudioSessionLocation.Marshaler.class)
-/*<annotations>*/@Library("AVFoundation")/*</annotations>*/
+/*<annotations>*/@Library("AVFoundation") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/AVAudioSessionLocation/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/AVAudioSessionLocation/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
-    
+
+    static { Bro.bind(/*<name>*/AVAudioSessionLocation/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static AVAudioSessionLocation toObject(Class<AVAudioSessionLocation> cls, long handle, long flags) {
@@ -65,35 +68,53 @@ import org.robovm.apple.audiounit.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<AVAudioSessionLocation> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<AVAudioSessionLocation> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(AVAudioSessionLocation.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<AVAudioSessionLocation> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (AVAudioSessionLocation o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(AVAudioSessionLocation.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    /*<constants>*/
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public static final AVAudioSessionLocation Upper = new AVAudioSessionLocation("UpperValue");
+    public static final AVAudioSessionLocation Upper = new AVAudioSessionLocation("Upper");
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public static final AVAudioSessionLocation Lower = new AVAudioSessionLocation("LowerValue");
+    public static final AVAudioSessionLocation Lower = new AVAudioSessionLocation("Lower");
+    /*</constants>*/
     
-    private static AVAudioSessionLocation[] values = new AVAudioSessionLocation[] {Upper, Lower};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    private static /*<name>*/AVAudioSessionLocation/*</name>*/[] values = new /*<name>*/AVAudioSessionLocation/*</name>*/[] {/*<value_list>*/Upper, Lower/*</value_list>*/};
     
-    private AVAudioSessionLocation(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/AVAudioSessionLocation/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static AVAudioSessionLocation valueOf(NSString value) {
-        for (AVAudioSessionLocation v : values) {
+    public static /*<name>*/AVAudioSessionLocation/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/AVAudioSessionLocation/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -101,16 +122,24 @@ import org.robovm.apple.audiounit.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/AVAudioSessionLocation/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="AVAudioSessionLocationUpper", optional=true)
-    protected static native NSString UpperValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="AVAudioSessionLocationLower", optional=true)
-    protected static native NSString LowerValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("AVFoundation") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="AVAudioSessionLocationUpper", optional=true)
+        public static native NSString Upper();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="AVAudioSessionLocationLower", optional=true)
+        public static native NSString Lower();
+        /*</values>*/
+    }
 }

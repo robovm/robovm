@@ -15,8 +15,8 @@
  */
 package org.robovm.apple.foundation;
 
-public abstract class NSSortIdentifier {
-
-    public abstract String value();
-    
+public abstract class NSSortIdentifier extends GlobalValueEnumeration<NSString> {
+    protected NSSortIdentifier(Class<?> clazz, String getterName) {
+        super(clazz, getterName);
+    }
 }

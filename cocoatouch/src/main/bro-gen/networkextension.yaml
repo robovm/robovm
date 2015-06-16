@@ -96,6 +96,7 @@ values:
         class: NEVPNManager
         name: '#{g[0]}'
         type: NSString
+
     # NEVPNConnection
     NEVPN(StatusDidChangeNotification):
         class: NEVPNConnection

@@ -32,56 +32,113 @@ import org.robovm.apple.foundation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("HealthKit")/*</annotations>*/
+/*<annotations>*/@Library("HealthKit") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/HKWorkoutSortIdentifier/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/HKWorkoutSortIdentifier/*</name>*/ 
-    extends /*<extends>*/NSSortIdentifier/*</extends>*/ 
+    extends /*<extends>*/NSSortIdentifier/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(HKWorkoutSortIdentifier.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKWorkoutSortIdentifier Duration = new HKWorkoutSortIdentifier("DurationValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKWorkoutSortIdentifier TotalDistance = new HKWorkoutSortIdentifier("TotalDistanceValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKWorkoutSortIdentifier TotalEnergyBurned = new HKWorkoutSortIdentifier("TotalEnergyBurnedValue");
-    
-    
-    private final LazyGlobalValue<String> lazyGlobalValue;
-    
-    private HKWorkoutSortIdentifier(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    static { Bro.bind(/*<name>*/HKWorkoutSortIdentifier/*</name>*/.class); }
+
+    /*<marshalers>*/
+    public static class Marshaler {
+        @MarshalsPointer
+        public static HKWorkoutSortIdentifier toObject(Class<HKWorkoutSortIdentifier> cls, long handle, long flags) {
+            NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return HKWorkoutSortIdentifier.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(HKWorkoutSortIdentifier o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(o.value(), flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    @Override
-    public String value() {
-        return lazyGlobalValue.value();
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<HKWorkoutSortIdentifier> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<HKWorkoutSortIdentifier> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(HKWorkoutSortIdentifier.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<HKWorkoutSortIdentifier> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (HKWorkoutSortIdentifier o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    /*<methods>*/
+    /*</marshalers>*/
+
+    /*<constants>*/
     /**
      * @since Available in iOS 8.0 and later.
      */
-    @GlobalValue(symbol="HKWorkoutSortIdentifierDuration", optional=true)
-    protected static native String DurationValue();
+    public static final HKWorkoutSortIdentifier Duration = new HKWorkoutSortIdentifier("Duration");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    @GlobalValue(symbol="HKWorkoutSortIdentifierTotalDistance", optional=true)
-    protected static native String TotalDistanceValue();
+    public static final HKWorkoutSortIdentifier TotalDistance = new HKWorkoutSortIdentifier("TotalDistance");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    @GlobalValue(symbol="HKWorkoutSortIdentifierTotalEnergyBurned", optional=true)
-    protected static native String TotalEnergyBurnedValue();
-    /*</methods>*/
+    public static final HKWorkoutSortIdentifier TotalEnergyBurned = new HKWorkoutSortIdentifier("TotalEnergyBurned");
+    /*</constants>*/
+    
+    private static /*<name>*/HKWorkoutSortIdentifier/*</name>*/[] values = new /*<name>*/HKWorkoutSortIdentifier/*</name>*/[] {/*<value_list>*/Duration, TotalDistance, TotalEnergyBurned/*</value_list>*/};
+    
+    /*<name>*/HKWorkoutSortIdentifier/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
+    }
+    
+    public static /*<name>*/HKWorkoutSortIdentifier/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/HKWorkoutSortIdentifier/*</name>*/ v : values) {
+            if (v.value().equals(value)) {
+                return v;
+            }
+        }
+        throw new IllegalArgumentException("No constant with value " + value + " found in " 
+            + /*<name>*/HKWorkoutSortIdentifier/*</name>*/.class.getName());
+    }
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("HealthKit") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKWorkoutSortIdentifierDuration", optional=true)
+        public static native NSString Duration();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKWorkoutSortIdentifierTotalDistance", optional=true)
+        public static native NSString TotalDistance();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKWorkoutSortIdentifierTotalEnergyBurned", optional=true)
+        public static native NSString TotalEnergyBurned();
+        /*</values>*/
+    }
 }

@@ -37,12 +37,15 @@ import org.robovm.apple.metal.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CATransactionProperty.Marshaler.class)
-/*<annotations>*/@Library("QuartzCore")/*</annotations>*/
+/*<annotations>*/@Library("QuartzCore") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/CATransactionProperty/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CATransactionProperty/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/CATransactionProperty/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CATransactionProperty toObject(Class<CATransactionProperty> cls, long handle, long flags) {
@@ -60,44 +63,61 @@ import org.robovm.apple.metal.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(CATransactionProperty.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<CATransactionProperty> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CATransactionProperty> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(CATransactionProperty.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CATransactionProperty> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (CATransactionProperty o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static final CATransactionProperty AnimationDuration = new CATransactionProperty("AnimationDurationValue");
+    public static final CATransactionProperty AnimationDuration = new CATransactionProperty("AnimationDuration");
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static final CATransactionProperty DisableActions = new CATransactionProperty("DisableActionsValue");
+    public static final CATransactionProperty DisableActions = new CATransactionProperty("DisableActions");
     /**
      * @since Available in iOS 3.0 and later.
      */
-    public static final CATransactionProperty AnimationTimingFunction = new CATransactionProperty("AnimationTimingFunctionValue");
+    public static final CATransactionProperty AnimationTimingFunction = new CATransactionProperty("AnimationTimingFunction");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CATransactionProperty CompletionBlock = new CATransactionProperty("CompletionBlockValue");
+    public static final CATransactionProperty CompletionBlock = new CATransactionProperty("CompletionBlock");
+    /*</constants>*/
     
-    private static CATransactionProperty[] values = new CATransactionProperty[] {AnimationDuration, DisableActions, 
-        AnimationTimingFunction, CompletionBlock};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    private static /*<name>*/CATransactionProperty/*</name>*/[] values = new /*<name>*/CATransactionProperty/*</name>*/[] {/*<value_list>*/AnimationDuration, DisableActions, AnimationTimingFunction, CompletionBlock/*</value_list>*/};
     
-    private CATransactionProperty(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/CATransactionProperty/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static CATransactionProperty valueOf(NSString value) {
-        for (CATransactionProperty v : values) {
+    public static /*<name>*/CATransactionProperty/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/CATransactionProperty/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -105,26 +125,34 @@ import org.robovm.apple.metal.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/CATransactionProperty/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCATransactionAnimationDuration", optional=true)
-    protected static native NSString AnimationDurationValue();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCATransactionDisableActions", optional=true)
-    protected static native NSString DisableActionsValue();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="kCATransactionAnimationTimingFunction", optional=true)
-    protected static native NSString AnimationTimingFunctionValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCATransactionCompletionBlock", optional=true)
-    protected static native NSString CompletionBlockValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("QuartzCore") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCATransactionAnimationDuration", optional=true)
+        public static native NSString AnimationDuration();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCATransactionDisableActions", optional=true)
+        public static native NSString DisableActions();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="kCATransactionAnimationTimingFunction", optional=true)
+        public static native NSString AnimationTimingFunction();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCATransactionCompletionBlock", optional=true)
+        public static native NSString CompletionBlock();
+        /*</values>*/
+    }
 }

@@ -38,12 +38,15 @@ import org.robovm.apple.uikit.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CIDetectorType.Marshaler.class)
-/*<annotations>*/@Library("CoreImage")/*</annotations>*/
+/*<annotations>*/@Library("CoreImage") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/CIDetectorType/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CIDetectorType/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
-    
+
+    static { Bro.bind(/*<name>*/CIDetectorType/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CIDetectorType toObject(Class<CIDetectorType> cls, long handle, long flags) {
@@ -61,39 +64,57 @@ import org.robovm.apple.uikit.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<CIDetectorType> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CIDetectorType> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(CIDetectorType.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CIDetectorType> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (CIDetectorType o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(CIDetectorType.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    /*<constants>*/
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final CIDetectorType Face = new CIDetectorType("FaceValue");
+    public static final CIDetectorType Face = new CIDetectorType("Face");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final CIDetectorType Rectangle = new CIDetectorType("RectangleValue");
+    public static final CIDetectorType Rectangle = new CIDetectorType("Rectangle");
     /**
-     * @since Available in iOS 6.0 and later.
+     * @since Available in iOS 8.0 and later.
      */
-    public static final CIDetectorType QRCode = new CIDetectorType("QRCodeValue");
+    public static final CIDetectorType QRCode = new CIDetectorType("QRCode");
+    /*</constants>*/
     
-    private static CIDetectorType[] values = new CIDetectorType[] {Face, QRCode, Rectangle};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    private static /*<name>*/CIDetectorType/*</name>*/[] values = new /*<name>*/CIDetectorType/*</name>*/[] {/*<value_list>*/Face, Rectangle, QRCode/*</value_list>*/};
     
-    private CIDetectorType(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/CIDetectorType/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static CIDetectorType valueOf(NSString value) {
-        for (CIDetectorType v : values) {
+    public static /*<name>*/CIDetectorType/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/CIDetectorType/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -101,21 +122,29 @@ import org.robovm.apple.uikit.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/CIDetectorType/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="CIDetectorTypeFace", optional=true)
-    protected static native NSString FaceValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="CIDetectorTypeRectangle", optional=true)
-    protected static native NSString RectangleValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="CIDetectorTypeQRCode", optional=true)
-    protected static native NSString QRCodeValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("CoreImage") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="CIDetectorTypeFace", optional=true)
+        public static native NSString Face();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="CIDetectorTypeRectangle", optional=true)
+        public static native NSString Rectangle();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="CIDetectorTypeQRCode", optional=true)
+        public static native NSString QRCode();
+        /*</values>*/
+    }
 }

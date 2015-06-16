@@ -40,168 +40,215 @@ import org.robovm.apple.dispatch.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("Foundation")/*</annotations>*/
+/*<annotations>*/@Library("Foundation") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/NSURLUbiquitousItemProperty/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSURLUbiquitousItemProperty/*</name>*/ 
-    extends /*<extends>*/NSURLProperty/*</extends>*/ 
+    extends /*<extends>*/NSURLProperty/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(NSURLUbiquitousItemProperty.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    static { Bro.bind(/*<name>*/NSURLUbiquitousItemProperty/*</name>*/.class); }
+
+    /*<marshalers>*/
+    public static class Marshaler {
+        @MarshalsPointer
+        public static NSURLUbiquitousItemProperty toObject(Class<NSURLUbiquitousItemProperty> cls, long handle, long flags) {
+            NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return NSURLUbiquitousItemProperty.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(NSURLUbiquitousItemProperty o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(o.value(), flags);
+        }
+    }
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<NSURLUbiquitousItemProperty> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<NSURLUbiquitousItemProperty> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(NSURLUbiquitousItemProperty.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<NSURLUbiquitousItemProperty> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (NSURLUbiquitousItemProperty o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final NSURLUbiquitousItemProperty IsUbiquitousItem = new NSURLUbiquitousItemProperty("IsUbiquitousItemValue");
+    public static final NSURLUbiquitousItemProperty IsUbiquitousItem = new NSURLUbiquitousItemProperty("IsUbiquitousItem");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final NSURLUbiquitousItemProperty HasUnresolvedConflicts = new NSURLUbiquitousItemProperty("HasUnresolvedConflictsValue");
+    public static final NSURLUbiquitousItemProperty HasUnresolvedConflicts = new NSURLUbiquitousItemProperty("HasUnresolvedConflicts");
     /**
      * @since Available in iOS 5.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
-    public static final NSURLUbiquitousItemProperty IsDownloaded = new NSURLUbiquitousItemProperty("IsDownloadedValue");
+    public static final NSURLUbiquitousItemProperty IsDownloaded = new NSURLUbiquitousItemProperty("IsDownloaded");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final NSURLUbiquitousItemProperty IsDownloading = new NSURLUbiquitousItemProperty("IsDownloadingValue");
+    public static final NSURLUbiquitousItemProperty IsDownloading = new NSURLUbiquitousItemProperty("IsDownloading");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final NSURLUbiquitousItemProperty IsUploaded = new NSURLUbiquitousItemProperty("IsUploadedValue");
+    public static final NSURLUbiquitousItemProperty IsUploaded = new NSURLUbiquitousItemProperty("IsUploaded");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final NSURLUbiquitousItemProperty IsUploading = new NSURLUbiquitousItemProperty("IsUploadingValue");
-    /**
-     * @since Available in iOS 5.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    public static final NSURLUbiquitousItemProperty PercentDownloaded = new NSURLUbiquitousItemProperty("PercentDownloadedValue");
+    public static final NSURLUbiquitousItemProperty IsUploading = new NSURLUbiquitousItemProperty("IsUploading");
     /**
      * @since Available in iOS 5.0 and later.
      * @deprecated Deprecated in iOS 6.0.
      */
     @Deprecated
-    public static final NSURLUbiquitousItemProperty PercentUploaded = new NSURLUbiquitousItemProperty("PercentUploadedValue");
+    public static final NSURLUbiquitousItemProperty PercentDownloaded = new NSURLUbiquitousItemProperty("PercentDownloaded");
+    /**
+     * @since Available in iOS 5.0 and later.
+     * @deprecated Deprecated in iOS 6.0.
+     */
+    @Deprecated
+    public static final NSURLUbiquitousItemProperty PercentUploaded = new NSURLUbiquitousItemProperty("PercentUploaded");
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public static final NSURLUbiquitousItemProperty DownloadingStatus = new NSURLUbiquitousItemProperty("DownloadingStatusValue");
+    public static final NSURLUbiquitousItemProperty DownloadingStatus = new NSURLUbiquitousItemProperty("DownloadingStatus");
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public static final NSURLUbiquitousItemProperty DownloadingError = new NSURLUbiquitousItemProperty("DownloadingErrorValue");
+    public static final NSURLUbiquitousItemProperty DownloadingError = new NSURLUbiquitousItemProperty("DownloadingError");
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public static final NSURLUbiquitousItemProperty UploadingError = new NSURLUbiquitousItemProperty("UploadingErrorValue");
+    public static final NSURLUbiquitousItemProperty UploadingError = new NSURLUbiquitousItemProperty("UploadingError");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final NSURLUbiquitousItemProperty DownloadRequested = new NSURLUbiquitousItemProperty("DownloadRequestedValue");
+    public static final NSURLUbiquitousItemProperty DownloadRequested = new NSURLUbiquitousItemProperty("DownloadRequested");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final NSURLUbiquitousItemProperty ContainerDisplayName = new NSURLUbiquitousItemProperty("ContainerDisplayNameValue");
+    public static final NSURLUbiquitousItemProperty ContainerDisplayName = new NSURLUbiquitousItemProperty("ContainerDisplayName");
+    /*</constants>*/
     
+    private static /*<name>*/NSURLUbiquitousItemProperty/*</name>*/[] values = new /*<name>*/NSURLUbiquitousItemProperty/*</name>*/[] {/*<value_list>*/IsUbiquitousItem, HasUnresolvedConflicts, IsDownloaded, IsDownloading, IsUploaded, IsUploading, PercentDownloaded, PercentUploaded, DownloadingStatus, DownloadingError, UploadingError, DownloadRequested, ContainerDisplayName/*</value_list>*/};
     
-    private static NSURLUbiquitousItemProperty[] values = new NSURLUbiquitousItemProperty[] {IsUbiquitousItem, HasUnresolvedConflicts, IsDownloading, IsUploaded, IsUploading, PercentDownloaded, 
-        PercentUploaded, IsDownloaded, DownloadingStatus, DownloadingError, UploadingError, DownloadRequested, ContainerDisplayName};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private NSURLUbiquitousItemProperty(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/NSURLUbiquitousItemProperty/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static NSURLUbiquitousItemProperty valueOf(NSString value) {
-        for (NSURLUbiquitousItemProperty v : values) {
+    public static /*<name>*/NSURLUbiquitousItemProperty/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/NSURLUbiquitousItemProperty/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
         }
-        return null;
+        throw new IllegalArgumentException("No constant with value " + value + " found in " 
+            + /*<name>*/NSURLUbiquitousItemProperty/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSURLIsUbiquitousItemKey", optional=true)
-    protected static native NSString IsUbiquitousItemValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSURLUbiquitousItemHasUnresolvedConflictsKey", optional=true)
-    protected static native NSString HasUnresolvedConflictsValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     */
-    @Deprecated
-    @GlobalValue(symbol="NSURLUbiquitousItemIsDownloadedKey", optional=true)
-    protected static native NSString IsDownloadedValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSURLUbiquitousItemIsDownloadingKey", optional=true)
-    protected static native NSString IsDownloadingValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSURLUbiquitousItemIsUploadedKey", optional=true)
-    protected static native NSString IsUploadedValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSURLUbiquitousItemIsUploadingKey", optional=true)
-    protected static native NSString IsUploadingValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    @GlobalValue(symbol="NSURLUbiquitousItemPercentDownloadedKey", optional=true)
-    protected static native NSString PercentDownloadedValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    @GlobalValue(symbol="NSURLUbiquitousItemPercentUploadedKey", optional=true)
-    protected static native NSString PercentUploadedValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSURLUbiquitousItemDownloadingStatusKey", optional=true)
-    protected static native NSString DownloadingStatusValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSURLUbiquitousItemDownloadingErrorKey", optional=true)
-    protected static native NSString DownloadingErrorValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSURLUbiquitousItemUploadingErrorKey", optional=true)
-    protected static native NSString UploadingErrorValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="NSURLUbiquitousItemDownloadRequestedKey", optional=true)
-    protected static native NSString DownloadRequestedValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="NSURLUbiquitousItemContainerDisplayNameKey", optional=true)
-    protected static native NSString ContainerDisplayNameValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("Foundation") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSURLIsUbiquitousItemKey", optional=true)
+        public static native NSString IsUbiquitousItem();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSURLUbiquitousItemHasUnresolvedConflictsKey", optional=true)
+        public static native NSString HasUnresolvedConflicts();
+        /**
+         * @since Available in iOS 5.0 and later.
+         * @deprecated Deprecated in iOS 7.0.
+         */
+        @Deprecated
+        @GlobalValue(symbol="NSURLUbiquitousItemIsDownloadedKey", optional=true)
+        public static native NSString IsDownloaded();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSURLUbiquitousItemIsDownloadingKey", optional=true)
+        public static native NSString IsDownloading();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSURLUbiquitousItemIsUploadedKey", optional=true)
+        public static native NSString IsUploaded();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSURLUbiquitousItemIsUploadingKey", optional=true)
+        public static native NSString IsUploading();
+        /**
+         * @since Available in iOS 5.0 and later.
+         * @deprecated Deprecated in iOS 6.0.
+         */
+        @Deprecated
+        @GlobalValue(symbol="NSURLUbiquitousItemPercentDownloadedKey", optional=true)
+        public static native NSString PercentDownloaded();
+        /**
+         * @since Available in iOS 5.0 and later.
+         * @deprecated Deprecated in iOS 6.0.
+         */
+        @Deprecated
+        @GlobalValue(symbol="NSURLUbiquitousItemPercentUploadedKey", optional=true)
+        public static native NSString PercentUploaded();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="NSURLUbiquitousItemDownloadingStatusKey", optional=true)
+        public static native NSString DownloadingStatus();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="NSURLUbiquitousItemDownloadingErrorKey", optional=true)
+        public static native NSString DownloadingError();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="NSURLUbiquitousItemUploadingErrorKey", optional=true)
+        public static native NSString UploadingError();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="NSURLUbiquitousItemDownloadRequestedKey", optional=true)
+        public static native NSString DownloadRequested();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="NSURLUbiquitousItemContainerDisplayNameKey", optional=true)
+        public static native NSString ContainerDisplayName();
+        /*</values>*/
+    }
 }

@@ -42,14 +42,14 @@ import org.robovm.apple.audiounit.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(AVVideoCleanAperture.Marshaler.class)
 /*<annotations>*/@Library("AVFoundation")/*</annotations>*/
+@Marshaler(/*<name>*/AVVideoCleanAperture/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/AVVideoCleanAperture/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static AVVideoCleanAperture toObject(Class<AVVideoCleanAperture> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -66,32 +66,62 @@ import org.robovm.apple.audiounit.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected AVVideoCleanAperture(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<AVVideoCleanAperture> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<AVVideoCleanAperture> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new AVVideoCleanAperture(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<AVVideoCleanAperture> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (AVVideoCleanAperture i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    public AVVideoCleanAperture() {
-        data = new NSMutableDictionary<>();
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    AVVideoCleanAperture(NSDictionary<NSString, NSObject> data) {
+        super(data);
     }
-    /*<bind>*/static { Bro.bind(AVVideoCleanAperture.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
+    public AVVideoCleanAperture() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
+    }
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
+    }
+    public AVVideoCleanAperture set(NSString key, NSObject value) {
+        data.put(key, value);
+        return this;
     }
     
+
     /**
      * @since Available in iOS 4.0 and later.
      */
     public long getWidth() {
-        if (data.containsKey(WidthKey())) {
-            NSNumber val = (NSNumber) data.get(WidthKey());
+        if (has(Keys.Width())) {
+            NSNumber val = (NSNumber) get(Keys.Width());
             return val.longValue();
         }
         return 0;
@@ -100,15 +130,15 @@ import org.robovm.apple.audiounit.*;
      * @since Available in iOS 4.0 and later.
      */
     public AVVideoCleanAperture setWidth(long width) {
-        data.put(WidthKey(), NSNumber.valueOf(width));
+        set(Keys.Width(), NSNumber.valueOf(width));
         return this;
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     public long getHeight() {
-        if (data.containsKey(HeightKey())) {
-            NSNumber val = (NSNumber) data.get(HeightKey());
+        if (has(Keys.Height())) {
+            NSNumber val = (NSNumber) get(Keys.Height());
             return val.longValue();
         }
         return 0;
@@ -117,15 +147,15 @@ import org.robovm.apple.audiounit.*;
      * @since Available in iOS 4.0 and later.
      */
     public AVVideoCleanAperture setHeight(long height) {
-        data.put(HeightKey(), NSNumber.valueOf(height));
+        set(Keys.Height(), NSNumber.valueOf(height));
         return this;
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     public long getHorizontalOffset() {
-        if (data.containsKey(HorizontalOffsetKey())) {
-            NSNumber val = (NSNumber) data.get(HorizontalOffsetKey());
+        if (has(Keys.HorizontalOffset())) {
+            NSNumber val = (NSNumber) get(Keys.HorizontalOffset());
             return val.longValue();
         }
         return 0;
@@ -133,16 +163,16 @@ import org.robovm.apple.audiounit.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public AVVideoCleanAperture setHorizontalOffset(long offset) {
-        data.put(HorizontalOffsetKey(), NSNumber.valueOf(offset));
+    public AVVideoCleanAperture setHorizontalOffset(long horizontalOffset) {
+        set(Keys.HorizontalOffset(), NSNumber.valueOf(horizontalOffset));
         return this;
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     public long getVerticalOffset() {
-        if (data.containsKey(VerticalOffsetKey())) {
-            NSNumber val = (NSNumber) data.get(VerticalOffsetKey());
+        if (has(Keys.VerticalOffset())) {
+            NSNumber val = (NSNumber) get(Keys.VerticalOffset());
             return val.longValue();
         }
         return 0;
@@ -150,35 +180,36 @@ import org.robovm.apple.audiounit.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public AVVideoCleanAperture setVerticalOffset(long offset) {
-        data.put(VerticalOffsetKey(), NSNumber.valueOf(offset));
+    public AVVideoCleanAperture setVerticalOffset(long verticalOffset) {
+        set(Keys.VerticalOffset(), NSNumber.valueOf(verticalOffset));
         return this;
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="AVVideoCleanApertureWidthKey", optional=true)
-    protected static native NSString WidthKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="AVVideoCleanApertureHeightKey", optional=true)
-    protected static native NSString HeightKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="AVVideoCleanApertureHorizontalOffsetKey", optional=true)
-    protected static native NSString HorizontalOffsetKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="AVVideoCleanApertureVerticalOffsetKey", optional=true)
-    protected static native NSString VerticalOffsetKey();
     /*</methods>*/
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    
+    /*<keys>*/
+    @Library("AVFoundation")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="AVVideoCleanApertureWidthKey", optional=true)
+        public static native NSString Width();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="AVVideoCleanApertureHeightKey", optional=true)
+        public static native NSString Height();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="AVVideoCleanApertureHorizontalOffsetKey", optional=true)
+        public static native NSString HorizontalOffset();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="AVVideoCleanApertureVerticalOffsetKey", optional=true)
+        public static native NSString VerticalOffset();
     }
+    /*</keys>*/
 }

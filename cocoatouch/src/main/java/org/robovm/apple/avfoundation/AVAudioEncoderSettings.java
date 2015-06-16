@@ -42,14 +42,14 @@ import org.robovm.apple.audiounit.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(AVAudioEncoderSettings.Marshaler.class)
 /*<annotations>*/@Library("AVFoundation")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class AVAudioEncoderSettings 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+@Marshaler(/*<name>*/AVAudioEncoderSettings/*</name>*/.Marshaler.class)
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/AVAudioEncoderSettings/*</name>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static AVAudioEncoderSettings toObject(Class<AVAudioEncoderSettings> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -66,44 +66,73 @@ import org.robovm.apple.audiounit.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected AVAudioEncoderSettings(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<AVAudioEncoderSettings> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<AVAudioEncoderSettings> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new AVAudioEncoderSettings(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<AVAudioEncoderSettings> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (AVAudioEncoderSettings i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    public AVAudioEncoderSettings() {
-        data = new NSMutableDictionary<>();
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    AVAudioEncoderSettings(NSDictionary<NSString, NSObject> data) {
+        super(data);
     }
-    /*<bind>*/static { Bro.bind(AVAudioEncoderSettings.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
+    public AVAudioEncoderSettings() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
+    }
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
+    }
+    public AVAudioEncoderSettings set(NSString key, NSObject value) {
+        data.put(key, value);
+        return this;
     }
     
-    
+
     public AVAudioQuality getAudioQuality() {
-        if (data.containsKey(AudioQualityKey())) {
-            NSNumber val = (NSNumber) data.get(AudioQualityKey());
+        if (has(Keys.AudioQuality())) {
+            NSNumber val = (NSNumber) get(Keys.AudioQuality());
             return AVAudioQuality.valueOf(val.longValue());
         }
         return null;
     }
-    public AVAudioEncoderSettings setAudioQuality(AVAudioQuality quality) {
-        data.put(AudioQualityKey(), NSNumber.valueOf(quality.value()));
+    public AVAudioEncoderSettings setAudioQuality(AVAudioQuality audioQuality) {
+        set(Keys.AudioQuality(), NSNumber.valueOf(audioQuality.value()));
         return this;
     }
     /**
      * @since Available in iOS 7.0 and later.
      */
     public AVAudioQuality getAudioQualityForVBR() {
-        if (data.containsKey(AudioQualityForVBRKey())) {
-            NSNumber val = (NSNumber) data.get(AudioQualityForVBRKey());
+        if (has(Keys.AudioQualityForVBR())) {
+            NSNumber val = (NSNumber) get(Keys.AudioQualityForVBR());
             return AVAudioQuality.valueOf(val.longValue());
         }
         return null;
@@ -111,27 +140,27 @@ import org.robovm.apple.audiounit.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public AVAudioEncoderSettings setAudioQualityForVBR(AVAudioQuality quality) {
-        data.put(AudioQualityForVBRKey(), NSNumber.valueOf(quality.value()));
+    public AVAudioEncoderSettings setAudioQualityForVBR(AVAudioQuality audioQualityForVBR) {
+        set(Keys.AudioQualityForVBR(), NSNumber.valueOf(audioQualityForVBR.value()));
         return this;
     }
     public int getBitRate() {
-        if (data.containsKey(BitRateKey())) {
-            NSNumber val = (NSNumber) data.get(BitRateKey());
+        if (has(Keys.BitRate())) {
+            NSNumber val = (NSNumber) get(Keys.BitRate());
             return val.intValue();
         }
         return 0;
     }
     public AVAudioEncoderSettings setBitRate(int bitRate) {
-        data.put(BitRateKey(), NSNumber.valueOf(bitRate));
+        set(Keys.BitRate(), NSNumber.valueOf(bitRate));
         return this;
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     public int getBitRatePerChannel() {
-        if (data.containsKey(BitRatePerChannelKey())) {
-            NSNumber val = (NSNumber) data.get(BitRatePerChannelKey());
+        if (has(Keys.BitRatePerChannel())) {
+            NSNumber val = (NSNumber) get(Keys.BitRatePerChannel());
             return val.intValue();
         }
         return 0;
@@ -139,16 +168,16 @@ import org.robovm.apple.audiounit.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public AVAudioEncoderSettings setBitRatePerChannel(int bitRate) {
-        data.put(BitRatePerChannelKey(), NSNumber.valueOf(bitRate));
+    public AVAudioEncoderSettings setBitRatePerChannel(int bitRatePerChannel) {
+        set(Keys.BitRatePerChannel(), NSNumber.valueOf(bitRatePerChannel));
         return this;
     }
     /**
      * @since Available in iOS 7.0 and later.
      */
     public AVAudioBitRateStrategy getBitRateStrategy() {
-        if (data.containsKey(BitRateStrategyKey())) {
-            NSString val = (NSString) data.get(BitRateStrategyKey());
+        if (has(Keys.BitRateStrategy())) {
+            NSString val = (NSString) get(Keys.BitRateStrategy());
             return AVAudioBitRateStrategy.valueOf(val);
         }
         return null;
@@ -157,46 +186,47 @@ import org.robovm.apple.audiounit.*;
      * @since Available in iOS 7.0 and later.
      */
     public AVAudioEncoderSettings setBitRateStrategy(AVAudioBitRateStrategy bitRateStrategy) {
-        data.put(BitRateStrategyKey(), bitRateStrategy.value());
+        set(Keys.BitRateStrategy(), bitRateStrategy.value());
         return this;
     }
     public int getBitDepthHint() {
-        if (data.containsKey(BitDepthHintKey())) {
-            NSNumber val = (NSNumber) data.get(BitDepthHintKey());
+        if (has(Keys.BitDepthHint())) {
+            NSNumber val = (NSNumber) get(Keys.BitDepthHint());
             return val.intValue();
         }
         return 0;
     }
-    public AVAudioEncoderSettings setBitDepthHint(int bitDepth) {
-        data.put(BitDepthHintKey(), NSNumber.valueOf(bitDepth));
+    public AVAudioEncoderSettings setBitDepthHint(int bitDepthHint) {
+        set(Keys.BitDepthHint(), NSNumber.valueOf(bitDepthHint));
         return this;
-    } 
-    /*<methods>*/
-    @GlobalValue(symbol="AVEncoderAudioQualityKey", optional=true)
-    protected static native NSString AudioQualityKey();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="AVEncoderAudioQualityForVBRKey", optional=true)
-    protected static native NSString AudioQualityForVBRKey();
-    @GlobalValue(symbol="AVEncoderBitRateKey", optional=true)
-    protected static native NSString BitRateKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="AVEncoderBitRatePerChannelKey", optional=true)
-    protected static native NSString BitRatePerChannelKey();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="AVEncoderBitRateStrategyKey", optional=true)
-    protected static native NSString BitRateStrategyKey();
-    @GlobalValue(symbol="AVEncoderBitDepthHintKey", optional=true)
-    protected static native NSString BitDepthHintKey();
-    /*</methods>*/
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
     }
+    /*</methods>*/
+    
+    /*<keys>*/
+    @Library("AVFoundation")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        @GlobalValue(symbol="AVEncoderAudioQualityKey", optional=true)
+        public static native NSString AudioQuality();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="AVEncoderAudioQualityForVBRKey", optional=true)
+        public static native NSString AudioQualityForVBR();
+        @GlobalValue(symbol="AVEncoderBitRateKey", optional=true)
+        public static native NSString BitRate();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="AVEncoderBitRatePerChannelKey", optional=true)
+        public static native NSString BitRatePerChannel();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="AVEncoderBitRateStrategyKey", optional=true)
+        public static native NSString BitRateStrategy();
+        @GlobalValue(symbol="AVEncoderBitDepthHintKey", optional=true)
+        public static native NSString BitDepthHint();
+    }
+    /*</keys>*/
 }

@@ -19,11 +19,11 @@ package org.robovm.apple.imageio;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
-
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -34,12 +34,13 @@ import org.robovm.apple.coregraphics.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CGImagePropertyCanonData.Marshaler.class)
 /*<annotations>*/@Library("ImageIO")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class CGImagePropertyCanonData 
-    extends /*<extends>*/Object/*</extends>*/ 
+@Marshaler(/*<name>*/CGImagePropertyCanonData/*</name>*/.Marshaler.class)
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/CGImagePropertyCanonData/*</name>*/ 
+    extends /*<extends>*/CFDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CGImagePropertyCanonData toObject(Class<CGImagePropertyCanonData> cls, long handle, long flags) {
@@ -57,57 +58,78 @@ import org.robovm.apple.coregraphics.*;
             return CFType.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private CFDictionary data;
-    
-    protected CGImagePropertyCanonData(CFDictionary data) {
-        this.data = data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CGImagePropertyCanonData> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CGImagePropertyCanonData> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new CGImagePropertyCanonData(o.get(i, CFDictionary.class)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CGImagePropertyCanonData> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray array = CFMutableArray.create();
+            for (CGImagePropertyCanonData i : l) {
+                array.add(i.getDictionary());
+            }
+            return CFType.Marshaler.toNative(array, flags);
+        }
     }
-    public CGImagePropertyCanonData() {
-        this.data = CFMutableDictionary.create();
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    CGImagePropertyCanonData(CFDictionary data) {
+        super(data);
     }
-    /*<bind>*/static { Bro.bind(CGImagePropertyCanonData.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public CFDictionary getDictionary() {
-        return data;
+    public CGImagePropertyCanonData() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(CGImagePropertyCanon key) {
+        return data.containsKey(key.value());
     }
-    
-    public boolean has(CGImagePropertyCanon property) {
-        return data.containsKey(property.value());
+    public <T extends NativeObject> T get(CGImagePropertyCanon key, Class<T> type) {
+        if (has(key)) {
+            return data.get(key.value(), type);
+        }
+        return null;
     }
-    
+    public CGImagePropertyCanonData set(CGImagePropertyCanon key, NativeObject value) {
+        data.put(key.value(), value);
+        return this;
+    }
+    /*</methods>*/
     public String getString(CGImagePropertyCanon property) {
         if (has(property)) {
-            CFString val = data.get(property.value(), CFString.class);
+            CFString val = get(property, CFString.class);
             return val.toString();
         }
         return null;
     }
     public double getNumber(CGImagePropertyCanon property) {
         if (has(property)) {
-            CFNumber val = data.get(property.value(), CFNumber.class);
+            CFNumber val = get(property, CFNumber.class);
             return val.doubleValue();
         }
         return 0;
     }
     public CGImagePropertyCanonData set(CGImagePropertyCanon property, String value) {
-        data.put(property.value(), new CFString(value));
+        set(property, new CFString(value));
         return this;
     }
     public CGImagePropertyCanonData set(CGImagePropertyCanon property, double value) {
-        data.put(property.value(), CFNumber.valueOf(value));
+        set(property, CFNumber.valueOf(value));
         return this;
     }
-    /*<methods>*/
-    /*</methods>*/
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
-    }
+    
+    /*<keys>*/
+    /*</keys>*/
 }

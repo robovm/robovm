@@ -38,15 +38,15 @@ import org.robovm.apple.corelocation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("UIKit")/*</annotations>*/
-/**
- * @since Available in iOS 7.0 and later.
- */
-@Marshaler(UIContentSizeCategory.Marshaler.class)
+/*<annotations>*/@Library("UIKit") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/UIContentSizeCategory/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIContentSizeCategory/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/UIContentSizeCategory/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static UIContentSizeCategory toObject(Class<UIContentSizeCategory> cls, long handle, long flags) {
@@ -64,39 +64,93 @@ import org.robovm.apple.corelocation.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(UIContentSizeCategory.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    public static final UIContentSizeCategory XS = new UIContentSizeCategory("ExtraSmallValue");
-    public static final UIContentSizeCategory S = new UIContentSizeCategory("SmallValue");
-    public static final UIContentSizeCategory M = new UIContentSizeCategory("MediumValue");
-    public static final UIContentSizeCategory L = new UIContentSizeCategory("LargeValue");
-    public static final UIContentSizeCategory XL = new UIContentSizeCategory("ExtraLargeValue");
-    public static final UIContentSizeCategory XXL = new UIContentSizeCategory("ExtraExtraLargeValue");
-    public static final UIContentSizeCategory XXXL = new UIContentSizeCategory("ExtraExtraExtraLargeValue");
-    public static final UIContentSizeCategory AccessibilityM = new UIContentSizeCategory("AccessibilityMediumValue");
-    public static final UIContentSizeCategory AccessibilityL = new UIContentSizeCategory("AccessibilityLargeValue");
-    public static final UIContentSizeCategory AccessibilityXL = new UIContentSizeCategory("AccessibilityExtraLargeValue");
-    public static final UIContentSizeCategory AccessibilityXXL = new UIContentSizeCategory("AccessibilityExtraExtraLargeValue");
-    public static final UIContentSizeCategory AccessibilityXXXL = new UIContentSizeCategory("AccessibilityExtraExtraExtraLargeValue");
-    private static UIContentSizeCategory[] values = new UIContentSizeCategory[] {XS, S, M, L, XL, XXL, XXXL, AccessibilityM, AccessibilityL, AccessibilityXL, AccessibilityXXL, AccessibilityXXXL};
-    
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private UIContentSizeCategory(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<UIContentSizeCategory> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<UIContentSizeCategory> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(UIContentSizeCategory.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<UIContentSizeCategory> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (UIContentSizeCategory o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*</marshalers>*/
+
+    /*<constants>*/
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final UIContentSizeCategory ExtraSmall = new UIContentSizeCategory("ExtraSmall");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final UIContentSizeCategory Small = new UIContentSizeCategory("Small");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final UIContentSizeCategory Medium = new UIContentSizeCategory("Medium");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final UIContentSizeCategory Large = new UIContentSizeCategory("Large");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final UIContentSizeCategory ExtraLarge = new UIContentSizeCategory("ExtraLarge");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final UIContentSizeCategory ExtraExtraLarge = new UIContentSizeCategory("ExtraExtraLarge");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final UIContentSizeCategory ExtraExtraExtraLarge = new UIContentSizeCategory("ExtraExtraExtraLarge");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final UIContentSizeCategory AccessibilityMedium = new UIContentSizeCategory("AccessibilityMedium");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final UIContentSizeCategory AccessibilityLarge = new UIContentSizeCategory("AccessibilityLarge");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final UIContentSizeCategory AccessibilityExtraLarge = new UIContentSizeCategory("AccessibilityExtraLarge");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final UIContentSizeCategory AccessibilityExtraExtraLarge = new UIContentSizeCategory("AccessibilityExtraExtraLarge");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final UIContentSizeCategory AccessibilityExtraExtraExtraLarge = new UIContentSizeCategory("AccessibilityExtraExtraExtraLarge");
+    /*</constants>*/
+    
+    private static /*<name>*/UIContentSizeCategory/*</name>*/[] values = new /*<name>*/UIContentSizeCategory/*</name>*/[] {/*<value_list>*/ExtraSmall, Small, Medium, Large, ExtraLarge, ExtraExtraLarge, ExtraExtraExtraLarge, AccessibilityMedium, AccessibilityLarge, AccessibilityExtraLarge, AccessibilityExtraExtraLarge, AccessibilityExtraExtraExtraLarge/*</value_list>*/};
+    
+    /*<name>*/UIContentSizeCategory/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static UIContentSizeCategory valueOf(NSString value) {
-        for (UIContentSizeCategory v : values) {
+    public static /*<name>*/UIContentSizeCategory/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/UIContentSizeCategory/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -104,66 +158,74 @@ import org.robovm.apple.corelocation.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/UIContentSizeCategory/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIContentSizeCategoryExtraSmall", optional=true)
-    protected static native NSString ExtraSmallValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIContentSizeCategorySmall", optional=true)
-    protected static native NSString SmallValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIContentSizeCategoryMedium", optional=true)
-    protected static native NSString MediumValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIContentSizeCategoryLarge", optional=true)
-    protected static native NSString LargeValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIContentSizeCategoryExtraLarge", optional=true)
-    protected static native NSString ExtraLargeValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIContentSizeCategoryExtraExtraLarge", optional=true)
-    protected static native NSString ExtraExtraLargeValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIContentSizeCategoryExtraExtraExtraLarge", optional=true)
-    protected static native NSString ExtraExtraExtraLargeValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIContentSizeCategoryAccessibilityMedium", optional=true)
-    protected static native NSString AccessibilityMediumValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIContentSizeCategoryAccessibilityLarge", optional=true)
-    protected static native NSString AccessibilityLargeValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIContentSizeCategoryAccessibilityExtraLarge", optional=true)
-    protected static native NSString AccessibilityExtraLargeValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIContentSizeCategoryAccessibilityExtraExtraLarge", optional=true)
-    protected static native NSString AccessibilityExtraExtraLargeValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIContentSizeCategoryAccessibilityExtraExtraExtraLarge", optional=true)
-    protected static native NSString AccessibilityExtraExtraExtraLargeValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("UIKit") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="UIContentSizeCategoryExtraSmall", optional=true)
+        public static native NSString ExtraSmall();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="UIContentSizeCategorySmall", optional=true)
+        public static native NSString Small();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="UIContentSizeCategoryMedium", optional=true)
+        public static native NSString Medium();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="UIContentSizeCategoryLarge", optional=true)
+        public static native NSString Large();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="UIContentSizeCategoryExtraLarge", optional=true)
+        public static native NSString ExtraLarge();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="UIContentSizeCategoryExtraExtraLarge", optional=true)
+        public static native NSString ExtraExtraLarge();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="UIContentSizeCategoryExtraExtraExtraLarge", optional=true)
+        public static native NSString ExtraExtraExtraLarge();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="UIContentSizeCategoryAccessibilityMedium", optional=true)
+        public static native NSString AccessibilityMedium();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="UIContentSizeCategoryAccessibilityLarge", optional=true)
+        public static native NSString AccessibilityLarge();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="UIContentSizeCategoryAccessibilityExtraLarge", optional=true)
+        public static native NSString AccessibilityExtraLarge();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="UIContentSizeCategoryAccessibilityExtraExtraLarge", optional=true)
+        public static native NSString AccessibilityExtraExtraLarge();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="UIContentSizeCategoryAccessibilityExtraExtraExtraLarge", optional=true)
+        public static native NSString AccessibilityExtraExtraExtraLarge();
+        /*</values>*/
+    }
 }

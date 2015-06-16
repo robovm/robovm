@@ -42,14 +42,14 @@ import org.robovm.apple.audiounit.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(AVAudioSettings.Marshaler.class)
 /*<annotations>*/@Library("AVFoundation")/*</annotations>*/
+@Marshaler(/*<name>*/AVAudioSettings/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/AVAudioSettings/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
-    
+
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static AVAudioSettings toObject(Class<AVAudioSettings> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -66,26 +66,40 @@ import org.robovm.apple.audiounit.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<AVAudioSettings> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<AVAudioSettings> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new AVAudioSettings(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<AVAudioSettings> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (AVAudioSettings i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
 
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected AVAudioSettings(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
+    /*<constructors>*/
+    AVAudioSettings(NSDictionary<NSString, NSObject> data) {
+        super(data);
     }
-    public AVAudioSettings() {
-        data = new NSMutableDictionary<>();
-    }
-    /*<bind>*/static { Bro.bind(AVAudioSettings.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
-    }
-    
+    public AVAudioSettings() {}
+    /*</constructors>*/
+
     private AVAudioEncoderSettings encoderSettings;
     
     public AVAudioEncoderSettings getEncoderSettings() {
@@ -119,87 +133,73 @@ import org.robovm.apple.audiounit.*;
         data.putAll(settings.getDictionary());
         return this;
     }
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
+    }
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
+    }
+    public AVAudioSettings set(NSString key, NSObject value) {
+        data.put(key, value);
+        return this;
+    }
     
+
     @WeaklyLinked
     public AudioFormat getFormat() {
-        if (data.containsKey(FormatIDKey())) {
-            NSNumber val = (NSNumber) data.get(FormatIDKey());
+        if (has(Keys.FormatID())) {
+            NSNumber val = (NSNumber) get(Keys.FormatID());
             return AudioFormat.valueOf(val.longValue());
         }
         return null;
     }
     @WeaklyLinked
     public AVAudioSettings setFormat(AudioFormat format) {
-        data.put(FormatIDKey(), NSNumber.valueOf(format.value()));
+        set(Keys.FormatID(), NSNumber.valueOf(format.value()));
         return this;
     }
     public double getSampleRate() {
-        if (data.containsKey(SampleRateKey())) {
-            NSNumber val = (NSNumber) data.get(SampleRateKey());
+        if (has(Keys.SampleRate())) {
+            NSNumber val = (NSNumber) get(Keys.SampleRate());
             return val.doubleValue();
         }
         return 0;
     }
     public AVAudioSettings setSampleRate(double sampleRate) {
-        data.put(SampleRateKey(), NSNumber.valueOf(sampleRate));
+        set(Keys.SampleRate(), NSNumber.valueOf(sampleRate));
         return this;
     }
     public int getNumberOfChannels() {
-        if (data.containsKey(NumberOfChannelsKey())) {
-            NSNumber val = (NSNumber) data.get(NumberOfChannelsKey());
+        if (has(Keys.NumberOfChannels())) {
+            NSNumber val = (NSNumber) get(Keys.NumberOfChannels());
             return val.intValue();
         }
         return 0;
     }
-    public AVAudioSettings setNumberOfChannels(int channels) {
-        data.put(NumberOfChannelsKey(), NSNumber.valueOf(channels));
-        return this;
-    }
-    public int getLinearPCMBitDepth() {
-        if (data.containsKey(BitDepthKey())) {
-            NSNumber val = (NSNumber) data.get(BitDepthKey());
-            return val.intValue();
-        }
-        return 0;
-    }
-    public AVAudioSettings setLinearPCMBitDepth(int bitDepth) {
-        data.put(BitDepthKey(), NSNumber.valueOf(bitDepth));
-        return this;
-    }
-    public boolean isLinearPCMBigEndian() {
-        if (data.containsKey(IsBigEndianKey())) {
-            NSNumber val = (NSNumber) data.get(IsBigEndianKey());
-            return val.booleanValue();
-        }
-        return false;
-    }
-    public AVAudioSettings setLinearPCMBigEndian(boolean bigEndian) {
-        data.put(IsBigEndianKey(), NSNumber.valueOf(bigEndian));
-        return this;
-    }
-    public boolean isLinearPCMFloat() {
-        if (data.containsKey(IsFloatKey())) {
-            NSNumber val = (NSNumber) data.get(IsFloatKey());
-            return val.booleanValue();
-        }
-        return false;
-    }
-    public AVAudioSettings setLinearPCMFloat(boolean isFloat) {
-        data.put(IsFloatKey(), NSNumber.valueOf(isFloat));
+    public AVAudioSettings setNumberOfChannels(int numberOfChannels) {
+        set(Keys.NumberOfChannels(), NSNumber.valueOf(numberOfChannels));
         return this;
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     public boolean isLinearPCMNonInterleaved() {
-        if (data.containsKey(IsNonInterleaved())) {
-            NSNumber val = (NSNumber) data.get(IsNonInterleaved());
+        if (has(Keys.IsNonInterleaved())) {
+            NSNumber val = (NSNumber) get(Keys.IsNonInterleaved());
             return val.booleanValue();
         }
         return false;
     }
-    public AVAudioSettings setLinearPCMNonInterleaved(boolean nonInterleaved) {
-        data.put(IsNonInterleaved(), NSNumber.valueOf(nonInterleaved));
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public AVAudioSettings setLinearPCMNonInterleaved(boolean linearPCMNonInterleaved) {
+        set(Keys.IsNonInterleaved(), NSNumber.valueOf(linearPCMNonInterleaved));
         return this;
     }
     /**
@@ -207,9 +207,9 @@ import org.robovm.apple.audiounit.*;
      */
     @WeaklyLinked
     public AudioChannelLayout getChannelLayout() {
-        if (data.containsKey(ChannelLayoutKey())) {
-            NSData val = (NSData) data.get(ChannelLayoutKey());
-            val.getStructData(AudioChannelLayout.class);
+        if (has(Keys.ChannelLayout())) {
+            NSData val = (NSData) get(Keys.ChannelLayout());
+            return val.getStructData(AudioChannelLayout.class);
         }
         return null;
     }
@@ -218,36 +218,37 @@ import org.robovm.apple.audiounit.*;
      */
     @WeaklyLinked
     public AVAudioSettings setChannelLayout(AudioChannelLayout channelLayout) {
-        data.put(ChannelLayoutKey(), new NSData(channelLayout));
+        set(Keys.ChannelLayout(), new NSData(channelLayout));
         return this;
     }
-    /*<methods>*/
-    @GlobalValue(symbol="AVFormatIDKey", optional=true)
-    protected static native NSString FormatIDKey();
-    @GlobalValue(symbol="AVSampleRateKey", optional=true)
-    protected static native NSString SampleRateKey();
-    @GlobalValue(symbol="AVNumberOfChannelsKey", optional=true)
-    protected static native NSString NumberOfChannelsKey();
-    @GlobalValue(symbol="AVLinearPCMBitDepthKey", optional=true)
-    protected static native NSString BitDepthKey();
-    @GlobalValue(symbol="AVLinearPCMIsBigEndianKey", optional=true)
-    protected static native NSString IsBigEndianKey();
-    @GlobalValue(symbol="AVLinearPCMIsFloatKey", optional=true)
-    protected static native NSString IsFloatKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="AVLinearPCMIsNonInterleaved", optional=true)
-    protected static native NSString IsNonInterleaved();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="AVChannelLayoutKey", optional=true)
-    protected static native NSString ChannelLayoutKey();
     /*</methods>*/
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    
+    /*<keys>*/
+    @Library("AVFoundation")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        @GlobalValue(symbol="AVFormatIDKey", optional=true)
+        public static native NSString FormatID();
+        @GlobalValue(symbol="AVSampleRateKey", optional=true)
+        public static native NSString SampleRate();
+        @GlobalValue(symbol="AVNumberOfChannelsKey", optional=true)
+        public static native NSString NumberOfChannels();
+        @GlobalValue(symbol="AVLinearPCMBitDepthKey", optional=true)
+        public static native NSString BitDepthKey();
+        @GlobalValue(symbol="AVLinearPCMIsBigEndianKey", optional=true)
+        public static native NSString IsBigEndianKey();
+        @GlobalValue(symbol="AVLinearPCMIsFloatKey", optional=true)
+        public static native NSString IsFloatKey();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="AVLinearPCMIsNonInterleaved", optional=true)
+        public static native NSString IsNonInterleaved();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="AVChannelLayoutKey", optional=true)
+        public static native NSString ChannelLayout();
     }
+    /*</keys>*/
 }

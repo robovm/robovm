@@ -314,9 +314,6 @@ categories:
     UIResponderStandardEditActions@NSObject: {protocol: true}
 
 classes:
-    UIKit:
-        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
-
     # Custom bits
     UIAccessibilityTraits:
         visibility: 'public final'
@@ -327,6 +324,8 @@ classes:
     UIEdgeInsets: {}
     UIOffset: {}
     
+    UIRemoteNotification:
+        extends: NSDictionaryWrapper
     
     UIPrintError:
         extends: NSError
@@ -4264,64 +4263,143 @@ functions:
         name: 'Function__#{g[0]}'
 
 values:
-    NS(TabColumnTerminatorsAttribute)Name:
-        class: NSTextTabOptions
+    NS(TabColumnTerminators)AttributeName:
+        dictionary: NSTextTabOptions
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        parameters:
+            TabColumnTerminators:
+                name: tabColumnTerminatingCharacters
+                type: NSCharacterSet
     NSTextStorage(.*Notification):
         class: NSTextStorage
         name: '#{g[0]}'
         type: NSString
-    NS(.*DocumentAttribute):
-        class: NSAttributedStringDocumentAttribute
+    NS(.*)DocumentAttribute:
+        dictionary: NSAttributedStringDocumentAttributes
+        enum: NSAttributedStringDocumentAttribute
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
-    NS(TextLayoutSectionsAttribute):
-        class: NSAttributedStringDocumentAttribute
+        methods:
+            DocumentType:
+                type: NSDocumentType
+            CharacterEncoding:
+                type: NSStringEncoding
+            DefaultAttributes:
+                type: NSAttributedStringAttributes
+            PaperSize:
+                type: CGSize
+            PaperMargin:
+                type: UIEdgeInsets
+            ViewSize:
+                type: CGSize
+            ViewZoom:
+                type: double
+            ReadOnly:
+                type: boolean
+            BackgroundColor:
+                type: UIColor
+            HyphenationFactor:
+                type: double
+            DefaultTabInterval:
+                type: double
+    NS(TextLayoutSections)Attribute:
+        dictionary: NSAttributedStringDocumentAttributes
+        enum: NSAttributedStringDocumentAttribute
+        constructor_visibility: public
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
-    NS(.*Attribute)Name:
-        class: NSAttributedStringAttribute
+    NS(.*)AttributeName:
+        dictionary: NSAttributedStringAttributes
+        enum: NSAttributedStringAttribute
+        constructor_visibility: public
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
     UITextAttribute(Font):
-        class: NSAttributedStringAttribute
-        name: 'Text#{g[0]}Attribute'
+        dictionary: NSAttributedStringAttributes
+        enum: NSAttributedStringAttribute
+        constructor_visibility: public
+        name: 'Text#{g[0]}'
         type: NSString
-        visibility: protected
+        methods:
+            Font:
+                type: UIFont
+            ParagraphStyle:
+                type: NSParagraphStyle
+            ForegroundColor:
+                type: UIColor
+            BackgroundColor:
+                type: UIColor
+            Kern:
+                name: kerning
+                type: double
+            StrikethroughStyle:
+                type: NSUnderlineStyle
+            UnderlineStyle:
+                type: NSUnderlineStyle
+            StrokeColor:
+                type: UIColor
+            StrokeWidth:
+                type: double
+            Shadow:
+                type: NSShadow
+            TextEffect:
+                type: NSTextEffect
+            Attachment:
+                type: NSTextAttachment
+            Link:
+                type: NSURL
+            BaselineOffset:
+                type: double
+            UnderlineColor:
+                type: UIColor
+            StrikethroughColor:
+                type: UIColor
+            Obliqueness:
+                type: double
+            Expansion:
+                type: double
+            VerticalGlyphForm:
+                name: verticalText
+                type: boolean
+            SpeechPunctuation:
+                type: boolean
+            SpeechLanguage:
+                type: String
+            SpeechPitch:
+                type: double
     UITextAttribute(.*):
-        class: NSAttributedStringAttribute
-        name: '#{g[0]}Attribute'
+        dictionary: NSAttributedStringAttributes
+        enum: NSAttributedStringAttribute
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     NSTextEffect(.*):
-        class: NSTextEffect
-        name: '#{g[0]}Value'
+        enum: NSTextEffect
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     NS(.*)TextDocumentType:
-        class: NSDocumentType
-        name: '#{g[0]}Value'
+        enum: NSDocumentType
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     NSTextLayoutSection(.*):
-        class: NSTextLayoutSection
-        name: '#{g[0]}Key'
+        dictionary: NSTextLayoutSection
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        methods:
+            Orientation:
+                type: NSTextLayoutOrientation
+            Range:
+                type: NSRange
+                hint: Struct<?>
     UILayoutPriority(.*):
         class: UILayoutPriority
         name: '#{g[0]}'
 
     # NSRunLoopMode
     UI(Tracking)RunLoopMode:
-        class: UIRunLoopMode
-        name: '#{g[0]}Value'
-        visibility: protected
+        enum: UIRunLoopMode
+        name: '#{g[0]}'
+        type: NSString
 
     # NSError
     UIPrintErrorDomain:
@@ -4330,10 +4408,9 @@ values:
 
     # UIAccessibility
     UIAccessibility(ScreenChanged|LayoutChanged|Announcement|PageScrolled|PauseAssistiveTechnology|ResumeAssistiveTechnology)Notification:
-        class: UIAccessibilityNotification
+        enum: UIAccessibilityNotification
         name: '#{g[0]}Notification'
-        readonly: true
-        visibility: protected
+        type: int
     UIAccessibility(.*Notification):
         class: UIAccessibilityGlobals
         name: '#{g[0]}'
@@ -4359,10 +4436,10 @@ values:
         type: long
         readonly: true
     UIAccessibilitySpeechAttribute(.*):
-        class: NSAttributedStringAttribute
-        name: 'Speech#{g[0]}Attribute'
+        dictionary: NSAttributedStringAttributes
+        enum: NSAttributedStringAttribute
+        name: 'Speech#{g[0]}'
         type: NSString
-        visibility: protected
 
     # UIActivity
     UIActivityType(.*):
@@ -4371,15 +4448,42 @@ values:
 
     # UIApplication
     UIApplicationLaunchOptionsUserActivity(Type)Key:
-        class: UIApplicationLaunchOptionsUserActivityInfo
-        name: '#{g[0]}Key'
-        type: NSString
-        visibility: protected
-    UIApplicationLaunchOptions(.*Key):
-        class: UIApplicationLaunchOptions
+        dictionary: UIApplicationLaunchOptionsUserActivityInfo
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        mutable: false
+        methods:
+            Type:
+                type: String
+    UIApplicationLaunchOptions(.*)Key:
+        dictionary: UIApplicationLaunchOptions
+        name: '#{g[0]}'
+        type: NSString
+        mutable: false
+        methods:
+            URL:
+                type: NSURL
+            SourceApplication:
+                type: String
+            LocalNotification:
+                type: UILocalNotification
+            Annotation:
+                type: NSPropertyList
+            Location:
+                name: locationStart
+                type: boolean
+            NewsstandDownloads:
+                name: newsstandDownloadIdentifiers
+                type: List<String>
+            BluetoothCentrals:
+                name: bluetoothCentralIdentifiers
+                type: List<String>
+            BluetoothPeripherals:
+                name: bluetoothPeripheralIdentifiers
+                type: List<String>
+            UserActivityDictionary:
+                name: UserActivityInfo
+                type: UIApplicationLaunchOptionsUserActivityInfo
     UIApplication(.*Notification):
         class: UIApplication
         name: '#{g[0]}'
@@ -4403,9 +4507,8 @@ values:
         type: NSString
         visibility: protected
     UIContentSizeCategory(.*):
-        class: UIContentSizeCategory
-        name: '#{g[0]}Value'
-        visibility: protected
+        enum: UIContentSizeCategory
+        name: '#{g[0]}'
         type: NSString
     UIApplication(BackgroundFetchInterval.*):
         class: UIApplication
@@ -4420,16 +4523,14 @@ values:
         class: UIApplication
         name: 'get#{g[0]}'
     UIApplication(.*)ExtensionPointIdentifier:
-        class: UIApplicationExtensionPointIdentifier
-        name: '#{g[0]}Value'
-        visibility: protected
+        enum: UIApplicationExtensionPointIdentifier
+        name: '#{g[0]}'
         type: NSString
 
     # UICollectionView
     UICollectionElementKind(.*):
-        class: UICollectionElementKind
-        name: '#{g[0]}Value'
-        visibility: protected
+        enum: UICollectionElementKind
+        name: '#{g[0]}'
         type: NSString
 
     # UIDevice
@@ -4454,35 +4555,84 @@ values:
 
     # UIFont
     UIFontDescriptor(.*)Attribute:
-        class: UIFontDescriptorAttribute
-        name: '#{g[0]}Value'
-        type: NSString
-        visibility: protected
-    UIFontFeature(.*IdentifierKey):
-        class: UIFontDescriptorAttributes
+        dictionary: UIFontDescriptorAttributes
+        enum: UIFontDescriptorAttribute
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        methods:
+            Family:
+                type: String
+            Name:
+                type: String
+            Face:
+                type: String
+            Size:
+                type: double
+            VisibleName:
+                type: String
+            Matrix:
+                type: CGAffineTransform
+            CharacterSet:
+                type: NSCharacterSet
+            CascadeList:
+                type: NSArray<UIFontDescriptor>
+            Traits:
+                type: UIFontDescriptorTraits
+            FixedAdvance:
+                type: double
+            TextStyle:
+                type: UIFontTextStyle
+            #FeatureSettings:
+                #type:
+#    UIFontFeature(.*Identifier)Key: TODO
+   #     class: UIFontDescriptorAttributes
+   #     name: '#{g[0]}'
+   #     type: NSString
+   #     visibility: protected
+        
+        
     UIFontTextStyle(.*):
-        class: UIFontTextStyle
-        name: '#{g[0]}Value'
-        type: NSString
-        visibility: protected
-    UIFont(.*Trait):
-        class: UIFontDescriptorTraits
+        enum: UIFontTextStyle
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
+    UIFont(.*Trait):
+        dictionary: UIFontDescriptorTraits
+        name: '#{g[0]}'
+        type: NSString
+        methods:
+            SymbolicTrait:
+                name: SymbolicTraits
+                type: UIFontDescriptorSymbolicTraits
+            WeightTrait:
+                type: double
+            WidthTrait:
+                type: double
+            SlantTrait:
+                type: double
     UIFontWeight(.*):
         enum: UIFontWeight
         name: '#{g[0]}'
 
     # UIImagePickerController
     UIImagePickerController(.*):
-        class: UIImagePickerControllerEditingInfo
-        name: '#{g[0]}Key'
+        dictionary: UIImagePickerControllerEditingInfo
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        methods:
+            MediaType:
+                type: String
+            OriginalImage:
+                type: UIImage
+            EditedImage:
+                type: UIImage
+            CropRect:
+                type: CGRect
+            MediaURL:
+                type: NSURL
+            ReferenceURL:
+                type: NSURL
+            MediaMetadata:
+                type: 'Map<String, NSObject>'
 
     # UIKeyCommand
     UIKeyInput(.*):
@@ -4507,10 +4657,12 @@ values:
 
     # UINib
     UINib(ExternalObjects):
-        class: UINibLoadingOptions
-        name: '#{g[0]}Key'
+        dictionary: UINibLoadingOptions
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        methods:
+            ExternalObjects:
+                type: 'Map<String, NSObject>'
 
     # UIOffset
     UIOffset(Zero):
@@ -4518,22 +4670,33 @@ values:
         name: '#{g[0]}'
 
     # UIPageViewController
-    UIPageViewControllerOption(.*Key):
-        class: UIPageViewControllerOptions
+    UIPageViewControllerOption(.*)Key:
+        dictionary: UIPageViewControllerOptions
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        methods:
+            SpineLocation:
+                type: UIPageViewControllerSpineLocation
+            InterPageSpacing:
+                type: double
 
     # UIPasteboard
     UIPasteboard(.*Notification):
         class: UIPasteboard
         name: '#{g[0]}'
         type: NSString
-    UIPasteboardChanged(.*Key):
-        class: UIPasteboardChangedNotificationInfo
+    UIPasteboardChanged(.*)Key:
+        dictionary: UIPasteboardChangedNotification
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        mutable: false
+        methods:
+            TypesAdded:
+                name: addedTypes
+                type: List<String>
+            TypesRemoved:
+                name: removedTypes
+                type: List<String>
     UIPasteboardNameGeneral:
         exclude: true # use UIPasteboard.getGeneralPasteboard() instead
     UI(PasteboardNameFind):
@@ -4544,7 +4707,8 @@ values:
         class: UIPasteboard
         name: 'get#{g[0]}TypeList'
         readonly: true
-        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+        type: List<String>
+        marshaler: NSArray.AsStringListMarshaler
 
     # UIScreen
     UIScreen(.*Notification):
@@ -4591,11 +4755,18 @@ values:
         type: NSString
 
     # UITextInput
-    UITextInputText(.*Key):
-        class: UITextInputTextStyle
+    UITextInputText(.*)Key:
+        dictionary: UITextInputTextStyle
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        methods:
+            BackgroundColor:
+                type: UIColor
+            Color:
+                name: textColor
+                type: UIColor
+            Font:
+                type: UIFont
 
     # UITextInputMode
     UITextInput(.*)Notification:
@@ -4614,9 +4785,9 @@ values:
         class: UIView
         name: '#{g[0]}'
     UILayoutFitting(.*)Size:
-        class: UILayoutFittingSize
-        name: '#{g[0]}Value'
-        visibility: protected
+        enum: UILayoutFittingSize
+        name: '#{g[0]}'
+        type: '@ByVal CGSize'
 
     # UIViewController
     UIViewController(ShowDetailTargetDidChangeNotification):
@@ -4625,16 +4796,14 @@ values:
         type: NSString
 
     # UIViewControllerContextTransitioning
-    UITransitionContext(.*ViewControllerKey):
-        class: UITransitionContextViewControllerType
+    UITransitionContext(.*ViewController)Key:
+        enum: UITransitionContextViewControllerType
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
-    UITransitionContext(.*ViewKey):
-        class: UITransitionContextViewType
+    UITransitionContext(.*View)Key:
+        enum: UITransitionContextViewType
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
 
     # UIWindow
     UIWindow(.*Notification):
@@ -4646,10 +4815,20 @@ values:
         name: '#{g[0]}'
         type: NSString
     UIKeyboard(.*)UserInfoKey:
-        class: UIKeyboardAnimation
-        name: '#{g[0]}Key'
+        dictionary: UIKeyboardAnimation
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        methods:
+            FrameBegin:
+                name: startFrame
+                type: CGRect
+            FrameEnd:
+                name: endFrame
+                type: CGRect
+            AnimationDuration:
+                type: double
+            AnimationCurve:
+                type: UIViewAnimationCurve
     UIWindow(Level.*):
         class: UIWindowLevel
         name: '#{g[0]}'

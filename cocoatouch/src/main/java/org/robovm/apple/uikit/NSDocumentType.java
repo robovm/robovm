@@ -38,46 +38,87 @@ import org.robovm.apple.corelocation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("UIKit")/*</annotations>*/
+/*<annotations>*/@Library("UIKit") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/NSDocumentType/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSDocumentType/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(NSDocumentType.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static final NSDocumentType PlainText = new NSDocumentType("PlainValue");
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static final NSDocumentType RTF = new NSDocumentType("RTFValue");
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static final NSDocumentType RTFD = new NSDocumentType("RTFDValue");
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static final NSDocumentType HTML = new NSDocumentType("HTMLValue");
-    private static NSDocumentType[] values = new NSDocumentType[] {PlainText, RTF, RTFD, HTML};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private NSDocumentType(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    static { Bro.bind(/*<name>*/NSDocumentType/*</name>*/.class); }
+
+    /*<marshalers>*/
+    public static class Marshaler {
+        @MarshalsPointer
+        public static NSDocumentType toObject(Class<NSDocumentType> cls, long handle, long flags) {
+            NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return NSDocumentType.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(NSDocumentType o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(o.value(), flags);
+        }
     }
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<NSDocumentType> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<NSDocumentType> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(NSDocumentType.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<NSDocumentType> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (NSDocumentType o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final NSDocumentType Plain = new NSDocumentType("Plain");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final NSDocumentType RTF = new NSDocumentType("RTF");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final NSDocumentType RTFD = new NSDocumentType("RTFD");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final NSDocumentType HTML = new NSDocumentType("HTML");
+    /*</constants>*/
+    
+    private static /*<name>*/NSDocumentType/*</name>*/[] values = new /*<name>*/NSDocumentType/*</name>*/[] {/*<value_list>*/Plain, RTF, RTFD, HTML/*</value_list>*/};
+    
+    /*<name>*/NSDocumentType/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static NSDocumentType valueOf(NSString value) {
-        for (NSDocumentType v : values) {
+    public static /*<name>*/NSDocumentType/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/NSDocumentType/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -85,26 +126,34 @@ import org.robovm.apple.corelocation.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/NSDocumentType/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSPlainTextDocumentType", optional=true)
-    protected static native NSString PlainValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSRTFTextDocumentType", optional=true)
-    protected static native NSString RTFValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSRTFDTextDocumentType", optional=true)
-    protected static native NSString RTFDValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSHTMLTextDocumentType", optional=true)
-    protected static native NSString HTMLValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("UIKit") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="NSPlainTextDocumentType", optional=true)
+        public static native NSString Plain();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="NSRTFTextDocumentType", optional=true)
+        public static native NSString RTF();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="NSRTFDTextDocumentType", optional=true)
+        public static native NSString RTFD();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="NSHTMLTextDocumentType", optional=true)
+        public static native NSString HTML();
+        /*</values>*/
+    }
 }

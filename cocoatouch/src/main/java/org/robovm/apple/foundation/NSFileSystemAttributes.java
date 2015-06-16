@@ -19,32 +19,35 @@ package org.robovm.apple.foundation;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
-
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.uikit.*;
+import org.robovm.apple.coretext.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coredata.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(NSFileSystemAttributes.Marshaler.class)
 /*<annotations>*/@Library("Foundation")/*</annotations>*/
+@Marshaler(/*<name>*/NSFileSystemAttributes/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSFileSystemAttributes/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
-    
+
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static NSFileSystemAttributes toObject(Class<NSFileSystemAttributes> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -61,41 +64,70 @@ import org.robovm.apple.security.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<NSFileSystemAttributes> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<NSFileSystemAttributes> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new NSFileSystemAttributes(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<NSFileSystemAttributes> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (NSFileSystemAttributes i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
 
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected NSFileSystemAttributes(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
+    /*<constructors>*/
+    NSFileSystemAttributes(NSDictionary<NSString, NSObject> data) {
+        super(data);
     }
-    public NSFileSystemAttributes() {
-        this.data = new NSMutableDictionary<>();
+    public NSFileSystemAttributes() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSFileSystemAttribute key) {
+        return data.containsKey(key.value());
     }
-    /*<bind>*/static { Bro.bind(NSFileSystemAttributes.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
+    public NSObject get(NSFileSystemAttribute key) {
+        if (has(key)) {
+            return data.get(key.value());
+        }
+        return null;
     }
-    
-    public NSFileSystemAttributes set(NSFileSystemAttribute attribute, NSObject value) {
-        data.put(attribute.value(), value);
+    public NSFileSystemAttributes set(NSFileSystemAttribute key, NSObject value) {
+        data.put(key.value(), value);
         return this;
     }
-    public NSObject get(NSFileSystemAttribute attribute) {
-        return data.get(attribute.value());
-    }
-    public boolean contains(NSFileSystemAttribute attribute) {
-        return data.containsKey(attribute.value());
-    }
     
-    
+
+    public long getSystemNumber() {
+        if (has(NSFileSystemAttribute.Number)) {
+            NSNumber val = (NSNumber) get(NSFileSystemAttribute.Number);
+            return val.longValue();
+        }
+        return 0;
+    }
+    public NSFileSystemAttributes setSystemNumber(long systemNumber) {
+        set(NSFileSystemAttribute.Number, NSNumber.valueOf(systemNumber));
+        return this;
+    }
     public long getSize() {
-        if (contains(NSFileSystemAttribute.Size)) {
-            NSNumber val = (NSNumber)get(NSFileSystemAttribute.Size);
+        if (has(NSFileSystemAttribute.Size)) {
+            NSNumber val = (NSNumber) get(NSFileSystemAttribute.Size);
             return val.longValue();
         }
         return 0;
@@ -105,19 +137,19 @@ import org.robovm.apple.security.*;
         return this;
     }
     public long getFreeSize() {
-        if (contains(NSFileSystemAttribute.FreeSize)) {
-            NSNumber val = (NSNumber)get(NSFileSystemAttribute.FreeSize);
+        if (has(NSFileSystemAttribute.FreeSize)) {
+            NSNumber val = (NSNumber) get(NSFileSystemAttribute.FreeSize);
             return val.longValue();
         }
         return 0;
     }
-    public NSFileSystemAttributes setFreeSize(long size) {
-        set(NSFileSystemAttribute.FreeSize, NSNumber.valueOf(size));
+    public NSFileSystemAttributes setFreeSize(long freeSize) {
+        set(NSFileSystemAttribute.FreeSize, NSNumber.valueOf(freeSize));
         return this;
     }
     public long getNodes() {
-        if (contains(NSFileSystemAttribute.Nodes)) {
-            NSNumber val = (NSNumber)get(NSFileSystemAttribute.Nodes);
+        if (has(NSFileSystemAttribute.Nodes)) {
+            NSNumber val = (NSNumber) get(NSFileSystemAttribute.Nodes);
             return val.longValue();
         }
         return 0;
@@ -127,33 +159,18 @@ import org.robovm.apple.security.*;
         return this;
     }
     public long getFreeNodes() {
-        if (contains(NSFileSystemAttribute.FreeNodes)) {
-            NSNumber val = (NSNumber)get(NSFileSystemAttribute.FreeNodes);
+        if (has(NSFileSystemAttribute.FreeNodes)) {
+            NSNumber val = (NSNumber) get(NSFileSystemAttribute.FreeNodes);
             return val.longValue();
         }
         return 0;
     }
-    public NSFileSystemAttributes setFreeNodes(long nodes) {
-        set(NSFileSystemAttribute.FreeNodes, NSNumber.valueOf(nodes));
+    public NSFileSystemAttributes setFreeNodes(long freeNodes) {
+        set(NSFileSystemAttribute.FreeNodes, NSNumber.valueOf(freeNodes));
         return this;
     }
-    public long getSystemNumber() {
-        if (contains(NSFileSystemAttribute.Number)) {
-            NSNumber val = (NSNumber)get(NSFileSystemAttribute.Number);
-            return val.longValue();
-        }
-        return 0;
-    }
-    public NSFileSystemAttributes setSystemNumber(long number) {
-        set(NSFileSystemAttribute.Number, NSNumber.valueOf(number));
-        return this;
-    }
-    /*<methods>*/
     /*</methods>*/
     
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
-    }
+    /*<keys>*/
+    /*</keys>*/
 }

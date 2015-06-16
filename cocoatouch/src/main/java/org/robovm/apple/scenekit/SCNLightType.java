@@ -39,12 +39,15 @@ import org.robovm.apple.opengles.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(SCNLightType.Marshaler.class)
-/*<annotations>*/@Library("SceneKit")/*</annotations>*/
+/*<annotations>*/@Library("SceneKit") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/SCNLightType/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SCNLightType/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/SCNLightType/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static SCNLightType toObject(Class<SCNLightType> cls, long handle, long flags) {
@@ -62,31 +65,49 @@ import org.robovm.apple.opengles.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(SCNLightType.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    public static final SCNLightType Ambient = new SCNLightType("AmbientValue");
-    public static final SCNLightType Omni = new SCNLightType("OmniValue");
-    public static final SCNLightType Directional = new SCNLightType("DirectionalValue");
-    public static final SCNLightType Spot = new SCNLightType("SpotValue");
-    
-    private static SCNLightType[] values = new SCNLightType[] {Ambient, Omni, Directional, Spot};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private SCNLightType(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<SCNLightType> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<SCNLightType> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(SCNLightType.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<SCNLightType> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (SCNLightType o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*</marshalers>*/
+
+    /*<constants>*/
+    public static final SCNLightType Ambient = new SCNLightType("Ambient");
+    public static final SCNLightType Omni = new SCNLightType("Omni");
+    public static final SCNLightType Directional = new SCNLightType("Directional");
+    public static final SCNLightType Spot = new SCNLightType("Spot");
+    /*</constants>*/
+    
+    private static /*<name>*/SCNLightType/*</name>*/[] values = new /*<name>*/SCNLightType/*</name>*/[] {/*<value_list>*/Ambient, Omni, Directional, Spot/*</value_list>*/};
+    
+    /*<name>*/SCNLightType/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static SCNLightType valueOf(NSString value) {
-        for (SCNLightType v : values) {
+    public static /*<name>*/SCNLightType/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/SCNLightType/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -94,14 +115,22 @@ import org.robovm.apple.opengles.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/SCNLightType/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    @GlobalValue(symbol="SCNLightTypeAmbient", optional=true)
-    protected static native NSString AmbientValue();
-    @GlobalValue(symbol="SCNLightTypeOmni", optional=true)
-    protected static native NSString OmniValue();
-    @GlobalValue(symbol="SCNLightTypeDirectional", optional=true)
-    protected static native NSString DirectionalValue();
-    @GlobalValue(symbol="SCNLightTypeSpot", optional=true)
-    protected static native NSString SpotValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("SceneKit") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        @GlobalValue(symbol="SCNLightTypeAmbient", optional=true)
+        public static native NSString Ambient();
+        @GlobalValue(symbol="SCNLightTypeOmni", optional=true)
+        public static native NSString Omni();
+        @GlobalValue(symbol="SCNLightTypeDirectional", optional=true)
+        public static native NSString Directional();
+        @GlobalValue(symbol="SCNLightTypeSpot", optional=true)
+        public static native NSString Spot();
+        /*</values>*/
+    }
 }

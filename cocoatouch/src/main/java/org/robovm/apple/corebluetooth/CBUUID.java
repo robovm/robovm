@@ -60,7 +60,7 @@ import org.robovm.apple.dispatch.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     public static CBUUID create(CBUUIDIdentifier identifier) {
-        return create(identifier.value());
+        return create(identifier.value().toString());
     }
     /*<methods>*/
     @Method(selector = "UUIDWithString:")

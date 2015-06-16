@@ -37,12 +37,15 @@ import org.robovm.apple.metal.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CATransitionType.Marshaler.class)
-/*<annotations>*/@Library("QuartzCore")/*</annotations>*/
+/*<annotations>*/@Library("QuartzCore") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/CATransitionType/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CATransitionType/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/CATransitionType/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CATransitionType toObject(Class<CATransitionType> cls, long handle, long flags) {
@@ -60,43 +63,61 @@ import org.robovm.apple.metal.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(CATransitionType.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public static final CATransitionType Fade = new CATransitionType("FadeValue");
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public static final CATransitionType MoveIn = new CATransitionType("MoveInValue");
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public static final CATransitionType Push = new CATransitionType("PushValue");
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public static final CATransitionType Reveal = new CATransitionType("RevealValue");
-    
-    private static CATransitionType[] values = new CATransitionType[] {Fade, MoveIn, Push, Reveal};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private CATransitionType(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<CATransitionType> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CATransitionType> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(CATransitionType.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CATransitionType> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (CATransitionType o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*</marshalers>*/
+
+    /*<constants>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public static final CATransitionType Fade = new CATransitionType("Fade");
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public static final CATransitionType MoveIn = new CATransitionType("MoveIn");
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public static final CATransitionType Push = new CATransitionType("Push");
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public static final CATransitionType Reveal = new CATransitionType("Reveal");
+    /*</constants>*/
+    
+    private static /*<name>*/CATransitionType/*</name>*/[] values = new /*<name>*/CATransitionType/*</name>*/[] {/*<value_list>*/Fade, MoveIn, Push, Reveal/*</value_list>*/};
+    
+    /*<name>*/CATransitionType/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static CATransitionType valueOf(NSString value) {
-        for (CATransitionType v : values) {
+    public static /*<name>*/CATransitionType/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/CATransitionType/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -104,26 +125,34 @@ import org.robovm.apple.metal.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/CATransitionType/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCATransitionFade", optional=true)
-    protected static native NSString FadeValue();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCATransitionMoveIn", optional=true)
-    protected static native NSString MoveInValue();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCATransitionPush", optional=true)
-    protected static native NSString PushValue();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCATransitionReveal", optional=true)
-    protected static native NSString RevealValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("QuartzCore") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCATransitionFade", optional=true)
+        public static native NSString Fade();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCATransitionMoveIn", optional=true)
+        public static native NSString MoveIn();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCATransitionPush", optional=true)
+        public static native NSString Push();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCATransitionReveal", optional=true)
+        public static native NSString Reveal();
+        /*</values>*/
+    }
 }

@@ -93,40 +93,6 @@ classes:
     AVError:
         extends: NSError
         annotations: ['@StronglyLinked']
-    
-    AVMetadataIdentifierCommon:
-        extends: AVMetadataIdentifier
-    AVMetadataIdentifier3GPUserData:
-        extends: AVMetadataIdentifier
-    AVMetadataIdentifierISOUserData:
-        extends: AVMetadataIdentifier
-    AVMetadataIdentifierQuickTimeUserData:
-        extends: AVMetadataIdentifier
-    AVMetadataIdentifierIcyMetadata:
-        extends: AVMetadataIdentifier
-    AVMetadataIdentifierID3Metadata:
-        extends: AVMetadataIdentifier
-    AVMetadataIdentifieriTunesMetadata:
-        extends: AVMetadataIdentifier
-    AVMetadataIdentifierQuickTimeMetadata:
-        extends: AVMetadataIdentifier
-
-    AVMetadataKeyCommon:
-        extends: AVMetadataKey
-    AVMetadataKey3GPUserData:
-        extends: AVMetadataKey
-    AVMetadataKeyIcyMetadata:
-        extends: AVMetadataKey
-    AVMetadataKeyID3Metadata:
-        extends: AVMetadataKey
-    AVMetadataKeyISOUserData:
-        extends: AVMetadataKey
-    AVMetadataKeyiTunesMetadata:
-        extends: AVMetadataKey
-    AVMetadataKeyQuickTimeMetadata:
-        extends: AVMetadataKey
-    AVMetadataKeyQuickTimeUserData:
-        extends: AVMetadataKey
 
     AVAsset: # DONE
         properties:
@@ -2233,29 +2199,25 @@ values:
 
     # AVAssetExportSession
     AVAssetExportPreset(640x480|960x540|1280x720|1920x1080):
-        class: AVAssetExportPreset
-        name: 'Size#{g[0]}Value'
+        enum: AVAssetExportPreset
+        name: 'Size#{g[0]}'
         type: NSString
-        visibility: protected
     AVAssetExportPreset(.*):
-        class: AVAssetExportPreset
-        name: '#{g[0]}Value'
+        enum: AVAssetExportPreset
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
 
     # AVAssetImageGenerator
     AVAssetImageGeneratorApertureMode(.*):
-        class: AVAssetImageGeneratorApertureMode
-        name: '#{g[0]}Value'
+        enum: AVAssetImageGeneratorApertureMode
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
 
     # AVAssetTrack
     AVTrackAssociationType(.*):
-        class: AVTrackAssociationType
-        name: '#{g[0]}Value'
+        enum: AVTrackAssociationType
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
 
     # AVAudioEngine
     AVAudioEngine(.*Notification):
@@ -2265,49 +2227,52 @@ values:
     
     # AVAudioSession
     AVAudioSessionCategory(.*):
-        class: AVAudioSessionCategory
-        name: '#{g[0]}Value'
+        enum: AVAudioSessionCategory
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     AVAudioSessionLocation(.*):
-        class: AVAudioSessionLocation
-        name: '#{g[0]}Value'
+        enum: AVAudioSessionLocation
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     AVAudioSessionMode(.*):
-        class: AVAudioSessionMode
-        name: '#{g[0]}Value'
+        enum: AVAudioSessionMode
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     AVAudioSessionOrientation(.*):
-        class: AVAudioSessionOrientation
-        name: '#{g[0]}Value'
+        enum: AVAudioSessionOrientation
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     AVAudioSessionPolarPattern(.*):
-        class: AVAudioSessionPolarPattern
-        name: '#{g[0]}Value'
+        enum: AVAudioSessionPolarPattern
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     AVAudioSessionPort(.*):
-        class: AVAudioSessionPort
-        name: '#{g[0]}Value'
+        enum: AVAudioSessionPort
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     AVAudioSession(.*Notification):
         class: AVAudioSession
         name: '#{g[0]}'
         type: NSString
-    AVAudioSessionInterruption(.*Key):
-        class: AVAudioSessionInterruptionNotificationUserInfo
+    AVAudioSessionInterruption(.*)Key:
+        dictionary: AVAudioSessionInterruptionNotification
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
-    AVAudioSessionRouteChange(.*Key):
-        class: AVAudioSessionRouteChangeNotificationUserInfo
+        methods:
+            Type:
+                type: AVAudioSessionInterruptionType
+            Option:
+                name: options
+                type: AVAudioSessionInterruptionOptions
+    AVAudioSessionRouteChange(.*)Key:
+        dictionary: AVAudioSessionRouteChangeNotification
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        methods:
+            Reason:
+                type: AVAudioSessionRouteChangeReason
+            PreviousRoute:
+                type: AVAudioSessionRouteDescription
     AVAudioSession(SilenceSecondaryAudioHintTypeKey):
         class: AVAudioSession
         name: '#{g[0]}'
@@ -2331,15 +2296,13 @@ values:
 
     # AVCaptureSession
     AVCaptureSessionPreset(352x288|640x480|1280x720|1920x1080):
-        class: AVCaptureSessionPreset
-        name: '_#{g[0]}Value'
+        enum: AVCaptureSessionPreset
+        name: 'Size#{g[0]}'
         type: NSString
-        visibility: protected
     AVCaptureSessionPreset(.*):
-        class: AVCaptureSessionPreset
-        name: '#{g[0]}Value'
+        enum: AVCaptureSessionPreset
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     AVCaptureSession(.*Notification):
         class: AVCaptureSession
         name: '#{g[0]}'
@@ -2352,76 +2315,124 @@ values:
 
     # AVLayer
     AVLayerVideoGravity(.*):
-        class: AVLayerVideoGravity
-        name: '#{g[0]}Value'
+        enum: AVLayerVideoGravity
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
 
     # AVMedia
     AVMediaCharacteristic(.*):
-        class: AVMediaCharacteristic
-        name: '#{g[0]}Value'
+        enum: AVMediaCharacteristic
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
 
     # AVMetadataItem
     AVMetadataCommonIdentifier(.*):
-        class: AVMetadataIdentifierCommon
-        name: '#{g[0]}Value'
-        type: NSString
-        visibility: protected
-    AVMetadataIdentifier(.*)UserData(.*):
-        class: 'AVMetadataIdentifier#{g[0]}UserData'
-        name: '#{g[1]}Value'
-        type: NSString
-        visibility: protected
-    AVMetadataIdentifier(.*)Metadata(.*):
-        class: 'AVMetadataIdentifier#{g[0]}Metadata'
-        name: '#{g[1]}Value'
-        type: NSString
-        visibility: protected
-    AVMetadataObjectType(.*):
-        class: AVMetadataObjectType
-        name: '#{g[0]}Value'
-        type: NSString
-        visibility: protected
-    AVMetadataKeySpace(.*):
-        class: AVMetadataKeySpace
-        name: '#{g[0]}Value'
-        type: NSString
-        visibility: protected
-    AVMetadataFormat(.*):
-        class: AVMetadataFormat
-        name: '#{g[0]}Value'
-        type: NSString
-        visibility: protected
-    AVMetadataCommonKey(.*):
-        class: AVMetadataKeyCommon
-        name: '#{g[0]}Value'
-        type: NSString
-        visibility: protected
-    AVMetadata(.*)MetadataKey(.*):
-        class: 'AVMetadataKey#{g[0]}Metadata'
-        name: '#{g[1]}Value'
-        type: NSString
-        visibility: protected
-    AVMetadata(.*)UserDataKey(.*):
-        class: 'AVMetadataKey#{g[0]}UserData'
-        name: '#{g[1]}Value'
-        type: NSString
-        visibility: protected
-    AVMetadataExtraAttribute(.*):
-        class: AVMetadataExtraAttributes
+        enum: AVMetadataIdentifierCommon
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        extends: AVMetadataIdentifier
+    AVMetadataIdentifier3GPUserData(.*):
+        enum: AVMetadataIdentifier3GPUserData
+        name: '#{g[0]}'
+        type: NSString
+        extends: AVMetadataIdentifier
+    AVMetadataIdentifierISOUserData(.*):
+        enum: AVMetadataIdentifierISOUserData
+        name: '#{g[0]}'
+        type: NSString
+        extends: AVMetadataIdentifier
+    AVMetadataIdentifierQuickTimeUserData(.*):
+        enum: AVMetadataIdentifierQuickTimeUserData
+        name: '#{g[0]}'
+        type: NSString
+        extends: AVMetadataIdentifier
+    AVMetadataIdentifierIcyMetadata(.*):
+        enum: AVMetadataIdentifierIcyMetadata
+        name: '#{g[0]}'
+        type: NSString
+        extends: AVMetadataIdentifier
+    AVMetadataIdentifierID3Metadata(.*):
+        enum: AVMetadataIdentifierID3Metadata
+        name: '#{g[0]}'
+        type: NSString
+        extends: AVMetadataIdentifier
+    AVMetadataIdentifieriTunesMetadata(.*):
+        enum: AVMetadataIdentifieriTunesMetadata
+        name: '#{g[0]}'
+        type: NSString
+        extends: AVMetadataIdentifier
+    AVMetadataIdentifierQuickTimeMetadata(.*):
+        enum: AVMetadataIdentifierQuickTimeMetadata
+        name: '#{g[0]}'
+        type: NSString
+        extends: AVMetadataIdentifier
+    AVMetadataObjectType(.*):
+        enum: AVMetadataObjectType
+        name: '#{g[0]}'
+        type: NSString
+    AVMetadataKeySpace(.*):
+        enum: AVMetadataKeySpace
+        name: '#{g[0]}'
+        type: NSString
+    AVMetadataFormat(.*):
+        enum: AVMetadataFormat
+        name: '#{g[0]}'
+        type: NSString
+    AVMetadataCommonKey(.*):
+        enum: AVMetadataKeyCommon
+        name: '#{g[0]}'
+        type: NSString
+        extends: AVMetadataKey
+    AVMetadataKey3GPUserData(.*):
+        enum: AVMetadataKey3GPUserData
+        name: '#{g[0]}'
+        type: NSString
+        extends: AVMetadataKey
+    AVMetadataKeyIcyMetadata(.*):
+        enum: AVMetadataKeyIcyMetadata
+        name: '#{g[0]}'
+        type: NSString
+        extends: AVMetadataKey
+    AVMetadataKeyID3Metadata(.*):
+        enum: AVMetadataKeyID3Metadata
+        name: '#{g[0]}'
+        type: NSString
+        extends: AVMetadataKey
+    AVMetadataKeyISOUserData(.*):
+        enum: AVMetadataKeyISOUserData
+        name: '#{g[0]}'
+        type: NSString
+        extends: AVMetadataKey
+    AVMetadataKeyiTunesMetadata(.*):
+        enum: AVMetadataKeyiTunesMetadata
+        name: '#{g[0]}'
+        type: NSString
+        extends: AVMetadataKey
+    AVMetadataKeyQuickTimeMetadata(.*):
+        enum: AVMetadataKeyQuickTimeMetadata
+        name: '#{g[0]}'
+        type: NSString
+        extends: AVMetadataKey
+    AVMetadataKeyQuickTimeUserData(.*):
+        enum: AVMetadataKeyQuickTimeUserData
+        name: '#{g[0]}'
+        type: NSString
+        extends: AVMetadataKey
+    AVMetadataExtraAttribute(.*)Key:
+        dictionary: AVMetadataExtraAttributes
+        name: '#{g[0]}'
+        type: NSString
+        methods:
+            ValueURI:
+                type: String
+            BaseURI:
+                type: String
 
     # AVOutputSettingsAssistant
     AVOutputSettingsPreset(.*):
-        class: AVOutputSettingsPreset
-        name: '_#{g[0]}Value'
+        enum: AVOutputSettingsPreset
+        name: 'Size#{g[0]}'
         type: NSString
-        visibility: protected
 
     # AVPlayerItem
     AVPlayerItem(.*Notification):
@@ -2436,10 +2447,9 @@ values:
 
     # AVPlayerItemLegibleOutput
     AVPlayerItemLegibleOutputTextStylingResolution(.*):
-        class: AVPlayerItemLegibleOutputTextStylingResolution
-        name: '#{g[0]}Value'
+        enum: AVPlayerItemLegibleOutputTextStylingResolution
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
 
     # AVSampleBufferDisplayLayer
     AVSampleBufferDisplayLayer(.*Notification):
@@ -2458,103 +2468,180 @@ values:
         name: 'get#{g[0]}'
 
     # AVURLAsset
-    AVURLAsset(.*Key):
-        class: AVURLAssetOptions
+    AVURLAsset(.*)Key:
+        dictionary: AVURLAssetOptions
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
-
+        methods:
+            PreferPreciseDurationAndTiming:
+                name: prefersPreciseDurationAndTiming
+                type: boolean
+            ReferenceRestrictions:
+                type: AVAssetReferenceRestrictions
+            HTTPCookies:
+                type: NSArray<NSHTTPCookie>
 
     # Constants
     AVFileType(3.*):
-        class: AVFileType
+        enum: AVFileType
         name: '_#{g[0]}'
-        type: String
+        type: NSString
     AVFileType(.*):
-        class: AVFileType
+        enum: AVFileType
         name: '#{g[0]}'
-        type: String
+        type: NSString
 
     # AudioSettings
     AVAudioBitRateStrategy_(.*):
-        class: AVAudioBitRateStrategy
-        name: '#{g[0]}Value'
+        enum: AVAudioBitRateStrategy
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     AVAudioTimePitchAlgorithm(.*):
-        class: AVAudioTimePitchAlgorithm
-        name: '#{g[0]}Value'
-        type: NSString
-        visibility: protected
-    AVSampleRateConverter(.*Key):
-        class: AVSampleRateConverterSettings
+        enum: AVAudioTimePitchAlgorithm
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
+    AVSampleRateConverter(.*)Key:
+        dictionary: AVSampleRateConverterSettings
+        name: '#{g[0]}'
+        type: NSString
+        methods:
+            Algorithm:
+                type: AVSampleRateConverterAlgorithm
+            AudioQuality:
+                type: AVAudioQuality
     AVSampleRateConverterAlgorithm_(.*):
-        class: AVSampleRateConverterAlgorithm
-        name: '#{g[0]}Value'
-        type: NSString
-        visibility: protected
-    AVEncoder(.*Key):
-        class: AVAudioEncoderSettings
+        enum: AVSampleRateConverterAlgorithm
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
-    AV((ChannelLayout|FormatID|SampleRate|NumberOfChannels)Key):
-        class: AVAudioSettings
+    AVEncoder(.*)Key:
+        dictionary: AVAudioEncoderSettings
         name: '#{g[0]}'
         type: NSString
-        visibility: protected 
-    AVLinearPCM(.*):
-        class: AVAudioSettings
+        methods:
+            AudioQuality:
+                type: AVAudioQuality
+            AudioQualityForVBR:
+                type: AVAudioQuality
+            BitRate:
+                type: int
+            BitRatePerChannel:
+                type: int
+            BitRateStrategy:
+                type: AVAudioBitRateStrategy
+            BitDepthHint:
+                type: int
+    AV(ChannelLayout|FormatID|SampleRate|NumberOfChannels)Key:
+        dictionary: AVAudioSettings
         name: '#{g[0]}'
         type: NSString
-        visibility: protected 
+        methods:
+            FormatID:
+                name: format
+                type: AudioFormat
+                annotations: ['@WeaklyLinked']
+            SampleRate:
+                type: double
+            NumberOfChannels:
+                type: int
+            BitDepth:
+                name: linearPCMBitDepth
+                type: int
+            IsBigEndian:
+                name: linearPCMBigEndian
+                type: boolean
+            IsFloat:
+                name: linearPCMFloat
+                type: boolean
+            IsNonInterleaved:
+                name: linearPCMNonInterleaved
+                type: boolean
+            ChannelLayout:
+                type: AudioChannelLayout
+                annotations: ['@WeaklyLinked']
+    AVLinearPCM(.*).*:
+        dictionary: AVAudioSettings
+        name: '#{g[0]}'
+        type: NSString
 
     # VideoSettings
     AVMediaType(.*):
-        class: AVMediaType
-        name: '#{g[0]}Value'
+        enum: AVMediaType
+        name: '#{g[0]}'
+        type: NSString
+    AVVideoCleanAperture(.+)Key:
+        dictionary: AVVideoCleanAperture
+        name: '#{g[0]}'
+        type: NSString
+        methods:
+            Width:
+                type: long
+            Height:
+                type: long
+            HorizontalOffset:
+                type: long
+            VerticalOffset:
+                type: long
+    AVVideo(AverageBitRate|Quality|MaxKeyFrameInterval|MaxKeyFrameIntervalDuration)Key:
+        dictionary: AVVideoCompressionSettings
+        name: '#{g[0]}'
+        type: NSString
+        methods:
+            AverageBitRate:
+                type: double
+            Quality:
+                type: double
+            MaxKeyFrameInterval:
+                type: double
+            MaxKeyFrameIntervalDuration:
+                type: double
+    AVVideoPixelAspectRatio(.+)Key:
+        class: AVPixelAspectRatio
+        name: '#{g[0]}'
         type: NSString
         visibility: protected
-    AVVideo(CleanApertureKey):
-        class: AVVideoSettings
+    AVVideo(.*)Key:
+        dictionary: AVVideoSettings
         name: '#{g[0]}'
         type: NSString
-        visibility: protected 
-    AVVideoCleanAperture(.*Key):
-        class: AVVideoCleanAperture
-        name: '#{g[0]}'
-        type: NSString
-        visibility: protected  
-    AVVideo((AverageBitRate|Quality|MaxKeyFrameInterval|MaxKeyFrameIntervalDuration)Key):
-        class: AVVideoCompressionSettings
-        name: '#{g[0]}'
-        type: NSString
-        visibility: protected 
-    AVVideo(.*Key):
-        class: AVVideoSettings
-        name: '#{g[0]}'
-        type: NSString
-        visibility: protected        
+        methods:
+            Codec:
+                type: CMVideoCodecType
+                annotations: ['@WeaklyLinked']
+            Width:
+                type: long
+            Height:
+                type: long
+            CleanAperture:
+                type: AVVideoCleanAperture
+            ScalingMode:
+                type: AVVideoScalingMode
+            CompressionSettings:
+                type: AVVideoCompressionSettings
+            AllowFrameReordering:
+                name: allowsFrameReordering
+                type: boolean
+            ProfileLevel:
+                type: AVVideoProfileLevel
+            H264EntropyMode:
+                type: AVVideoH264EntropyMode
+            ExpectedSourceFrameRate:
+                type: double
+            AverageNonDroppableFrameRate:
+                type: double
     AVVideoCodec(.*):
         exclude: true
     AVVideoScalingMode(.*):
-        class: AVVideoScalingMode
-        name: '#{g[0]}Value'
+        enum: AVVideoScalingMode
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     AVVideoProfileLevel(.*):
-        class: AVVideoProfileLevel
-        name: '#{g[0]}Value'
+        enum: AVVideoProfileLevel
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     AVVideoH264EntropyMode(.*):
-        class: AVVideoH264EntropyMode
-        name: '#{g[0]}Value'
+        enum: AVVideoH264EntropyMode
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
 
     # Make sure we don't miss any values if new ones are introduced in a later version
     (k?AV.*):

@@ -34,14 +34,14 @@ import org.robovm.apple.dispatch.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CBCentralManagerScanOptions.Marshaler.class)
 /*<annotations>*/@Library("CoreBluetooth")/*</annotations>*/
+@Marshaler(/*<name>*/CBCentralManagerScanOptions/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CBCentralManagerScanOptions/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static CBCentralManagerScanOptions toObject(Class<CBCentralManagerScanOptions> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -58,44 +58,73 @@ import org.robovm.apple.dispatch.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected CBCentralManagerScanOptions(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CBCentralManagerScanOptions> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CBCentralManagerScanOptions> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new CBCentralManagerScanOptions(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CBCentralManagerScanOptions> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (CBCentralManagerScanOptions i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    public CBCentralManagerScanOptions() {
-    	this.data = new NSMutableDictionary<>();
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    CBCentralManagerScanOptions(NSDictionary<NSString, NSObject> data) {
+        super(data);
     }
-    /*<bind>*/static { Bro.bind(CBCentralManagerScanOptions.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
+    public CBCentralManagerScanOptions() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
+    }
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
+    }
+    public CBCentralManagerScanOptions set(NSString key, NSObject value) {
+        data.put(key, value);
+        return this;
     }
     
-    public boolean isAllowingDuplicates() {
-        if (data.containsKey(AllowDuplicatesKey())) {
-            NSNumber val = (NSNumber)data.get(AllowDuplicatesKey());
+
+    public boolean allowsDuplicates() {
+        if (has(Keys.AllowDuplicates())) {
+            NSNumber val = (NSNumber) get(Keys.AllowDuplicates());
             return val.booleanValue();
         }
         return false;
     }
-    public CBCentralManagerScanOptions setAllowsDuplicates(boolean allowDuplicates) {
-        data.put(AllowDuplicatesKey(), NSNumber.valueOf(allowDuplicates));
+    public CBCentralManagerScanOptions setAllowsDuplicates(boolean allowsDuplicates) {
+        set(Keys.AllowDuplicates(), NSNumber.valueOf(allowsDuplicates));
         return this;
     }
     /**
      * @since Available in iOS 7.0 and later.
      */
-    @SuppressWarnings("unchecked")
     public NSArray<CBUUID> getSolicitedServiceUUIDs() {
-        if (data.containsKey(SolicitedServiceUUIDsKey())) {
-            NSArray<CBUUID> val = (NSArray<CBUUID>)data.get(SolicitedServiceUUIDsKey());
+        if (has(Keys.SolicitedServiceUUIDs())) {
+            NSArray<CBUUID> val = (NSArray<CBUUID>) get(Keys.SolicitedServiceUUIDs());
             return val;
         }
         return null;
@@ -103,22 +132,23 @@ import org.robovm.apple.dispatch.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public CBCentralManagerScanOptions setSolicitedServiceUUIDs(NSArray<CBUUID> uuids) {
-        data.put(SolicitedServiceUUIDsKey(), uuids);
+    public CBCentralManagerScanOptions setSolicitedServiceUUIDs(NSArray<CBUUID> solicitedServiceUUIDs) {
+        set(Keys.SolicitedServiceUUIDs(), solicitedServiceUUIDs);
         return this;
     }
-    /*<methods>*/
-    @GlobalValue(symbol="CBCentralManagerScanOptionAllowDuplicatesKey", optional=true)
-    protected static native NSString AllowDuplicatesKey();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="CBCentralManagerScanOptionSolicitedServiceUUIDsKey", optional=true)
-    protected static native NSString SolicitedServiceUUIDsKey();
     /*</methods>*/
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    
+    /*<keys>*/
+    @Library("CoreBluetooth")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        @GlobalValue(symbol="CBCentralManagerScanOptionAllowDuplicatesKey", optional=true)
+        public static native NSString AllowDuplicates();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="CBCentralManagerScanOptionSolicitedServiceUUIDsKey", optional=true)
+        public static native NSString SolicitedServiceUUIDs();
     }
+    /*</keys>*/
 }

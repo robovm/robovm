@@ -78,8 +78,8 @@ import org.robovm.apple.corefoundation.*;
                 return 0L;
             }
             CFArray array = CFMutableArray.create();
-            for (ABPersonSocialProfileService i : l) {
-                array.add(i.value());
+            for (ABPersonSocialProfileService o : l) {
+                array.add(o.value());
             }
             return CFType.Marshaler.toNative(array, flags);
         }

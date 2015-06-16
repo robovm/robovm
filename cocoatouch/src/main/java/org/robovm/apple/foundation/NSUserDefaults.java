@@ -98,29 +98,29 @@ import org.robovm.apple.dispatch.*;
         setVolatileDomain(domain, domainName);
     }
     public void setVolatileDomain(NSUserDefaultsDomain domainName, NSDictionary<?, ?> domain) {
-        setVolatileDomain(domain, domainName.value());
+        setVolatileDomain(domain, domainName.value().toString());
     } 
     public void setPersistentDomain(String domainName, NSDictionary<?, ?> domain) {
         setPersistentDomain(domain, domainName);
     }
     public void setPersistentDomain(NSUserDefaultsDomain domainName, NSDictionary<?, ?> domain) {
-        setPersistentDomain(domain, domainName.value());
+        setPersistentDomain(domain, domainName.value().toString());
     }
     
     public NSDictionary<?, ?> getVolatileDomain(NSUserDefaultsDomain domainName) {
-        return getVolatileDomain(domainName.value());
+        return getVolatileDomain(domainName.value().toString());
     }
     public void removeVolatileDomain(NSUserDefaultsDomain domainName) {
-        removeVolatileDomain(domainName.value());
+        removeVolatileDomain(domainName.value().toString());
     }
     public NSDictionary<?, ?> getPersistentDomain(NSUserDefaultsDomain domainName) {
-        return getPersistentDomain(domainName.value());
+        return getPersistentDomain(domainName.value().toString());
     }
     public void removePersistentDomain(NSUserDefaultsDomain domainName) {
-        removePersistentDomain(domainName.value());
+        removePersistentDomain(domainName.value().toString());
     }
     public boolean isObjectForced(String key, NSUserDefaultsDomain domain) {
-        return isObjectForced(key, domain.value());
+        return isObjectForced(key, domain.value().toString());
     }
     /*<methods>*/
     @GlobalValue(symbol="NSUserDefaultsDidChangeNotification", optional=true)

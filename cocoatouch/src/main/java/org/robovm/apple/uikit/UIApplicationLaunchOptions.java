@@ -38,14 +38,14 @@ import org.robovm.apple.corelocation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(UIApplicationLaunchOptions.Marshaler.class)
 /*<annotations>*/@Library("UIKit")/*</annotations>*/
+@Marshaler(/*<name>*/UIApplicationLaunchOptions/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIApplicationLaunchOptions/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static UIApplicationLaunchOptions toObject(Class<UIApplicationLaunchOptions> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -62,29 +62,57 @@ import org.robovm.apple.corelocation.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected UIApplicationLaunchOptions(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<UIApplicationLaunchOptions> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<UIApplicationLaunchOptions> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new UIApplicationLaunchOptions(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<UIApplicationLaunchOptions> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (UIApplicationLaunchOptions i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    /*<bind>*/static { Bro.bind(UIApplicationLaunchOptions.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    UIApplicationLaunchOptions(NSDictionary<NSString, NSObject> data) {
+        super(data);
+    }
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
+    }
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
     }
     
+
     /**
      * @since Available in iOS 3.0 and later.
      */
     public NSURL getURL() {
-        if (data.containsKey(URLKey())) {
-            NSURL val = (NSURL) data.get(URLKey());
+        if (has(Keys.URL())) {
+            NSURL val = (NSURL) get(Keys.URL());
             return val;
         }
         return null;
@@ -93,20 +121,9 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 3.0 and later.
      */
     public String getSourceApplication() {
-        if (data.containsKey(SourceApplicationKey())) {
-            NSString val = (NSString) data.get(SourceApplicationKey());
+        if (has(Keys.SourceApplication())) {
+            NSString val = (NSString) get(Keys.SourceApplication());
             return val.toString();
-        }
-        return null;
-    }
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @SuppressWarnings("unchecked")
-    public UIRemoteNotification getRemoteNotication() {
-        if (data.containsKey(RemoteNotificationKey())) {
-            NSDictionary<NSString, NSObject> val = (NSDictionary<NSString, NSObject>) data.get(RemoteNotificationKey());
-            return new UIRemoteNotification(val);
         }
         return null;
     }
@@ -114,8 +131,8 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 4.0 and later.
      */
     public UILocalNotification getLocalNotification() {
-        if (data.containsKey(LocalNotificationKey())) {
-            UILocalNotification val = (UILocalNotification) data.get(LocalNotificationKey());
+        if (has(Keys.LocalNotification())) {
+            UILocalNotification val = (UILocalNotification) get(Keys.LocalNotification());
             return val;
         }
         return null;
@@ -124,8 +141,8 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 3.2 and later.
      */
     public NSPropertyList getAnnotation() {
-        if (data.containsKey(AnnotationKey())) {
-            NSPropertyList val = (NSPropertyList) data.get(AnnotationKey());
+        if (has(Keys.Annotation())) {
+            NSPropertyList val = (NSPropertyList) get(Keys.Annotation());
             return val;
         }
         return null;
@@ -134,8 +151,8 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 4.0 and later.
      */
     public boolean isLocationStart() {
-        if (data.containsKey(LocationKey())) {
-            NSNumber val = (NSNumber) data.get(LocationKey());
+        if (has(Keys.Location())) {
+            NSNumber val = (NSNumber) get(Keys.Location());
             return val.booleanValue();
         }
         return false;
@@ -143,10 +160,9 @@ import org.robovm.apple.corelocation.*;
     /**
      * @since Available in iOS 5.0 and later.
      */
-    @SuppressWarnings("unchecked")
     public List<String> getNewsstandDownloadIdentifiers() {
-        if (data.containsKey(NewsstandDownloadsKey())) {
-            NSArray<NSString> val = (NSArray<NSString>) data.get(NewsstandDownloadsKey());
+        if (has(Keys.NewsstandDownloads())) {
+            NSArray<NSString> val = (NSArray<NSString>) get(Keys.NewsstandDownloads());
             return val.asStringList();
         }
         return null;
@@ -154,10 +170,9 @@ import org.robovm.apple.corelocation.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    @SuppressWarnings("unchecked")
     public List<String> getBluetoothCentralIdentifiers() {
-        if (data.containsKey(BluetoothCentralsKey())) {
-            NSArray<NSString> val = (NSArray<NSString>) data.get(BluetoothCentralsKey());
+        if (has(Keys.BluetoothCentrals())) {
+            NSArray<NSString> val = (NSArray<NSString>) get(Keys.BluetoothCentrals());
             return val.asStringList();
         }
         return null;
@@ -165,10 +180,9 @@ import org.robovm.apple.corelocation.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    @SuppressWarnings("unchecked")
     public List<String> getBluetoothPeripheralIdentifiers() {
-        if (data.containsKey(BluetoothPeripheralsKey())) {
-            NSArray<NSString> val = (NSArray<NSString>) data.get(BluetoothPeripheralsKey());
+        if (has(Keys.BluetoothPeripherals())) {
+            NSArray<NSString> val = (NSArray<NSString>) get(Keys.BluetoothPeripherals());
             return val.asStringList();
         }
         return null;
@@ -176,70 +190,79 @@ import org.robovm.apple.corelocation.*;
     /**
      * @since Available in iOS 8.0 and later.
      */
-    @SuppressWarnings("unchecked")
     public UIApplicationLaunchOptionsUserActivityInfo getUserActivityInfo() {
-        if (data.containsKey(UserActivityDictionaryKey())) {
-            NSDictionary<NSString, NSObject> val = (NSDictionary<NSString, NSObject>) data.get(UserActivityDictionaryKey());
+        if (has(Keys.UserActivityDictionary())) {
+            NSDictionary<NSString, NSObject> val = (NSDictionary<NSString, NSObject>) get(Keys.UserActivityDictionary());
             return new UIApplicationLaunchOptionsUserActivityInfo(val);
         }
         return null;
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="UIApplicationLaunchOptionsURLKey", optional=true)
-    protected static native NSString URLKey();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="UIApplicationLaunchOptionsSourceApplicationKey", optional=true)
-    protected static native NSString SourceApplicationKey();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="UIApplicationLaunchOptionsRemoteNotificationKey", optional=true)
-    protected static native NSString RemoteNotificationKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="UIApplicationLaunchOptionsLocalNotificationKey", optional=true)
-    protected static native NSString LocalNotificationKey();
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @GlobalValue(symbol="UIApplicationLaunchOptionsAnnotationKey", optional=true)
-    protected static native NSString AnnotationKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="UIApplicationLaunchOptionsLocationKey", optional=true)
-    protected static native NSString LocationKey();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="UIApplicationLaunchOptionsNewsstandDownloadsKey", optional=true)
-    protected static native NSString NewsstandDownloadsKey();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIApplicationLaunchOptionsBluetoothCentralsKey", optional=true)
-    protected static native NSString BluetoothCentralsKey();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIApplicationLaunchOptionsBluetoothPeripheralsKey", optional=true)
-    protected static native NSString BluetoothPeripheralsKey();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="UIApplicationLaunchOptionsUserActivityDictionaryKey", optional=true)
-    protected static native NSString UserActivityDictionaryKey();
     /*</methods>*/
-    
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    public UIRemoteNotification getRemoteNotification() {
+        if (has(Keys.RemoteNotification())) {
+            NSDictionary<NSString, NSObject> val = (NSDictionary<NSString, NSObject>) get(Keys.RemoteNotification());
+            return new UIRemoteNotification(val);
+        }
+        return null;
     }
+    
+    /*<keys>*/
+    @Library("UIKit")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="UIApplicationLaunchOptionsURLKey", optional=true)
+        public static native NSString URL();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="UIApplicationLaunchOptionsSourceApplicationKey", optional=true)
+        public static native NSString SourceApplication();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="UIApplicationLaunchOptionsRemoteNotificationKey", optional=true)
+        public static native NSString RemoteNotification();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="UIApplicationLaunchOptionsLocalNotificationKey", optional=true)
+        public static native NSString LocalNotification();
+        /**
+         * @since Available in iOS 3.2 and later.
+         */
+        @GlobalValue(symbol="UIApplicationLaunchOptionsAnnotationKey", optional=true)
+        public static native NSString Annotation();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="UIApplicationLaunchOptionsLocationKey", optional=true)
+        public static native NSString Location();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="UIApplicationLaunchOptionsNewsstandDownloadsKey", optional=true)
+        public static native NSString NewsstandDownloads();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="UIApplicationLaunchOptionsBluetoothCentralsKey", optional=true)
+        public static native NSString BluetoothCentrals();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="UIApplicationLaunchOptionsBluetoothPeripheralsKey", optional=true)
+        public static native NSString BluetoothPeripherals();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="UIApplicationLaunchOptionsUserActivityDictionaryKey", optional=true)
+        public static native NSString UserActivityDictionary();
+    }
+    /*</keys>*/
 }

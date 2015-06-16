@@ -40,12 +40,15 @@ import org.robovm.apple.dispatch.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(NSProgressKind.Marshaler.class)
-/*<annotations>*/@Library("Foundation")/*</annotations>*/
+/*<annotations>*/@Library("Foundation") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/NSProgressKind/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSProgressKind/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/NSProgressKind/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static NSProgressKind toObject(Class<NSProgressKind> cls, long handle, long flags) {
@@ -63,31 +66,49 @@ import org.robovm.apple.dispatch.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(NSProgressKind.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<NSProgressKind> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<NSProgressKind> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(NSProgressKind.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<NSProgressKind> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (NSProgressKind o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public static final NSProgressKind File = new NSProgressKind("FileValue");
+    public static final NSProgressKind File = new NSProgressKind("File");
+    /*</constants>*/
     
-    private static NSProgressKind[] values = new NSProgressKind[] {File};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    private static /*<name>*/NSProgressKind/*</name>*/[] values = new /*<name>*/NSProgressKind/*</name>*/[] {/*<value_list>*/File/*</value_list>*/};
     
-    private NSProgressKind(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/NSProgressKind/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static NSProgressKind valueOf(NSString value) {
-        for (NSProgressKind v : values) {
+    public static /*<name>*/NSProgressKind/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/NSProgressKind/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -95,11 +116,19 @@ import org.robovm.apple.dispatch.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/NSProgressKind/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSProgressKindFile", optional=true)
-    protected static native NSString FileValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("Foundation") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="NSProgressKindFile", optional=true)
+        public static native NSString File();
+        /*</values>*/
+    }
 }

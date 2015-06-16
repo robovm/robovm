@@ -40,12 +40,15 @@ import org.robovm.apple.dispatch.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(NSURLFileSystemProperty.Marshaler.class)
-/*<annotations>*/@Library("Foundation")/*</annotations>*/
+/*<annotations>*/@Library("Foundation") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/NSURLFileSystemProperty/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSURLFileSystemProperty/*</name>*/ 
-    extends /*<extends>*/NSURLProperty/*</extends>*/ 
+    extends /*<extends>*/NSURLProperty/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/NSURLFileSystemProperty/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static NSURLFileSystemProperty toObject(Class<NSURLFileSystemProperty> cls, long handle, long flags) {
@@ -63,7 +66,6 @@ import org.robovm.apple.dispatch.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
     public static class AsListMarshaler {
         @SuppressWarnings("unchecked")
         @MarshalsPointer
@@ -73,8 +75,8 @@ import org.robovm.apple.dispatch.*;
                 return null;
             }
             List<NSURLFileSystemProperty> list = new ArrayList<>();
-            for (NSString str : o) {
-                list.add(NSURLFileSystemProperty.valueOf(str));
+            for (int i = 0; i < o.size(); i++) {
+                list.add(NSURLFileSystemProperty.valueOf(o.get(i)));
             }
             return list;
         }
@@ -83,404 +85,401 @@ import org.robovm.apple.dispatch.*;
             if (l == null) {
                 return 0L;
             }
-            NSMutableArray<NSString> array = new NSMutableArray<>();
-            for (NSURLFileSystemProperty i : l) {
-                array.add(i.value());
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (NSURLFileSystemProperty o : l) {
+                array.add(o.value());
             }
             return NSObject.Marshaler.toNative(array, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(NSURLFileSystemProperty.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    /*</marshalers>*/
+
+    /*<constants>*/
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSURLFileSystemProperty Name = new NSURLFileSystemProperty("NameValue");
+    public static final NSURLFileSystemProperty Name = new NSURLFileSystemProperty("Name");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSURLFileSystemProperty LocalizedName = new NSURLFileSystemProperty("LocalizedNameValue");
+    public static final NSURLFileSystemProperty LocalizedName = new NSURLFileSystemProperty("LocalizedName");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSURLFileSystemProperty IsRegularFile = new NSURLFileSystemProperty("IsRegularFileValue");
+    public static final NSURLFileSystemProperty IsRegularFile = new NSURLFileSystemProperty("IsRegularFile");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSURLFileSystemProperty IsDirectory = new NSURLFileSystemProperty("IsDirectoryValue");
+    public static final NSURLFileSystemProperty IsDirectory = new NSURLFileSystemProperty("IsDirectory");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSURLFileSystemProperty IsSymbolicLink = new NSURLFileSystemProperty("IsSymbolicLinkValue");
+    public static final NSURLFileSystemProperty IsSymbolicLink = new NSURLFileSystemProperty("IsSymbolicLink");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSURLFileSystemProperty IsVolume = new NSURLFileSystemProperty("IsVolumeValue");
+    public static final NSURLFileSystemProperty IsVolume = new NSURLFileSystemProperty("IsVolume");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSURLFileSystemProperty IsPackage = new NSURLFileSystemProperty("IsPackageValue");
+    public static final NSURLFileSystemProperty IsPackage = new NSURLFileSystemProperty("IsPackage");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSURLFileSystemProperty IsSystemImmutable = new NSURLFileSystemProperty("IsSystemImmutableValue");
+    public static final NSURLFileSystemProperty IsSystemImmutable = new NSURLFileSystemProperty("IsSystemImmutable");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSURLFileSystemProperty IsUserImmutable = new NSURLFileSystemProperty("IsUserImmutableValue");
+    public static final NSURLFileSystemProperty IsUserImmutable = new NSURLFileSystemProperty("IsUserImmutable");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSURLFileSystemProperty IsHidden = new NSURLFileSystemProperty("IsHiddenValue");
+    public static final NSURLFileSystemProperty IsHidden = new NSURLFileSystemProperty("IsHidden");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSURLFileSystemProperty HasHiddenExtension = new NSURLFileSystemProperty("HasHiddenExtensionValue");
+    public static final NSURLFileSystemProperty HasHiddenExtension = new NSURLFileSystemProperty("HasHiddenExtension");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSURLFileSystemProperty CreationDate = new NSURLFileSystemProperty("CreationDateValue");
+    public static final NSURLFileSystemProperty CreationDate = new NSURLFileSystemProperty("CreationDate");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSURLFileSystemProperty ContentAccessDate = new NSURLFileSystemProperty("ContentAccessDateValue");
+    public static final NSURLFileSystemProperty ContentAccessDate = new NSURLFileSystemProperty("ContentAccessDate");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSURLFileSystemProperty ContentModificationDate = new NSURLFileSystemProperty("ContentModificationDateValue");
+    public static final NSURLFileSystemProperty ContentModificationDate = new NSURLFileSystemProperty("ContentModificationDate");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSURLFileSystemProperty AttributeModificationDate = new NSURLFileSystemProperty("AttributeModificationDateValue");
+    public static final NSURLFileSystemProperty AttributeModificationDate = new NSURLFileSystemProperty("AttributeModificationDate");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSURLFileSystemProperty LinkCount = new NSURLFileSystemProperty("LinkCountValue");
+    public static final NSURLFileSystemProperty LinkCount = new NSURLFileSystemProperty("LinkCount");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSURLFileSystemProperty ParentDirectoryURL = new NSURLFileSystemProperty("ParentDirectoryURLValue");
+    public static final NSURLFileSystemProperty ParentDirectoryURL = new NSURLFileSystemProperty("ParentDirectoryURL");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSURLFileSystemProperty VolumeURL = new NSURLFileSystemProperty("VolumeURLValue");
+    public static final NSURLFileSystemProperty VolumeURL = new NSURLFileSystemProperty("VolumeURL");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSURLFileSystemProperty TypeIdentifier = new NSURLFileSystemProperty("TypeIdentifierValue");
+    public static final NSURLFileSystemProperty TypeIdentifier = new NSURLFileSystemProperty("TypeIdentifier");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSURLFileSystemProperty LocalizedTypeDescription = new NSURLFileSystemProperty("LocalizedTypeDescriptionValue");
+    public static final NSURLFileSystemProperty LocalizedTypeDescription = new NSURLFileSystemProperty("LocalizedTypeDescription");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSURLFileSystemProperty LabelNumber = new NSURLFileSystemProperty("LabelNumberValue");
+    public static final NSURLFileSystemProperty LabelNumber = new NSURLFileSystemProperty("LabelNumber");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSURLFileSystemProperty LabelColor = new NSURLFileSystemProperty("LabelColorValue");
+    public static final NSURLFileSystemProperty LabelColor = new NSURLFileSystemProperty("LabelColor");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSURLFileSystemProperty LocalizedLabel = new NSURLFileSystemProperty("LocalizedLabelValue");
+    public static final NSURLFileSystemProperty LocalizedLabel = new NSURLFileSystemProperty("LocalizedLabel");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSURLFileSystemProperty EffectiveIcon = new NSURLFileSystemProperty("EffectiveIconValue");
+    public static final NSURLFileSystemProperty EffectiveIcon = new NSURLFileSystemProperty("EffectiveIcon");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSURLFileSystemProperty CustomIcon = new NSURLFileSystemProperty("CustomIconValue");
+    public static final NSURLFileSystemProperty CustomIcon = new NSURLFileSystemProperty("CustomIcon");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final NSURLFileSystemProperty FileResourceIdentifier = new NSURLFileSystemProperty("FileResourceIdentifierValue");
+    public static final NSURLFileSystemProperty FileResourceIdentifier = new NSURLFileSystemProperty("FileResourceIdentifier");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final NSURLFileSystemProperty VolumeIdentifier = new NSURLFileSystemProperty("VolumeIdentifierValue");
+    public static final NSURLFileSystemProperty VolumeIdentifier = new NSURLFileSystemProperty("VolumeIdentifier");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final NSURLFileSystemProperty PreferredIOBlockSize = new NSURLFileSystemProperty("PreferredIOBlockSizeValue");
+    public static final NSURLFileSystemProperty PreferredIOBlockSize = new NSURLFileSystemProperty("PreferredIOBlockSize");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final NSURLFileSystemProperty IsReadable = new NSURLFileSystemProperty("IsReadableValue");
+    public static final NSURLFileSystemProperty IsReadable = new NSURLFileSystemProperty("IsReadable");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final NSURLFileSystemProperty IsWritable = new NSURLFileSystemProperty("IsWritableValue");
+    public static final NSURLFileSystemProperty IsWritable = new NSURLFileSystemProperty("IsWritable");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final NSURLFileSystemProperty IsExecutable = new NSURLFileSystemProperty("IsExecutableValue");
+    public static final NSURLFileSystemProperty IsExecutable = new NSURLFileSystemProperty("IsExecutable");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final NSURLFileSystemProperty FileSecurity = new NSURLFileSystemProperty("FileSecurityValue");
+    public static final NSURLFileSystemProperty FileSecurity = new NSURLFileSystemProperty("FileSecurity");
     /**
      * @since Available in iOS 5.1 and later.
      */
-    public static final NSURLFileSystemProperty IsExcludedFromBackup = new NSURLFileSystemProperty("IsExcludedFromBackupValue");
+    public static final NSURLFileSystemProperty IsExcludedFromBackup = new NSURLFileSystemProperty("IsExcludedFromBackup");
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public static final NSURLFileSystemProperty Path = new NSURLFileSystemProperty("PathValue");
+    public static final NSURLFileSystemProperty Path = new NSURLFileSystemProperty("Path");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final NSURLFileSystemProperty IsMountTrigger = new NSURLFileSystemProperty("IsMountTriggerValue");
+    public static final NSURLFileSystemProperty IsMountTrigger = new NSURLFileSystemProperty("IsMountTrigger");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final NSURLFileSystemProperty GenerationIdentifier = new NSURLFileSystemProperty("GenerationIdentifier");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final NSURLFileSystemProperty DocumentIdentifier = new NSURLFileSystemProperty("DocumentIdentifier");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final NSURLFileSystemProperty AddedToDirectoryDate = new NSURLFileSystemProperty("AddedToDirectoryDate");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final NSURLFileSystemProperty FileResourceType = new NSURLFileSystemProperty("FileResourceTypeValue");
+    public static final NSURLFileSystemProperty FileResourceType = new NSURLFileSystemProperty("FileResourceType");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final NSURLFileSystemProperty GenerationIdentifier = new NSURLFileSystemProperty("GenerationIdentifierValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final NSURLFileSystemProperty DocumentIdentifier = new NSURLFileSystemProperty("DocumentIdentifierValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final NSURLFileSystemProperty AddedToDirectoryDate = new NSURLFileSystemProperty("AddedToDirectoryDateValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final NSURLFileSystemProperty ThumbnailDictionary = new NSURLFileSystemProperty("ThumbnailDictionaryValue");
+    public static final NSURLFileSystemProperty ThumbnailDictionary = new NSURLFileSystemProperty("ThumbnailDictionary");
+    /*</constants>*/
     
+    private static /*<name>*/NSURLFileSystemProperty/*</name>*/[] values = new /*<name>*/NSURLFileSystemProperty/*</name>*/[] {/*<value_list>*/Name, LocalizedName, IsRegularFile, IsDirectory, IsSymbolicLink, IsVolume, IsPackage, IsSystemImmutable, IsUserImmutable, IsHidden, HasHiddenExtension, CreationDate, ContentAccessDate, ContentModificationDate, AttributeModificationDate, LinkCount, ParentDirectoryURL, VolumeURL, TypeIdentifier, LocalizedTypeDescription, LabelNumber, LabelColor, LocalizedLabel, EffectiveIcon, CustomIcon, FileResourceIdentifier, VolumeIdentifier, PreferredIOBlockSize, IsReadable, IsWritable, IsExecutable, FileSecurity, IsExcludedFromBackup, Path, IsMountTrigger, GenerationIdentifier, DocumentIdentifier, AddedToDirectoryDate, FileResourceType, ThumbnailDictionary/*</value_list>*/};
     
-    private static NSURLFileSystemProperty[] values = new NSURLFileSystemProperty[] {Name, LocalizedName, IsRegularFile, IsDirectory, IsSymbolicLink, IsVolume, IsPackage, IsSystemImmutable, 
-        IsUserImmutable, IsHidden, HasHiddenExtension, CreationDate, ContentAccessDate, ContentModificationDate, AttributeModificationDate, LinkCount, ParentDirectoryURL, VolumeURL, TypeIdentifier, 
-        LocalizedTypeDescription, LabelNumber, LabelNumber, LabelColor, LocalizedLabel, EffectiveIcon, CustomIcon, FileResourceIdentifier, VolumeIdentifier, PreferredIOBlockSize, IsReadable, 
-        IsWritable, IsExecutable, FileSecurity, IsMountTrigger, FileResourceType, IsExcludedFromBackup, Path, GenerationIdentifier, DocumentIdentifier, AddedToDirectoryDate, ThumbnailDictionary};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private NSURLFileSystemProperty(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/NSURLFileSystemProperty/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static NSURLFileSystemProperty valueOf(NSString value) {
-        for (NSURLFileSystemProperty v : values) {
+    public static /*<name>*/NSURLFileSystemProperty/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/NSURLFileSystemProperty/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
         }
-        return null;
+        throw new IllegalArgumentException("No constant with value " + value + " found in " 
+            + /*<name>*/NSURLFileSystemProperty/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSURLNameKey", optional=true)
-    protected static native NSString NameValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSURLLocalizedNameKey", optional=true)
-    protected static native NSString LocalizedNameValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSURLIsRegularFileKey", optional=true)
-    protected static native NSString IsRegularFileValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSURLIsDirectoryKey", optional=true)
-    protected static native NSString IsDirectoryValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSURLIsSymbolicLinkKey", optional=true)
-    protected static native NSString IsSymbolicLinkValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSURLIsVolumeKey", optional=true)
-    protected static native NSString IsVolumeValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSURLIsPackageKey", optional=true)
-    protected static native NSString IsPackageValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSURLIsSystemImmutableKey", optional=true)
-    protected static native NSString IsSystemImmutableValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSURLIsUserImmutableKey", optional=true)
-    protected static native NSString IsUserImmutableValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSURLIsHiddenKey", optional=true)
-    protected static native NSString IsHiddenValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSURLHasHiddenExtensionKey", optional=true)
-    protected static native NSString HasHiddenExtensionValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSURLCreationDateKey", optional=true)
-    protected static native NSString CreationDateValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSURLContentAccessDateKey", optional=true)
-    protected static native NSString ContentAccessDateValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSURLContentModificationDateKey", optional=true)
-    protected static native NSString ContentModificationDateValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSURLAttributeModificationDateKey", optional=true)
-    protected static native NSString AttributeModificationDateValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSURLLinkCountKey", optional=true)
-    protected static native NSString LinkCountValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSURLParentDirectoryURLKey", optional=true)
-    protected static native NSString ParentDirectoryURLValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSURLVolumeURLKey", optional=true)
-    protected static native NSString VolumeURLValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSURLTypeIdentifierKey", optional=true)
-    protected static native NSString TypeIdentifierValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSURLLocalizedTypeDescriptionKey", optional=true)
-    protected static native NSString LocalizedTypeDescriptionValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSURLLabelNumberKey", optional=true)
-    protected static native NSString LabelNumberValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSURLLabelColorKey", optional=true)
-    protected static native NSString LabelColorValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSURLLocalizedLabelKey", optional=true)
-    protected static native NSString LocalizedLabelValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSURLEffectiveIconKey", optional=true)
-    protected static native NSString EffectiveIconValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSURLCustomIconKey", optional=true)
-    protected static native NSString CustomIconValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSURLFileResourceIdentifierKey", optional=true)
-    protected static native NSString FileResourceIdentifierValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSURLVolumeIdentifierKey", optional=true)
-    protected static native NSString VolumeIdentifierValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSURLPreferredIOBlockSizeKey", optional=true)
-    protected static native NSString PreferredIOBlockSizeValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSURLIsReadableKey", optional=true)
-    protected static native NSString IsReadableValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSURLIsWritableKey", optional=true)
-    protected static native NSString IsWritableValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSURLIsExecutableKey", optional=true)
-    protected static native NSString IsExecutableValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSURLFileSecurityKey", optional=true)
-    protected static native NSString FileSecurityValue();
-    /**
-     * @since Available in iOS 5.1 and later.
-     */
-    @GlobalValue(symbol="NSURLIsExcludedFromBackupKey", optional=true)
-    protected static native NSString IsExcludedFromBackupValue();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="NSURLPathKey", optional=true)
-    protected static native NSString PathValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSURLIsMountTriggerKey", optional=true)
-    protected static native NSString IsMountTriggerValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="NSURLGenerationIdentifierKey", optional=true)
-    protected static native NSString GenerationIdentifierValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="NSURLDocumentIdentifierKey", optional=true)
-    protected static native NSString DocumentIdentifierValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="NSURLAddedToDirectoryDateKey", optional=true)
-    protected static native NSString AddedToDirectoryDateValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSURLFileResourceTypeKey", optional=true)
-    protected static native NSString FileResourceTypeValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="NSURLThumbnailDictionaryKey", optional=true)
-    protected static native NSString ThumbnailDictionaryValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("Foundation") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSURLNameKey", optional=true)
+        public static native NSString Name();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSURLLocalizedNameKey", optional=true)
+        public static native NSString LocalizedName();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSURLIsRegularFileKey", optional=true)
+        public static native NSString IsRegularFile();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSURLIsDirectoryKey", optional=true)
+        public static native NSString IsDirectory();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSURLIsSymbolicLinkKey", optional=true)
+        public static native NSString IsSymbolicLink();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSURLIsVolumeKey", optional=true)
+        public static native NSString IsVolume();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSURLIsPackageKey", optional=true)
+        public static native NSString IsPackage();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSURLIsSystemImmutableKey", optional=true)
+        public static native NSString IsSystemImmutable();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSURLIsUserImmutableKey", optional=true)
+        public static native NSString IsUserImmutable();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSURLIsHiddenKey", optional=true)
+        public static native NSString IsHidden();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSURLHasHiddenExtensionKey", optional=true)
+        public static native NSString HasHiddenExtension();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSURLCreationDateKey", optional=true)
+        public static native NSString CreationDate();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSURLContentAccessDateKey", optional=true)
+        public static native NSString ContentAccessDate();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSURLContentModificationDateKey", optional=true)
+        public static native NSString ContentModificationDate();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSURLAttributeModificationDateKey", optional=true)
+        public static native NSString AttributeModificationDate();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSURLLinkCountKey", optional=true)
+        public static native NSString LinkCount();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSURLParentDirectoryURLKey", optional=true)
+        public static native NSString ParentDirectoryURL();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSURLVolumeURLKey", optional=true)
+        public static native NSString VolumeURL();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSURLTypeIdentifierKey", optional=true)
+        public static native NSString TypeIdentifier();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSURLLocalizedTypeDescriptionKey", optional=true)
+        public static native NSString LocalizedTypeDescription();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSURLLabelNumberKey", optional=true)
+        public static native NSString LabelNumber();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSURLLabelColorKey", optional=true)
+        public static native NSString LabelColor();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSURLLocalizedLabelKey", optional=true)
+        public static native NSString LocalizedLabel();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSURLEffectiveIconKey", optional=true)
+        public static native NSString EffectiveIcon();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSURLCustomIconKey", optional=true)
+        public static native NSString CustomIcon();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSURLFileResourceIdentifierKey", optional=true)
+        public static native NSString FileResourceIdentifier();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSURLVolumeIdentifierKey", optional=true)
+        public static native NSString VolumeIdentifier();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSURLPreferredIOBlockSizeKey", optional=true)
+        public static native NSString PreferredIOBlockSize();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSURLIsReadableKey", optional=true)
+        public static native NSString IsReadable();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSURLIsWritableKey", optional=true)
+        public static native NSString IsWritable();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSURLIsExecutableKey", optional=true)
+        public static native NSString IsExecutable();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSURLFileSecurityKey", optional=true)
+        public static native NSString FileSecurity();
+        /**
+         * @since Available in iOS 5.1 and later.
+         */
+        @GlobalValue(symbol="NSURLIsExcludedFromBackupKey", optional=true)
+        public static native NSString IsExcludedFromBackup();
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        @GlobalValue(symbol="NSURLPathKey", optional=true)
+        public static native NSString Path();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSURLIsMountTriggerKey", optional=true)
+        public static native NSString IsMountTrigger();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="NSURLGenerationIdentifierKey", optional=true)
+        public static native NSString GenerationIdentifier();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="NSURLDocumentIdentifierKey", optional=true)
+        public static native NSString DocumentIdentifier();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="NSURLAddedToDirectoryDateKey", optional=true)
+        public static native NSString AddedToDirectoryDate();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSURLFileResourceTypeKey", optional=true)
+        public static native NSString FileResourceType();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="NSURLThumbnailDictionaryKey", optional=true)
+        public static native NSString ThumbnailDictionary();
+        /*</values>*/
+    }
 }

@@ -39,14 +39,14 @@ import org.robovm.apple.opengles.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(SCNSceneSourceUnit.Marshaler.class)
 /*<annotations>*/@Library("SceneKit")/*</annotations>*/
+@Marshaler(/*<name>*/SCNSceneSourceUnit/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SCNSceneSourceUnit/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static SCNSceneSourceUnit toObject(Class<SCNSceneSourceUnit> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -63,46 +63,88 @@ import org.robovm.apple.opengles.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected SCNSceneSourceUnit(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<SCNSceneSourceUnit> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<SCNSceneSourceUnit> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new SCNSceneSourceUnit(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<SCNSceneSourceUnit> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (SCNSceneSourceUnit i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    /*<bind>*/static { Bro.bind(SCNSceneSourceUnit.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    SCNSceneSourceUnit(NSDictionary<NSString, NSObject> data) {
+        super(data);
+    }
+    public SCNSceneSourceUnit() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
+    }
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
+    }
+    public SCNSceneSourceUnit set(NSString key, NSObject value) {
+        data.put(key, value);
+        return this;
     }
     
+
     public String getName() {
-        if (data.containsKey(UnitNameKey())) {
-            NSString val = (NSString) data.get(UnitNameKey());
+        if (has(Keys.Name())) {
+            NSString val = (NSString) get(Keys.Name());
             return val.toString();
         }
         return null;
     }
+    public SCNSceneSourceUnit setName(String name) {
+        set(Keys.Name(), new NSString(name));
+        return this;
+    }
     public double getMetersPerUnit() {
-        if (data.containsKey(UnitMeterKey())) {
-            NSNumber val = (NSNumber) data.get(UnitMeterKey());
+        if (has(Keys.Meter())) {
+            NSNumber val = (NSNumber) get(Keys.Meter());
             return val.doubleValue();
         }
         return 0;
     }
-    /*<methods>*/
-    @GlobalValue(symbol="SCNSceneSourceAssetUnitNameKey", optional=true)
-    protected static native NSString UnitNameKey();
-    @GlobalValue(symbol="SCNSceneSourceAssetUnitMeterKey", optional=true)
-    protected static native NSString UnitMeterKey();
-    /*</methods>*/
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    public SCNSceneSourceUnit setMetersPerUnit(double metersPerUnit) {
+        set(Keys.Meter(), NSNumber.valueOf(metersPerUnit));
+        return this;
     }
+    /*</methods>*/
+    
+    /*<keys>*/
+    @Library("SceneKit")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        @GlobalValue(symbol="SCNSceneSourceAssetUnitNameKey", optional=true)
+        public static native NSString Name();
+        @GlobalValue(symbol="SCNSceneSourceAssetUnitMeterKey", optional=true)
+        public static native NSString Meter();
+    }
+    /*</keys>*/
 }

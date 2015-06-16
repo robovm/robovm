@@ -38,12 +38,15 @@ import org.robovm.apple.uikit.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CIFilterAttributeType.Marshaler.class)
-/*<annotations>*/@Library("CoreImage")/*</annotations>*/
+/*<annotations>*/@Library("CoreImage") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/CIFilterAttributeType/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CIFilterAttributeType/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
-    
+
+    static { Bro.bind(/*<name>*/CIFilterAttributeType/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CIFilterAttributeType toObject(Class<CIFilterAttributeType> cls, long handle, long flags) {
@@ -61,54 +64,71 @@ import org.robovm.apple.uikit.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<CIFilterAttributeType> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CIFilterAttributeType> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(CIFilterAttributeType.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CIFilterAttributeType> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (CIFilterAttributeType o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(CIFilterAttributeType.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    public static final CIFilterAttributeType Time = new CIFilterAttributeType("TimeValue");
-    public static final CIFilterAttributeType Scalar = new CIFilterAttributeType("ScalarValue");
-    public static final CIFilterAttributeType Distance = new CIFilterAttributeType("DistanceValue");
-    public static final CIFilterAttributeType Angle = new CIFilterAttributeType("AngleValue");
-    public static final CIFilterAttributeType Boolean = new CIFilterAttributeType("BooleanValue");
+    /*<constants>*/
+    public static final CIFilterAttributeType Time = new CIFilterAttributeType("Time");
+    public static final CIFilterAttributeType Scalar = new CIFilterAttributeType("Scalar");
+    public static final CIFilterAttributeType Distance = new CIFilterAttributeType("Distance");
+    public static final CIFilterAttributeType Angle = new CIFilterAttributeType("Angle");
+    public static final CIFilterAttributeType Boolean = new CIFilterAttributeType("Boolean");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final CIFilterAttributeType Integer = new CIFilterAttributeType("IntegerValue");
+    public static final CIFilterAttributeType Integer = new CIFilterAttributeType("Integer");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final CIFilterAttributeType Count = new CIFilterAttributeType("CountValue");
-    public static final CIFilterAttributeType Position = new CIFilterAttributeType("PositionValue");
-    public static final CIFilterAttributeType Offset = new CIFilterAttributeType("OffsetValue");
-    public static final CIFilterAttributeType Position3 = new CIFilterAttributeType("Position3Value");
-    public static final CIFilterAttributeType Rectangle = new CIFilterAttributeType("RectangleValue");
-    public static final CIFilterAttributeType Color = new CIFilterAttributeType("ColorValue");
+    public static final CIFilterAttributeType Count = new CIFilterAttributeType("Count");
+    public static final CIFilterAttributeType Position = new CIFilterAttributeType("Position");
+    public static final CIFilterAttributeType Offset = new CIFilterAttributeType("Offset");
+    public static final CIFilterAttributeType Position3 = new CIFilterAttributeType("Position3");
+    public static final CIFilterAttributeType Rectangle = new CIFilterAttributeType("Rectangle");
+    public static final CIFilterAttributeType Color = new CIFilterAttributeType("Color");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final CIFilterAttributeType Image = new CIFilterAttributeType("ImageValue");
+    public static final CIFilterAttributeType Image = new CIFilterAttributeType("Image");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final CIFilterAttributeType Transform = new CIFilterAttributeType("TransformValue");
+    public static final CIFilterAttributeType Transform = new CIFilterAttributeType("Transform");
+    /*</constants>*/
     
-    private static CIFilterAttributeType[] values = new CIFilterAttributeType[] {Time, Scalar, Distance, Angle, Boolean, 
-        Integer, Count, Position, Offset, Position3, Rectangle, Color, Image, Transform};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    private static /*<name>*/CIFilterAttributeType/*</name>*/[] values = new /*<name>*/CIFilterAttributeType/*</name>*/[] {/*<value_list>*/Time, Scalar, Distance, Angle, Boolean, Integer, Count, Position, Offset, Position3, Rectangle, Color, Image, Transform/*</value_list>*/};
     
-    private CIFilterAttributeType(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/CIFilterAttributeType/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static CIFilterAttributeType valueOf(NSString value) {
-        for (CIFilterAttributeType v : values) {
+    public static /*<name>*/CIFilterAttributeType/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/CIFilterAttributeType/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -116,46 +136,54 @@ import org.robovm.apple.uikit.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/CIFilterAttributeType/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    @GlobalValue(symbol="kCIAttributeTypeTime", optional=true)
-    protected static native NSString TimeValue();
-    @GlobalValue(symbol="kCIAttributeTypeScalar", optional=true)
-    protected static native NSString ScalarValue();
-    @GlobalValue(symbol="kCIAttributeTypeDistance", optional=true)
-    protected static native NSString DistanceValue();
-    @GlobalValue(symbol="kCIAttributeTypeAngle", optional=true)
-    protected static native NSString AngleValue();
-    @GlobalValue(symbol="kCIAttributeTypeBoolean", optional=true)
-    protected static native NSString BooleanValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="kCIAttributeTypeInteger", optional=true)
-    protected static native NSString IntegerValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="kCIAttributeTypeCount", optional=true)
-    protected static native NSString CountValue();
-    @GlobalValue(symbol="kCIAttributeTypePosition", optional=true)
-    protected static native NSString PositionValue();
-    @GlobalValue(symbol="kCIAttributeTypeOffset", optional=true)
-    protected static native NSString OffsetValue();
-    @GlobalValue(symbol="kCIAttributeTypePosition3", optional=true)
-    protected static native NSString Position3Value();
-    @GlobalValue(symbol="kCIAttributeTypeRectangle", optional=true)
-    protected static native NSString RectangleValue();
-    @GlobalValue(symbol="kCIAttributeTypeColor", optional=true)
-    protected static native NSString ColorValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="kCIAttributeTypeImage", optional=true)
-    protected static native NSString ImageValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="kCIAttributeTypeTransform", optional=true)
-    protected static native NSString TransformValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("CoreImage") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        @GlobalValue(symbol="kCIAttributeTypeTime", optional=true)
+        public static native NSString Time();
+        @GlobalValue(symbol="kCIAttributeTypeScalar", optional=true)
+        public static native NSString Scalar();
+        @GlobalValue(symbol="kCIAttributeTypeDistance", optional=true)
+        public static native NSString Distance();
+        @GlobalValue(symbol="kCIAttributeTypeAngle", optional=true)
+        public static native NSString Angle();
+        @GlobalValue(symbol="kCIAttributeTypeBoolean", optional=true)
+        public static native NSString Boolean();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="kCIAttributeTypeInteger", optional=true)
+        public static native NSString Integer();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="kCIAttributeTypeCount", optional=true)
+        public static native NSString Count();
+        @GlobalValue(symbol="kCIAttributeTypePosition", optional=true)
+        public static native NSString Position();
+        @GlobalValue(symbol="kCIAttributeTypeOffset", optional=true)
+        public static native NSString Offset();
+        @GlobalValue(symbol="kCIAttributeTypePosition3", optional=true)
+        public static native NSString Position3();
+        @GlobalValue(symbol="kCIAttributeTypeRectangle", optional=true)
+        public static native NSString Rectangle();
+        @GlobalValue(symbol="kCIAttributeTypeColor", optional=true)
+        public static native NSString Color();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="kCIAttributeTypeImage", optional=true)
+        public static native NSString Image();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="kCIAttributeTypeTransform", optional=true)
+        public static native NSString Transform();
+        /*</values>*/
+    }
 }

@@ -56,6 +56,7 @@ import org.robovm.apple.audiounit.*;
     /*<constructors>*/
     public AVAssetWriterInputPixelBufferAdaptor() {}
     protected AVAssetWriterInputPixelBufferAdaptor(SkipInit skipInit) { super(skipInit); }
+    @WeaklyLinked
     public AVAssetWriterInputPixelBufferAdaptor(AVAssetWriterInput input, CVPixelBufferAttributes sourcePixelBufferAttributes) { super((SkipInit) null); initObject(init(input, sourcePixelBufferAttributes)); }
     /*</constructors>*/
     /*<properties>*/

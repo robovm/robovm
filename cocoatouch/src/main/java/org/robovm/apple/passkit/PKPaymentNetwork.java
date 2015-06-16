@@ -80,8 +80,8 @@ import org.robovm.apple.addressbook.*;
                 return 0L;
             }
             NSArray<NSString> array = new NSMutableArray<>();
-            for (PKPaymentNetwork i : l) {
-                array.add(i.value());
+            for (PKPaymentNetwork o : l) {
+                array.add(o.value());
             }
             return NSObject.Marshaler.toNative(array, flags);
         }

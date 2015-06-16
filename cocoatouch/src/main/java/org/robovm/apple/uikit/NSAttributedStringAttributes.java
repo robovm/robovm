@@ -19,28 +19,33 @@ package org.robovm.apple.uikit;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
-
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
-import org.robovm.apple.uikit.*;
+import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.coredata.*;
+import org.robovm.apple.coreimage.*;
+import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(NSAttributedStringAttributes.Marshaler.class)
 /*<annotations>*/@Library("UIKit")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class NSAttributedStringAttributes 
-    extends /*<extends>*/Object/*</extends>*/ 
+@Marshaler(/*<name>*/NSAttributedStringAttributes/*</name>*/.Marshaler.class)
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/NSAttributedStringAttributes/*</name>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static NSAttributedStringAttributes toObject(Class<NSAttributedStringAttributes> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -57,54 +62,126 @@ import org.robovm.apple.uikit.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<NSAttributedStringAttributes> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<NSAttributedStringAttributes> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new NSAttributedStringAttributes(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<NSAttributedStringAttributes> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (NSAttributedStringAttributes i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constructors>*/
     public NSAttributedStringAttributes(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
+        super(data);
     }
-    public NSAttributedStringAttributes() {
-        this.data = new NSMutableDictionary<>();
+    public NSAttributedStringAttributes() {}
+    /*</constructors>*/
+
+    public boolean has(String key) {
+        return data.containsKey(new NSString(key));
     }
-    /*<bind>*/static { Bro.bind(NSAttributedStringAttributes.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
+    public NSObject get(String key) {
+        if (has(key)) {
+            return data.get(new NSString(key));
+        }
+        return null;
     }
-    
-    public NSAttributedStringAttributes set(String attribute, NSObject value) {
-        data.put(new NSString(attribute), value);
+    public NSAttributedStringAttributes set(String key, NSObject value) {
+        data.put(new NSString(key), value);
         return this;
     }
-    public NSAttributedStringAttributes set(NSAttributedStringAttribute attribute, NSObject value) {
-        data.put(attribute.value(), value);
+    /*<methods>*/
+    public boolean has(NSAttributedStringAttribute key) {
+        return data.containsKey(key.value());
+    }
+    public NSObject get(NSAttributedStringAttribute key) {
+        if (has(key)) {
+            return data.get(key.value());
+        }
+        return null;
+    }
+    public NSAttributedStringAttributes set(NSAttributedStringAttribute key, NSObject value) {
+        data.put(key.value(), value);
         return this;
     }
-    public NSObject get(String attribute) {
-        return data.get(new NSString(attribute));
-    }
-    public NSObject get(NSAttributedStringAttribute attribute) {
-        return data.get(attribute.value());
-    }
-    public boolean contains(String attribute) {
-        return data.containsKey(new NSString(attribute));
-    }
-    public boolean contains(NSAttributedStringAttribute attribute) {
-        return data.containsKey(attribute.value());
-    }
     
-    
+
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public boolean isSpeechPunctuation() {
+        if (has(NSAttributedStringAttribute.SpeechPunctuation)) {
+            NSNumber val = (NSNumber) get(NSAttributedStringAttribute.SpeechPunctuation);
+            return val.booleanValue();
+        }
+        return false;
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public NSAttributedStringAttributes setSpeechPunctuation(boolean speechPunctuation) {
+        set(NSAttributedStringAttribute.SpeechPunctuation, NSNumber.valueOf(speechPunctuation));
+        return this;
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public String getSpeechLanguage() {
+        if (has(NSAttributedStringAttribute.SpeechLanguage)) {
+            NSString val = (NSString) get(NSAttributedStringAttribute.SpeechLanguage);
+            return val.toString();
+        }
+        return null;
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public NSAttributedStringAttributes setSpeechLanguage(String speechLanguage) {
+        set(NSAttributedStringAttribute.SpeechLanguage, new NSString(speechLanguage));
+        return this;
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public double getSpeechPitch() {
+        if (has(NSAttributedStringAttribute.SpeechPitch)) {
+            NSNumber val = (NSNumber) get(NSAttributedStringAttribute.SpeechPitch);
+            return val.doubleValue();
+        }
+        return 0;
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public NSAttributedStringAttributes setSpeechPitch(double speechPitch) {
+        set(NSAttributedStringAttribute.SpeechPitch, NSNumber.valueOf(speechPitch));
+        return this;
+    }
     /**
      * @since Available in iOS 6.0 and later.
      */
     public UIFont getFont() {
-        if (contains(NSAttributedStringAttribute.Font)) {
-            UIFont val = (UIFont)get(NSAttributedStringAttribute.Font);
+        if (has(NSAttributedStringAttribute.Font)) {
+            UIFont val = (UIFont) get(NSAttributedStringAttribute.Font);
             return val;
         }
         return null;
@@ -120,8 +197,8 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 6.0 and later.
      */
     public NSParagraphStyle getParagraphStyle() {
-        if (contains(NSAttributedStringAttribute.ParagraphStyle)) {
-            NSParagraphStyle val = (NSParagraphStyle)get(NSAttributedStringAttribute.ParagraphStyle);
+        if (has(NSAttributedStringAttribute.ParagraphStyle)) {
+            NSParagraphStyle val = (NSParagraphStyle) get(NSAttributedStringAttribute.ParagraphStyle);
             return val;
         }
         return null;
@@ -137,8 +214,8 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 6.0 and later.
      */
     public UIColor getForegroundColor() {
-        if (contains(NSAttributedStringAttribute.ForegroundColor)) {
-            UIColor val = (UIColor)get(NSAttributedStringAttribute.ForegroundColor);
+        if (has(NSAttributedStringAttribute.ForegroundColor)) {
+            UIColor val = (UIColor) get(NSAttributedStringAttribute.ForegroundColor);
             return val;
         }
         return null;
@@ -146,16 +223,16 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public NSAttributedStringAttributes setForegroundColor(UIColor color) {
-        set(NSAttributedStringAttribute.ForegroundColor, color);
+    public NSAttributedStringAttributes setForegroundColor(UIColor foregroundColor) {
+        set(NSAttributedStringAttribute.ForegroundColor, foregroundColor);
         return this;
     }
     /**
      * @since Available in iOS 6.0 and later.
      */
     public UIColor getBackgroundColor() {
-        if (contains(NSAttributedStringAttribute.BackgroundColor)) {
-            UIColor val = (UIColor)get(NSAttributedStringAttribute.BackgroundColor);
+        if (has(NSAttributedStringAttribute.BackgroundColor)) {
+            UIColor val = (UIColor) get(NSAttributedStringAttribute.BackgroundColor);
             return val;
         }
         return null;
@@ -163,33 +240,16 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public NSAttributedStringAttributes setBackgroundColor(UIColor color) {
-        set(NSAttributedStringAttribute.BackgroundColor, color);
-        return this;
-    }
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    public NSLigature getLigature() {
-        if (contains(NSAttributedStringAttribute.Ligature)) {
-            NSNumber val = (NSNumber)get(NSAttributedStringAttribute.Ligature);
-            return NSLigature.values()[val.intValue()];
-        }
-        return NSLigature.Default;
-    }
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    public NSAttributedStringAttributes setLigature(NSLigature ligature) {
-        set(NSAttributedStringAttribute.Ligature, NSNumber.valueOf(ligature.ordinal()));
+    public NSAttributedStringAttributes setBackgroundColor(UIColor backgroundColor) {
+        set(NSAttributedStringAttribute.BackgroundColor, backgroundColor);
         return this;
     }
     /**
      * @since Available in iOS 6.0 and later.
      */
     public double getKerning() {
-        if (contains(NSAttributedStringAttribute.Kern)) {
-            NSNumber val = (NSNumber)get(NSAttributedStringAttribute.Kern);
+        if (has(NSAttributedStringAttribute.Kern)) {
+            NSNumber val = (NSNumber) get(NSAttributedStringAttribute.Kern);
             return val.doubleValue();
         }
         return 0;
@@ -197,50 +257,50 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public NSAttributedStringAttributes setKerning(double kern) {
-        set(NSAttributedStringAttribute.Kern, NSNumber.valueOf(kern));
+    public NSAttributedStringAttributes setKerning(double kerning) {
+        set(NSAttributedStringAttribute.Kern, NSNumber.valueOf(kerning));
         return this;
     }
     /**
      * @since Available in iOS 6.0 and later.
      */
     public NSUnderlineStyle getStrikethroughStyle() {
-        if (contains(NSAttributedStringAttribute.StrikethroughStyle)) {
-            NSNumber val = (NSNumber)get(NSAttributedStringAttribute.StrikethroughStyle);
-            return NSUnderlineStyle.valueOf(val.intValue());
+        if (has(NSAttributedStringAttribute.StrikethroughStyle)) {
+            NSNumber val = (NSNumber) get(NSAttributedStringAttribute.StrikethroughStyle);
+            return NSUnderlineStyle.valueOf(val.longValue());
         }
-        return NSUnderlineStyle.StyleNone;
+        return null;
     }
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public NSAttributedStringAttributes setStrikethroughStyle(NSUnderlineStyle style) {
-        set(NSAttributedStringAttribute.StrikethroughStyle, NSNumber.valueOf((int)style.value()));
+    public NSAttributedStringAttributes setStrikethroughStyle(NSUnderlineStyle strikethroughStyle) {
+        set(NSAttributedStringAttribute.StrikethroughStyle, NSNumber.valueOf(strikethroughStyle.value()));
         return this;
     }
     /**
      * @since Available in iOS 6.0 and later.
      */
     public NSUnderlineStyle getUnderlineStyle() {
-        if (contains(NSAttributedStringAttribute.UnderlineStyle)) {
-            NSNumber val = (NSNumber)get(NSAttributedStringAttribute.UnderlineStyle);
-            return NSUnderlineStyle.valueOf(val.intValue());
+        if (has(NSAttributedStringAttribute.UnderlineStyle)) {
+            NSNumber val = (NSNumber) get(NSAttributedStringAttribute.UnderlineStyle);
+            return NSUnderlineStyle.valueOf(val.longValue());
         }
-        return NSUnderlineStyle.StyleNone;
+        return null;
     }
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public NSAttributedStringAttributes setUnderlineStyle(NSUnderlineStyle style) {
-        set(NSAttributedStringAttribute.UnderlineStyle, NSNumber.valueOf((int)style.value()));
+    public NSAttributedStringAttributes setUnderlineStyle(NSUnderlineStyle underlineStyle) {
+        set(NSAttributedStringAttribute.UnderlineStyle, NSNumber.valueOf(underlineStyle.value()));
         return this;
     }
     /**
      * @since Available in iOS 6.0 and later.
      */
     public UIColor getStrokeColor() {
-        if (contains(NSAttributedStringAttribute.StrokeColor)) {
-            UIColor val = (UIColor)get(NSAttributedStringAttribute.StrokeColor);
+        if (has(NSAttributedStringAttribute.StrokeColor)) {
+            UIColor val = (UIColor) get(NSAttributedStringAttribute.StrokeColor);
             return val;
         }
         return null;
@@ -248,16 +308,16 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public NSAttributedStringAttributes setStrokeColor(UIColor color) {
-        set(NSAttributedStringAttribute.StrokeColor, color);
+    public NSAttributedStringAttributes setStrokeColor(UIColor strokeColor) {
+        set(NSAttributedStringAttribute.StrokeColor, strokeColor);
         return this;
     }
     /**
      * @since Available in iOS 6.0 and later.
      */
     public double getStrokeWidth() {
-        if (contains(NSAttributedStringAttribute.StrokeWidth)) {
-            NSNumber val = (NSNumber)get(NSAttributedStringAttribute.StrokeWidth);
+        if (has(NSAttributedStringAttribute.StrokeWidth)) {
+            NSNumber val = (NSNumber) get(NSAttributedStringAttribute.StrokeWidth);
             return val.doubleValue();
         }
         return 0;
@@ -265,16 +325,16 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public NSAttributedStringAttributes setStrokeWidth(double width) {
-        set(NSAttributedStringAttribute.StrokeWidth, NSNumber.valueOf(width));
+    public NSAttributedStringAttributes setStrokeWidth(double strokeWidth) {
+        set(NSAttributedStringAttribute.StrokeWidth, NSNumber.valueOf(strokeWidth));
         return this;
     }
     /**
      * @since Available in iOS 6.0 and later.
      */
     public NSShadow getShadow() {
-        if (contains(NSAttributedStringAttribute.Shadow)) {
-            NSShadow val = (NSShadow)get(NSAttributedStringAttribute.Shadow);
+        if (has(NSAttributedStringAttribute.Shadow)) {
+            NSShadow val = (NSShadow) get(NSAttributedStringAttribute.Shadow);
             return val;
         }
         return null;
@@ -290,8 +350,8 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 7.0 and later.
      */
     public NSTextEffect getTextEffect() {
-        if (contains(NSAttributedStringAttribute.TextEffect)) {
-            NSString val = (NSString)get(NSAttributedStringAttribute.TextEffect);
+        if (has(NSAttributedStringAttribute.TextEffect)) {
+            NSString val = (NSString) get(NSAttributedStringAttribute.TextEffect);
             return NSTextEffect.valueOf(val);
         }
         return null;
@@ -307,8 +367,8 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 7.0 and later.
      */
     public NSTextAttachment getAttachment() {
-        if (contains(NSAttributedStringAttribute.Attachment)) {
-            NSTextAttachment val = (NSTextAttachment)get(NSAttributedStringAttribute.Attachment);
+        if (has(NSAttributedStringAttribute.Attachment)) {
+            NSTextAttachment val = (NSTextAttachment) get(NSAttributedStringAttribute.Attachment);
             return val;
         }
         return null;
@@ -324,8 +384,8 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 7.0 and later.
      */
     public NSURL getLink() {
-        if (contains(NSAttributedStringAttribute.Link)) {
-            NSURL val = (NSURL)get(NSAttributedStringAttribute.Link);
+        if (has(NSAttributedStringAttribute.Link)) {
+            NSURL val = (NSURL) get(NSAttributedStringAttribute.Link);
             return val;
         }
         return null;
@@ -341,8 +401,8 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 7.0 and later.
      */
     public double getBaselineOffset() {
-        if (contains(NSAttributedStringAttribute.BaselineOffset)) {
-            NSNumber val = (NSNumber)get(NSAttributedStringAttribute.BaselineOffset);
+        if (has(NSAttributedStringAttribute.BaselineOffset)) {
+            NSNumber val = (NSNumber) get(NSAttributedStringAttribute.BaselineOffset);
             return val.doubleValue();
         }
         return 0;
@@ -350,16 +410,16 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public NSAttributedStringAttributes setBaselineOffset(double offset) {
-        set(NSAttributedStringAttribute.BaselineOffset, NSNumber.valueOf(offset));
+    public NSAttributedStringAttributes setBaselineOffset(double baselineOffset) {
+        set(NSAttributedStringAttribute.BaselineOffset, NSNumber.valueOf(baselineOffset));
         return this;
     }
     /**
      * @since Available in iOS 7.0 and later.
      */
     public UIColor getUnderlineColor() {
-        if (contains(NSAttributedStringAttribute.UnderlineColor)) {
-            UIColor val = (UIColor)get(NSAttributedStringAttribute.UnderlineColor);
+        if (has(NSAttributedStringAttribute.UnderlineColor)) {
+            UIColor val = (UIColor) get(NSAttributedStringAttribute.UnderlineColor);
             return val;
         }
         return null;
@@ -367,16 +427,16 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public NSAttributedStringAttributes setUnderlineColor(UIColor color) {
-        set(NSAttributedStringAttribute.UnderlineColor, color);
+    public NSAttributedStringAttributes setUnderlineColor(UIColor underlineColor) {
+        set(NSAttributedStringAttribute.UnderlineColor, underlineColor);
         return this;
     }
     /**
      * @since Available in iOS 7.0 and later.
      */
     public UIColor getStrikethroughColor() {
-        if (contains(NSAttributedStringAttribute.StrikethroughColor)) {
-            UIColor val = (UIColor)get(NSAttributedStringAttribute.StrikethroughColor);
+        if (has(NSAttributedStringAttribute.StrikethroughColor)) {
+            UIColor val = (UIColor) get(NSAttributedStringAttribute.StrikethroughColor);
             return val;
         }
         return null;
@@ -384,16 +444,16 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public NSAttributedStringAttributes setStrikethroughColor(UIColor color) {
-        set(NSAttributedStringAttribute.StrikethroughColor, color);
+    public NSAttributedStringAttributes setStrikethroughColor(UIColor strikethroughColor) {
+        set(NSAttributedStringAttribute.StrikethroughColor, strikethroughColor);
         return this;
     }
     /**
      * @since Available in iOS 7.0 and later.
      */
     public double getObliqueness() {
-        if (contains(NSAttributedStringAttribute.Obliqueness)) {
-            NSNumber val = (NSNumber)get(NSAttributedStringAttribute.Obliqueness);
+        if (has(NSAttributedStringAttribute.Obliqueness)) {
+            NSNumber val = (NSNumber) get(NSAttributedStringAttribute.Obliqueness);
             return val.doubleValue();
         }
         return 0;
@@ -409,8 +469,8 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 7.0 and later.
      */
     public double getExpansion() {
-        if (contains(NSAttributedStringAttribute.Expansion)) {
-            NSNumber val = (NSNumber)get(NSAttributedStringAttribute.Expansion);
+        if (has(NSAttributedStringAttribute.Expansion)) {
+            NSNumber val = (NSNumber) get(NSAttributedStringAttribute.Expansion);
             return val.doubleValue();
         }
         return 0;
@@ -423,12 +483,28 @@ import org.robovm.apple.uikit.*;
         return this;
     }
     /**
-     * @since Available in iOS 7.0 and later.
+     * @since Available in iOS 6.0 and later.
      */
+    public boolean isVerticalText() {
+        if (has(NSAttributedStringAttribute.VerticalGlyphForm)) {
+            NSNumber val = (NSNumber) get(NSAttributedStringAttribute.VerticalGlyphForm);
+            return val.booleanValue();
+        }
+        return false;
+    }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public NSAttributedStringAttributes setVerticalText(boolean verticalText) {
+        set(NSAttributedStringAttribute.VerticalGlyphForm, NSNumber.valueOf(verticalText));
+        return this;
+    }
+    /*</methods>*/
+    
     @SuppressWarnings("unchecked")
     public List<NSTextDirection> getWritingDirections() {
         List<NSTextDirection> list = new ArrayList<>();
-        if (contains(NSAttributedStringAttribute.WritingDirection)) {
+        if (has(NSAttributedStringAttribute.WritingDirection)) {
             NSArray<NSNumber> val = (NSArray<NSNumber>)get(NSAttributedStringAttribute.WritingDirection);
             for (NSNumber n : val) {
                 list.add(NSTextDirection.values()[n.intValue()]);
@@ -450,75 +526,21 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public boolean isVerticalText() {
-        if (contains(NSAttributedStringAttribute.VerticalGlyphForm)) {
-            NSNumber val = (NSNumber)get(NSAttributedStringAttribute.VerticalGlyphForm);
-            return val.intValue() == 1;
-        }
-        return false;
-    }
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    public NSAttributedStringAttributes setVerticalText(boolean vertical) {
-        set(NSAttributedStringAttribute.VerticalGlyphForm, vertical ? NSNumber.valueOf(1) : NSNumber.valueOf(0));
-        return this;
-    }
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public boolean isSpeechPunctuation() {
-        if (contains(NSAttributedStringAttribute.SpeechPunctuation)) {
-            NSNumber val = (NSNumber)get(NSAttributedStringAttribute.SpeechPunctuation);
-            return val.booleanValue();
-        }
-        return false;
-    }
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public NSAttributedStringAttributes setSpeechPunctuation(boolean punctuation) {
-        set(NSAttributedStringAttribute.SpeechPunctuation, NSNumber.valueOf(punctuation));
-        return this;
-    }
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public String getSpeechLanguage() {
-        if (contains(NSAttributedStringAttribute.SpeechLanguage)) {
-            NSString val = (NSString)get(NSAttributedStringAttribute.SpeechLanguage);
-            return val.toString();
+    public NSLigature getLigature() {
+        if (has(NSAttributedStringAttribute.Ligature)) {
+            NSNumber val = (NSNumber) get(NSAttributedStringAttribute.Ligature);
+            return NSLigature.values()[val.intValue()];
         }
         return null;
     }
     /**
-     * @since Available in iOS 7.0 and later.
+     * @since Available in iOS 6.0 and later.
      */
-    public NSAttributedStringAttributes setSpeechLanguage(String language) {
-        set(NSAttributedStringAttribute.SpeechLanguage, new NSString(language));
-        return this;
-    }
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public double getSpeechPitch() {
-        if (contains(NSAttributedStringAttribute.SpeechPitch)) {
-            NSNumber val = (NSNumber)get(NSAttributedStringAttribute.SpeechPitch);
-            return val.doubleValue();
-        }
-        return 1;
-    }
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public NSAttributedStringAttributes setSpeechPitch(double pitch) {
-        set(NSAttributedStringAttribute.SpeechPitch, NSNumber.valueOf(pitch));
+    public NSAttributedStringAttributes setLigature(NSLigature ligature) {
+        set(NSAttributedStringAttribute.Ligature, NSNumber.valueOf(ligature.ordinal()));
         return this;
     }
     
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
-    }
+    /*<keys>*/
+    /*</keys>*/
 }

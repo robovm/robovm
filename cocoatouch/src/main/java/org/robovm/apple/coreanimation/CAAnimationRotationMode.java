@@ -37,12 +37,15 @@ import org.robovm.apple.metal.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CAAnimationRotationMode.Marshaler.class)
-/*<annotations>*/@Library("QuartzCore")/*</annotations>*/
+/*<annotations>*/@Library("QuartzCore") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/CAAnimationRotationMode/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CAAnimationRotationMode/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/CAAnimationRotationMode/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CAAnimationRotationMode toObject(Class<CAAnimationRotationMode> cls, long handle, long flags) {
@@ -60,35 +63,53 @@ import org.robovm.apple.metal.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(CAAnimationRotationMode.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<CAAnimationRotationMode> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CAAnimationRotationMode> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(CAAnimationRotationMode.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CAAnimationRotationMode> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (CAAnimationRotationMode o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static final CAAnimationRotationMode Auto = new CAAnimationRotationMode("AutoValue");
+    public static final CAAnimationRotationMode Auto = new CAAnimationRotationMode("Auto");
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static final CAAnimationRotationMode AutoReverse = new CAAnimationRotationMode("AutoReverseValue");
+    public static final CAAnimationRotationMode AutoReverse = new CAAnimationRotationMode("AutoReverse");
+    /*</constants>*/
     
-    private static CAAnimationRotationMode[] values = new CAAnimationRotationMode[] {Auto, AutoReverse};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    private static /*<name>*/CAAnimationRotationMode/*</name>*/[] values = new /*<name>*/CAAnimationRotationMode/*</name>*/[] {/*<value_list>*/Auto, AutoReverse/*</value_list>*/};
     
-    private CAAnimationRotationMode(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/CAAnimationRotationMode/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static CAAnimationRotationMode valueOf(NSString value) {
-        for (CAAnimationRotationMode v : values) {
+    public static /*<name>*/CAAnimationRotationMode/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/CAAnimationRotationMode/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -96,16 +117,24 @@ import org.robovm.apple.metal.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/CAAnimationRotationMode/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCAAnimationRotateAuto", optional=true)
-    protected static native NSString AutoValue();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCAAnimationRotateAutoReverse", optional=true)
-    protected static native NSString AutoReverseValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("QuartzCore") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCAAnimationRotateAuto", optional=true)
+        public static native NSString Auto();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCAAnimationRotateAutoReverse", optional=true)
+        public static native NSString AutoReverse();
+        /*</values>*/
+    }
 }

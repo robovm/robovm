@@ -29,37 +29,9 @@ enums:
     HKMetricPrefix: {}
         
 classes:
-    HKBodyQuantityTypeIdentifier:
-        extends: HKQuantityTypeIdentifier
-    HKFitnessQuantityTypeIdentifier:
-        extends: HKQuantityTypeIdentifier
-    HKVitalSignsQuantityTypeIdentifier:
-        extends: HKQuantityTypeIdentifier
-    HKResultsQuantityTypeIdentifier:
-        extends: HKQuantityTypeIdentifier
-    HKDietaryQuantityTypeIdentifier:
-        extends: HKQuantityTypeIdentifier
-    HKCategoryTypeIdentifier:
-        extends: HKTypeIdentifier
-    HKCharacteristicTypeIdentifier:
-        extends: HKTypeIdentifier
-    HKCorrelationTypeIdentifier:
-        extends: HKTypeIdentifier
-    HKWorkoutTypeIdentifier:
-        extends: HKTypeIdentifier
-        
     HKError:
         extends: NSError
         annotations: ['@StronglyLinked']
-        
-    HKPredicateKeyPath:
-        extends: NSPredicateKeyPath
-        
-    HKSampleSortIdentifier:
-        extends: NSSortIdentifier
-    HKWorkoutSortIdentifier:
-        extends: NSSortIdentifier
-
         
     HKBiologicalSexObject: {} # DONE
     HKBloodTypeObject: {} # DONE
@@ -415,78 +387,77 @@ values:
         type: NSString
 
     HKQuantityTypeIdentifier(BodyMassIndex|BodyFatPercentage|Height|BodyMass|LeanBodyMass):
-        class: HKBodyQuantityTypeIdentifier
-        name: "#{g[0]}Value"
+        enum: HKBodyQuantityTypeIdentifier
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        extends: HKQuantityTypeIdentifier
     HKQuantityTypeIdentifier(StepCount|DistanceWalkingRunning|DistanceCycling|BasalEnergyBurned|ActiveEnergyBurned|FlightsClimbed|NikeFuel):
-        class: HKFitnessQuantityTypeIdentifier
-        name: "#{g[0]}Value"
+        enum: HKFitnessQuantityTypeIdentifier
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        extends: HKQuantityTypeIdentifier
     HKQuantityTypeIdentifier(HeartRate|BodyTemperature|BloodPressureSystolic|BloodPressureDiastolic|RespiratoryRate):
-        class: HKVitalSignsQuantityTypeIdentifier
-        name: "#{g[0]}Value"
+        enum: HKVitalSignsQuantityTypeIdentifier
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        extends: HKQuantityTypeIdentifier
     HKQuantityTypeIdentifier(OxygenSaturation|PeripheralPerfusionIndex|BloodGlucose|NumberOfTimesFallen|ElectrodermalActivity|InhalerUsage):
-        class: HKResultsQuantityTypeIdentifier
-        name: "#{g[0]}Value"
+        enum: HKResultsQuantityTypeIdentifier
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        extends: HKQuantityTypeIdentifier
     HKQuantityTypeIdentifier(BloodAlcoholContent|ForcedVitalCapacity|ForcedExpiratoryVolume1|PeakExpiratoryFlowRate):
-        class: HKResultsQuantityTypeIdentifier
-        name: "#{g[0]}Value"
+        enum: HKResultsQuantityTypeIdentifier
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        extends: HKQuantityTypeIdentifier
     HKQuantityTypeIdentifierDietary(.*):
-        class: HKDietaryQuantityTypeIdentifier
-        name: "#{g[0]}Value"
+        enum: HKDietaryQuantityTypeIdentifier
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        extends: HKQuantityTypeIdentifier
     HKCategoryTypeIdentifier(.*):
-        class: HKCategoryTypeIdentifier
-        name: "#{g[0]}Value"
+        enum: HKCategoryTypeIdentifier
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        extends: HKTypeIdentifier
     HKCharacteristicTypeIdentifier(.*):
-        class: HKCharacteristicTypeIdentifier
-        name: "#{g[0]}Value"
+        enum: HKCharacteristicTypeIdentifier
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        extends: HKTypeIdentifier
     HKCorrelationTypeIdentifier(.*):
-        class: HKCorrelationTypeIdentifier
-        name: "#{g[0]}Value"
+        enum: HKCorrelationTypeIdentifier
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        extends: HKTypeIdentifier
     HKWorkoutTypeIdentifier:
-        class: HKWorkoutTypeIdentifier
-        name: WorkoutValue
+        enum: HKWorkoutTypeIdentifier
+        name: Workout
         type: NSString
-        visibility: protected
+        extends: HKTypeIdentifier
         
     HKMetadataKey(.*):
-        class: HKMetadataKey
-        name: "#{g[0]}Key"
+        enum: HKMetadataKey
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
         
     HKPredicateKeyPath(.*):
-        class: HKPredicateKeyPath
-        name: "#{g[0]}Value"
+        enum: HKPredicateKeyPath
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        extends: NSPredicateKeyPath
 
     HKSampleSortIdentifier(.*):
-        class: HKSampleSortIdentifier
-        name: "#{g[0]}Value"
-        type: String
-        visibility: protected
+        enum: HKSampleSortIdentifier
+        name: '#{g[0]}'
+        type: NSString
+        extends: NSSortIdentifier
     HKWorkoutSortIdentifier(.*):
-        class: HKWorkoutSortIdentifier
-        name: "#{g[0]}Value"
-        type: String
-        visibility: protected
+        enum: HKWorkoutSortIdentifier
+        name: '#{g[0]}'
+        type: NSString
+        extends: NSSortIdentifier
 
     # Make sure we don't miss any values if new ones are introduced in a later version
     (HK.*):

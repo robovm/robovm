@@ -48,10 +48,12 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public CBPeripheralManager() {}
     protected CBPeripheralManager(SkipInit skipInit) { super(skipInit); }
+    @WeaklyLinked
     public CBPeripheralManager(CBPeripheralManagerDelegate delegate, DispatchQueue queue) { super((SkipInit) null); initObject(init(delegate, queue)); }
     /**
      * @since Available in iOS 7.0 and later.
      */
+    @WeaklyLinked
     public CBPeripheralManager(CBPeripheralManagerDelegate delegate, DispatchQueue queue, CBPeripheralManagerOptions options) { super((SkipInit) null); initObject(init(delegate, queue, options)); }
     /*</constructors>*/
     /*<properties>*/
@@ -88,7 +90,7 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "removeAllServices")
     public native void removeAllServices();
     @Method(selector = "respondToRequest:withResult:")
-    public native void respondToRequest(CBATTRequest request, CBATTError result);
+    public native void respondToRequest(CBATTRequest request, CBATTErrorCode result);
     @Method(selector = "updateValue:forCharacteristic:onSubscribedCentrals:")
     public native boolean updateValue(NSData value, CBMutableCharacteristic characteristic, NSArray<CBCentral> centrals);
     /**

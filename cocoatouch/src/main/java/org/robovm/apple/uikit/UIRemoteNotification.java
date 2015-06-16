@@ -15,7 +15,6 @@
  */
 package org.robovm.apple.uikit;
 
-/*<imports>*/
 import java.io.*;
 import java.nio.*;
 import java.util.*;
@@ -32,14 +31,13 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
-/*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
 @Marshaler(UIRemoteNotification.Marshaler.class)
 /*<annotations>*/@Library("UIKit")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIRemoteNotification/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     public static class Marshaler {
@@ -61,27 +59,16 @@ import org.robovm.apple.coreimage.*;
         }
     }
     
-    /*<ptr>*/
-    /*</ptr>*/
     private static final NSString ALERT = new NSString("alert");
     private static final NSString BODY = new NSString("body");
     private static final NSString SHOW_VIEW = new NSString("show-view");
     private static final NSString BADGE = new NSString("badge");
     private static final NSString SOUND = new NSString("sound");
     
-    private NSDictionary<NSString, NSObject> data;
-    
     protected UIRemoteNotification(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
+        super(data);
     }
-    /*<bind>*/static { Bro.bind(UIRemoteNotification.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
-    }
+    static { Bro.bind(UIRemoteNotification.class); }
     
     public String getAlert() {
         if (data.containsKey(ALERT)) {
@@ -129,13 +116,5 @@ import org.robovm.apple.coreimage.*;
     
     public NSObject get(String key) {
         return data.get(new NSString(key));
-    }
-    /*<methods>*/
-    /*</methods>*/
-    
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
     }
 }

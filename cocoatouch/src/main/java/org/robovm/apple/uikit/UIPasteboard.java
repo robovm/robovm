@@ -47,11 +47,16 @@ import org.robovm.apple.corelocation.*;
     /*<implements>*//*</implements>*/ {
 
     public static class Notifications {
-        public static NSObject observeChanged(UIPasteboard object, final VoidBlock2<UIPasteboard, UIPasteboardChangedNotificationInfo> block) {
+        public static NSObject observeChanged(UIPasteboard object, final VoidBlock2<UIPasteboard, UIPasteboardChangedNotification> block) {
             return NSNotificationCenter.getDefaultCenter().addObserver(ChangedNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke(NSNotification a) {
-                    block.invoke((UIPasteboard)a.getObject(), new UIPasteboardChangedNotificationInfo(a.getUserInfo()));
+                    NSDictionary<NSString, NSObject> userInfo = a.getUserInfo();
+                    UIPasteboardChangedNotification data = null;
+                    if (userInfo != null) {
+                        data = new UIPasteboardChangedNotification(userInfo);
+                    }
+                    block.invoke((UIPasteboard)a.getObject(), data);
                 }
             });
         }
@@ -163,13 +168,13 @@ import org.robovm.apple.corelocation.*;
     @GlobalValue(symbol="UIPasteboardRemovedNotification", optional=true)
     public static native NSString RemovedNotification();
     @GlobalValue(symbol="UIPasteboardTypeListString", optional=true)
-    public static native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getStringTypeList();
+    public static native List<String> getStringTypeList();
     @GlobalValue(symbol="UIPasteboardTypeListURL", optional=true)
-    public static native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getURLTypeList();
+    public static native List<String> getURLTypeList();
     @GlobalValue(symbol="UIPasteboardTypeListImage", optional=true)
-    public static native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getImageTypeList();
+    public static native List<String> getImageTypeList();
     @GlobalValue(symbol="UIPasteboardTypeListColor", optional=true)
-    public static native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getColorTypeList();
+    public static native List<String> getColorTypeList();
     
     @Method(selector = "pasteboardTypes")
     public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getTypes();

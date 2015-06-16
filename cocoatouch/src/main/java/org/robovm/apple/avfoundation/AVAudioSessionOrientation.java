@@ -42,12 +42,15 @@ import org.robovm.apple.audiounit.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(AVAudioSessionOrientation.Marshaler.class)
-/*<annotations>*/@Library("AVFoundation")/*</annotations>*/
+/*<annotations>*/@Library("AVFoundation") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/AVAudioSessionOrientation/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/AVAudioSessionOrientation/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
-    
+
+    static { Bro.bind(/*<name>*/AVAudioSessionOrientation/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static AVAudioSessionOrientation toObject(Class<AVAudioSessionOrientation> cls, long handle, long flags) {
@@ -65,52 +68,69 @@ import org.robovm.apple.audiounit.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<AVAudioSessionOrientation> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<AVAudioSessionOrientation> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(AVAudioSessionOrientation.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<AVAudioSessionOrientation> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (AVAudioSessionOrientation o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(AVAudioSessionOrientation.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    /*<constants>*/
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public static final AVAudioSessionOrientation Top = new AVAudioSessionOrientation("TopValue");
+    public static final AVAudioSessionOrientation Top = new AVAudioSessionOrientation("Top");
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public static final AVAudioSessionOrientation Bottom = new AVAudioSessionOrientation("BottomValue");
+    public static final AVAudioSessionOrientation Bottom = new AVAudioSessionOrientation("Bottom");
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public static final AVAudioSessionOrientation Front = new AVAudioSessionOrientation("FrontValue");
+    public static final AVAudioSessionOrientation Front = new AVAudioSessionOrientation("Front");
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public static final AVAudioSessionOrientation Back = new AVAudioSessionOrientation("BackValue");
+    public static final AVAudioSessionOrientation Back = new AVAudioSessionOrientation("Back");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final AVAudioSessionOrientation Left = new AVAudioSessionOrientation("LeftValue");
+    public static final AVAudioSessionOrientation Left = new AVAudioSessionOrientation("Left");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final AVAudioSessionOrientation Right = new AVAudioSessionOrientation("RightValue");
+    public static final AVAudioSessionOrientation Right = new AVAudioSessionOrientation("Right");
+    /*</constants>*/
     
-    private static AVAudioSessionOrientation[] values = new AVAudioSessionOrientation[] {Top, Bottom, Front, Back,
-        Left, Right};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    private static /*<name>*/AVAudioSessionOrientation/*</name>*/[] values = new /*<name>*/AVAudioSessionOrientation/*</name>*/[] {/*<value_list>*/Top, Bottom, Front, Back, Left, Right/*</value_list>*/};
     
-    private AVAudioSessionOrientation(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/AVAudioSessionOrientation/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static AVAudioSessionOrientation valueOf(NSString value) {
-        for (AVAudioSessionOrientation v : values) {
+    public static /*<name>*/AVAudioSessionOrientation/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/AVAudioSessionOrientation/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -118,36 +138,44 @@ import org.robovm.apple.audiounit.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/AVAudioSessionOrientation/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="AVAudioSessionOrientationTop", optional=true)
-    protected static native NSString TopValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="AVAudioSessionOrientationBottom", optional=true)
-    protected static native NSString BottomValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="AVAudioSessionOrientationFront", optional=true)
-    protected static native NSString FrontValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="AVAudioSessionOrientationBack", optional=true)
-    protected static native NSString BackValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="AVAudioSessionOrientationLeft", optional=true)
-    protected static native NSString LeftValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="AVAudioSessionOrientationRight", optional=true)
-    protected static native NSString RightValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("AVFoundation") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="AVAudioSessionOrientationTop", optional=true)
+        public static native NSString Top();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="AVAudioSessionOrientationBottom", optional=true)
+        public static native NSString Bottom();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="AVAudioSessionOrientationFront", optional=true)
+        public static native NSString Front();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="AVAudioSessionOrientationBack", optional=true)
+        public static native NSString Back();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="AVAudioSessionOrientationLeft", optional=true)
+        public static native NSString Left();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="AVAudioSessionOrientationRight", optional=true)
+        public static native NSString Right();
+        /*</values>*/
+    }
 }

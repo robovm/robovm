@@ -66,19 +66,19 @@ protocols: {}
 functions:
     (GCExtendedGamepadSnapShotDataV100FromNSData):
         class: GCExtendedGamepadSnapShotDataV100
-        name: "setData"
+        name: setData
 
     (NSDataFromGCExtendedGamepadSnapShotDataV100):
         class: GCExtendedGamepadSnapShotDataV100
-        name: "getData"
+        name: getData
 
     (GCGamepadSnapShotDataV100FromNSData):
         class: GCGamepadSnapShotDataV100
-        name: "setData"
+        name: setData
         
     (NSDataFromGCGamepadSnapShotDataV100):
         class: GCGamepadSnapShotDataV100
-        name: "getData"
+        name: getData
 
     # Make sure we don't miss any functions if new ones are introduced in a later version
     (k?GC.*):

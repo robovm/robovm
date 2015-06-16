@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -33,12 +34,15 @@ import org.robovm.apple.coregraphics.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CGImageMetadataPrefix.Marshaler.class)
-/*<annotations>*/@Library("ImageIO")/*</annotations>*/
+/*<annotations>*/@Library("ImageIO") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/CGImageMetadataPrefix/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CGImageMetadataPrefix/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<CFString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
-    
+
+    static { Bro.bind(/*<name>*/CGImageMetadataPrefix/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CGImageMetadataPrefix toObject(Class<CGImageMetadataPrefix> cls, long handle, long flags) {
@@ -56,64 +60,80 @@ import org.robovm.apple.coregraphics.*;
             return CFType.Marshaler.toNative(o.value(), flags);
         }
     }
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CGImageMetadataPrefix> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CGImageMetadataPrefix> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(CGImageMetadataPrefix.valueOf(o.get(i, CFString.class)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CGImageMetadataPrefix> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray array = CFMutableArray.create();
+            for (CGImageMetadataPrefix o : l) {
+                array.add(o.value());
+            }
+            return CFType.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(CGImageMetadataPrefix.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    /*<constants>*/
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public static final CGImageMetadataPrefix Exif = new CGImageMetadataPrefix("ExifValue");
+    public static final CGImageMetadataPrefix Exif = new CGImageMetadataPrefix("Exif");
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public static final CGImageMetadataPrefix ExifAux = new CGImageMetadataPrefix("ExifAuxValue");
+    public static final CGImageMetadataPrefix ExifAux = new CGImageMetadataPrefix("ExifAux");
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public static final CGImageMetadataPrefix ExifEX = new CGImageMetadataPrefix("ExifEXValue");
+    public static final CGImageMetadataPrefix ExifEX = new CGImageMetadataPrefix("ExifEX");
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public static final CGImageMetadataPrefix DublinCore = new CGImageMetadataPrefix("DublinCoreValue");
+    public static final CGImageMetadataPrefix DublinCore = new CGImageMetadataPrefix("DublinCore");
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public static final CGImageMetadataPrefix IPTCCore = new CGImageMetadataPrefix("IPTCCoreValue");
+    public static final CGImageMetadataPrefix IPTCCore = new CGImageMetadataPrefix("IPTCCore");
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public static final CGImageMetadataPrefix Photoshop = new CGImageMetadataPrefix("PhotoshopValue");
+    public static final CGImageMetadataPrefix Photoshop = new CGImageMetadataPrefix("Photoshop");
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public static final CGImageMetadataPrefix TIFF = new CGImageMetadataPrefix("TIFFValue");
+    public static final CGImageMetadataPrefix TIFF = new CGImageMetadataPrefix("TIFF");
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public static final CGImageMetadataPrefix XMPBasic = new CGImageMetadataPrefix("XMPBasicValue");
+    public static final CGImageMetadataPrefix XMPBasic = new CGImageMetadataPrefix("XMPBasic");
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public static final CGImageMetadataPrefix XMPRights = new CGImageMetadataPrefix("XMPRightsValue");
+    public static final CGImageMetadataPrefix XMPRights = new CGImageMetadataPrefix("XMPRights");
+    /*</constants>*/
     
-    private static CGImageMetadataPrefix[] values = new CGImageMetadataPrefix[] {Exif, ExifAux, ExifEX, DublinCore, 
-        IPTCCore, Photoshop, TIFF, XMPBasic, XMPRights};
-    private final LazyGlobalValue<CFString> lazyGlobalValue;
+    private static /*<name>*/CGImageMetadataPrefix/*</name>*/[] values = new /*<name>*/CGImageMetadataPrefix/*</name>*/[] {/*<value_list>*/Exif, ExifAux, ExifEX, DublinCore, IPTCCore, Photoshop, TIFF, XMPBasic, XMPRights/*</value_list>*/};
     
-    private CGImageMetadataPrefix(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public CFString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/CGImageMetadataPrefix/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static CGImageMetadataPrefix valueOf(CFString value) {
-        for (CGImageMetadataPrefix v : values) {
+    public static /*<name>*/CGImageMetadataPrefix/*</name>*/ valueOf(/*<type>*/CFString/*</type>*/ value) {
+        for (/*<name>*/CGImageMetadataPrefix/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -121,51 +141,59 @@ import org.robovm.apple.coregraphics.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/CGImageMetadataPrefix/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="kCGImageMetadataPrefixExif", optional=true)
-    protected static native CFString ExifValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="kCGImageMetadataPrefixExifAux", optional=true)
-    protected static native CFString ExifAuxValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="kCGImageMetadataPrefixExifEX", optional=true)
-    protected static native CFString ExifEXValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="kCGImageMetadataPrefixDublinCore", optional=true)
-    protected static native CFString DublinCoreValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="kCGImageMetadataPrefixIPTCCore", optional=true)
-    protected static native CFString IPTCCoreValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="kCGImageMetadataPrefixPhotoshop", optional=true)
-    protected static native CFString PhotoshopValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="kCGImageMetadataPrefixTIFF", optional=true)
-    protected static native CFString TIFFValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="kCGImageMetadataPrefixXMPBasic", optional=true)
-    protected static native CFString XMPBasicValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="kCGImageMetadataPrefixXMPRights", optional=true)
-    protected static native CFString XMPRightsValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("ImageIO") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="kCGImageMetadataPrefixExif", optional=true)
+        public static native CFString Exif();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="kCGImageMetadataPrefixExifAux", optional=true)
+        public static native CFString ExifAux();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="kCGImageMetadataPrefixExifEX", optional=true)
+        public static native CFString ExifEX();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="kCGImageMetadataPrefixDublinCore", optional=true)
+        public static native CFString DublinCore();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="kCGImageMetadataPrefixIPTCCore", optional=true)
+        public static native CFString IPTCCore();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="kCGImageMetadataPrefixPhotoshop", optional=true)
+        public static native CFString Photoshop();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="kCGImageMetadataPrefixTIFF", optional=true)
+        public static native CFString TIFF();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="kCGImageMetadataPrefixXMPBasic", optional=true)
+        public static native CFString XMPBasic();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="kCGImageMetadataPrefixXMPRights", optional=true)
+        public static native CFString XMPRights();
+        /*</values>*/
+    }
 }

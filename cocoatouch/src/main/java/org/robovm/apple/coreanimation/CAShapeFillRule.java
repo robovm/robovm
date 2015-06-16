@@ -37,12 +37,15 @@ import org.robovm.apple.metal.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CAShapeFillRule.Marshaler.class)
-/*<annotations>*/@Library("QuartzCore")/*</annotations>*/
+/*<annotations>*/@Library("QuartzCore") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/CAShapeFillRule/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CAShapeFillRule/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/CAShapeFillRule/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CAShapeFillRule toObject(Class<CAShapeFillRule> cls, long handle, long flags) {
@@ -60,35 +63,53 @@ import org.robovm.apple.metal.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(CAShapeFillRule.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<CAShapeFillRule> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CAShapeFillRule> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(CAShapeFillRule.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CAShapeFillRule> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (CAShapeFillRule o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
     /**
      * @since Available in iOS 3.0 and later.
      */
-    public static final CAShapeFillRule NonZero = new CAShapeFillRule("NonZeroValue");
+    public static final CAShapeFillRule NonZero = new CAShapeFillRule("NonZero");
     /**
      * @since Available in iOS 3.0 and later.
      */
-    public static final CAShapeFillRule EvenOdd = new CAShapeFillRule("EvenOddValue");
+    public static final CAShapeFillRule EvenOdd = new CAShapeFillRule("EvenOdd");
+    /*</constants>*/
     
-    private static CAShapeFillRule[] values = new CAShapeFillRule[] {NonZero, EvenOdd};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    private static /*<name>*/CAShapeFillRule/*</name>*/[] values = new /*<name>*/CAShapeFillRule/*</name>*/[] {/*<value_list>*/NonZero, EvenOdd/*</value_list>*/};
     
-    private CAShapeFillRule(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/CAShapeFillRule/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static CAShapeFillRule valueOf(NSString value) {
-        for (CAShapeFillRule v : values) {
+    public static /*<name>*/CAShapeFillRule/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/CAShapeFillRule/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -96,16 +117,24 @@ import org.robovm.apple.metal.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/CAShapeFillRule/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="kCAFillRuleNonZero", optional=true)
-    protected static native NSString NonZeroValue();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="kCAFillRuleEvenOdd", optional=true)
-    protected static native NSString EvenOddValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("QuartzCore") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="kCAFillRuleNonZero", optional=true)
+        public static native NSString NonZero();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="kCAFillRuleEvenOdd", optional=true)
+        public static native NSString EvenOdd();
+        /*</values>*/
+    }
 }

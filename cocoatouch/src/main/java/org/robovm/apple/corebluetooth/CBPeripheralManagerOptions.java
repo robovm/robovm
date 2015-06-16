@@ -34,14 +34,14 @@ import org.robovm.apple.dispatch.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CBPeripheralManagerOptions.Marshaler.class)
 /*<annotations>*/@Library("CoreBluetooth")/*</annotations>*/
+@Marshaler(/*<name>*/CBPeripheralManagerOptions/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CBPeripheralManagerOptions/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static CBPeripheralManagerOptions toObject(Class<CBPeripheralManagerOptions> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -58,33 +58,62 @@ import org.robovm.apple.dispatch.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected CBPeripheralManagerOptions(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CBPeripheralManagerOptions> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CBPeripheralManagerOptions> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new CBPeripheralManagerOptions(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CBPeripheralManagerOptions> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (CBPeripheralManagerOptions i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    public CBPeripheralManagerOptions() {
-    	this.data = new NSMutableDictionary<>();
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    CBPeripheralManagerOptions(NSDictionary<NSString, NSObject> data) {
+        super(data);
     }
-    /*<bind>*/static { Bro.bind(CBPeripheralManagerOptions.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
+    public CBPeripheralManagerOptions() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
+    }
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
+    }
+    public CBPeripheralManagerOptions set(NSString key, NSObject value) {
+        data.put(key, value);
+        return this;
     }
     
-    
+
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public boolean isShowingPowerAlert() {
-        if (data.containsKey(ShowPowerAlertKey())) {
-            NSNumber val = (NSNumber)data.get(ShowPowerAlertKey());
+    public boolean showsPowerAlert() {
+        if (has(Keys.ShowPowerAlert())) {
+            NSNumber val = (NSNumber) get(Keys.ShowPowerAlert());
             return val.booleanValue();
         }
         return false;
@@ -92,16 +121,16 @@ import org.robovm.apple.dispatch.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public CBPeripheralManagerOptions setShowPowerAlert(boolean showAlert) {
-        data.put(ShowPowerAlertKey(), NSNumber.valueOf(showAlert));
+    public CBPeripheralManagerOptions setShowsPowerAlert(boolean showsPowerAlert) {
+        set(Keys.ShowPowerAlert(), NSNumber.valueOf(showsPowerAlert));
         return this;
     }
     /**
      * @since Available in iOS 7.0 and later.
      */
     public String getRestoreIdentifier() {
-        if (data.containsKey(RestoreIdentifierKey())) {
-            NSString val = (NSString)data.get(RestoreIdentifierKey());
+        if (has(Keys.RestoreIdentifier())) {
+            NSString val = (NSString) get(Keys.RestoreIdentifier());
             return val.toString();
         }
         return null;
@@ -109,25 +138,26 @@ import org.robovm.apple.dispatch.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public CBPeripheralManagerOptions setRestoreIdentifier(String identifier) {
-        data.put(RestoreIdentifierKey(), new NSString(identifier));
+    public CBPeripheralManagerOptions setRestoreIdentifier(String restoreIdentifier) {
+        set(Keys.RestoreIdentifier(), new NSString(restoreIdentifier));
         return this;
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="CBPeripheralManagerOptionShowPowerAlertKey", optional=true)
-    protected static native NSString ShowPowerAlertKey();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="CBPeripheralManagerOptionRestoreIdentifierKey", optional=true)
-    protected static native NSString RestoreIdentifierKey();
     /*</methods>*/
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    
+    /*<keys>*/
+    @Library("CoreBluetooth")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="CBPeripheralManagerOptionShowPowerAlertKey", optional=true)
+        public static native NSString ShowPowerAlert();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="CBPeripheralManagerOptionRestoreIdentifierKey", optional=true)
+        public static native NSString RestoreIdentifier();
     }
+    /*</keys>*/
 }

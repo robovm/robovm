@@ -40,12 +40,15 @@ import org.robovm.apple.dispatch.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(NSStreamSocketSecurityLevel.Marshaler.class)
-/*<annotations>*/@Library("Foundation")/*</annotations>*/
+/*<annotations>*/@Library("Foundation") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/NSStreamSocketSecurityLevel/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSStreamSocketSecurityLevel/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/NSStreamSocketSecurityLevel/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static NSStreamSocketSecurityLevel toObject(Class<NSStreamSocketSecurityLevel> cls, long handle, long flags) {
@@ -63,47 +66,65 @@ import org.robovm.apple.dispatch.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(NSStreamSocketSecurityLevel.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public static final NSStreamSocketSecurityLevel None = new NSStreamSocketSecurityLevel("NoneValue");
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public static final NSStreamSocketSecurityLevel SSLv2 = new NSStreamSocketSecurityLevel("SSLv2Value");
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public static final NSStreamSocketSecurityLevel SSLv3 = new NSStreamSocketSecurityLevel("SSLv3Value");
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public static final NSStreamSocketSecurityLevel TLSv1 = new NSStreamSocketSecurityLevel("TLSv1Value");
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public static final NSStreamSocketSecurityLevel NegotiatedSSL = new NSStreamSocketSecurityLevel("NegotiatedSSLValue");
-    
-    private static NSStreamSocketSecurityLevel[] values = new NSStreamSocketSecurityLevel[] {None, SSLv2, SSLv3, TLSv1, NegotiatedSSL};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private NSStreamSocketSecurityLevel(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<NSStreamSocketSecurityLevel> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<NSStreamSocketSecurityLevel> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(NSStreamSocketSecurityLevel.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<NSStreamSocketSecurityLevel> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (NSStreamSocketSecurityLevel o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*</marshalers>*/
+
+    /*<constants>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public static final NSStreamSocketSecurityLevel None = new NSStreamSocketSecurityLevel("None");
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public static final NSStreamSocketSecurityLevel SSLv2 = new NSStreamSocketSecurityLevel("SSLv2");
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public static final NSStreamSocketSecurityLevel SSLv3 = new NSStreamSocketSecurityLevel("SSLv3");
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public static final NSStreamSocketSecurityLevel TLSv1 = new NSStreamSocketSecurityLevel("TLSv1");
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public static final NSStreamSocketSecurityLevel NegotiatedSSL = new NSStreamSocketSecurityLevel("NegotiatedSSL");
+    /*</constants>*/
+    
+    private static /*<name>*/NSStreamSocketSecurityLevel/*</name>*/[] values = new /*<name>*/NSStreamSocketSecurityLevel/*</name>*/[] {/*<value_list>*/None, SSLv2, SSLv3, TLSv1, NegotiatedSSL/*</value_list>*/};
+    
+    /*<name>*/NSStreamSocketSecurityLevel/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static NSStreamSocketSecurityLevel valueOf(NSString value) {
-        for (NSStreamSocketSecurityLevel v : values) {
+    public static /*<name>*/NSStreamSocketSecurityLevel/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/NSStreamSocketSecurityLevel/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -111,31 +132,39 @@ import org.robovm.apple.dispatch.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/NSStreamSocketSecurityLevel/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="NSStreamSocketSecurityLevelNone", optional=true)
-    protected static native NSString NoneValue();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="NSStreamSocketSecurityLevelSSLv2", optional=true)
-    protected static native NSString SSLv2Value();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="NSStreamSocketSecurityLevelSSLv3", optional=true)
-    protected static native NSString SSLv3Value();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="NSStreamSocketSecurityLevelTLSv1", optional=true)
-    protected static native NSString TLSv1Value();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="NSStreamSocketSecurityLevelNegotiatedSSL", optional=true)
-    protected static native NSString NegotiatedSSLValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("Foundation") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="NSStreamSocketSecurityLevelNone", optional=true)
+        public static native NSString None();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="NSStreamSocketSecurityLevelSSLv2", optional=true)
+        public static native NSString SSLv2();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="NSStreamSocketSecurityLevelSSLv3", optional=true)
+        public static native NSString SSLv3();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="NSStreamSocketSecurityLevelTLSv1", optional=true)
+        public static native NSString TLSv1();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="NSStreamSocketSecurityLevelNegotiatedSSL", optional=true)
+        public static native NSString NegotiatedSSL();
+        /*</values>*/
+    }
 }

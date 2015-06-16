@@ -37,33 +37,72 @@ import org.robovm.apple.coretext.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("CoreFoundation")/*</annotations>*/
+/*<annotations>*/@Library("CoreFoundation") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/CFRunLoopMode/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CFRunLoopMode/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<CFString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(CFRunLoopMode.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    public static final CFRunLoopMode Default = new CFRunLoopMode("DefaultValue");
-    public static final CFRunLoopMode Common = new CFRunLoopMode("CommonValue");
-    
-    private static CFRunLoopMode[] values = new CFRunLoopMode[] {Default, Common};
-    private final LazyGlobalValue<String> lazyGlobalValue;
-    
-    private CFRunLoopMode(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    static { Bro.bind(/*<name>*/CFRunLoopMode/*</name>*/.class); }
+
+    /*<marshalers>*/
+    public static class Marshaler {
+        @MarshalsPointer
+        public static CFRunLoopMode toObject(Class<CFRunLoopMode> cls, long handle, long flags) {
+            CFString o = (CFString) CFType.Marshaler.toObject(CFString.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return CFRunLoopMode.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(CFRunLoopMode o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return CFType.Marshaler.toNative(o.value(), flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public String value() {
-        return lazyGlobalValue.value();
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CFRunLoopMode> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CFRunLoopMode> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(CFRunLoopMode.valueOf(o.get(i, CFString.class)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CFRunLoopMode> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray array = CFMutableArray.create();
+            for (CFRunLoopMode o : l) {
+                array.add(o.value());
+            }
+            return CFType.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
+    public static final CFRunLoopMode Default = new CFRunLoopMode("Default");
+    public static final CFRunLoopMode Common = new CFRunLoopMode("Common");
+    /*</constants>*/
+    
+    private static /*<name>*/CFRunLoopMode/*</name>*/[] values = new /*<name>*/CFRunLoopMode/*</name>*/[] {/*<value_list>*/Default, Common/*</value_list>*/};
+    
+    /*<name>*/CFRunLoopMode/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static CFRunLoopMode valueOf(String value) {
-        for (CFRunLoopMode v : values) {
+    public static /*<name>*/CFRunLoopMode/*</name>*/ valueOf(/*<type>*/CFString/*</type>*/ value) {
+        for (/*<name>*/CFRunLoopMode/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -71,10 +110,18 @@ import org.robovm.apple.coretext.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/CFRunLoopMode/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    @GlobalValue(symbol="kCFRunLoopDefaultMode", optional=true)
-    protected static native String DefaultValue();
-    @GlobalValue(symbol="kCFRunLoopCommonModes", optional=true)
-    protected static native String CommonValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("CoreFoundation") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        @GlobalValue(symbol="kCFRunLoopDefaultMode", optional=true)
+        public static native CFString Default();
+        @GlobalValue(symbol="kCFRunLoopCommonModes", optional=true)
+        public static native CFString Common();
+        /*</values>*/
+    }
 }

@@ -385,111 +385,94 @@ values:
 
     # CAEmitterLayer
     kCAEmitterLayer(Point|Line|Rectangle|Cuboid|Circle|Sphere):
-        class: CAEmitterShape
-        name: '#{g[0]}Value'
+        enum: CAEmitterShape
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     kCAEmitterLayer(Points|Outline|Surface|Volume):
-        class: CAEmitterMode
-        name: '#{g[0]}Value'
+        enum: CAEmitterMode
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     kCAEmitterLayer(Unordered|OldestFirst|OldestLast|BackToFront|Additive):
-        class: CAEmitterRenderMode
-        name: '#{g[0]}Value'
+        enum: CAEmitterRenderMode
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
 
     # CAGradientLayer
     kCAGradientLayer(.*):
-        class: CAGradientType
-        name: '#{g[0]}Value'
+        enum: CAGradientType
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
 
     # CAKeyframeAnimation
     kCAAnimationRotate(.*):
-        class: CAAnimationRotationMode
-        name: '#{g[0]}Value'
+        enum: CAAnimationRotationMode
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     kCAAnimation(.*):
-        class: CAAnimationCalculationMode
-        name: '#{g[0]}Value'
+        enum: CAAnimationCalculationMode
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
 
     # CALayer
     kCAGravity(.*):
-        class: CAGravity
-        name: '#{g[0]}Value'
+        enum: CAGravity
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     kCAFilter(.*):
-        class: CAFilter
-        name: '#{g[0]}Value'
+        enum: CAFilter
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     kCA(OnOrderIn|OnOrderOut|Transition):
         class: CAActionIdentifier
         name: '#{g[0]}'
 
     # CAMediaTiming
     kCAFillMode(.*):
-        class: CAFillMode
-        name: '#{g[0]}Value'
+        enum: CAFillMode
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
 
     # CAMediaTimingFunction
     kCAMediaTimingFunction(.*):
-        class: CAMediaTimingFunctionName
-        name: '#{g[0]}Value'
+        enum: CAMediaTimingFunctionName
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
 
     # CAScrollLayer
     kCAScroll(.*):
-        class: CAScrollMode
-        name: '#{g[0]}Value'
+        enum: CAScrollMode
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
 
     # CAShapeLayer
     kCAFillRule(.*):
-        class: CAShapeFillRule
-        name: '#{g[0]}Value'
+        enum: CAShapeFillRule
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     kCALineJoin(.*):
-        class: CALineJoin
-        name: '#{g[0]}Value'
+        enum: CALineJoin
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     kCALineCap(.*):
-        class: CALineCap
-        name: '#{g[0]}Value'
+        enum: CALineCap
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
 
     # CATextLayer
     kCAAlignment(.*):
-        class: CATextAlignmentMode
-        name: '#{g[0]}Value'
+        enum: CATextAlignmentMode
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected 
     kCATruncation(.*):
-        class: CATextTruncationMode
-        name: '#{g[0]}Value'
+        enum: CATextTruncationMode
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected 
 
     # CATransaction
     kCATransaction(.*):
-        class: CATransactionProperty
-        name: '#{g[0]}Value'
+        enum: CATransactionProperty
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
 
     # CATransform3D
     CATransform3D(Identity):
@@ -498,22 +481,19 @@ values:
 
     # CATransition
     kCATransition(From.*):
-        class: CATransitionSubType
-        name: '#{g[0]}Value'
+        enum: CATransitionSubType
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     kCATransition(.*):
-        class: CATransitionType
-        name: '#{g[0]}Value'
+        enum: CATransitionType
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
 
     # CAValueFunction
     kCAValueFunction(.*):
-        class: CAValueFunctionName
-        name: '#{g[0]}Value'
+        enum: CAValueFunctionName
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
 
     k?CA(.*):
         class: CoreAnimation

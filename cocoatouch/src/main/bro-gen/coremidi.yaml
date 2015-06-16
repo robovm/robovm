@@ -6,24 +6,24 @@ clang_args: ['-x', 'objective-c']
 headers:
     - /System/Library/Frameworks/CoreMIDI.framework/Headers/CoreMIDI.h
 typedefs:
-    'MIDIObjectRef': MIDIObject
-    'MIDIClientRef': MIDIClient
-    'MIDIPortRef': MIDIPort
-    'MIDIDeviceRef': MIDIDevice
-    'MIDIEntityRef': MIDIEntity
-    'MIDIEndpointRef': MIDIEndpoint
-    'MIDIDeviceListRef': MIDIDeviceList
-    'MIDISetupRef': MIDISetup
-    'MIDIThruConnectionRef': MIDIThruConnection
-    'MIDIDriverRef': MIDIDriver
+    MIDIObjectRef: MIDIObject
+    MIDIClientRef: MIDIClient
+    MIDIPortRef: MIDIPort
+    MIDIDeviceRef: MIDIDevice
+    MIDIEntityRef: MIDIEntity
+    MIDIEndpointRef: MIDIEndpoint
+    MIDIDeviceListRef: MIDIDeviceList
+    MIDISetupRef: MIDISetup
+    MIDIThruConnectionRef: MIDIThruConnection
+    MIDIDriverRef: MIDIDriver
 private_typedefs:
-    "__CFString *": String
-    "__CFString **": "NSString.NSStringPtr"
-    "__CFData *": NSData
-    "__CFURL *": NSURL
-    "__CFDictionary *": "NSDictionary<?, ?>"
-    "__CFArray *": "NSArray<?>"
-    "CFPropertyListRef": CFPropertyList
+    '__CFString *': String
+    '__CFString **': NSString.NSStringPtr
+    '__CFData *': NSData
+    '__CFURL *': NSURL
+    '__CFDictionary *': 'NSDictionary<?, ?>'
+    '__CFArray *': NSArray<?>
+    CFPropertyListRef: CFPropertyList
     
 enums:
     MIDINetworkConnectionPolicy: { first: MIDINetworkConnectionPolicy_NoOne, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
@@ -34,9 +34,6 @@ enums:
     MIDITransformControlType: { first: kMIDIControlType_7Bit, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
         
 classes:
-    CoreMIDI:
-        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
-
     MIDINetworkConnection: # DONE
         methods:
             '+connectionWithHost:':
@@ -427,10 +424,10 @@ values:
     # Make sure we don't miss any values if new ones are introduced in a later version
     (MIDI.*):
         class: CoreMIDI
-        name: "Value__#{g[0]}"
+        name: 'Value__#{g[0]}'
 
 constants:
     # Make sure we don't miss any constants if new ones are introduced in a later version
     (MIDI.*):
         class: CoreMIDI
-        name: "Constant__#{g[0]}"
+        name: 'Constant__#{g[0]}'

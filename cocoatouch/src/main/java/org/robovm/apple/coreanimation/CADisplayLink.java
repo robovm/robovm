@@ -82,10 +82,10 @@ import org.robovm.apple.metal.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     public void addToRunLoop(NSRunLoop runloop, NSRunLoopMode mode) {
-        addToRunLoop(runloop, mode.value());
+        addToRunLoop(runloop, mode.value().toString());
     }
     public void removeFromRunLoop(NSRunLoop runloop, NSRunLoopMode mode) {
-        removeFromRunLoop(runloop, mode.value());
+        removeFromRunLoop(runloop, mode.value().toString());
     }
     
     public static CADisplayLink create(OnUpdateListener listener) {

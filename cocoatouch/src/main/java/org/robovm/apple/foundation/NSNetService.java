@@ -98,10 +98,10 @@ import org.robovm.apple.dispatch.*;
         return ptr.get();
     }
     public void scheduleInRunLoop(NSRunLoop aRunLoop, NSRunLoopMode mode) {
-        scheduleInRunLoop(aRunLoop, mode.value());
+        scheduleInRunLoop(aRunLoop, mode.value().toString());
     }
     public void removeFromRunLoop(NSRunLoop aRunLoop, NSRunLoopMode mode) {
-        removeFromRunLoop(aRunLoop, mode.value());
+        removeFromRunLoop(aRunLoop, mode.value().toString());
     }
     /*<methods>*/
     @Method(selector = "initWithDomain:type:name:port:")

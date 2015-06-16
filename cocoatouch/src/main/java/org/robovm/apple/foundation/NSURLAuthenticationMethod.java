@@ -40,12 +40,15 @@ import org.robovm.apple.dispatch.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(NSURLAuthenticationMethod.Marshaler.class)
-/*<annotations>*/@Library("Foundation")/*</annotations>*/
+/*<annotations>*/@Library("Foundation") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/NSURLAuthenticationMethod/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSURLAuthenticationMethod/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/NSURLAuthenticationMethod/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static NSURLAuthenticationMethod toObject(Class<NSURLAuthenticationMethod> cls, long handle, long flags) {
@@ -63,47 +66,65 @@ import org.robovm.apple.dispatch.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(NSURLAuthenticationMethod.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    public static final NSURLAuthenticationMethod Default = new NSURLAuthenticationMethod("DefaultValue");
-    public static final NSURLAuthenticationMethod HTTPBasic = new NSURLAuthenticationMethod("HTTPBasicValue");
-    public static final NSURLAuthenticationMethod HTTPDigest = new NSURLAuthenticationMethod("HTTPDigestValue");
-    public static final NSURLAuthenticationMethod HTMLForm = new NSURLAuthenticationMethod("HTMLFormValue");
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<NSURLAuthenticationMethod> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<NSURLAuthenticationMethod> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(NSURLAuthenticationMethod.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<NSURLAuthenticationMethod> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (NSURLAuthenticationMethod o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
+    public static final NSURLAuthenticationMethod Default = new NSURLAuthenticationMethod("Default");
+    public static final NSURLAuthenticationMethod HTTPBasic = new NSURLAuthenticationMethod("HTTPBasic");
+    public static final NSURLAuthenticationMethod HTTPDigest = new NSURLAuthenticationMethod("HTTPDigest");
+    public static final NSURLAuthenticationMethod HTMLForm = new NSURLAuthenticationMethod("HTMLForm");
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static final NSURLAuthenticationMethod NTLM = new NSURLAuthenticationMethod("NTLMValue");
+    public static final NSURLAuthenticationMethod NTLM = new NSURLAuthenticationMethod("NTLM");
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static final NSURLAuthenticationMethod Negotiate = new NSURLAuthenticationMethod("NegotiateValue");
+    public static final NSURLAuthenticationMethod Negotiate = new NSURLAuthenticationMethod("Negotiate");
     /**
      * @since Available in iOS 3.0 and later.
      */
-    public static final NSURLAuthenticationMethod ClientCertificate = new NSURLAuthenticationMethod("ClientCertificateValue");
+    public static final NSURLAuthenticationMethod ClientCertificate = new NSURLAuthenticationMethod("ClientCertificate");
     /**
      * @since Available in iOS 3.0 and later.
      */
-    public static final NSURLAuthenticationMethod ServerTrust = new NSURLAuthenticationMethod("ServerTrustValue");
+    public static final NSURLAuthenticationMethod ServerTrust = new NSURLAuthenticationMethod("ServerTrust");
+    /*</constants>*/
     
-    private static NSURLAuthenticationMethod[] values = new NSURLAuthenticationMethod[] {Default, HTTPBasic, HTTPDigest, HTMLForm, NTLM, Negotiate, ClientCertificate, ServerTrust};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    private static /*<name>*/NSURLAuthenticationMethod/*</name>*/[] values = new /*<name>*/NSURLAuthenticationMethod/*</name>*/[] {/*<value_list>*/Default, HTTPBasic, HTTPDigest, HTMLForm, NTLM, Negotiate, ClientCertificate, ServerTrust/*</value_list>*/};
     
-    private NSURLAuthenticationMethod(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/NSURLAuthenticationMethod/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static NSURLAuthenticationMethod valueOf(NSString value) {
-        for (NSURLAuthenticationMethod v : values) {
+    public static /*<name>*/NSURLAuthenticationMethod/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/NSURLAuthenticationMethod/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -111,34 +132,42 @@ import org.robovm.apple.dispatch.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/NSURLAuthenticationMethod/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    @GlobalValue(symbol="NSURLAuthenticationMethodDefault", optional=true)
-    protected static native NSString DefaultValue();
-    @GlobalValue(symbol="NSURLAuthenticationMethodHTTPBasic", optional=true)
-    protected static native NSString HTTPBasicValue();
-    @GlobalValue(symbol="NSURLAuthenticationMethodHTTPDigest", optional=true)
-    protected static native NSString HTTPDigestValue();
-    @GlobalValue(symbol="NSURLAuthenticationMethodHTMLForm", optional=true)
-    protected static native NSString HTMLFormValue();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="NSURLAuthenticationMethodNTLM", optional=true)
-    protected static native NSString NTLMValue();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="NSURLAuthenticationMethodNegotiate", optional=true)
-    protected static native NSString NegotiateValue();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSURLAuthenticationMethodClientCertificate", optional=true)
-    protected static native NSString ClientCertificateValue();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSURLAuthenticationMethodServerTrust", optional=true)
-    protected static native NSString ServerTrustValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("Foundation") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        @GlobalValue(symbol="NSURLAuthenticationMethodDefault", optional=true)
+        public static native NSString Default();
+        @GlobalValue(symbol="NSURLAuthenticationMethodHTTPBasic", optional=true)
+        public static native NSString HTTPBasic();
+        @GlobalValue(symbol="NSURLAuthenticationMethodHTTPDigest", optional=true)
+        public static native NSString HTTPDigest();
+        @GlobalValue(symbol="NSURLAuthenticationMethodHTMLForm", optional=true)
+        public static native NSString HTMLForm();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="NSURLAuthenticationMethodNTLM", optional=true)
+        public static native NSString NTLM();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="NSURLAuthenticationMethodNegotiate", optional=true)
+        public static native NSString Negotiate();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="NSURLAuthenticationMethodClientCertificate", optional=true)
+        public static native NSString ClientCertificate();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="NSURLAuthenticationMethodServerTrust", optional=true)
+        public static native NSString ServerTrust();
+        /*</values>*/
+    }
 }

@@ -74,10 +74,10 @@ import org.robovm.apple.newsstandkit.NKAssetDownload;
     /*</properties>*/
     /*<members>*//*</members>*/
     public void scheduleInRunLoop(NSRunLoop aRunLoop, NSRunLoopMode mode) {
-        scheduleInRunLoop(aRunLoop, mode.value());
+        scheduleInRunLoop(aRunLoop, mode.value().toString());
     }
     public void unscheduleFromRunLoop(NSRunLoop aRunLoop, NSRunLoopMode mode) {
-        unscheduleFromRunLoop(aRunLoop, mode.value());
+        unscheduleFromRunLoop(aRunLoop, mode.value().toString());
     }
 
     /* NewsstandKit extensions */

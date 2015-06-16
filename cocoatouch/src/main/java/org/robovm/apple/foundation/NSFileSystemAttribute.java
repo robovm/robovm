@@ -40,36 +40,76 @@ import org.robovm.apple.dispatch.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("Foundation")/*</annotations>*/
+/*<annotations>*/@Library("Foundation") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/NSFileSystemAttribute/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSFileSystemAttribute/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(NSFileSystemAttribute.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    public static final NSFileSystemAttribute Number = new NSFileSystemAttribute("NumberAttribute");
-    public static final NSFileSystemAttribute Size = new NSFileSystemAttribute("SizeAttribute");
-    public static final NSFileSystemAttribute FreeSize = new NSFileSystemAttribute("FreeSizeAttribute");    
-    public static final NSFileSystemAttribute Nodes = new NSFileSystemAttribute("NodesAttribute");
-    public static final NSFileSystemAttribute FreeNodes = new NSFileSystemAttribute("FreeNodesAttribute");
-    private static NSFileSystemAttribute[] values = new NSFileSystemAttribute[] {Number, Size, FreeSize, Nodes, FreeNodes};
-    
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private NSFileSystemAttribute(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    static { Bro.bind(/*<name>*/NSFileSystemAttribute/*</name>*/.class); }
+
+    /*<marshalers>*/
+    public static class Marshaler {
+        @MarshalsPointer
+        public static NSFileSystemAttribute toObject(Class<NSFileSystemAttribute> cls, long handle, long flags) {
+            NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return NSFileSystemAttribute.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(NSFileSystemAttribute o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(o.value(), flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<NSFileSystemAttribute> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<NSFileSystemAttribute> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(NSFileSystemAttribute.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<NSFileSystemAttribute> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (NSFileSystemAttribute o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
+    public static final NSFileSystemAttribute Number = new NSFileSystemAttribute("Number");
+    public static final NSFileSystemAttribute Size = new NSFileSystemAttribute("Size");
+    public static final NSFileSystemAttribute FreeSize = new NSFileSystemAttribute("FreeSize");
+    public static final NSFileSystemAttribute Nodes = new NSFileSystemAttribute("Nodes");
+    public static final NSFileSystemAttribute FreeNodes = new NSFileSystemAttribute("FreeNodes");
+    /*</constants>*/
+    
+    private static /*<name>*/NSFileSystemAttribute/*</name>*/[] values = new /*<name>*/NSFileSystemAttribute/*</name>*/[] {/*<value_list>*/Number, Size, FreeSize, Nodes, FreeNodes/*</value_list>*/};
+    
+    /*<name>*/NSFileSystemAttribute/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static NSFileSystemAttribute valueOf(NSString value) {
-        for (NSFileSystemAttribute v : values) {
+    public static /*<name>*/NSFileSystemAttribute/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/NSFileSystemAttribute/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -77,16 +117,24 @@ import org.robovm.apple.dispatch.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/NSFileSystemAttribute/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    @GlobalValue(symbol="NSFileSystemNumber", optional=true)
-    protected static native NSString NumberAttribute();
-    @GlobalValue(symbol="NSFileSystemSize", optional=true)
-    protected static native NSString SizeAttribute();
-    @GlobalValue(symbol="NSFileSystemFreeSize", optional=true)
-    protected static native NSString FreeSizeAttribute();
-    @GlobalValue(symbol="NSFileSystemNodes", optional=true)
-    protected static native NSString NodesAttribute();
-    @GlobalValue(symbol="NSFileSystemFreeNodes", optional=true)
-    protected static native NSString FreeNodesAttribute();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("Foundation") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        @GlobalValue(symbol="NSFileSystemNumber", optional=true)
+        public static native NSString Number();
+        @GlobalValue(symbol="NSFileSystemSize", optional=true)
+        public static native NSString Size();
+        @GlobalValue(symbol="NSFileSystemFreeSize", optional=true)
+        public static native NSString FreeSize();
+        @GlobalValue(symbol="NSFileSystemNodes", optional=true)
+        public static native NSString Nodes();
+        @GlobalValue(symbol="NSFileSystemFreeNodes", optional=true)
+        public static native NSString FreeNodes();
+        /*</values>*/
+    }
 }

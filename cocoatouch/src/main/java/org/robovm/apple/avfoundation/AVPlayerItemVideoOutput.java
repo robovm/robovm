@@ -56,6 +56,7 @@ import org.robovm.apple.audiounit.*;
     /*<constructors>*/
     public AVPlayerItemVideoOutput() {}
     protected AVPlayerItemVideoOutput(SkipInit skipInit) { super(skipInit); }
+    @WeaklyLinked
     public AVPlayerItemVideoOutput(CVPixelBufferAttributes pixelBufferAttributes) { super((SkipInit) null); initObject(init(pixelBufferAttributes)); }
     /*</constructors>*/
     /*<properties>*/

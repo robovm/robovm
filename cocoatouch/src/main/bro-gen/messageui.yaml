@@ -81,10 +81,15 @@ values:
         type: NSString
         visibility: protected
     MFMessageComposeViewControllerAttachment(.*):
-        class: MFMessageComposeViewControllerAttachment
-        name: '#{g[0]}Key'
+        dictionary: MFMessageComposeViewControllerAttachment
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        mutable: false
+        methods:
+            URL:
+                type: String
+            AlternateFilename:
+                type: String
     
     # Make sure we don't miss any values if new ones are introduced in a later version
     (k?MF.*):

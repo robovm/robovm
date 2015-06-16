@@ -42,270 +42,293 @@ import org.robovm.apple.audiounit.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/**
- * @since Available in iOS 8.0 and later.
- */
-@Marshaler(AVMetadataIdentifierCommon.Marshaler.class)
-/*<annotations>*/@Library("AVFoundation")/*</annotations>*/
+/*<annotations>*/@Library("AVFoundation") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/AVMetadataIdentifierCommon/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/AVMetadataIdentifierCommon/*</name>*/ 
-    extends /*<extends>*/AVMetadataIdentifier/*</extends>*/ 
+    extends /*<extends>*/AVMetadataIdentifier/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/AVMetadataIdentifierCommon/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
-        public static NSMetadataItemAttribute toObject(Class<NSMetadataItemAttribute> cls, long handle, long flags) {
+        public static AVMetadataIdentifierCommon toObject(Class<AVMetadataIdentifierCommon> cls, long handle, long flags) {
             NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
             if (o == null) {
                 return null;
             }
-            return NSMetadataItemAttribute.valueOf(o);
+            return AVMetadataIdentifierCommon.valueOf(o);
         }
         @MarshalsPointer
-        public static long toNative(NSMetadataItemAttribute o, long flags) {
+        public static long toNative(AVMetadataIdentifierCommon o, long flags) {
             if (o == null) {
                 return 0L;
             }
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(AVMetadataIdentifierCommon.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final AVMetadataIdentifierCommon Title = new AVMetadataIdentifierCommon("TitleValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final AVMetadataIdentifierCommon Creator = new AVMetadataIdentifierCommon("CreatorValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final AVMetadataIdentifierCommon Subject = new AVMetadataIdentifierCommon("SubjectValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final AVMetadataIdentifierCommon Description = new AVMetadataIdentifierCommon("DescriptionValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final AVMetadataIdentifierCommon Publisher = new AVMetadataIdentifierCommon("PublisherValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final AVMetadataIdentifierCommon Contributor = new AVMetadataIdentifierCommon("ContributorValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final AVMetadataIdentifierCommon CreationDate = new AVMetadataIdentifierCommon("CreationDateValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final AVMetadataIdentifierCommon LastModifiedDate = new AVMetadataIdentifierCommon("LastModifiedDateValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final AVMetadataIdentifierCommon Type = new AVMetadataIdentifierCommon("TypeValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final AVMetadataIdentifierCommon Format = new AVMetadataIdentifierCommon("FormatValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final AVMetadataIdentifierCommon AssetIdentifier = new AVMetadataIdentifierCommon("AssetIdentifierValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final AVMetadataIdentifierCommon Source = new AVMetadataIdentifierCommon("SourceValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final AVMetadataIdentifierCommon Language = new AVMetadataIdentifierCommon("LanguageValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final AVMetadataIdentifierCommon Relation = new AVMetadataIdentifierCommon("RelationValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final AVMetadataIdentifierCommon Location = new AVMetadataIdentifierCommon("LocationValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final AVMetadataIdentifierCommon Copyrights = new AVMetadataIdentifierCommon("CopyrightsValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final AVMetadataIdentifierCommon AlbumName = new AVMetadataIdentifierCommon("AlbumNameValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final AVMetadataIdentifierCommon Author = new AVMetadataIdentifierCommon("AuthorValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final AVMetadataIdentifierCommon Artist = new AVMetadataIdentifierCommon("ArtistValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final AVMetadataIdentifierCommon Artwork = new AVMetadataIdentifierCommon("ArtworkValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final AVMetadataIdentifierCommon Make = new AVMetadataIdentifierCommon("MakeValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final AVMetadataIdentifierCommon Model = new AVMetadataIdentifierCommon("ModelValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final AVMetadataIdentifierCommon Software = new AVMetadataIdentifierCommon("SoftwareValue");
-    
-    private static AVMetadataIdentifierCommon[] values = new AVMetadataIdentifierCommon[] {Title, Creator, Subject, Description, 
-        Publisher, Contributor, CreationDate, LastModifiedDate, Format, AssetIdentifier, Source, Language, Relation, Location, 
-        Copyrights, AlbumName, Author, Artist, Artwork, Make, Model, Software};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private AVMetadataIdentifierCommon(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<AVMetadataIdentifierCommon> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<AVMetadataIdentifierCommon> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(AVMetadataIdentifierCommon.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<AVMetadataIdentifierCommon> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (AVMetadataIdentifierCommon o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*</marshalers>*/
+
+    /*<constants>*/
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final AVMetadataIdentifierCommon Title = new AVMetadataIdentifierCommon("Title");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final AVMetadataIdentifierCommon Creator = new AVMetadataIdentifierCommon("Creator");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final AVMetadataIdentifierCommon Subject = new AVMetadataIdentifierCommon("Subject");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final AVMetadataIdentifierCommon Description = new AVMetadataIdentifierCommon("Description");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final AVMetadataIdentifierCommon Publisher = new AVMetadataIdentifierCommon("Publisher");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final AVMetadataIdentifierCommon Contributor = new AVMetadataIdentifierCommon("Contributor");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final AVMetadataIdentifierCommon CreationDate = new AVMetadataIdentifierCommon("CreationDate");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final AVMetadataIdentifierCommon LastModifiedDate = new AVMetadataIdentifierCommon("LastModifiedDate");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final AVMetadataIdentifierCommon Type = new AVMetadataIdentifierCommon("Type");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final AVMetadataIdentifierCommon Format = new AVMetadataIdentifierCommon("Format");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final AVMetadataIdentifierCommon AssetIdentifier = new AVMetadataIdentifierCommon("AssetIdentifier");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final AVMetadataIdentifierCommon Source = new AVMetadataIdentifierCommon("Source");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final AVMetadataIdentifierCommon Language = new AVMetadataIdentifierCommon("Language");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final AVMetadataIdentifierCommon Relation = new AVMetadataIdentifierCommon("Relation");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final AVMetadataIdentifierCommon Location = new AVMetadataIdentifierCommon("Location");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final AVMetadataIdentifierCommon Copyrights = new AVMetadataIdentifierCommon("Copyrights");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final AVMetadataIdentifierCommon AlbumName = new AVMetadataIdentifierCommon("AlbumName");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final AVMetadataIdentifierCommon Author = new AVMetadataIdentifierCommon("Author");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final AVMetadataIdentifierCommon Artist = new AVMetadataIdentifierCommon("Artist");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final AVMetadataIdentifierCommon Artwork = new AVMetadataIdentifierCommon("Artwork");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final AVMetadataIdentifierCommon Make = new AVMetadataIdentifierCommon("Make");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final AVMetadataIdentifierCommon Model = new AVMetadataIdentifierCommon("Model");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final AVMetadataIdentifierCommon Software = new AVMetadataIdentifierCommon("Software");
+    /*</constants>*/
+    
+    private static /*<name>*/AVMetadataIdentifierCommon/*</name>*/[] values = new /*<name>*/AVMetadataIdentifierCommon/*</name>*/[] {/*<value_list>*/Title, Creator, Subject, Description, Publisher, Contributor, CreationDate, LastModifiedDate, Type, Format, AssetIdentifier, Source, Language, Relation, Location, Copyrights, AlbumName, Author, Artist, Artwork, Make, Model, Software/*</value_list>*/};
+    
+    /*<name>*/AVMetadataIdentifierCommon/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static AVMetadataIdentifierCommon valueOf(NSString value) {
-        for (AVMetadataIdentifierCommon v : values) {
+    public static /*<name>*/AVMetadataIdentifierCommon/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/AVMetadataIdentifierCommon/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
         }
-        return null;
-//        throw new IllegalArgumentException("No constant with value " + value + " found in " 
-//            + /*<name>*/AVMetadataIdentifierCommon/*</name>*/.class.getName());
+        throw new IllegalArgumentException("No constant with value " + value + " found in " 
+            + /*<name>*/AVMetadataIdentifierCommon/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="AVMetadataCommonIdentifierTitle", optional=true)
-    protected static native NSString TitleValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="AVMetadataCommonIdentifierCreator", optional=true)
-    protected static native NSString CreatorValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="AVMetadataCommonIdentifierSubject", optional=true)
-    protected static native NSString SubjectValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="AVMetadataCommonIdentifierDescription", optional=true)
-    protected static native NSString DescriptionValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="AVMetadataCommonIdentifierPublisher", optional=true)
-    protected static native NSString PublisherValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="AVMetadataCommonIdentifierContributor", optional=true)
-    protected static native NSString ContributorValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="AVMetadataCommonIdentifierCreationDate", optional=true)
-    protected static native NSString CreationDateValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="AVMetadataCommonIdentifierLastModifiedDate", optional=true)
-    protected static native NSString LastModifiedDateValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="AVMetadataCommonIdentifierType", optional=true)
-    protected static native NSString TypeValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="AVMetadataCommonIdentifierFormat", optional=true)
-    protected static native NSString FormatValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="AVMetadataCommonIdentifierAssetIdentifier", optional=true)
-    protected static native NSString AssetIdentifierValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="AVMetadataCommonIdentifierSource", optional=true)
-    protected static native NSString SourceValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="AVMetadataCommonIdentifierLanguage", optional=true)
-    protected static native NSString LanguageValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="AVMetadataCommonIdentifierRelation", optional=true)
-    protected static native NSString RelationValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="AVMetadataCommonIdentifierLocation", optional=true)
-    protected static native NSString LocationValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="AVMetadataCommonIdentifierCopyrights", optional=true)
-    protected static native NSString CopyrightsValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="AVMetadataCommonIdentifierAlbumName", optional=true)
-    protected static native NSString AlbumNameValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="AVMetadataCommonIdentifierAuthor", optional=true)
-    protected static native NSString AuthorValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="AVMetadataCommonIdentifierArtist", optional=true)
-    protected static native NSString ArtistValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="AVMetadataCommonIdentifierArtwork", optional=true)
-    protected static native NSString ArtworkValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="AVMetadataCommonIdentifierMake", optional=true)
-    protected static native NSString MakeValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="AVMetadataCommonIdentifierModel", optional=true)
-    protected static native NSString ModelValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="AVMetadataCommonIdentifierSoftware", optional=true)
-    protected static native NSString SoftwareValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("AVFoundation") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="AVMetadataCommonIdentifierTitle", optional=true)
+        public static native NSString Title();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="AVMetadataCommonIdentifierCreator", optional=true)
+        public static native NSString Creator();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="AVMetadataCommonIdentifierSubject", optional=true)
+        public static native NSString Subject();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="AVMetadataCommonIdentifierDescription", optional=true)
+        public static native NSString Description();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="AVMetadataCommonIdentifierPublisher", optional=true)
+        public static native NSString Publisher();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="AVMetadataCommonIdentifierContributor", optional=true)
+        public static native NSString Contributor();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="AVMetadataCommonIdentifierCreationDate", optional=true)
+        public static native NSString CreationDate();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="AVMetadataCommonIdentifierLastModifiedDate", optional=true)
+        public static native NSString LastModifiedDate();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="AVMetadataCommonIdentifierType", optional=true)
+        public static native NSString Type();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="AVMetadataCommonIdentifierFormat", optional=true)
+        public static native NSString Format();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="AVMetadataCommonIdentifierAssetIdentifier", optional=true)
+        public static native NSString AssetIdentifier();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="AVMetadataCommonIdentifierSource", optional=true)
+        public static native NSString Source();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="AVMetadataCommonIdentifierLanguage", optional=true)
+        public static native NSString Language();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="AVMetadataCommonIdentifierRelation", optional=true)
+        public static native NSString Relation();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="AVMetadataCommonIdentifierLocation", optional=true)
+        public static native NSString Location();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="AVMetadataCommonIdentifierCopyrights", optional=true)
+        public static native NSString Copyrights();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="AVMetadataCommonIdentifierAlbumName", optional=true)
+        public static native NSString AlbumName();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="AVMetadataCommonIdentifierAuthor", optional=true)
+        public static native NSString Author();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="AVMetadataCommonIdentifierArtist", optional=true)
+        public static native NSString Artist();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="AVMetadataCommonIdentifierArtwork", optional=true)
+        public static native NSString Artwork();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="AVMetadataCommonIdentifierMake", optional=true)
+        public static native NSString Make();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="AVMetadataCommonIdentifierModel", optional=true)
+        public static native NSString Model();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="AVMetadataCommonIdentifierSoftware", optional=true)
+        public static native NSString Software();
+        /*</values>*/
+    }
 }

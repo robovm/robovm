@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -91,13 +92,13 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     public void scheduleInRunLoop(CFRunLoop runLoop, CFRunLoopMode runLoopMode) {
-        scheduleInRunLoop(runLoop, runLoopMode.value());
+        scheduleInRunLoop(runLoop, runLoopMode.value().toString());
     }
     /**
      * @since Available in iOS 2.0 and later.
      */
     public void unscheduleFromRunLoop(CFRunLoop runLoop, CFRunLoopMode runLoopMode) {
-        unscheduleFromRunLoop(runLoop, runLoopMode.value());
+        unscheduleFromRunLoop(runLoop, runLoopMode.value().toString());
     }
     /*<methods>*/
     /**

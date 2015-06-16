@@ -38,14 +38,14 @@ import org.robovm.apple.corelocation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(UIPageViewControllerOptions.Marshaler.class)
 /*<annotations>*/@Library("UIKit")/*</annotations>*/
+@Marshaler(/*<name>*/UIPageViewControllerOptions/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIPageViewControllerOptions/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static UIPageViewControllerOptions toObject(Class<UIPageViewControllerOptions> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -62,68 +62,97 @@ import org.robovm.apple.corelocation.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    
-    private NSDictionary<NSString, NSObject> data;
-    
-    public UIPageViewControllerOptions() {
-        this.data = new NSMutableDictionary<>();
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<UIPageViewControllerOptions> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<UIPageViewControllerOptions> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new UIPageViewControllerOptions(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<UIPageViewControllerOptions> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (UIPageViewControllerOptions i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    protected UIPageViewControllerOptions(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    UIPageViewControllerOptions(NSDictionary<NSString, NSObject> data) {
+        super(data);
     }
-    /*<bind>*/static { Bro.bind(UIPageViewControllerOptions.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
+    public UIPageViewControllerOptions() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
+    }
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
+    }
+    public UIPageViewControllerOptions set(NSString key, NSObject value) {
+        data.put(key, value);
+        return this;
     }
     
+
     public UIPageViewControllerSpineLocation getSpineLocation() {
-        if (data.containsKey(SpineLocationKey())) {
-            NSNumber val = (NSNumber)data.get(SpineLocationKey());
-            return UIPageViewControllerSpineLocation.valueOf(val.intValue());
+        if (has(Keys.SpineLocation())) {
+            NSNumber val = (NSNumber) get(Keys.SpineLocation());
+            return UIPageViewControllerSpineLocation.valueOf(val.longValue());
         }
         return null;
     }
     public UIPageViewControllerOptions setSpineLocation(UIPageViewControllerSpineLocation spineLocation) {
-        data.put(SpineLocationKey(), NSNumber.valueOf((int)spineLocation.value()));
+        set(Keys.SpineLocation(), NSNumber.valueOf(spineLocation.value()));
         return this;
     }
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public @MachineSizedFloat double getInterPageSpacing() {
-        if (data.containsKey(InterPageSpacingKey())) {
-            NSNumber val = (NSNumber)data.get(InterPageSpacingKey());
-            return val.floatValue();
+    public double getInterPageSpacing() {
+        if (has(Keys.InterPageSpacing())) {
+            NSNumber val = (NSNumber) get(Keys.InterPageSpacing());
+            return val.doubleValue();
         }
         return 0;
     }
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public UIPageViewControllerOptions setInterPageSpacing(@MachineSizedFloat double interPageSpacing) {
-        data.put(InterPageSpacingKey(), NSNumber.valueOf(interPageSpacing));
+    public UIPageViewControllerOptions setInterPageSpacing(double interPageSpacing) {
+        set(Keys.InterPageSpacing(), NSNumber.valueOf(interPageSpacing));
         return this;
     }
-    /*<methods>*/
-    @GlobalValue(symbol="UIPageViewControllerOptionSpineLocationKey", optional=true)
-    protected static native NSString SpineLocationKey();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="UIPageViewControllerOptionInterPageSpacingKey", optional=true)
-    protected static native NSString InterPageSpacingKey();
     /*</methods>*/
     
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    /*<keys>*/
+    @Library("UIKit")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        @GlobalValue(symbol="UIPageViewControllerOptionSpineLocationKey", optional=true)
+        public static native NSString SpineLocation();
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        @GlobalValue(symbol="UIPageViewControllerOptionInterPageSpacingKey", optional=true)
+        public static native NSString InterPageSpacing();
     }
+    /*</keys>*/
 }

@@ -37,12 +37,15 @@ import org.robovm.apple.metal.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CAGravity.Marshaler.class)
-/*<annotations>*/@Library("QuartzCore")/*</annotations>*/
+/*<annotations>*/@Library("QuartzCore") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/CAGravity/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CAGravity/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/CAGravity/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CAGravity toObject(Class<CAGravity> cls, long handle, long flags) {
@@ -60,76 +63,93 @@ import org.robovm.apple.metal.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(CAGravity.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public static final CAGravity Center = new CAGravity("CenterValue");
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public static final CAGravity Top = new CAGravity("TopValue");
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public static final CAGravity Bottom = new CAGravity("BottomValue");
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public static final CAGravity Left = new CAGravity("LeftValue");
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public static final CAGravity Right = new CAGravity("RightValue");
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public static final CAGravity TopLeft = new CAGravity("TopLeftValue");
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public static final CAGravity TopRight = new CAGravity("TopRightValue");
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public static final CAGravity BottomLeft = new CAGravity("BottomLeftValue");
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public static final CAGravity BottomRight = new CAGravity("BottomRightValue");
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public static final CAGravity Resize = new CAGravity("ResizeValue");
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public static final CAGravity ResizeAspect = new CAGravity("ResizeAspectValue");
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public static final CAGravity ResizeAspectFill = new CAGravity("ResizeAspectFillValue");
-    
-    private static CAGravity[] values = new CAGravity[] {Center, Top, Bottom, Left, Right, TopLeft, TopRight, 
-        BottomLeft, BottomRight, Resize, ResizeAspect, ResizeAspectFill};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private CAGravity(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<CAGravity> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CAGravity> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(CAGravity.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CAGravity> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (CAGravity o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*</marshalers>*/
+
+    /*<constants>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public static final CAGravity Center = new CAGravity("Center");
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public static final CAGravity Top = new CAGravity("Top");
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public static final CAGravity Bottom = new CAGravity("Bottom");
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public static final CAGravity Left = new CAGravity("Left");
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public static final CAGravity Right = new CAGravity("Right");
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public static final CAGravity TopLeft = new CAGravity("TopLeft");
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public static final CAGravity TopRight = new CAGravity("TopRight");
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public static final CAGravity BottomLeft = new CAGravity("BottomLeft");
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public static final CAGravity BottomRight = new CAGravity("BottomRight");
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public static final CAGravity Resize = new CAGravity("Resize");
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public static final CAGravity ResizeAspect = new CAGravity("ResizeAspect");
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public static final CAGravity ResizeAspectFill = new CAGravity("ResizeAspectFill");
+    /*</constants>*/
+    
+    private static /*<name>*/CAGravity/*</name>*/[] values = new /*<name>*/CAGravity/*</name>*/[] {/*<value_list>*/Center, Top, Bottom, Left, Right, TopLeft, TopRight, BottomLeft, BottomRight, Resize, ResizeAspect, ResizeAspectFill/*</value_list>*/};
+    
+    /*<name>*/CAGravity/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static CAGravity valueOf(NSString value) {
-        for (CAGravity v : values) {
+    public static /*<name>*/CAGravity/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/CAGravity/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -137,66 +157,74 @@ import org.robovm.apple.metal.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/CAGravity/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCAGravityCenter", optional=true)
-    protected static native NSString CenterValue();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCAGravityTop", optional=true)
-    protected static native NSString TopValue();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCAGravityBottom", optional=true)
-    protected static native NSString BottomValue();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCAGravityLeft", optional=true)
-    protected static native NSString LeftValue();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCAGravityRight", optional=true)
-    protected static native NSString RightValue();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCAGravityTopLeft", optional=true)
-    protected static native NSString TopLeftValue();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCAGravityTopRight", optional=true)
-    protected static native NSString TopRightValue();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCAGravityBottomLeft", optional=true)
-    protected static native NSString BottomLeftValue();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCAGravityBottomRight", optional=true)
-    protected static native NSString BottomRightValue();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCAGravityResize", optional=true)
-    protected static native NSString ResizeValue();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCAGravityResizeAspect", optional=true)
-    protected static native NSString ResizeAspectValue();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCAGravityResizeAspectFill", optional=true)
-    protected static native NSString ResizeAspectFillValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("QuartzCore") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCAGravityCenter", optional=true)
+        public static native NSString Center();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCAGravityTop", optional=true)
+        public static native NSString Top();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCAGravityBottom", optional=true)
+        public static native NSString Bottom();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCAGravityLeft", optional=true)
+        public static native NSString Left();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCAGravityRight", optional=true)
+        public static native NSString Right();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCAGravityTopLeft", optional=true)
+        public static native NSString TopLeft();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCAGravityTopRight", optional=true)
+        public static native NSString TopRight();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCAGravityBottomLeft", optional=true)
+        public static native NSString BottomLeft();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCAGravityBottomRight", optional=true)
+        public static native NSString BottomRight();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCAGravityResize", optional=true)
+        public static native NSString Resize();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCAGravityResizeAspect", optional=true)
+        public static native NSString ResizeAspect();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCAGravityResizeAspectFill", optional=true)
+        public static native NSString ResizeAspectFill();
+        /*</values>*/
+    }
 }

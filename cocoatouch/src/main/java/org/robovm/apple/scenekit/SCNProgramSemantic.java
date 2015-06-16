@@ -19,6 +19,7 @@ package org.robovm.apple.scenekit;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -38,8 +39,12 @@ import org.robovm.apple.glkit.*;
 /*</javadoc>*/
 @Marshaler(SCNProgramSemantic.Marshaler.class)
 /*<annotations>*/@Library("SceneKit")/*</annotations>*/
-public abstract class SCNProgramSemantic {
+public abstract class SCNProgramSemantic extends GlobalValueEnumeration<NSString> {
     
+    protected SCNProgramSemantic(Class<?> clazz, String getterName) {
+        super(clazz, getterName);
+    }
+
     public static class Marshaler {
         @MarshalsPointer
         public static SCNProgramSemantic toObject(Class<SCNProgramSemantic> cls, long handle, long flags) {
@@ -60,8 +65,6 @@ public abstract class SCNProgramSemantic {
 
     static { Bro.bind(SCNProgramSemantic.class); }
 
-    public abstract NSString value();
-    
     public static SCNProgramSemantic valueOf(NSString value) {
         SCNProgramSemantic v = SCNGeometrySourceSemantic.valueOf(value);
         if (v == null) v = SCNRenderingTransform.valueOf(value);

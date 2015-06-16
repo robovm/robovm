@@ -81,8 +81,8 @@ import org.robovm.apple.audiotoolbox.*;
                 return 0L;
             }
             CFArray array = CFMutableArray.create();
-            for (CMTextVerticalLayout i : l) {
-                array.add(i.value());
+            for (CMTextVerticalLayout o : l) {
+                array.add(o.value());
             }
             return CFType.Marshaler.toNative(array, flags);
         }

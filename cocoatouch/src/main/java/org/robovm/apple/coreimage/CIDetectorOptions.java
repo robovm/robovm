@@ -38,14 +38,14 @@ import org.robovm.apple.uikit.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CIDetectorOptions.Marshaler.class)
 /*<annotations>*/@Library("CoreImage")/*</annotations>*/
+@Marshaler(/*<name>*/CIDetectorOptions/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CIDetectorOptions/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
-    
+
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static CIDetectorOptions toObject(Class<CIDetectorOptions> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -62,33 +62,62 @@ import org.robovm.apple.uikit.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CIDetectorOptions> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CIDetectorOptions> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new CIDetectorOptions(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CIDetectorOptions> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (CIDetectorOptions i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
 
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected CIDetectorOptions(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
+    /*<constructors>*/
+    CIDetectorOptions(NSDictionary<NSString, NSObject> data) {
+        super(data);
     }
-    public CIDetectorOptions() {
-        this.data = new NSMutableDictionary<>();
+    public CIDetectorOptions() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
     }
-    /*<bind>*/static { Bro.bind(CIDetectorOptions.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
+    }
+    public CIDetectorOptions set(NSString key, NSObject value) {
+        data.put(key, value);
+        return this;
     }
     
-    
+
     /**
      * @since Available in iOS 5.0 and later.
      */
     public CIDetectorAccuracy getAccuracy() {
-        if (data.containsKey(AccuracyKey())) {
-            NSString val = (NSString)data.get(AccuracyKey());
+        if (has(Keys.Accuracy())) {
+            NSString val = (NSString) get(Keys.Accuracy());
             return CIDetectorAccuracy.valueOf(val);
         }
         return null;
@@ -97,15 +126,15 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 5.0 and later.
      */
     public CIDetectorOptions setAccuracy(CIDetectorAccuracy accuracy) {
-        data.put(AccuracyKey(), accuracy.value());
+        set(Keys.Accuracy(), accuracy.value());
         return this;
     }
     /**
      * @since Available in iOS 6.0 and later.
      */
     public boolean isTracking() {
-        if (data.containsKey(TrackingKey())) {
-            NSNumber val = (NSNumber)data.get(TrackingKey());
+        if (has(Keys.Tracking())) {
+            NSNumber val = (NSNumber) get(Keys.Tracking());
             return val.booleanValue();
         }
         return false;
@@ -114,15 +143,15 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 6.0 and later.
      */
     public CIDetectorOptions setTracking(boolean tracking) {
-        data.put(TrackingKey(), NSNumber.valueOf(tracking));
+        set(Keys.Tracking(), NSNumber.valueOf(tracking));
         return this;
     }
     /**
      * @since Available in iOS 6.0 and later.
      */
     public double getMinFeatureSize() {
-        if (data.containsKey(MinFeatureSizeKey())) {
-            NSNumber val = (NSNumber)data.get(MinFeatureSizeKey());
+        if (has(Keys.MinFeatureSize())) {
+            NSNumber val = (NSNumber) get(Keys.MinFeatureSize());
             return val.doubleValue();
         }
         return 0;
@@ -131,29 +160,30 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 6.0 and later.
      */
     public CIDetectorOptions setMinFeatureSize(double minFeatureSize) {
-        data.put(MinFeatureSizeKey(), NSNumber.valueOf(minFeatureSize));
+        set(Keys.MinFeatureSize(), NSNumber.valueOf(minFeatureSize));
         return this;
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="CIDetectorAccuracy", optional=true)
-    protected static native NSString AccuracyKey();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="CIDetectorTracking", optional=true)
-    protected static native NSString TrackingKey();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="CIDetectorMinFeatureSize", optional=true)
-    protected static native NSString MinFeatureSizeKey();
     /*</methods>*/
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    
+    /*<keys>*/
+    @Library("CoreImage")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="CIDetectorAccuracy", optional=true)
+        public static native NSString Accuracy();
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        @GlobalValue(symbol="CIDetectorTracking", optional=true)
+        public static native NSString Tracking();
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        @GlobalValue(symbol="CIDetectorMinFeatureSize", optional=true)
+        public static native NSString MinFeatureSize();
     }
+    /*</keys>*/
 }

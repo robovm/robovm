@@ -34,14 +34,14 @@ import org.robovm.apple.dispatch.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CBCentralManagerOptions.Marshaler.class)
 /*<annotations>*/@Library("CoreBluetooth")/*</annotations>*/
+@Marshaler(/*<name>*/CBCentralManagerOptions/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CBCentralManagerOptions/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static CBCentralManagerOptions toObject(Class<CBCentralManagerOptions> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -58,33 +58,62 @@ import org.robovm.apple.dispatch.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected CBCentralManagerOptions(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CBCentralManagerOptions> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CBCentralManagerOptions> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new CBCentralManagerOptions(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CBCentralManagerOptions> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (CBCentralManagerOptions i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    public CBCentralManagerOptions() {
-    	this.data = new NSMutableDictionary<>();
-	}
-    /*<bind>*/static { Bro.bind(CBCentralManagerOptions.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    CBCentralManagerOptions(NSDictionary<NSString, NSObject> data) {
+        super(data);
+    }
+    public CBCentralManagerOptions() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
+    }
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
+    }
+    public CBCentralManagerOptions set(NSString key, NSObject value) {
+        data.put(key, value);
+        return this;
     }
     
-    
+
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public boolean isShowingPowerAlert() {
-        if (data.containsKey(ShowPowerAlertKey())) {
-            NSNumber val = (NSNumber)data.get(ShowPowerAlertKey());
+    public boolean showsPowerAlert() {
+        if (has(Keys.ShowPowerAlert())) {
+            NSNumber val = (NSNumber) get(Keys.ShowPowerAlert());
             return val.booleanValue();
         }
         return false;
@@ -92,16 +121,16 @@ import org.robovm.apple.dispatch.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public CBCentralManagerOptions setShowPowerAlert(boolean showAlert) {
-        data.put(ShowPowerAlertKey(), NSNumber.valueOf(showAlert));
+    public CBCentralManagerOptions setShowsPowerAlert(boolean showsPowerAlert) {
+        set(Keys.ShowPowerAlert(), NSNumber.valueOf(showsPowerAlert));
         return this;
     }
     /**
      * @since Available in iOS 7.0 and later.
      */
     public String getRestoreIdentifier() {
-        if (data.containsKey(RestoreIdentifierKey())) {
-            NSString val = (NSString)data.get(RestoreIdentifierKey());
+        if (has(Keys.RestoreIdentifier())) {
+            NSString val = (NSString) get(Keys.RestoreIdentifier());
             return val.toString();
         }
         return null;
@@ -109,25 +138,26 @@ import org.robovm.apple.dispatch.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public CBCentralManagerOptions setRestoreIdentifier(String identifier) {
-        data.put(RestoreIdentifierKey(), new NSString(identifier));
+    public CBCentralManagerOptions setRestoreIdentifier(String restoreIdentifier) {
+        set(Keys.RestoreIdentifier(), new NSString(restoreIdentifier));
         return this;
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="CBCentralManagerOptionShowPowerAlertKey", optional=true)
-    protected static native NSString ShowPowerAlertKey();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="CBCentralManagerOptionRestoreIdentifierKey", optional=true)
-    protected static native NSString RestoreIdentifierKey();
     /*</methods>*/
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    
+    /*<keys>*/
+    @Library("CoreBluetooth")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="CBCentralManagerOptionShowPowerAlertKey", optional=true)
+        public static native NSString ShowPowerAlert();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="CBCentralManagerOptionRestoreIdentifierKey", optional=true)
+        public static native NSString RestoreIdentifier();
     }
+    /*</keys>*/
 }

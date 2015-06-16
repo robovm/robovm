@@ -40,43 +40,83 @@ import org.robovm.apple.dispatch.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("Foundation")/*</annotations>*/
+/*<annotations>*/@Library("Foundation") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/NSURLUbiquitousItemDownloadingStatus/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSURLUbiquitousItemDownloadingStatus/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(NSURLUbiquitousItemDownloadingStatus.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static final NSURLUbiquitousItemDownloadingStatus NotDownloaded = new NSURLUbiquitousItemDownloadingStatus("NotDownloadedValue");
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static final NSURLUbiquitousItemDownloadingStatus Downloaded = new NSURLUbiquitousItemDownloadingStatus("DownloadedValue");
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static final NSURLUbiquitousItemDownloadingStatus Current = new NSURLUbiquitousItemDownloadingStatus("CurrentValue");
-    
-    private static NSURLUbiquitousItemDownloadingStatus[] values = new NSURLUbiquitousItemDownloadingStatus[] {NotDownloaded, Downloaded, Current};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private NSURLUbiquitousItemDownloadingStatus(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    static { Bro.bind(/*<name>*/NSURLUbiquitousItemDownloadingStatus/*</name>*/.class); }
+
+    /*<marshalers>*/
+    public static class Marshaler {
+        @MarshalsPointer
+        public static NSURLUbiquitousItemDownloadingStatus toObject(Class<NSURLUbiquitousItemDownloadingStatus> cls, long handle, long flags) {
+            NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return NSURLUbiquitousItemDownloadingStatus.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(NSURLUbiquitousItemDownloadingStatus o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(o.value(), flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<NSURLUbiquitousItemDownloadingStatus> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<NSURLUbiquitousItemDownloadingStatus> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(NSURLUbiquitousItemDownloadingStatus.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<NSURLUbiquitousItemDownloadingStatus> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (NSURLUbiquitousItemDownloadingStatus o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final NSURLUbiquitousItemDownloadingStatus NotDownloaded = new NSURLUbiquitousItemDownloadingStatus("NotDownloaded");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final NSURLUbiquitousItemDownloadingStatus Downloaded = new NSURLUbiquitousItemDownloadingStatus("Downloaded");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final NSURLUbiquitousItemDownloadingStatus Current = new NSURLUbiquitousItemDownloadingStatus("Current");
+    /*</constants>*/
+    
+    private static /*<name>*/NSURLUbiquitousItemDownloadingStatus/*</name>*/[] values = new /*<name>*/NSURLUbiquitousItemDownloadingStatus/*</name>*/[] {/*<value_list>*/NotDownloaded, Downloaded, Current/*</value_list>*/};
+    
+    /*<name>*/NSURLUbiquitousItemDownloadingStatus/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static NSURLUbiquitousItemDownloadingStatus valueOf(NSString value) {
-        for (NSURLUbiquitousItemDownloadingStatus v : values) {
+    public static /*<name>*/NSURLUbiquitousItemDownloadingStatus/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/NSURLUbiquitousItemDownloadingStatus/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -84,21 +124,29 @@ import org.robovm.apple.dispatch.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/NSURLUbiquitousItemDownloadingStatus/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSURLUbiquitousItemDownloadingStatusNotDownloaded", optional=true)
-    protected static native NSString NotDownloadedValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSURLUbiquitousItemDownloadingStatusDownloaded", optional=true)
-    protected static native NSString DownloadedValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSURLUbiquitousItemDownloadingStatusCurrent", optional=true)
-    protected static native NSString CurrentValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("Foundation") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="NSURLUbiquitousItemDownloadingStatusNotDownloaded", optional=true)
+        public static native NSString NotDownloaded();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="NSURLUbiquitousItemDownloadingStatusDownloaded", optional=true)
+        public static native NSString Downloaded();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="NSURLUbiquitousItemDownloadingStatusCurrent", optional=true)
+        public static native NSString Current();
+        /*</values>*/
+    }
 }

@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -33,12 +34,15 @@ import org.robovm.apple.coregraphics.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CGImagePropertyGPS.Marshaler.class)
-/*<annotations>*/@Library("ImageIO")/*</annotations>*/
+/*<annotations>*/@Library("ImageIO") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/CGImagePropertyGPS/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CGImagePropertyGPS/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<CFString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
-    
+
+    static { Bro.bind(/*<name>*/CGImagePropertyGPS/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CGImagePropertyGPS toObject(Class<CGImagePropertyGPS> cls, long handle, long flags) {
@@ -56,158 +60,172 @@ import org.robovm.apple.coregraphics.*;
             return CFType.Marshaler.toNative(o.value(), flags);
         }
     }
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CGImagePropertyGPS> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CGImagePropertyGPS> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(CGImagePropertyGPS.valueOf(o.get(i, CFString.class)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CGImagePropertyGPS> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray array = CFMutableArray.create();
+            for (CGImagePropertyGPS o : l) {
+                array.add(o.value());
+            }
+            return CFType.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(CGImagePropertyGPS.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    /*<constants>*/
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyGPS Version = new CGImagePropertyGPS("VersionKey");
+    public static final CGImagePropertyGPS Version = new CGImagePropertyGPS("Version");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyGPS LatitudeRef = new CGImagePropertyGPS("LatitudeRefKey");
+    public static final CGImagePropertyGPS LatitudeRef = new CGImagePropertyGPS("LatitudeRef");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyGPS Latitude = new CGImagePropertyGPS("LatitudeKey");
+    public static final CGImagePropertyGPS Latitude = new CGImagePropertyGPS("Latitude");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyGPS LongitudeRef = new CGImagePropertyGPS("LongitudeRefKey");
+    public static final CGImagePropertyGPS LongitudeRef = new CGImagePropertyGPS("LongitudeRef");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyGPS Longitude = new CGImagePropertyGPS("LongitudeKey");
+    public static final CGImagePropertyGPS Longitude = new CGImagePropertyGPS("Longitude");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyGPS AltitudeRef = new CGImagePropertyGPS("AltitudeRefKey");
+    public static final CGImagePropertyGPS AltitudeRef = new CGImagePropertyGPS("AltitudeRef");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyGPS Altitude = new CGImagePropertyGPS("AltitudeKey");
+    public static final CGImagePropertyGPS Altitude = new CGImagePropertyGPS("Altitude");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyGPS TimeStamp = new CGImagePropertyGPS("TimeStampKey");
+    public static final CGImagePropertyGPS TimeStamp = new CGImagePropertyGPS("TimeStamp");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyGPS Satellites = new CGImagePropertyGPS("SatellitesKey");
+    public static final CGImagePropertyGPS Satellites = new CGImagePropertyGPS("Satellites");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyGPS Status = new CGImagePropertyGPS("StatusKey");
+    public static final CGImagePropertyGPS Status = new CGImagePropertyGPS("Status");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyGPS MeasureMode = new CGImagePropertyGPS("MeasureModeKey");
+    public static final CGImagePropertyGPS MeasureMode = new CGImagePropertyGPS("MeasureMode");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyGPS DOP = new CGImagePropertyGPS("DOPKey");
+    public static final CGImagePropertyGPS DOP = new CGImagePropertyGPS("DOP");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyGPS SpeedRef = new CGImagePropertyGPS("SpeedRefKey");
+    public static final CGImagePropertyGPS SpeedRef = new CGImagePropertyGPS("SpeedRef");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyGPS Speed = new CGImagePropertyGPS("SpeedKey");
+    public static final CGImagePropertyGPS Speed = new CGImagePropertyGPS("Speed");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyGPS TrackRef = new CGImagePropertyGPS("TrackRefKey");
+    public static final CGImagePropertyGPS TrackRef = new CGImagePropertyGPS("TrackRef");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyGPS Track = new CGImagePropertyGPS("TrackKey");
+    public static final CGImagePropertyGPS Track = new CGImagePropertyGPS("Track");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyGPS ImgDirectionRef = new CGImagePropertyGPS("ImgDirectionRefKey");
+    public static final CGImagePropertyGPS ImgDirectionRef = new CGImagePropertyGPS("ImgDirectionRef");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyGPS ImgDirection = new CGImagePropertyGPS("ImgDirectionKey");
+    public static final CGImagePropertyGPS ImgDirection = new CGImagePropertyGPS("ImgDirection");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyGPS MapDatum = new CGImagePropertyGPS("MapDatumKey");
+    public static final CGImagePropertyGPS MapDatum = new CGImagePropertyGPS("MapDatum");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyGPS DestLatitudeRef = new CGImagePropertyGPS("DestLatitudeRefKey");
+    public static final CGImagePropertyGPS DestLatitudeRef = new CGImagePropertyGPS("DestLatitudeRef");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyGPS DestLatitude = new CGImagePropertyGPS("DestLatitudeKey");
+    public static final CGImagePropertyGPS DestLatitude = new CGImagePropertyGPS("DestLatitude");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyGPS DestLongitudeRef = new CGImagePropertyGPS("DestLongitudeRefKey");
+    public static final CGImagePropertyGPS DestLongitudeRef = new CGImagePropertyGPS("DestLongitudeRef");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyGPS DestLongitude = new CGImagePropertyGPS("DestLongitudeKey");
+    public static final CGImagePropertyGPS DestLongitude = new CGImagePropertyGPS("DestLongitude");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyGPS DestBearingRef = new CGImagePropertyGPS("DestBearingRefKey");
+    public static final CGImagePropertyGPS DestBearingRef = new CGImagePropertyGPS("DestBearingRef");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyGPS DestBearing = new CGImagePropertyGPS("DestBearingKey");
+    public static final CGImagePropertyGPS DestBearing = new CGImagePropertyGPS("DestBearing");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyGPS DestDistanceRef = new CGImagePropertyGPS("DestDistanceRefKey");
+    public static final CGImagePropertyGPS DestDistanceRef = new CGImagePropertyGPS("DestDistanceRef");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyGPS DestDistance = new CGImagePropertyGPS("DestDistanceKey");
+    public static final CGImagePropertyGPS DestDistance = new CGImagePropertyGPS("DestDistance");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyGPS ProcessingMethod = new CGImagePropertyGPS("ProcessingMethodKey");
+    public static final CGImagePropertyGPS ProcessingMethod = new CGImagePropertyGPS("ProcessingMethod");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyGPS AreaInformation = new CGImagePropertyGPS("AreaInformationKey");
+    public static final CGImagePropertyGPS AreaInformation = new CGImagePropertyGPS("AreaInformation");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyGPS DateStamp = new CGImagePropertyGPS("DateStampKey");
+    public static final CGImagePropertyGPS DateStamp = new CGImagePropertyGPS("DateStamp");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyGPS Differental = new CGImagePropertyGPS("DifferentalKey");
+    public static final CGImagePropertyGPS Differental = new CGImagePropertyGPS("Differental");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final CGImagePropertyGPS HPositioningError = new CGImagePropertyGPS("HPositioningErrorKey");    
+    public static final CGImagePropertyGPS HPositioningError = new CGImagePropertyGPS("HPositioningError");
+    /*</constants>*/
     
-    private static CGImagePropertyGPS[] values = new CGImagePropertyGPS[] {Version, LatitudeRef, Latitude, LongitudeRef, 
-        Longitude, AltitudeRef, Altitude, TimeStamp, Satellites, Status, MeasureMode, DOP, SpeedRef, Speed, TrackRef, Track, 
-        ImgDirectionRef, ImgDirection, MapDatum, DestLatitudeRef, DestLatitude, DestLongitudeRef, DestLongitude, DestBearingRef, 
-        DestBearing, DestDistanceRef, DestDistance, ProcessingMethod, AreaInformation, DateStamp, Differental, HPositioningError};
-    private final LazyGlobalValue<CFString> lazyGlobalValue;
+    private static /*<name>*/CGImagePropertyGPS/*</name>*/[] values = new /*<name>*/CGImagePropertyGPS/*</name>*/[] {/*<value_list>*/Version, LatitudeRef, Latitude, LongitudeRef, Longitude, AltitudeRef, Altitude, TimeStamp, Satellites, Status, MeasureMode, DOP, SpeedRef, Speed, TrackRef, Track, ImgDirectionRef, ImgDirection, MapDatum, DestLatitudeRef, DestLatitude, DestLongitudeRef, DestLongitude, DestBearingRef, DestBearing, DestDistanceRef, DestDistance, ProcessingMethod, AreaInformation, DateStamp, Differental, HPositioningError/*</value_list>*/};
     
-    private CGImagePropertyGPS(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public CFString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/CGImagePropertyGPS/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static CGImagePropertyGPS valueOf(CFString value) {
-        for (CGImagePropertyGPS v : values) {
+    public static /*<name>*/CGImagePropertyGPS/*</name>*/ valueOf(/*<type>*/CFString/*</type>*/ value) {
+        for (/*<name>*/CGImagePropertyGPS/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -215,166 +233,174 @@ import org.robovm.apple.coregraphics.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/CGImagePropertyGPS/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyGPSVersion", optional=true)
-    protected static native CFString VersionKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyGPSLatitudeRef", optional=true)
-    protected static native CFString LatitudeRefKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyGPSLatitude", optional=true)
-    protected static native CFString LatitudeKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyGPSLongitudeRef", optional=true)
-    protected static native CFString LongitudeRefKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyGPSLongitude", optional=true)
-    protected static native CFString LongitudeKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyGPSAltitudeRef", optional=true)
-    protected static native CFString AltitudeRefKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyGPSAltitude", optional=true)
-    protected static native CFString AltitudeKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyGPSTimeStamp", optional=true)
-    protected static native CFString TimeStampKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyGPSSatellites", optional=true)
-    protected static native CFString SatellitesKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyGPSStatus", optional=true)
-    protected static native CFString StatusKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyGPSMeasureMode", optional=true)
-    protected static native CFString MeasureModeKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyGPSDOP", optional=true)
-    protected static native CFString DOPKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyGPSSpeedRef", optional=true)
-    protected static native CFString SpeedRefKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyGPSSpeed", optional=true)
-    protected static native CFString SpeedKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyGPSTrackRef", optional=true)
-    protected static native CFString TrackRefKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyGPSTrack", optional=true)
-    protected static native CFString TrackKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyGPSImgDirectionRef", optional=true)
-    protected static native CFString ImgDirectionRefKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyGPSImgDirection", optional=true)
-    protected static native CFString ImgDirectionKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyGPSMapDatum", optional=true)
-    protected static native CFString MapDatumKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyGPSDestLatitudeRef", optional=true)
-    protected static native CFString DestLatitudeRefKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyGPSDestLatitude", optional=true)
-    protected static native CFString DestLatitudeKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyGPSDestLongitudeRef", optional=true)
-    protected static native CFString DestLongitudeRefKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyGPSDestLongitude", optional=true)
-    protected static native CFString DestLongitudeKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyGPSDestBearingRef", optional=true)
-    protected static native CFString DestBearingRefKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyGPSDestBearing", optional=true)
-    protected static native CFString DestBearingKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyGPSDestDistanceRef", optional=true)
-    protected static native CFString DestDistanceRefKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyGPSDestDistance", optional=true)
-    protected static native CFString DestDistanceKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyGPSProcessingMethod", optional=true)
-    protected static native CFString ProcessingMethodKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyGPSAreaInformation", optional=true)
-    protected static native CFString AreaInformationKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyGPSDateStamp", optional=true)
-    protected static native CFString DateStampKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyGPSDifferental", optional=true)
-    protected static native CFString DifferentalKey();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyGPSHPositioningError", optional=true)
-    protected static native CFString HPositioningErrorKey();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("ImageIO") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyGPSVersion", optional=true)
+        public static native CFString Version();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyGPSLatitudeRef", optional=true)
+        public static native CFString LatitudeRef();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyGPSLatitude", optional=true)
+        public static native CFString Latitude();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyGPSLongitudeRef", optional=true)
+        public static native CFString LongitudeRef();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyGPSLongitude", optional=true)
+        public static native CFString Longitude();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyGPSAltitudeRef", optional=true)
+        public static native CFString AltitudeRef();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyGPSAltitude", optional=true)
+        public static native CFString Altitude();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyGPSTimeStamp", optional=true)
+        public static native CFString TimeStamp();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyGPSSatellites", optional=true)
+        public static native CFString Satellites();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyGPSStatus", optional=true)
+        public static native CFString Status();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyGPSMeasureMode", optional=true)
+        public static native CFString MeasureMode();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyGPSDOP", optional=true)
+        public static native CFString DOP();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyGPSSpeedRef", optional=true)
+        public static native CFString SpeedRef();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyGPSSpeed", optional=true)
+        public static native CFString Speed();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyGPSTrackRef", optional=true)
+        public static native CFString TrackRef();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyGPSTrack", optional=true)
+        public static native CFString Track();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyGPSImgDirectionRef", optional=true)
+        public static native CFString ImgDirectionRef();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyGPSImgDirection", optional=true)
+        public static native CFString ImgDirection();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyGPSMapDatum", optional=true)
+        public static native CFString MapDatum();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyGPSDestLatitudeRef", optional=true)
+        public static native CFString DestLatitudeRef();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyGPSDestLatitude", optional=true)
+        public static native CFString DestLatitude();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyGPSDestLongitudeRef", optional=true)
+        public static native CFString DestLongitudeRef();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyGPSDestLongitude", optional=true)
+        public static native CFString DestLongitude();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyGPSDestBearingRef", optional=true)
+        public static native CFString DestBearingRef();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyGPSDestBearing", optional=true)
+        public static native CFString DestBearing();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyGPSDestDistanceRef", optional=true)
+        public static native CFString DestDistanceRef();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyGPSDestDistance", optional=true)
+        public static native CFString DestDistance();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyGPSProcessingMethod", optional=true)
+        public static native CFString ProcessingMethod();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyGPSAreaInformation", optional=true)
+        public static native CFString AreaInformation();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyGPSDateStamp", optional=true)
+        public static native CFString DateStamp();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyGPSDifferental", optional=true)
+        public static native CFString Differental();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyGPSHPositioningError", optional=true)
+        public static native CFString HPositioningError();
+        /*</values>*/
+    }
 }

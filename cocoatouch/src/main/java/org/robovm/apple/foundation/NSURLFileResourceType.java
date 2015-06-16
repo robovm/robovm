@@ -40,64 +40,103 @@ import org.robovm.apple.dispatch.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("Foundation")/*</annotations>*/
+/*<annotations>*/@Library("Foundation") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/NSURLFileResourceType/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSURLFileResourceType/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(NSURLFileResourceType.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    public static final NSURLFileResourceType NamedPipe = new NSURLFileResourceType("NamedPipeValue");
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    public static final NSURLFileResourceType CharacterSpecial = new NSURLFileResourceType("CharacterSpecialValue");
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    public static final NSURLFileResourceType Directory = new NSURLFileResourceType("DirectoryValue");
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    public static final NSURLFileResourceType BlockSpecial = new NSURLFileResourceType("BlockSpecialValue");
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    public static final NSURLFileResourceType Regular = new NSURLFileResourceType("RegularValue");
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    public static final NSURLFileResourceType SymbolicLink = new NSURLFileResourceType("SymbolicLinkValue");
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    public static final NSURLFileResourceType Socket = new NSURLFileResourceType("SocketValue");
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    public static final NSURLFileResourceType Unknown = new NSURLFileResourceType("UnknownValue");
-    
-    private static NSURLFileResourceType[] values = new NSURLFileResourceType[] {NamedPipe, CharacterSpecial, Directory, BlockSpecial, Regular,
-        SymbolicLink, Socket, Unknown};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private NSURLFileResourceType(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    static { Bro.bind(/*<name>*/NSURLFileResourceType/*</name>*/.class); }
+
+    /*<marshalers>*/
+    public static class Marshaler {
+        @MarshalsPointer
+        public static NSURLFileResourceType toObject(Class<NSURLFileResourceType> cls, long handle, long flags) {
+            NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return NSURLFileResourceType.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(NSURLFileResourceType o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(o.value(), flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<NSURLFileResourceType> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<NSURLFileResourceType> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(NSURLFileResourceType.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<NSURLFileResourceType> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (NSURLFileResourceType o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static final NSURLFileResourceType NamedPipe = new NSURLFileResourceType("NamedPipe");
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static final NSURLFileResourceType CharacterSpecial = new NSURLFileResourceType("CharacterSpecial");
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static final NSURLFileResourceType Directory = new NSURLFileResourceType("Directory");
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static final NSURLFileResourceType BlockSpecial = new NSURLFileResourceType("BlockSpecial");
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static final NSURLFileResourceType Regular = new NSURLFileResourceType("Regular");
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static final NSURLFileResourceType SymbolicLink = new NSURLFileResourceType("SymbolicLink");
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static final NSURLFileResourceType Socket = new NSURLFileResourceType("Socket");
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static final NSURLFileResourceType Unknown = new NSURLFileResourceType("Unknown");
+    /*</constants>*/
+    
+    private static /*<name>*/NSURLFileResourceType/*</name>*/[] values = new /*<name>*/NSURLFileResourceType/*</name>*/[] {/*<value_list>*/NamedPipe, CharacterSpecial, Directory, BlockSpecial, Regular, SymbolicLink, Socket, Unknown/*</value_list>*/};
+    
+    /*<name>*/NSURLFileResourceType/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static NSURLFileResourceType valueOf(NSString value) {
-        for (NSURLFileResourceType v : values) {
+    public static /*<name>*/NSURLFileResourceType/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/NSURLFileResourceType/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -105,46 +144,54 @@ import org.robovm.apple.dispatch.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/NSURLFileResourceType/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSURLFileResourceTypeNamedPipe", optional=true)
-    protected static native NSString NamedPipeValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSURLFileResourceTypeCharacterSpecial", optional=true)
-    protected static native NSString CharacterSpecialValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSURLFileResourceTypeDirectory", optional=true)
-    protected static native NSString DirectoryValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSURLFileResourceTypeBlockSpecial", optional=true)
-    protected static native NSString BlockSpecialValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSURLFileResourceTypeRegular", optional=true)
-    protected static native NSString RegularValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSURLFileResourceTypeSymbolicLink", optional=true)
-    protected static native NSString SymbolicLinkValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSURLFileResourceTypeSocket", optional=true)
-    protected static native NSString SocketValue();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSURLFileResourceTypeUnknown", optional=true)
-    protected static native NSString UnknownValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("Foundation") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSURLFileResourceTypeNamedPipe", optional=true)
+        public static native NSString NamedPipe();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSURLFileResourceTypeCharacterSpecial", optional=true)
+        public static native NSString CharacterSpecial();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSURLFileResourceTypeDirectory", optional=true)
+        public static native NSString Directory();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSURLFileResourceTypeBlockSpecial", optional=true)
+        public static native NSString BlockSpecial();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSURLFileResourceTypeRegular", optional=true)
+        public static native NSString Regular();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSURLFileResourceTypeSymbolicLink", optional=true)
+        public static native NSString SymbolicLink();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSURLFileResourceTypeSocket", optional=true)
+        public static native NSString Socket();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSURLFileResourceTypeUnknown", optional=true)
+        public static native NSString Unknown();
+        /*</values>*/
+    }
 }

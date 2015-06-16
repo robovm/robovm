@@ -32,128 +32,176 @@ import org.robovm.apple.foundation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("HealthKit")/*</annotations>*/
+/*<annotations>*/@Library("HealthKit") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/HKResultsQuantityTypeIdentifier/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/HKResultsQuantityTypeIdentifier/*</name>*/ 
-    extends /*<extends>*/HKQuantityTypeIdentifier/*</extends>*/ 
+    extends /*<extends>*/HKQuantityTypeIdentifier/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(HKResultsQuantityTypeIdentifier.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKResultsQuantityTypeIdentifier OxygenSaturation = new HKResultsQuantityTypeIdentifier("OxygenSaturationValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKResultsQuantityTypeIdentifier PeripheralPerfusionIndex = new HKResultsQuantityTypeIdentifier("PeripheralPerfusionIndexValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKResultsQuantityTypeIdentifier BloodGlucose = new HKResultsQuantityTypeIdentifier("BloodGlucoseValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKResultsQuantityTypeIdentifier NumberOfTimesFallen = new HKResultsQuantityTypeIdentifier("NumberOfTimesFallenValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKResultsQuantityTypeIdentifier ElectrodermalActivity = new HKResultsQuantityTypeIdentifier("ElectrodermalActivityValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKResultsQuantityTypeIdentifier InhalerUsage = new HKResultsQuantityTypeIdentifier("InhalerUsageValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKResultsQuantityTypeIdentifier BloodAlcoholContent = new HKResultsQuantityTypeIdentifier("BloodAlcoholContentValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKResultsQuantityTypeIdentifier ForcedVitalCapacity = new HKResultsQuantityTypeIdentifier("ForcedVitalCapacityValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKResultsQuantityTypeIdentifier ForcedExpiratoryVolume1 = new HKResultsQuantityTypeIdentifier("ForcedExpiratoryVolume1Value");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKResultsQuantityTypeIdentifier PeakExpiratoryFlowRate = new HKResultsQuantityTypeIdentifier("PeakExpiratoryFlowRateValue");
-    
-    private static HKResultsQuantityTypeIdentifier[] values = new HKResultsQuantityTypeIdentifier[] {OxygenSaturation, PeripheralPerfusionIndex, BloodGlucose, NumberOfTimesFallen, 
-        ElectrodermalActivity, InhalerUsage, BloodAlcoholContent, ForcedVitalCapacity, ForcedExpiratoryVolume1, PeakExpiratoryFlowRate};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private HKResultsQuantityTypeIdentifier(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    static { Bro.bind(/*<name>*/HKResultsQuantityTypeIdentifier/*</name>*/.class); }
+
+    /*<marshalers>*/
+    public static class Marshaler {
+        @MarshalsPointer
+        public static HKResultsQuantityTypeIdentifier toObject(Class<HKResultsQuantityTypeIdentifier> cls, long handle, long flags) {
+            NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return HKResultsQuantityTypeIdentifier.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(HKResultsQuantityTypeIdentifier o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(o.value(), flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<HKResultsQuantityTypeIdentifier> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<HKResultsQuantityTypeIdentifier> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(HKResultsQuantityTypeIdentifier.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<HKResultsQuantityTypeIdentifier> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (HKResultsQuantityTypeIdentifier o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKResultsQuantityTypeIdentifier OxygenSaturation = new HKResultsQuantityTypeIdentifier("OxygenSaturation");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKResultsQuantityTypeIdentifier PeripheralPerfusionIndex = new HKResultsQuantityTypeIdentifier("PeripheralPerfusionIndex");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKResultsQuantityTypeIdentifier BloodGlucose = new HKResultsQuantityTypeIdentifier("BloodGlucose");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKResultsQuantityTypeIdentifier NumberOfTimesFallen = new HKResultsQuantityTypeIdentifier("NumberOfTimesFallen");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKResultsQuantityTypeIdentifier ElectrodermalActivity = new HKResultsQuantityTypeIdentifier("ElectrodermalActivity");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKResultsQuantityTypeIdentifier InhalerUsage = new HKResultsQuantityTypeIdentifier("InhalerUsage");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKResultsQuantityTypeIdentifier BloodAlcoholContent = new HKResultsQuantityTypeIdentifier("BloodAlcoholContent");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKResultsQuantityTypeIdentifier ForcedVitalCapacity = new HKResultsQuantityTypeIdentifier("ForcedVitalCapacity");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKResultsQuantityTypeIdentifier ForcedExpiratoryVolume1 = new HKResultsQuantityTypeIdentifier("ForcedExpiratoryVolume1");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKResultsQuantityTypeIdentifier PeakExpiratoryFlowRate = new HKResultsQuantityTypeIdentifier("PeakExpiratoryFlowRate");
+    /*</constants>*/
+    
+    private static /*<name>*/HKResultsQuantityTypeIdentifier/*</name>*/[] values = new /*<name>*/HKResultsQuantityTypeIdentifier/*</name>*/[] {/*<value_list>*/OxygenSaturation, PeripheralPerfusionIndex, BloodGlucose, NumberOfTimesFallen, ElectrodermalActivity, InhalerUsage, BloodAlcoholContent, ForcedVitalCapacity, ForcedExpiratoryVolume1, PeakExpiratoryFlowRate/*</value_list>*/};
+    
+    /*<name>*/HKResultsQuantityTypeIdentifier/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static HKResultsQuantityTypeIdentifier valueOf(NSString value) {
-        for (HKResultsQuantityTypeIdentifier v : values) {
+    public static /*<name>*/HKResultsQuantityTypeIdentifier/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/HKResultsQuantityTypeIdentifier/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
         }
-        return null;
+        throw new IllegalArgumentException("No constant with value " + value + " found in " 
+            + /*<name>*/HKResultsQuantityTypeIdentifier/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierOxygenSaturation", optional=true)
-    protected static native NSString OxygenSaturationValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierPeripheralPerfusionIndex", optional=true)
-    protected static native NSString PeripheralPerfusionIndexValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierBloodGlucose", optional=true)
-    protected static native NSString BloodGlucoseValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierNumberOfTimesFallen", optional=true)
-    protected static native NSString NumberOfTimesFallenValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierElectrodermalActivity", optional=true)
-    protected static native NSString ElectrodermalActivityValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierInhalerUsage", optional=true)
-    protected static native NSString InhalerUsageValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierBloodAlcoholContent", optional=true)
-    protected static native NSString BloodAlcoholContentValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierForcedVitalCapacity", optional=true)
-    protected static native NSString ForcedVitalCapacityValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierForcedExpiratoryVolume1", optional=true)
-    protected static native NSString ForcedExpiratoryVolume1Value();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierPeakExpiratoryFlowRate", optional=true)
-    protected static native NSString PeakExpiratoryFlowRateValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("HealthKit") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierOxygenSaturation", optional=true)
+        public static native NSString OxygenSaturation();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierPeripheralPerfusionIndex", optional=true)
+        public static native NSString PeripheralPerfusionIndex();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierBloodGlucose", optional=true)
+        public static native NSString BloodGlucose();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierNumberOfTimesFallen", optional=true)
+        public static native NSString NumberOfTimesFallen();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierElectrodermalActivity", optional=true)
+        public static native NSString ElectrodermalActivity();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierInhalerUsage", optional=true)
+        public static native NSString InhalerUsage();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierBloodAlcoholContent", optional=true)
+        public static native NSString BloodAlcoholContent();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierForcedVitalCapacity", optional=true)
+        public static native NSString ForcedVitalCapacity();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierForcedExpiratoryVolume1", optional=true)
+        public static native NSString ForcedExpiratoryVolume1();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierPeakExpiratoryFlowRate", optional=true)
+        public static native NSString PeakExpiratoryFlowRate();
+        /*</values>*/
+    }
 }

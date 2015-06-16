@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -33,12 +34,15 @@ import org.robovm.apple.coregraphics.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CGImagePropertyDNG.Marshaler.class)
-/*<annotations>*/@Library("ImageIO")/*</annotations>*/
+/*<annotations>*/@Library("ImageIO") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/CGImagePropertyDNG/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CGImagePropertyDNG/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<CFString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
-    
+
+    static { Bro.bind(/*<name>*/CGImagePropertyDNG/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CGImagePropertyDNG toObject(Class<CGImagePropertyDNG> cls, long handle, long flags) {
@@ -56,52 +60,68 @@ import org.robovm.apple.coregraphics.*;
             return CFType.Marshaler.toNative(o.value(), flags);
         }
     }
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CGImagePropertyDNG> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CGImagePropertyDNG> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(CGImagePropertyDNG.valueOf(o.get(i, CFString.class)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CGImagePropertyDNG> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray array = CFMutableArray.create();
+            for (CGImagePropertyDNG o : l) {
+                array.add(o.value());
+            }
+            return CFType.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(CGImagePropertyDNG.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    /*<constants>*/
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyDNG Version = new CGImagePropertyDNG("VersionKey");
+    public static final CGImagePropertyDNG Version = new CGImagePropertyDNG("Version");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyDNG BackwardVersion = new CGImagePropertyDNG("BackwardVersionKey");
+    public static final CGImagePropertyDNG BackwardVersion = new CGImagePropertyDNG("BackwardVersion");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyDNG UniqueCameraModel = new CGImagePropertyDNG("UniqueCameraModelKey");
+    public static final CGImagePropertyDNG UniqueCameraModel = new CGImagePropertyDNG("UniqueCameraModel");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyDNG LocalizedCameraModel = new CGImagePropertyDNG("LocalizedCameraModelKey");
+    public static final CGImagePropertyDNG LocalizedCameraModel = new CGImagePropertyDNG("LocalizedCameraModel");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyDNG CameraSerialNumber = new CGImagePropertyDNG("CameraSerialNumberKey");
+    public static final CGImagePropertyDNG CameraSerialNumber = new CGImagePropertyDNG("CameraSerialNumber");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyDNG LensInfo = new CGImagePropertyDNG("LensInfoKey");
+    public static final CGImagePropertyDNG LensInfo = new CGImagePropertyDNG("LensInfo");
+    /*</constants>*/
     
-    private static CGImagePropertyDNG[] values = new CGImagePropertyDNG[] {Version, BackwardVersion, UniqueCameraModel, LocalizedCameraModel, 
-        CameraSerialNumber, LensInfo};
-    private final LazyGlobalValue<CFString> lazyGlobalValue;
+    private static /*<name>*/CGImagePropertyDNG/*</name>*/[] values = new /*<name>*/CGImagePropertyDNG/*</name>*/[] {/*<value_list>*/Version, BackwardVersion, UniqueCameraModel, LocalizedCameraModel, CameraSerialNumber, LensInfo/*</value_list>*/};
     
-    private CGImagePropertyDNG(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public CFString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/CGImagePropertyDNG/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static CGImagePropertyDNG valueOf(CFString value) {
-        for (CGImagePropertyDNG v : values) {
+    public static /*<name>*/CGImagePropertyDNG/*</name>*/ valueOf(/*<type>*/CFString/*</type>*/ value) {
+        for (/*<name>*/CGImagePropertyDNG/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -109,36 +129,44 @@ import org.robovm.apple.coregraphics.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/CGImagePropertyDNG/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyDNGVersion", optional=true)
-    protected static native CFString VersionKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyDNGBackwardVersion", optional=true)
-    protected static native CFString BackwardVersionKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyDNGUniqueCameraModel", optional=true)
-    protected static native CFString UniqueCameraModelKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyDNGLocalizedCameraModel", optional=true)
-    protected static native CFString LocalizedCameraModelKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyDNGCameraSerialNumber", optional=true)
-    protected static native CFString CameraSerialNumberKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyDNGLensInfo", optional=true)
-    protected static native CFString LensInfoKey();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("ImageIO") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyDNGVersion", optional=true)
+        public static native CFString Version();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyDNGBackwardVersion", optional=true)
+        public static native CFString BackwardVersion();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyDNGUniqueCameraModel", optional=true)
+        public static native CFString UniqueCameraModel();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyDNGLocalizedCameraModel", optional=true)
+        public static native CFString LocalizedCameraModel();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyDNGCameraSerialNumber", optional=true)
+        public static native CFString CameraSerialNumber();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyDNGLensInfo", optional=true)
+        public static native CFString LensInfo();
+        /*</values>*/
+    }
 }

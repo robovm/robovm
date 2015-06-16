@@ -33,14 +33,14 @@ import org.robovm.apple.uikit.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(MFMessageComposeViewControllerAttachment.Marshaler.class)
 /*<annotations>*/@Library("MessageUI")/*</annotations>*/
+@Marshaler(/*<name>*/MFMessageComposeViewControllerAttachment/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/MFMessageComposeViewControllerAttachment/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static MFMessageComposeViewControllerAttachment toObject(Class<MFMessageComposeViewControllerAttachment> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -57,9 +57,7 @@ import org.robovm.apple.uikit.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
-    
     public static class AsListMarshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static List<MFMessageComposeViewControllerAttachment> toObject(Class<? extends NSObject> cls, long handle, long flags) {
             NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
@@ -67,8 +65,8 @@ import org.robovm.apple.uikit.*;
                 return null;
             }
             List<MFMessageComposeViewControllerAttachment> list = new ArrayList<>();
-            for (NSDictionary<NSString, NSObject> dict : o) {
-                list.add(new MFMessageComposeViewControllerAttachment(dict));
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new MFMessageComposeViewControllerAttachment(o.get(i)));
             }
             return list;
         }
@@ -77,53 +75,57 @@ import org.robovm.apple.uikit.*;
             if (l == null) {
                 return 0L;
             }
-            NSMutableArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
             for (MFMessageComposeViewControllerAttachment i : l) {
                 array.add(i.getDictionary());
             }
             return NSObject.Marshaler.toNative(array, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected MFMessageComposeViewControllerAttachment(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    MFMessageComposeViewControllerAttachment(NSDictionary<NSString, NSObject> data) {
+        super(data);
     }
-    /*<bind>*/static { Bro.bind(MFMessageComposeViewControllerAttachment.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
+    }
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
     }
     
+
     public String getURL() {
-        if (data.containsKey(URLKey())) {
-            NSString val = (NSString)data.get(URLKey());
+        if (has(Keys.URL())) {
+            NSString val = (NSString) get(Keys.URL());
             return val.toString();
         }
         return null;
     }
     public String getAlternateFilename() {
-        if (data.containsKey(AlternateFilenameKey())) {
-            NSString val = (NSString)data.get(AlternateFilenameKey());
+        if (has(Keys.AlternateFilename())) {
+            NSString val = (NSString) get(Keys.AlternateFilename());
             return val.toString();
         }
         return null;
     }
-    /*<methods>*/
-    @GlobalValue(symbol="MFMessageComposeViewControllerAttachmentURL", optional=true)
-    protected static native NSString URLKey();
-    @GlobalValue(symbol="MFMessageComposeViewControllerAttachmentAlternateFilename", optional=true)
-    protected static native NSString AlternateFilenameKey();
     /*</methods>*/
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    
+    /*<keys>*/
+    @Library("MessageUI")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        @GlobalValue(symbol="MFMessageComposeViewControllerAttachmentURL", optional=true)
+        public static native NSString URL();
+        @GlobalValue(symbol="MFMessageComposeViewControllerAttachmentAlternateFilename", optional=true)
+        public static native NSString AlternateFilename();
     }
+    /*</keys>*/
 }

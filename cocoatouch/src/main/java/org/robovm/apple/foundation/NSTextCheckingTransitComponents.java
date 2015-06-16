@@ -40,14 +40,14 @@ import org.robovm.apple.dispatch.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(NSTextCheckingTransitComponents.Marshaler.class)
 /*<annotations>*/@Library("Foundation")/*</annotations>*/
+@Marshaler(/*<name>*/NSTextCheckingTransitComponents/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSTextCheckingTransitComponents/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static NSTextCheckingTransitComponents toObject(Class<NSTextCheckingTransitComponents> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -64,32 +64,57 @@ import org.robovm.apple.dispatch.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected NSTextCheckingTransitComponents(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<NSTextCheckingTransitComponents> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<NSTextCheckingTransitComponents> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new NSTextCheckingTransitComponents(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<NSTextCheckingTransitComponents> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (NSTextCheckingTransitComponents i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    public NSTextCheckingTransitComponents() {
-        this.data = new NSMutableDictionary<>();
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    NSTextCheckingTransitComponents(NSDictionary<NSString, NSObject> data) {
+        super(data);
     }
-    /*<bind>*/static { Bro.bind(NSTextCheckingTransitComponents.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
+    }
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
     }
     
+
     /**
      * @since Available in iOS 4.0 and later.
      */
     public String getAirline() {
-        if (data.containsKey(AirlineKey())) {
-            NSString val = (NSString)data.get(AirlineKey());
+        if (has(Keys.Airline())) {
+            NSString val = (NSString) get(Keys.Airline());
             return val.toString();
         }
         return null;
@@ -98,27 +123,28 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 4.0 and later.
      */
     public String getFlight() {
-        if (data.containsKey(FlightKey())) {
-            NSString val = (NSString)data.get(FlightKey());
+        if (has(Keys.Flight())) {
+            NSString val = (NSString) get(Keys.Flight());
             return val.toString();
         }
         return null;
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSTextCheckingAirlineKey", optional=true)
-    protected static native NSString AirlineKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSTextCheckingFlightKey", optional=true)
-    protected static native NSString FlightKey();
     /*</methods>*/
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    
+    /*<keys>*/
+    @Library("Foundation")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSTextCheckingAirlineKey", optional=true)
+        public static native NSString Airline();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="NSTextCheckingFlightKey", optional=true)
+        public static native NSString Flight();
     }
+    /*</keys>*/
 }

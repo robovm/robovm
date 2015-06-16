@@ -42,12 +42,15 @@ import org.robovm.apple.audiounit.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(AVMetadataIdentifierIcyMetadata.Marshaler.class)
-/*<annotations>*/@Library("AVFoundation")/*</annotations>*/
+/*<annotations>*/@Library("AVFoundation") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/AVMetadataIdentifierIcyMetadata/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/AVMetadataIdentifierIcyMetadata/*</name>*/ 
-    extends /*<extends>*/AVMetadataIdentifier/*</extends>*/ 
+    extends /*<extends>*/AVMetadataIdentifier/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/AVMetadataIdentifierIcyMetadata/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static AVMetadataIdentifierIcyMetadata toObject(Class<AVMetadataIdentifierIcyMetadata> cls, long handle, long flags) {
@@ -65,53 +68,78 @@ import org.robovm.apple.audiounit.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(AVMetadataIdentifierIcyMetadata.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<AVMetadataIdentifierIcyMetadata> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<AVMetadataIdentifierIcyMetadata> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(AVMetadataIdentifierIcyMetadata.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<AVMetadataIdentifierIcyMetadata> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (AVMetadataIdentifierIcyMetadata o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final AVMetadataIdentifierIcyMetadata StreamTitle = new AVMetadataIdentifierIcyMetadata("StreamTitleValue");
+    public static final AVMetadataIdentifierIcyMetadata StreamTitle = new AVMetadataIdentifierIcyMetadata("StreamTitle");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final AVMetadataIdentifierIcyMetadata StreamURL = new AVMetadataIdentifierIcyMetadata("StreamURLValue");
+    public static final AVMetadataIdentifierIcyMetadata StreamURL = new AVMetadataIdentifierIcyMetadata("StreamURL");
+    /*</constants>*/
     
-    private static AVMetadataIdentifierIcyMetadata[] values = new AVMetadataIdentifierIcyMetadata[] {StreamTitle, StreamURL};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    private static /*<name>*/AVMetadataIdentifierIcyMetadata/*</name>*/[] values = new /*<name>*/AVMetadataIdentifierIcyMetadata/*</name>*/[] {/*<value_list>*/StreamTitle, StreamURL/*</value_list>*/};
     
-    private AVMetadataIdentifierIcyMetadata(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/AVMetadataIdentifierIcyMetadata/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static AVMetadataIdentifierIcyMetadata valueOf(NSString value) {
-        for (AVMetadataIdentifierIcyMetadata v : values) {
+    public static /*<name>*/AVMetadataIdentifierIcyMetadata/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/AVMetadataIdentifierIcyMetadata/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
         }
-        return null;
-//        throw new IllegalArgumentException("No constant with value " + value + " found in " 
-//            + /*<name>*/AVMetadataIdentifierIcyMetadata/*</name>*/.class.getName());
+        throw new IllegalArgumentException("No constant with value " + value + " found in " 
+            + /*<name>*/AVMetadataIdentifierIcyMetadata/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="AVMetadataIdentifierIcyMetadataStreamTitle", optional=true)
-    protected static native NSString StreamTitleValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="AVMetadataIdentifierIcyMetadataStreamURL", optional=true)
-    protected static native NSString StreamURLValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("AVFoundation") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="AVMetadataIdentifierIcyMetadataStreamTitle", optional=true)
+        public static native NSString StreamTitle();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="AVMetadataIdentifierIcyMetadataStreamURL", optional=true)
+        public static native NSString StreamURL();
+        /*</values>*/
+    }
 }

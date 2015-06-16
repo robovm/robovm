@@ -39,9 +39,13 @@ import org.robovm.apple.security.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("Foundation")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ abstract class /*<name>*/NSURLProperty/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    protected NSURLProperty(Class<?> clazz, String getterName) {
+        super(clazz, getterName);
+    }
+    
     public static class AsListMarshaler {
         @MarshalsPointer
         public static List<NSURLProperty> toObject(Class<? extends NSObject> cls, long handle, long flags) {
@@ -68,7 +72,6 @@ import org.robovm.apple.security.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    public abstract NSString value();
     /*<methods>*/
     public static NSURLProperty valueOf(NSString value) {
         NSURLProperty property = null;

@@ -43,14 +43,13 @@ import org.robovm.apple.audiounit.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
+/*<annotations>*/@Library("AVFoundation")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/AVPixelAspectRatio/*</name>*/ 
     extends /*<extends>*/Struct<AVPixelAspectRatio>/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class AVPixelAspectRatioPtr extends Ptr<AVPixelAspectRatio, AVPixelAspectRatioPtr> {}/*</ptr>*/
-    /*<bind>*/
-    /*</bind>*/
+    /*<bind>*/static { Bro.bind(AVPixelAspectRatio.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public AVPixelAspectRatio() {}
@@ -66,5 +65,16 @@ import org.robovm.apple.audiounit.*;
     @StructMember(1) public native @MachineSizedSInt long getVerticalSpacing();
     @StructMember(1) public native AVPixelAspectRatio setVerticalSpacing(@MachineSizedSInt long verticalSpacing);
     /*</members>*/
-    /*<methods>*//*</methods>*/
+    /*<methods>*/
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="AVVideoPixelAspectRatioHorizontalSpacingKey", optional=true)
+    protected static native NSString HorizontalSpacing();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="AVVideoPixelAspectRatioVerticalSpacingKey", optional=true)
+    protected static native NSString VerticalSpacing();
+    /*</methods>*/
 }

@@ -19,17 +19,19 @@ package org.robovm.apple.foundation;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
-
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.uikit.*;
+import org.robovm.apple.coretext.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coredata.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
@@ -38,14 +40,14 @@ import org.robovm.apple.dispatch.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(NSProgressUserInfo.Marshaler.class)
 /*<annotations>*/@Library("Foundation")/*</annotations>*/
+@Marshaler(/*<name>*/NSProgressUserInfo/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSProgressUserInfo/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static NSProgressUserInfo toObject(Class<NSProgressUserInfo> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -62,49 +64,76 @@ import org.robovm.apple.dispatch.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected NSProgressUserInfo(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<NSProgressUserInfo> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<NSProgressUserInfo> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new NSProgressUserInfo(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<NSProgressUserInfo> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (NSProgressUserInfo i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    public NSProgressUserInfo() {
-        this.data = new NSMutableDictionary<>();
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    NSProgressUserInfo(NSDictionary<NSString, NSObject> data) {
+        super(data);
     }
-    /*<bind>*/static { Bro.bind(NSProgressUserInfo.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
+    public NSProgressUserInfo() {}
+    /*</constructors>*/
+
+    
+    public boolean has(String key) {
+        return data.containsKey(new NSString(key));
+    }
+    public NSObject get(String key) {
+        if (has(key)) {
+            return data.get(new NSString(key));
+        }
+        return null;
+    }
     public NSProgressUserInfo set(String key, NSObject value) {
         data.put(new NSString(key), value);
         return this;
+    }
+    /*<methods>*/
+    public boolean has(NSProgressUserInfoKey key) {
+        return data.containsKey(key.value());
+    }
+    public NSObject get(NSProgressUserInfoKey key) {
+        if (has(key)) {
+            return data.get(key.value());
+        }
+        return null;
     }
     public NSProgressUserInfo set(NSProgressUserInfoKey key, NSObject value) {
         data.put(key.value(), value);
         return this;
     }
-    public NSObject get(String key) {
-        return data.get(new NSString(key));
-    }
-    public NSObject get(NSProgressUserInfoKey key) {
-        return data.get(key.value());
-    }
-    public boolean contains(String key) {
-        return data.containsKey(new NSString(key));
-    }
-    public boolean contains(NSProgressUserInfoKey key) {
-        return data.containsKey(key.value());
-    }
     
+
     /**
      * @since Available in iOS 7.0 and later.
      */
     public double getEstimatedTimeRemaining() {
-        if (contains(NSProgressUserInfoKey.EstimatedTimeRemaining)) {
-            NSNumber val = (NSNumber)get(NSProgressUserInfoKey.EstimatedTimeRemaining);
+        if (has(NSProgressUserInfoKey.EstimatedTimeRemaining)) {
+            NSNumber val = (NSNumber) get(NSProgressUserInfoKey.EstimatedTimeRemaining);
             return val.doubleValue();
         }
         return 0;
@@ -112,16 +141,16 @@ import org.robovm.apple.dispatch.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public NSProgressUserInfo setEstimatedTimeRemaining(double timeRemaining) {
-        set(NSProgressUserInfoKey.EstimatedTimeRemaining, NSNumber.valueOf(timeRemaining));
+    public NSProgressUserInfo setEstimatedTimeRemaining(double estimatedTimeRemaining) {
+        set(NSProgressUserInfoKey.EstimatedTimeRemaining, NSNumber.valueOf(estimatedTimeRemaining));
         return this;
     }
     /**
      * @since Available in iOS 7.0 and later.
      */
     public long getThroughput() {
-        if (contains(NSProgressUserInfoKey.Throughput)) {
-            NSNumber val = (NSNumber)get(NSProgressUserInfoKey.Throughput);
+        if (has(NSProgressUserInfoKey.Throughput)) {
+            NSNumber val = (NSNumber) get(NSProgressUserInfoKey.Throughput);
             return val.longValue();
         }
         return 0;
@@ -137,8 +166,8 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 7.0 and later.
      */
     public NSProgressFileOperationKind getFileOperationKind() {
-        if (contains(NSProgressUserInfoKey.FileOperationKind)) {
-            NSString val = (NSString)get(NSProgressUserInfoKey.FileOperationKind);
+        if (has(NSProgressUserInfoKey.FileOperationKind)) {
+            NSString val = (NSString) get(NSProgressUserInfoKey.FileOperationKind);
             return NSProgressFileOperationKind.valueOf(val);
         }
         return null;
@@ -146,16 +175,16 @@ import org.robovm.apple.dispatch.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public NSProgressUserInfo setFileOperationKind(NSProgressFileOperationKind kind) {
-        set(NSProgressUserInfoKey.FileOperationKind, kind.value());
+    public NSProgressUserInfo setFileOperationKind(NSProgressFileOperationKind fileOperationKind) {
+        set(NSProgressUserInfoKey.FileOperationKind, fileOperationKind.value());
         return this;
     }
     /**
      * @since Available in iOS 7.0 and later.
      */
     public NSURL getFileURL() {
-        if (contains(NSProgressUserInfoKey.FileURL)) {
-            NSURL val = (NSURL)get(NSProgressUserInfoKey.FileURL);
+        if (has(NSProgressUserInfoKey.FileURL)) {
+            NSURL val = (NSURL) get(NSProgressUserInfoKey.FileURL);
             return val;
         }
         return null;
@@ -163,16 +192,16 @@ import org.robovm.apple.dispatch.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public NSProgressUserInfo setFileURL(NSURL url) {
-        set(NSProgressUserInfoKey.FileURL, url);
+    public NSProgressUserInfo setFileURL(NSURL fileURL) {
+        set(NSProgressUserInfoKey.FileURL, fileURL);
         return this;
     }
     /**
      * @since Available in iOS 7.0 and later.
      */
     public long getTotalFileCount() {
-        if (contains(NSProgressUserInfoKey.FileTotalCount)) {
-            NSNumber val = (NSNumber)get(NSProgressUserInfoKey.FileTotalCount);
+        if (has(NSProgressUserInfoKey.FileTotalCount)) {
+            NSNumber val = (NSNumber) get(NSProgressUserInfoKey.FileTotalCount);
             return val.longValue();
         }
         return 0;
@@ -180,16 +209,16 @@ import org.robovm.apple.dispatch.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public NSProgressUserInfo setTotalFileCount(long fileCount) {
-        set(NSProgressUserInfoKey.FileTotalCount, NSNumber.valueOf(fileCount));
+    public NSProgressUserInfo setTotalFileCount(long totalFileCount) {
+        set(NSProgressUserInfoKey.FileTotalCount, NSNumber.valueOf(totalFileCount));
         return this;
     }
     /**
      * @since Available in iOS 7.0 and later.
      */
     public long getCompletedFileCount() {
-        if (contains(NSProgressUserInfoKey.FileCompletedCount)) {
-            NSNumber val = (NSNumber)get(NSProgressUserInfoKey.FileCompletedCount);
+        if (has(NSProgressUserInfoKey.FileCompletedCount)) {
+            NSNumber val = (NSNumber) get(NSProgressUserInfoKey.FileCompletedCount);
             return val.longValue();
         }
         return 0;
@@ -197,10 +226,12 @@ import org.robovm.apple.dispatch.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public NSProgressUserInfo setCompletedFileCount(long fileCount) {
-        set(NSProgressUserInfoKey.FileCompletedCount, NSNumber.valueOf(fileCount));
+    public NSProgressUserInfo setCompletedFileCount(long completedFileCount) {
+        set(NSProgressUserInfoKey.FileCompletedCount, NSNumber.valueOf(completedFileCount));
         return this;
     }
-    /*<methods>*/
     /*</methods>*/
+    
+    /*<keys>*/
+    /*</keys>*/
 }

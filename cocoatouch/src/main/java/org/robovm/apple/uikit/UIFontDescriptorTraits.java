@@ -39,12 +39,13 @@ import org.robovm.apple.corelocation.*;
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("UIKit")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class UIFontDescriptorTraits 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+@Marshaler(/*<name>*/UIFontDescriptorTraits/*</name>*/.Marshaler.class)
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/UIFontDescriptorTraits/*</name>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static UIFontDescriptorTraits toObject(Class<UIFontDescriptorTraits> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -61,50 +62,79 @@ import org.robovm.apple.corelocation.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected UIFontDescriptorTraits(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<UIFontDescriptorTraits> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<UIFontDescriptorTraits> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new UIFontDescriptorTraits(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<UIFontDescriptorTraits> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (UIFontDescriptorTraits i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    public UIFontDescriptorTraits() {
-        this.data = new NSMutableDictionary<>();
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    UIFontDescriptorTraits(NSDictionary<NSString, NSObject> data) {
+        super(data);
+    }
+    public UIFontDescriptorTraits() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
+    }
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
+    }
+    public UIFontDescriptorTraits set(NSString key, NSObject value) {
+        data.put(key, value);
+        return this;
     }
     
-    /*<bind>*/static { Bro.bind(UIFontDescriptorTraits.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
-    }
-    
+
     /**
      * @since Available in iOS 7.0 and later.
      */
     public UIFontDescriptorSymbolicTraits getSymbolicTraits() {
-        if (data.containsKey(SymbolicTrait())) {
-            NSNumber val = (NSNumber)data.get(SymbolicTrait());
-            return new UIFontDescriptorSymbolicTraits(val.intValue());
+        if (has(Keys.SymbolicTrait())) {
+            NSNumber val = (NSNumber) get(Keys.SymbolicTrait());
+            return new UIFontDescriptorSymbolicTraits(val.longValue());
         }
-        return UIFontDescriptorSymbolicTraits.None;
+        return null;
     }
     /**
      * @since Available in iOS 7.0 and later.
      */
     public UIFontDescriptorTraits setSymbolicTraits(UIFontDescriptorSymbolicTraits symbolicTraits) {
-        data.put(SymbolicTrait(), NSNumber.valueOf((int)symbolicTraits.value()));
+        set(Keys.SymbolicTrait(), NSNumber.valueOf(symbolicTraits.value()));
         return this;
     }
     /**
      * @since Available in iOS 7.0 and later.
      */
     public double getWeightTrait() {
-        if (data.containsKey(WeightTrait())) {
-            NSNumber val = (NSNumber)data.get(WeightTrait());
+        if (has(Keys.WeightTrait())) {
+            NSNumber val = (NSNumber) get(Keys.WeightTrait());
             return val.doubleValue();
         }
         return 0;
@@ -112,16 +142,16 @@ import org.robovm.apple.corelocation.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public UIFontDescriptorTraits setWeightTrait(double weight) {
-        data.put(WeightTrait(), NSNumber.valueOf(weight));
+    public UIFontDescriptorTraits setWeightTrait(double weightTrait) {
+        set(Keys.WeightTrait(), NSNumber.valueOf(weightTrait));
         return this;
     }
     /**
      * @since Available in iOS 7.0 and later.
      */
     public double getWidthTrait() {
-        if (data.containsKey(WidthTrait())) {
-            NSNumber val = (NSNumber)data.get(WidthTrait());
+        if (has(Keys.WidthTrait())) {
+            NSNumber val = (NSNumber) get(Keys.WidthTrait());
             return val.doubleValue();
         }
         return 0;
@@ -129,16 +159,16 @@ import org.robovm.apple.corelocation.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public UIFontDescriptorTraits setWidthTrait(double width) {
-        data.put(WidthTrait(), NSNumber.valueOf(width));
+    public UIFontDescriptorTraits setWidthTrait(double widthTrait) {
+        set(Keys.WidthTrait(), NSNumber.valueOf(widthTrait));
         return this;
     }
     /**
      * @since Available in iOS 7.0 and later.
      */
     public double getSlantTrait() {
-        if (data.containsKey(SlantTrait())) {
-            NSNumber val = (NSNumber)data.get(SlantTrait());
+        if (has(Keys.SlantTrait())) {
+            NSNumber val = (NSNumber) get(Keys.SlantTrait());
             return val.doubleValue();
         }
         return 0;
@@ -146,36 +176,36 @@ import org.robovm.apple.corelocation.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public UIFontDescriptorTraits setSlantTrait(double slant) {
-        data.put(SlantTrait(), NSNumber.valueOf(slant));
+    public UIFontDescriptorTraits setSlantTrait(double slantTrait) {
+        set(Keys.SlantTrait(), NSNumber.valueOf(slantTrait));
         return this;
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIFontSymbolicTrait", optional=true)
-    protected static native NSString SymbolicTrait();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIFontWeightTrait", optional=true)
-    protected static native NSString WeightTrait();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIFontWidthTrait", optional=true)
-    protected static native NSString WidthTrait();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIFontSlantTrait", optional=true)
-    protected static native NSString SlantTrait();
     /*</methods>*/
     
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    /*<keys>*/
+    @Library("UIKit")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="UIFontSymbolicTrait", optional=true)
+        public static native NSString SymbolicTrait();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="UIFontWeightTrait", optional=true)
+        public static native NSString WeightTrait();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="UIFontWidthTrait", optional=true)
+        public static native NSString WidthTrait();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="UIFontSlantTrait", optional=true)
+        public static native NSString SlantTrait();
     }
+    /*</keys>*/
 }

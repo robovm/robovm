@@ -42,14 +42,14 @@ import org.robovm.apple.audiounit.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(AVURLAssetOptions.Marshaler.class)
 /*<annotations>*/@Library("AVFoundation")/*</annotations>*/
+@Marshaler(/*<name>*/AVURLAssetOptions/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/AVURLAssetOptions/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static AVURLAssetOptions toObject(Class<AVURLAssetOptions> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -66,32 +66,62 @@ import org.robovm.apple.audiounit.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected AVURLAssetOptions(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<AVURLAssetOptions> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<AVURLAssetOptions> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new AVURLAssetOptions(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<AVURLAssetOptions> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (AVURLAssetOptions i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    public AVURLAssetOptions() {
-        data = new NSMutableDictionary<>();
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    AVURLAssetOptions(NSDictionary<NSString, NSObject> data) {
+        super(data);
     }
-    /*<bind>*/static { Bro.bind(AVURLAssetOptions.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
+    public AVURLAssetOptions() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
+    }
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
+    }
+    public AVURLAssetOptions set(NSString key, NSObject value) {
+        data.put(key, value);
+        return this;
     }
     
+
     /**
      * @since Available in iOS 4.0 and later.
      */
     public boolean prefersPreciseDurationAndTiming() {
-        if (data.containsKey(PreferPreciseDurationAndTimingKey())) {
-            NSNumber val = (NSNumber) data.get(PreferPreciseDurationAndTimingKey());
+        if (has(Keys.PreferPreciseDurationAndTiming())) {
+            NSNumber val = (NSNumber) get(Keys.PreferPreciseDurationAndTiming());
             return val.booleanValue();
         }
         return false;
@@ -99,16 +129,16 @@ import org.robovm.apple.audiounit.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public AVURLAssetOptions setPrefersPreciseDurationAndTiming(boolean preferPrecise) {
-        data.put(PreferPreciseDurationAndTimingKey(), NSNumber.valueOf(preferPrecise));
+    public AVURLAssetOptions setPrefersPreciseDurationAndTiming(boolean prefersPreciseDurationAndTiming) {
+        set(Keys.PreferPreciseDurationAndTiming(), NSNumber.valueOf(prefersPreciseDurationAndTiming));
         return this;
     }
     /**
      * @since Available in iOS 5.0 and later.
      */
     public AVAssetReferenceRestrictions getReferenceRestrictions() {
-        if (data.containsKey(ReferenceRestrictionsKey())) {
-            NSNumber val = (NSNumber) data.get(ReferenceRestrictionsKey());
+        if (has(Keys.ReferenceRestrictions())) {
+            NSNumber val = (NSNumber) get(Keys.ReferenceRestrictions());
             return new AVAssetReferenceRestrictions(val.longValue());
         }
         return null;
@@ -116,17 +146,16 @@ import org.robovm.apple.audiounit.*;
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public AVURLAssetOptions setReferenceRestrictions(AVAssetReferenceRestrictions restrictions) {
-        data.put(ReferenceRestrictionsKey(), NSNumber.valueOf(restrictions.value()));
+    public AVURLAssetOptions setReferenceRestrictions(AVAssetReferenceRestrictions referenceRestrictions) {
+        set(Keys.ReferenceRestrictions(), NSNumber.valueOf(referenceRestrictions.value()));
         return this;
     }
     /**
      * @since Available in iOS 8.0 and later.
      */
-    @SuppressWarnings("unchecked")
     public NSArray<NSHTTPCookie> getHTTPCookies() {
-        if (data.containsKey(HTTPCookiesKey())) {
-            NSArray<NSHTTPCookie> val = (NSArray<NSHTTPCookie>) data.get(HTTPCookiesKey());
+        if (has(Keys.HTTPCookies())) {
+            NSArray<NSHTTPCookie> val = (NSArray<NSHTTPCookie>) get(Keys.HTTPCookies());
             return val;
         }
         return null;
@@ -134,30 +163,31 @@ import org.robovm.apple.audiounit.*;
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public AVURLAssetOptions setHTTPCookies(NSArray<NSHTTPCookie> cookies) {
-        data.put(HTTPCookiesKey(), cookies);
+    public AVURLAssetOptions setHTTPCookies(NSArray<NSHTTPCookie> hTTPCookies) {
+        set(Keys.HTTPCookies(), hTTPCookies);
         return this;
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="AVURLAssetPreferPreciseDurationAndTimingKey", optional=true)
-    protected static native NSString PreferPreciseDurationAndTimingKey();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="AVURLAssetReferenceRestrictionsKey", optional=true)
-    protected static native NSString ReferenceRestrictionsKey();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="AVURLAssetHTTPCookiesKey", optional=true)
-    protected static native NSString HTTPCookiesKey();
     /*</methods>*/
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    
+    /*<keys>*/
+    @Library("AVFoundation")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="AVURLAssetPreferPreciseDurationAndTimingKey", optional=true)
+        public static native NSString PreferPreciseDurationAndTiming();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="AVURLAssetReferenceRestrictionsKey", optional=true)
+        public static native NSString ReferenceRestrictions();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="AVURLAssetHTTPCookiesKey", optional=true)
+        public static native NSString HTTPCookies();
     }
+    /*</keys>*/
 }

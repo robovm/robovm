@@ -42,12 +42,15 @@ import org.robovm.apple.audiounit.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(AVTrackAssociationType.Marshaler.class)
-/*<annotations>*/@Library("AVFoundation")/*</annotations>*/
+/*<annotations>*/@Library("AVFoundation") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/AVTrackAssociationType/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/AVTrackAssociationType/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/AVTrackAssociationType/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static AVTrackAssociationType toObject(Class<AVTrackAssociationType> cls, long handle, long flags) {
@@ -74,8 +77,8 @@ import org.robovm.apple.audiounit.*;
                 return null;
             }
             List<AVTrackAssociationType> list = new ArrayList<>();
-            for (NSString str : o) {
-                list.add(AVTrackAssociationType.valueOf(str));
+            for (int i = 0; i < o.size(); i++) {
+                list.add(AVTrackAssociationType.valueOf(o.get(i)));
             }
             return list;
         }
@@ -84,59 +87,50 @@ import org.robovm.apple.audiounit.*;
             if (l == null) {
                 return 0L;
             }
-            NSMutableArray<NSString> array = new NSMutableArray<>();
-            for (AVTrackAssociationType i : l) {
-                array.add(i.value());
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (AVTrackAssociationType o : l) {
+                array.add(o.value());
             }
             return NSObject.Marshaler.toNative(array, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(AVTrackAssociationType.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    /*</marshalers>*/
+
+    /*<constants>*/
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public static final AVTrackAssociationType AudioFallback = new AVTrackAssociationType("AudioFallbackValue");
+    public static final AVTrackAssociationType AudioFallback = new AVTrackAssociationType("AudioFallback");
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public static final AVTrackAssociationType ChapterList = new AVTrackAssociationType("ChapterListValue");
+    public static final AVTrackAssociationType ChapterList = new AVTrackAssociationType("ChapterList");
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public static final AVTrackAssociationType ForcedSubtitlesOnly = new AVTrackAssociationType("ForcedSubtitlesOnlyValue");
+    public static final AVTrackAssociationType ForcedSubtitlesOnly = new AVTrackAssociationType("ForcedSubtitlesOnly");
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public static final AVTrackAssociationType SelectionFollower = new AVTrackAssociationType("SelectionFollowerValue");
+    public static final AVTrackAssociationType SelectionFollower = new AVTrackAssociationType("SelectionFollower");
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public static final AVTrackAssociationType Timecode = new AVTrackAssociationType("TimecodeValue");
+    public static final AVTrackAssociationType Timecode = new AVTrackAssociationType("Timecode");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final AVTrackAssociationType MetadataReferent = new AVTrackAssociationType("MetadataReferentValue");
+    public static final AVTrackAssociationType MetadataReferent = new AVTrackAssociationType("MetadataReferent");
+    /*</constants>*/
     
-    private static AVTrackAssociationType[] values = new AVTrackAssociationType[] {AudioFallback, ChapterList, ForcedSubtitlesOnly, 
-        SelectionFollower, Timecode, MetadataReferent};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    private static /*<name>*/AVTrackAssociationType/*</name>*/[] values = new /*<name>*/AVTrackAssociationType/*</name>*/[] {/*<value_list>*/AudioFallback, ChapterList, ForcedSubtitlesOnly, SelectionFollower, Timecode, MetadataReferent/*</value_list>*/};
     
-    private AVTrackAssociationType(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/AVTrackAssociationType/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static AVTrackAssociationType valueOf(NSString value) {
-        for (AVTrackAssociationType v : values) {
+    public static /*<name>*/AVTrackAssociationType/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/AVTrackAssociationType/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -144,36 +138,44 @@ import org.robovm.apple.audiounit.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/AVTrackAssociationType/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="AVTrackAssociationTypeAudioFallback", optional=true)
-    protected static native NSString AudioFallbackValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="AVTrackAssociationTypeChapterList", optional=true)
-    protected static native NSString ChapterListValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="AVTrackAssociationTypeForcedSubtitlesOnly", optional=true)
-    protected static native NSString ForcedSubtitlesOnlyValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="AVTrackAssociationTypeSelectionFollower", optional=true)
-    protected static native NSString SelectionFollowerValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="AVTrackAssociationTypeTimecode", optional=true)
-    protected static native NSString TimecodeValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="AVTrackAssociationTypeMetadataReferent", optional=true)
-    protected static native NSString MetadataReferentValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("AVFoundation") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="AVTrackAssociationTypeAudioFallback", optional=true)
+        public static native NSString AudioFallback();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="AVTrackAssociationTypeChapterList", optional=true)
+        public static native NSString ChapterList();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="AVTrackAssociationTypeForcedSubtitlesOnly", optional=true)
+        public static native NSString ForcedSubtitlesOnly();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="AVTrackAssociationTypeSelectionFollower", optional=true)
+        public static native NSString SelectionFollower();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="AVTrackAssociationTypeTimecode", optional=true)
+        public static native NSString Timecode();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="AVTrackAssociationTypeMetadataReferent", optional=true)
+        public static native NSString MetadataReferent();
+        /*</values>*/
+    }
 }

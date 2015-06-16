@@ -37,12 +37,15 @@ import org.robovm.apple.metal.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CAScrollMode.Marshaler.class)
-/*<annotations>*/@Library("QuartzCore")/*</annotations>*/
+/*<annotations>*/@Library("QuartzCore") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/CAScrollMode/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CAScrollMode/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/CAScrollMode/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CAScrollMode toObject(Class<CAScrollMode> cls, long handle, long flags) {
@@ -60,43 +63,61 @@ import org.robovm.apple.metal.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(CAScrollMode.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public static final CAScrollMode None = new CAScrollMode("NoneValue");
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public static final CAScrollMode Vertically = new CAScrollMode("VerticallyValue");
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public static final CAScrollMode Horizontally = new CAScrollMode("HorizontallyValue");
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public static final CAScrollMode Both = new CAScrollMode("BothValue");
-    
-    private static CAScrollMode[] values = new CAScrollMode[] {None, Vertically, Horizontally, Both};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private CAScrollMode(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<CAScrollMode> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CAScrollMode> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(CAScrollMode.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CAScrollMode> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (CAScrollMode o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*</marshalers>*/
+
+    /*<constants>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public static final CAScrollMode None = new CAScrollMode("None");
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public static final CAScrollMode Vertically = new CAScrollMode("Vertically");
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public static final CAScrollMode Horizontally = new CAScrollMode("Horizontally");
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public static final CAScrollMode Both = new CAScrollMode("Both");
+    /*</constants>*/
+    
+    private static /*<name>*/CAScrollMode/*</name>*/[] values = new /*<name>*/CAScrollMode/*</name>*/[] {/*<value_list>*/None, Vertically, Horizontally, Both/*</value_list>*/};
+    
+    /*<name>*/CAScrollMode/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static CAScrollMode valueOf(NSString value) {
-        for (CAScrollMode v : values) {
+    public static /*<name>*/CAScrollMode/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/CAScrollMode/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -104,26 +125,34 @@ import org.robovm.apple.metal.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/CAScrollMode/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCAScrollNone", optional=true)
-    protected static native NSString NoneValue();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCAScrollVertically", optional=true)
-    protected static native NSString VerticallyValue();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCAScrollHorizontally", optional=true)
-    protected static native NSString HorizontallyValue();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCAScrollBoth", optional=true)
-    protected static native NSString BothValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("QuartzCore") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCAScrollNone", optional=true)
+        public static native NSString None();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCAScrollVertically", optional=true)
+        public static native NSString Vertically();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCAScrollHorizontally", optional=true)
+        public static native NSString Horizontally();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCAScrollBoth", optional=true)
+        public static native NSString Both();
+        /*</values>*/
+    }
 }

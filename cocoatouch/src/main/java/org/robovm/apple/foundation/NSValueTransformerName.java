@@ -40,51 +40,91 @@ import org.robovm.apple.dispatch.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("Foundation")/*</annotations>*/
+/*<annotations>*/@Library("Foundation") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/NSValueTransformerName/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSValueTransformerName/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(NSValueTransformerName.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    public static final NSValueTransformerName NegateBoolean = new NSValueTransformerName("NegateBooleanValue");
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    public static final NSValueTransformerName IsNull = new NSValueTransformerName("IsNilValue");
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    public static final NSValueTransformerName IsNotNull = new NSValueTransformerName("IsNotNilValue");
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    public static final NSValueTransformerName UnarchiveFromData = new NSValueTransformerName("UnarchiveFromDataValue");
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    public static final NSValueTransformerName KeyedUnarchiveFromData = new NSValueTransformerName("KeyedUnarchiveFromDataValue");
-    
-    private static NSValueTransformerName[] values = new NSValueTransformerName[] {NegateBoolean, IsNull, IsNotNull, UnarchiveFromData, KeyedUnarchiveFromData};
-    private final LazyGlobalValue<String> lazyGlobalValue;
-    
-    private NSValueTransformerName(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    static { Bro.bind(/*<name>*/NSValueTransformerName/*</name>*/.class); }
+
+    /*<marshalers>*/
+    public static class Marshaler {
+        @MarshalsPointer
+        public static NSValueTransformerName toObject(Class<NSValueTransformerName> cls, long handle, long flags) {
+            NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return NSValueTransformerName.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(NSValueTransformerName o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(o.value(), flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public String value() {
-        return lazyGlobalValue.value();
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<NSValueTransformerName> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<NSValueTransformerName> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(NSValueTransformerName.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<NSValueTransformerName> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (NSValueTransformerName o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    public static final NSValueTransformerName NegateBoolean = new NSValueTransformerName("NegateBoolean");
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    public static final NSValueTransformerName IsNil = new NSValueTransformerName("IsNil");
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    public static final NSValueTransformerName IsNotNil = new NSValueTransformerName("IsNotNil");
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    public static final NSValueTransformerName UnarchiveFromData = new NSValueTransformerName("UnarchiveFromData");
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    public static final NSValueTransformerName KeyedUnarchiveFromData = new NSValueTransformerName("KeyedUnarchiveFromData");
+    /*</constants>*/
+    
+    private static /*<name>*/NSValueTransformerName/*</name>*/[] values = new /*<name>*/NSValueTransformerName/*</name>*/[] {/*<value_list>*/NegateBoolean, IsNil, IsNotNil, UnarchiveFromData, KeyedUnarchiveFromData/*</value_list>*/};
+    
+    /*<name>*/NSValueTransformerName/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static NSValueTransformerName valueOf(NSString value) {
-        for (NSValueTransformerName v : values) {
+    public static /*<name>*/NSValueTransformerName/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/NSValueTransformerName/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -92,31 +132,39 @@ import org.robovm.apple.dispatch.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/NSValueTransformerName/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSNegateBooleanTransformerName", optional=true)
-    protected static native String NegateBooleanValue();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSIsNilTransformerName", optional=true)
-    protected static native String IsNilValue();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSIsNotNilTransformerName", optional=true)
-    protected static native String IsNotNilValue();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSUnarchiveFromDataTransformerName", optional=true)
-    protected static native String UnarchiveFromDataValue();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSKeyedUnarchiveFromDataTransformerName", optional=true)
-    protected static native String KeyedUnarchiveFromDataValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("Foundation") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="NSNegateBooleanTransformerName", optional=true)
+        public static native NSString NegateBoolean();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="NSIsNilTransformerName", optional=true)
+        public static native NSString IsNil();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="NSIsNotNilTransformerName", optional=true)
+        public static native NSString IsNotNil();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="NSUnarchiveFromDataTransformerName", optional=true)
+        public static native NSString UnarchiveFromData();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="NSKeyedUnarchiveFromDataTransformerName", optional=true)
+        public static native NSString KeyedUnarchiveFromData();
+        /*</values>*/
+    }
 }

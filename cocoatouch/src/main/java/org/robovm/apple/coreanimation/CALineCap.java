@@ -37,12 +37,15 @@ import org.robovm.apple.metal.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CALineCap.Marshaler.class)
-/*<annotations>*/@Library("QuartzCore")/*</annotations>*/
+/*<annotations>*/@Library("QuartzCore") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/CALineCap/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CALineCap/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/CALineCap/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CALineCap toObject(Class<CALineCap> cls, long handle, long flags) {
@@ -60,39 +63,57 @@ import org.robovm.apple.metal.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(CALineCap.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    public static final CALineCap Butt = new CALineCap("ButtValue");
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    public static final CALineCap Round = new CALineCap("RoundValue");
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    public static final CALineCap Square = new CALineCap("SquareValue");
-    
-    private static CALineCap[] values = new CALineCap[] {Butt, Round, Square};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private CALineCap(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<CALineCap> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CALineCap> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(CALineCap.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CALineCap> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (CALineCap o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*</marshalers>*/
+
+    /*<constants>*/
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    public static final CALineCap Butt = new CALineCap("Butt");
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    public static final CALineCap Round = new CALineCap("Round");
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    public static final CALineCap Square = new CALineCap("Square");
+    /*</constants>*/
+    
+    private static /*<name>*/CALineCap/*</name>*/[] values = new /*<name>*/CALineCap/*</name>*/[] {/*<value_list>*/Butt, Round, Square/*</value_list>*/};
+    
+    /*<name>*/CALineCap/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static CALineCap valueOf(NSString value) {
-        for (CALineCap v : values) {
+    public static /*<name>*/CALineCap/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/CALineCap/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -100,21 +121,29 @@ import org.robovm.apple.metal.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/CALineCap/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="kCALineCapButt", optional=true)
-    protected static native NSString ButtValue();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="kCALineCapRound", optional=true)
-    protected static native NSString RoundValue();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="kCALineCapSquare", optional=true)
-    protected static native NSString SquareValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("QuartzCore") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="kCALineCapButt", optional=true)
+        public static native NSString Butt();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="kCALineCapRound", optional=true)
+        public static native NSString Round();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="kCALineCapSquare", optional=true)
+        public static native NSString Square();
+        /*</values>*/
+    }
 }

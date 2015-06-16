@@ -159,7 +159,7 @@ import org.robovm.apple.dispatch.*;
     public void setRunLoopModes(NSRunLoopMode...modes) {
         List<String> list = new ArrayList<>();
         for (NSRunLoopMode mode : modes) {
-            list.add(mode.value());
+            list.add(mode.value().toString());
         }
         setRunLoopModes(list);
     }

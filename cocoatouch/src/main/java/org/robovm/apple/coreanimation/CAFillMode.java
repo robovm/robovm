@@ -37,12 +37,15 @@ import org.robovm.apple.metal.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CAFillMode.Marshaler.class)
-/*<annotations>*/@Library("QuartzCore")/*</annotations>*/
+/*<annotations>*/@Library("QuartzCore") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/CAFillMode/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CAFillMode/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/CAFillMode/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CAFillMode toObject(Class<CAFillMode> cls, long handle, long flags) {
@@ -60,43 +63,61 @@ import org.robovm.apple.metal.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(CAFillMode.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public static final CAFillMode Forwards = new CAFillMode("ForwardsValue");
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public static final CAFillMode Backwards = new CAFillMode("BackwardsValue");
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public static final CAFillMode Both = new CAFillMode("BothValue");
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public static final CAFillMode Removed = new CAFillMode("RemovedValue");
-    
-    private static CAFillMode[] values = new CAFillMode[] {Forwards, Backwards, Both, Removed};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private CAFillMode(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<CAFillMode> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CAFillMode> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(CAFillMode.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CAFillMode> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (CAFillMode o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*</marshalers>*/
+
+    /*<constants>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public static final CAFillMode Forwards = new CAFillMode("Forwards");
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public static final CAFillMode Backwards = new CAFillMode("Backwards");
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public static final CAFillMode Both = new CAFillMode("Both");
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public static final CAFillMode Removed = new CAFillMode("Removed");
+    /*</constants>*/
+    
+    private static /*<name>*/CAFillMode/*</name>*/[] values = new /*<name>*/CAFillMode/*</name>*/[] {/*<value_list>*/Forwards, Backwards, Both, Removed/*</value_list>*/};
+    
+    /*<name>*/CAFillMode/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static CAFillMode valueOf(NSString value) {
-        for (CAFillMode v : values) {
+    public static /*<name>*/CAFillMode/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/CAFillMode/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -104,26 +125,34 @@ import org.robovm.apple.metal.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/CAFillMode/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCAFillModeForwards", optional=true)
-    protected static native NSString ForwardsValue();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCAFillModeBackwards", optional=true)
-    protected static native NSString BackwardsValue();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCAFillModeBoth", optional=true)
-    protected static native NSString BothValue();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCAFillModeRemoved", optional=true)
-    protected static native NSString RemovedValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("QuartzCore") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCAFillModeForwards", optional=true)
+        public static native NSString Forwards();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCAFillModeBackwards", optional=true)
+        public static native NSString Backwards();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCAFillModeBoth", optional=true)
+        public static native NSString Both();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCAFillModeRemoved", optional=true)
+        public static native NSString Removed();
+        /*</values>*/
+    }
 }

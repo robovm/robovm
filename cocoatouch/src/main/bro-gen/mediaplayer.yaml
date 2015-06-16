@@ -38,12 +38,6 @@ categories:
                 name: dismissMoviePlayerViewController
 
 classes:
-    MPMediaEntityProperty: {}
-    MPMediaItemProperty:
-        extends: MPMediaEntityProperty
-    MPMediaPlaylistProperty:
-        extends: MPMediaEntityProperty
-
     MPChangePlaybackRateCommand: # DONE
         properties:
             supportedPlaybackRates:
@@ -310,106 +304,130 @@ functions:
 
 values:
     MPMediaEntityPropertyPersistentID:
-        class: MPMediaEntityProperty
-        name: EntityPersistentIDValue
+        enum: MPMediaEntityProperty
+        name: EntityPersistentID
         type: NSString
-        visibility: protected
     MPMediaEntityProperty(.*):
-        class: MPMediaEntityProperty
-        name: "#{g[0]}Value"
+        enum: MPMediaEntityProperty
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     
     MPMediaItemPropertyPersistentID:
-        class: MPMediaItemProperty
-        name: ItemPersistentIDValue
+        enum: MPMediaItemProperty
+        name: ItemPersistentID
         type: NSString
-        visibility: protected
+        extends: MPMediaEntityProperty
     MPMediaItemProperty(.*):
-        class: MPMediaItemProperty
-        name: "#{g[0]}Value"
+        enum: MPMediaItemProperty
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        extends: MPMediaEntityProperty
         
     MPMediaPlaylistPropertyPersistentID:
-        class: MPMediaPlaylistProperty
-        name: PlaylistPersistendIDValue
+        enum: MPMediaPlaylistProperty
+        name: PlaylistPersistendID
         type: NSString
-        visibility: protected
+        extends: MPMediaEntityProperty
     MPMediaPlaylistProperty(.*):
-        class: MPMediaPlaylistProperty
-        name: "#{g[0]}Value"
+        enum: MPMediaPlaylistProperty
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        extends: MPMediaEntityProperty
 
     MPNowPlayingInfoProperty(.*):
-        class: MPNowPlayingInfo
-        name: "#{g[0]}"
+        dictionary: MPNowPlayingInfo
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        methods:
+            ElapsedPlaybackTime:
+                type: double
+            PlaybackRate:
+                type: double
+            PlaybackQueueIndex:
+                type: int
+            PlaybackQueueCount:
+                type: int
+            ChapterNumber:
+                type: int
+            ChapterCount:
+                type: int
+            DefaultPlaybackRate:
+                type: double
         
     MPMoviePlayerTimedMetadataKey(.*):
         class: MPTimedMetadata
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
         visibility: protected
 
     MPMediaLibrary(DidChangeNotification):
         class: MPMediaLibrary
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
     MPMediaPlayback(IsPreparedToPlayDidChangeNotification):
         class: MPMusicPlayerController
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
     MPMoviePlayerContentPreloadDidFinishNotification:
         exclude: true
     MPMoviePlayer(.*Notification):
         class: MPMoviePlayerController
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
     MPMovie(.*Notification):
         class: MPMoviePlayerController
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
     MPMusicPlayerController(.*Notification):
         class: MPMusicPlayerController
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
     MPVolumeView(.*Notification):
         class: MPVolumeView
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
         
     MPMoviePlayer(PlaybackDidFinishReasonUserInfoKey):
         class: MPMoviePlayerController
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
         visibility: protected
     MPMoviePlayer(TimedMetadataUserInfoKey):
         class: MPMoviePlayerController
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
         visibility: protected
-    MPMoviePlayerThumbnail(.*Key):
-        class: MPMoviePlayerThumbnailRequest
-        name: "#{g[0]}"
+    MPMoviePlayerThumbnail(.*)Key:
+        dictionary: MPMoviePlayerThumbnailRequest
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
-    MPMoviePlayerFullscreenAnimation(.*UserInfoKey):
-        class: MPMoviePlayerFullscreenAnimation
-        name: "#{g[0]}"
+        mutable: false
+        methods:
+            Image:
+                type: UIImage
+            Time:
+                type: double
+            Error:
+                type: NSError
+    MPMoviePlayerFullscreenAnimation(.*)UserInfoKey:
+        dictionary: MPMoviePlayerFullscreenAnimation
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        mutable: false
+        methods:
+            Duration:
+                type: double
+            Curve:
+                type: UIViewAnimationCurve
 
     # Make sure we don't miss any values if new ones are introduced in a later version
     (k?MP.*):
         class: MediaPlayer
-        name: "Value__#{g[0]}"
+        name: 'Value__#{g[0]}'
 
 constants:
 
     # Make sure we don't miss any constants if new ones are introduced in a later version
     (k?MP.*):
         class: MediaPlayer
-        name: "Constant__#{g[0]}"
+        name: 'Constant__#{g[0]}'

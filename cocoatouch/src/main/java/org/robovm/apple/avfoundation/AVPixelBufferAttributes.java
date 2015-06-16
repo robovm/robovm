@@ -36,6 +36,7 @@ import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.corevideo.*;
 import org.robovm.apple.audiotoolbox.*;
+import org.robovm.apple.avfoundation.AVVideoSettings.Keys;
 import org.robovm.apple.mediatoolbox.*;
 /*</imports>*/
 
@@ -61,55 +62,22 @@ import org.robovm.apple.mediatoolbox.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public double getPixelAspectRatioHorizontalSpacing() {
-        if (data.containsKey(AVVideoSettings.PixelAspectRatioKey())) {
-            CFDictionary val = data.get(AVVideoSettings.PixelAspectRatioKey(), CFDictionary.class);
-            if (val.containsKey(AVVideoSettings.PixelAspectRatioHorizontalSpacingKey())) {
-                CFNumber n = val.get(AVVideoSettings.PixelAspectRatioHorizontalSpacingKey(), CFNumber.class);
-                return n.doubleValue();
-            }
+    public AVPixelAspectRatio getPixelAspectRatio() {
+        if (data.containsKey(AVVideoSettings.Keys.PixelAspectRatio())) {
+            NSDictionary<?, ?> val = data.get(AVVideoSettings.Keys.PixelAspectRatio(), NSDictionary.class);
+            AVPixelAspectRatio result = new AVPixelAspectRatio(val.getLong(AVPixelAspectRatio.HorizontalSpacing(), 0), val.getLong(AVPixelAspectRatio.VerticalSpacing(), 0));
+            return result;
         }
-        return 0;
+        return null;
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public AVPixelBufferAttributes setPixelAspectRatioHorizontalSpacing(double spacing) {
-        CFDictionary val = null;
-        if (data.containsKey(AVVideoSettings.PixelAspectRatioKey())) {
-            val = data.get(AVVideoSettings.PixelAspectRatioKey(), CFDictionary.class);
-        } else {
-            val = CFMutableDictionary.create();
-        }
-        val.put(AVVideoSettings.PixelAspectRatioHorizontalSpacingKey(), CFNumber.valueOf(spacing));
-        data.put(AVVideoSettings.PixelAspectRatioKey(), val);
-        return this;
-    }
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public double getPixelAspectRatioVerticalSpacing() {
-        if (data.containsKey(AVVideoSettings.PixelAspectRatioKey())) {
-            CFDictionary val = data.get(AVVideoSettings.PixelAspectRatioKey(), CFDictionary.class);
-            if (val.containsKey(AVVideoSettings.PixelAspectRatioVerticalSpacingKey())) {
-                CFNumber n = val.get(AVVideoSettings.PixelAspectRatioVerticalSpacingKey(), CFNumber.class);
-                return n.doubleValue();
-            }
-        }
-        return 0;
-    }
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public AVPixelBufferAttributes setPixelAspectRatioVerticalSpacing(double spacing) {
-        CFDictionary val = null;
-        if (data.containsKey(AVVideoSettings.PixelAspectRatioKey())) {
-            val = data.get(AVVideoSettings.PixelAspectRatioKey(), CFDictionary.class);
-        } else {
-            val = CFMutableDictionary.create();
-        }
-        val.put(AVVideoSettings.PixelAspectRatioVerticalSpacingKey(), CFNumber.valueOf(spacing));
-        data.put(AVVideoSettings.PixelAspectRatioKey(), val);
+    public AVPixelBufferAttributes setPixelAspectRatio(AVPixelAspectRatio pixelAspectRatio) {
+        NSDictionary<NSString, NSObject> val = new NSMutableDictionary<>();
+        val.put(AVPixelAspectRatio.HorizontalSpacing(), pixelAspectRatio.getHorizontalSpacing());
+        val.put(AVPixelAspectRatio.VerticalSpacing(), pixelAspectRatio.getVerticalSpacing());
+        data.put(AVVideoSettings.Keys.PixelAspectRatio(), val);
         return this;
     }
     /**
@@ -117,8 +85,8 @@ import org.robovm.apple.mediatoolbox.*;
      */
     @SuppressWarnings("unchecked")
     public AVVideoCleanAperture getCleanAperture() {
-        if (data.containsKey(AVVideoSettings.CleanApertureKey())) {
-            NSDictionary<NSString, NSObject> val = data.get(AVVideoSettings.CleanApertureKey(), NSDictionary.class);
+        if (data.containsKey(AVVideoSettings.Keys.CleanAperture())) {
+            NSDictionary<NSString, NSObject> val = data.get(AVVideoSettings.Keys.CleanAperture(), NSDictionary.class);
             return new AVVideoCleanAperture(val);
         }
         return null;
@@ -127,15 +95,15 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 4.0 and later.
      */
     public AVPixelBufferAttributes setCleanAperture(AVVideoCleanAperture cleanAperture) {
-        data.put(AVVideoSettings.CleanApertureKey(), cleanAperture.getDictionary());
+        data.put(AVVideoSettings.Keys.CleanAperture(), cleanAperture.getDictionary());
         return this;
     }
     /**
      * @since Available in iOS 5.0 and later.
      */
     public AVVideoScalingMode getScalingMode() {
-        if (data.containsKey(AVVideoSettings.ScalingModeKey())) {
-            NSString val = data.get(AVVideoSettings.ScalingModeKey(), NSString.class);
+        if (data.containsKey(AVVideoSettings.Keys.ScalingMode())) {
+            NSString val = data.get(AVVideoSettings.Keys.ScalingMode(), NSString.class);
             return AVVideoScalingMode.valueOf(val);
         }
         return null;
@@ -144,7 +112,7 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 5.0 and later.
      */
     public AVPixelBufferAttributes setScalingMode(AVVideoScalingMode scalingMode) {
-        data.put(AVVideoSettings.ScalingModeKey(), scalingMode.value());
+        data.put(AVVideoSettings.Keys.ScalingMode(), scalingMode.value());
         return this;
     }
     /*<methods>*/

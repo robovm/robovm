@@ -85,8 +85,8 @@ import org.robovm.apple.opengles.*;
                 return 0L;
             }
             NSArray<NSString> array = new NSMutableArray<>();
-            for (SCNErrorUserInfoKey i : l) {
-                array.add(i.value());
+            for (SCNErrorUserInfoKey o : l) {
+                array.add(o.value());
             }
             return NSObject.Marshaler.toNative(array, flags);
         }

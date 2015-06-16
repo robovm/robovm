@@ -77,7 +77,8 @@ classes:
     MTLCompileOptions: # DONE
         properties:
             'preprocessorMacros':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>'
+                type: 'Map<String, String>'
+                marshaler: NSDictionary.AsStringStringMapMarshaler
     MTLComputePipelineReflection: # DONE
         properties:
             'arguments':

@@ -360,21 +360,44 @@ functions:
 
 values:
     # PHAsset
-    PHContentEditingInput(.*Key):
-        class: PHContentEditingInputRequestResult
+    PHContentEditingInput(.*)Key:
+        dictionary: PHContentEditingInputRequestResult
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        mutable: false
+        methods:
+            ResultIsInCloud:
+                name: resultInCloud
+                type: boolean
+            Cancelled:
+                name: isCancelled
+                type: boolean
+            Error:
+                type: NSError
 
     # PHImageManager
     PHImageManager(MaximumSize):
         class: PHImageManager
         name: 'get#{g[0]}'
-    PHImage(.*Key):
-        class: PHImageRequestResult
+    PHImage(.*)Key:
+        dictionary: PHImageRequestResult
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        mutable: false
+        methods:
+            ResultIsInCloud:
+                name: resultInCloud
+                type: boolean
+            ResultIsDegraded:
+                name: resultDegraded
+                type: boolean
+            ResultRequestID:
+                type: long
+            Cancelled:
+                name: isCancelled
+                type: boolean
+            Error:
+                type: NSError
    
     # Make sure we don't miss any values if new ones are introduced in a later version
     (k?PH.*):

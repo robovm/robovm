@@ -168,7 +168,7 @@ import org.robovm.apple.foundation.*;
     }
     
     /*<keys>*/
-    @Library("Accounts") @StronglyLinked
+    @Library("Accounts")
     public static class Keys {
         static { Bro.bind(Keys.class); }
         /**

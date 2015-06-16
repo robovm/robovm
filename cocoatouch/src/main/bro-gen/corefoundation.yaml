@@ -1885,13 +1885,13 @@ values:
 
     # CFRunLoop
     kCFRunLoop(Default)Mode:
-        class: CFRunLoopMode
-        name: '#{g[0]}Value'
-        visibility: protected
+        enum: CFRunLoopMode
+        name: '#{g[0]}'
+        type: CFString
     kCFRunLoop(Common)Modes:
-        class: CFRunLoopMode
-        name: '#{g[0]}Value'
-        visibility: protected
+        enum: CFRunLoopMode
+        name: '#{g[0]}'
+        type: CFString
     
     # CFSocket
     kCFSocket(.*):

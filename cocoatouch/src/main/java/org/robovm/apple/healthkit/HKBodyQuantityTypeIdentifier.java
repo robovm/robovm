@@ -32,82 +32,131 @@ import org.robovm.apple.foundation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("HealthKit")/*</annotations>*/
+/*<annotations>*/@Library("HealthKit") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/HKBodyQuantityTypeIdentifier/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/HKBodyQuantityTypeIdentifier/*</name>*/ 
-    extends /*<extends>*/HKQuantityTypeIdentifier/*</extends>*/ 
+    extends /*<extends>*/HKQuantityTypeIdentifier/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(HKBodyQuantityTypeIdentifier.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKBodyQuantityTypeIdentifier BodyMassIndex = new HKBodyQuantityTypeIdentifier("BodyMassIndexValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKBodyQuantityTypeIdentifier BodyFatPercentage = new HKBodyQuantityTypeIdentifier("BodyFatPercentageValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKBodyQuantityTypeIdentifier Height = new HKBodyQuantityTypeIdentifier("HeightValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKBodyQuantityTypeIdentifier BodyMass = new HKBodyQuantityTypeIdentifier("BodyMassValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final HKBodyQuantityTypeIdentifier LeanBodyMass = new HKBodyQuantityTypeIdentifier("LeanBodyMassValue");
-    
-    private static HKBodyQuantityTypeIdentifier[] values = new HKBodyQuantityTypeIdentifier[] {BodyMassIndex, BodyFatPercentage, Height, BodyMass, LeanBodyMass};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private HKBodyQuantityTypeIdentifier(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    static { Bro.bind(/*<name>*/HKBodyQuantityTypeIdentifier/*</name>*/.class); }
+
+    /*<marshalers>*/
+    public static class Marshaler {
+        @MarshalsPointer
+        public static HKBodyQuantityTypeIdentifier toObject(Class<HKBodyQuantityTypeIdentifier> cls, long handle, long flags) {
+            NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return HKBodyQuantityTypeIdentifier.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(HKBodyQuantityTypeIdentifier o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(o.value(), flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<HKBodyQuantityTypeIdentifier> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<HKBodyQuantityTypeIdentifier> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(HKBodyQuantityTypeIdentifier.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<HKBodyQuantityTypeIdentifier> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (HKBodyQuantityTypeIdentifier o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKBodyQuantityTypeIdentifier BodyMassIndex = new HKBodyQuantityTypeIdentifier("BodyMassIndex");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKBodyQuantityTypeIdentifier BodyFatPercentage = new HKBodyQuantityTypeIdentifier("BodyFatPercentage");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKBodyQuantityTypeIdentifier Height = new HKBodyQuantityTypeIdentifier("Height");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKBodyQuantityTypeIdentifier BodyMass = new HKBodyQuantityTypeIdentifier("BodyMass");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final HKBodyQuantityTypeIdentifier LeanBodyMass = new HKBodyQuantityTypeIdentifier("LeanBodyMass");
+    /*</constants>*/
+    
+    private static /*<name>*/HKBodyQuantityTypeIdentifier/*</name>*/[] values = new /*<name>*/HKBodyQuantityTypeIdentifier/*</name>*/[] {/*<value_list>*/BodyMassIndex, BodyFatPercentage, Height, BodyMass, LeanBodyMass/*</value_list>*/};
+    
+    /*<name>*/HKBodyQuantityTypeIdentifier/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static HKBodyQuantityTypeIdentifier valueOf(NSString value) {
-        for (HKBodyQuantityTypeIdentifier v : values) {
+    public static /*<name>*/HKBodyQuantityTypeIdentifier/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/HKBodyQuantityTypeIdentifier/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
         }
-        return null;
+        throw new IllegalArgumentException("No constant with value " + value + " found in " 
+            + /*<name>*/HKBodyQuantityTypeIdentifier/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierBodyMassIndex", optional=true)
-    protected static native NSString BodyMassIndexValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierBodyFatPercentage", optional=true)
-    protected static native NSString BodyFatPercentageValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierHeight", optional=true)
-    protected static native NSString HeightValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierBodyMass", optional=true)
-    protected static native NSString BodyMassValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HKQuantityTypeIdentifierLeanBodyMass", optional=true)
-    protected static native NSString LeanBodyMassValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("HealthKit") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierBodyMassIndex", optional=true)
+        public static native NSString BodyMassIndex();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierBodyFatPercentage", optional=true)
+        public static native NSString BodyFatPercentage();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierHeight", optional=true)
+        public static native NSString Height();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierBodyMass", optional=true)
+        public static native NSString BodyMass();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HKQuantityTypeIdentifierLeanBodyMass", optional=true)
+        public static native NSString LeanBodyMass();
+        /*</values>*/
+    }
 }

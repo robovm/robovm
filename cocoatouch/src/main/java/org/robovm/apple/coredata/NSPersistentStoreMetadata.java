@@ -32,14 +32,14 @@ import org.robovm.apple.foundation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(NSPersistentStoreMetadata.Marshaler.class)
 /*<annotations>*/@Library("CoreData")/*</annotations>*/
+@Marshaler(/*<name>*/NSPersistentStoreMetadata/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSPersistentStoreMetadata/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
-    
+
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static NSPersistentStoreMetadata toObject(Class<NSPersistentStoreMetadata> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -56,32 +56,62 @@ import org.robovm.apple.foundation.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<NSPersistentStoreMetadata> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<NSPersistentStoreMetadata> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new NSPersistentStoreMetadata(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<NSPersistentStoreMetadata> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (NSPersistentStoreMetadata i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
 
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
+    /*<constructors>*/
+    NSPersistentStoreMetadata(NSDictionary<NSString, NSObject> data) {
+        super(data);
+    }
+    public NSPersistentStoreMetadata() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
+    }
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
+    }
+    public NSPersistentStoreMetadata set(NSString key, NSObject value) {
+        data.put(key, value);
+        return this;
+    }
     
-    protected NSPersistentStoreMetadata(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
-    }
-    public NSPersistentStoreMetadata() {
-    	this.data = new NSMutableDictionary<>();
-    }
-    /*<bind>*/static { Bro.bind(NSPersistentStoreMetadata.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
-    }
-    
+
     /**
      * @since Available in iOS 3.0 and later.
      */
     public String getType() {
-        if (data.containsKey(TypeValue())) {
-            NSString val = (NSString)data.get(TypeValue());
+        if (has(Keys.Type())) {
+            NSString val = (NSString) get(Keys.Type());
             return val.toString();
         }
         return null;
@@ -89,23 +119,16 @@ import org.robovm.apple.foundation.*;
     /**
      * @since Available in iOS 3.0 and later.
      */
-    public NSPersistentStoreMetadata setType(NSPersistentStoreType type) {
-        data.put(TypeValue(), new NSString(type.value()));
-        return this;
-    }
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
     public NSPersistentStoreMetadata setType(String type) {
-        data.put(TypeValue(), new NSString(type));
+        set(Keys.Type(), new NSString(type));
         return this;
     }
     /**
      * @since Available in iOS 3.0 and later.
      */
     public NSUUID getUUID() {
-        if (data.containsKey(UUIDValue())) {
-            NSUUID val = (NSUUID)data.get(UUIDValue());
+        if (has(Keys.UUID())) {
+            NSUUID val = (NSUUID) get(Keys.UUID());
             return val;
         }
         return null;
@@ -113,16 +136,16 @@ import org.robovm.apple.foundation.*;
     /**
      * @since Available in iOS 3.0 and later.
      */
-    public NSPersistentStoreMetadata setUUID(NSUUID uuid) {
-        data.put(UUIDValue(), uuid);
+    public NSPersistentStoreMetadata setUUID(NSUUID uUID) {
+        set(Keys.UUID(), uUID);
         return this;
     }
     /**
      * @since Available in iOS 3.0 and later.
      */
     public NSDictionary<?, ?> getModelVersionHashes() {
-        if (data.containsKey(ModelVersionHashesValue())) {
-            NSDictionary<?, ?> val = (NSDictionary<?, ?>)data.get(ModelVersionHashesValue());
+        if (has(Keys.ModelVersionHashes())) {
+            NSDictionary<?, ?> val = (NSDictionary<?, ?>) get(Keys.ModelVersionHashes());
             return val;
         }
         return null;
@@ -131,8 +154,8 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 3.0 and later.
      */
     public NSSet<?> getModelVersionIdentifiers() {
-        if (data.containsKey(ModelVersionIdentifiersValue())) {
-            NSSet<?> val = (NSSet<?>)data.get(ModelVersionIdentifiersValue());
+        if (has(Keys.ModelVersionIdentifiers())) {
+            NSSet<?> val = (NSSet<?>) get(Keys.ModelVersionIdentifiers());
             return val;
         }
         return null;
@@ -141,42 +164,47 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 3.0 and later.
      */
     public long getOSCompatibility() {
-        if (data.containsKey(OSCompatibilityValue())) {
-            NSNumber val = (NSNumber)data.get(OSCompatibilityValue());
+        if (has(Keys.OSCompatibility())) {
+            NSNumber val = (NSNumber) get(Keys.OSCompatibility());
             return val.longValue();
         }
         return 0;
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSStoreTypeKey", optional=true)
-    protected static native NSString TypeValue();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSStoreUUIDKey", optional=true)
-    protected static native NSString UUIDValue();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSStoreModelVersionHashesKey", optional=true)
-    protected static native NSString ModelVersionHashesValue();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSStoreModelVersionIdentifiersKey", optional=true)
-    protected static native NSString ModelVersionIdentifiersValue();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSPersistentStoreOSCompatibility", optional=true)
-    protected static native NSString OSCompatibilityValue();
     /*</methods>*/
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    public NSPersistentStoreMetadata setType(NSPersistentStoreType type) {
+        data.put(Keys.Type(), type.value());
+        return this;
     }
+    
+    /*<keys>*/
+    @Library("CoreData")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="NSStoreTypeKey", optional=true)
+        public static native NSString Type();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="NSStoreUUIDKey", optional=true)
+        public static native NSString UUID();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="NSStoreModelVersionHashesKey", optional=true)
+        public static native NSString ModelVersionHashes();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="NSStoreModelVersionIdentifiersKey", optional=true)
+        public static native NSString ModelVersionIdentifiers();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="NSPersistentStoreOSCompatibility", optional=true)
+        public static native NSString OSCompatibility();
+    }
+    /*</keys>*/
 }

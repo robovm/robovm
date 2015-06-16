@@ -38,12 +38,15 @@ import org.robovm.apple.corelocation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(UITransitionContextViewControllerType.Marshaler.class)
-/*<annotations>*/@Library("UIKit")/*</annotations>*/
+/*<annotations>*/@Library("UIKit") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/UITransitionContextViewControllerType/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UITransitionContextViewControllerType/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/UITransitionContextViewControllerType/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static UITransitionContextViewControllerType toObject(Class<UITransitionContextViewControllerType> cls, long handle, long flags) {
@@ -61,35 +64,53 @@ import org.robovm.apple.corelocation.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(UITransitionContextViewControllerType.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<UITransitionContextViewControllerType> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<UITransitionContextViewControllerType> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(UITransitionContextViewControllerType.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<UITransitionContextViewControllerType> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (UITransitionContextViewControllerType o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public static final UITransitionContextViewControllerType From = new UITransitionContextViewControllerType("FromViewControllerKey");
+    public static final UITransitionContextViewControllerType FromViewController = new UITransitionContextViewControllerType("FromViewController");
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public static final UITransitionContextViewControllerType To = new UITransitionContextViewControllerType("ToViewControllerKey");
-    private static UITransitionContextViewControllerType[] values = new UITransitionContextViewControllerType[] {From, To};
+    public static final UITransitionContextViewControllerType ToViewController = new UITransitionContextViewControllerType("ToViewController");
+    /*</constants>*/
     
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    private static /*<name>*/UITransitionContextViewControllerType/*</name>*/[] values = new /*<name>*/UITransitionContextViewControllerType/*</name>*/[] {/*<value_list>*/FromViewController, ToViewController/*</value_list>*/};
     
-    private UITransitionContextViewControllerType(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/UITransitionContextViewControllerType/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static UITransitionContextViewControllerType valueOf(NSString value) {
-        for (UITransitionContextViewControllerType v : values) {
+    public static /*<name>*/UITransitionContextViewControllerType/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/UITransitionContextViewControllerType/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -97,16 +118,24 @@ import org.robovm.apple.corelocation.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/UITransitionContextViewControllerType/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UITransitionContextFromViewControllerKey", optional=true)
-    protected static native NSString FromViewControllerKey();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UITransitionContextToViewControllerKey", optional=true)
-    protected static native NSString ToViewControllerKey();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("UIKit") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="UITransitionContextFromViewControllerKey", optional=true)
+        public static native NSString FromViewController();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="UITransitionContextToViewControllerKey", optional=true)
+        public static native NSString ToViewController();
+        /*</values>*/
+    }
 }

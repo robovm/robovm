@@ -38,12 +38,15 @@ import org.robovm.apple.corelocation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(UICollectionElementKind.Marshaler.class)
-/*<annotations>*/@Library("UIKit")/*</annotations>*/
+/*<annotations>*/@Library("UIKit") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/UICollectionElementKind/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UICollectionElementKind/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/UICollectionElementKind/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static UICollectionElementKind toObject(Class<UICollectionElementKind> cls, long handle, long flags) {
@@ -61,29 +64,53 @@ import org.robovm.apple.corelocation.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(UICollectionElementKind.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    public static final UICollectionElementKind SectionHeader = new UICollectionElementKind("SectionHeaderValue");
-    public static final UICollectionElementKind SectionFooter = new UICollectionElementKind("SectionFooterValue");
-    private static UICollectionElementKind[] values = new UICollectionElementKind[] {SectionHeader, SectionFooter};
-    
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private UICollectionElementKind(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<UICollectionElementKind> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<UICollectionElementKind> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(UICollectionElementKind.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<UICollectionElementKind> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (UICollectionElementKind o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*</marshalers>*/
+
+    /*<constants>*/
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public static final UICollectionElementKind SectionHeader = new UICollectionElementKind("SectionHeader");
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public static final UICollectionElementKind SectionFooter = new UICollectionElementKind("SectionFooter");
+    /*</constants>*/
+    
+    private static /*<name>*/UICollectionElementKind/*</name>*/[] values = new /*<name>*/UICollectionElementKind/*</name>*/[] {/*<value_list>*/SectionHeader, SectionFooter/*</value_list>*/};
+    
+    /*<name>*/UICollectionElementKind/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static UICollectionElementKind valueOf(NSString value) {
-        for (UICollectionElementKind v : values) {
+    public static /*<name>*/UICollectionElementKind/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/UICollectionElementKind/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -91,16 +118,24 @@ import org.robovm.apple.corelocation.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/UICollectionElementKind/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="UICollectionElementKindSectionHeader", optional=true)
-    protected static native NSString SectionHeaderValue();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="UICollectionElementKindSectionFooter", optional=true)
-    protected static native NSString SectionFooterValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("UIKit") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        @GlobalValue(symbol="UICollectionElementKindSectionHeader", optional=true)
+        public static native NSString SectionHeader();
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        @GlobalValue(symbol="UICollectionElementKindSectionFooter", optional=true)
+        public static native NSString SectionFooter();
+        /*</values>*/
+    }
 }

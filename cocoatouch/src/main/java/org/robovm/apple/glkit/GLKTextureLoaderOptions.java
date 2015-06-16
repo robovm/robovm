@@ -199,7 +199,7 @@ import org.robovm.apple.dispatch.*;
     /*</methods>*/
     
     /*<keys>*/
-    @Library("GLKit") @StronglyLinked
+    @Library("GLKit")
     public static class Keys {
         static { Bro.bind(Keys.class); }
         /**

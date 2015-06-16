@@ -44,9 +44,13 @@ import org.robovm.apple.mediatoolbox.*;
 /*<annotations>*/@Library("AVFoundation")/*</annotations>*/
 @Marshaler(AVMetadataKey.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ abstract class /*<name>*/AVMetadataKey/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    protected AVMetadataKey(Class<?> clazz, String getterName) {
+        super(clazz, getterName);
+    }
+    
     public static class Marshaler {
         @MarshalsPointer
         public static AVMetadataKey toObject(Class<AVMetadataKey> cls, long handle, long flags) {
@@ -113,8 +117,6 @@ import org.robovm.apple.mediatoolbox.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
-    public abstract NSString value();
-    
     public static AVMetadataKey valueOf(NSString value) {
         Class<?>[] args = new Class<?>[] {NSString.class};
         for (Class<? extends AVMetadataKey> cls : allSubClasses) {

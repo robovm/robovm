@@ -33,14 +33,14 @@ import org.robovm.apple.uikit.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(SKReceiptRefreshRequestOptions.Marshaler.class)
 /*<annotations>*/@Library("StoreKit")/*</annotations>*/
+@Marshaler(/*<name>*/SKReceiptRefreshRequestOptions/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SKReceiptRefreshRequestOptions/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static SKReceiptRefreshRequestOptions toObject(Class<SKReceiptRefreshRequestOptions> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -57,32 +57,62 @@ import org.robovm.apple.uikit.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected SKReceiptRefreshRequestOptions(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<SKReceiptRefreshRequestOptions> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<SKReceiptRefreshRequestOptions> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new SKReceiptRefreshRequestOptions(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<SKReceiptRefreshRequestOptions> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (SKReceiptRefreshRequestOptions i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    public SKReceiptRefreshRequestOptions() {
-        data = new NSMutableDictionary<NSString, NSObject>();
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    SKReceiptRefreshRequestOptions(NSDictionary<NSString, NSObject> data) {
+        super(data);
     }
-    /*<bind>*/static { Bro.bind(SKReceiptRefreshRequestOptions.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
+    public SKReceiptRefreshRequestOptions() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
+    }
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
+    }
+    public SKReceiptRefreshRequestOptions set(NSString key, NSObject value) {
+        data.put(key, value);
+        return this;
     }
     
+
     /**
      * @since Available in iOS 7.0 and later.
      */
     public boolean isExpired() {
-        if (data.containsKey(IsExpiredKey())) {
-            NSNumber val = (NSNumber)data.get(IsExpiredKey());
+        if (has(Keys.IsExpired())) {
+            NSNumber val = (NSNumber) get(Keys.IsExpired());
             return val.booleanValue();
         }
         return false;
@@ -91,15 +121,15 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 7.0 and later.
      */
     public SKReceiptRefreshRequestOptions setExpired(boolean expired) {
-        data.put(IsExpiredKey(), NSNumber.valueOf(expired));
+        set(Keys.IsExpired(), NSNumber.valueOf(expired));
         return this;
     }
     /**
      * @since Available in iOS 7.0 and later.
      */
     public boolean isRevoked() {
-        if (data.containsKey(IsRevokedKey())) {
-            NSNumber val = (NSNumber)data.get(IsRevokedKey());
+        if (has(Keys.IsRevoked())) {
+            NSNumber val = (NSNumber) get(Keys.IsRevoked());
             return val.booleanValue();
         }
         return false;
@@ -108,15 +138,15 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 7.0 and later.
      */
     public SKReceiptRefreshRequestOptions setRevoked(boolean revoked) {
-        data.put(IsRevokedKey(), NSNumber.valueOf(revoked));
+        set(Keys.IsRevoked(), NSNumber.valueOf(revoked));
         return this;
     }
     /**
      * @since Available in iOS 7.0 and later.
      */
     public boolean isVolumePurchase() {
-        if (data.containsKey(IsVolumePurchaseKey())) {
-            NSNumber val = (NSNumber)data.get(IsVolumePurchaseKey());
+        if (has(Keys.IsVolumePurchase())) {
+            NSNumber val = (NSNumber) get(Keys.IsVolumePurchase());
             return val.booleanValue();
         }
         return false;
@@ -125,30 +155,30 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 7.0 and later.
      */
     public SKReceiptRefreshRequestOptions setVolumePurchase(boolean volumePurchase) {
-        data.put(IsVolumePurchaseKey(), NSNumber.valueOf(volumePurchase));
+        set(Keys.IsVolumePurchase(), NSNumber.valueOf(volumePurchase));
         return this;
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="SKReceiptPropertyIsExpired", optional=true)
-    protected static native NSString IsExpiredKey();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="SKReceiptPropertyIsRevoked", optional=true)
-    protected static native NSString IsRevokedKey();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="SKReceiptPropertyIsVolumePurchase", optional=true)
-    protected static native NSString IsVolumePurchaseKey();
     /*</methods>*/
     
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    /*<keys>*/
+    @Library("StoreKit")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="SKReceiptPropertyIsExpired", optional=true)
+        public static native NSString IsExpired();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="SKReceiptPropertyIsRevoked", optional=true)
+        public static native NSString IsRevoked();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="SKReceiptPropertyIsVolumePurchase", optional=true)
+        public static native NSString IsVolumePurchase();
     }
+    /*</keys>*/
 }

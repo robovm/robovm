@@ -211,37 +211,58 @@ functions:
 values:
     # CIContext
     kCIContext(.*):
-        class: CIContextOptions
-        name: '#{g[0]}Key'
+        dictionary: CIContextOptions
+        name: '#{g[0]}'
         type: NSString
-        readonly: true
-        visibility: protected
+        methods:
+            OutputColorSpace:
+                type: CGColorSpace
+            WorkingColorSpace:
+                type: CGColorSpace
+            WorkingFormat:
+                type: CIFormat
+            UseSoftwareRenderer:
+                name: usesSoftwareRenderer
+                type: boolean
+            PriorityRequestLow:
+                name: requestsLowPriority
+                type: boolean
 
     # CIDetector
     CIDetectorType(.*):
-        class: CIDetectorType
-        name: '#{g[0]}Value'
+        enum: CIDetectorType
+        name: '#{g[0]}'
         type: NSString
-        readonly: true
-        visibility: protected
     CIDetector(ImageOrientation|EyeBlink|Smile|FocalLength|AspectRatio):
-        class: CIDetectorFeatureOptions
-        name: '#{g[0]}Key'
+        dictionary: CIDetectorFeatureOptions
+        name: '#{g[0]}'
         type: NSString
-        readonly: true
-        visibility: protected
+        methods:
+            EyeBlink:
+                name: recognizesEyeBlinks
+                type: boolean
+            Smile:
+                name: recognizesSmiles
+                type: boolean
+            FocalLength:
+                type: double
+            AspectRatio:
+                type: double
     CIDetectorAccuracy(Low|High):
-        class: CIDetectorAccuracy
-        name: '#{g[0]}Value'
+        enum: CIDetectorAccuracy
+        name: '#{g[0]}'
         type: NSString
-        readonly: true
-        visibility: protected
     CIDetector(.*):
-        class: CIDetectorOptions
-        name: '#{g[0]}Key'
+        dictionary: CIDetectorOptions
+        name: '#{g[0]}'
         type: NSString
-        readonly: true
-        visibility: protected
+        methods:
+            Accuracy:
+                type: CIDetectorAccuracy
+            Tracking:
+                type: boolean
+            MinFeatureSize:
+                type: double
 
     # CIFeature
     CIFeatureTypeFace:
@@ -269,56 +290,88 @@ values:
             Version:
                 type: long
     kCICategory(.*):
-        class: CIFilterCategory
-        name: '#{g[0]}Value'
+        enum: CIFilterCategory
+        name: '#{g[0]}'
         type: NSString
-        readonly: true
-        visibility: protected
     kCIAttributeFilter(.*):
-        class: CIFilterAttributes
-        name: '#{g[0]}Key'
+        dictionary: CIFilterAttributes
+        name: '#{g[0]}'
         type: NSString
-        readonly: true
-        visibility: protected
-    kCIAttribute(Type):
-        class: CIFilterAttribute
-        name: '#{g[0]}Key'
+        mutable: false
+        methods:
+            Name:
+                type: String
+            DisplayName:
+                type: String
+    kCIAttributeType(.+):
+        enum: CIFilterAttributeType
+        name: '#{g[0]}'
         type: NSString
-        readonly: true
-        visibility: protected
-    kCIAttributeType(.*):
-        class: CIFilterAttributeType
-        name: '#{g[0]}Value'
-        type: NSString
-        readonly: true
-        visibility: protected
     kCIAttribute(.*):
-        class: CIFilterAttribute
-        name: '#{g[0]}Key'
+        dictionary: CIFilterAttribute
+        name: '#{g[0]}'
         type: NSString
-        readonly: true
-        visibility: protected
+        mutable: false
+        methods:
+            Class:
+                name: AttributeClassName
+                type: String
+            Type:
+                type: CIFilterAttributeType
+            Min:
+                type: double
+            Max:
+                type: double
+            SliderMin:
+                type: double
+            SliderMax:
+                type: double
+            Default:
+                type: double
+            Identity:
+                type: double
+            Name:
+                type: String
+            DisplayName:
+                type: String
 
     # CIFormat
     kCIFormat(.*):
-        class: CIFormat
-        name: '#{g[0]}Value'
-        readonly: true
-        visibility: protected
+        enum: CIFormat
+        name: '#{g[0]}'
+        type: int
 
     # CIImage
     kCIImageAutoAdjust(.*):
-        class: CIImageAutoAdjustOptions
-        name: '#{g[0]}Key'
+        dictionary: CIImageAutoAdjustOptions
+        name: '#{g[0]}'
         type: CFString
-        readonly: true
-        visibility: protected
+        methods:
+            Enhance:
+                name: appliesEnhancementFilter
+                type: boolean
+            RedEye:
+                name: appliesRedEyeFilter
+                type: boolean
+            Features:
+                type: List<CIFeature>
+            Crop:
+                name: appliesCropFilter
+                type: boolean
+            Level:
+                name: appliesAutoLevel
+                type: boolean
     kCIImage(.*):
-        class: CIImageOptions
-        name: '#{g[0]}Key'
+        dictionary: CIImageOptions
+        name: '#{g[0]}'
         type: CFString
-        readonly: true
-        visibility: protected
+        methods:
+            ColorSpace:
+                type: CGColorSpace
+            Properties:
+                annotations: ['@WeaklyLinked']
+                type: CGImageProperties
+                hint: GlobalValueDictionaryWrapper<NSString>
 
     # Make sure we don't miss any values if new ones are introduced in a later version
     (k?CI.*):

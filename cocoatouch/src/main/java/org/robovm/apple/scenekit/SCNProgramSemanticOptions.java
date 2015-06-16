@@ -39,14 +39,14 @@ import org.robovm.apple.opengles.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(SCNProgramSemanticOptions.Marshaler.class)
 /*<annotations>*/@Library("SceneKit")/*</annotations>*/
+@Marshaler(/*<name>*/SCNProgramSemanticOptions/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SCNProgramSemanticOptions/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static SCNProgramSemanticOptions toObject(Class<SCNProgramSemanticOptions> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -63,44 +63,75 @@ import org.robovm.apple.opengles.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected SCNProgramSemanticOptions(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<SCNProgramSemanticOptions> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<SCNProgramSemanticOptions> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new SCNProgramSemanticOptions(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<SCNProgramSemanticOptions> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (SCNProgramSemanticOptions i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    public SCNProgramSemanticOptions() {
-        data = new NSMutableDictionary<>();
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    SCNProgramSemanticOptions(NSDictionary<NSString, NSObject> data) {
+        super(data);
     }
-    /*<bind>*/static { Bro.bind(SCNProgramSemanticOptions.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
+    public SCNProgramSemanticOptions() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
+    }
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
+    }
+    public SCNProgramSemanticOptions set(NSString key, NSObject value) {
+        data.put(key, value);
+        return this;
     }
     
+
     public long getMappingChannel() {
-        if (data.containsKey(MappingChannelKey())) {
-            NSNumber val = (NSNumber) data.get(MappingChannelKey());
+        if (has(Keys.MappingChannel())) {
+            NSNumber val = (NSNumber) get(Keys.MappingChannel());
             return val.longValue();
         }
         return 0;
     }
     public SCNProgramSemanticOptions setMappingChannel(long mappingChannel) {
-        data.put(MappingChannelKey(), NSNumber.valueOf(mappingChannel));
+        set(Keys.MappingChannel(), NSNumber.valueOf(mappingChannel));
         return this;
     }
-    /*<methods>*/
-    @GlobalValue(symbol="SCNProgramMappingChannelKey", optional=true)
-    protected static native NSString MappingChannelKey();
     /*</methods>*/
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    
+    /*<keys>*/
+    @Library("SceneKit")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        @GlobalValue(symbol="SCNProgramMappingChannelKey", optional=true)
+        public static native NSString MappingChannel();
     }
+    /*</keys>*/
 }

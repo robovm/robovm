@@ -40,17 +40,14 @@ import org.robovm.apple.dispatch.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/**
- * @since Available in iOS 8.0 and later.
- */
-@Marshaler(NSURLThumbnail.Marshaler.class)
 /*<annotations>*/@Library("Foundation")/*</annotations>*/
+@Marshaler(/*<name>*/NSURLThumbnail/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSURLThumbnail/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
-    
+
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static NSURLThumbnail toObject(Class<NSURLThumbnail> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -67,48 +64,86 @@ import org.robovm.apple.dispatch.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<NSURLThumbnail> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<NSURLThumbnail> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new NSURLThumbnail(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<NSURLThumbnail> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (NSURLThumbnail i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
 
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected NSURLThumbnail(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
+    /*<constructors>*/
+    NSURLThumbnail(NSDictionary<NSString, NSObject> data) {
+        super(data);
     }
-    public NSURLThumbnail() {
-        this.data = new NSMutableDictionary<>();
+    public NSURLThumbnail() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
     }
-    /*<bind>*/static { Bro.bind(NSURLThumbnail.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
+    }
+    public NSURLThumbnail set(NSString key, NSObject value) {
+        data.put(key, value);
+        return this;
     }
     
-    
+
     /**
      * @since Available in iOS 8.0 and later.
      */
     @WeaklyLinked
-    public UIImage get1024x1024Size() {
-        if (data.containsKey(_1024x1024SizeKey())) {
-            UIImage val = (UIImage)data.get(_1024x1024SizeKey());
+    public UIImage getSize1024x1024() {
+        if (has(Keys.Size1024x1024())) {
+            UIImage val = (UIImage) get(Keys.Size1024x1024());
             return val;
         }
         return null;
     }
-    /*<methods>*/
     /**
      * @since Available in iOS 8.0 and later.
      */
-    @GlobalValue(symbol="NSThumbnail1024x1024SizeKey", optional=true)
-    protected static native NSString _1024x1024SizeKey();
-    /*</methods>*/
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    @WeaklyLinked
+    public NSURLThumbnail setSize1024x1024(UIImage size1024x1024) {
+        set(Keys.Size1024x1024(), size1024x1024);
+        return this;
     }
+    /*</methods>*/
+    
+    /*<keys>*/
+    @Library("Foundation")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="NSThumbnail1024x1024SizeKey", optional=true)
+        public static native NSString Size1024x1024();
+    }
+    /*</keys>*/
 }

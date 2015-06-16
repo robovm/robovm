@@ -83,8 +83,8 @@ import org.robovm.apple.dispatch.*;
                 return 0L;
             }
             NSArray<NSString> array = new NSMutableArray<>();
-            for (GLKErrorUserInfoKey i : l) {
-                array.add(i.value());
+            for (GLKErrorUserInfoKey o : l) {
+                array.add(o.value());
             }
             return NSObject.Marshaler.toNative(array, flags);
         }

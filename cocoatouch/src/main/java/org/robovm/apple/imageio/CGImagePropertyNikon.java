@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -33,12 +34,15 @@ import org.robovm.apple.coregraphics.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CGImagePropertyNikon.Marshaler.class)
-/*<annotations>*/@Library("ImageIO")/*</annotations>*/
+/*<annotations>*/@Library("ImageIO") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/CGImagePropertyNikon/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CGImagePropertyNikon/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<CFString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
-    
+
+    static { Bro.bind(/*<name>*/CGImagePropertyNikon/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CGImagePropertyNikon toObject(Class<CGImagePropertyNikon> cls, long handle, long flags) {
@@ -56,101 +60,116 @@ import org.robovm.apple.coregraphics.*;
             return CFType.Marshaler.toNative(o.value(), flags);
         }
     }
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CGImagePropertyNikon> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CGImagePropertyNikon> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(CGImagePropertyNikon.valueOf(o.get(i, CFString.class)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CGImagePropertyNikon> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray array = CFMutableArray.create();
+            for (CGImagePropertyNikon o : l) {
+                array.add(o.value());
+            }
+            return CFType.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(CGImagePropertyNikon.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    /*<constants>*/
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyNikon ISOSetting = new CGImagePropertyNikon("ISOSettingKey");
+    public static final CGImagePropertyNikon ISOSetting = new CGImagePropertyNikon("ISOSetting");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyNikon ColorMode = new CGImagePropertyNikon("ColorModeKey");
+    public static final CGImagePropertyNikon ColorMode = new CGImagePropertyNikon("ColorMode");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyNikon Quality = new CGImagePropertyNikon("QualityKey");
+    public static final CGImagePropertyNikon Quality = new CGImagePropertyNikon("Quality");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyNikon WhiteBalanceMode = new CGImagePropertyNikon("WhiteBalanceModeKey");
+    public static final CGImagePropertyNikon WhiteBalanceMode = new CGImagePropertyNikon("WhiteBalanceMode");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyNikon SharpenMode = new CGImagePropertyNikon("SharpenModeKey");
+    public static final CGImagePropertyNikon SharpenMode = new CGImagePropertyNikon("SharpenMode");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyNikon FocusMode = new CGImagePropertyNikon("FocusModeKey");
+    public static final CGImagePropertyNikon FocusMode = new CGImagePropertyNikon("FocusMode");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyNikon FlashSetting = new CGImagePropertyNikon("FlashSettingKey");
+    public static final CGImagePropertyNikon FlashSetting = new CGImagePropertyNikon("FlashSetting");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyNikon ISOSelection = new CGImagePropertyNikon("ISOSelectionKey");
+    public static final CGImagePropertyNikon ISOSelection = new CGImagePropertyNikon("ISOSelection");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyNikon FlashExposureComp = new CGImagePropertyNikon("FlashExposureCompKey");
+    public static final CGImagePropertyNikon FlashExposureComp = new CGImagePropertyNikon("FlashExposureComp");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyNikon ImageAdjustment = new CGImagePropertyNikon("ImageAdjustmentKey");
+    public static final CGImagePropertyNikon ImageAdjustment = new CGImagePropertyNikon("ImageAdjustment");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyNikon LensAdapter = new CGImagePropertyNikon("LensAdapterKey");
+    public static final CGImagePropertyNikon LensAdapter = new CGImagePropertyNikon("LensAdapter");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyNikon LensType = new CGImagePropertyNikon("LensTypeKey");
+    public static final CGImagePropertyNikon LensType = new CGImagePropertyNikon("LensType");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyNikon LensInfo = new CGImagePropertyNikon("LensInfoKey");
+    public static final CGImagePropertyNikon LensInfo = new CGImagePropertyNikon("LensInfo");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyNikon FocusDistance = new CGImagePropertyNikon("FocusDistanceKey");
+    public static final CGImagePropertyNikon FocusDistance = new CGImagePropertyNikon("FocusDistance");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyNikon DigitalZoom = new CGImagePropertyNikon("DigitalZoomKey");
+    public static final CGImagePropertyNikon DigitalZoom = new CGImagePropertyNikon("DigitalZoom");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyNikon ShootingMode = new CGImagePropertyNikon("ShootingModeKey");
+    public static final CGImagePropertyNikon ShootingMode = new CGImagePropertyNikon("ShootingMode");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyNikon CameraSerialNumber = new CGImagePropertyNikon("CameraSerialNumberKey");
+    public static final CGImagePropertyNikon CameraSerialNumber = new CGImagePropertyNikon("CameraSerialNumber");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyNikon ShutterCount = new CGImagePropertyNikon("ShutterCountKey");
+    public static final CGImagePropertyNikon ShutterCount = new CGImagePropertyNikon("ShutterCount");
+    /*</constants>*/
     
-    private static CGImagePropertyNikon[] values = new CGImagePropertyNikon[] {ISOSetting, ColorMode, Quality, 
-        WhiteBalanceMode, SharpenMode, FocusMode, FlashSetting, ISOSelection, FlashExposureComp, ImageAdjustment, 
-        LensAdapter, LensType, LensInfo, FocusDistance, DigitalZoom, ShootingMode, CameraSerialNumber, ShutterCount};
-    private final LazyGlobalValue<CFString> lazyGlobalValue;
+    private static /*<name>*/CGImagePropertyNikon/*</name>*/[] values = new /*<name>*/CGImagePropertyNikon/*</name>*/[] {/*<value_list>*/ISOSetting, ColorMode, Quality, WhiteBalanceMode, SharpenMode, FocusMode, FlashSetting, ISOSelection, FlashExposureComp, ImageAdjustment, LensAdapter, LensType, LensInfo, FocusDistance, DigitalZoom, ShootingMode, CameraSerialNumber, ShutterCount/*</value_list>*/};
     
-    private CGImagePropertyNikon(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public CFString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/CGImagePropertyNikon/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static CGImagePropertyNikon valueOf(CFString value) {
-        for (CGImagePropertyNikon v : values) {
+    public static /*<name>*/CGImagePropertyNikon/*</name>*/ valueOf(/*<type>*/CFString/*</type>*/ value) {
+        for (/*<name>*/CGImagePropertyNikon/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -158,96 +177,104 @@ import org.robovm.apple.coregraphics.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/CGImagePropertyNikon/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyMakerNikonISOSetting", optional=true)
-    protected static native CFString ISOSettingKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyMakerNikonColorMode", optional=true)
-    protected static native CFString ColorModeKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyMakerNikonQuality", optional=true)
-    protected static native CFString QualityKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyMakerNikonWhiteBalanceMode", optional=true)
-    protected static native CFString WhiteBalanceModeKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyMakerNikonSharpenMode", optional=true)
-    protected static native CFString SharpenModeKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyMakerNikonFocusMode", optional=true)
-    protected static native CFString FocusModeKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyMakerNikonFlashSetting", optional=true)
-    protected static native CFString FlashSettingKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyMakerNikonISOSelection", optional=true)
-    protected static native CFString ISOSelectionKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyMakerNikonFlashExposureComp", optional=true)
-    protected static native CFString FlashExposureCompKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyMakerNikonImageAdjustment", optional=true)
-    protected static native CFString ImageAdjustmentKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyMakerNikonLensAdapter", optional=true)
-    protected static native CFString LensAdapterKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyMakerNikonLensType", optional=true)
-    protected static native CFString LensTypeKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyMakerNikonLensInfo", optional=true)
-    protected static native CFString LensInfoKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyMakerNikonFocusDistance", optional=true)
-    protected static native CFString FocusDistanceKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyMakerNikonDigitalZoom", optional=true)
-    protected static native CFString DigitalZoomKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyMakerNikonShootingMode", optional=true)
-    protected static native CFString ShootingModeKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyMakerNikonCameraSerialNumber", optional=true)
-    protected static native CFString CameraSerialNumberKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCGImagePropertyMakerNikonShutterCount", optional=true)
-    protected static native CFString ShutterCountKey();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("ImageIO") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyMakerNikonISOSetting", optional=true)
+        public static native CFString ISOSetting();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyMakerNikonColorMode", optional=true)
+        public static native CFString ColorMode();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyMakerNikonQuality", optional=true)
+        public static native CFString Quality();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyMakerNikonWhiteBalanceMode", optional=true)
+        public static native CFString WhiteBalanceMode();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyMakerNikonSharpenMode", optional=true)
+        public static native CFString SharpenMode();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyMakerNikonFocusMode", optional=true)
+        public static native CFString FocusMode();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyMakerNikonFlashSetting", optional=true)
+        public static native CFString FlashSetting();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyMakerNikonISOSelection", optional=true)
+        public static native CFString ISOSelection();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyMakerNikonFlashExposureComp", optional=true)
+        public static native CFString FlashExposureComp();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyMakerNikonImageAdjustment", optional=true)
+        public static native CFString ImageAdjustment();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyMakerNikonLensAdapter", optional=true)
+        public static native CFString LensAdapter();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyMakerNikonLensType", optional=true)
+        public static native CFString LensType();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyMakerNikonLensInfo", optional=true)
+        public static native CFString LensInfo();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyMakerNikonFocusDistance", optional=true)
+        public static native CFString FocusDistance();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyMakerNikonDigitalZoom", optional=true)
+        public static native CFString DigitalZoom();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyMakerNikonShootingMode", optional=true)
+        public static native CFString ShootingMode();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyMakerNikonCameraSerialNumber", optional=true)
+        public static native CFString CameraSerialNumber();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyMakerNikonShutterCount", optional=true)
+        public static native CFString ShutterCount();
+        /*</values>*/
+    }
 }

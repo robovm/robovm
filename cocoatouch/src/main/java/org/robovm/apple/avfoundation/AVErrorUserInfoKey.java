@@ -88,8 +88,8 @@ import org.robovm.apple.audiounit.*;
                 return 0L;
             }
             NSArray<NSString> array = new NSMutableArray<>();
-            for (AVErrorUserInfoKey i : l) {
-                array.add(i.value());
+            for (AVErrorUserInfoKey o : l) {
+                array.add(o.value());
             }
             return NSObject.Marshaler.toNative(array, flags);
         }

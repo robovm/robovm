@@ -39,14 +39,14 @@ import org.robovm.apple.opengles.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(SCNSceneSourceOptions.Marshaler.class)
 /*<annotations>*/@Library("SceneKit")/*</annotations>*/
+@Marshaler(/*<name>*/SCNSceneSourceOptions/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SCNSceneSourceOptions/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static SCNSceneSourceOptions toObject(Class<SCNSceneSourceOptions> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -63,139 +63,175 @@ import org.robovm.apple.opengles.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<SCNSceneSourceOptions> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<SCNSceneSourceOptions> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new SCNSceneSourceOptions(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<SCNSceneSourceOptions> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (SCNSceneSourceOptions i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    SCNSceneSourceOptions(NSDictionary<NSString, NSObject> data) {
+        super(data);
+    }
+    public SCNSceneSourceOptions() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
+    }
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
+    }
+    public SCNSceneSourceOptions set(NSString key, NSObject value) {
+        data.put(key, value);
+        return this;
+    }
     
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected SCNSceneSourceOptions(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
-    }
-    public SCNSceneSourceOptions() {
-        data = new NSMutableDictionary<>();
-    }
-    /*<bind>*/static { Bro.bind(SCNSceneSourceOptions.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
-    }
-    
-    public boolean isCreatingNormalsIfAbsent() {
-        if (data.containsKey(CreateNormalsIfAbsentKey())) {
-            NSNumber val = (NSNumber) data.get(CreateNormalsIfAbsentKey());
+
+    public boolean createsNormalsIfAbsent() {
+        if (has(Keys.CreateNormalsIfAbsent())) {
+            NSNumber val = (NSNumber) get(Keys.CreateNormalsIfAbsent());
             return val.booleanValue();
         }
         return false;
     }
-    public SCNSceneSourceOptions setCreateNormalsIfAbsent(boolean createNormals) {
-        data.put(CreateNormalsIfAbsentKey(), NSNumber.valueOf(createNormals));
+    public SCNSceneSourceOptions setCreatesNormalsIfAbsent(boolean createsNormalsIfAbsent) {
+        set(Keys.CreateNormalsIfAbsent(), NSNumber.valueOf(createsNormalsIfAbsent));
         return this;
     }
-    public boolean isCheckingConsistency() {
-        if (data.containsKey(CheckConsistencyKey())) {
-            NSNumber val = (NSNumber) data.get(CheckConsistencyKey());
+    public boolean checksConsistency() {
+        if (has(Keys.CheckConsistency())) {
+            NSNumber val = (NSNumber) get(Keys.CheckConsistency());
             return val.booleanValue();
         }
         return false;
     }
-    public SCNSceneSourceOptions setCheckConsistency(boolean check) {
-        data.put(CheckConsistencyKey(), NSNumber.valueOf(check));
+    public SCNSceneSourceOptions setChecksConsistency(boolean checksConsistency) {
+        set(Keys.CheckConsistency(), NSNumber.valueOf(checksConsistency));
         return this;
     }
-    public boolean isFlatteningScene() {
-        if (data.containsKey(FlattenSceneKey())) {
-            NSNumber val = (NSNumber) data.get(FlattenSceneKey());
+    public boolean flattensScene() {
+        if (has(Keys.FlattenScene())) {
+            NSNumber val = (NSNumber) get(Keys.FlattenScene());
             return val.booleanValue();
         }
         return false;
     }
-    public SCNSceneSourceOptions setFlattenScene(boolean flattenScene) {
-        data.put(FlattenSceneKey(), NSNumber.valueOf(flattenScene));
+    public SCNSceneSourceOptions setFlattensScene(boolean flattensScene) {
+        set(Keys.FlattenScene(), NSNumber.valueOf(flattensScene));
         return this;
     }
-    public boolean isUsingSafeMode() {
-        if (data.containsKey(UseSafeModeKey())) {
-            NSNumber val = (NSNumber) data.get(UseSafeModeKey());
+    public boolean usesSafeMode() {
+        if (has(Keys.UseSafeMode())) {
+            NSNumber val = (NSNumber) get(Keys.UseSafeMode());
             return val.booleanValue();
         }
         return false;
     }
-    public SCNSceneSourceOptions setUseSafeMode(boolean safeMode) {
-        data.put(UseSafeModeKey(), NSNumber.valueOf(safeMode));
+    public SCNSceneSourceOptions setUsesSafeMode(boolean usesSafeMode) {
+        set(Keys.UseSafeMode(), NSNumber.valueOf(usesSafeMode));
         return this;
     }
-    @SuppressWarnings("unchecked")
     public NSArray<NSURL> getAssetDirectoryURLs() {
-        if (data.containsKey(AssetDirectoryURLsKey())) {
-            NSArray<NSURL> val = (NSArray<NSURL>) data.get(AssetDirectoryURLsKey());
+        if (has(Keys.AssetDirectoryURLs())) {
+            NSArray<NSURL> val = (NSArray<NSURL>) get(Keys.AssetDirectoryURLs());
             return val;
         }
         return null;
     }
-    public SCNSceneSourceOptions setAssetDirectoryURLs(NSArray<NSURL> urls) {
-        data.put(AssetDirectoryURLsKey(), urls);
+    public SCNSceneSourceOptions setAssetDirectoryURLs(NSArray<NSURL> assetDirectoryURLs) {
+        set(Keys.AssetDirectoryURLs(), assetDirectoryURLs);
         return this;
     }
-    public boolean isOverridingAssetURLs() {
-        if (data.containsKey(OverrideAssetURLsKey())) {
-            NSNumber val = (NSNumber) data.get(OverrideAssetURLsKey());
+    public boolean overridesAssetURLs() {
+        if (has(Keys.OverrideAssetURLs())) {
+            NSNumber val = (NSNumber) get(Keys.OverrideAssetURLs());
             return val.booleanValue();
         }
         return false;
     }
-    public SCNSceneSourceOptions setOverrideAssetURLs(boolean override) {
-        data.put(OverrideAssetURLsKey(), NSNumber.valueOf(override));
+    public SCNSceneSourceOptions setOverridesAssetURLs(boolean overridesAssetURLs) {
+        set(Keys.OverrideAssetURLs(), NSNumber.valueOf(overridesAssetURLs));
         return this;
     }
     public boolean isStrictConformance() {
-        if (data.containsKey(StrictConformanceKey())) {
-            NSNumber val = (NSNumber) data.get(StrictConformanceKey());
+        if (has(Keys.StrictConformance())) {
+            NSNumber val = (NSNumber) get(Keys.StrictConformance());
             return val.booleanValue();
         }
         return false;
     }
-    public SCNSceneSourceOptions setStrictConformance(boolean strict) {
-        data.put(StrictConformanceKey(), NSNumber.valueOf(strict));
+    public SCNSceneSourceOptions setStrictConformance(boolean strictConformance) {
+        set(Keys.StrictConformance(), NSNumber.valueOf(strictConformance));
         return this;
     }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     public SCNSceneSourceAnimationImportPolicy getAnimationImportPolicy() {
-        if (data.containsKey(AnimationImportPolicyKey())) {
-            NSString val = (NSString) data.get(AnimationImportPolicyKey());
+        if (has(Keys.AnimationImportPolicy())) {
+            NSString val = (NSString) get(Keys.AnimationImportPolicy());
             return SCNSceneSourceAnimationImportPolicy.valueOf(val);
         }
         return null;
     }
-    public SCNSceneSourceOptions setAnimationImportPolicy(SCNSceneSourceAnimationImportPolicy policy) {
-        data.put(AnimationImportPolicyKey(), policy.value());
-        return this;
-    }
-    /*<methods>*/
-    @GlobalValue(symbol="SCNSceneSourceCreateNormalsIfAbsentKey", optional=true)
-    protected static native NSString CreateNormalsIfAbsentKey();
-    @GlobalValue(symbol="SCNSceneSourceCheckConsistencyKey", optional=true)
-    protected static native NSString CheckConsistencyKey();
-    @GlobalValue(symbol="SCNSceneSourceFlattenSceneKey", optional=true)
-    protected static native NSString FlattenSceneKey();
-    @GlobalValue(symbol="SCNSceneSourceUseSafeModeKey", optional=true)
-    protected static native NSString UseSafeModeKey();
-    @GlobalValue(symbol="SCNSceneSourceAssetDirectoryURLsKey", optional=true)
-    protected static native NSString AssetDirectoryURLsKey();
-    @GlobalValue(symbol="SCNSceneSourceOverrideAssetURLsKey", optional=true)
-    protected static native NSString OverrideAssetURLsKey();
-    @GlobalValue(symbol="SCNSceneSourceStrictConformanceKey", optional=true)
-    protected static native NSString StrictConformanceKey();
     /**
      * @since Available in iOS 8.0 and later.
      */
-    @GlobalValue(symbol="SCNSceneSourceAnimationImportPolicyKey", optional=true)
-    protected static native NSString AnimationImportPolicyKey();
-    /*</methods>*/
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    public SCNSceneSourceOptions setAnimationImportPolicy(SCNSceneSourceAnimationImportPolicy animationImportPolicy) {
+        set(Keys.AnimationImportPolicy(), animationImportPolicy.value());
+        return this;
     }
+    /*</methods>*/
+    
+    /*<keys>*/
+    @Library("SceneKit")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        @GlobalValue(symbol="SCNSceneSourceCreateNormalsIfAbsentKey", optional=true)
+        public static native NSString CreateNormalsIfAbsent();
+        @GlobalValue(symbol="SCNSceneSourceCheckConsistencyKey", optional=true)
+        public static native NSString CheckConsistency();
+        @GlobalValue(symbol="SCNSceneSourceFlattenSceneKey", optional=true)
+        public static native NSString FlattenScene();
+        @GlobalValue(symbol="SCNSceneSourceUseSafeModeKey", optional=true)
+        public static native NSString UseSafeMode();
+        @GlobalValue(symbol="SCNSceneSourceAssetDirectoryURLsKey", optional=true)
+        public static native NSString AssetDirectoryURLs();
+        @GlobalValue(symbol="SCNSceneSourceOverrideAssetURLsKey", optional=true)
+        public static native NSString OverrideAssetURLs();
+        @GlobalValue(symbol="SCNSceneSourceStrictConformanceKey", optional=true)
+        public static native NSString StrictConformance();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="SCNSceneSourceAnimationImportPolicyKey", optional=true)
+        public static native NSString AnimationImportPolicy();
+    }
+    /*</keys>*/
 }

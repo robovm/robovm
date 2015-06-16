@@ -42,12 +42,15 @@ import org.robovm.apple.audiounit.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(AVAudioSessionCategory.Marshaler.class)
-/*<annotations>*/@Library("AVFoundation")/*</annotations>*/
+/*<annotations>*/@Library("AVFoundation") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/AVAudioSessionCategory/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/AVAudioSessionCategory/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/AVAudioSessionCategory/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static AVAudioSessionCategory toObject(Class<AVAudioSessionCategory> cls, long handle, long flags) {
@@ -65,38 +68,55 @@ import org.robovm.apple.audiounit.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(AVAudioSessionCategory.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    public static final AVAudioSessionCategory Ambient = new AVAudioSessionCategory("AmbientValue");
-    public static final AVAudioSessionCategory SoloAmbient = new AVAudioSessionCategory("SoloAmbientValue");
-    public static final AVAudioSessionCategory Playback = new AVAudioSessionCategory("PlaybackValue");
-    public static final AVAudioSessionCategory Record = new AVAudioSessionCategory("RecordValue");
-    public static final AVAudioSessionCategory PlayAndRecord = new AVAudioSessionCategory("PlayAndRecordValue");
-    public static final AVAudioSessionCategory AudioProcessing = new AVAudioSessionCategory("AudioProcessingValue");
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<AVAudioSessionCategory> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<AVAudioSessionCategory> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(AVAudioSessionCategory.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<AVAudioSessionCategory> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (AVAudioSessionCategory o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
+    public static final AVAudioSessionCategory Ambient = new AVAudioSessionCategory("Ambient");
+    public static final AVAudioSessionCategory SoloAmbient = new AVAudioSessionCategory("SoloAmbient");
+    public static final AVAudioSessionCategory Playback = new AVAudioSessionCategory("Playback");
+    public static final AVAudioSessionCategory Record = new AVAudioSessionCategory("Record");
+    public static final AVAudioSessionCategory PlayAndRecord = new AVAudioSessionCategory("PlayAndRecord");
+    public static final AVAudioSessionCategory AudioProcessing = new AVAudioSessionCategory("AudioProcessing");
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public static final AVAudioSessionCategory MultiRoute = new AVAudioSessionCategory("MultiRouteValue");
+    public static final AVAudioSessionCategory MultiRoute = new AVAudioSessionCategory("MultiRoute");
+    /*</constants>*/
     
-    private static AVAudioSessionCategory[] values = new AVAudioSessionCategory[] {Ambient, SoloAmbient, Playback, Record, 
-        PlayAndRecord, AudioProcessing, MultiRoute};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    private static /*<name>*/AVAudioSessionCategory/*</name>*/[] values = new /*<name>*/AVAudioSessionCategory/*</name>*/[] {/*<value_list>*/Ambient, SoloAmbient, Playback, Record, PlayAndRecord, AudioProcessing, MultiRoute/*</value_list>*/};
     
-    private AVAudioSessionCategory(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/AVAudioSessionCategory/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static AVAudioSessionCategory valueOf(NSString value) {
-        for (AVAudioSessionCategory v : values) {
+    public static /*<name>*/AVAudioSessionCategory/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/AVAudioSessionCategory/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -104,23 +124,31 @@ import org.robovm.apple.audiounit.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/AVAudioSessionCategory/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    @GlobalValue(symbol="AVAudioSessionCategoryAmbient", optional=true)
-    protected static native NSString AmbientValue();
-    @GlobalValue(symbol="AVAudioSessionCategorySoloAmbient", optional=true)
-    protected static native NSString SoloAmbientValue();
-    @GlobalValue(symbol="AVAudioSessionCategoryPlayback", optional=true)
-    protected static native NSString PlaybackValue();
-    @GlobalValue(symbol="AVAudioSessionCategoryRecord", optional=true)
-    protected static native NSString RecordValue();
-    @GlobalValue(symbol="AVAudioSessionCategoryPlayAndRecord", optional=true)
-    protected static native NSString PlayAndRecordValue();
-    @GlobalValue(symbol="AVAudioSessionCategoryAudioProcessing", optional=true)
-    protected static native NSString AudioProcessingValue();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="AVAudioSessionCategoryMultiRoute", optional=true)
-    protected static native NSString MultiRouteValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("AVFoundation") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        @GlobalValue(symbol="AVAudioSessionCategoryAmbient", optional=true)
+        public static native NSString Ambient();
+        @GlobalValue(symbol="AVAudioSessionCategorySoloAmbient", optional=true)
+        public static native NSString SoloAmbient();
+        @GlobalValue(symbol="AVAudioSessionCategoryPlayback", optional=true)
+        public static native NSString Playback();
+        @GlobalValue(symbol="AVAudioSessionCategoryRecord", optional=true)
+        public static native NSString Record();
+        @GlobalValue(symbol="AVAudioSessionCategoryPlayAndRecord", optional=true)
+        public static native NSString PlayAndRecord();
+        @GlobalValue(symbol="AVAudioSessionCategoryAudioProcessing", optional=true)
+        public static native NSString AudioProcessing();
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        @GlobalValue(symbol="AVAudioSessionCategoryMultiRoute", optional=true)
+        public static native NSString MultiRoute();
+        /*</values>*/
+    }
 }

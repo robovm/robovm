@@ -37,12 +37,15 @@ import org.robovm.apple.metal.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CATransitionSubType.Marshaler.class)
-/*<annotations>*/@Library("QuartzCore")/*</annotations>*/
+/*<annotations>*/@Library("QuartzCore") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/CATransitionSubType/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CATransitionSubType/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/CATransitionSubType/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CATransitionSubType toObject(Class<CATransitionSubType> cls, long handle, long flags) {
@@ -60,43 +63,61 @@ import org.robovm.apple.metal.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(CATransitionSubType.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public static final CATransitionSubType FromRight = new CATransitionSubType("FromRightValue");
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public static final CATransitionSubType FromLeft = new CATransitionSubType("FromLeftValue");
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public static final CATransitionSubType FromTop = new CATransitionSubType("FromTopValue");
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public static final CATransitionSubType FromBottom = new CATransitionSubType("FromBottomValue");
-    
-    private static CATransitionSubType[] values = new CATransitionSubType[] {FromRight, FromLeft, FromTop, FromBottom};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private CATransitionSubType(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<CATransitionSubType> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CATransitionSubType> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(CATransitionSubType.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CATransitionSubType> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (CATransitionSubType o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*</marshalers>*/
+
+    /*<constants>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public static final CATransitionSubType FromRight = new CATransitionSubType("FromRight");
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public static final CATransitionSubType FromLeft = new CATransitionSubType("FromLeft");
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public static final CATransitionSubType FromTop = new CATransitionSubType("FromTop");
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public static final CATransitionSubType FromBottom = new CATransitionSubType("FromBottom");
+    /*</constants>*/
+    
+    private static /*<name>*/CATransitionSubType/*</name>*/[] values = new /*<name>*/CATransitionSubType/*</name>*/[] {/*<value_list>*/FromRight, FromLeft, FromTop, FromBottom/*</value_list>*/};
+    
+    /*<name>*/CATransitionSubType/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static CATransitionSubType valueOf(NSString value) {
-        for (CATransitionSubType v : values) {
+    public static /*<name>*/CATransitionSubType/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/CATransitionSubType/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -104,26 +125,34 @@ import org.robovm.apple.metal.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/CATransitionSubType/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCATransitionFromRight", optional=true)
-    protected static native NSString FromRightValue();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCATransitionFromLeft", optional=true)
-    protected static native NSString FromLeftValue();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCATransitionFromTop", optional=true)
-    protected static native NSString FromTopValue();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCATransitionFromBottom", optional=true)
-    protected static native NSString FromBottomValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("QuartzCore") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCATransitionFromRight", optional=true)
+        public static native NSString FromRight();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCATransitionFromLeft", optional=true)
+        public static native NSString FromLeft();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCATransitionFromTop", optional=true)
+        public static native NSString FromTop();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCATransitionFromBottom", optional=true)
+        public static native NSString FromBottom();
+        /*</values>*/
+    }
 }

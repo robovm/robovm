@@ -126,7 +126,7 @@ import org.robovm.apple.dispatch.*;
     /*</methods>*/
     
     /*<keys>*/
-    @Library("Security") @StronglyLinked
+    @Library("Security")
     public static class Keys {
         static { Bro.bind(Keys.class); }
         /**

@@ -40,12 +40,15 @@ import org.robovm.apple.dispatch.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(NSURLProtectionSpaceProxyType.Marshaler.class)
-/*<annotations>*/@Library("Foundation")/*</annotations>*/
+/*<annotations>*/@Library("Foundation") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/NSURLProtectionSpaceProxyType/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSURLProtectionSpaceProxyType/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/NSURLProtectionSpaceProxyType/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static NSURLProtectionSpaceProxyType toObject(Class<NSURLProtectionSpaceProxyType> cls, long handle, long flags) {
@@ -63,31 +66,49 @@ import org.robovm.apple.dispatch.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(NSURLProtectionSpaceProxyType.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    public static final NSURLProtectionSpaceProxyType HTTP = new NSURLProtectionSpaceProxyType("HTTPValue");
-    public static final NSURLProtectionSpaceProxyType HTTPS = new NSURLProtectionSpaceProxyType("HTTPSValue");
-    public static final NSURLProtectionSpaceProxyType FTP = new NSURLProtectionSpaceProxyType("FTPValue");
-    public static final NSURLProtectionSpaceProxyType SOCKS = new NSURLProtectionSpaceProxyType("SOCKSValue");
-    
-    public static final NSURLProtectionSpaceProxyType[] values = new NSURLProtectionSpaceProxyType[] {HTTP, HTTPS, FTP, SOCKS};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private NSURLProtectionSpaceProxyType(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<NSURLProtectionSpaceProxyType> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<NSURLProtectionSpaceProxyType> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(NSURLProtectionSpaceProxyType.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<NSURLProtectionSpaceProxyType> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (NSURLProtectionSpaceProxyType o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*</marshalers>*/
+
+    /*<constants>*/
+    public static final NSURLProtectionSpaceProxyType HTTP = new NSURLProtectionSpaceProxyType("HTTP");
+    public static final NSURLProtectionSpaceProxyType HTTPS = new NSURLProtectionSpaceProxyType("HTTPS");
+    public static final NSURLProtectionSpaceProxyType FTP = new NSURLProtectionSpaceProxyType("FTP");
+    public static final NSURLProtectionSpaceProxyType SOCKS = new NSURLProtectionSpaceProxyType("SOCKS");
+    /*</constants>*/
+    
+    private static /*<name>*/NSURLProtectionSpaceProxyType/*</name>*/[] values = new /*<name>*/NSURLProtectionSpaceProxyType/*</name>*/[] {/*<value_list>*/HTTP, HTTPS, FTP, SOCKS/*</value_list>*/};
+    
+    /*<name>*/NSURLProtectionSpaceProxyType/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static NSURLProtectionSpaceProxyType valueOf(NSString value) {
-        for (NSURLProtectionSpaceProxyType v : values) {
+    public static /*<name>*/NSURLProtectionSpaceProxyType/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/NSURLProtectionSpaceProxyType/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -95,14 +116,22 @@ import org.robovm.apple.dispatch.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/NSURLProtectionSpaceProxyType/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    @GlobalValue(symbol="NSURLProtectionSpaceHTTPProxy", optional=true)
-    protected static native NSString HTTPValue();
-    @GlobalValue(symbol="NSURLProtectionSpaceHTTPSProxy", optional=true)
-    protected static native NSString HTTPSValue();
-    @GlobalValue(symbol="NSURLProtectionSpaceFTPProxy", optional=true)
-    protected static native NSString FTPValue();
-    @GlobalValue(symbol="NSURLProtectionSpaceSOCKSProxy", optional=true)
-    protected static native NSString SOCKSValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("Foundation") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        @GlobalValue(symbol="NSURLProtectionSpaceHTTPProxy", optional=true)
+        public static native NSString HTTP();
+        @GlobalValue(symbol="NSURLProtectionSpaceHTTPSProxy", optional=true)
+        public static native NSString HTTPS();
+        @GlobalValue(symbol="NSURLProtectionSpaceFTPProxy", optional=true)
+        public static native NSString FTP();
+        @GlobalValue(symbol="NSURLProtectionSpaceSOCKSProxy", optional=true)
+        public static native NSString SOCKS();
+        /*</values>*/
+    }
 }

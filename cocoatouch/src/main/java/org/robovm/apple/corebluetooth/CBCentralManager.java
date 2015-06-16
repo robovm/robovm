@@ -48,10 +48,12 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public CBCentralManager() {}
     protected CBCentralManager(SkipInit skipInit) { super(skipInit); }
+    @WeaklyLinked
     public CBCentralManager(CBCentralManagerDelegate delegate, DispatchQueue queue) { super((SkipInit) null); initObject(init(delegate, queue)); }
     /**
      * @since Available in iOS 7.0 and later.
      */
+    @WeaklyLinked
     public CBCentralManager(CBCentralManagerDelegate delegate, DispatchQueue queue, CBCentralManagerOptions options) { super((SkipInit) null); initObject(init(delegate, queue, options)); }
     /*</constructors>*/
     /*<properties>*/

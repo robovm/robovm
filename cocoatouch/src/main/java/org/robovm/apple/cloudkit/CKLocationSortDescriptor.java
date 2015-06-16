@@ -47,17 +47,18 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public CKLocationSortDescriptor() {}
     protected CKLocationSortDescriptor(SkipInit skipInit) { super(skipInit); }
+    @WeaklyLinked
     public CKLocationSortDescriptor(String key, CLLocation relativeLocation) { super((SkipInit) null); initObject(init(key, relativeLocation)); }
     public CKLocationSortDescriptor(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     public CKLocationSortDescriptor(NSSortIdentifier key, boolean ascending) {
-        this(key.value(), ascending);
+        this(key.value().toString(), ascending);
     }
     public CKLocationSortDescriptor(NSSortIdentifier key, boolean ascending, Selector selector) {
-        this(key.value(), ascending, selector);
+        this(key.value().toString(), ascending, selector);
     }
     public CKLocationSortDescriptor(NSSortIdentifier key, boolean ascending, @Block Block2<NSObject, NSObject, NSComparisonResult> cmptr) {
-        this(key.value(), ascending, cmptr);
+        this(key.value().toString(), ascending, cmptr);
     }
     /*<constructors>*/
     public CKLocationSortDescriptor(String key, boolean ascending) { 

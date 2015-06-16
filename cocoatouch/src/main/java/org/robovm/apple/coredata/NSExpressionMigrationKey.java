@@ -32,12 +32,15 @@ import org.robovm.apple.foundation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(NSExpressionMigrationKey.Marshaler.class)
-/*<annotations>*/@Library("CoreData")/*</annotations>*/
+/*<annotations>*/@Library("CoreData") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/NSExpressionMigrationKey/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSExpressionMigrationKey/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/NSExpressionMigrationKey/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static NSExpressionMigrationKey toObject(Class<NSExpressionMigrationKey> cls, long handle, long flags) {
@@ -45,62 +48,79 @@ import org.robovm.apple.foundation.*;
             if (o == null) {
                 return null;
             }
-            return NSExpressionMigrationKey.valueOf(o.toString());
+            return NSExpressionMigrationKey.valueOf(o);
         }
         @MarshalsPointer
         public static long toNative(NSExpressionMigrationKey o, long flags) {
             if (o == null) {
                 return 0L;
             }
-            return NSObject.Marshaler.toNative(new NSString(o.value()), flags);
+            return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(NSExpressionMigrationKey.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    public static final NSExpressionMigrationKey Manager = new NSExpressionMigrationKey("ManagerKeyValue");
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    public static final NSExpressionMigrationKey SourceObject = new NSExpressionMigrationKey("SourceObjectKeyValue");
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    public static final NSExpressionMigrationKey DestinationObject = new NSExpressionMigrationKey("DestinationObjectKeyValue");
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    public static final NSExpressionMigrationKey EntityMapping = new NSExpressionMigrationKey("EntityMappingKeyValue");
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    public static final NSExpressionMigrationKey PropertyMapping = new NSExpressionMigrationKey("PropertyMappingKeyValue");
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    public static final NSExpressionMigrationKey EntityPolicy = new NSExpressionMigrationKey("EntityPolicyKeyValue");
-    
-    private static NSExpressionMigrationKey[] values = new NSExpressionMigrationKey[] {Manager, SourceObject, DestinationObject, EntityMapping,
-        PropertyMapping, EntityPolicy};
-    private final LazyGlobalValue<String> lazyGlobalValue;
-    
-    private NSExpressionMigrationKey(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<NSExpressionMigrationKey> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<NSExpressionMigrationKey> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(NSExpressionMigrationKey.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<NSExpressionMigrationKey> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (NSExpressionMigrationKey o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public String value() {
-        return lazyGlobalValue.value();
+    /*</marshalers>*/
+
+    /*<constants>*/
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    public static final NSExpressionMigrationKey ManagerKey = new NSExpressionMigrationKey("ManagerKey");
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    public static final NSExpressionMigrationKey SourceObjectKey = new NSExpressionMigrationKey("SourceObjectKey");
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    public static final NSExpressionMigrationKey DestinationObjectKey = new NSExpressionMigrationKey("DestinationObjectKey");
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    public static final NSExpressionMigrationKey EntityMappingKey = new NSExpressionMigrationKey("EntityMappingKey");
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    public static final NSExpressionMigrationKey PropertyMappingKey = new NSExpressionMigrationKey("PropertyMappingKey");
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    public static final NSExpressionMigrationKey EntityPolicyKey = new NSExpressionMigrationKey("EntityPolicyKey");
+    /*</constants>*/
+    
+    private static /*<name>*/NSExpressionMigrationKey/*</name>*/[] values = new /*<name>*/NSExpressionMigrationKey/*</name>*/[] {/*<value_list>*/ManagerKey, SourceObjectKey, DestinationObjectKey, EntityMappingKey, PropertyMappingKey, EntityPolicyKey/*</value_list>*/};
+    
+    /*<name>*/NSExpressionMigrationKey/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static NSExpressionMigrationKey valueOf (String value) {
-        for (NSExpressionMigrationKey v : values) {
+    public static /*<name>*/NSExpressionMigrationKey/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/NSExpressionMigrationKey/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -108,36 +128,44 @@ import org.robovm.apple.foundation.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/NSExpressionMigrationKey/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSMigrationManagerKey", optional=true)
-    protected static native String ManagerKeyValue();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSMigrationSourceObjectKey", optional=true)
-    protected static native String SourceObjectKeyValue();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSMigrationDestinationObjectKey", optional=true)
-    protected static native String DestinationObjectKeyValue();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSMigrationEntityMappingKey", optional=true)
-    protected static native String EntityMappingKeyValue();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSMigrationPropertyMappingKey", optional=true)
-    protected static native String PropertyMappingKeyValue();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSMigrationEntityPolicyKey", optional=true)
-    protected static native String EntityPolicyKeyValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("CoreData") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="NSMigrationManagerKey", optional=true)
+        public static native NSString ManagerKey();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="NSMigrationSourceObjectKey", optional=true)
+        public static native NSString SourceObjectKey();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="NSMigrationDestinationObjectKey", optional=true)
+        public static native NSString DestinationObjectKey();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="NSMigrationEntityMappingKey", optional=true)
+        public static native NSString EntityMappingKey();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="NSMigrationPropertyMappingKey", optional=true)
+        public static native NSString PropertyMappingKey();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="NSMigrationEntityPolicyKey", optional=true)
+        public static native NSString EntityPolicyKey();
+        /*</values>*/
+    }
 }

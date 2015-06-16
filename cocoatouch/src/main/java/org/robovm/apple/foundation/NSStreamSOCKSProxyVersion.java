@@ -40,12 +40,15 @@ import org.robovm.apple.dispatch.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(NSStreamSOCKSProxyVersion.Marshaler.class)
-/*<annotations>*/@Library("Foundation")/*</annotations>*/
+/*<annotations>*/@Library("Foundation") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/NSStreamSOCKSProxyVersion/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSStreamSOCKSProxyVersion/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/NSStreamSOCKSProxyVersion/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static NSStreamSOCKSProxyVersion toObject(Class<NSStreamSOCKSProxyVersion> cls, long handle, long flags) {
@@ -63,35 +66,53 @@ import org.robovm.apple.dispatch.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(NSStreamSOCKSProxyVersion.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<NSStreamSOCKSProxyVersion> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<NSStreamSOCKSProxyVersion> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(NSStreamSOCKSProxyVersion.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<NSStreamSOCKSProxyVersion> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (NSStreamSOCKSProxyVersion o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static final NSStreamSOCKSProxyVersion _4 = new NSStreamSOCKSProxyVersion("_4Value");
+    public static final NSStreamSOCKSProxyVersion Version4 = new NSStreamSOCKSProxyVersion("Version4");
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static final NSStreamSOCKSProxyVersion _5 = new NSStreamSOCKSProxyVersion("_5Value");
+    public static final NSStreamSOCKSProxyVersion Version5 = new NSStreamSOCKSProxyVersion("Version5");
+    /*</constants>*/
     
-    private static NSStreamSOCKSProxyVersion[] values = new NSStreamSOCKSProxyVersion[] {_4, _5};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    private static /*<name>*/NSStreamSOCKSProxyVersion/*</name>*/[] values = new /*<name>*/NSStreamSOCKSProxyVersion/*</name>*/[] {/*<value_list>*/Version4, Version5/*</value_list>*/};
     
-    private NSStreamSOCKSProxyVersion(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/NSStreamSOCKSProxyVersion/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static NSStreamSOCKSProxyVersion valueOf(NSString value) {
-        for (NSStreamSOCKSProxyVersion v : values) {
+    public static /*<name>*/NSStreamSOCKSProxyVersion/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/NSStreamSOCKSProxyVersion/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -99,16 +120,24 @@ import org.robovm.apple.dispatch.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/NSStreamSOCKSProxyVersion/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="NSStreamSOCKSProxyVersion4", optional=true)
-    protected static native NSString _4Value();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="NSStreamSOCKSProxyVersion5", optional=true)
-    protected static native NSString _5Value();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("Foundation") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="NSStreamSOCKSProxyVersion4", optional=true)
+        public static native NSString Version4();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="NSStreamSOCKSProxyVersion5", optional=true)
+        public static native NSString Version5();
+        /*</values>*/
+    }
 }

@@ -37,12 +37,15 @@ import org.robovm.apple.metal.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CATextAlignmentMode.Marshaler.class)
-/*<annotations>*/@Library("QuartzCore")/*</annotations>*/
+/*<annotations>*/@Library("QuartzCore") @StronglyLinked/*</annotations>*/
+@Marshaler(/*<name>*/CATextAlignmentMode/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CATextAlignmentMode/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/CATextAlignmentMode/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CATextAlignmentMode toObject(Class<CATextAlignmentMode> cls, long handle, long flags) {
@@ -60,47 +63,65 @@ import org.robovm.apple.metal.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(CATextAlignmentMode.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    public static final CATextAlignmentMode Natural = new CATextAlignmentMode("NaturalValue");
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    public static final CATextAlignmentMode Left = new CATextAlignmentMode("LeftValue");
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    public static final CATextAlignmentMode Right = new CATextAlignmentMode("RightValue");
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    public static final CATextAlignmentMode Center = new CATextAlignmentMode("CenterValue");
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    public static final CATextAlignmentMode Justified = new CATextAlignmentMode("JustifiedValue");
-    
-    private static CATextAlignmentMode[] values = new CATextAlignmentMode[] {Natural, Left, Right, Center, Justified};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private CATextAlignmentMode(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<CATextAlignmentMode> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CATextAlignmentMode> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(CATextAlignmentMode.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CATextAlignmentMode> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (CATextAlignmentMode o : l) {
+                array.add(o.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*</marshalers>*/
+
+    /*<constants>*/
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
+    public static final CATextAlignmentMode Natural = new CATextAlignmentMode("Natural");
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
+    public static final CATextAlignmentMode Left = new CATextAlignmentMode("Left");
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
+    public static final CATextAlignmentMode Right = new CATextAlignmentMode("Right");
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
+    public static final CATextAlignmentMode Center = new CATextAlignmentMode("Center");
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
+    public static final CATextAlignmentMode Justified = new CATextAlignmentMode("Justified");
+    /*</constants>*/
+    
+    private static /*<name>*/CATextAlignmentMode/*</name>*/[] values = new /*<name>*/CATextAlignmentMode/*</name>*/[] {/*<value_list>*/Natural, Left, Right, Center, Justified/*</value_list>*/};
+    
+    /*<name>*/CATextAlignmentMode/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static CATextAlignmentMode valueOf(NSString value) {
-        for (CATextAlignmentMode v : values) {
+    public static /*<name>*/CATextAlignmentMode/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/CATextAlignmentMode/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -108,31 +129,39 @@ import org.robovm.apple.metal.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/CATextAlignmentMode/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @GlobalValue(symbol="kCAAlignmentNatural", optional=true)
-    protected static native NSString NaturalValue();
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @GlobalValue(symbol="kCAAlignmentLeft", optional=true)
-    protected static native NSString LeftValue();
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @GlobalValue(symbol="kCAAlignmentRight", optional=true)
-    protected static native NSString RightValue();
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @GlobalValue(symbol="kCAAlignmentCenter", optional=true)
-    protected static native NSString CenterValue();
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @GlobalValue(symbol="kCAAlignmentJustified", optional=true)
-    protected static native NSString JustifiedValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("QuartzCore") @StronglyLinked/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 3.2 and later.
+         */
+        @GlobalValue(symbol="kCAAlignmentNatural", optional=true)
+        public static native NSString Natural();
+        /**
+         * @since Available in iOS 3.2 and later.
+         */
+        @GlobalValue(symbol="kCAAlignmentLeft", optional=true)
+        public static native NSString Left();
+        /**
+         * @since Available in iOS 3.2 and later.
+         */
+        @GlobalValue(symbol="kCAAlignmentRight", optional=true)
+        public static native NSString Right();
+        /**
+         * @since Available in iOS 3.2 and later.
+         */
+        @GlobalValue(symbol="kCAAlignmentCenter", optional=true)
+        public static native NSString Center();
+        /**
+         * @since Available in iOS 3.2 and later.
+         */
+        @GlobalValue(symbol="kCAAlignmentJustified", optional=true)
+        public static native NSString Justified();
+        /*</values>*/
+    }
 }

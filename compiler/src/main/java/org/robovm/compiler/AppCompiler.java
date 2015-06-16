@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -52,6 +53,7 @@ import org.robovm.compiler.clazz.Path;
 import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.config.Config.TargetType;
+import org.robovm.compiler.config.Config.TargetBinary;
 import org.robovm.compiler.config.Config.TreeShakerMode;
 import org.robovm.compiler.config.OS;
 import org.robovm.compiler.config.Resource;
@@ -499,6 +501,9 @@ public class AppCompiler {
                 } else if ("-target".equals(args[i])) {
                     String s = args[++i];
                     builder.targetType("auto".equals(s) ? null : TargetType.valueOf(s));
+                } else if ("-binaryType".equals(args[i])) {
+                	String s = args[++i];
+                    builder.targetBinary("auto".equals(s) ? null : TargetBinary.valueOf(s));
                 } else if ("-treeshaker".equals(args[i])) {
                     String s = args[++i];
                     builder.treeShakerMode(TreeShakerMode.valueOf(s));
@@ -613,6 +618,10 @@ public class AppCompiler {
                 return;
             }
 
+            // TODO: Add to the command line ONLY when building a dynamic library.
+            builder.addExportedSymbol("JNI_CreateJavaVM");
+            builder.addExportedSymbol("JNI_GetCreatedJavaVMs");
+            
             compiler = new AppCompiler(builder.build());
 
             if (createIpa && (!(compiler.config.getTarget() instanceof IOSTarget)

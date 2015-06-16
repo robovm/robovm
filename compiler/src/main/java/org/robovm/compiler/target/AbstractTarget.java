@@ -22,6 +22,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -39,6 +40,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.robovm.compiler.clazz.Path;
 import org.robovm.compiler.config.Config;
+import org.robovm.compiler.config.Config.TargetBinary;
 import org.robovm.compiler.config.OS;
 import org.robovm.compiler.config.Resource;
 import org.robovm.compiler.config.Resource.Walker;
@@ -79,9 +81,20 @@ public abstract class AbstractTarget implements Target {
     }
     
     public void build(List<File> objectFiles) throws IOException {
-        File outFile = new File(config.getTmpDir(), config.getExecutableName());
+        final TargetBinary targetBinary = config.getTargetBinary();
+    	File outFile = ((null != config.getExecutableName()) && (targetBinary != TargetBinary.dynamic_lib)) 
+    		? new File(config.getTmpDir(), config.getExecutableName()) 
+    		: new File("/tmp/", "robovm_java.so");
         
-        config.getLogger().debug("Building executable %s", outFile);
+        if (targetBinary == TargetBinary.executable) {
+        	config.getLogger().debug("Building executable %s", outFile);
+        } else if (targetBinary == TargetBinary.dynamic_lib) {
+        	config.getLogger().debug("Building dynamic library %s", outFile);
+        } else {
+        	// TODO CHFO: this is not a real option.  To be deleted. 
+        	assert( targetBinary == TargetBinary.static_lib);
+        	config.getLogger().debug("Building static library %s", outFile);
+        }
         
         LinkedList<String> ccArgs = new LinkedList<String>();
         LinkedList<String> libs = new LinkedList<String>();
@@ -92,14 +105,20 @@ public abstract class AbstractTarget implements Target {
         if (config.getOs().getFamily() == OS.Family.darwin) {
             libs.add("-force_load");
             libs.add(new File(config.getOsArchDepLibDir(), "librobovm-rt" + libSuffix + ".a").getAbsolutePath());
+            if (config.isSkipInstall()) {
+                libs.add("-lrobovm-debug" + libSuffix);
+            }
+            libs.addAll(Arrays.asList(
+                    "-lrobovm-core" + libSuffix, "-lgc" + libSuffix, "-lpthread", "-ldl", "-lm"));
         } else {
             libs.addAll(Arrays.asList("-Wl,--whole-archive", "-lrobovm-rt" + libSuffix, "-Wl,--no-whole-archive"));            
+            if (config.isSkipInstall()) {
+                //libs.add("-lrobovm-debug" + libSuffix);
+                libs.addAll(Arrays.asList("-Wl,--whole-archive", "-lrobovm-debug" + libSuffix, "-Wl,--no-whole-archive"));            
+            }
+            libs.addAll(Arrays.asList(
+            		"-Wl,--whole-archive", "-lrobovm-core" + libSuffix, "-Wl,--no-whole-archive", "-lgc" + libSuffix, "-lpthread", "-ldl", "-lm"));
         }
-        if (config.isSkipInstall()) {
-            libs.add("-lrobovm-debug" + libSuffix);
-        }
-        libs.addAll(Arrays.asList(
-                "-lrobovm-core" + libSuffix, "-lgc" + libSuffix, "-lpthread", "-ldl", "-lm"));
         if (config.getOs().getFamily() == OS.Family.linux) {
             libs.add("-lrt");
         }
@@ -113,9 +132,27 @@ public abstract class AbstractTarget implements Target {
         ccArgs.add("-L");
         ccArgs.add(config.getOsArchDepLibDir().getAbsolutePath());
         if (config.getOs().getFamily() == OS.Family.linux) {
+            ccArgs.add("-Wl,--cref");
             ccArgs.add("-Wl,-rpath=$ORIGIN");
+        	String symbolsPath = config.getTmpDir() + "/exported_symbols";
+        	PrintWriter exportedSymbolsFile = new PrintWriter(symbolsPath, "UTF-8");
+            List<String> exportedSymbols = new ArrayList<String>();
+            if (config.isSkipInstall()) {
+                exportedSymbols.add("catch_exception_raise");
+            }
+            exportedSymbols.addAll(config.getExportedSymbols());
+        	exportedSymbolsFile.println("{");
+        	for (String s : exportedSymbols) {
+        		exportedSymbolsFile.println(s + ";");
+        	}
+    		exportedSymbolsFile.println("};");
+    		exportedSymbolsFile.close();
+    		config.getLogger().debug("Wrote exported symbols file: " + symbolsPath);
+            ccArgs.add("-Wl,--dynamic-list=" + symbolsPath);
+            // CHFO: This is where we add our list of "kept" s
             ccArgs.add("-Wl,--gc-sections");
-//            ccArgs.add("-Wl,--print-gc-sections");
+            // CHFO added this too.
+            //ccArgs.add("-Wl,--print-gc-sections");
         } else if (config.getOs().getFamily() == OS.Family.darwin) {
             ccArgs.add("-ObjC");
             File exportedSymbolsFile = new File(config.getTmpDir(), "exported_symbols");
@@ -184,6 +221,34 @@ public abstract class AbstractTarget implements Target {
                 }
             }
         }
+        
+        if (targetBinary == TargetBinary.dynamic_lib) {
+        	// CHFO TODO integrate cleanly.
+        	String objFileName = "/tmp/robovm_objfiles.txt";
+        	PrintWriter writer = new PrintWriter(objFileName, "UTF-8");;//new FileOutputStream("/tmp/robovmdbg.txt");
+        	
+        	for (File fobj : objectFiles) {
+        		//config.getLogger().debug("libs:" + s);
+        		writer.println(fobj.getAbsolutePath());
+        		config.getLogger().debug("obj file" + fobj.getAbsolutePath());
+        	}
+        	
+        	libs.add( "-shared" );
+    		writer.println("-shared libs");
+        	for (String s : libs) {
+        		config.getLogger().debug("libs:" + s);	
+        		writer.println(s);
+        	}
+        	writer.close();
+
+        	ccArgs.add("-fPIC");
+        	for (String s : ccArgs) {
+        		config.getLogger().debug("ccArgs:" + s);	
+        	}
+    		//config.getLogger().debug("outFile:" + outFile);	
+        	config.getLogger().debug("-->Building dynamic library:" + outFile);
+        	
+        }
      
         if (config.getOs() == OS.macosx) {
             if (!config.getFrameworks().contains("CoreServices")) {
@@ -233,9 +298,14 @@ public abstract class AbstractTarget implements Target {
     }
     
     public void install() throws IOException {
-        config.getLogger().debug("Installing executable to %s", config.getInstallDir());
-        config.getInstallDir().mkdirs();
-        doInstall(config.getInstallDir(), config.getExecutableName());
+    	if (config.getInstallDir() != null) {
+	        config.getLogger().debug("Installing executable to %s", config.getInstallDir());
+	        config.getInstallDir().mkdirs();
+	        doInstall(config.getInstallDir(), config.getExecutableName());
+    	}
+    	else {
+    		config.getLogger().debug("No executable to install.");
+    	}
     }
     
     protected void doInstall(File installDir, String executable) throws IOException {

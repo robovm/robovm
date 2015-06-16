@@ -54,6 +54,7 @@ import org.robovm.compiler.clazz.Dependency;
 import org.robovm.compiler.clazz.MethodInfo;
 import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
+import org.robovm.compiler.config.Config.TargetBinary;
 import org.robovm.compiler.config.OS;
 import org.robovm.compiler.llvm.AliasRef;
 import org.robovm.compiler.llvm.And;
@@ -106,6 +107,7 @@ import org.robovm.llvm.TargetMachine;
 import org.robovm.llvm.binding.Attribute;
 import org.robovm.llvm.binding.CodeGenFileType;
 import org.robovm.llvm.binding.CodeGenOptLevel;
+import org.robovm.llvm.binding.RelocMode;
 
 import soot.BooleanType;
 import soot.ByteType;
@@ -388,7 +390,10 @@ public class ClassCompiler {
                 String triple = config.getTriple();
                 Target target = Target.lookupTarget(triple);
                 try (TargetMachine targetMachine = target.createTargetMachine(triple,
-                        config.getArch().getLlvmCpu(), null, config.isDebug()? CodeGenOptLevel.CodeGenLevelNone: null, null, null)) {
+                        config.getArch().getLlvmCpu(), null, 
+                        config.isDebug()? CodeGenOptLevel.CodeGenLevelNone: null,
+                        config.getTargetBinary() == TargetBinary.dynamic_lib ? RelocMode.RelocPIC : null,
+                        null)) {
                     targetMachine.setAsmVerbosityDefault(true);
                     targetMachine.setFunctionSections(true);
                     targetMachine.setDataSections(true);

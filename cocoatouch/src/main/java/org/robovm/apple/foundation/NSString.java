@@ -37,8 +37,6 @@ import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
-import org.robovm.rt.annotation.WeaklyLinked;
-import org.robovm.apple.coretext.CTAttributedStringAttributes;
 
 /*<javadoc>*/
 

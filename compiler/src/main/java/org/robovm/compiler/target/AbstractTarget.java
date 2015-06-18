@@ -39,6 +39,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.robovm.compiler.clazz.Path;
 import org.robovm.compiler.config.Config;
+import org.robovm.compiler.config.Config.TargetBinary;
 import org.robovm.compiler.config.OS;
 import org.robovm.compiler.config.Resource;
 import org.robovm.compiler.config.Resource.Walker;
@@ -79,9 +80,16 @@ public abstract class AbstractTarget implements Target {
     }
     
     public void build(List<File> objectFiles) throws IOException {
-        File outFile = new File(config.getTmpDir(), config.getExecutableName());
+        final TargetBinary targetBinary = config.getTargetBinary();
+        String binaryName = config.getBinaryName();
+        final boolean isOSX = (config.getOs() == OS.macosx);
+        final boolean isIOS = (config.getOs() == OS.ios);
+        final boolean isDarwin = (config.getOs().getFamily() == OS.Family.darwin);
+        final boolean isLinux  = (config.getOs().getFamily() == OS.Family.linux);
         
-        config.getLogger().debug("Building executable %s", outFile);
+      	config.getLogger().debug("Building binary %s", binaryName);
+        
+      	File outFile = new File(config.getTmpDir(), binaryName);
         
         LinkedList<String> ccArgs = new LinkedList<String>();
         LinkedList<String> libs = new LinkedList<String>();
@@ -89,21 +97,21 @@ public abstract class AbstractTarget implements Target {
         String libSuffix = config.isUseDebugLibs() ? "-dbg" : "";
         
         libs.add("-lrobovm-bc" + libSuffix); 
-        if (config.getOs().getFamily() == OS.Family.darwin) {
+        if (isDarwin) {
             libs.add("-force_load");
             libs.add(new File(config.getOsArchDepLibDir(), "librobovm-rt" + libSuffix + ".a").getAbsolutePath());
         } else {
             libs.addAll(Arrays.asList("-Wl,--whole-archive", "-lrobovm-rt" + libSuffix, "-Wl,--no-whole-archive"));            
         }
-        if (config.isSkipInstall()) {
+            if (config.isSkipInstall()) {
             libs.add("-lrobovm-debug" + libSuffix);
-        }
-        libs.addAll(Arrays.asList(
+            }
+            libs.addAll(Arrays.asList(
                 "-lrobovm-core" + libSuffix, "-lgc" + libSuffix, "-lpthread", "-ldl", "-lm"));
-        if (config.getOs().getFamily() == OS.Family.linux) {
+        if (isLinux) {
             libs.add("-lrt");
         }
-        if (config.getOs().getFamily() == OS.Family.darwin) {
+        if (isDarwin) {
             libs.add("-liconv");
             libs.add("-lsqlite3");
             libs.add("-framework");
@@ -115,7 +123,7 @@ public abstract class AbstractTarget implements Target {
         if (config.getOs().getFamily() == OS.Family.linux) {
             ccArgs.add("-Wl,-rpath=$ORIGIN");
             ccArgs.add("-Wl,--gc-sections");
-//            ccArgs.add("-Wl,--print-gc-sections");
+            //ccArgs.add("-Wl,--print-gc-sections");
         } else if (config.getOs().getFamily() == OS.Family.darwin) {
             ccArgs.add("-ObjC");
             File exportedSymbolsFile = new File(config.getTmpDir(), "exported_symbols");
@@ -136,19 +144,19 @@ public abstract class AbstractTarget implements Target {
             ccArgs.add("-Wl,-dead_strip");
         }
         
-        if (config.getOs().getFamily() == OS.Family.darwin && !config.getFrameworks().isEmpty()) {
+        if (isDarwin && !config.getFrameworks().isEmpty()) {
             for (String p : config.getFrameworks()) {
                 libs.add("-framework");
                 libs.add(p);
             }
         }
-        if (config.getOs().getFamily() == OS.Family.darwin && !config.getWeakFrameworks().isEmpty()) {
+        if (isDarwin && !config.getWeakFrameworks().isEmpty()) {
             for (String p : config.getWeakFrameworks()) {
                 libs.add("-weak_framework");
                 libs.add(p);
             }
         }
-        if (config.getOs().getFamily() == OS.Family.darwin && !config.getFrameworkPaths().isEmpty()) {
+        if (isDarwin && !config.getFrameworkPaths().isEmpty()) {
             for (File p : config.getFrameworkPaths()) {
                 ccArgs.add("-F" + p.getAbsolutePath());
             }
@@ -184,13 +192,18 @@ public abstract class AbstractTarget implements Target {
                 }
             }
         }
+        
+        if (targetBinary == TargetBinary.dynamic_lib) {
+        	libs.add( "-shared" );
+        	ccArgs.add("-fPIC");
+        }
      
-        if (config.getOs() == OS.macosx) {
+        if (isOSX) {
             if (!config.getFrameworks().contains("CoreServices")) {
                 libs.add("-framework");
                 libs.add("CoreServices");
             }
-        } else if (config.getOs() == OS.ios) {
+        } else if (isIOS) {
             if (!config.getFrameworks().contains("MobileCoreServices")) {
                 libs.add("-framework");
                 libs.add("MobileCoreServices");
@@ -233,15 +246,20 @@ public abstract class AbstractTarget implements Target {
     }
     
     public void install() throws IOException {
-        config.getLogger().debug("Installing executable to %s", config.getInstallDir());
-        config.getInstallDir().mkdirs();
-        doInstall(config.getInstallDir(), config.getExecutableName());
+    	if (config.getInstallDir() != null) {
+	        config.getLogger().debug("Installing executable %s to %s", config.getBinaryName(), config.getInstallDir());
+	        config.getInstallDir().mkdirs();
+	        doInstall(config.getInstallDir(), config.getBinaryName());
+    	}
+    	else {
+    		config.getLogger().debug("No executable to install.");
+    	}
     }
     
     protected void doInstall(File installDir, String executable) throws IOException {
-        if (!config.getTmpDir().equals(installDir) || !executable.equals(config.getExecutableName())) {
+        if (!config.getTmpDir().equals(installDir) || !executable.equals(config.getBinaryName())) {
             File destFile = new File(installDir, executable);
-            FileUtils.copyFile(new File(config.getTmpDir(), config.getExecutableName()), destFile);
+            FileUtils.copyFile(new File(config.getTmpDir(), config.getBinaryName()), destFile);
             destFile.setExecutable(true, false);
         }
         for (File f : config.getOsArchDepLibDir().listFiles()) {

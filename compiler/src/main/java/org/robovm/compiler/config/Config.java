@@ -112,6 +112,10 @@ public class Config {
         console, ios
     };
 
+    public enum TargetBinary { 
+        executable, dynamic_lib 
+    };
+    
     public enum TreeShakerMode {
         none, conservative, aggressive
     };
@@ -158,6 +162,8 @@ public class Config {
     private ArrayList<String> pluginArguments;
     @Element(required = false, name = "target")
     private TargetType targetType;
+    @Element(required = false, name = "targetExec")
+    private TargetBinary targetBinary;
     @Element(required = false, name = "treeShaker")
     private TreeShakerMode treeShakerMode;
 
@@ -247,11 +253,24 @@ public class Config {
     public String getExecutableName() {
         return executableName;
     }
+    
+    public String getBinaryName() {
+    	String s = new String();
+    	s = executableName;
+    	if (targetBinary == TargetBinary.dynamic_lib) {
+    		s += (os == OS.ios) ? ".dylib" : ".so";
+    	}
+    	return s;
+    }
 
     public File getExecutablePath() {
         return new File(installDir, getExecutableName());
     }
 
+    public File getBinaryPath() {
+        return new File(installDir, getBinaryName());
+    }    
+    
     public File getCacheDir() {
         return osArchCacheDir;
     }
@@ -463,6 +482,10 @@ public class Config {
         return targetType;
     }
 
+    public TargetBinary getTargetBinary() {
+        return targetBinary;
+    }
+    
     public TreeShakerMode getTreeShakerMode() {
         return treeShakerMode == null ? TreeShakerMode.none : treeShakerMode;
     }
@@ -768,11 +791,18 @@ public class Config {
             mainClass = getMainClass(mainJar);
             classpath.add(mainJar);
         }
-
-        if (!skipLinking && executableName == null && mainClass == null) {
-            throw new IllegalArgumentException("No target and no main class specified");
+        
+        if (!skipLinking && executableName == null && mainClass == null && (forceLinkClasses == null || forceLinkClasses.size() == 0)) {
+            throw new IllegalArgumentException("No target and no main class specified, and no classes force-linked into project.");
         }
 
+        if (!skipLinking && mainClass == null) {
+        	if ( forceLinkClasses != null && forceLinkClasses.size() != 0 ) {
+        		logger.warn("No main class specified, so assuming it is the first force-linked class.");
+        		mainClass = forceLinkClasses.get(0);
+        	}
+        }
+        
         if (!skipLinking && classpath.isEmpty()) {
             throw new IllegalArgumentException("No classpath specified");
         }
@@ -1267,6 +1297,11 @@ public class Config {
             return this;
         }
 
+        public Builder targetBinary(TargetBinary targetBinary) {
+            config.targetBinary = targetBinary;
+            return this;
+        }
+        
         public Builder clearProperties() {
             config.properties.clear();
             return this;
@@ -1361,7 +1396,12 @@ public class Config {
             }
             config.pluginArguments.add(argName);
         }
-
+        
+        // TODO: Are we disobeying any rules by allowing config to be fetched?  All I want is the targetBinary.
+        public final Config getConfig() {
+            return config;
+        }        
+        
         public Config build() throws IOException {
             for (CompilerPlugin plugin : config.getCompilerPlugins()) {
                 plugin.beforeConfig(this, config);

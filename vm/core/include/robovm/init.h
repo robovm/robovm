@@ -18,6 +18,7 @@
 
 extern ClassLoader* systemClassLoader;
 
+extern void rvmParseOption(char* arg, Options* options);
 extern jboolean rvmInitOptions(int argc, char* argv[], Options* options, jboolean ignoreRvmArgs);
 extern Env* rvmStartup(Options* options);
 extern VM* rvmCreateVM(Options* options);

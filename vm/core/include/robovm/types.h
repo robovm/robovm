@@ -371,8 +371,8 @@ typedef struct Options {
     char* pidFile;
     jboolean printDebugPort;
     char* debugPortFile;
-    char basePath[PATH_MAX];
-    char executablePath[PATH_MAX];
+    char resourcesPath[PATH_MAX];
+    char imagePath[PATH_MAX];
     char** rawBootclasspath; 
     char** rawClasspath; 
     SystemProperty* properties;

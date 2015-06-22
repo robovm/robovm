@@ -109,7 +109,6 @@ endif()
 # Set up global C and C++ compiler flags
 set(C_FLAGS "${C_FLAGS} -std=gnu99 -fPIC")
 set(CXX_FLAGS "${CXX_FLAGS} -std=gnu++11 -fPIC")
-#set(C_CXX_FLAGS "${C_CXX_FLAGS} -Wall -fvisibility=hidden -fdata-sections -ffunction-sections -fPIC")
 set(C_CXX_FLAGS "${C_CXX_FLAGS} -Wall -fdata-sections -ffunction-sections -fPIC")
 if(CARCH)
   set(C_CXX_FLAGS "${C_CXX_FLAGS} -arch ${CARCH}")
@@ -228,10 +227,8 @@ else()
   set(EXTGC_MARK_DESCR_OFFSET 12)
 endif()
 
-set(EXT_C_FLAGS "${C_CXX_FLAGS}")
-set(EXT_LD_FLAGS "${CMAKE_EXE_LINKER_FLAGS}")
-set(EXTGC_C_FLAGS "${EXT_C_FLAGS} -DGC_DISABLE_INCREMENTAL -DGC_FORCE_UNMAP_ON_GCOLLECT -DMARK_DESCR_OFFSET=${EXTGC_MARK_DESCR_OFFSET}")
-set(EXTGC_LD_FLAGS "${EXT_LD_FLAGS}")
+set(EXTGC_C_FLAGS "${C_CXX_FLAGS} -DGC_DISABLE_INCREMENTAL -DGC_FORCE_UNMAP_ON_GCOLLECT -DMARK_DESCR_OFFSET=${EXTGC_MARK_DESCR_OFFSET}")
+set(EXTGC_LD_FLAGS "${CMAKE_EXE_LINKER_FLAGS}")
 if(DARWIN)
   set(EXTGC_C_FLAGS "${EXTGC_C_FLAGS} -DNO_DYLD_BIND_FULLY_IMAGE")
 endif()
@@ -262,7 +259,7 @@ ExternalProject_Add(extgc
   GIT_TAG 330797462474976093d631058f784c843040e294
   UPDATE_COMMAND ""
   PATCH_COMMAND bash -c "rm -rf libatomic_ops && ln -s ../../../libatomic_ops-prefix/src/libatomic_ops libatomic_ops"
-  CONFIGURE_COMMAND bash -c "CC=${CMAKE_C_COMPILER} CFLAGS='${EXTGC_C_FLAGS} -fPIC' LDFLAGS='${EXTGC_LD_FLAGS} -fPIC' ./configure ${EXT_HOST} ${EXTGC_PARAMS} --prefix=${CMAKE_BINARY_DIR}/gc"
+  CONFIGURE_COMMAND bash -c "CC=${CMAKE_C_COMPILER} CFLAGS='${EXTGC_C_FLAGS}' LDFLAGS='${EXTGC_LD_FLAGS}' ./configure ${EXT_HOST} ${EXTGC_PARAMS} --prefix=${CMAKE_BINARY_DIR}/gc"
   BUILD_IN_SOURCE 1
 )
 install(FILES ${CMAKE_BINARY_DIR}/gc/lib/libgc.a DESTINATION ${INSTALL_DIR} RENAME libgc${LIB_SUFFIX})

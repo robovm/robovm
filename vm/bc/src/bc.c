@@ -31,8 +31,6 @@
 
 #define ALLOC_NATIVE_FRAMES_SIZE 8
 
-static const int MAX_PATH = 1024;
-
 typedef struct {
     ClassInfoHeader* classInfoHeader;
     void* start;
@@ -93,9 +91,7 @@ static void initOptions() {
     options.listUserClasses = listUserClasses;
 }
 
-
-int bcmain(int argc, char* argv[]) {
-
+static int bcmain(int argc, char* argv[]) {
     initOptions();
 
     if (!rvmInitOptions(argc, argv, &options, FALSE)) {
@@ -113,7 +109,6 @@ int bcmain(int argc, char* argv[]) {
     return result;
 }
 
-//__attribute__ ((weak)) main;
 int __attribute__ ((weak)) main(int argc, char* argv[]) {
     bcmain( argc, argv );
 }
@@ -1208,8 +1203,8 @@ static jboolean createMainArgumentsFromVmArgs(
     }
 
     // Argv[0] points to the exe path.
-    pp_argv[0] = malloc(sizeof(char) * MAX_PATH);
-    pp_argv[0] = getExecutablePath(pp_argv[0], MAX_PATH);
+    pp_argv[0] = malloc(sizeof(char) * PATH_MAX);
+    pp_argv[0] = getExecutablePath(pp_argv[0], PATH_MAX);
 
     // Argv[1..n_argc] are converted forms of the options flags.
     if (p_vm_args) {
@@ -1269,9 +1264,7 @@ void deallocArgCArgV(char ** argv, const int argc) {
 }
 
 
-__attribute__((visibility("default")))
 jint JNI_CreateJavaVM(JavaVM** p_vm, JNIEnv** p_env, void* pvm_args) {
-
     initOptions();
 
     JavaVMInitArgs *vm_args = (JavaVMInitArgs *) pvm_args;
@@ -1293,7 +1286,7 @@ jint JNI_CreateJavaVM(JavaVM** p_vm, JNIEnv** p_env, void* pvm_args) {
     } else {
         // TODO: Do with real code that maps natively, rather than adding faked argc, argv.
         const int argc = 1;
-        char path[MAX_PATH];
+        char path[PATH_MAX];
         char *argv1 = getExecutablePath(path, sizeof(path));
         char *argv[2] = { argv1, NULL };
 
@@ -1323,7 +1316,6 @@ jint JNI_CreateJavaVM(JavaVM** p_vm, JNIEnv** p_env, void* pvm_args) {
     return JNI_OK;
 }
 
-__attribute__((visibility("default")))
 jint JNI_GetCreatedJavaVMs(JavaVM** vmBuf, jsize bufLen, jsize* nVMs) {
     int numVms = (vm) ? 1 : 0;
     numVms = (bufLen < 1) ? bufLen : 1;

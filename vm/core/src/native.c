@@ -66,8 +66,7 @@ static void throwUnsupportedOperationException(Env* env, char* msg) {
 }
 
 static jint DestroyJavaVM(JavaVM* vm) {
-    // Call rvmDestroy and send in VM.
-    jboolean rval = rvmDestroy((VM*)vm);
+    jboolean rval = rvmDestroyVM((VM*) vm);
     return rval ? JNI_OK : JNI_ERR;
 }
 

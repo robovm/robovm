@@ -176,8 +176,7 @@ static void parseArg(char* arg, Options* options) {
         property->value = s;
         DL_APPEND(options->properties, property);
     } else if (startsWith(arg, "exepath=")) {
-        fprintf(stderr, "processing executable path.");
-        strncpy( options->executablePath, &arg[8], PATH_MAX);
+        strncpy(options->executablePath, &arg[8], PATH_MAX);
     }
 }
 
@@ -456,11 +455,11 @@ jboolean rvmRun(Env* env) {
         }
     }
 
-    return rvmDestroy(env->vm);
+    return rvmDestroyVM(env->vm);
 }
 
-jboolean rvmDestroy(VM * vm) {
-    Env * env;
+jboolean rvmDestroyVM(VM* vm) {
+    Env* env;
     if (JNI_OK != rvmAttachCurrentThread(vm, &env, NULL, NULL) ) {
         WARN("rvmDestroy() failed to attach current thread.");
         return FALSE;

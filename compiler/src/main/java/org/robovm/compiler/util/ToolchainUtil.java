@@ -48,6 +48,7 @@ public class ToolchainUtil {
     private static String IBTOOL;
     private static String NM;
     private static String OTOOL;
+    private static String FILE;
 
     private static String getIOSDevClang() throws IOException {
         if (IOS_DEV_CLANG == null) {
@@ -117,6 +118,13 @@ public class ToolchainUtil {
             OTOOL = findXcodeCommand("otool", "iphoneos");
         }
         return OTOOL;
+    }
+    
+    private static String getFile() throws IOException {
+        if (FILE == null) {
+            FILE = findXcodeCommand("file", "iphoneos");
+        }
+        return FILE;
     }
 
     private static String getPackageApplication() throws IOException {
@@ -287,7 +295,11 @@ public class ToolchainUtil {
         }
         args.add("-output");
         args.add(outFile);
-        new Executor(config.getLogger(), getLipo()).args(args).exec();
+        new Executor(Logger.NULL_LOGGER, getLipo()).args(args).exec();
+    }
+    
+    public static String file(File file) throws IOException {
+        return new Executor(Logger.NULL_LOGGER, getFile()).args(file).execCapture();
     }
 
     public static void packageApplication(Config config, File appDir, File outFile) throws IOException {

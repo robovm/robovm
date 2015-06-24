@@ -142,6 +142,8 @@ public class Config {
     private ArrayList<Lib> libs;
     @ElementList(required = false, entry = "symbol")
     private ArrayList<String> exportedSymbols;
+    @ElementList(required = false, entry = "symbol")
+    private ArrayList<String> unhideSymbols;
     @ElementList(required = false, entry = "framework")
     private ArrayList<String> frameworks;
     @ElementList(required = false, entry = "framework")
@@ -363,6 +365,11 @@ public class Config {
                 : Collections.unmodifiableList(exportedSymbols);
     }
 
+    public List<String> getUnhideSymbols() {
+        return unhideSymbols == null ? Collections.<String> emptyList()
+                : Collections.unmodifiableList(unhideSymbols);
+    }
+    
     public List<Lib> getLibs() {
         return libs == null ? Collections.<Lib> emptyList()
                 : Collections.unmodifiableList(libs);
@@ -659,6 +666,7 @@ public class Config {
 
     private void mergeConfig(Config from, Config to) {
         to.exportedSymbols = mergeLists(from.exportedSymbols, to.exportedSymbols);
+        to.unhideSymbols = mergeLists(from.unhideSymbols, to.unhideSymbols);
         to.forceLinkClasses = mergeLists(from.forceLinkClasses, to.forceLinkClasses);
         to.frameworkPaths = mergeLists(from.frameworkPaths, to.frameworkPaths);
         to.frameworks = mergeLists(from.frameworks, to.frameworks);
@@ -694,6 +702,7 @@ public class Config {
 
         // Copy back to this Config
         this.exportedSymbols = config.exportedSymbols;
+        this.unhideSymbols = config.unhideSymbols;
         this.forceLinkClasses = config.forceLinkClasses;
         this.frameworkPaths = config.frameworkPaths;
         this.frameworks = config.frameworks;
@@ -1184,6 +1193,21 @@ public class Config {
                 config.exportedSymbols = new ArrayList<String>();
             }
             config.exportedSymbols.add(symbol);
+            return this;
+        }
+
+        public Builder clearUnhideSymbols() {
+            if (config.unhideSymbols != null) {
+                config.unhideSymbols.clear();
+            }
+            return this;
+        }
+
+        public Builder addUnhideSymbol(String symbol) {
+            if (config.unhideSymbols == null) {
+                config.unhideSymbols = new ArrayList<String>();
+            }
+            config.unhideSymbols.add(symbol);
             return this;
         }
 

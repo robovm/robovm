@@ -39,6 +39,7 @@ import org.robovm.rt.bro.annotation.Library;
  */
 public final class Runtime {
 
+    private static final String UNHIDDEN_SYMBOL_PREFIX = "_unhidden_";
     private static final Map<String, Long> handles = new HashMap<String, Long>();
     private static final List<String> searchPaths;
     
@@ -198,6 +199,9 @@ public final class Runtime {
             symbol = method.getName();
         }
         long f = Dl.resolve(handle, symbol);
+        if (f == 0L) {
+            f = Dl.resolve(handle, UNHIDDEN_SYMBOL_PREFIX + symbol);
+        }
         if (f == 0L && !bridge.optional()) {
             throw new UnsatisfiedLinkError("Failed to resolve native function '" + symbol + "' " 
                     + "for method " + method + " with @Bridge annotation " + bridge 
@@ -218,6 +222,9 @@ public final class Runtime {
             symbol = method.getName();
         }
         long f = Dl.resolve(handle, symbol);
+        if (f == 0L) {
+            f = Dl.resolve(handle, UNHIDDEN_SYMBOL_PREFIX + symbol);
+        }
         if (f == 0L && !globalValue.optional()) {
             throw new UnsatisfiedLinkError("Failed to resolve symbol '" + symbol + "' " 
                     + "for method " + method + " with @GlobalValue annotation " + globalValue 
@@ -229,6 +236,9 @@ public final class Runtime {
     public static long resolveBridge(String libraryName, String symbol, Method method) {
         long handle = getHandle(libraryName);
         long f = Dl.resolve(handle, symbol);
+        if (f == 0L) {
+            f = Dl.resolve(handle, UNHIDDEN_SYMBOL_PREFIX + symbol);
+        }
         if (f == 0L) {
             throw new UnsatisfiedLinkError("Failed to resolve native function " + symbol
                     + "for method " + method + " in library " + libraryName);

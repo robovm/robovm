@@ -577,6 +577,10 @@ public class AppCompiler {
                     for (String p : args[++i].split(":")) {
                         builder.addExportedSymbol(p);
                     }
+                } else if ("-unhidesymbols".equals(args[i])) {
+                    for (String p : args[++i].split(":")) {
+                        builder.addUnhideSymbol(p);
+                    }
                 } else if ("-frameworks".equals(args[i])) {
                     for (String p : args[++i].split(":")) {
                         builder.addFramework(p);
@@ -901,6 +905,11 @@ public class AppCompiler {
                          + "                        Wildcards can be used. * matches zero or more characters,\n" 
                          + "                        ? matches one character. [abc], [a-z] matches one character\n" 
                          + "                        from the specified set of characters.");
+        System.err.println("  -unhidesymbols <list>\n" 
+                         + "                        : separated list of global hidden symbols in linked in static\n" 
+                         + "                        libraries or frameworks that should be unhidden to be\n" 
+                         + "                        accessible to bro @Bridge methods. Wildcards are not\n" 
+                         + "                        supported. Unhidden symbols will always be exported.");
         System.err.println("  -frameworks <list>    : separated list of frameworks that should be included\n" 
                          + "                        when linking the final executable.");
         System.err.println("  -weakframeworks <list>\n" 

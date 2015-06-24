@@ -118,7 +118,7 @@ public abstract class AbstractTarget implements Target {
 //            ccArgs.add("-Wl,--print-gc-sections");
         } else if (config.getOs().getFamily() == OS.Family.darwin) {
             ccArgs.add("-ObjC");
-            File exportedSymbolsFile = new File(config.getTmpDir(), "exported_symbols");
+
             List<String> exportedSymbols = new ArrayList<String>();
             if (config.isSkipInstall()) {
                 exportedSymbols.add("catch_exception_raise");
@@ -129,9 +129,26 @@ public abstract class AbstractTarget implements Target {
                 // '_' to each symbol here so the user won't have to.
                 exportedSymbols.set(i, "_" + exportedSymbols.get(i));
             }
+
+            if (!config.getUnhideSymbols().isEmpty()) {
+                List<String> aliasedSymbols = new ArrayList<String>();
+                for (String symbol : config.getUnhideSymbols()) {
+                    aliasedSymbols.add("_" + symbol + " __unhidden_" + symbol);
+                }
+                File aliasedSymbolsFile = new File(config.getTmpDir(), "aliased_symbols");
+                FileUtils.writeLines(aliasedSymbolsFile, "ASCII", aliasedSymbols);
+                ccArgs.add("-Xlinker");
+                ccArgs.add("-alias_list");
+                ccArgs.add("-Xlinker");
+                ccArgs.add(aliasedSymbolsFile.getAbsolutePath());
+                exportedSymbols.add("__unhidden_*");
+            }
+
+            File exportedSymbolsFile = new File(config.getTmpDir(), "exported_symbols");
             FileUtils.writeLines(exportedSymbolsFile, "ASCII", exportedSymbols);
             ccArgs.add("-exported_symbols_list");
             ccArgs.add(exportedSymbolsFile.getAbsolutePath());
+
             ccArgs.add("-Wl,-no_implicit_dylibs");
             ccArgs.add("-Wl,-dead_strip");
         }

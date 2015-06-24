@@ -19,14 +19,6 @@
 #include "MurmurHash3.h"
 #include "classinfo.h"
 
-#if defined(__APPLE__)
-#include <mach-o/dyld.h> // for _NSGetExecutablePath()
-#include <libgen.h>      // for dirname()
-#include <dlfcn.h>
-#elif defined(__linux__)
-#include <unistd.h>
-#endif
-
 #define LOG_TAG "bc"
 
 #define ALLOC_NATIVE_FRAMES_SIZE 8

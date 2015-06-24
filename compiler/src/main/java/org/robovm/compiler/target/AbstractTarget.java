@@ -264,32 +264,36 @@ public abstract class AbstractTarget implements Target {
                 new Resource(frameworkDir).walk(new Walker() {
                     @Override
                     public boolean processDir(Resource resource, File dir, File destDir) throws IOException {
-                        return !(dir.getName().equals("Headers") || dir.getName().equals("Modules") || dir.getName()
-                                .equals("_CodeSignature"));
+                        return !(dir.getName().equals("Headers") || dir.getName().equals("PrivateHeaders")
+                                || dir.getName().equals("Modules") || dir.getName()
+                                        .equals("_CodeSignature") || dir.getName().equals("Versions") || dir.getName()
+                                .equals("Documentation"));
                     }
 
                     @Override
                     public void processFile(Resource resource, File file, File destDir) throws IOException {
-                        copyFile(resource, file, destDir);
+                        if (!isStaticLibrary(file)) {
+                            copyFile(resource, file, destDir);
 
-                        if (file.canExecute()) {
-                            // remove simulator archs for device builds
-                            if (config.getOs() == OS.ios && config.getArch().isArm()) {
-                                File inFile = new File(destDir, file.getName());
-                                File tmpFile = new File(destDir, file.getName() + ".tmp");
-                                ToolchainUtil.lipoRemoveArchs(config, inFile, tmpFile, Arch.x86, Arch.x86_64);
-                                FileUtils.copyFile(tmpFile, inFile);
-                            }
+                            if (isDynamicLibrary(file)) {
+                                // remove simulator archs for device builds
+                                if (config.getOs() == OS.ios && config.getArch().isArm()) {
+                                    File inFile = new File(destDir, file.getName());
+                                    File tmpFile = new File(destDir, file.getName() + ".tmp");
+                                    ToolchainUtil.lipoRemoveArchs(config, inFile, tmpFile, Arch.x86, Arch.x86_64);
+                                    FileUtils.copyFile(tmpFile, inFile);
+                                }
 
-                            // check if this dylib depends on Swift
-                            // and register those libraries to be copied
-                            // to bundle.app/Frameworks
-                            String dependencies = ToolchainUtil.otool(file);
-                            Pattern swiftLibraryPattern = Pattern.compile("libswift.+\\.dylib");
-                            Matcher matcher = swiftLibraryPattern.matcher(dependencies);
-                            while (matcher.find()) {
-                                String library = dependencies.substring(matcher.start(), matcher.end());
-                                swiftLibraries.add(library);
+                                // check if this dylib depends on Swift
+                                // and register those libraries to be copied
+                                // to bundle.app/Frameworks
+                                String dependencies = ToolchainUtil.otool(file);
+                                Pattern swiftLibraryPattern = Pattern.compile("libswift.+\\.dylib");
+                                Matcher matcher = swiftLibraryPattern.matcher(dependencies);
+                                while (matcher.find()) {
+                                    String library = dependencies.substring(matcher.start(), matcher.end());
+                                    swiftLibraries.add(library);
+                                }
                             }
                         }
                     }
@@ -317,6 +321,16 @@ public abstract class AbstractTarget implements Target {
                 }
             }
         }
+    }
+
+    protected boolean isDynamicLibrary(File file) throws IOException {
+        String result = ToolchainUtil.file(file);        
+        return result.contains("shared library");
+    }
+
+    protected boolean isStaticLibrary(File file) throws IOException {
+        String result = ToolchainUtil.file(file);        
+        return result.contains("ar archive");
     }
 
     protected boolean processDir(Resource resource, File dir, File destDir) throws IOException {

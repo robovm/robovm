@@ -327,6 +327,17 @@ public class IOSTarget extends AbstractTarget {
         }
         ccArgs.add("-isysroot");
         ccArgs.add(sdk.getRoot().getAbsolutePath());
+        
+        // specify dynamic library loading path
+        libArgs.add("-Xlinker");
+        libArgs.add("-rpath");
+        libArgs.add("-Xlinker");
+        libArgs.add("@executable_path/Frameworks");
+        libArgs.add("-Xlinker");
+        libArgs.add("-rpath");
+        libArgs.add("-Xlinker");
+        libArgs.add("@loader_path/Frameworks");
+        
         super.doBuild(outFile, ccArgs, objectFiles, libArgs);
     }
 

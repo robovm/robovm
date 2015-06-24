@@ -28,9 +28,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
@@ -38,6 +42,7 @@ import java.util.zip.ZipOutputStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.robovm.compiler.clazz.Path;
+import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.config.OS;
 import org.robovm.compiler.config.Resource;
@@ -222,6 +227,80 @@ public abstract class AbstractTarget implements Target {
             }, destDir);
         }
     }
+    
+    protected void copyDynamicFrameworks(File destDir) throws IOException {
+        for (String framework : config.getFrameworks()) {
+            boolean isCustomFramework = false;
+            File frameworkDir = null;
+            for (File path : config.getFrameworkPaths()) {
+                frameworkDir = new File(path, framework + ".framework");
+                if (frameworkDir.exists() && frameworkDir.isDirectory()) {
+                    isCustomFramework = true;
+                    break;
+                }
+            }
+            if (isCustomFramework) {
+                File frameworksDir = new File(destDir, "Frameworks");
+                final Set<String> swiftLibraries = new HashSet<>();
+
+                config.getLogger().debug("Copying framework %s from %s to %s", framework, frameworkDir, destDir);
+                new Resource(frameworkDir).walk(new Walker() {
+                    @Override
+                    public boolean processDir(Resource resource, File dir, File destDir) throws IOException {
+                        return !(dir.getName().equals("Headers") || dir.getName().equals("Modules") || dir.getName()
+                                .equals("_CodeSignature"));
+                    }
+
+                    @Override
+                    public void processFile(Resource resource, File file, File destDir) throws IOException {
+                        copyFile(resource, file, destDir);
+
+                        if (file.canExecute()) {
+                            // remove simulator archs for device builds
+                            if (config.getOs() == OS.ios && config.getArch().isArm()) {
+                                File inFile = new File(destDir, file.getName());
+                                File tmpFile = new File(destDir, file.getName() + ".tmp");
+                                ToolchainUtil.lipoRemoveArchs(config, inFile, tmpFile, Arch.x86, Arch.x86_64);
+                                FileUtils.copyFile(tmpFile, inFile);
+                            }
+
+                            // check if this dylib depends on Swift
+                            // and register those libraries to be copied
+                            // to bundle.app/Frameworks
+                            String dependencies = ToolchainUtil.otool(file);
+                            Pattern swiftLibraryPattern = Pattern.compile("libswift.+\\.dylib");
+                            Matcher matcher = swiftLibraryPattern.matcher(dependencies);
+                            while (matcher.find()) {
+                                String library = dependencies.substring(matcher.start(), matcher.end());
+                                swiftLibraries.add(library);
+                            }
+                        }
+                    }
+
+                }, frameworksDir);
+
+                // copy Swift libraries if required
+                if (!swiftLibraries.isEmpty()) {
+                    String system = null;
+                    if (config.getOs() == OS.ios) {
+                        if (config.getArch().isArm()) {
+                            system = "iphoneos";
+                        } else {
+                            system = "iphonesimulator";
+                        }
+                    } else {
+                        system = "mac";
+                    }
+                    File swiftDir = new File(ToolchainUtil.findXcodePath(),
+                            "Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/" + system);
+                    for (String library : swiftLibraries) {
+                        File swiftLibrary = new File(swiftDir, library);
+                        FileUtils.copyFileToDirectory(swiftLibrary, frameworksDir);
+                    }
+                }
+            }
+        }
+    }
 
     protected boolean processDir(Resource resource, File dir, File destDir) throws IOException {
         return true;
@@ -251,6 +330,7 @@ public abstract class AbstractTarget implements Target {
         }
         stripArchives(installDir);
         copyResources(installDir);
+        copyDynamicFrameworks(installDir);
     }
 
     public Process launch(LaunchParameters launchParameters) throws IOException {

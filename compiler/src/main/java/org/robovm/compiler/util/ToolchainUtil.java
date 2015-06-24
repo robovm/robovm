@@ -28,6 +28,7 @@ import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.config.OS;
 import org.robovm.compiler.config.tools.TextureAtlas;
+import org.robovm.compiler.log.ConsoleLogger;
 import org.robovm.compiler.log.Logger;
 import org.robovm.compiler.target.ios.IOSTarget;
 
@@ -45,6 +46,8 @@ public class ToolchainUtil {
     private static String TEXTUREATLAS;
     private static String ACTOOL;
     private static String IBTOOL;
+    private static String NM;
+    private static String OTOOL;
 
     private static String getIOSDevClang() throws IOException {
         if (IOS_DEV_CLANG == null) {
@@ -100,6 +103,20 @@ public class ToolchainUtil {
             LIPO = findXcodeCommand("lipo", "iphoneos");
         }
         return LIPO;
+    }
+
+    private static String getNm() throws IOException {
+        if (NM == null) {
+            NM = findXcodeCommand("nm", "iphoneos");
+        }
+        return NM;
+    }
+    
+    private static String getOtool() throws IOException {
+        if(OTOOL == null) {
+            OTOOL = findXcodeCommand("otool", "iphoneos");
+        }
+        return OTOOL;
     }
 
     private static String getPackageApplication() throws IOException {
@@ -248,9 +265,29 @@ public class ToolchainUtil {
     public static void compileStrings(Config config, File inFile, File outFile) throws IOException {
         new Executor(config.getLogger(), getPlutil()).args("-convert", "binary1", inFile, "-o", outFile).exec();
     }
+    
+    public static String nm(File file) throws IOException {
+        return new Executor(Logger.NULL_LOGGER, getNm()).args(file.getAbsolutePath()).execCapture();
+    }
+
+    public static String otool(File file) throws IOException {
+        return new Executor(new ConsoleLogger(false), getOtool()).args("-L", file.getAbsolutePath()).execCapture();
+    }
 
     public static void lipo(Config config, File outFile, List<File> inFiles) throws IOException {
         new Executor(config.getLogger(), getLipo()).args(inFiles, "-create", "-output", outFile).exec();
+    }
+    
+    public static void lipoRemoveArchs(Config config, File inFile, File outFile, Arch ... archs) throws IOException {
+        List<Object> args = new ArrayList<>();
+        args.add(inFile);
+        for(Arch arch: archs) {
+            args.add("-remove");
+            args.add(arch.getClangName());
+        }
+        args.add("-output");
+        args.add(outFile);
+        new Executor(config.getLogger(), getLipo()).args(args).exec();
     }
 
     public static void packageApplication(Config config, File appDir, File outFile) throws IOException {

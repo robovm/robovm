@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.apache.commons.lang3.StringUtils;
 import org.robovm.compiler.Annotations;
 import org.robovm.compiler.Annotations.Visibility;
 import org.robovm.compiler.CompilerException;
@@ -182,27 +183,29 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
     private void createGenericSignatureForMsgSend(SootMethod annotatedMethod, SootMethod m, List<Type> paramTypes, boolean extensions) {
         SignatureTag tag = (SignatureTag) annotatedMethod.getTag(SignatureTag.class.getSimpleName());
         if (tag != null) {
-            String signature = null;
-            if (extensions) {
-                // We need to insert a Selector as parameter 2.
-                SootMethodType type = new SootMethodType(annotatedMethod);
-                StringBuilder sb = new StringBuilder("(");
-                org.robovm.compiler.util.generic.Type[] genericParameterTypes = type.getGenericParameterTypes();
-                sb.append(genericParameterTypes[0].toGenericSignature());
-                sb.append(Types.getDescriptor(org_robovm_objc_Selector.getType()));
-                for (int i = 1; i < genericParameterTypes.length; i++) {
-                    sb.append(genericParameterTypes[i].toGenericSignature());
-                }
-                sb.append(")");
-                sb.append(type.getGenericReturnType().toGenericSignature());
-                signature = sb.toString();
-            } else {
-                // For non extensions we just need to prepend the receiver type
-                // and Selector to the generic signature.
-                signature = "(" + Types.getDescriptor(paramTypes.get(0)) + Types.getDescriptor(paramTypes.get(1))
-                        + tag.getSignature().substring(1);
+            SootMethodType type = new SootMethodType(annotatedMethod);
+            List<String> genericParameterTypes = new ArrayList<>();
+            for (org.robovm.compiler.util.generic.Type t : type.getGenericParameterTypes()) {
+                genericParameterTypes.add(t.toGenericSignature());
             }
-            m.addTag(new SignatureTag(signature));
+            if (!extensions) {
+                /*
+                 * For non extensions the generic signature is missing the
+                 * receiver as parameter 1.
+                 */
+                genericParameterTypes.add(0, Types.getDescriptor(paramTypes.get(0)));
+            }
+            /*
+             * Always insert the selector as parameter 2 of the generic
+             * signature.
+             */
+            genericParameterTypes.add(1, Types.getDescriptor(paramTypes.get(1)));
+
+            StringBuilder sb = new StringBuilder("(");
+            sb.append(StringUtils.join(genericParameterTypes, ""));
+            sb.append(")");
+            sb.append(type.getGenericReturnType().toGenericSignature());
+            m.addTag(new SignatureTag(sb.toString()));
         }
     }
 

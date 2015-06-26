@@ -137,8 +137,8 @@ public class ObjCRuntime {
         return size;
     }
     
-    @Bridge
-    public static native @Pointer long objc_getClass(@Pointer long name);
+    
+    /* selector */
     
     @Bridge
     public static native BytePtr sel_getName(Selector sel);
@@ -146,11 +146,13 @@ public class ObjCRuntime {
     @Bridge
     public static native Selector sel_registerName(BytePtr str);
     
+    /* objc */
+    
     @Bridge
-    public static native void objc_setAssociatedObject(@Pointer long object, @Pointer long key, @Pointer long value, int policy);
-
+    public static native @Pointer long objc_getClass(@Pointer long name);
+    
     @Bridge
-    public static native @Pointer long objc_getAssociatedObject(@Pointer long object, @Pointer long key);
+    public static native @Pointer long objc_getMetaClass(@Pointer long name);
 
     @Bridge
     public static native @Pointer long objc_allocateClassPair(@Pointer long superclass, @Pointer long name, @Pointer long extraBytes);
@@ -159,22 +161,62 @@ public class ObjCRuntime {
     public static native void objc_registerClassPair(@Pointer long cls);
     
     @Bridge
+    public static native @Pointer long objc_getProtocol(@Pointer long name);
+    
+    @Bridge
+    public static native @Pointer long objc_allocateProtocol(@Pointer long name);
+    
+    @Bridge
+    public static native void objc_registerProtocol(@Pointer long protocol);
+    
+    @Bridge
+    public static native void objc_setAssociatedObject(@Pointer long object, @Pointer long key, @Pointer long value, int policy);
+
+    @Bridge
+    public static native @Pointer long objc_getAssociatedObject(@Pointer long object, @Pointer long key);
+
+    /* object */
+    
+    @Bridge
     public static native @Pointer long object_getClass(@Pointer long object);
+    
+    @Bridge
+    public static native @Pointer long object_setClass(@Pointer long object, @Pointer long cls);
 
     @Bridge
     public static native @Pointer long object_getClassName(@Pointer long object);
+    
+    @Bridge
+    public static native @Pointer long object_dispose(@Pointer long object);
+    
+    @Bridge
+    public static native @Pointer long object_getIvar(@Pointer long object, @Pointer long ivar);
+
+    @Bridge
+    public static native void object_setIvar(@Pointer long object, @Pointer long ivar, @Pointer long value);
+    
+    /* class */
 
     @Bridge
     public static native @Pointer long class_getSuperclass(@Pointer long cls);
 
     @Bridge
+    public static native @Pointer long class_isMetaClass(@Pointer long cls);
+    
+    @Bridge
     public static native @Pointer long class_getName(@Pointer long cls);
-
+    
     @Bridge
     public static native @Pointer long class_getInstanceMethod(@Pointer long aClass, @Pointer long aSelector);
 
     @Bridge
     public static native @Pointer long class_getClassMethod(@Pointer long aClass, @Pointer long aSelector);
+    
+    @Bridge
+    public static native  boolean class_addProtocol(@Pointer long cls, @Pointer long protocol);
+    
+    @Bridge
+    public static native boolean class_conformsToProtocol(@Pointer long cls, @Pointer long protocol);
 
     @Bridge
     public static native boolean class_addMethod(@Pointer long cls, @Pointer long name, @Pointer long imp, @Pointer long types);
@@ -183,16 +225,67 @@ public class ObjCRuntime {
     public static native @Pointer long class_replaceMethod(@Pointer long cls, @Pointer long name, @Pointer long imp, @Pointer long types);
     
     @Bridge
+    public static native @Pointer long class_getMethodImplementation(@Pointer long cls, @Pointer long name);
+    
+    @Bridge
     public static native boolean class_addIvar(@Pointer long cls, @Pointer long name, int size, byte alignment, @Pointer long types);
     
     @Bridge
     public static native @Pointer long class_getInstanceVariable(@Pointer long cls, @Pointer long name);
     
     @Bridge
+    public static native @Pointer long class_getClassVariable(@Pointer long cls, @Pointer long name);
+    
+    @Bridge
     public static native @Pointer long class_getIvarLayout(@Pointer long cls);
     
     @Bridge
+    public static native void class_setIvarLayout(@Pointer long cls, @Pointer long layout);
+    
+    @Bridge
+    public static native @Pointer long class_getProperty(@Pointer long cls, @Pointer long name);
+    
+    @Bridge
+    public static native boolean class_respondsToSelector(@Pointer long cls, @Pointer long sel);
+    
+    /* protocol */
+    
+    @Bridge
+    public static native @Pointer long protocol_getName(@Pointer long protocol);
+    
+    @Bridge
+    public static native void protocol_addProtocol(@Pointer long protocol, @Pointer long addition);
+    
+    @Bridge
+    public static native boolean protocol_conformsToProtocol(@Pointer long protocol, @Pointer long other);
+
+    @Bridge
+    public static native @Pointer long protocol_getProperty(@Pointer long protocol, @Pointer long name, boolean isRequiredProperty, boolean isInstanceProperty);
+    
+    /* ivar */
+    
+    @Bridge
+    public static native @Pointer long ivar_getName(@Pointer long ivar);
+
+    @Bridge
+    public static native @Pointer long ivar_getTypeEncoding(@Pointer long ivar);
+    
+    @Bridge
     public static native int ivar_getOffset(@Pointer long ivar);
+    
+    /* method */
+    
+    @Bridge
+    public static native @Pointer long method_getName(@Pointer long m);
+    
+    @Bridge
+    public static native @Pointer long method_copyReturnType(@Pointer long m);
+
+    @Bridge
+    public static native @Pointer long method_copyArgumentType(@Pointer long m, int index);
+    
+    @Bridge
+    public static native int method_getNumberOfArguments(@Pointer long m);
     
     @Bridge
     public static native @Pointer long method_getTypeEncoding(@Pointer long method);
@@ -202,6 +295,22 @@ public class ObjCRuntime {
     
     @Bridge
     public static native @Pointer long method_setImplementation(@Pointer long m, @Pointer long imp);
+    
+    @Bridge
+    public static native void method_exchangeImplementations(@Pointer long m1, @Pointer long m2);
+    
+    /* property */
+    
+    @Bridge
+    public static native @Pointer long property_getName(@Pointer long property);
+
+    @Bridge
+    public static native BytePtr property_getAttributes(@Pointer long property);
+
+    @Bridge
+    public static native BytePtr property_copyAttributeValue(@Pointer long property, BytePtr attributeName);
+    
+    /* message */
     
     @Bridge(symbol = "objc_msgSend")
     public static native @Pointer long ptr_objc_msgSend(@Pointer long receiver, @Pointer long selector);

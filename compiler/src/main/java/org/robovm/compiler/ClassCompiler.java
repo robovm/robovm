@@ -891,17 +891,11 @@ public class ClassCompiler {
         }
         for (SootMethod m : sootClass.getMethods()) {
             MethodInfo mi = ci.getMethod(m.getName(), getDescriptor(m));
-            addClassDependencyIfNeeded(clazz, mi, m.getReturnType(), true);
+            addClassDependencyIfNeeded(clazz, mi, m.getReturnType(), false);
             @SuppressWarnings("unchecked")
             List<soot.Type> paramTypes = (List<soot.Type>) m.getParameterTypes();
             for (soot.Type type : paramTypes) {
-                /*
-                 * Constructors are strongly linked even in aggressive tree
-                 * shaking mode. Make sure to add the parameters of constructors
-                 * as strong dependencies. For all other methods we add
-                 * parameters as weak dependencies.
-                 */
-                addClassDependencyIfNeeded(clazz, mi, type, !m.getName().equals("<init>"));
+                addClassDependencyIfNeeded(clazz, mi, type, false);
             }
         }
         ci.addClassDependencies(attributesEncoder.getDependencies(), false);

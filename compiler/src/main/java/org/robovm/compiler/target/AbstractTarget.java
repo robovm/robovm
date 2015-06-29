@@ -282,6 +282,7 @@ public abstract class AbstractTarget implements Target {
                                     File tmpFile = new File(destDir, file.getName() + ".tmp");
                                     ToolchainUtil.lipoRemoveArchs(config, inFile, tmpFile, Arch.x86, Arch.x86_64);
                                     FileUtils.copyFile(tmpFile, inFile);
+                                    tmpFile.delete();
                                 }
 
                                 // check if this dylib depends on Swift

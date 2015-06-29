@@ -393,6 +393,24 @@ public class IOSTarget extends AbstractTarget {
                 ldid(getOrCreateEntitlementsPList(true), appDir);
             } else {
                 copyProvisioningProfile(provisioningProfile, appDir);
+                // sign dynamic frameworks first
+                File frameworksDir = new File(appDir, "Frameworks");
+                if (frameworksDir.exists() && frameworksDir.isDirectory()) {
+                    // Sign swift rt libs
+                    for (File swiftLib : frameworksDir.listFiles()) {
+                        if (swiftLib.getName().endsWith(".dylib")) {
+                            codesign(signIdentity, getOrCreateEntitlementsPList(true), swiftLib);
+                        }
+                    }
+
+                    // sign embedded frameworks
+                    for (File framework : frameworksDir.listFiles()) {
+                        if (framework.isDirectory() && framework.getName().endsWith(".framework")) {
+                            codesign(signIdentity, getOrCreateEntitlementsPList(true), framework);
+                        }
+                    }
+                }
+                // sign the app
                 codesign(signIdentity, getOrCreateEntitlementsPList(true), appDir);
             }
         }

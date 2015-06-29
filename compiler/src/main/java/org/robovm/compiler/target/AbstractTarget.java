@@ -246,6 +246,9 @@ public abstract class AbstractTarget implements Target {
     }
     
     protected void copyDynamicFrameworks(File destDir) throws IOException {
+        final Set<String> swiftLibraries = new HashSet<>();
+        File frameworksDir = new File(destDir, "Frameworks");
+        
         for (String framework : config.getFrameworks()) {
             boolean isCustomFramework = false;
             File frameworkDir = null;
@@ -256,69 +259,79 @@ public abstract class AbstractTarget implements Target {
                     break;
                 }
             }
+                        
             if (isCustomFramework) {
-                File frameworksDir = new File(destDir, "Frameworks");
-                final Set<String> swiftLibraries = new HashSet<>();
-
-                config.getLogger().debug("Copying framework %s from %s to %s", framework, frameworkDir, destDir);
-                new Resource(frameworkDir).walk(new Walker() {
-                    @Override
-                    public boolean processDir(Resource resource, File dir, File destDir) throws IOException {
-                        return !(dir.getName().equals("Headers") || dir.getName().equals("PrivateHeaders")
-                                || dir.getName().equals("Modules") || dir.getName()
-                                        .equals("_CodeSignature") || dir.getName().equals("Versions") || dir.getName()
-                                .equals("Documentation"));
+                // check if this is a dynamic framework by finding
+                // at least ony dylib in the root folder
+                boolean isDynamicFramework = false;
+                for(File file: frameworkDir.listFiles()) {
+                    if(file.isFile() && isDynamicLibrary(file)) {
+                        isDynamicFramework = true;
                     }
-
-                    @Override
-                    public void processFile(Resource resource, File file, File destDir) throws IOException {
-                        if (!isStaticLibrary(file)) {
-                            copyFile(resource, file, destDir);
-
-                            if (isDynamicLibrary(file)) {
-                                // remove simulator archs for device builds
-                                if (config.getOs() == OS.ios && config.getArch().isArm()) {
-                                    File inFile = new File(destDir, file.getName());
-                                    File tmpFile = new File(destDir, file.getName() + ".tmp");
-                                    ToolchainUtil.lipoRemoveArchs(config, inFile, tmpFile, Arch.x86, Arch.x86_64);
-                                    FileUtils.copyFile(tmpFile, inFile);
-                                }
-
-                                // check if this dylib depends on Swift
-                                // and register those libraries to be copied
-                                // to bundle.app/Frameworks
-                                String dependencies = ToolchainUtil.otool(file);
-                                Pattern swiftLibraryPattern = Pattern.compile("libswift.+\\.dylib");
-                                Matcher matcher = swiftLibraryPattern.matcher(dependencies);
-                                while (matcher.find()) {
-                                    String library = dependencies.substring(matcher.start(), matcher.end());
-                                    swiftLibraries.add(library);
+                }
+                
+                if(isDynamicFramework) {                    
+                    config.getLogger().debug("Copying framework %s from %s to %s", framework, frameworkDir, destDir);
+                    new Resource(frameworkDir).walk(new Walker() {
+                        @Override
+                        public boolean processDir(Resource resource, File dir, File destDir) throws IOException {
+                            return !(dir.getName().equals("Headers") || dir.getName().equals("PrivateHeaders")
+                                    || dir.getName().equals("Modules") || dir.getName()
+                                            .equals("_CodeSignature") || dir.getName().equals("Versions") || dir.getName()
+                                    .equals("Documentation"));
+                        }
+    
+                        @Override
+                        public void processFile(Resource resource, File file, File destDir) throws IOException {
+                            if (!isStaticLibrary(file)) {
+                                copyFile(resource, file, destDir);
+    
+                                if (isDynamicLibrary(file)) {
+                                    // remove simulator archs for device builds
+                                    if (config.getOs() == OS.ios && config.getArch().isArm()) {
+                                        File inFile = new File(destDir, file.getName());
+                                        File tmpFile = new File(destDir, file.getName() + ".tmp");
+                                        ToolchainUtil.lipoRemoveArchs(config, inFile, tmpFile, Arch.x86, Arch.x86_64);
+                                        FileUtils.copyFile(tmpFile, inFile);
+                                        tmpFile.delete();
+                                    }
+    
+                                    // check if this dylib depends on Swift
+                                    // and register those libraries to be copied
+                                    // to bundle.app/Frameworks
+                                    String dependencies = ToolchainUtil.otool(file);
+                                    Pattern swiftLibraryPattern = Pattern.compile("libswift.+\\.dylib");
+                                    Matcher matcher = swiftLibraryPattern.matcher(dependencies);
+                                    while (matcher.find()) {
+                                        String library = dependencies.substring(matcher.start(), matcher.end());
+                                        swiftLibraries.add(library);
+                                    }
                                 }
                             }
                         }
-                    }
-
-                }, frameworksDir);
-
-                // copy Swift libraries if required
-                if (!swiftLibraries.isEmpty()) {
-                    String system = null;
-                    if (config.getOs() == OS.ios) {
-                        if (config.getArch().isArm()) {
-                            system = "iphoneos";
-                        } else {
-                            system = "iphonesimulator";
-                        }
-                    } else {
-                        system = "mac";
-                    }
-                    File swiftDir = new File(ToolchainUtil.findXcodePath(),
-                            "Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/" + system);
-                    for (String library : swiftLibraries) {
-                        File swiftLibrary = new File(swiftDir, library);
-                        FileUtils.copyFileToDirectory(swiftLibrary, frameworksDir);
-                    }
+    
+                    }, frameworksDir);
                 }
+            }
+        }
+        
+        // copy Swift libraries if required
+        if (!swiftLibraries.isEmpty()) {
+            String system = null;
+            if (config.getOs() == OS.ios) {
+                if (config.getArch().isArm()) {
+                    system = "iphoneos";
+                } else {
+                    system = "iphonesimulator";
+                }
+            } else {
+                system = "mac";
+            }
+            File swiftDir = new File(ToolchainUtil.findXcodePath(),
+                    "Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/" + system);
+            for (String library : swiftLibraries) {
+                File swiftLibrary = new File(swiftDir, library);
+                FileUtils.copyFileToDirectory(swiftLibrary, frameworksDir);
             }
         }
     }

@@ -285,6 +285,32 @@ import org.robovm.apple.corelocation.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
+    public List<UIFontFeatureSetting> getFeatureSettings() {
+        if (has(UIFontDescriptorAttribute.FeatureSettings)) {
+            NSArray<?> val = (NSArray<?>) get(UIFontDescriptorAttribute.FeatureSettings);
+            List<UIFontFeatureSetting> list = new ArrayList<>();
+            NSDictionary<NSString, NSObject>[] array = (NSDictionary<NSString, NSObject>[]) val.toArray(new NSDictionary[val.size()]);
+            for (NSDictionary<NSString, NSObject> d : array) {
+               list.add(new UIFontFeatureSetting(d));
+            }
+            return list;
+        }
+        return null;
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public UIFontDescriptorAttributes setFeatureSettings(List<UIFontFeatureSetting> featureSettings) {
+        NSArray<NSDictionary<NSString, NSObject>> val = new NSMutableArray<>();
+        for (UIFontFeatureSetting e : featureSettings) {
+            val.add(e.getDictionary());
+        }
+        set(UIFontDescriptorAttribute.FeatureSettings, val);
+        return this;
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public UIFontTextStyle getTextStyle() {
         if (has(UIFontDescriptorAttribute.TextStyle)) {
             NSString val = (NSString) get(UIFontDescriptorAttribute.TextStyle);

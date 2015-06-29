@@ -4554,6 +4554,15 @@ values:
         name: '#{g[0]}'
 
     # UIFont
+    UIFontFeature(.*Identifier)Key:
+        dictionary: UIFontFeatureSetting
+        name: '#{g[0]}'
+        type: NSString
+        methods:
+            TypeIdentifier:
+                type: long
+            SelectorIdentifier:
+                type: long
     UIFontDescriptor(.*)Attribute:
         dictionary: UIFontDescriptorAttributes
         enum: UIFontDescriptorAttribute
@@ -4582,14 +4591,8 @@ values:
                 type: double
             TextStyle:
                 type: UIFontTextStyle
-            #FeatureSettings:
-                #type:
-#    UIFontFeature(.*Identifier)Key: TODO
-   #     class: UIFontDescriptorAttributes
-   #     name: '#{g[0]}'
-   #     type: NSString
-   #     visibility: protected
-        
+            FeatureSettings:
+                type: List<UIFontFeatureSetting>
         
     UIFontTextStyle(.*):
         enum: UIFontTextStyle

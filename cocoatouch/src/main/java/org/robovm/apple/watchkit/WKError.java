@@ -35,32 +35,35 @@ import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
 /*</javadoc>*/
-/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
-@ForceLinkClass(WatchKitError.class)
-public enum /*<name>*/WatchKitErrorCode/*</name>*/ implements NSErrorCode {
-    /*<values>*/
-    UnknownError(1L),
-    ApplicationDelegateWatchKitRequestReplyNotCalledError(2L);
-    /*</values>*/
+/*<annotations>*/@Library("WatchKit") @StronglyLinked/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/WKError/*</name>*/ 
+    extends /*<extends>*/NSError/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
 
-    /*<bind>*/
-    /*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<methods>*//*</methods>*/
-
-    private final long n;
-
-    private /*<name>*/WatchKitErrorCode/*</name>*/(long n) { this.n = n; }
-    public long value() { return n; }
-    public static /*<name>*/WatchKitErrorCode/*</name>*/ valueOf(long n) {
-        for (/*<name>*/WatchKitErrorCode/*</name>*/ v : values()) {
-            if (v.n == n) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/WatchKitErrorCode/*</name>*/.class.getName());
+    protected WKError(SkipInit skipInit) {
+        super(skipInit);
     }
+    
+    /*<ptr>*/
+    /*</ptr>*/
+    /*<bind>*/static { Bro.bind(WKError.class); }/*</bind>*/
+    /*<constants>*//*</constants>*/
+    /*<constructors>*//*</constructors>*/
+    /*<properties>*//*</properties>*/
+    /*<members>*//*</members>*/
+    @Override
+    public WKErrorCode getErrorCode() {
+        WKErrorCode code = null;
+        try {
+            code = WKErrorCode.valueOf(getCode());
+        } catch (IllegalArgumentException e) {
+            // ignore
+        }
+        return code;
+    }
+    /*<methods>*/
+    @GlobalValue(symbol="WatchKitErrorDomain", optional=true)
+    public static native String getClassDomain();
+    /*</methods>*/
 }

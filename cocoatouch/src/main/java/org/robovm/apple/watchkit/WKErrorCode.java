@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.uikit;
+package org.robovm.apple.watchkit;
 
 /*<imports>*/
 import java.io.*;
@@ -28,38 +28,39 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
-import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.uikit.*;
 import org.robovm.apple.coregraphics.*;
-import org.robovm.apple.coredata.*;
-import org.robovm.apple.coreimage.*;
-import org.robovm.apple.coretext.*;
+import org.robovm.apple.mapkit.*;
 import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
-/*</javadoc>*/
-/*<annotations>*/@Library("UIKit")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/UIKit/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(UIKit.class); }/*</bind>*/
+/*</javadoc>*/
+/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
+@ForceLinkClass(WKError.class)
+public enum /*<name>*/WKErrorCode/*</name>*/ implements NSErrorCode {
+    /*<values>*/
+    Unknown(1L),
+    ApplicationDelegateWatchKitRequestReplyNotCalled(2L);
+    /*</values>*/
+
+    /*<bind>*/
+    /*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIFontFeatureTypeIdentifierKey", optional=true)
-    public static native String Value__UIFontFeatureTypeIdentifierKey();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIFontFeatureSelectorIdentifierKey", optional=true)
-    public static native String Value__UIFontFeatureSelectorIdentifierKey();
-    /*</methods>*/
+    /*<methods>*//*</methods>*/
+
+    private final long n;
+
+    private /*<name>*/WKErrorCode/*</name>*/(long n) { this.n = n; }
+    public long value() { return n; }
+    public static /*<name>*/WKErrorCode/*</name>*/ valueOf(long n) {
+        for (/*<name>*/WKErrorCode/*</name>*/ v : values()) {
+            if (v.n == n) {
+                return v;
+            }
+        }
+        throw new IllegalArgumentException("No constant with value " + n + " found in " 
+            + /*<name>*/WKErrorCode/*</name>*/.class.getName());
+    }
 }

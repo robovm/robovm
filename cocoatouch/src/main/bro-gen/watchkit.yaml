@@ -13,10 +13,10 @@ enums:
     WKMenuItemIcon: {}
     WKTextInputMode: {}
     WKInterfaceMapPinColor: {}
-    WatchKitErrorCode: {}
+    WKErrorCode: {first: WatchKitUnknownError, suffix: Error}
         
 classes:
-    WatchKitError:
+    WKError:
         extends: NSError
         annotations: ['@StronglyLinked']
     
@@ -168,7 +168,7 @@ functions:
 
 values:
     WatchKitErrorDomain:
-        class: WatchKitError
+        class: WKError
         name: getClassDomain
    
     # Make sure we don't miss any values if new ones are introduced in a later version

@@ -186,9 +186,5 @@ import org.robovm.apple.dispatch.*;
     }
     
     /*<methods>*/
-    @GlobalValue(symbol="NSNetServicesErrorCode", optional=true)
-    public static native String NetServicesErrorCode();
-    @GlobalValue(symbol="NSNetServicesErrorDomain", optional=true)
-    public static native String NetServicesErrorDomain();
     /*</methods>*/
 }

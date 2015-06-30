@@ -32,5 +32,9 @@ extern jboolean rvmHasDynamicLib(Env* env, DynamicLib* lib, DynamicLib* libs);
 extern void rvmAddDynamicLib(Env* env, DynamicLib* lib, DynamicLib** libs);
 extern void* rvmFindDynamicLibSymbol(Env* env, DynamicLib* first, const char* symbol, jboolean searchAll);
 
+// BCLIB
+extern int initLib(int argc, char* argv[]);
+extern jboolean rvmRunAsLib(Env* env);
+
 #endif
 

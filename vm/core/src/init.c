@@ -27,6 +27,8 @@
 #include "utlist.h"
 #include <unistd.h>
 
+#include "bclib.h"
+
 #define LOG_TAG "core.init"
 ClassLoader* systemClassLoader = NULL;
 static Class* java_lang_Daemons = NULL;
@@ -378,7 +380,27 @@ error_system_ClassLoader:
     return NULL;
 }
 
-jboolean rvmRun(Env* env) {
+// BCLIB extension
+
+int initLib(int argc, char* argv[])
+{
+    return initAsLib(argc, argv);
+}
+
+jboolean rvmRunInternal(Env* env, jboolean runAsLib);
+
+jboolean rvmRunAsLib(Env* env)
+{
+    rvmRunInternal(env, TRUE);
+}
+
+jboolean rvmRun(Env* env)
+{
+    return rvmRunInternal (env, FALSE);
+}
+
+jboolean rvmRunInternal(Env* env, jboolean runAsLib) {
+
     Options* options = env->vm->options;
     Class* clazz = NULL;
 
@@ -430,6 +452,7 @@ jboolean rvmRun(Env* env) {
         }
     }
 
+    	if (!runAsLib) {
     if (!errorDuringSetup) {
         rvmHookBeforeAppEntryPoint(env, options->mainClass);
         clazz = rvmFindClassUsingLoader(env, options->mainClass, systemClassLoader);
@@ -453,12 +476,15 @@ jboolean rvmRun(Env* env) {
                 }
             }
         }
-    }
+    }}
 
     Object* throwable = rvmExceptionOccurred(env);
-    rvmDetachCurrentThread(env->vm, TRUE, FALSE);
-
-    rvmJoinNonDaemonThreads(env);
+    if (!runAsLib) {
+        rvmDetachCurrentThread(env->vm, TRUE, FALSE);
+        rvmJoinNonDaemonThreads(env);
+    } else {
+        printf("ROBOVM SETUP AS STATIC LIBRARY: (%p)", throwable);
+    }
 
     return throwable == NULL ? TRUE : FALSE;
 }

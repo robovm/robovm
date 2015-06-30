@@ -28,7 +28,17 @@
 
 #else	// defined(_MSC_VER)
 
-#define	FORCE_INLINE __attribute__((always_inline))
+// RoboVM note: Start change.
+#if defined(__linux__)
+#if defined(NDEBUG)
+#define FORCE_INLINE inline
+#else
+#define FORCE_INLINE
+#endif
+#else
+#define FORCE_INLINE __attribute__((always_inline))
+#endif
+// RoboVM note: End change.
 
 FORCE_INLINE uint32_t rotl32 ( uint32_t x, int8_t r )
 {

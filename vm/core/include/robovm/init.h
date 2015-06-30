@@ -23,6 +23,7 @@ extern Env* rvmStartup(Options* options);
 extern VM* rvmCreateVM(Options* options);
 extern Env* rvmCreateEnv(VM* vm);
 extern jboolean rvmRun(Env* env);
+extern jboolean rvmDestroy(VM* vm);
 extern void rvmShutdown(Env* env, jint code);
 extern void rvmAbort(char* format, ...);
 

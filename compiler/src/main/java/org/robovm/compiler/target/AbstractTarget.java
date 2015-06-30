@@ -267,6 +267,7 @@ public abstract class AbstractTarget implements Target {
                 for(File file: frameworkDir.listFiles()) {
                     if(file.isFile() && isDynamicLibrary(file)) {
                         isDynamicFramework = true;
+                        break;
                     }
                 }
                 
@@ -286,19 +287,26 @@ public abstract class AbstractTarget implements Target {
                             if (!isStaticLibrary(file)) {
                                 copyFile(resource, file, destDir);
     
-                                if (isDynamicLibrary(file)) {
+                                if (isDynamicLibrary(file)) {                                                                        
                                     // remove simulator archs for device builds
                                     if (config.getOs() == OS.ios && config.getArch().isArm()) {
+                                        String archs = ToolchainUtil.lipoInfo(config, file);
                                         File inFile = new File(destDir, file.getName());
                                         File tmpFile = new File(destDir, file.getName() + ".tmp");
-                                        ToolchainUtil.lipoRemoveArchs(config, inFile, tmpFile, Arch.x86, Arch.x86_64);
+                                        FileUtils.copyFile(inFile, tmpFile);
+                                        if(archs.contains(Arch.x86.getClangName())) { 
+                                            ToolchainUtil.lipoRemoveArchs(config, inFile, tmpFile, Arch.x86);
+                                        }
+                                        if(archs.contains(Arch.x86_64.getClangName())) { 
+                                            ToolchainUtil.lipoRemoveArchs(config, inFile, tmpFile, Arch.x86_64);
+                                        }
                                         FileUtils.copyFile(tmpFile, inFile);
                                         tmpFile.delete();
                                     }
     
                                     // check if this dylib depends on Swift
                                     // and register those libraries to be copied
-                                    // to bundle.app/Frameworks
+                                    // to bundle.app/Frameworks                                  
                                     String dependencies = ToolchainUtil.otool(file);
                                     Pattern swiftLibraryPattern = Pattern.compile("libswift.+\\.dylib");
                                     Matcher matcher = swiftLibraryPattern.matcher(dependencies);

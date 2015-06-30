@@ -66,7 +66,8 @@ static void throwUnsupportedOperationException(Env* env, char* msg) {
 }
 
 static jint DestroyJavaVM(JavaVM* vm) {
-    return JNI_ERR;
+    jboolean rval = rvmDestroyVM((VM*) vm);
+    return rval ? JNI_OK : JNI_ERR;
 }
 
 static jint AttachCurrentThread(JavaVM* vm, void** penv, void* args) {

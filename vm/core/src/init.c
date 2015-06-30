@@ -92,7 +92,7 @@ static jboolean initClasspathEntries(Env* env, char* basePath, char** raw, Class
     return TRUE;
 }
 
-static void parseArg(char* arg, Options* options) {
+void rvmParseOption(char* arg, Options* options) {
     if (startsWith(arg, "log=trace")) {
         if (options->logLevel == 0) options->logLevel = LOG_LEVEL_TRACE;
     } else if (startsWith(arg, "log=debug")) {
@@ -175,28 +175,18 @@ static void parseArg(char* arg, Options* options) {
         property->key = key;
         property->value = s;
         DL_APPEND(options->properties, property);
+    } else if (startsWith(arg, "ImagePath=")) {
+        strncpy(options->imagePath, &arg[strlen("ImagePath=")], sizeof(options->imagePath) - 1);
+    } else if (startsWith(arg, "ResourcesPath=")) {
+        strncpy(options->resourcesPath, &arg[strlen("ResourcesPath=")], sizeof(options->resourcesPath) - 1);
     }
 }
 
-jboolean rvmInitOptions(int argc, char* argv[], Options* options, jboolean ignoreRvmArgs) {
+static void parseRoboVMIni(Options* options) {
     char path[PATH_MAX];
-    if (!realpath(argv[0], path)) {
-        return FALSE;
-    }
-
-    strcpy(options->executablePath, path);
-
-    jint i = strlen(path);
-    while (i >= 0 && path[i] != '/') {
-        path[i--] = '\0';
-    }
-    if (i >= 0 && path[i] == '/') {
-        path[i] = '\0';
-    }
-
-    strcpy(options->basePath, path);
 
     // Look for a robovm.ini next to the executable
+    strncpy(path, options->resourcesPath, sizeof(path) - 1);
     strcat(path, "/robovm.ini");
     FILE* f = fopen(path, "r");
     if (f) {
@@ -206,7 +196,7 @@ jboolean rvmInitOptions(int argc, char* argv[], Options* options, jboolean ignor
         while ((linelen = getline(&line, &linecap, f)) > 0) {
             line = trim(line);
             if (strlen(line) > 0 && line[0] != '#') {
-                parseArg(line, options);
+                rvmParseOption(line, options);
             }
         }
         if (line) {
@@ -214,27 +204,72 @@ jboolean rvmInitOptions(int argc, char* argv[], Options* options, jboolean ignor
         }
         fclose(f);
     }
+}
 
-    jint firstJavaArg = 1;
-    for (i = 1; i < argc; i++) {
-        if (startsWith(argv[i], "-rvm:")) {
-            if (!ignoreRvmArgs) {
-                char* arg = &argv[i][5];
-                parseArg(arg, options);
+jboolean rvmInitOptions(int argc, char* argv[], Options* options, jboolean ignoreRvmArgs) {
+    if (argc > 0) {
+        // We're called from a RoboVM executable
+        if (!realpath(argv[0], options->imagePath)) {
+            return FALSE;
+        }
+    } else {
+        // We're called via JNI. The caller could already have set
+        // imagePath. If not we try to determine it via dladdr().
+        if (strlen(options->imagePath) == 0) {
+            Dl_info dlinfo;
+            if (dladdr(rvmInitOptions, &dlinfo) == 0 || dlinfo.dli_fname == NULL) {
+                rvmAbort("Could not determine image path using dladdr()");
             }
-            firstJavaArg++;
-        } else {
-            break;
+            strncpy(options->imagePath, dlinfo.dli_fname, sizeof(options->imagePath) - 1);
         }
     }
 
-    options->commandLineArgs = NULL;
-    options->commandLineArgsCount = argc - firstJavaArg;
-    if (options->commandLineArgsCount > 0) {
-        options->commandLineArgs = &argv[firstJavaArg];
+    if (strlen(options->resourcesPath) == 0) {
+        strncpy(options->resourcesPath, options->imagePath, sizeof(options->resourcesPath) - 1);
+        jint i = strlen(options->resourcesPath);
+        while (i >= 0 && options->resourcesPath[i] != '/') {
+            options->resourcesPath[i--] = '\0';
+        }
+        if (i >= 0 && options->resourcesPath[i] == '/') {
+            options->resourcesPath[i] = '\0';
+        }
+        if (argc == 0) {
+#if defined(DARWIN)
+            // Called via JNI and on Darwin. Assume this is a framework. Use the
+            // Resources folder next to the image.
+            strncat(options->resourcesPath, "/Resources",
+                    sizeof(options->resourcesPath) - strlen(options->resourcesPath) - 1);
+#endif
+        }
     }
 
-    return options->mainClass != NULL;
+    // Look for a robovm.ini in the resources path
+    parseRoboVMIni(options);
+
+    if (argc > 0) {
+        jint firstJavaArg = 1;
+        for (jint i = 1; i < argc; i++) {
+            if (startsWith(argv[i], "-rvm:")) {
+                if (!ignoreRvmArgs) {
+                    char* arg = &argv[i][5];
+                    rvmParseOption(arg, options);
+                }
+                firstJavaArg++;
+            } else {
+                break;
+            }
+        }
+
+        options->commandLineArgs = NULL;
+        options->commandLineArgsCount = argc - firstJavaArg;
+        if (options->commandLineArgsCount > 0) {
+            options->commandLineArgs = &argv[firstJavaArg];
+        }
+
+        return options->mainClass != NULL;
+    }
+
+    return TRUE;
 }
 
 VM* rvmCreateVM(Options* options) {
@@ -311,8 +346,8 @@ Env* rvmStartup(Options* options) {
     if (!env) return NULL;
     // TODO: What if we can't allocate Env?
 
-    if (!initClasspathEntries(env, options->basePath, options->rawBootclasspath, &options->bootclasspath)) return NULL;
-    if (!initClasspathEntries(env, options->basePath, options->rawClasspath, &options->classpath)) return NULL;
+    if (!initClasspathEntries(env, options->resourcesPath, options->rawBootclasspath, &options->bootclasspath)) return NULL;
+    if (!initClasspathEntries(env, options->resourcesPath, options->rawClasspath, &options->classpath)) return NULL;
 
     // Call init on modules
     TRACE("Initializing classes");
@@ -369,25 +404,12 @@ Env* rvmStartup(Options* options) {
     if (rvmExceptionCheck(env)) goto error_daemons;
     TRACE("Daemons started");
 
-    return env;
-
-error_daemons:
-error_system_ClassLoader:
-    rvmDetachCurrentThread(env->vm, TRUE, FALSE);
-
-    return NULL;
-}
-
-jboolean rvmRun(Env* env) {
-    Options* options = env->vm->options;
-    Class* clazz = NULL;
-
     jboolean errorDuringSetup = FALSE;
 
     //If our options has any properties, let's set them before we call our main.
     if (options->properties) {
         //First, find java.lang.System, which has the setProperty method.
-        clazz = rvmFindClassUsingLoader(env, "java/lang/System", NULL);
+        Class* clazz = rvmFindClassUsingLoader(env, "java/lang/System", NULL);
         if (clazz) {
             //Get the setProperty method.
             Method* method = rvmGetClassMethod(env, clazz, "setProperty", "(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;");
@@ -430,31 +452,51 @@ jboolean rvmRun(Env* env) {
         }
     }
 
-    if (!errorDuringSetup) {
-        rvmHookBeforeAppEntryPoint(env, options->mainClass);
-        clazz = rvmFindClassUsingLoader(env, options->mainClass, systemClassLoader);
-        if (clazz) {
-            Method* method = rvmGetClassMethod(env, clazz, "main", "([Ljava/lang/String;)V");
-            if (method) {
-                ObjectArray* args = rvmNewObjectArray(env, options->commandLineArgsCount, java_lang_String, NULL, NULL);
+    return (errorDuringSetup) ? NULL : env;
+
+error_daemons:
+error_system_ClassLoader:
+    rvmDetachCurrentThread(env->vm, TRUE, FALSE);
+
+    return NULL;
+}
+
+jboolean rvmRun(Env* env) {
+    Options* options = env->vm->options;
+    Class* clazz = NULL;
+
+    rvmHookBeforeAppEntryPoint(env, options->mainClass);
+    clazz = rvmFindClassUsingLoader(env, options->mainClass, systemClassLoader);
+    if (clazz) {
+        Method* method = rvmGetClassMethod(env, clazz, "main", "([Ljava/lang/String;)V");
+        if (method) {
+            ObjectArray* args = rvmNewObjectArray(env, options->commandLineArgsCount, java_lang_String, NULL, NULL);
+            if (args) {
+                jint i = 0;
+                for (i = 0; i < args->length; i++) {
+                    // TODO: Don't assume modified UTF-8
+                    args->values[i] = rvmNewStringUTF(env, options->commandLineArgs[i], -1);
+                    if (!args->values[i]) {
+                        args = NULL;
+                        break;
+                    }
+                }
                 if (args) {
-                    jint i = 0;
-                    for (i = 0; i < args->length; i++) {
-                        // TODO: Don't assume modified UTF-8
-                        args->values[i] = rvmNewStringUTF(env, options->commandLineArgs[i], -1);
-                        if (!args->values[i]) {
-                            args = NULL;
-                            break;
-                        }
-                    }
-                    if (args) {
-                        rvmCallVoidClassMethod(env, clazz, method, args);
-                    }
+                    rvmCallVoidClassMethod(env, clazz, method, args);
                 }
             }
         }
     }
 
+    return rvmDestroyVM(env->vm);
+}
+
+jboolean rvmDestroyVM(VM* vm) {
+    Env* env;
+    if (JNI_OK != rvmAttachCurrentThread(vm, &env, NULL, NULL) ) {
+        WARN("rvmDestroy() failed to attach current thread.");
+        return FALSE;
+    }
     Object* throwable = rvmExceptionOccurred(env);
     rvmDetachCurrentThread(env->vm, TRUE, FALSE);
 

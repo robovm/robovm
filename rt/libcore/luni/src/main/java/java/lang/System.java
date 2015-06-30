@@ -433,7 +433,7 @@ public final class System {
         p.put("java.version", "0");
 
         // RoboVM note: Android uses getenv("JAVA_HOME") here with "/system" as fallback.
-        p.put("java.home", VM.basePath());
+        p.put("java.home", VM.resourcesPath());
 
         // RoboVM note: Use value of $TMPDIR if set. Otherwise use /tmp as Android does.
         String tmpdir = getenv("TMPDIR");

@@ -107,6 +107,7 @@ import org.robovm.llvm.TargetMachine;
 import org.robovm.llvm.binding.Attribute;
 import org.robovm.llvm.binding.CodeGenFileType;
 import org.robovm.llvm.binding.CodeGenOptLevel;
+import org.robovm.llvm.binding.RelocMode;
 
 import soot.BooleanType;
 import soot.ByteType;
@@ -389,7 +390,9 @@ public class ClassCompiler {
                 String triple = config.getTriple();
                 Target target = Target.lookupTarget(triple);
                 try (TargetMachine targetMachine = target.createTargetMachine(triple,
-                        config.getArch().getLlvmCpu(), null, config.isDebug()? CodeGenOptLevel.CodeGenLevelNone: null, null, null)) {
+                        config.getArch().getLlvmCpu(), null, 
+                        config.isDebug()? CodeGenOptLevel.CodeGenLevelNone: null,
+                        RelocMode.RelocPIC, null)) {
                     targetMachine.setAsmVerbosityDefault(true);
                     targetMachine.setFunctionSections(true);
                     targetMachine.setDataSections(true);

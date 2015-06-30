@@ -51,12 +51,12 @@ Object* Java_org_robovm_rt_VM_classPath(Env* env, Class* c) {
     return rvmNewStringUTF(env, classpath, -1);
 }
 
-Object* Java_org_robovm_rt_VM_basePath(Env* env, Class* c) {
-    return rvmNewStringUTF(env, env->vm->options->basePath, -1);
+Object* Java_org_robovm_rt_VM_resourcesPath(Env* env, Class* c) {
+    return rvmNewStringUTF(env, env->vm->options->resourcesPath, -1);
 }
 
-Object* Java_org_robovm_rt_VM_executablePath(Env* env, Class* c) {
-    return rvmNewStringUTF(env, env->vm->options->executablePath, -1);
+Object* Java_org_robovm_rt_VM_imagePath(Env* env, Class* c) {
+    return rvmNewStringUTF(env, env->vm->options->imagePath, -1);
 }
 
 ObjectArray* Java_org_robovm_rt_VM_staticLibs(Env* env, Class* c) {

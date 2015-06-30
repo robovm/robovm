@@ -42,15 +42,17 @@ public final class VM {
     public static native String classPath();
 
     /**
-     * Returns the path to the executable currently running.
+     * Returns the path to the executable or dynamic library currently running.
      */
-    public static native String executablePath();
+    public static native String imagePath();
 
     /**
-     * Returns the parent directory of the path to the executable currently
-     * running.
+     * Returns the resources path where the apps or frameworks resources are
+     * located. For executables this is typically the directory where the
+     * executable is located. For OS X/iOS frameworks this is typically the
+     * {@code Resources} folder located next to the dynamic library file.
      */
-    public static native String basePath();
+    public static native String resourcesPath();
 
     /**
      * Returns the names of any static libraries that have been linked into the

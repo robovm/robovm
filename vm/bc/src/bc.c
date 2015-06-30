@@ -64,7 +64,7 @@ static VM* vm = NULL;
 static jint addressClassLookupsCount = 0;
 static AddressClassLookup* addressClassLookups = NULL;
 
-int main(int argc, char* argv[]) {
+static void initOptions() {
     options.mainClass = (char*) _bcMainClass;
     options.rawBootclasspath = _bcBootclasspath;
     options.rawClasspath = _bcClasspath;
@@ -81,6 +81,11 @@ int main(int argc, char* argv[]) {
     options.runtimeData = &_bcRuntimeData;
     options.listBootClasses = listBootClasses;
     options.listUserClasses = listUserClasses;
+}
+
+static int bcmain(int argc, char* argv[]) {
+    initOptions();
+
     if (!rvmInitOptions(argc, argv, &options, FALSE)) {
         fprintf(stderr, "rvmInitOptions(...) failed!\n");
         return 1;
@@ -94,6 +99,10 @@ int main(int argc, char* argv[]) {
     jint result = rvmRun(env) ? 0 : 1;
     rvmShutdown(env, result);
     return result;
+}
+
+int __attribute__ ((weak)) main(int argc, char* argv[]) {
+    bcmain( argc, argv );
 }
 
 static ClassInfoHeader** getClassInfosBase(void* hash) {
@@ -1046,4 +1055,72 @@ void _bcHookInstrumented(DebugEnv* debugEnv, jint lineNumber, jint lineNumberOff
     rvmPopGatewayFrame(env);
     // Restore the exception if one had been thrown when this function was called.
     env->throwable = throwable;
+}
+
+jint JNI_GetDefaultJavaVMInitArgs(void* vm_args) {
+    return JNI_OK;
+}
+
+static inline jint startsWith(char* s, char* prefix) {
+    return s && strncasecmp(s, prefix, strlen(prefix)) == 0;
+}
+
+jint JNI_CreateJavaVM(JavaVM** p_vm, JNIEnv** p_env, void* pvm_args) {
+    initOptions();
+
+    JavaVMInitArgs* vmArgs = (JavaVMInitArgs*) pvm_args;
+    if (vmArgs) {
+        for (int i = 0; i < vmArgs->nOptions; i++) {
+            JavaVMOption* opt = &vmArgs->options[i];
+            if (startsWith(opt->optionString, "-rvm:")) {
+                char* arg = &opt->optionString[5];
+                rvmParseOption(arg, &options);
+            } else if (startsWith(opt->optionString, "-X")) {
+                char* arg = &opt->optionString[2];
+                rvmParseOption(arg, &options);
+            } else if (startsWith(opt->optionString, "-D")) {
+                char* arg = &opt->optionString[1];
+                rvmParseOption(arg, &options);
+            } else if (startsWith(opt->optionString, "-verbose")) {
+                rvmParseOption("log=trace", &options);
+            }
+        }
+    }
+
+    if (!rvmInitOptions(0, NULL, &options, FALSE)) {
+        return JNI_ERR;
+    }
+
+    // Start up robovm (JNI)
+    Env* env = rvmStartup(&options);
+    if (!env) {
+        return JNI_ERR;
+    }
+
+    vm = env->vm;
+
+    // Return values.
+    if (p_vm) {
+        *p_vm = &vm->javaVM;
+    }
+    if (p_env) {
+        *p_env = &env->jni;
+    }
+
+    return JNI_OK;
+}
+
+jint JNI_GetCreatedJavaVMs(JavaVM** vmBuf, jsize bufLen, jsize* nVMs) {
+    int numVms = (vm) ? 1 : 0;
+    numVms = (bufLen < 1) ? bufLen : 1;
+    if ((NULL == vmBuf) || (NULL == vm)) {
+        return JNI_ERR;
+    }
+    if (bufLen >= 1) {
+        *vmBuf = &vm->javaVM;
+    }
+    if (NULL != nVMs) {
+        *nVMs = numVms;
+    }
+    return JNI_OK;
 }

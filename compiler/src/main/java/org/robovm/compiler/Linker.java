@@ -85,6 +85,7 @@ import org.robovm.llvm.PassManager;
 import org.robovm.llvm.Target;
 import org.robovm.llvm.TargetMachine;
 import org.robovm.llvm.binding.CodeGenFileType;
+import org.robovm.llvm.binding.RelocMode;
 
 /**
  *
@@ -501,7 +502,8 @@ public class Linker {
 
                 String triple = config.getTriple();
                 Target target = Target.lookupTarget(triple);
-                try (TargetMachine targetMachine = target.createTargetMachine(triple)) {
+                try (TargetMachine targetMachine = target.createTargetMachine(
+                        triple, null, null, null, RelocMode.RelocPIC, null)) {
                     targetMachine.setAsmVerbosityDefault(true);
                     targetMachine.setFunctionSections(true);
                     targetMachine.setDataSections(true);

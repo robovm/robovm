@@ -13,6 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#if defined(LINUX)
+#   define _GNU_SOURCE // Required on Linux to get dladdr() support
+#endif
+
 #include <robovm.h>
 #include <string.h>
 #include <stdio.h>

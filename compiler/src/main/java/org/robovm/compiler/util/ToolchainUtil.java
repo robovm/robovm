@@ -298,6 +298,13 @@ public class ToolchainUtil {
         new Executor(Logger.NULL_LOGGER, getLipo()).args(args).exec();
     }
     
+    public static String lipoInfo(Config config, File inFile) throws IOException {
+        List<Object> args = new ArrayList<>();
+        args.add("-info");
+        args.add(inFile);        
+        return new Executor(Logger.NULL_LOGGER, getLipo()).args(args).execCapture();
+    }
+    
     public static String file(File file) throws IOException {
         return new Executor(Logger.NULL_LOGGER, getFile()).args(file).execCapture();
     }

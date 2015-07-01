@@ -32,6 +32,8 @@ import org.robovm.rt.bro.annotation.MarshalsPointer;
 @Library("objc")
 public final class ObjCClass extends ObjCObject {
     
+    private static final String OBJC_PROXY_CLASS_SUFFIX = "$ObjCProxy";
+    private static final int OBJC_PROXY_CLASS_SUFFIX_LENGTH = OBJC_PROXY_CLASS_SUFFIX.length();
     private static final Map<Class<? extends ObjCObject>, ObjCClass> typeToClass = new HashMap<Class<? extends ObjCObject>, ObjCClass>();
     private static final Map<String, ObjCClass> nameToClass = new HashMap<String, ObjCClass>();
     private static final Map<String, Class<? extends ObjCObject>> allNativeClasses = new HashMap<>();
@@ -71,14 +73,14 @@ public final class ObjCClass extends ObjCObject {
             if (isObjCProxy(cls)) {
                 // Map protocol interface names to ObjC protocol proxy classes
                 String name = cls.getName();
-                String protocolName = name.substring(0, name.length() - 10);
+                String protocolName = name.substring(0, name.length() - OBJC_PROXY_CLASS_SUFFIX_LENGTH);
                 allObjCProxyClasses.put(protocolName, cls);
             }
         }
     }
 
     static boolean isObjCProxy(Class<?> cls) {
-        return (cls.getModifiers() & ACC_SYNTHETIC) > 0 && cls.getName().endsWith("$ObjCProxy");
+        return (cls.getModifiers() & ACC_SYNTHETIC) > 0 && cls.getName().endsWith(OBJC_PROXY_CLASS_SUFFIX);
     }
     
     public static class Marshaler {

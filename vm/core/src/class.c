@@ -1248,8 +1248,10 @@ void rvmInitialize(Env* env, Class* clazz) {
 
 Object* rvmAllocateObject(Env* env, Class* clazz) {
     if (CLASS_IS_ABSTRACT(clazz) || CLASS_IS_INTERFACE(clazz)) {
-        // TODO: Message
-        rvmThrowNew(env, java_lang_InstantiationException, "");
+        rvmThrowNewf(env, java_lang_InstantiationException,
+             "Cannot allocate an instance of %s %s",
+             CLASS_IS_INTERFACE(clazz) ? "interface" : "abstract class",
+             clazz->name);
         return NULL;
     }
     if (!CLASS_IS_STATE_INITIALIZED(clazz)) {

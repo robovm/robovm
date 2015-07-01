@@ -210,14 +210,14 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
     }
 
     private static void copyAnnotations(SootMethod fromMethod, SootMethod toMethod, boolean extensions) {
-        Annotations.copyAnnotations(fromMethod, toMethod, Visibility.RuntimeVisible);
+        Annotations.copyAnnotations(fromMethod, toMethod, Visibility.Any);
         if (extensions) {
-            copyParameterAnnotations(fromMethod, toMethod, 0, 1, 0, Visibility.RuntimeVisible);
+            copyParameterAnnotations(fromMethod, toMethod, 0, 1, 0, Visibility.Any);
             if (fromMethod.getParameterCount() > 1) {
-                copyParameterAnnotations(fromMethod, toMethod, 1, fromMethod.getParameterCount(), 1, Visibility.RuntimeVisible);
+                copyParameterAnnotations(fromMethod, toMethod, 1, fromMethod.getParameterCount(), 1, Visibility.Any);
             }
         } else {
-            copyParameterAnnotations(fromMethod, toMethod, 0, fromMethod.getParameterCount(), 2, Visibility.RuntimeVisible);
+            copyParameterAnnotations(fromMethod, toMethod, 0, fromMethod.getParameterCount(), 2, Visibility.Any);
         }
     }
 

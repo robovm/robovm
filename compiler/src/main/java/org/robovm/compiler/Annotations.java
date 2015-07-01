@@ -412,10 +412,13 @@ public class Annotations {
                 ArrayList<VisibilityAnnotationTag> l = 
                         ((VisibilityParameterAnnotationTag) tag).getVisibilityAnnotations();
                 if (l != null && paramIndex < l.size()) {
-                    for (Iterator<AnnotationTag> it = l.get(paramIndex).getAnnotations().iterator(); it.hasNext();) {
-                        AnnotationTag annoTag = it.next();
-                        if (annoTag.getType().equals(annotationType)) {
-                            it.remove();
+                    ArrayList<AnnotationTag> annotations = l.get(paramIndex).getAnnotations();
+                    if (annotations != null) {
+                        for (Iterator<AnnotationTag> it = annotations.iterator(); it.hasNext();) {
+                            AnnotationTag annoTag = it.next();
+                            if (annoTag.getType().equals(annotationType)) {
+                                it.remove();
+                            }
                         }
                     }
                 }

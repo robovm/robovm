@@ -914,6 +914,10 @@ public class Config {
                 File dir = new File(System.getenv("ROBOVM_DEV_ROOT"));
                 return validateDevRootDir(dir);
             }
+            if (System.getProperty("ROBOVM_DEV_ROOT") != null) {
+                File dir = new File(System.getProperty("ROBOVM_DEV_ROOT"));
+                return validateDevRootDir(dir);
+            }
 
             if (System.getenv("ROBOVM_HOME") != null) {
                 File dir = new File(System.getenv("ROBOVM_HOME"));

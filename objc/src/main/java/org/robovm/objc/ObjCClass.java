@@ -296,7 +296,7 @@ public final class ObjCClass extends ObjCObject {
         }
         ObjCObject.ObjectOwnershipHelper.registerClass(handle);
         ObjCRuntime.objc_registerClassPair(handle);                                  
-        return new ObjCClass(handle, type, name, true);
+        return new ObjCClass(handle, type, name, !isObjCProxy(type));
     }
     
     private static Map<String, Method> getCallbacks(Class<?> type) {

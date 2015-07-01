@@ -187,6 +187,11 @@ public class CustomClassTest {
         NSObjectProxyProtocol description = pr.performSelector2(Selector.register("description"));
         assertSame(objcProxyCls, description.getClass());
         assertEquals(((NativeObject) description).as(NSObject.class).description(), description.toString());
+
+        // Make sure the proxy class isn't treated as a custom class
+        @SuppressWarnings("unchecked")
+        ObjCClass objcClass = ObjCClass.getByType((Class<? extends ObjCObject>) objcProxyCls);
+        assertFalse(objcClass.isCustom());
     }
 
     private Set<String> getMethodNames(Class<?> c) {

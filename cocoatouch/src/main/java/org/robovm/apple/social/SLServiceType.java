@@ -65,7 +65,7 @@ import org.robovm.apple.accounts.*;
         @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static List<SLServiceType> toObject(Class<? extends NSObject> cls, long handle, long flags) {
-            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(NSArray.class, handle, flags);
             if (o == null) {
                 return null;
             }

@@ -61,7 +61,7 @@ import org.robovm.apple.coregraphics.*;
     public static class AsListMarshaler {
         @MarshalsPointer
         public static List<CGImagePropertyExifData> toObject(Class<? extends CFType> cls, long handle, long flags) {
-            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            CFArray o = (CFArray) CFType.Marshaler.toObject(CFArray.class, handle, flags);
             if (o == null) {
                 return null;
             }

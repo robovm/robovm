@@ -69,13 +69,20 @@ import org.robovm.apple.dispatch.*;
     public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getVolatileDomainNames();
     /*</properties>*/
     /*<members>*//*</members>*/
+    public int getInt(String defaultName) {
+        return (int) getLong(defaultName);
+    }
+    
     public void put(String defaultName, NSObject value) {
         setObject(value, defaultName);
     }
     public void put(String defaultName, String value) {
         setObject(new NSString(value), defaultName);
     }
-    public void put(String defaultName, @MachineSizedSInt long value) {
+    public void put(String defaultName, int value) {
+        setInteger(value, defaultName);
+    }
+    public void put(String defaultName, long value) {
         setInteger(value, defaultName);
     }
     public void put(String defaultName, float value) {
@@ -143,7 +150,7 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "stringArrayForKey:")
     public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getStringArray(String defaultName);
     @Method(selector = "integerForKey:")
-    public native @MachineSizedSInt long getInteger(String defaultName);
+    public native @MachineSizedSInt long getLong(String defaultName);
     @Method(selector = "floatForKey:")
     public native float getFloat(String defaultName);
     @Method(selector = "doubleForKey:")

@@ -67,7 +67,7 @@ import org.robovm.apple.corelocation.*;
         @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static List<UIFontWeight> toObject(Class<? extends NSObject> cls, long handle, long flags) {
-            NSArray<NSNumber> o = (NSArray<NSNumber>) NSObject.Marshaler.toObject(cls, handle, flags);
+            NSArray<NSNumber> o = (NSArray<NSNumber>) NSObject.Marshaler.toObject(NSArray.class, handle, flags);
             if (o == null) {
                 return null;
             }

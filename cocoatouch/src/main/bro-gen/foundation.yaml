@@ -3637,7 +3637,7 @@ classes:
                 name: getStringArray
                 return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-integerForKey:':
-                name: getInteger
+                name: getLong
             '-floatForKey:':
                 name: getFloat
             '-doubleForKey:':

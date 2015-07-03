@@ -44,7 +44,7 @@ import org.robovm.apple.uikit.*;
     public static class AsListMarshaler {
         @MarshalsPointer
         public static List<?> toObject(Class<? extends CFType> cls, long handle, long flags) {
-            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            CFArray o = (CFArray) CFType.Marshaler.toObject(CFArray.class, handle, flags);
             if (o == null) {
                 return null;
             }

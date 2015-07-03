@@ -501,10 +501,14 @@ jboolean initGC(Options* options) {
 
 void gcRegisterCurrentThread() {
     struct GC_stack_base stackBase;
-    if (!GC_thread_is_registered()) {
-        assert(GC_get_stack_base(&stackBase) == GC_SUCCESS);
-        assert(GC_register_my_thread(&stackBase) == GC_SUCCESS);
+    if (GC_thread_is_registered()) {
+        // Always deregister the current thread to prevent a situation where the
+        // thread is registered with the GC yet the GC's thread local alloc TLS
+        // has been cleared (see #1025).
+        GC_unregister_my_thread();
     }
+    assert(GC_get_stack_base(&stackBase) == GC_SUCCESS);
+    assert(GC_register_my_thread(&stackBase) == GC_SUCCESS);
 }
 
 void gcUnregisterCurrentThread() {

@@ -89,6 +89,11 @@
     </dependency>
     <dependency>
       <groupId>org.robovm</groupId>
+      <artifactId>robovm-soot</artifactId>
+      <version>2.5.0-1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.robovm</groupId>
       <artifactId>robovm-rt</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>

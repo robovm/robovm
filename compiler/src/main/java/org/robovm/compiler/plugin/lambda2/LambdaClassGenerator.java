@@ -21,7 +21,10 @@ public class LambdaClassGenerator {
         ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
 
         String packageName = caller.getPackageName().replace('.', '/');
-        String lambdaClassName = packageName + "/" + caller.getShortName() + "$$Lambda$" + (counter++);
+        if(!packageName.isEmpty()) {
+            packageName += "/";
+        }
+        String lambdaClassName = packageName + caller.getShortName() + "$$Lambda$" + (counter++);
         String functionalInterface = invokedType.returnType().toString().replace('.', '/');
 
         cw.visit(CLASS_VERSION,
@@ -49,7 +52,7 @@ public class LambdaClassGenerator {
     }
 
     private void createConstructor(ClassWriter cw) {
-        MethodVisitor mv = cw.visitMethod(ACC_PRIVATE, "<init>", "()V", null, null);
+        MethodVisitor mv = cw.visitMethod(0, "<init>", "()V", null, null);
         mv.visitCode();
         mv.visitVarInsn(ALOAD, 0);
         mv.visitMethodInsn(INVOKESPECIAL, "java/lang/Object", "<init>", "()V", false);

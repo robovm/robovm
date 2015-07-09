@@ -16,6 +16,7 @@ import org.robovm.compiler.plugin.AbstractCompilerPlugin;
 import org.robovm.compiler.plugin.lambda.java.lang.invoke.LambdaConversionException;
 import org.robovm.compiler.plugin.lambda.java.lang.invoke.LambdaMetafactory;
 
+import org.robovm.compiler.plugin.lambda2.LambdaClassGenerator;
 import soot.Body;
 import soot.Local;
 import soot.Modifier;
@@ -118,6 +119,7 @@ public class LambdaPlugin extends AbstractCompilerPlugin {
                                 callSite = altMetafactory(caller, invokedName, invokedType, samMethodType, implMethod,
                                         instantiatedMethodType, bsmArgs);
                             } else {
+                                new LambdaClassGenerator().generate(sootClass, expr.getMethodRef().name(), expr.getMethodRef(), (SootMethodType)bsmArgs.get(0), (SootMethodHandle)bsmArgs.get(1), (SootMethodType)bsmArgs.get(2));
                                 callSite = LambdaMetafactory.metafactory(caller, invokedName, invokedType, samMethodType, implMethod, instantiatedMethodType);
                             }
         

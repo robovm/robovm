@@ -32,7 +32,8 @@ import org.junit.Test;
 import org.robovm.compiler.config.Config.Builder;
 import org.robovm.compiler.config.Config.Home;
 import org.robovm.compiler.config.Config.Lib;
-import org.robovm.compiler.config.Config.TargetType;
+import org.robovm.compiler.target.ConsoleTarget;
+import org.robovm.compiler.target.ios.IOSTarget;
 import org.zeroturnaround.zip.ZipUtil;
 
 /**
@@ -155,7 +156,7 @@ public class ConfigTest {
         builder.iosInfoPList(new File("Info.plist"));
         builder.iosEntitlementsPList(new File("entitlements.plist"));
         builder.iosResourceRulesPList(new File(tmp, "resourcerules.plist"));
-        builder.targetType(TargetType.ios);
+        builder.targetType(IOSTarget.TYPE);
         
         StringWriter out = new StringWriter();
         builder.write(out, wd);
@@ -228,7 +229,7 @@ public class ConfigTest {
         builder.cacheDir(cacheDir);
         builder.os(OS.macosx);
         builder.arch(Arch.x86);
-        builder.targetType(TargetType.console);
+        builder.targetType(ConsoleTarget.TYPE);
         builder.mainClass("Main");
         builder.addClasspathEntry(p1);
         builder.addClasspathEntry(p2);
@@ -304,7 +305,7 @@ public class ConfigTest {
         builder.cacheDir(cacheDir);
         builder.os(OS.macosx);
         builder.arch(Arch.x86);
-        builder.targetType(TargetType.console);
+        builder.targetType(ConsoleTarget.TYPE);
         builder.mainClass("Main");
         builder.addBootClasspathEntry(new File(tmpDir, "bcp1"));
         builder.addBootClasspathEntry(new File(tmpDir, "bcp2"));

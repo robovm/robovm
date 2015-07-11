@@ -51,7 +51,6 @@ import org.robovm.compiler.clazz.Clazzes;
 import org.robovm.compiler.clazz.Path;
 import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
-import org.robovm.compiler.config.Config.TargetType;
 import org.robovm.compiler.config.Config.TreeShakerMode;
 import org.robovm.compiler.config.OS;
 import org.robovm.compiler.config.Resource;
@@ -560,7 +559,7 @@ public class AppCompiler {
 //                    builder.cpu(args[++i]);
                 } else if ("-target".equals(args[i])) {
                     String s = args[++i];
-                    builder.targetType("auto".equals(s) ? null : TargetType.valueOf(s));
+                    builder.targetType("auto".equals(s) ? null : s);
                 } else if ("-treeshaker".equals(args[i])) {
                     String s = args[++i];
                     builder.treeShakerMode(TreeShakerMode.valueOf(s));

@@ -34,6 +34,8 @@ import org.robovm.compiler.util.io.OpenOnWriteFileOutputStream;
  * Console {@link Target} implementation.
  */
 public class ConsoleTarget extends AbstractTarget {
+    public static final String TYPE = "console";
+
     private OS os;
     private Arch arch;
 

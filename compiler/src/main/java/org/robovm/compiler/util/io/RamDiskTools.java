@@ -30,8 +30,6 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
-import org.robovm.compiler.config.Config.Builder;
-import org.robovm.compiler.config.Config.TargetType;
 import org.robovm.compiler.config.OS;
 import org.robovm.compiler.log.Logger;
 import org.robovm.compiler.util.Executor;
@@ -52,13 +50,24 @@ public class RamDiskTools {
     private static final String ROBOVM_RAM_DISK_PATH = "/Volumes/RoboVM RAM Disk";
     private static final long MIN_FREE_SPACE = 1024 * 1024 * 400;
 
+    private File newCacheDir;
+    private File newTmpDir;
+
+    public File getCacheDir() {
+        return newCacheDir;
+    }
+
+    public File getTmpDir() {
+        return newTmpDir;
+    }
+
     /**
-     * Checks if a RAM disk is available, pruns it if necessary and rewires the
-     * {@link Builder} accordingly.
-     * 
-     * @param builder
+     * Checks if a RAM disk is available and prunes it if necessary.
      */
-    public void setupRamDisk(Config.Builder builder, Config config) {
+    public void setupRamDisk(Config config, File cacheDir, File tmpDir) {
+        this.newCacheDir = cacheDir;
+        this.newTmpDir = tmpDir;
+
         if (OS.getDefaultOS() != OS.macosx) {
             return;
         }
@@ -88,8 +97,6 @@ public class RamDiskTools {
             return;
         }
 
-        File cacheDir = config.getCacheDir();
-        File tmpDir = config.getTmpDir();
         try {
             FileStore store = Files.getFileStore(volume.toPath());
             if (store.getUsableSpace() < MIN_FREE_SPACE) {
@@ -112,12 +119,12 @@ public class RamDiskTools {
             }
             newTmpDir = new File(newTmpDir, tmpDir.getAbsolutePath());
             config.getLogger().debug("Using RAM disk at %s for cache and tmp directory", ROBOVM_RAM_DISK_PATH);
-            builder.cacheDir(newCacheDir);
-            builder.tmpDir(newTmpDir);
+            this.newCacheDir = newCacheDir;
+            this.newTmpDir = newTmpDir;
         } catch (Throwable t) {
             config.getLogger().error("Couldn't setup RAM disk, using hard drive, %s", t.getMessage());
-            builder.cacheDir(cacheDir);
-            builder.tmpDir(tmpDir);
+            this.newCacheDir = cacheDir;
+            this.newTmpDir = tmpDir;
         }
     }
 
@@ -136,27 +143,8 @@ public class RamDiskTools {
     }
 
     private void cleanCache(FileStore store, File volume, Config config) throws IOException {
-        // Figur out the cache dir for our current confi. We need to reconstruct
-        // os/arch ourselves as they may not have been set on the config yet.
-        // calling build on the config before we do this doesn't work
-        // either because we can not set the cache/tmpDir after that.
-        TargetType currTarget = config.getTargetType();
         OS currOs = config.getOs();
-        if (currOs == null) {
-            if (currTarget != null) {
-                currOs = currTarget == TargetType.console ? OS.getDefaultOS() : OS.ios;
-            } else {
-                currOs = OS.getDefaultOS();
-            }
-        }
         Arch currArch = config.getArch();
-        if (currArch == null) {
-            if (currTarget != null) {
-                currArch = currTarget == TargetType.console ? Arch.getDefaultArch() : Arch.thumbv7;
-            } else {
-                currArch = Arch.getDefaultArch();
-            }
-        }        
         CacheDir currCacheDir = constructCacheDir(volume, currOs, currArch, config.isDebug());
 
         // Enumerate all directories that are not our current cache

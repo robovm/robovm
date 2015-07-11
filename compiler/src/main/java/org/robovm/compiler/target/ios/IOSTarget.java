@@ -80,6 +80,8 @@ import com.dd.plist.XMLPropertyListParser;
  *
  */
 public class IOSTarget extends AbstractTarget {
+    public static final String TYPE = "ios";
+
     private static File iosSimPath;
 
     private Arch arch;

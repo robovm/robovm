@@ -108,10 +108,6 @@ public class Config {
         full
     };
 
-    public enum TargetType {
-        console, ios
-    };
-
     public enum TreeShakerMode {
         none, conservative, aggressive
     };
@@ -159,7 +155,7 @@ public class Config {
     @ElementList(required = false, entry = "argument")
     private ArrayList<String> pluginArguments;
     @Element(required = false, name = "target")
-    private TargetType targetType;
+    private String targetType;
     @Element(required = false, name = "treeShaker")
     private TreeShakerMode treeShakerMode;
 
@@ -466,7 +462,7 @@ public class Config {
         return target;
     }
 
-    public TargetType getTargetType() {
+    public String getTargetType() {
         return targetType;
     }
 
@@ -811,9 +807,9 @@ public class Config {
             installDir.mkdirs();
         }
 
-        if (targetType == TargetType.console) {
+        if (ConsoleTarget.TYPE.equals(targetType)) {
             target = new ConsoleTarget();
-        } else if (targetType == TargetType.ios) {
+        } else if (IOSTarget.TYPE.equals(targetType)) {
             target = new IOSTarget();
         } else {
             // Auto
@@ -1295,7 +1291,7 @@ public class Config {
             return this;
         }
 
-        public Builder targetType(TargetType targetType) {
+        public Builder targetType(String targetType) {
             config.targetType = targetType;
             return this;
         }

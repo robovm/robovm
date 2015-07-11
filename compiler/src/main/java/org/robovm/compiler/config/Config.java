@@ -832,11 +832,6 @@ public class Config {
         osArchDepLibDir = new File(new File(home.libVmDir, os.toString()),
                 arch.toString());
 
-        File osDir = new File(cacheDir, os.toString());
-        File archDir = new File(osDir, arch.toString());
-        osArchCacheDir = new File(archDir, debug ? "debug" : "release");
-        osArchCacheDir.mkdirs();
-
         if (treeShakerMode != null && treeShakerMode != TreeShakerMode.none 
                 && os.getFamily() == Family.darwin && arch == Arch.x86) {
 
@@ -847,6 +842,16 @@ public class Config {
             treeShakerMode = TreeShakerMode.none;
         }
         dependencyGraph = new DependencyGraph(getTreeShakerMode());
+
+        RamDiskTools ramDiskTools = new RamDiskTools();
+        ramDiskTools.setupRamDisk(this, this.cacheDir, this.tmpDir);
+        this.cacheDir = ramDiskTools.getCacheDir();
+        this.tmpDir = ramDiskTools.getTmpDir();
+
+        File osDir = new File(cacheDir, os.toString());
+        File archDir = new File(osDir, arch.toString());
+        osArchCacheDir = new File(archDir, debug ? "debug" : "release");
+        osArchCacheDir.mkdirs();
 
         this.clazzes = new Clazzes(this, realBootclasspath, classpath);
 
@@ -1395,7 +1400,6 @@ public class Config {
                 plugin.beforeConfig(this, config);
             }
 
-            new RamDiskTools().setupRamDisk(this, config);
             return config.build();
         }
 

@@ -363,7 +363,7 @@ public class IOSTarget extends AbstractTarget {
                 copyProvisioningProfile(provisioningProfile, installDir);
                 boolean getTaskAllow = provisioningProfile.getType() == Type.Development;
                 signFrameworks(installDir, getTaskAllow);
-                codesign(signIdentity, getOrCreateEntitlementsPList(getTaskAllow), installDir);
+                codesign(signIdentity, getOrCreateEntitlementsPList(getTaskAllow, getBundleId()), installDir);
                 // For some odd reason there needs to be a symbolic link in the
                 // root of
                 // the app bundle named CodeResources pointing at
@@ -393,12 +393,12 @@ public class IOSTarget extends AbstractTarget {
             if (config.isIosSkipSigning()) {
                 config.getLogger().warn("Skiping code signing. The resulting app will "
                         + "be unsigned and will not run on unjailbroken devices");
-                ldid(getOrCreateEntitlementsPList(true), appDir);
+                ldid(getOrCreateEntitlementsPList(true, getBundleId()), appDir);
             } else {
                 copyProvisioningProfile(provisioningProfile, appDir);
                 signFrameworks(appDir, true);
                 // sign the app
-                codesign(signIdentity, getOrCreateEntitlementsPList(true), appDir);
+                codesign(signIdentity, getOrCreateEntitlementsPList(true, getBundleId()), appDir);
             }
         }
     }
@@ -410,17 +410,32 @@ public class IOSTarget extends AbstractTarget {
             // Sign swift rt libs
             for (File swiftLib : frameworksDir.listFiles()) {
                 if (swiftLib.getName().endsWith(".dylib")) {
-                    codesign(signIdentity, getOrCreateEntitlementsPList(getTaskAllow), swiftLib);
+                    codesign(signIdentity, getOrCreateEntitlementsPList(getTaskAllow, getBundleId()), swiftLib);
                 }
             }
 
             // sign embedded frameworks
             for (File framework : frameworksDir.listFiles()) {
                 if (framework.isDirectory() && framework.getName().endsWith(".framework")) {
-                    codesign(signIdentity, getOrCreateEntitlementsPList(getTaskAllow), framework);
+                    codesign(signIdentity, getOrCreateEntitlementsPList(getTaskAllow, getFrameworkBundleId(framework)), framework);
                 }
             }
         }
+    }
+
+    private String getFrameworkBundleId(File frameworkDir) {
+        File frameworkInfoPListFile = new File(frameworkDir, "Info.plist");
+        if (!frameworkInfoPListFile.exists()){
+            throw new Error(String.format("Couldn't find Info.plist in framework %s", frameworkDir));
+        }
+
+        InfoPList frameworkInfoPList = new InfoPList(frameworkInfoPListFile);
+        String bundleIdentifier = frameworkInfoPList.getBundleIdentifier();
+        if (bundleIdentifier == null){
+            throw new Error(String.format("Couldn't find Bundle Identifier in Info.plist in framework %s", frameworkDir));
+        }
+
+        return bundleIdentifier;
     }
 
     private void codesign(SigningIdentity identity, File entitlementsPList, File appDir) throws IOException {
@@ -465,7 +480,7 @@ public class IOSTarget extends AbstractTarget {
         }
     }
 
-    private File getOrCreateEntitlementsPList(boolean getTaskAllow) throws IOException {
+    private File getOrCreateEntitlementsPList(boolean getTaskAllow, String bundleId) throws IOException {
         try {
             File destFile = new File(config.getTmpDir(), "Entitlements.plist");
             NSDictionary dict = null;
@@ -482,7 +497,7 @@ public class IOSTarget extends AbstractTarget {
                         dict.put(key, profileEntitlements.objectForKey(key));
                     }
                 }
-                dict.put("application-identifier", provisioningProfile.getAppIdPrefix() + "." + getBundleId());
+                dict.put("application-identifier", provisioningProfile.getAppIdPrefix() + "." + bundleId);
             }
             dict.put("get-task-allow", getTaskAllow);
             PropertyListParser.saveAsXML(dict, destFile);

@@ -430,6 +430,7 @@ public class IOSTarget extends AbstractTarget {
         }
 
         InfoPList frameworkInfoPList = new InfoPList(frameworkInfoPListFile);
+        frameworkInfoPList.parse(new Properties());
         String bundleIdentifier = frameworkInfoPList.getBundleIdentifier();
         if (bundleIdentifier == null){
             throw new Error(String.format("Couldn't find Bundle Identifier in Info.plist in framework %s", frameworkDir));

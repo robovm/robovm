@@ -46,9 +46,18 @@ public class LambdaClassGenerator {
         MethodVisitor mv = cw.visitMethod(ACC_PUBLIC, invokedType.name(), descriptor, null, null);
         mv.visitCode();
         mv.visitMethodInsn(INVOKESTATIC, implClassName, implMethod.getMethodRef().name(), descriptor, false);
-        mv.visitInsn(RETURN);
+
+        createForwardingMethodReturn(mv, samMethodType, implMethod, instantiatedMethodType);
         mv.visitMaxs(-1, -1);
         mv.visitEnd();
+    }
+
+    private void createForwardingMethodReturn(MethodVisitor mv, SootMethodType samMethodType, SootMethodHandle implMethod, SootMethodType instantiatedMethodType) {
+        if(samMethodType.getReturnType().toString().equals("void")) {
+            mv.visitInsn(RETURN);
+        } else {
+
+        }
     }
 
     private void createConstructor(ClassWriter cw) {

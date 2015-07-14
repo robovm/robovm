@@ -362,6 +362,7 @@ public class IOSTarget extends AbstractTarget {
                 // Copy the provisioning profile
                 copyProvisioningProfile(provisioningProfile, installDir);
                 boolean getTaskAllow = provisioningProfile.getType() == Type.Development;
+                signFrameworks(installDir, getTaskAllow);
                 codesign(signIdentity, getOrCreateEntitlementsPList(getTaskAllow), installDir);
                 // For some odd reason there needs to be a symbolic link in the
                 // root of
@@ -395,25 +396,29 @@ public class IOSTarget extends AbstractTarget {
                 ldid(getOrCreateEntitlementsPList(true), appDir);
             } else {
                 copyProvisioningProfile(provisioningProfile, appDir);
-                // sign dynamic frameworks first
-                File frameworksDir = new File(appDir, "Frameworks");
-                if (frameworksDir.exists() && frameworksDir.isDirectory()) {
-                    // Sign swift rt libs
-                    for (File swiftLib : frameworksDir.listFiles()) {
-                        if (swiftLib.getName().endsWith(".dylib")) {
-                            codesign(signIdentity, getOrCreateEntitlementsPList(true), swiftLib);
-                        }
-                    }
-
-                    // sign embedded frameworks
-                    for (File framework : frameworksDir.listFiles()) {
-                        if (framework.isDirectory() && framework.getName().endsWith(".framework")) {
-                            codesign(signIdentity, getOrCreateEntitlementsPList(true), framework);
-                        }
-                    }
-                }
+                signFrameworks(appDir, true);
                 // sign the app
                 codesign(signIdentity, getOrCreateEntitlementsPList(true), appDir);
+            }
+        }
+    }
+
+    private void signFrameworks(File appDir, boolean getTaskAllow) throws IOException {
+        // sign dynamic frameworks first
+        File frameworksDir = new File(appDir, "Frameworks");
+        if (frameworksDir.exists() && frameworksDir.isDirectory()) {
+            // Sign swift rt libs
+            for (File swiftLib : frameworksDir.listFiles()) {
+                if (swiftLib.getName().endsWith(".dylib")) {
+                    codesign(signIdentity, getOrCreateEntitlementsPList(getTaskAllow), swiftLib);
+                }
+            }
+
+            // sign embedded frameworks
+            for (File framework : frameworksDir.listFiles()) {
+                if (framework.isDirectory() && framework.getName().endsWith(".framework")) {
+                    codesign(signIdentity, getOrCreateEntitlementsPList(getTaskAllow), framework);
+                }
             }
         }
     }

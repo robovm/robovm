@@ -423,14 +423,18 @@ public class IOSTarget extends AbstractTarget {
         }
     }
 
-    private String getFrameworkBundleId(File frameworkDir) {
+    private String getFrameworkBundleId(File frameworkDir) throws IOException {
         File frameworkInfoPListFile = new File(frameworkDir, "Info.plist");
         if (!frameworkInfoPListFile.exists()){
             throw new Error(String.format("Couldn't find Info.plist in framework %s", frameworkDir));
         }
 
-        InfoPList frameworkInfoPList = new InfoPList(frameworkInfoPListFile);
+        File decompiledFrameworkInfoPListFile = new File(config.getTmpDir(), String.format("%s.%s", frameworkDir.getName(), "Info.plist"));
+        ToolchainUtil.decompileXml(config, frameworkInfoPListFile, decompiledFrameworkInfoPListFile);
+
+        InfoPList frameworkInfoPList = new InfoPList(decompiledFrameworkInfoPListFile);
         frameworkInfoPList.parse(new Properties());
+
         String bundleIdentifier = frameworkInfoPList.getBundleIdentifier();
         if (bundleIdentifier == null){
             throw new Error(String.format("Couldn't find Bundle Identifier in Info.plist in framework %s", frameworkDir));

@@ -27,12 +27,16 @@ import org.robovm.compiler.config.OS;
 
 public interface Target {
 
+    String getType();
+
     OS getOs();
     
     Arch getArch();
     
     String getInstallRelativeArchivePath(Path path);
 
+    boolean canLaunch();
+    
     boolean canLaunchInPlace();
 
     void build(List<File> objectFiles) throws IOException;

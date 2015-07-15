@@ -95,6 +95,10 @@ public class IOSTarget extends AbstractTarget {
 
     public IOSTarget() {}
 
+    public String getType() {
+        return TYPE;
+    }
+
     @Override
     public Arch getArch() {
         return arch;
@@ -363,7 +367,7 @@ public class IOSTarget extends AbstractTarget {
                 copyProvisioningProfile(provisioningProfile, installDir);
                 boolean getTaskAllow = provisioningProfile.getType() == Type.Development;
                 signFrameworks(installDir, getTaskAllow);
-                codesign(signIdentity, getOrCreateEntitlementsPList(getTaskAllow), installDir);
+                codesignApp(signIdentity, getOrCreateEntitlementsPList(getTaskAllow, getBundleId()), installDir);
                 // For some odd reason there needs to be a symbolic link in the
                 // root of
                 // the app bundle named CodeResources pointing at
@@ -393,12 +397,12 @@ public class IOSTarget extends AbstractTarget {
             if (config.isIosSkipSigning()) {
                 config.getLogger().warn("Skiping code signing. The resulting app will "
                         + "be unsigned and will not run on unjailbroken devices");
-                ldid(getOrCreateEntitlementsPList(true), appDir);
+                ldid(getOrCreateEntitlementsPList(true, getBundleId()), appDir);
             } else {
                 copyProvisioningProfile(provisioningProfile, appDir);
                 signFrameworks(appDir, true);
                 // sign the app
-                codesign(signIdentity, getOrCreateEntitlementsPList(true), appDir);
+                codesignApp(signIdentity, getOrCreateEntitlementsPList(true, getBundleId()), appDir);
             }
         }
     }
@@ -410,21 +414,21 @@ public class IOSTarget extends AbstractTarget {
             // Sign swift rt libs
             for (File swiftLib : frameworksDir.listFiles()) {
                 if (swiftLib.getName().endsWith(".dylib")) {
-                    codesign(signIdentity, getOrCreateEntitlementsPList(getTaskAllow), swiftLib);
+                    codesignFramework(signIdentity, swiftLib);
                 }
             }
 
             // sign embedded frameworks
             for (File framework : frameworksDir.listFiles()) {
                 if (framework.isDirectory() && framework.getName().endsWith(".framework")) {
-                    codesign(signIdentity, getOrCreateEntitlementsPList(getTaskAllow), framework);
+                    codesignFramework(signIdentity, framework);
                 }
             }
         }
     }
 
-    private void codesign(SigningIdentity identity, File entitlementsPList, File appDir) throws IOException {
-        config.getLogger().debug("Code signing using identity '%s' with fingerprint %s", identity.getName(),
+    private void codesignApp(SigningIdentity identity, File entitlementsPList, File appDir) throws IOException {
+        config.getLogger().debug("Code signing app using identity '%s' with fingerprint %s", identity.getName(),
                 identity.getFingerprint());
         List<Object> args = new ArrayList<Object>();
         args.add("-f");
@@ -435,6 +439,21 @@ public class IOSTarget extends AbstractTarget {
             args.add(entitlementsPList);
         }
         args.add(appDir);
+        new Executor(config.getLogger(), "codesign")
+                .addEnv("CODESIGN_ALLOCATE", ToolchainUtil.findXcodeCommand("codesign_allocate", "iphoneos"))
+                .args(args)
+                .exec();
+    }
+
+    private void codesignFramework(SigningIdentity identity, File frameworkDir) throws IOException {
+        config.getLogger().debug("Code signing framework using identity '%s' with fingerprint %s", identity.getName(),
+                identity.getFingerprint());
+        List<Object> args = new ArrayList<Object>();
+        args.add("-f");
+        args.add("-s");
+        args.add(identity.getFingerprint());
+        args.add("--preserve-metadata=identifier,entitlements,resource-rules");
+        args.add(frameworkDir);
         new Executor(config.getLogger(), "codesign")
                 .addEnv("CODESIGN_ALLOCATE", ToolchainUtil.findXcodeCommand("codesign_allocate", "iphoneos"))
                 .args(args)
@@ -465,7 +484,7 @@ public class IOSTarget extends AbstractTarget {
         }
     }
 
-    private File getOrCreateEntitlementsPList(boolean getTaskAllow) throws IOException {
+    private File getOrCreateEntitlementsPList(boolean getTaskAllow, String bundleId) throws IOException {
         try {
             File destFile = new File(config.getTmpDir(), "Entitlements.plist");
             NSDictionary dict = null;
@@ -482,7 +501,7 @@ public class IOSTarget extends AbstractTarget {
                         dict.put(key, profileEntitlements.objectForKey(key));
                     }
                 }
-                dict.put("application-identifier", provisioningProfile.getAppIdPrefix() + "." + getBundleId());
+                dict.put("application-identifier", provisioningProfile.getAppIdPrefix() + "." + bundleId);
             }
             dict.put("get-task-allow", getTaskAllow);
             PropertyListParser.saveAsXML(dict, destFile);

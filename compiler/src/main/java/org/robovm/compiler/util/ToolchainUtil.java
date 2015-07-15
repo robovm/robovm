@@ -273,7 +273,11 @@ public class ToolchainUtil {
     public static void compileStrings(Config config, File inFile, File outFile) throws IOException {
         new Executor(config.getLogger(), getPlutil()).args("-convert", "binary1", inFile, "-o", outFile).exec();
     }
-    
+
+    public static void decompileXml(Config config, File inFile, File outFile) throws IOException {
+        new Executor(config.getLogger(), getPlutil()).args("-convert", "xml1", inFile, "-o", outFile).exec();
+    }
+
     public static String nm(File file) throws IOException {
         return new Executor(Logger.NULL_LOGGER, getNm()).args(file.getAbsolutePath()).execCapture();
     }

@@ -42,6 +42,10 @@ public class ConsoleTarget extends AbstractTarget {
     public ConsoleTarget() {
     }
     
+    public String getType() {
+        return TYPE;
+    }
+    
     public OS getOs() {
         return os;
     }

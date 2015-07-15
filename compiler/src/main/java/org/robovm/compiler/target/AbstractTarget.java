@@ -283,8 +283,7 @@ public abstract class AbstractTarget implements Target {
                         @Override
                         public boolean processDir(Resource resource, File dir, File destDir) throws IOException {
                             return !(dir.getName().equals("Headers") || dir.getName().equals("PrivateHeaders")
-                                    || dir.getName().equals("Modules") || dir.getName()
-                                            .equals("_CodeSignature") || dir.getName().equals("Versions") || dir.getName()
+                                    || dir.getName().equals("Modules") || dir.getName().equals("Versions") || dir.getName()
                                     .equals("Documentation"));
                         }
     

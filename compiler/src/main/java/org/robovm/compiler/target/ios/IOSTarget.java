@@ -363,7 +363,7 @@ public class IOSTarget extends AbstractTarget {
                 copyProvisioningProfile(provisioningProfile, installDir);
                 boolean getTaskAllow = provisioningProfile.getType() == Type.Development;
                 signFrameworks(installDir, getTaskAllow);
-                codesign(signIdentity, getOrCreateEntitlementsPList(getTaskAllow, getBundleId()), installDir);
+                codesignApp(signIdentity, getOrCreateEntitlementsPList(getTaskAllow, getBundleId()), installDir);
                 // For some odd reason there needs to be a symbolic link in the
                 // root of
                 // the app bundle named CodeResources pointing at
@@ -398,7 +398,7 @@ public class IOSTarget extends AbstractTarget {
                 copyProvisioningProfile(provisioningProfile, appDir);
                 signFrameworks(appDir, true);
                 // sign the app
-                codesign(signIdentity, getOrCreateEntitlementsPList(true, getBundleId()), appDir);
+                codesignApp(signIdentity, getOrCreateEntitlementsPList(true, getBundleId()), appDir);
             }
         }
     }
@@ -410,41 +410,21 @@ public class IOSTarget extends AbstractTarget {
             // Sign swift rt libs
             for (File swiftLib : frameworksDir.listFiles()) {
                 if (swiftLib.getName().endsWith(".dylib")) {
-                    codesign(signIdentity, getOrCreateEntitlementsPList(getTaskAllow, getBundleId()), swiftLib);
+                    codesignFramework(signIdentity, swiftLib);
                 }
             }
 
             // sign embedded frameworks
             for (File framework : frameworksDir.listFiles()) {
                 if (framework.isDirectory() && framework.getName().endsWith(".framework")) {
-                    codesign(signIdentity, getOrCreateEntitlementsPList(getTaskAllow, getFrameworkBundleId(framework)), framework);
+                    codesignFramework(signIdentity, framework);
                 }
             }
         }
     }
 
-    private String getFrameworkBundleId(File frameworkDir) throws IOException {
-        File frameworkInfoPListFile = new File(frameworkDir, "Info.plist");
-        if (!frameworkInfoPListFile.exists()){
-            throw new Error(String.format("Couldn't find Info.plist in framework %s", frameworkDir));
-        }
-
-        File decompiledFrameworkInfoPListFile = new File(config.getTmpDir(), String.format("%s.%s", frameworkDir.getName(), "Info.plist"));
-        ToolchainUtil.decompileXml(config, frameworkInfoPListFile, decompiledFrameworkInfoPListFile);
-
-        InfoPList frameworkInfoPList = new InfoPList(decompiledFrameworkInfoPListFile);
-        frameworkInfoPList.parse(new Properties());
-
-        String bundleIdentifier = frameworkInfoPList.getBundleIdentifier();
-        if (bundleIdentifier == null){
-            throw new Error(String.format("Couldn't find Bundle Identifier in Info.plist in framework %s", frameworkDir));
-        }
-
-        return bundleIdentifier;
-    }
-
-    private void codesign(SigningIdentity identity, File entitlementsPList, File appDir) throws IOException {
-        config.getLogger().debug("Code signing using identity '%s' with fingerprint %s", identity.getName(),
+    private void codesignApp(SigningIdentity identity, File entitlementsPList, File appDir) throws IOException {
+        config.getLogger().debug("Code signing app using identity '%s' with fingerprint %s", identity.getName(),
                 identity.getFingerprint());
         List<Object> args = new ArrayList<Object>();
         args.add("-f");
@@ -455,6 +435,21 @@ public class IOSTarget extends AbstractTarget {
             args.add(entitlementsPList);
         }
         args.add(appDir);
+        new Executor(config.getLogger(), "codesign")
+                .addEnv("CODESIGN_ALLOCATE", ToolchainUtil.findXcodeCommand("codesign_allocate", "iphoneos"))
+                .args(args)
+                .exec();
+    }
+
+    private void codesignFramework(SigningIdentity identity, File frameworkDir) throws IOException {
+        config.getLogger().debug("Code signing framework using identity '%s' with fingerprint %s", identity.getName(),
+                identity.getFingerprint());
+        List<Object> args = new ArrayList<Object>();
+        args.add("-f");
+        args.add("-s");
+        args.add(identity.getFingerprint());
+        args.add("--preserve-metadata=identifier,entitlements,resource-rules");
+        args.add(frameworkDir);
         new Executor(config.getLogger(), "codesign")
                 .addEnv("CODESIGN_ALLOCATE", ToolchainUtil.findXcodeCommand("codesign_allocate", "iphoneos"))
                 .args(args)

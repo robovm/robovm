@@ -1,0 +1,6 @@
+-applymapping mapping.flags
+
+-keepattributes
+-keep class * {
+  *;
+}

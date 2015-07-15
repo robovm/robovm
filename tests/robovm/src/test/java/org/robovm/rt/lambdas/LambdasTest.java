@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.rt;
+package org.robovm.rt.lambdas;
 
 import static org.junit.Assert.*;
 

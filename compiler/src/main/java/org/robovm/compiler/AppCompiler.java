@@ -44,6 +44,7 @@ import java.util.concurrent.TimeUnit;
 import org.apache.commons.exec.ExecuteException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.robovm.compiler.clazz.Clazz;
@@ -58,6 +59,8 @@ import org.robovm.compiler.log.ConsoleLogger;
 import org.robovm.compiler.plugin.LaunchPlugin;
 import org.robovm.compiler.plugin.Plugin;
 import org.robovm.compiler.plugin.PluginArgument;
+import org.robovm.compiler.plugin.TargetPlugin;
+import org.robovm.compiler.target.ConsoleTarget;
 import org.robovm.compiler.target.LaunchParameters;
 import org.robovm.compiler.target.ios.DeviceType;
 import org.robovm.compiler.target.ios.IOSSimulatorLaunchParameters;
@@ -827,6 +830,14 @@ public class AppCompiler {
         if (errorMessage != null) {
             System.err.format("robovm: %s\n", errorMessage);
         }
+        List<String> targets = new ArrayList<>();
+        targets.add(ConsoleTarget.TYPE);
+        targets.add(IOSTarget.TYPE);
+        for (Plugin plugin : plugins) {
+            if (plugin instanceof TargetPlugin) {
+                targets.add(((TargetPlugin) plugin).getTarget().getType());
+            }
+        }
         // @formatter:off 
         System.err.println("Usage: robovm [-options] class [run-args]");
         System.err.println("   or  robovm [-options] -jar jarfile [run-args]");
@@ -866,7 +877,8 @@ public class AppCompiler {
                          + "                        'auto' which means use the LLVM default.");
         System.err.println("  -cpu <name>           The name of the LLVM cpu to compile for. The LLVM default\n" 
                          + "                        is used if not specified. Use llc to determine allowed values.");
-        System.err.println("  -target <name>        The target to build for. Either 'auto', 'console' or 'ios'.\n" 
+        System.err.println("  -target <name>        The target to build for. One of:\n" 
+                         + "                          'auto', '" + StringUtils.join(targets, "', '") + "'\n" 
                          + "                        The default is 'auto' which means use -os to decide.");
         System.err.println("  -forcelinkclasses <list>\n" 
                          + "                        : separated list of class patterns matching\n" 

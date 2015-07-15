@@ -95,6 +95,10 @@ public class IOSTarget extends AbstractTarget {
 
     public IOSTarget() {}
 
+    public String getType() {
+        return TYPE;
+    }
+
     @Override
     public Arch getArch() {
         return arch;

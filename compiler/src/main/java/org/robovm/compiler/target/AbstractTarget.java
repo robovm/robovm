@@ -67,10 +67,15 @@ public abstract class AbstractTarget implements Target {
     }
     
     @Override
+    public boolean canLaunch() {
+        return false;
+    }
+
+    @Override
     public LaunchParameters createLaunchParameters() {
         return new LaunchParameters();
     }
-    
+
     public String getInstallRelativeArchivePath(Path path) {
         String name = config.getArchiveName(path);
         if (path.isInBootClasspath()) {
@@ -417,7 +422,9 @@ public abstract class AbstractTarget implements Target {
         return createLauncher(launchParameters).execAsync();
     }
     
-    protected abstract Launcher createLauncher(LaunchParameters launchParameters) throws IOException;
+    protected Launcher createLauncher(LaunchParameters launchParameters) throws IOException {
+        throw new UnsupportedOperationException();
+    }
     
     protected Target build(Config config) {
         return this;

@@ -6,6 +6,7 @@ import org.robovm.compiler.Types;
 import soot.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.objectweb.asm.Opcodes.*;
 
@@ -41,14 +42,44 @@ public class LambdaClassGenerator {
         String implClassName = implMethod.getMethodRef().declaringClass().getName().replace('.', '/');
         MethodVisitor mv = cw.visitMethod(ACC_PUBLIC, invokedType.name(), descriptor, null, null);
         mv.visitCode();
+        
+        pushArguments(mv, invokedType, samMethodType, implMethod, instantiatedMethodType);
         mv.visitMethodInsn(INVOKESTATIC, implClassName, implMethod.getMethodRef().name(), descriptor, false);
-
         createForwardingMethodReturn(mv, samMethodType, implMethod, instantiatedMethodType);
+        
         mv.visitMaxs(-1, -1);
         mv.visitEnd();
     }
 
-    private void createForwardingMethodReturn(MethodVisitor mv, SootMethodType samMethodType, SootMethodHandle implMethod, SootMethodType instantiatedMethodType) {
+    private void pushArguments(MethodVisitor mv, SootMethodRef invokedType, SootMethodType samMethodType,
+			SootMethodHandle implMethod, SootMethodType instantiatedMethodType) {
+    	List<Type> args = samMethodType.getParameterTypes();
+    	int localIndex = 0;
+    	
+		for(int i = 0; i < args.size(); i++) {
+			Type arg = args.get(i);
+			if(arg instanceof PrimType) {
+				if(arg.equals(LongType.v())) {
+	        		mv.visitVarInsn(LLOAD, localIndex + 1);
+	        	} else if(arg.equals(FloatType.v())) {
+	        		mv.visitVarInsn(FLOAD, localIndex + 1);
+	        	} else if(arg.equals(DoubleType.v())) {
+	        		mv.visitVarInsn(DLOAD, localIndex + 1);
+	        	} else {
+	        		mv.visitVarInsn(ILOAD, localIndex + 1);
+	        	}
+			} else {
+				mv.visitVarInsn(ALOAD, localIndex + 1);
+			}
+			if(arg.equals(LongType.v()) || arg.equals(DoubleType.v())) {
+				localIndex += 2;
+			} else {
+				localIndex += 1;
+			}
+		}
+	}
+
+	private void createForwardingMethodReturn(MethodVisitor mv, SootMethodType samMethodType, SootMethodHandle implMethod, SootMethodType instantiatedMethodType) {
     	Type returnType = samMethodType.getReturnType();
         if(returnType.equals(VoidType.v())) {
             mv.visitInsn(RETURN);

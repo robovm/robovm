@@ -44,6 +44,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.AndFileFilter;
 import org.apache.commons.io.filefilter.PrefixFileFilter;
 import org.apache.commons.io.filefilter.RegexFileFilter;
+import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.robovm.compiler.CompilerException;
 import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
@@ -414,14 +415,14 @@ public class IOSTarget extends AbstractTarget {
             // Sign swift rt libs
             for (File swiftLib : frameworksDir.listFiles()) {
                 if (swiftLib.getName().endsWith(".dylib")) {
-                    codesignFramework(signIdentity, swiftLib);
+                    codesignSwiftLib(signIdentity, swiftLib);
                 }
             }
 
             // sign embedded frameworks
             for (File framework : frameworksDir.listFiles()) {
                 if (framework.isDirectory() && framework.getName().endsWith(".framework")) {
-                    codesignFramework(signIdentity, framework);
+                    codesignCustomFramework(signIdentity, framework);
                 }
             }
         }
@@ -430,6 +431,22 @@ public class IOSTarget extends AbstractTarget {
     private void codesignApp(SigningIdentity identity, File entitlementsPList, File appDir) throws IOException {
         config.getLogger().debug("Code signing app using identity '%s' with fingerprint %s", identity.getName(),
                 identity.getFingerprint());
+        codesign(identity, entitlementsPList, false, false, true, appDir);
+    }
+
+    private void codesignSwiftLib(SigningIdentity identity, File swiftLib) throws IOException {
+        config.getLogger().debug("Code signing swift dylib '%s' using identity '%s' with fingerprint %s", swiftLib.getName(), identity.getName(),
+                identity.getFingerprint());
+        codesign(identity, null, false, true, false, swiftLib);
+    }
+
+    private void codesignCustomFramework(SigningIdentity identity, File frameworkDir) throws IOException {
+        config.getLogger().debug("Code signing framework '%s' using identity '%s' with fingerprint %s", frameworkDir.getName(), identity.getName(),
+                identity.getFingerprint());
+        codesign(identity, null, true, false, true, frameworkDir);
+    }
+
+    private void codesign(SigningIdentity identity, File entitlementsPList, boolean preserveMetadata, boolean verbose, boolean allocate, File target) throws IOException {
         List<Object> args = new ArrayList<Object>();
         args.add("-f");
         args.add("-s");
@@ -438,26 +455,19 @@ public class IOSTarget extends AbstractTarget {
             args.add("--entitlements");
             args.add(entitlementsPList);
         }
-        args.add(appDir);
-        new Executor(config.getLogger(), "codesign")
-                .addEnv("CODESIGN_ALLOCATE", ToolchainUtil.findXcodeCommand("codesign_allocate", "iphoneos"))
-                .args(args)
-                .exec();
-    }
-
-    private void codesignFramework(SigningIdentity identity, File frameworkDir) throws IOException {
-        config.getLogger().debug("Code signing framework using identity '%s' with fingerprint %s", identity.getName(),
-                identity.getFingerprint());
-        List<Object> args = new ArrayList<Object>();
-        args.add("-f");
-        args.add("-s");
-        args.add(identity.getFingerprint());
-        args.add("--preserve-metadata=identifier,entitlements,resource-rules");
-        args.add(frameworkDir);
-        new Executor(config.getLogger(), "codesign")
-                .addEnv("CODESIGN_ALLOCATE", ToolchainUtil.findXcodeCommand("codesign_allocate", "iphoneos"))
-                .args(args)
-                .exec();
+        if (preserveMetadata) {
+            args.add("--preserve-metadata=identifier,entitlements,resource-rules");
+        }
+        if (verbose) {
+            args.add("--verbose");
+        }
+        args.add(target);
+        Executor executor = new Executor(config.getLogger(), "codesign");
+        if (allocate) {
+            executor.addEnv("CODESIGN_ALLOCATE", ToolchainUtil.findXcodeCommand("codesign_allocate", "iphoneos"));
+        }
+        executor.args(args);
+        executor.exec();
     }
 
     private void ldid(File entitlementsPList, File appDir) throws IOException {
@@ -579,7 +589,45 @@ public class IOSTarget extends AbstractTarget {
         tmpDir.mkdirs();
         super.doInstall(tmpDir, getExecutable());
         prepareInstall(tmpDir);
-        ToolchainUtil.packageApplication(config, tmpDir, new File(config.getInstallDir(), getExecutable() + ".ipa"));
+        packageApplication(tmpDir);
+    }
+
+    private void packageApplication(File appDir) throws IOException {
+        File ipaFile = new File(config.getInstallDir(), getExecutable() + ".ipa");
+        config.getLogger().debug("Packaging IPA %s from %s", ipaFile.getName(), appDir.getName());
+
+        File tmpDir = new File(config.getInstallDir(), "ipabuild");
+        FileUtils.deleteDirectory(tmpDir);
+        tmpDir.mkdirs();
+
+        File payloadDir = new File(tmpDir, "Payload");
+        payloadDir.mkdir();
+        config.getLogger().debug("Copying %s to %s", appDir.getName(), payloadDir);
+        new Executor(config.getLogger(), "cp")
+                .args("-Rp", appDir, payloadDir)
+                .exec();
+
+        File frameworksDir = new File(appDir, "Frameworks");
+        if (frameworksDir.exists()){
+            String[] swiftLibs = frameworksDir.list(new AndFileFilter(
+                    new PrefixFileFilter("libswift"),
+                    new SuffixFileFilter(".dylib")));
+
+            if (swiftLibs.length > 0){
+                File swiftSupportDir = new File(tmpDir, "SwiftSupport");
+                swiftSupportDir.mkdir();
+                copySwiftLibs(Arrays.asList(swiftLibs), swiftSupportDir);
+            }
+        }
+
+        config.getLogger().debug("Zipping %s to %s", tmpDir, ipaFile);
+        new Executor(Logger.NULL_LOGGER, "zip")
+                .wd(tmpDir)
+                .args("--symlinks", "--recurse-paths", ipaFile, ".")
+                .exec();
+
+        config.getLogger().debug("Deleting temp dir %s", tmpDir);
+        FileUtils.deleteDirectory(tmpDir);
     }
 
     @Override

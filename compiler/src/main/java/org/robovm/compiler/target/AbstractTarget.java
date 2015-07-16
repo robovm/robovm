@@ -88,13 +88,28 @@ public abstract class AbstractTarget implements Target {
         return true;
     }
     
+    protected List<String> getTargetExportedSymbols() {
+        return Collections.emptyList();
+    }
+    
+    protected List<String> getTargetCcArgs() {
+        return Collections.emptyList();
+    }
+
+    protected List<String> getTargetLibs() {
+        return Collections.emptyList();
+    }
+
     public void build(List<File> objectFiles) throws IOException {
         File outFile = new File(config.getTmpDir(), config.getExecutableName());
         
-        config.getLogger().debug("Building executable %s", outFile);
+        config.getLogger().debug("Building %s binary %s", config.getTarget().getType(), outFile);
         
         LinkedList<String> ccArgs = new LinkedList<String>();
         LinkedList<String> libs = new LinkedList<String>();
+        
+        ccArgs.addAll(getTargetCcArgs());
+        libs.addAll(getTargetLibs());
         
         String libSuffix = config.isUseDebugLibs() ? "-dbg" : "";
         
@@ -130,6 +145,7 @@ public abstract class AbstractTarget implements Target {
             ccArgs.add("-ObjC");
 
             List<String> exportedSymbols = new ArrayList<String>();
+            exportedSymbols.addAll(getTargetExportedSymbols());
             if (config.isSkipInstall()) {
                 exportedSymbols.add("catch_exception_raise");
             }
@@ -369,14 +385,14 @@ public abstract class AbstractTarget implements Target {
     }
     
     public void install() throws IOException {
-        config.getLogger().debug("Installing executable to %s", config.getInstallDir());
+        config.getLogger().debug("Installing %s binary to %s", config.getTarget().getType(), config.getInstallDir());
         config.getInstallDir().mkdirs();
         doInstall(config.getInstallDir(), config.getExecutableName());
     }
     
-    protected void doInstall(File installDir, String executable) throws IOException {
-        if (!config.getTmpDir().equals(installDir) || !executable.equals(config.getExecutableName())) {
-            File destFile = new File(installDir, executable);
+    protected void doInstall(File installDir, String image) throws IOException {
+        if (!config.getTmpDir().equals(installDir) || !image.equals(config.getExecutableName())) {
+            File destFile = new File(installDir, image);
             FileUtils.copyFile(new File(config.getTmpDir(), config.getExecutableName()), destFile);
             destFile.setExecutable(true, false);
         }

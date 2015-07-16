@@ -334,26 +334,25 @@ public abstract class AbstractTarget implements Target {
         }
     }
 
-    protected void copySwiftLibs(Collection<String> swiftLibraries, File targetDir) throws IOException {
-
-        String system = null;
-        if (config.getOs() == OS.ios) {
-            if (config.getArch().isArm()) {
-                system = "iphoneos";
-            } else {
-                system = "iphonesimulator";
-            }
-        } else {
-            system = "mac";
-        }
-        File swiftDir = new File(ToolchainUtil.findXcodePath(),
-                "Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/" + system);
-        for (String library : swiftLibraries) {
-            config.getLogger().debug("Copying swift lib %s from %s to %s", library, swiftDir, targetDir);
-            File swiftLibrary = new File(swiftDir, library);
-            FileUtils.copyFileToDirectory(swiftLibrary, targetDir);
-        }
-    }
+	protected void copySwiftLibs(Collection<String> swiftLibraries, File targetDir) throws IOException {
+		String system = null;
+		if (config.getOs() == OS.ios) {
+			if (config.getArch().isArm()) {
+				system = "iphoneos";
+			} else {
+				system = "iphonesimulator";
+			}
+		} else {
+			system = "mac";
+		}
+		File swiftDir = new File(ToolchainUtil.findXcodePath(),
+				"Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/" + system);
+		for (String library : swiftLibraries) {
+			config.getLogger().debug("Copying swift lib %s from %s to %s", library, swiftDir, targetDir);
+			File swiftLibrary = new File(swiftDir, library);
+			FileUtils.copyFileToDirectory(swiftLibrary, targetDir);
+		}
+	}
 
     protected boolean isDynamicLibrary(File file) throws IOException {
         String result = ToolchainUtil.file(file);        

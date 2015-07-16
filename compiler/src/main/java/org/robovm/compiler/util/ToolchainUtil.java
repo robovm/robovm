@@ -275,7 +275,7 @@ public class ToolchainUtil {
     }
 
     public static void decompileXml(Config config, File inFile, File outFile) throws IOException {
-        new Executor(config.getLogger(), getPlutil()).args("-convert", "xml1", inFile, "-o", outFile).exec();
+        new Executor(Logger.NULL_LOGGER, getPlutil()).args("-convert", "xml1", inFile, "-o", outFile).exec();
     }
 
     public static String nm(File file) throws IOException {

@@ -40,6 +40,10 @@ interface O {
     String add(String a, String b);
 }
 
+interface M {
+    String add(boolean b, byte by, char c, short s, int i, long l, float f, double d, String o);
+}
+
 public class Test002_NoneCaptureParameters {
     @Test
     public void testNonCaptureParameters() {
@@ -69,5 +73,11 @@ public class Test002_NoneCaptureParameters {
         
         O o = (a, b) -> a + b;
         assertEquals("Hello" + "World", o.add("Hello", "World"));
+        
+        M m = (b1, by1, c1, s1, i1, l1, f1, d1, o1) -> {
+            return "" + b1 + by1 + c1 + s1 + i1 + l1 + f1 + d1 + o1;
+        };
+        assertEquals("" + true + ((byte)1) +'a' + ((short)2) + 3 + ((long)4) + 5.0f + 6.0 + "Hello",
+                     m.add(true, (byte)1, 'a', (short)2, 3, (long)4, 5.0f, 6.0, "Hello"));
     }
 }

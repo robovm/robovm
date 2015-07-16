@@ -20,11 +20,7 @@ public class LambdaClassGenerator {
     public LambdaClass generate(SootClass caller, String invokedName, SootMethodRef invokedType, SootMethodType samMethodType, SootMethodHandle implMethod, SootMethodType instantiatedMethodType) {
         ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
 
-        String packageName = caller.getPackageName().replace('.', '/');
-        if(!packageName.isEmpty()) {
-            packageName += "/";
-        }
-        String lambdaClassName = packageName + caller.getShortName() + "$$Lambda$" + (counter++);
+        String lambdaClassName = caller.getName().replace('.', '/') + "$$Lambda$" + (counter++);
         String functionalInterface = invokedType.returnType().toString().replace('.', '/');
 
         cw.visit(CLASS_VERSION,
@@ -53,10 +49,21 @@ public class LambdaClassGenerator {
     }
 
     private void createForwardingMethodReturn(MethodVisitor mv, SootMethodType samMethodType, SootMethodHandle implMethod, SootMethodType instantiatedMethodType) {
-        if(samMethodType.getReturnType().toString().equals("void")) {
+    	Type returnType = samMethodType.getReturnType();
+        if(returnType.equals(VoidType.v())) {
             mv.visitInsn(RETURN);
+        } else if(returnType instanceof PrimType) {
+        	if(returnType.equals(LongType.v())) {
+        		mv.visitInsn(LRETURN);
+        	} else if(returnType.equals(FloatType.v())) {
+        		mv.visitInsn(FRETURN);
+        	} else if(returnType.equals(DoubleType.v())) {
+        		mv.visitInsn(DRETURN);
+        	} else {
+        		mv.visitInsn(IRETURN);
+        	}
         } else {
-
+        	mv.visitInsn(ARETURN);
         }
     }
 

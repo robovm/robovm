@@ -195,7 +195,7 @@ public class Config {
     private boolean skipLinking = false;
     private boolean skipInstall = false;
     private boolean dumpIntermediates = false;
-    private int threads = Runtime.getRuntime().availableProcessors();
+    private int threads = 1;// Runtime.getRuntime().availableProcessors();
     private Logger logger = Logger.NULL_LOGGER;
 
     /*
@@ -225,8 +225,8 @@ public class Config {
                 new ObjCMemberPlugin(),
                 new ObjCBlockPlugin(),
                 new AnnotationImplPlugin(),
-                new LambdaPlugin()
-                //new org.robovm.compiler.plugin.lambda2.LambdaPlugin()
+                // new LambdaPlugin()
+                new org.robovm.compiler.plugin.lambda2.LambdaPlugin()
                 ));
         this.loadPluginsFromClassPath();
     }

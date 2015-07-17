@@ -708,6 +708,10 @@ public class AppCompiler {
             if (createIpa) {
                 compiler.createIpa(ipaArchs);
             } else {
+                if (run && !compiler.config.getTarget().canLaunch()) {
+                    throw new IllegalArgumentException("Cannot launch when building " 
+                            + compiler.config.getTarget().getType() + " binaries");
+                }
                 compiler.compile();
                 if (run) {
                     LaunchParameters launchParameters = compiler.config.getTarget().createLaunchParameters();
@@ -868,7 +872,7 @@ public class AppCompiler {
                          + "                        ${java.io.tmpdir}.");
         System.err.println("  -jar <path>           Use main class as specified by the manifest in this JAR \n" 
                          + "                        archive.");
-        System.err.println("  -o <name>             The name of the target executable");
+        System.err.println("  -o <name>             The name of the target binary");
         System.err.println("  -os <name>            The name of the OS to build for. Allowed values are \n" 
                          + "                        'auto', 'linux', 'macosx' and 'ios'. Default is 'auto' which\n" 
                          + "                        means use the LLVM deafult.");

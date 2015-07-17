@@ -117,6 +117,10 @@ public abstract class AbstractTarget implements Target {
         
         ccArgs.add("-L");
         ccArgs.add(config.getOsArchDepLibDir().getAbsolutePath());
+        if (config.getForceLinkSwiftLibs().size() > 0) {
+            ccArgs.add("-L");
+            ccArgs.add(getSwiftDir().getAbsolutePath());
+        }
         if (config.getOs().getFamily() == OS.Family.linux) {
             ccArgs.add("-Wl,-rpath=$ORIGIN");
             ccArgs.add("-Wl,--gc-sections");
@@ -322,7 +326,7 @@ public abstract class AbstractTarget implements Target {
                 }
             }
         }
-
+        swiftLibraries.addAll(config.getForceLinkSwiftLibs());
         // copy Swift libraries if required
         if (!swiftLibraries.isEmpty()) {
             copySwiftLibs(swiftLibraries, frameworksDir);
@@ -330,7 +334,15 @@ public abstract class AbstractTarget implements Target {
     }
 
     protected void copySwiftLibs(Collection<String> swiftLibraries, File targetDir) throws IOException {
+        File swiftDir = getSwiftDir();
+        for (String library : swiftLibraries) {
+            config.getLogger().debug("Copying swift lib %s from %s to %s", library, swiftDir, targetDir);
+            File swiftLibrary = new File(swiftDir, library);
+            FileUtils.copyFileToDirectory(swiftLibrary, targetDir);
+        }
+    }
 
+    private File getSwiftDir() throws IOException {
         String system = null;
         if (config.getOs() == OS.ios) {
             if (config.getArch().isArm()) {
@@ -341,13 +353,8 @@ public abstract class AbstractTarget implements Target {
         } else {
             system = "mac";
         }
-        File swiftDir = new File(ToolchainUtil.findXcodePath(),
+        return new File(ToolchainUtil.findXcodePath(),
                 "Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/" + system);
-        for (String library : swiftLibraries) {
-            config.getLogger().debug("Copying swift lib %s from %s to %s", library, swiftDir, targetDir);
-            File swiftLibrary = new File(swiftDir, library);
-            FileUtils.copyFileToDirectory(swiftLibrary, targetDir);
-        }
     }
 
     protected boolean isDynamicLibrary(File file) throws IOException {

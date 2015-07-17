@@ -1,7 +1,24 @@
+/*
+ * Copyright (C) 2014 RoboVM AB
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/gpl-2.0.html>.
+ */
 package org.robovm.compiler.plugin.lambda2;
 
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
+import org.robovm.compiler.CompilerException;
 import org.robovm.compiler.Types;
 import soot.*;
 
@@ -30,52 +47,83 @@ public class LambdaClassGenerator {
                 null, "java/lang/Object",
                 new String[]{ functionalInterface });
 
-        createConstructor(cw);
-        createForwardingMethod(cw, invokedType, samMethodType, implMethod, instantiatedMethodType);
+        String targetMethod = "<init>";
+        createFieldsAndConstructor(lambdaClassName, cw, invokedType, samMethodType, implMethod, instantiatedMethodType);
+        
+        // if we perform capturing, we can't cache the
+        // lambda instance. We need to create a factory method
+        // that returns a new instance of the lambda
+        // every time the lambda is invoked. That method
+        // will be invoked instead of the <init> method
+        // of the lambda by LambdaPlugin.
+        if(!invokedType.parameterTypes().isEmpty()) {
+        	targetMethod = createFactory(lambdaClassName, cw, invokedType, samMethodType, implMethod, instantiatedMethodType);
+        }
+        createForwardingMethod(lambdaClassName, cw, invokedType, samMethodType, implMethod, instantiatedMethodType);
         cw.visitEnd();
 
-        return new LambdaClass(lambdaClassName, cw.toByteArray(), "<init>", new ArrayList<Type>(), invokedType.returnType());
+        return new LambdaClass(lambdaClassName, cw.toByteArray(), targetMethod, invokedType.parameterTypes(), invokedType.returnType());
     }
 
-    private void createForwardingMethod(ClassWriter cw, SootMethodRef invokedType, SootMethodType samMethodType, SootMethodHandle implMethod, SootMethodType instantiatedMethodType) {
+    private void createForwardingMethod(String lambdaClassName, ClassWriter cw, SootMethodRef invokedType, SootMethodType samMethodType, SootMethodHandle implMethod, SootMethodType instantiatedMethodType) {
         String descriptor = Types.getDescriptor(samMethodType.getParameterTypes(), samMethodType.getReturnType());
         String implClassName = implMethod.getMethodRef().declaringClass().getName().replace('.', '/');
         MethodVisitor mv = cw.visitMethod(ACC_PUBLIC, invokedType.name(), descriptor, null, null);
         mv.visitCode();
         
-        pushArguments(mv, invokedType, samMethodType, implMethod, instantiatedMethodType);
-        mv.visitMethodInsn(INVOKESTATIC, implClassName, implMethod.getMethodRef().name(), descriptor, false);
+        pushArguments(lambdaClassName, mv, invokedType, samMethodType, implMethod, instantiatedMethodType);
+        int invokeOpCode = INVOKESTATIC;
+        switch(implMethod.getReferenceKind()) {
+	        case SootMethodHandle.REF_invokeInterface:
+	        	invokeOpCode = INVOKEINTERFACE;
+	        	break;
+	        case SootMethodHandle.REF_invokeSpecial:
+	        case SootMethodHandle.REF_newInvokeSpecial:
+	        	invokeOpCode = INVOKESPECIAL;
+	        	break;
+	        case SootMethodHandle.REF_invokeStatic:
+	        	invokeOpCode = INVOKESTATIC;
+	        	break;
+	        case SootMethodHandle.REF_invokeVirtual:
+	        	invokeOpCode = INVOKEVIRTUAL;
+	        	break;
+        	default:
+        		throw new CompilerException("Unknown invoke type: " + implMethod.getReferenceKind());
+        }
+        String implDescriptor = null;        
+        List<Type> paramTypes = new ArrayList<Type>(implMethod.getMethodType().getParameterTypes());
+        // need to remove the first parameter (this) in case this
+        // is an instance method
+        if(invokeOpCode != INVOKESTATIC && !paramTypes.isEmpty()) {
+        	paramTypes.remove(0);
+        }
+        implDescriptor = Types.getDescriptor(paramTypes, implMethod.getMethodType().getReturnType());
+        mv.visitMethodInsn(invokeOpCode, implClassName, implMethod.getMethodRef().name(), implDescriptor, false);
         createForwardingMethodReturn(mv, samMethodType, implMethod, instantiatedMethodType);
         
         mv.visitMaxs(-1, -1);
         mv.visitEnd();
     }
 
-    private void pushArguments(MethodVisitor mv, SootMethodRef invokedType, SootMethodType samMethodType,
+    private void pushArguments(String lambdaClassName, MethodVisitor mv, SootMethodRef invokedType, SootMethodType samMethodType,
 			SootMethodHandle implMethod, SootMethodType instantiatedMethodType) {
-    	List<Type> args = samMethodType.getParameterTypes();
-    	int localIndex = 0;
+    	int localIndex = 1; // we start at slot index 1, because this occupies slot 0
     	
-		for(int i = 0; i < args.size(); i++) {
-			Type arg = args.get(i);
-			if(arg instanceof PrimType) {
-				if(arg.equals(LongType.v())) {
-	        		mv.visitVarInsn(LLOAD, localIndex + 1);
-	        	} else if(arg.equals(FloatType.v())) {
-	        		mv.visitVarInsn(FLOAD, localIndex + 1);
-	        	} else if(arg.equals(DoubleType.v())) {
-	        		mv.visitVarInsn(DLOAD, localIndex + 1);
-	        	} else {
-	        		mv.visitVarInsn(ILOAD, localIndex + 1);
-	        	}
-			} else {
-				mv.visitVarInsn(ALOAD, localIndex + 1);
-			}
-			if(arg.equals(LongType.v()) || arg.equals(DoubleType.v())) {
-				localIndex += 2;
-			} else {
-				localIndex += 1;
-			}
+    	// push the captured arguments, may include
+    	// the caller's this if the desugared lambda
+    	// is a instance method
+    	int i = 0;
+    	for(Object obj: invokedType.parameterTypes()) {
+    		Type captureType = (Type)obj;
+    		mv.visitVarInsn(ALOAD, 0);
+    		mv.visitFieldInsn(GETFIELD, lambdaClassName, "field" + i, Types.getDescriptor(captureType));
+    		i++;
+    	}
+    	
+    	// push the functional interface parameters    	    	    
+		for(Type arg: samMethodType.getParameterTypes()) {			
+			mv.visitVarInsn(loadOpcodeForType(arg), localIndex);
+			localIndex += slotsForType(arg);
 		}
 	}
 
@@ -98,13 +146,100 @@ public class LambdaClassGenerator {
         }
     }
 
-    private void createConstructor(ClassWriter cw) {
-        MethodVisitor mv = cw.visitMethod(0, "<init>", "()V", null, null);
+    private void createFieldsAndConstructor(String lambdaClassName, ClassWriter cw, SootMethodRef invokedType, SootMethodType samMethodType, SootMethodHandle implMethod, SootMethodType instantiatedMethodType) {
+    	StringBuffer constructorDescriptor = new StringBuffer();
+    	
+    	// create the fields on the class
+    	int i = 0;
+    	for(Object obj: invokedType.parameterTypes()) {
+    		Type captureType = (Type)obj;
+    		String typeDesc = Types.getDescriptor(captureType);    		    	
+    		cw.visitField(ACC_PRIVATE + ACC_FINAL, "field" + i, typeDesc, null, null);
+    		constructorDescriptor.append(typeDesc);
+    		i++;
+    	}
+    	
+    	// create constructor
+        MethodVisitor mv = cw.visitMethod(0, "<init>", "(" + constructorDescriptor.toString() + ")V", null, null);
         mv.visitCode();
+        
+        // calls super
         mv.visitVarInsn(ALOAD, 0);
         mv.visitMethodInsn(INVOKESPECIAL, "java/lang/Object", "<init>", "()V", false);
+        
+        // store the captures into the fields
+        i = 0;
+        int localIndex = 1; // we start at slot 1, because this occupies slot 0
+        for(Object obj: invokedType.parameterTypes()) {
+    		Type captureType = (Type)obj;    		
+    		
+    		// load this for put field
+    		mv.visitVarInsn(ALOAD, 0);
+    		
+    		// load capture from argument slot
+    		mv.visitVarInsn(loadOpcodeForType(captureType), localIndex);
+			localIndex += slotsForType(captureType);
+			
+			// store the capture into the field
+			mv.visitFieldInsn(PUTFIELD, lambdaClassName, "field" + i, Types.getDescriptor(captureType));
+			
+    		i++;
+    	}
+        
         mv.visitInsn(RETURN);
         mv.visitMaxs(-1, -1);
-        mv.visitEnd();
+        mv.visitEnd();               
+    }
+    
+    private String createFactory(String lambdaClassName, ClassWriter cw, SootMethodRef invokedType, SootMethodType samMethodType, SootMethodHandle implMethod, SootMethodType instantiatedMethodType) {
+    	MethodVisitor mv = cw.visitMethod(ACC_STATIC, "getLambdaInstance", Types.getDescriptor(invokedType.parameterTypes(), invokedType.returnType()), null, null);
+    	mv.visitCode();
+    	mv.visitTypeInsn(NEW, lambdaClassName);
+    	mv.visitInsn(DUP);
+    	int i = 0;
+    	for(Object obj: invokedType.parameterTypes()) {
+    		Type captureType = (Type)obj; 
+    		mv.visitVarInsn(loadOpcodeForType(captureType), i);
+    		i += slotsForType(captureType);
+    	}
+    	mv.visitMethodInsn(INVOKESPECIAL, lambdaClassName, "<init>", Types.getDescriptor(invokedType.parameterTypes(), VoidType.v()), false);
+    	mv.visitInsn(ARETURN);
+    	mv.visitMaxs(-1, -1);
+    	mv.visitEnd();    	
+    	return "getLambdaInstance";
+    }
+    
+    public int loadOpcodeForType(Type type) {
+    	if(type instanceof PrimType) {
+			if(type.equals(LongType.v())) {
+        		return LLOAD;
+        	} else if(type.equals(FloatType.v())) {
+        		return FLOAD;
+        	} else if(type.equals(DoubleType.v())) {
+        		return DLOAD;
+        	} else {
+        		return ILOAD;
+        	}
+		} else {
+			return ALOAD;
+		}
+    }
+    
+    public int slotsForType(Type type) {
+    	if(type.equals(LongType.v()) || type.equals(DoubleType.v())) {
+			return 2;
+		} else {
+			return 1;
+		}
+    }
+    
+    public static class A {
+    	final LambdaClassGenerator gen;
+    	final int a;
+    	
+    	public A(LambdaClassGenerator get, int a) {
+    		this.gen = get;
+    		this.a = a;
+    	}
     }
 }

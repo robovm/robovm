@@ -119,7 +119,7 @@ public class LambdaPlugin extends AbstractCompilerPlugin {
                                 callSite = altMetafactory(caller, invokedName, invokedType, samMethodType, implMethod,
                                         instantiatedMethodType, bsmArgs);
                             } else {
-                                new LambdaClassGenerator().generate(sootClass, expr.getMethodRef().name(), expr.getMethodRef(), (SootMethodType)bsmArgs.get(0), (SootMethodHandle)bsmArgs.get(1), (SootMethodType)bsmArgs.get(2));
+                                // new LambdaClassGenerator().generate(sootClass, expr.getMethodRef().name(), expr.getMethodRef(), (SootMethodType)bsmArgs.get(0), (SootMethodHandle)bsmArgs.get(1), (SootMethodType)bsmArgs.get(2));
                                 callSite = LambdaMetafactory.metafactory(caller, invokedName, invokedType, samMethodType, implMethod, instantiatedMethodType);
                             }
         

@@ -138,6 +138,8 @@ public class Config {
     private ArrayList<String> roots;
     @ElementList(required = false, entry = "pattern")
     private ArrayList<String> forceLinkClasses;
+    @ElementList(required = false, entry = "swiftLib")
+    private ArrayList<String> forceLinkSwiftLibs;
     @ElementList(required = false, entry = "lib")
     private ArrayList<Lib> libs;
     @ElementList(required = false, entry = "symbol")
@@ -367,6 +369,9 @@ public class Config {
         return forceLinkClasses == null ? Collections.<String> emptyList()
                 : Collections.unmodifiableList(forceLinkClasses);
     }
+
+    public List<String> getForceLinkSwiftLibs() { return forceLinkSwiftLibs == null ? Collections.<String> emptyList()
+            : Collections.unmodifiableList(forceLinkSwiftLibs); }
 
     public List<String> getExportedSymbols() {
         return exportedSymbols == null ? Collections.<String> emptyList()

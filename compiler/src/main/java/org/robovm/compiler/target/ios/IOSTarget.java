@@ -16,11 +16,23 @@
  */
 package org.robovm.compiler.target.ios;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.NoSuchElementException;
+import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -83,6 +95,10 @@ public class IOSTarget extends AbstractTarget {
     private File partialPListDir;
 
     public IOSTarget() {}
+
+    public String getType() {
+        return TYPE;
+    }
 
     @Override
     public Arch getArch() {
@@ -605,9 +621,9 @@ public class IOSTarget extends AbstractTarget {
         }
 
         config.getLogger().debug("Zipping %s to %s", tmpDir, ipaFile);
-        new Executor(config.getLogger(), "zip")
+        new Executor(Logger.NULL_LOGGER, "zip")
                 .wd(tmpDir)
-                .args("--symlinks", "--verbose", "--recurse-paths", ipaFile, ".")
+                .args("--symlinks", "--recurse-paths", ipaFile, ".")
                 .exec();
 
         config.getLogger().debug("Deleting temp dir %s", tmpDir);

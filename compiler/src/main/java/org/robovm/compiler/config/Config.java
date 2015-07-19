@@ -35,9 +35,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.ServiceLoader;
 import java.util.TreeMap;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
@@ -46,7 +48,6 @@ import java.util.zip.ZipFile;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.robovm.compiler.CompilerException;
 import org.robovm.compiler.DependencyGraph;
 import org.robovm.compiler.ITable;
 import org.robovm.compiler.MarshalerLookup;
@@ -63,6 +64,7 @@ import org.robovm.compiler.plugin.CompilerPlugin;
 import org.robovm.compiler.plugin.LaunchPlugin;
 import org.robovm.compiler.plugin.Plugin;
 import org.robovm.compiler.plugin.PluginArgument;
+import org.robovm.compiler.plugin.TargetPlugin;
 import org.robovm.compiler.plugin.annotation.AnnotationImplPlugin;
 import org.robovm.compiler.plugin.lambda.LambdaPlugin;
 import org.robovm.compiler.plugin.objc.InterfaceBuilderClassesPlugin;
@@ -116,6 +118,8 @@ public class Config {
     private File installDir = null;
     @Element(required = false)
     private String executableName = null;
+    @Element(required = false)
+    private String imageName = null;
     @Element(required = false)
     private Boolean useDynamicJni = null;
     @Element(required = false)
@@ -248,8 +252,16 @@ public class Config {
         return executableName;
     }
 
+    public String getImageName() {
+        return imageName;
+    }
+
     public File getExecutablePath() {
         return new File(installDir, getExecutableName());
+    }
+
+    public File getImagePath() {
+        return getExecutablePath();
     }
 
     public File getCacheDir() {
@@ -434,6 +446,16 @@ public class Config {
             }
         }
         return launchPlugins;
+    }
+
+    public List<TargetPlugin> getTargetPlugins() {
+        List<TargetPlugin> targetPlugins = new ArrayList<>();
+        for (Plugin plugin : plugins) {
+            if (plugin instanceof TargetPlugin) {
+                targetPlugins.add((TargetPlugin) plugin);
+            }
+        }
+        return targetPlugins;
     }
 
     public List<Plugin> getPlugins() {
@@ -712,28 +734,23 @@ public class Config {
         this.weakFrameworks = config.weakFrameworks;
     }
 
-    private void loadPluginsFromClassPath() throws IOException {
-        try (InputStream in = getClass().getResourceAsStream("/META-INF/robovm/plugins.properties")) {
-            if (in != null) {
-                Properties p = new Properties();
-                p.load(in);
-                String value;
-                for (int i = 1; (value = p.getProperty("compiler.plugin." + i)) != null; i++) {
-                    Class<CompilerPlugin> c = (Class<CompilerPlugin>) getClass().getClassLoader().loadClass(value);
-                    plugins.add(c.newInstance());
-                }
-                for (int i = 1; (value = p.getProperty("launch.plugin." + i)) != null; i++) {
-                    Class<LaunchPlugin> c = (Class<LaunchPlugin>) getClass().getClassLoader().loadClass(value);
-                    plugins.add(c.newInstance());
-                }
-            }
-        } catch (ClassNotFoundException e) {
-            throw new CompilerException(e);
-        } catch (InstantiationException e) {
-            throw new CompilerException(e);
-        } catch (IllegalAccessException e) {
-            throw new CompilerException(e);
+    private static <T> List<T> toList(Iterator<T> it) {
+        List<T> l = new ArrayList<T>();
+        while (it.hasNext()) {
+            l.add(it.next());
         }
+        return l;
+    }
+
+    private void loadPluginsFromClassPath() throws IOException {
+        ClassLoader classLoader = getClass().getClassLoader();
+        ServiceLoader<CompilerPlugin> compilerPluginLoader = ServiceLoader.load(CompilerPlugin.class, classLoader);
+        ServiceLoader<LaunchPlugin> launchPluginLoader = ServiceLoader.load(LaunchPlugin.class, classLoader);
+        ServiceLoader<TargetPlugin> targetPluginLoader = ServiceLoader.load(TargetPlugin.class, classLoader);
+
+        plugins.addAll(toList(compilerPluginLoader.iterator()));
+        plugins.addAll(toList(launchPluginLoader.iterator()));
+        plugins.addAll(toList(targetPluginLoader.iterator()));
     }
 
     private static Config clone(Config config) throws IOException {
@@ -779,6 +796,10 @@ public class Config {
             classpath.add(mainJar);
         }
 
+        if (executableName == null && imageName != null) {
+            executableName = imageName;
+        }
+
         if (!skipLinking && executableName == null && mainClass == null) {
             throw new IllegalArgumentException("No target and no main class specified");
         }
@@ -793,6 +814,10 @@ public class Config {
 
         if (executableName == null) {
             executableName = mainClass;
+        }
+
+        if (imageName == null || !imageName.equals(executableName)) {
+            imageName = executableName;
         }
 
         List<File> realBootclasspath = bootclasspath == null ? new ArrayList<File>() : bootclasspath;
@@ -812,10 +837,22 @@ public class Config {
             installDir.mkdirs();
         }
 
-        if (ConsoleTarget.TYPE.equals(targetType)) {
-            target = new ConsoleTarget();
-        } else if (IOSTarget.TYPE.equals(targetType)) {
-            target = new IOSTarget();
+        if (targetType != null) {
+            if (ConsoleTarget.TYPE.equals(targetType)) {
+                target = new ConsoleTarget();
+            } else if (IOSTarget.TYPE.equals(targetType)) {
+                target = new IOSTarget();
+            } else {
+                for (TargetPlugin plugin : getTargetPlugins()) {
+                    if (plugin.getTarget().getType().equals(targetType)) {
+                        target = plugin.getTarget();
+                        break;
+                    }
+                }
+                if (target == null) {
+                    throw new IllegalArgumentException("Unsupported target '" + targetType + "'");
+                }
+            }
         } else {
             // Auto
             if (os == OS.ios) {
@@ -1093,6 +1130,11 @@ public class Config {
 
         public Builder executableName(String executableName) {
             config.executableName = executableName;
+            return this;
+        }
+
+        public Builder imageName(String imageName) {
+            config.imageName = imageName;
             return this;
         }
 
@@ -1385,6 +1427,11 @@ public class Config {
         }
 
         public Builder addLaunchPlugin(LaunchPlugin plugin) {
+            config.plugins.add(plugin);
+            return this;
+        }
+
+        public Builder addTargetPlugin(TargetPlugin plugin) {
             config.plugins.add(plugin);
             return this;
         }

@@ -25,23 +25,81 @@ import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.config.OS;
 
+/**
+ * Builds and launches (if supported) a particular type of binary (e.g. iOS
+ * apps, dynamic libraries, etc).
+ */
 public interface Target {
 
+    /**
+     * Returns a unique type id for this {@link Target}.
+     */
+    String getType();
+
+    /**
+     * Returns the {@link OS} this {@link Target} will build for. This is
+     * determined by {@link #init(Config)}. If an explicit {@link OS} has been
+     * set on the {@link Config} in the call to {@link #init(Config)} that
+     * {@link OS} will returned by this method. Otherwise {@link #init(Config)}
+     * will determine a default {@link OS} and this method returns that one.
+     */
     OS getOs();
     
+    /**
+     * Returns the {@link Arch} this {@link Target} will build for. This is
+     * determined by {@link #init(Config)}. If an explicit {@link Arch} has been
+     * set on the {@link Config} in the call to {@link #init(Config)} that
+     * {@link Arch} will returned by this method. Otherwise
+     * {@link #init(Config)} will determine a default {@link Arch} and this
+     * method returns that one.
+     */
     Arch getArch();
     
     String getInstallRelativeArchivePath(Path path);
 
+    /**
+     * Returns {@code true} if binaries created by this {@link Target} can be
+     * launched, i.e. it produces executable binaries.
+     */
+    boolean canLaunch();
+    
+    /**
+     * Returns {@code true} if binaries created by this {@link Target} can be
+     * launched in place and doesn't have to be copied into some folder
+     * structure, e.g. an iOS app bundle.
+     */
     boolean canLaunchInPlace();
 
+    /**
+     * Builds a binary out of the specified object files.
+     */
     void build(List<File> objectFiles) throws IOException;
 
+    /**
+     * Installs the built binary and any supporting files into the
+     * {@link Config#getInstallDir()} directory.
+     */
     void install() throws IOException;
 
+    /**
+     * Launches the built binary if supported.
+     * 
+     * @throws UnsupportedOperationException if binaries built by this
+     *             {@link Target} cannot be launched.
+     */
     Process launch(LaunchParameters launchParameters) throws IOException;
 
+    /**
+     * Creates {@link LaunchParameters} for launching the binary built by this
+     * {@link Target}.
+     * 
+     * @throws UnsupportedOperationException if binaries built by this
+     *             {@link Target} cannot be launched.
+     */
     LaunchParameters createLaunchParameters();
     
+    /**
+     * Initializes this {@link Target} from the specified {@link Config}.
+     */
     void init(Config config);
 }

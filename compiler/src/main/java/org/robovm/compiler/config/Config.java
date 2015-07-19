@@ -140,7 +140,7 @@ public class Config {
     private ArrayList<String> forceLinkClasses;
     @ElementList(required = false, entry = "swiftLib")
     private ArrayList<String> forceLinkSwiftLibs;
-    @ElementList(required = false, entry = "libs")
+    @ElementList(required = false, entry = "lib")
     private ArrayList<Lib> libs;
     @ElementList(required = false, entry = "symbol")
     private ArrayList<String> exportedSymbols;

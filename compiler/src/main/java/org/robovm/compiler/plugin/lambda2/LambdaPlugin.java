@@ -54,8 +54,8 @@ import soot.jimple.Jimple;
 import soot.jimple.NullConstant;
 
 public class LambdaPlugin extends AbstractCompilerPlugin {
-	private static int FLAG_MARKERS = 4;
-	private static int FLAG_BRIDGES = 2;
+	private static int FLAG_MARKERS = 2;
+	private static int FLAG_BRIDGES = 4;
 	
     final Map<SootClass, LambdaClassGenerator> generators = new HashMap<SootClass, LambdaClassGenerator>();
 

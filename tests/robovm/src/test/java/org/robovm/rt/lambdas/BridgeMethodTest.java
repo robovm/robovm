@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 The Android Open Source Project
+ * Copyright (C) 2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,20 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.rt.lambdas.test004;
+package org.robovm.rt.lambdas;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-interface I {
-    int add();
+interface A<T> { 
+    T m(T t); 
 }
 
-public class Test04_Casting {
+interface B extends A<String> { 
+    String m(String s); 
+}
 
-  @Test
-  public void test004() {
-    assertEquals(10, ((I)()->10).add());   
-  }
+public class BridgeMethodTest {
+    @Test
+    public void testBridgeMethods() {
+        B b = (s) -> { return "Hello " + s; };        
+        assertEquals("Hello there", b.m("there"));
+        
+        A a = b;
+        assertEquals("Hello there", a.m("there"));
+    }
 }

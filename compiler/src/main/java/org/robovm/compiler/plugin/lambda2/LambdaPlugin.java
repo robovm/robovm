@@ -16,21 +16,47 @@
  */
 package org.robovm.compiler.plugin.lambda2;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.io.FileUtils;
 import org.robovm.compiler.CompilerException;
 import org.robovm.compiler.ModuleBuilder;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.plugin.AbstractCompilerPlugin;
-import soot.*;
-import soot.jimple.*;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.*;
+import soot.Body;
+import soot.Local;
+import soot.Modifier;
+import soot.PatchingChain;
+import soot.Scene;
+import soot.SootClass;
+import soot.SootField;
+import soot.SootMethod;
+import soot.SootMethodHandle;
+import soot.SootMethodRef;
+import soot.SootMethodType;
+import soot.SootResolver;
+import soot.Type;
+import soot.Unit;
+import soot.Value;
+import soot.jimple.DefinitionStmt;
+import soot.jimple.DynamicInvokeExpr;
+import soot.jimple.IntConstant;
+import soot.jimple.Jimple;
+import soot.jimple.NullConstant;
 
 public class LambdaPlugin extends AbstractCompilerPlugin {
-
+	private static int FLAG_MARKERS = 4;
+	private static int FLAG_BRIDGES = 2;
+	
     final Map<SootClass, LambdaClassGenerator> generators = new HashMap<SootClass, LambdaClassGenerator>();
 
     private static boolean isLambdaBootstrapMethod(SootMethodRef methodRef) {
@@ -89,8 +115,25 @@ public class LambdaPlugin extends AbstractCompilerPlugin {
 
                         try {
                             LambdaClass callSite = null;
-                            // TODO: handle altMetaFactory case
-                            callSite = generator.generate(caller, invokedName, invokedType, samMethodType, implMethod, instantiatedMethodType);
+                            List<Type> markerInterfaces = new ArrayList<>();
+                            List<SootMethodType> bridgeMethods = new ArrayList<>();
+                            if (expr.getBootstrapMethodRef().name().equals("altMetafactory")) {
+                            	int flags = ((IntConstant) bsmArgs.get(3)).value;
+                                int bsmArgsIdx = 4;
+                                if ((flags & FLAG_MARKERS) > 0) {
+                                    int count = ((IntConstant) bsmArgs.get(bsmArgsIdx++)).value;            
+                                    for (int i = 0; i < count; i++) {
+                                        markerInterfaces.add((Type) bsmArgs.get(bsmArgsIdx++));
+                                    }
+                                }
+                                if ((flags & FLAG_BRIDGES) > 0) {
+                                    int count = ((IntConstant) bsmArgs.get(bsmArgsIdx++)).value;            
+                                    for (int i = 0; i < count; i++) {
+                                        bridgeMethods.add((SootMethodType) bsmArgs.get(bsmArgsIdx++));
+                                    }
+                                }
+                            }
+                            callSite = generator.generate(caller, invokedName, invokedType, samMethodType, implMethod, instantiatedMethodType, markerInterfaces, bridgeMethods);
 
                             File f = clazz.getPath().getGeneratedClassFile(callSite.getLambdaClassName());
                             FileUtils.writeByteArrayToFile(f, callSite.getClassData());

@@ -100,6 +100,10 @@ public class SootSClass extends SClass {
         return result.toArray(new SClass[result.size()]);
     }
     
+    public static SClass<?> forType(String className) {
+    	return SClass.lookup("L" + className + ";");
+    }
+    
     public static SClass<?> forType(soot.Type type) {
         String descriptor = Types.getDescriptor(type);
         return SClass.lookup(descriptor);

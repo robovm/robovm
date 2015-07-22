@@ -32,6 +32,7 @@ import soot.SootResolver;
 import soot.Type;
 import soot.Unit;
 import soot.Value;
+import soot.jimple.ClassConstant;
 import soot.jimple.DefinitionStmt;
 import soot.jimple.DynamicInvokeExpr;
 import soot.jimple.IntConstant;
@@ -194,7 +195,16 @@ public class LambdaPlugin extends AbstractCompilerPlugin {
             int count = ((IntConstant) bsmArgs.get(bsmArgsIdx++)).value;
             args.add(count);
             for (int i = 0; i < count; i++) {
-                args.add(SootSClass.forType((soot.Type) bsmArgs.get(bsmArgsIdx++)));
+            	Value value = bsmArgs.get(bsmArgsIdx++);
+            	Object arg = null;
+				if (value instanceof Type) {
+					arg = SootSClass.forType((soot.Type) value);
+				} else if (value instanceof ClassConstant) {
+					arg = SootSClass.forType(((ClassConstant) value).getValue());
+				} else {
+					throw new CompilerException("Unknown marker interface type found in Jimple: " + value.getClass());
+				}
+				args.add(arg);
             }
         }
         if ((flags & LambdaMetafactory.FLAG_BRIDGES) > 0) {

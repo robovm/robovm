@@ -19,6 +19,7 @@ package org.robovm.compiler.plugin.lambda2;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.commons.GeneratorAdapter;
 import org.robovm.compiler.CompilerException;
 import org.robovm.compiler.Types;
 import soot.*;
@@ -74,7 +75,8 @@ public class LambdaClassGenerator {
 			Type returnType, List<Type> invokedParameters, SootMethodType samMethodType, SootMethodHandle implMethod, SootMethodType instantiatedMethodType, boolean isBridgeMethod) {
 		String descriptor = Types.getDescriptor(parameters, returnType);
 		String implClassName = implMethod.getMethodRef().declaringClass().getName().replace('.', '/');
-		MethodVisitor mv = cw.visitMethod(ACC_PUBLIC | (isBridgeMethod?ACC_BRIDGE:0), name, descriptor, null, null);
+		int accessFlags = ACC_PUBLIC | (isBridgeMethod?ACC_BRIDGE:0);
+		MethodVisitor mv = cw.visitMethod(accessFlags, name, descriptor, null, null);
 		mv.visitCode();
 		
 		// figure out the invoke op code for the lambda implementation
@@ -104,8 +106,10 @@ public class LambdaClassGenerator {
 			throw new CompilerException("Unknown invoke type: " + implMethod.getReferenceKind());
 		}
 		
+		GeneratorAdapter caster = new GeneratorAdapter(mv, accessFlags, name, descriptor);
+		
 		// push the arguments
-		pushArguments(caller, lambdaClassName, mv, parameters, invokedParameters, implMethod, instantiatedMethodType, isInstanceMethod);
+		pushArguments(caller, lambdaClassName, mv, caster, parameters, invokedParameters, implMethod, instantiatedMethodType, isInstanceMethod);
 		
 		// generate a descriptor for the lambda implementation 
 		// to invoke based on the parameters. If the lambda
@@ -118,16 +122,16 @@ public class LambdaClassGenerator {
 		implDescriptor = Types.getDescriptor(paramTypes, implMethod.getMethodType().getReturnType());
 		
 		// call the lambda implementation
-		mv.visitMethodInsn(invokeOpCode, implClassName, implMethod.getMethodRef().name(), implDescriptor, false);
+		mv.visitMethodInsn(invokeOpCode, implClassName, implMethod.getMethodRef().name(), implDescriptor, invokeOpCode == INVOKEINTERFACE);
 		
 		// emit the return instruction based on the return type
-		createForwardingMethodReturn(mv, returnType, samMethodType, implMethod, instantiatedMethodType);
+		createForwardingMethodReturn(mv, caster, returnType, samMethodType, implMethod, instantiatedMethodType);
 
 		mv.visitMaxs(-1, -1);
 		mv.visitEnd();
 	}
 
-	private void pushArguments(SootClass caller, String lambdaClassName, MethodVisitor mv,
+	private void pushArguments(SootClass caller, String lambdaClassName, MethodVisitor mv, GeneratorAdapter caster,
 			List<Type> parameters, List<Type> invokedParameters, SootMethodHandle implMethod, SootMethodType instantiatedMethodType, boolean isInstanceMethod) {
 
 		// if this is a method reference to ::new, we need to
@@ -135,8 +139,7 @@ public class LambdaClassGenerator {
 		if(implMethod.getReferenceKind() == SootMethodHandle.REF_newInvokeSpecial) {
 			mv.visitTypeInsn(NEW, implMethod.getMethodRef().declaringClass().getName().replace('.', '/'));
 			mv.visitInsn(DUP);
-		}        
-		
+		}				
 
 		// push the captured arguments		
 		for (int i = 0; i < invokedParameters.size(); i++) {
@@ -154,8 +157,8 @@ public class LambdaClassGenerator {
 		boolean paramsContainReceiver = isInstanceMethod & !caller.getName().equals(implMethod.getMethodRef().declaringClass().getName());	
 		int paramsIndex = 0;
 		int localIndex = 1; // we start at slot index 1, because this occupies slot 0
-		if(paramsContainReceiver) {
-			Type param = parameters.get(0);
+		if(paramsContainReceiver && !parameters.isEmpty()) {
+			Type param = parameters.get(0);			
 			mv.visitVarInsn(loadOpcodeForType(param), localIndex);
 			localIndex += slotsForType(param);
 			paramsIndex++;
@@ -165,12 +168,12 @@ public class LambdaClassGenerator {
 		for (int i = 0; paramsIndex < parameters.size(); paramsIndex++, i++) {
 			Type param = parameters.get(paramsIndex);
 			mv.visitVarInsn(loadOpcodeForType(param), localIndex);			
-			castOrWiden(mv, param, (Type)implMethod.getMethodRef().parameterTypes().get(samParamsOffset + i));		
+			castOrWiden(mv, caster, param, (Type)implMethod.getMethodRef().parameterTypes().get(samParamsOffset + i));		
 			localIndex += slotsForType(param);
 		}
 	}
 
-	private void castOrWiden(MethodVisitor mv, Type actual, Type expected) {
+	private void castOrWiden(MethodVisitor mv, GeneratorAdapter caster, Type actual, Type expected) {
 		if(actual.equals(expected)) {
 			return;
 		}
@@ -179,17 +182,58 @@ public class LambdaClassGenerator {
 			return;
 		}
 		
-		System.out.println("Need to convert " + actual + " to " + expected);
+		System.out.println("Need to convert " + actual + " to " + expected);			
 		
 		// primitive types, either widening or boxing/unboxing
 		if((isPrimitiveType(actual) || isBoxedType(actual)) && ((isPrimitiveType(expected) || isBoxedType(expected)))) {
-			System.out.println("prim");
-		} else { 
-			RefType actualRef = (RefType)actual;
-			RefType expectedRef = (RefType)expected;
+			System.out.println("Prim");
 			
+			org.objectweb.asm.Type actualAsmType = getAsmPrimitiveType(actual);
+			org.objectweb.asm.Type expectedAsmType = getAsmPrimitiveType(expected);
+			
+			// unbox the actual value
+			if(isBoxedType(actual)) {
+				caster.unbox(actualAsmType);
+			}
+			
+			// widen to the type of the
+			// expected value
+			caster.cast(actualAsmType, expectedAsmType);
+			
+			// box the value if necessary
+			if(isBoxedType(expected)) {
+				caster.box(expectedAsmType);
+			}
+		} else { 								
 			// simple cast which will throw a ClassCastException at runtime
-			mv.visitTypeInsn(Opcodes.CHECKCAST, expectedRef.getClassName().replace('.', '/'));
+			mv.visitTypeInsn(Opcodes.CHECKCAST, ((RefType)expected).getClassName().replace('.', '/'));
+		}
+	}
+	
+	private org.objectweb.asm.Type getAsmPrimitiveType(Type type) {
+		if(isBoxedType(type)) {
+			String className = type.toString();
+			if("java.lang.Boolean".equals(className)) {
+				return org.objectweb.asm.Type.BOOLEAN_TYPE;
+			} else if ("java.lang.Byte".equals(className)) {
+				return org.objectweb.asm.Type.BYTE_TYPE;
+			} else if ("java.lang.Character".equals(className)) {
+				return org.objectweb.asm.Type.CHAR_TYPE;
+			} else if ("java.lang.Short".equals(className)) {
+				return org.objectweb.asm.Type.SHORT_TYPE;
+			} else if ("java.lang.Integer".equals(className)) {
+				return org.objectweb.asm.Type.INT_TYPE;
+			} else if ("java.lang.Long".equals(className)) {
+				return org.objectweb.asm.Type.LONG_TYPE;
+			} else if ("java.lang.Float".equals(className)) {
+				return org.objectweb.asm.Type.FLOAT_TYPE;
+			} else if ("java.lang.Double".equals(className)) {
+				return org.objectweb.asm.Type.DOUBLE_TYPE;
+			} else {
+				throw new CompilerException("Unknown primitive type " + type);
+			}
+		} else {
+			return org.objectweb.asm.Type.getType(Types.getDescriptor(type));
 		}
 	}
 	
@@ -197,12 +241,21 @@ public class LambdaClassGenerator {
 		return type instanceof PrimType;
 	}
 	
-	private boolean isBoxedType(Type type) {		
-		return false;
+	private boolean isBoxedType(Type type) {
+		String className = type.toString();
+		return "java.lang.Boolean".equals(className) ||
+			   "java.lang.Byte".equals(className) ||
+			   "java.lang.Character".equals(className) ||
+			   "java.lang.Short".equals(className) ||
+			   "java.lang.Integer".equals(className) ||
+			   "java.lang.Long".equals(className) ||
+			   "java.lang.Float".equals(className) ||
+			   "java.lang.Double".equals(className);		
 	}
 
-	private void createForwardingMethodReturn(MethodVisitor mv, Type returnType, SootMethodType samMethodType,
-			SootMethodHandle implMethod, SootMethodType instantiatedMethodType) {		
+	private void createForwardingMethodReturn(MethodVisitor mv, GeneratorAdapter caster, Type returnType, SootMethodType samMethodType,
+			SootMethodHandle implMethod, SootMethodType instantiatedMethodType) {
+		castOrWiden(mv, caster, implMethod.getMethodRef().returnType(), instantiatedMethodType.getReturnType());
 		if (returnType.equals(VoidType.v())) {
 			mv.visitInsn(RETURN);
 		} else if (returnType instanceof PrimType) {

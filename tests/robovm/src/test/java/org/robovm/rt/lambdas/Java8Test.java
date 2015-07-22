@@ -86,7 +86,7 @@ public class Java8Test {
     }
     default Integer addInts(int x, int y) { return x + y; }
     default String print() { return "DefaultInterface"; }
-    // CHECKSTYLE_ON
+    // CHECKSTYLE_ON 
   }
 
   interface DefaultInterface2 {
@@ -894,7 +894,7 @@ public class Java8Test {
   }
 
   // Test particular scenarios involving multiple path to inherit defaults.
-  interface ITop {
+  interface ITop { 
     default String m() {
       return "ITop.m()";
     }

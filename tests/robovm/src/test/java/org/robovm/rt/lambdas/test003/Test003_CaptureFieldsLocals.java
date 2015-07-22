@@ -48,7 +48,7 @@ class LocalsAndFields {
     int field;
 
     public LocalsAndFields(int value) {
-        this.field = value;        
+        this.field = value;       
     }
 
     public int add(int a) {

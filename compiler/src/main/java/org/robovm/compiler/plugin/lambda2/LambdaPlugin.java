@@ -26,8 +26,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
+import org.junit.internal.Classes;
 import org.robovm.compiler.CompilerException;
 import org.robovm.compiler.ModuleBuilder;
+import org.robovm.compiler.Types;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.plugin.AbstractCompilerPlugin;
@@ -47,6 +49,7 @@ import soot.SootResolver;
 import soot.Type;
 import soot.Unit;
 import soot.Value;
+import soot.jimple.ClassConstant;
 import soot.jimple.DefinitionStmt;
 import soot.jimple.DynamicInvokeExpr;
 import soot.jimple.IntConstant;
@@ -123,7 +126,13 @@ public class LambdaPlugin extends AbstractCompilerPlugin {
                                 if ((flags & FLAG_MARKERS) > 0) {
                                     int count = ((IntConstant) bsmArgs.get(bsmArgsIdx++)).value;            
                                     for (int i = 0; i < count; i++) {
-                                        markerInterfaces.add((Type) bsmArgs.get(bsmArgsIdx++));
+                                    	Object value = bsmArgs.get(bsmArgsIdx++);
+                                    	if (value instanceof Type) {
+                                    		markerInterfaces.add((Type) value);
+                                    	} else if (value instanceof ClassConstant) {
+                                    		String className = ((ClassConstant) value).getValue().replace('/', '.');
+                                    		markerInterfaces.add(SootResolver.v().resolveClass(className, SootClass.HIERARCHY).getType());                                 		
+                                    	}
                                     }
                                 }
                                 if ((flags & FLAG_BRIDGES) > 0) {
@@ -140,6 +149,7 @@ public class LambdaPlugin extends AbstractCompilerPlugin {
                             // The lambda class is created after the caller is compiled.
                             // This prevents the triggering of a recompile of the caller.
                             f.setLastModified(clazz.lastModified());
+                            System.out.println("Created lambda " + callSite.getLambdaClassName() + " at line " + unit.getTag("LineNumberTag"));
 
                             SootClass lambdaClass = SootResolver.v().makeClassRef(callSite.getLambdaClassName().replace('/', '.'));
 

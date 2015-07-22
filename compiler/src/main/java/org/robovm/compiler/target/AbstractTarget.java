@@ -68,7 +68,7 @@ public abstract class AbstractTarget implements Target {
     
     @Override
     public boolean canLaunch() {
-        return false;
+        return true;
     }
 
     @Override

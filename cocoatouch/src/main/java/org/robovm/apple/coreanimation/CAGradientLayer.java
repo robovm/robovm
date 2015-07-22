@@ -50,11 +50,20 @@ import org.robovm.apple.metal.*;
     public CAGradientLayer() {}
     protected CAGradientLayer(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
+    public void setLocations(double... locations) {
+        if (locations != null && locations.length > 0) {
+            NSArray<NSNumber> loc = new NSMutableArray<>();
+            for (double l : locations) {
+                loc.add(NSNumber.valueOf(l));
+            }
+            setLocations(loc);
+        }
+    }
     /*<properties>*/
     @Property(selector = "colors")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<CGColor> getColors();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CGColor.AsListMarshaler.class) List<CGColor> getColors();
     @Property(selector = "setColors:")
-    public native void setColors(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<CGColor> v);
+    public native void setColors(@org.robovm.rt.bro.annotation.Marshaler(CGColor.AsListMarshaler.class) List<CGColor> v);
     @Property(selector = "locations")
     public native NSArray<NSNumber> getLocations();
     @Property(selector = "setLocations:")

@@ -84,7 +84,7 @@ classes:
     CAGradientLayer: # DONE
         properties:
             'colors':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<CGColor>'
+                type: '@org.robovm.rt.bro.annotation.Marshaler(CGColor.AsListMarshaler.class) List<CGColor>'
             'locations':
                 type: NSArray<NSNumber>
             'type':

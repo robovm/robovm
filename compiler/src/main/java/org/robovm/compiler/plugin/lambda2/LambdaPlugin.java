@@ -1,11 +1,29 @@
-package org.robovm.compiler.plugin.lambda;
+/*
+ * Copyright (C) 2014 RoboVM AB
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/gpl-2.0.html>.
+ */
+package org.robovm.compiler.plugin.lambda2;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.robovm.compiler.CompilerException;
@@ -13,8 +31,6 @@ import org.robovm.compiler.ModuleBuilder;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.plugin.AbstractCompilerPlugin;
-import org.robovm.compiler.plugin.lambda.java.lang.invoke.LambdaConversionException;
-import org.robovm.compiler.plugin.lambda.java.lang.invoke.LambdaMetafactory;
 
 import soot.Body;
 import soot.Local;
@@ -39,43 +55,21 @@ import soot.jimple.Jimple;
 import soot.jimple.NullConstant;
 
 public class LambdaPlugin extends AbstractCompilerPlugin {
+    private static int FLAG_MARKERS = 2;
+    private static int FLAG_BRIDGES = 4;
+
+    final Map<SootClass, LambdaClassGenerator> generators = new HashMap<SootClass, LambdaClassGenerator>();
 
     private static boolean isLambdaBootstrapMethod(SootMethodRef methodRef) {
         return methodRef.declaringClass().getName().equals("java.lang.invoke.LambdaMetafactory")
                 && (methodRef.name().equals("metafactory") || methodRef.name().equals("altMetafactory"));
     }
 
-    private static SMethodType toSMethodType(SootMethodRef ref) {
-        return new SMethodType(SootSClass.forType(ref.returnType()), SootSClass.forTypes(ref.parameterTypes()));
-    }
-
-    private static SMethodType toSMethodType(SootMethodType t) {
-        return new SMethodType(SootSClass.forType(t.getReturnType()), SootSClass.forTypes(t.getParameterTypes()));
-    }
-
-    private static SMethodHandle toSMethodHandle(SootMethodHandle h) {
-        return new SMethodHandle(
-                toSMethodType(h.getMethodType()),
-                new SMethodHandleInfo(
-                        SootSClass.forType(h.getMethodRef().declaringClass().getType()),
-                        h.getMethodRef().name(),
-                        toSMethodType(h.getMethodRef()), h.getReferenceKind()));
-    }
-
-    private static soot.Type toSootType(SClass<?> type) {
-        if (type instanceof SootSClass) {
-            return ((SootSClass) type).type;
+    @Override
+    public void afterClass(Config config, Clazz clazz, ModuleBuilder moduleBuilder) throws IOException {
+        synchronized (generators) {
+            generators.remove(clazz.getSootClass());
         }
-        SootSClassLookup lookup = (SootSClassLookup) SClass.getLookup();
-        return ((SootSClass) lookup.lookup(type.getDescriptor())).type;
-    }
-
-    private static List<soot.Type> toSootTypes(List<SClass<?>> types) {
-        List<soot.Type> result = new ArrayList<>();
-        for (SClass<?> type : types) {
-            result.add(toSootType(type));
-        }
-        return result;
     }
 
     @Override
@@ -94,8 +88,6 @@ public class LambdaPlugin extends AbstractCompilerPlugin {
             return;
         }
 
-        SClass.setLookup(new SootSClassLookup());
-
         int tmpCounter = 0;
         Body body = method.retrieveActiveBody();
         PatchingChain<Unit> units = body.getUnits();
@@ -105,24 +97,52 @@ public class LambdaPlugin extends AbstractCompilerPlugin {
                     DynamicInvokeExpr expr = (DynamicInvokeExpr) ((DefinitionStmt) unit).getRightOp();
 
                     if (isLambdaBootstrapMethod(expr.getBootstrapMethodRef())) {
+                        LambdaClassGenerator generator = null;
+                        synchronized (generators) {
+                            generator = generators.get(sootClass);
+                            if (generator == null) {
+                                generator = new LambdaClassGenerator();
+                                generators.put(sootClass, generator);
+                            }
+                        }
+
                         List<Value> bsmArgs = expr.getBootstrapArgs();
-                        SMethodHandles.Lookup caller = new SMethodHandles.Lookup(
-                                SootSClass.forType(sootClass.getType()));
+                        SootClass caller = sootClass;
                         String invokedName = expr.getMethodRef().name();
-                        SMethodType invokedType = toSMethodType(expr.getMethodRef());
-                        SMethodType samMethodType = toSMethodType((SootMethodType) bsmArgs.get(0));
-                        SMethodHandle implMethod = toSMethodHandle((SootMethodHandle) bsmArgs.get(1));
-                        SMethodType instantiatedMethodType = toSMethodType((SootMethodType) bsmArgs.get(2));
+                        SootMethodRef invokedType = expr.getMethodRef();
+                        SootMethodType samMethodType = (SootMethodType) bsmArgs.get(0);
+                        SootMethodHandle implMethod = (SootMethodHandle) bsmArgs.get(1);
+                        SootMethodType instantiatedMethodType = (SootMethodType) bsmArgs.get(2);
 
                         try {
-                            SCallSite callSite = null;
+                            LambdaClass callSite = null;
+                            List<Type> markerInterfaces = new ArrayList<>();
+                            List<SootMethodType> bridgeMethods = new ArrayList<>();
                             if (expr.getBootstrapMethodRef().name().equals("altMetafactory")) {
-                                callSite = altMetafactory(caller, invokedName, invokedType, samMethodType, implMethod,
-                                        instantiatedMethodType, bsmArgs);
-                            } else {
-                                callSite = LambdaMetafactory.metafactory(caller, invokedName, invokedType,
-                                        samMethodType, implMethod, instantiatedMethodType);
+                                int flags = ((IntConstant) bsmArgs.get(3)).value;
+                                int bsmArgsIdx = 4;
+                                if ((flags & FLAG_MARKERS) > 0) {
+                                    int count = ((IntConstant) bsmArgs.get(bsmArgsIdx++)).value;
+                                    for (int i = 0; i < count; i++) {
+                                        Object value = bsmArgs.get(bsmArgsIdx++);
+                                        if (value instanceof Type) {
+                                            markerInterfaces.add((Type) value);
+                                        } else if (value instanceof ClassConstant) {
+                                            String className = ((ClassConstant) value).getValue().replace('/', '.');
+                                            markerInterfaces.add(SootResolver.v()
+                                                    .resolveClass(className, SootClass.HIERARCHY).getType());
+                                        }
+                                    }
+                                }
+                                if ((flags & FLAG_BRIDGES) > 0) {
+                                    int count = ((IntConstant) bsmArgs.get(bsmArgsIdx++)).value;
+                                    for (int i = 0; i < count; i++) {
+                                        bridgeMethods.add((SootMethodType) bsmArgs.get(bsmArgsIdx++));
+                                    }
+                                }
                             }
+                            callSite = generator.generate(caller, invokedName, invokedType, samMethodType, implMethod,
+                                    instantiatedMethodType, markerInterfaces, bridgeMethods);
 
                             File f = clazz.getPath().getGeneratedClassFile(callSite.getLambdaClassName());
                             FileUtils.writeByteArrayToFile(f, callSite.getClassData());
@@ -136,7 +156,7 @@ public class LambdaPlugin extends AbstractCompilerPlugin {
                                     .makeClassRef(callSite.getLambdaClassName().replace('/', '.'));
 
                             Local l = (Local) ((DefinitionStmt) unit).getLeftOp();
-                            Type samType = toSootType(callSite.getTargetMethodType().returnType());
+                            Type samType = callSite.getTargetMethodReturnType();
                             LinkedList<Unit> newUnits = new LinkedList<>();
                             if (callSite.getTargetMethodName().equals("<init>")) {
                                 // Constant lambda. Create an instance once and
@@ -159,8 +179,8 @@ public class LambdaPlugin extends AbstractCompilerPlugin {
                                 body.getLocals().add(tmp);
                                 newUnits.add(
                                         Jimple.v().newAssignStmt(tmp, Jimple.v().newNewExpr(lambdaClass.getType())));
-                                newUnits.add(Jimple.v().newInvokeStmt(Jimple.v().newSpecialInvokeExpr(tmp, Scene.v()
-                                        .makeConstructorRef(lambdaClass, Collections.<soot.Type> emptyList()))));
+                                newUnits.add(Jimple.v().newInvokeStmt(Jimple.v().newSpecialInvokeExpr(tmp,
+                                        Scene.v().makeConstructorRef(lambdaClass, Collections.<Type> emptyList()))));
                                 // LambdaClass.lambdaField = $tmpX
                                 newUnits.add(
                                         Jimple.v().newAssignStmt(Jimple.v().newStaticFieldRef(field.makeRef()), tmp));
@@ -173,7 +193,7 @@ public class LambdaPlugin extends AbstractCompilerPlugin {
                                         Jimple.v().newStaticInvokeExpr(
                                                 Scene.v().makeMethodRef(lambdaClass,
                                                         callSite.getTargetMethodName(),
-                                                        toSootTypes(callSite.getTargetMethodType().parameterList()),
+                                                        callSite.getTargetMethodParameters(),
                                                         samType, true),
                                                 expr.getArgs())));
                             }
@@ -181,7 +201,7 @@ public class LambdaPlugin extends AbstractCompilerPlugin {
                             units.remove(unit);
                             unit = newUnits.getLast();
 
-                        } catch (LambdaConversionException e) {
+                        } catch (Throwable e) {
                             // TODO: Change the jimple of the method to throw a
                             // LambdaConversionException at runtime.
                             throw new CompilerException(e);
@@ -191,43 +211,4 @@ public class LambdaPlugin extends AbstractCompilerPlugin {
             }
         }
     }
-
-    private SCallSite altMetafactory(SMethodHandles.Lookup caller, String invokedName, SMethodType invokedType,
-            SMethodType samMethodType, SMethodHandle implMethod, SMethodType instantiatedMethodType,
-            List<Value> bsmArgs)
-                    throws LambdaConversionException {
-
-        int flags = ((IntConstant) bsmArgs.get(3)).value;
-        List<Object> args = new ArrayList<>();
-        args.add(samMethodType);
-        args.add(implMethod);
-        args.add(instantiatedMethodType);
-        args.add(flags);
-        int bsmArgsIdx = 4;
-        if ((flags & LambdaMetafactory.FLAG_MARKERS) > 0) {
-            int count = ((IntConstant) bsmArgs.get(bsmArgsIdx++)).value;
-            args.add(count);
-            for (int i = 0; i < count; i++) {
-                Value value = bsmArgs.get(bsmArgsIdx++);
-                Object arg = null;
-                if (value instanceof Type) {
-                    arg = SootSClass.forType((soot.Type) value);
-                } else if (value instanceof ClassConstant) {
-                    arg = SootSClass.forType(((ClassConstant) value).getValue());
-                } else {
-                    throw new CompilerException("Unknown marker interface type found in Jimple: " + value.getClass());
-                }
-                args.add(arg);
-            }
-        }
-        if ((flags & LambdaMetafactory.FLAG_BRIDGES) > 0) {
-            int count = ((IntConstant) bsmArgs.get(bsmArgsIdx++)).value;
-            args.add(count);
-            for (int i = 0; i < count; i++) {
-                args.add(toSMethodType((SootMethodType) bsmArgs.get(bsmArgsIdx++)));
-            }
-        }
-        return LambdaMetafactory.altMetafactory(caller, invokedName, invokedType, args.toArray());
-    }
-
 }

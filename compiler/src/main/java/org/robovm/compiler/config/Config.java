@@ -226,6 +226,7 @@ public class Config {
                 new ObjCBlockPlugin(),
                 new AnnotationImplPlugin(),
                 new LambdaPlugin()
+                // new org.robovm.compiler.plugin.lambda2.LambdaPlugin()
                 ));
         this.loadPluginsFromClassPath();
     }

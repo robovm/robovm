@@ -148,8 +148,7 @@ public class LambdaPlugin extends AbstractCompilerPlugin {
                             FileUtils.writeByteArrayToFile(f, callSite.getClassData());
                             // The lambda class is created after the caller is compiled.
                             // This prevents the triggering of a recompile of the caller.
-                            f.setLastModified(clazz.lastModified());
-                            System.out.println("Created lambda " + callSite.getLambdaClassName() + " at line " + unit.getTag("LineNumberTag"));
+                            f.setLastModified(clazz.lastModified());                            
 
                             SootClass lambdaClass = SootResolver.v().makeClassRef(callSite.getLambdaClassName().replace('/', '.'));
 

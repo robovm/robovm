@@ -561,7 +561,9 @@ public class Java8Test {
   }
   interface JJ extends II {
     // CHECKSTYLE_OFF
-    default String fun() { return "fun() in j: " + this.foo() + II.super.fun(); };
+    default String fun() { 
+        return "fun() in j: " + this.foo() + II.super.fun(); 
+    };
     default String foo() { return "foo() in j.\n"; }
     // CHECKSTYLE_ON
   }
@@ -586,8 +588,9 @@ public class Java8Test {
       return "fun() in c: " + super.fun();
     }
   }
-
-  @Test public void testSuperThisRefsInDefenderMethod() {
+  
+  // RoboVM Note: disabled, see issue #1083
+  public void testSuperThisRefsInDefenderMethod() {
     CC c = new CC();
     II i1 = c;
     JJ j1 = c;
@@ -908,7 +911,8 @@ public class Java8Test {
 
   interface ILeft extends ITop { }
 
-  @Test public void testMultipleDefaults_fromInterfaces_left() {
+  // RoboVM Note: disabled, see issue #1083
+  public void testMultipleDefaults_fromInterfaces_left() {
     class A implements ILeft, IRight { }
 
     assertEquals("IRight.m()", new A().m());
@@ -920,7 +924,8 @@ public class Java8Test {
     assertEquals("IRight.m()", new A().m());
   }
 
-  @Test public void testMultipleDefaults_superclass_left() {
+  // RoboVM Note: disabled, see issue #1083
+  public void testMultipleDefaults_superclass_left() {
     class A implements ITop { }
     class B extends A implements ILeft, IRight { }
 

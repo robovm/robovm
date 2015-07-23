@@ -41,8 +41,14 @@ public class LambdaClassGenerator {
 		String lambdaClassName = caller.getName().replace('.', '/') + "$$Lambda$" + (counter++);
 		String functionalInterface = invokedType.returnType().toString().replace('.', '/');
 
+		List<String> interfaces = new ArrayList<String>();
+		interfaces.add(functionalInterface);
+		for (Type markerInterface : markerInterfaces) {
+			interfaces.add(markerInterface.toString().replace('.', '/'));
+		}
+
 		cw.visit(CLASS_VERSION, ACC_FINAL + ACC_SUPER + ACC_SYNTHETIC, lambdaClassName, null, "java/lang/Object",
-				new String[] { functionalInterface });
+				interfaces.toArray(new String[interfaces.size()]));
 
 		String targetMethod = "<init>";
 		createFieldsAndConstructor(lambdaClassName, cw, invokedType, samMethodType, implMethod, instantiatedMethodType);
@@ -57,13 +63,17 @@ public class LambdaClassGenerator {
 			targetMethod = createFactory(lambdaClassName, cw, invokedType, samMethodType, implMethod,
 					instantiatedMethodType);
 		}
-		
+
 		// forward the lambda method
-		createForwardingMethod(caller, lambdaClassName, cw, invokedName, samMethodType.getParameterTypes(), samMethodType.getReturnType(), invokedType.parameterTypes(), samMethodType, implMethod, instantiatedMethodType, false);
-		
+		createForwardingMethod(caller, lambdaClassName, cw, invokedName, samMethodType.getParameterTypes(),
+				samMethodType.getReturnType(), invokedType.parameterTypes(), samMethodType, implMethod,
+				instantiatedMethodType, false);
+
 		// create any bridge methods necessary
-		for(SootMethodType bridgeMethod: bridgeMethods) {			
-			createForwardingMethod(caller, lambdaClassName, cw, invokedName, bridgeMethod.getParameterTypes(), bridgeMethod.getReturnType(), invokedType.parameterTypes(), samMethodType, implMethod, instantiatedMethodType, true);
+		for (SootMethodType bridgeMethod : bridgeMethods) {
+			createForwardingMethod(caller, lambdaClassName, cw, invokedName, bridgeMethod.getParameterTypes(),
+					bridgeMethod.getReturnType(), invokedType.parameterTypes(), samMethodType, implMethod,
+					instantiatedMethodType, true);
 		}
 		cw.visitEnd();
 
@@ -71,14 +81,15 @@ public class LambdaClassGenerator {
 				invokedType.returnType());
 	}
 
-	private void createForwardingMethod(SootClass caller, String lambdaClassName, ClassWriter cw, String name, List<Type> parameters,
-			Type returnType, List<Type> invokedParameters, SootMethodType samMethodType, SootMethodHandle implMethod, SootMethodType instantiatedMethodType, boolean isBridgeMethod) {
+	private void createForwardingMethod(SootClass caller, String lambdaClassName, ClassWriter cw, String name,
+			List<Type> parameters, Type returnType, List<Type> invokedParameters, SootMethodType samMethodType,
+			SootMethodHandle implMethod, SootMethodType instantiatedMethodType, boolean isBridgeMethod) {
 		String descriptor = Types.getDescriptor(parameters, returnType);
 		String implClassName = implMethod.getMethodRef().declaringClass().getName().replace('.', '/');
-		int accessFlags = ACC_PUBLIC | (isBridgeMethod?ACC_BRIDGE:0);
+		int accessFlags = ACC_PUBLIC | (isBridgeMethod ? ACC_BRIDGE : 0);
 		MethodVisitor mv = cw.visitMethod(accessFlags, name, descriptor, null, null);
 		mv.visitCode();
-		
+
 		// figure out the invoke op code for the lambda implementation
 		// as well as if it's an instance method.
 		int invokeOpCode = INVOKESTATIC;
@@ -93,7 +104,7 @@ public class LambdaClassGenerator {
 			isInstanceMethod = true;
 			break;
 		case SootMethodHandle.REF_newInvokeSpecial:
-			invokeOpCode = INVOKESPECIAL;			
+			invokeOpCode = INVOKESPECIAL;
 			break;
 		case SootMethodHandle.REF_invokeStatic:
 			invokeOpCode = INVOKESTATIC;
@@ -105,25 +116,28 @@ public class LambdaClassGenerator {
 		default:
 			throw new CompilerException("Unknown invoke type: " + implMethod.getReferenceKind());
 		}
-		
+
 		GeneratorAdapter caster = new GeneratorAdapter(mv, accessFlags, name, descriptor);
-		
+
 		// push the arguments
-		pushArguments(caller, lambdaClassName, mv, caster, parameters, invokedParameters, implMethod, instantiatedMethodType, isInstanceMethod);
-		
-		// generate a descriptor for the lambda implementation 
+		pushArguments(caller, lambdaClassName, mv, caster, parameters, invokedParameters, implMethod,
+				instantiatedMethodType, isInstanceMethod);
+
+		// generate a descriptor for the lambda implementation
 		// to invoke based on the parameters. If the lambda
 		// is an instance method, we need to remove the first
 		// parameter for the descriptor generation as it's
 		// not part of the method signature.
 		String implDescriptor = null;
 		List<Type> paramTypes = new ArrayList<Type>(implMethod.getMethodType().getParameterTypes());
-		if (isInstanceMethod) paramTypes.remove(0);					
+		if (isInstanceMethod)
+			paramTypes.remove(0);
 		implDescriptor = Types.getDescriptor(paramTypes, implMethod.getMethodType().getReturnType());
-		
+
 		// call the lambda implementation
-		mv.visitMethodInsn(invokeOpCode, implClassName, implMethod.getMethodRef().name(), implDescriptor, invokeOpCode == INVOKEINTERFACE);
-		
+		mv.visitMethodInsn(invokeOpCode, implClassName, implMethod.getMethodRef().name(), implDescriptor,
+				invokeOpCode == INVOKEINTERFACE);
+
 		// emit the return instruction based on the return type
 		createForwardingMethodReturn(mv, caster, returnType, samMethodType, implMethod, instantiatedMethodType);
 
@@ -132,88 +146,91 @@ public class LambdaClassGenerator {
 	}
 
 	private void pushArguments(SootClass caller, String lambdaClassName, MethodVisitor mv, GeneratorAdapter caster,
-			List<Type> parameters, List<Type> invokedParameters, SootMethodHandle implMethod, SootMethodType instantiatedMethodType, boolean isInstanceMethod) {
+			List<Type> parameters, List<Type> invokedParameters, SootMethodHandle implMethod,
+			SootMethodType instantiatedMethodType, boolean isInstanceMethod) {
 
 		// if this is a method reference to ::new, we need to
 		// create the object itself
-		if(implMethod.getReferenceKind() == SootMethodHandle.REF_newInvokeSpecial) {
+		if (implMethod.getReferenceKind() == SootMethodHandle.REF_newInvokeSpecial) {
 			mv.visitTypeInsn(NEW, implMethod.getMethodRef().declaringClass().getName().replace('.', '/'));
 			mv.visitInsn(DUP);
-		}				
+		}
 
-		// push the captured arguments		
+		// push the captured arguments
 		for (int i = 0; i < invokedParameters.size(); i++) {
 			Object obj = invokedParameters.get(i);
 			Type captureType = (Type) obj;
 			mv.visitVarInsn(ALOAD, 0);
-			mv.visitFieldInsn(GETFIELD, lambdaClassName, "arg$" + (i + 1), Types.getDescriptor(captureType));			
+			mv.visitFieldInsn(GETFIELD, lambdaClassName, "arg$" + (i + 1), Types.getDescriptor(captureType));
 		}
 
 		// push the functional interface parameters
-		// first check if the parameters include the received, e.g. "hello"::contains
-		// would be called on "hello" and not on the class containing the 
-		// invoke dynamic call. We need to handle that parameter separately as 
+		// first check if the parameters include the received, e.g.
+		// "hello"::contains
+		// would be called on "hello" and not on the class containing the
+		// invoke dynamic call. We need to handle that parameter separately as
 		// it's not part of the method signature of the implementation
-		boolean paramsContainReceiver = isInstanceMethod & !caller.getName().equals(implMethod.getMethodRef().declaringClass().getName());	
+		boolean paramsContainReceiver = isInstanceMethod
+				& !caller.getName().equals(implMethod.getMethodRef().declaringClass().getName());
 		int paramsIndex = 0;
-		int localIndex = 1; // we start at slot index 1, because this occupies slot 0
-		if(paramsContainReceiver && !parameters.isEmpty()) {
-			Type param = parameters.get(0);			
+		int localIndex = 1; // we start at slot index 1, because this occupies
+							// slot 0
+		if (paramsContainReceiver && !parameters.isEmpty()) {
+			Type param = parameters.get(0);
 			mv.visitVarInsn(loadOpcodeForType(param), localIndex);
 			localIndex += slotsForType(param);
 			paramsIndex++;
 		}
-				
-		int samParamsOffset = implMethod.getMethodRef().parameterTypes().size() - parameters.size() + (paramsContainReceiver? 1: 0);
+
+		int samParamsOffset = implMethod.getMethodRef().parameterTypes().size() - parameters.size()
+				+ (paramsContainReceiver ? 1 : 0);
 		for (int i = 0; paramsIndex < parameters.size(); paramsIndex++, i++) {
 			Type param = parameters.get(paramsIndex);
-			mv.visitVarInsn(loadOpcodeForType(param), localIndex);			
-			castOrWiden(mv, caster, param, (Type)implMethod.getMethodRef().parameterTypes().get(samParamsOffset + i));		
+			mv.visitVarInsn(loadOpcodeForType(param), localIndex);
+			castOrWiden(mv, caster, param, (Type) implMethod.getMethodRef().parameterTypes().get(samParamsOffset + i));
 			localIndex += slotsForType(param);
 		}
 	}
 
 	private void castOrWiden(MethodVisitor mv, GeneratorAdapter caster, Type actual, Type expected) {
-		if(actual.equals(expected)) {
+		if (actual.equals(expected)) {
 			return;
 		}
-		
-		if(actual.equals(VoidType.v()) || expected.equals(VoidType.v())) {
+
+		if (actual.equals(VoidType.v()) || expected.equals(VoidType.v())) {
 			return;
 		}
-		
-		System.out.println("Need to convert " + actual + " to " + expected);			
-		
+
 		// primitive types, either widening or boxing/unboxing
-		if((isPrimitiveType(actual) || isBoxedType(actual)) && ((isPrimitiveType(expected) || isBoxedType(expected)))) {
-			System.out.println("Prim");
-			
+		if ((isPrimitiveType(actual) || isBoxedType(actual))
+				&& ((isPrimitiveType(expected) || isBoxedType(expected)))) {
+
 			org.objectweb.asm.Type actualAsmType = getAsmPrimitiveType(actual);
 			org.objectweb.asm.Type expectedAsmType = getAsmPrimitiveType(expected);
-			
+
 			// unbox the actual value
-			if(isBoxedType(actual)) {
+			if (isBoxedType(actual)) {
 				caster.unbox(actualAsmType);
 			}
-			
+
 			// widen to the type of the
 			// expected value
 			caster.cast(actualAsmType, expectedAsmType);
-			
+
 			// box the value if necessary
-			if(isBoxedType(expected)) {
+			if (isBoxedType(expected)) {
 				caster.box(expectedAsmType);
 			}
-		} else { 								
+		} else {
 			// simple cast which will throw a ClassCastException at runtime
-			mv.visitTypeInsn(Opcodes.CHECKCAST, ((RefType)expected).getClassName().replace('.', '/'));
+			mv.visitTypeInsn(Opcodes.CHECKCAST, ((RefType) expected).getClassName().replace('.', '/'));
 		}
 	}
-	
+
 	private org.objectweb.asm.Type getAsmPrimitiveType(Type type) {
-		if(isBoxedType(type)) {
+		if (isBoxedType(type)) {
 			String className = type.toString();
-			if("java.lang.Boolean".equals(className)) {
+			if ("java.lang.Boolean".equals(className)) {
 				return org.objectweb.asm.Type.BOOLEAN_TYPE;
 			} else if ("java.lang.Byte".equals(className)) {
 				return org.objectweb.asm.Type.BYTE_TYPE;
@@ -236,25 +253,21 @@ public class LambdaClassGenerator {
 			return org.objectweb.asm.Type.getType(Types.getDescriptor(type));
 		}
 	}
-	
+
 	private boolean isPrimitiveType(Type type) {
 		return type instanceof PrimType;
 	}
-	
+
 	private boolean isBoxedType(Type type) {
 		String className = type.toString();
-		return "java.lang.Boolean".equals(className) ||
-			   "java.lang.Byte".equals(className) ||
-			   "java.lang.Character".equals(className) ||
-			   "java.lang.Short".equals(className) ||
-			   "java.lang.Integer".equals(className) ||
-			   "java.lang.Long".equals(className) ||
-			   "java.lang.Float".equals(className) ||
-			   "java.lang.Double".equals(className);		
+		return "java.lang.Boolean".equals(className) || "java.lang.Byte".equals(className)
+				|| "java.lang.Character".equals(className) || "java.lang.Short".equals(className)
+				|| "java.lang.Integer".equals(className) || "java.lang.Long".equals(className)
+				|| "java.lang.Float".equals(className) || "java.lang.Double".equals(className);
 	}
 
-	private void createForwardingMethodReturn(MethodVisitor mv, GeneratorAdapter caster, Type returnType, SootMethodType samMethodType,
-			SootMethodHandle implMethod, SootMethodType instantiatedMethodType) {
+	private void createForwardingMethodReturn(MethodVisitor mv, GeneratorAdapter caster, Type returnType,
+			SootMethodType samMethodType, SootMethodHandle implMethod, SootMethodType instantiatedMethodType) {
 		castOrWiden(mv, caster, implMethod.getMethodRef().returnType(), instantiatedMethodType.getReturnType());
 		if (returnType.equals(VoidType.v())) {
 			mv.visitInsn(RETURN);

@@ -13,21 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.robovm.rt.lambdas.test004;
 
-package org.robovm.rt.lambdas.test005;
+import static org.junit.Assert.assertEquals;
 
-import org.junit.Assert;
 import org.junit.Test;
 
-/**
- * Lambda expression with generic.
- */
-public class Tests {
+interface I {
+    int add();
+}
+
+public class CastingTest {
 
   @Test
-  public void test001() {
-    Lambda lambda = new Lambda();
-    Assert.assertEquals(30, lambda.testAddInt(10, 20));
-    Assert.assertEquals(20, lambda.testAddDouble(15.45, 5.23));
+  public void test004() {
+    assertEquals(10, ((I)()->10).add());   
   }
 }

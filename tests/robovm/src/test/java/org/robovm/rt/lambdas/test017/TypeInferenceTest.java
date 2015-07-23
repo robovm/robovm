@@ -14,19 +14,20 @@
  * limitations under the License.
  */
 
-package org.robovm.rt.lambdas.test006;
+package org.robovm.rt.lambdas.test017;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Test that mixed lambda with non lambda expression of the same type.
+ * Use parameter type of lambda when type inference could not select the right type
  */
-public class Tests {
+public class TypeInferenceTest {
 
   @Test
   public void test001() {
     Lambda lambda = new Lambda();
-    Assert.assertEquals(41, lambda.testAddDouble(15.45, 5.23));
+    Assert.assertEquals(1, lambda.getInt().intValue());
+    Assert.assertTrue(lambda.getFloat().floatValue() == 2f);
   }
 }

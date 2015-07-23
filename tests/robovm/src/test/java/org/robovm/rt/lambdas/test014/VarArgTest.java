@@ -14,18 +14,19 @@
  * limitations under the License.
  */
 
-package org.robovm.rt.lambdas.test010.jack;
+package org.robovm.rt.lambdas.test014;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Lambda with obfuscation to check that MethodId is well managed
+ * Lambda mixing vararg and array.
  */
-public class Tests {
+public class VarArgTest {
 
   @Test
   public void test001() {
-    Assert.assertEquals(60, new Lambda().testGet10());
+    Lambda lambda = new Lambda();
+    Assert.assertEquals(20, lambda.addValues());
   }
 }

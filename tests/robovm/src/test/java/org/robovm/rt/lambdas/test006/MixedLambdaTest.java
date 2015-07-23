@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-package org.robovm.rt.lambdas.test013;
+package org.robovm.rt.lambdas.test006;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Lambda specifying parameter types.
+ * Test that mixed lambda with non lambda expression of the same type.
  */
-public class Tests {
+public class MixedLambdaTest {
 
   @Test
   public void test001() {
     Lambda lambda = new Lambda();
-    Assert.assertEquals(10, lambda.addValues());
+    Assert.assertEquals(41, lambda.testAddDouble(15.45, 5.23));
   }
 }

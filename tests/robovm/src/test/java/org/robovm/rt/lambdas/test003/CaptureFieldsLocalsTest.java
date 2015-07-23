@@ -57,7 +57,7 @@ class LocalsAndFields {
     }    
 }
 
-public class Test003_CaptureFieldsLocals {
+public class CaptureFieldsLocalsTest {
 
     @Test
     public void test003() {

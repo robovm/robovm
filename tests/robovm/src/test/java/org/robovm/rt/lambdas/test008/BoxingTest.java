@@ -13,20 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.rt.lambdas.test004;
 
-import static org.junit.Assert.assertEquals;
+package org.robovm.rt.lambdas.test008;
 
+import org.junit.Assert;
 import org.junit.Test;
 
-interface I {
-    int add();
-}
-
-public class Test04_Casting {
+/**
+ * Test that check that boxing work in lambda body and that return type with generic works properly
+ */
+public class BoxingTest {
 
   @Test
-  public void test004() {
-    assertEquals(10, ((I)()->10).add());   
+  public void test001() {
+    Lambda lambda = new Lambda();
+    Assert.assertEquals(21, lambda.testAddInt(15, 5));
   }
 }

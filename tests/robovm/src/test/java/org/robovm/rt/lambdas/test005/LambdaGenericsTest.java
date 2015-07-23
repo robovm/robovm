@@ -14,19 +14,20 @@
  * limitations under the License.
  */
 
-package org.robovm.rt.lambdas.test014;
+package org.robovm.rt.lambdas.test005;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Lambda mixing vararg and array.
+ * Lambda expression with generic.
  */
-public class Tests {
+public class LambdaGenericsTest {
 
   @Test
   public void test001() {
     Lambda lambda = new Lambda();
-    Assert.assertEquals(20, lambda.addValues());
+    Assert.assertEquals(30, lambda.testAddInt(10, 20));
+    Assert.assertEquals(20, lambda.testAddDouble(15.45, 5.23));
   }
 }

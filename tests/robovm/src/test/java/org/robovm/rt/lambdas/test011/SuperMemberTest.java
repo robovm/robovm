@@ -14,20 +14,19 @@
  * limitations under the License.
  */
 
-package org.robovm.rt.lambdas.test007;
+package org.robovm.rt.lambdas.test011;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-
 /**
- * Test returning a lambda expression accessing local values that will be used outside his
- * definition scope.
+ * Lambda accessing super members.
  */
-public class Tests {
+public class SuperMemberTest {
 
   @Test
   public void test001() {
-    Assert.assertEquals(35, UseLambda.testAddDouble(15.4, 9.08));
+    Lambda lambda = new Lambda();
+    Assert.assertEquals(20, lambda.testAccessingSuperMembers());
   }
 }

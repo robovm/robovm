@@ -14,23 +14,35 @@
  * limitations under the License.
  */
 
-package org.robovm.rt.lambdas.test018;
+package org.robovm.rt.lambdas.test009;
 
-
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Test target typing with overloading methods.
+ * Test using exception with lambda.
  */
-public class Tests {
+public class LambdaExceptionTest {
 
   @Test
   public void test001() {
     Lambda lambda = new Lambda();
-    Assert.assertEquals("1-void", lambda.test1());
-    Assert.assertEquals("2-test", lambda.test2());
-    Assert.assertEquals("3-4", lambda.test3());
+    Assert.assertEquals(20, lambda.testAddInt(15, 5));
+  }
+
+  @Test
+  public void test002() {
+    Lambda lambda = new Lambda();
+    Assert.assertEquals(1, lambda.testCatchingException());
+  }
+
+  @Test
+  public void test003() {
+    try {
+      Lambda lambda = new Lambda();
+      lambda.testThrowingException();
+      Assert.fail();
+    } catch (Test009Exception e) {
+    }
   }
 }

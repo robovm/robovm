@@ -14,35 +14,19 @@
  * limitations under the License.
  */
 
-package org.robovm.rt.lambdas.test009;
+package org.robovm.rt.lambdas.test016;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Test using exception with lambda.
+ * Lambda expression into array initializer.
  */
-public class Tests {
+public class ArrayInitializerTest {
 
   @Test
   public void test001() {
     Lambda lambda = new Lambda();
-    Assert.assertEquals(20, lambda.testAddInt(15, 5));
-  }
-
-  @Test
-  public void test002() {
-    Lambda lambda = new Lambda();
-    Assert.assertEquals(1, lambda.testCatchingException());
-  }
-
-  @Test
-  public void test003() {
-    try {
-      Lambda lambda = new Lambda();
-      lambda.testThrowingException();
-      Assert.fail();
-    } catch (Test009Exception e) {
-    }
+    Assert.assertEquals("Hello World", lambda.getString());
   }
 }

@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-package org.robovm.rt.lambdas.test015;
+package org.robovm.rt.lambdas.test012;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Nested lambda expression.
+ * Lambda expression into another lambda expression.
  */
-public class Tests {
+public class NestedLambdaTest {
 
   @Test
   public void test001() {
     Lambda lambda = new Lambda();
-    Assert.assertEquals("Jack", lambda.getString());
+    Assert.assertEquals(30, lambda.testWithNestedLambda(10));
   }
 }

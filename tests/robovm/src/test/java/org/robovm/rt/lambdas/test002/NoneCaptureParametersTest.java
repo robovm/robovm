@@ -59,7 +59,7 @@ interface M {
     String add(boolean b, byte by, char c, short s, int i, long l, float f, double d, String o);
 }
 
-public class Test002_NoneCaptureParameters {
+public class NoneCaptureParametersTest {
     @Test
     public void testNonCaptureParameters() {
         B bo = (a, b) -> a && b;

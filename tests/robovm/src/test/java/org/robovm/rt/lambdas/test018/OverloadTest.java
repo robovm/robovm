@@ -14,19 +14,23 @@
  * limitations under the License.
  */
 
-package org.robovm.rt.lambdas.test008;
+package org.robovm.rt.lambdas.test018;
 
-import org.junit.Assert;
+
+import junit.framework.Assert;
+
 import org.junit.Test;
 
 /**
- * Test that check that boxing work in lambda body and that return type with generic works properly
+ * Test target typing with overloading methods.
  */
-public class Tests {
+public class OverloadTest {
 
   @Test
   public void test001() {
     Lambda lambda = new Lambda();
-    Assert.assertEquals(21, lambda.testAddInt(15, 5));
+    Assert.assertEquals("1-void", lambda.test1());
+    Assert.assertEquals("2-test", lambda.test2());
+    Assert.assertEquals("3-4", lambda.test3());
   }
 }

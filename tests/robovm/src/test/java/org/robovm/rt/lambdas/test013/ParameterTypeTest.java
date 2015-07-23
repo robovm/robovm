@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-package org.robovm.rt.lambdas.test016;
+package org.robovm.rt.lambdas.test013;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Lambda expression into array initializer.
+ * Lambda specifying parameter types.
  */
-public class Tests {
+public class ParameterTypeTest {
 
   @Test
   public void test001() {
     Lambda lambda = new Lambda();
-    Assert.assertEquals("Hello World", lambda.getString());
+    Assert.assertEquals(10, lambda.addValues());
   }
 }

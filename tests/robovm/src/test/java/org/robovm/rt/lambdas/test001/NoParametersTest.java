@@ -66,7 +66,7 @@ interface O {
 /**
  * Lambda expression test without parameters.
  */
-public class Test001_NoParameters {
+public class NoParametersTest {
 
     @Test
     public void test001() {

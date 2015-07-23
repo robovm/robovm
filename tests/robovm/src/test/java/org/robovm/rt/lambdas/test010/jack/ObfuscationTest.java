@@ -14,20 +14,18 @@
  * limitations under the License.
  */
 
-package org.robovm.rt.lambdas.test017;
+package org.robovm.rt.lambdas.test010.jack;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Use parameter type of lambda when type inference could not select the right type
+ * Lambda with obfuscation to check that MethodId is well managed
  */
-public class Tests {
+public class ObfuscationTest {
 
   @Test
   public void test001() {
-    Lambda lambda = new Lambda();
-    Assert.assertEquals(1, lambda.getInt().intValue());
-    Assert.assertTrue(lambda.getFloat().floatValue() == 2f);
+    Assert.assertEquals(60, new Lambda().testGet10());
   }
 }

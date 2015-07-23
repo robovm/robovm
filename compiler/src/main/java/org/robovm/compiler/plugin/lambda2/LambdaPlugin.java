@@ -26,10 +26,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
-import org.junit.internal.Classes;
 import org.robovm.compiler.CompilerException;
 import org.robovm.compiler.ModuleBuilder;
-import org.robovm.compiler.Types;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.plugin.AbstractCompilerPlugin;
@@ -57,13 +55,13 @@ import soot.jimple.Jimple;
 import soot.jimple.NullConstant;
 
 public class LambdaPlugin extends AbstractCompilerPlugin {
-	private static int FLAG_MARKERS = 2;
-	private static int FLAG_BRIDGES = 4;
-	
+    private static int FLAG_MARKERS = 2;
+    private static int FLAG_BRIDGES = 4;
+
     final Map<SootClass, LambdaClassGenerator> generators = new HashMap<SootClass, LambdaClassGenerator>();
 
     private static boolean isLambdaBootstrapMethod(SootMethodRef methodRef) {
-        return methodRef.declaringClass().getName().equals("java.lang.invoke.LambdaMetafactory") 
+        return methodRef.declaringClass().getName().equals("java.lang.invoke.LambdaMetafactory")
                 && (methodRef.name().equals("metafactory") || methodRef.name().equals("altMetafactory"));
     }
 
@@ -102,7 +100,7 @@ public class LambdaPlugin extends AbstractCompilerPlugin {
                         LambdaClassGenerator generator = null;
                         synchronized (generators) {
                             generator = generators.get(sootClass);
-                            if(generator == null) {
+                            if (generator == null) {
                                 generator = new LambdaClassGenerator();
                                 generators.put(sootClass, generator);
                             }
@@ -121,68 +119,82 @@ public class LambdaPlugin extends AbstractCompilerPlugin {
                             List<Type> markerInterfaces = new ArrayList<>();
                             List<SootMethodType> bridgeMethods = new ArrayList<>();
                             if (expr.getBootstrapMethodRef().name().equals("altMetafactory")) {
-                            	int flags = ((IntConstant) bsmArgs.get(3)).value;
+                                int flags = ((IntConstant) bsmArgs.get(3)).value;
                                 int bsmArgsIdx = 4;
                                 if ((flags & FLAG_MARKERS) > 0) {
-                                    int count = ((IntConstant) bsmArgs.get(bsmArgsIdx++)).value;            
+                                    int count = ((IntConstant) bsmArgs.get(bsmArgsIdx++)).value;
                                     for (int i = 0; i < count; i++) {
-                                    	Object value = bsmArgs.get(bsmArgsIdx++);
-                                    	if (value instanceof Type) {
-                                    		markerInterfaces.add((Type) value);
-                                    	} else if (value instanceof ClassConstant) {
-                                    		String className = ((ClassConstant) value).getValue().replace('/', '.');
-                                    		markerInterfaces.add(SootResolver.v().resolveClass(className, SootClass.HIERARCHY).getType());                                 		
-                                    	}
+                                        Object value = bsmArgs.get(bsmArgsIdx++);
+                                        if (value instanceof Type) {
+                                            markerInterfaces.add((Type) value);
+                                        } else if (value instanceof ClassConstant) {
+                                            String className = ((ClassConstant) value).getValue().replace('/', '.');
+                                            markerInterfaces.add(SootResolver.v()
+                                                    .resolveClass(className, SootClass.HIERARCHY).getType());
+                                        }
                                     }
                                 }
                                 if ((flags & FLAG_BRIDGES) > 0) {
-                                    int count = ((IntConstant) bsmArgs.get(bsmArgsIdx++)).value;            
+                                    int count = ((IntConstant) bsmArgs.get(bsmArgsIdx++)).value;
                                     for (int i = 0; i < count; i++) {
                                         bridgeMethods.add((SootMethodType) bsmArgs.get(bsmArgsIdx++));
                                     }
                                 }
                             }
-                            callSite = generator.generate(caller, invokedName, invokedType, samMethodType, implMethod, instantiatedMethodType, markerInterfaces, bridgeMethods);
+                            callSite = generator.generate(caller, invokedName, invokedType, samMethodType, implMethod,
+                                    instantiatedMethodType, markerInterfaces, bridgeMethods);
 
                             File f = clazz.getPath().getGeneratedClassFile(callSite.getLambdaClassName());
                             FileUtils.writeByteArrayToFile(f, callSite.getClassData());
-                            // The lambda class is created after the caller is compiled.
-                            // This prevents the triggering of a recompile of the caller.
-                            f.setLastModified(clazz.lastModified());                            
+                            // The lambda class is created after the caller is
+                            // compiled.
+                            // This prevents the triggering of a recompile of
+                            // the caller.
+                            f.setLastModified(clazz.lastModified());
 
-                            SootClass lambdaClass = SootResolver.v().makeClassRef(callSite.getLambdaClassName().replace('/', '.'));
+                            SootClass lambdaClass = SootResolver.v()
+                                    .makeClassRef(callSite.getLambdaClassName().replace('/', '.'));
 
                             Local l = (Local) ((DefinitionStmt) unit).getLeftOp();
                             Type samType = callSite.getTargetMethodReturnType();
                             LinkedList<Unit> newUnits = new LinkedList<>();
                             if (callSite.getTargetMethodName().equals("<init>")) {
-                                // Constant lambda. Create an instance once and reuse for
+                                // Constant lambda. Create an instance once and
+                                // reuse for
                                 // every call.
-                                String fieldName = lambdaClass.getName().substring(lambdaClass.getName().lastIndexOf('.') + 1);
+                                String fieldName = lambdaClass.getName()
+                                        .substring(lambdaClass.getName().lastIndexOf('.') + 1);
                                 SootField field = new SootField(fieldName, lambdaClass.getType(),
-                                        Modifier.STATIC | Modifier.PRIVATE | Modifier.TRANSIENT | 0x1000 /*SYNTHETIC*/);
+                                        Modifier.STATIC | Modifier.PRIVATE | Modifier.TRANSIENT
+                                                | 0x1000 /* SYNTHETIC */);
                                 method.getDeclaringClass().addField(field);
                                 // l = LambdaClass.lambdaField
-                                newUnits.add(Jimple.v().newAssignStmt(l, Jimple.v().newStaticFieldRef(field.makeRef())));
+                                newUnits.add(
+                                        Jimple.v().newAssignStmt(l, Jimple.v().newStaticFieldRef(field.makeRef())));
                                 // if l != null goto succOfInvokedynamic
-                                newUnits.add(Jimple.v().newIfStmt(Jimple.v().newNeExpr(l, NullConstant.v()), units.getSuccOf(unit)));
+                                newUnits.add(Jimple.v().newIfStmt(Jimple.v().newNeExpr(l, NullConstant.v()),
+                                        units.getSuccOf(unit)));
                                 // $tmpX = new LambdaClass()
                                 Local tmp = Jimple.v().newLocal("$tmp" + (tmpCounter++), lambdaClass.getType());
                                 body.getLocals().add(tmp);
-                                newUnits.add(Jimple.v().newAssignStmt(tmp, Jimple.v().newNewExpr(lambdaClass.getType())));
-                                newUnits.add(Jimple.v().newInvokeStmt(Jimple.v().newSpecialInvokeExpr(tmp, Scene.v().makeConstructorRef(lambdaClass, Collections.<Type>emptyList()))));
+                                newUnits.add(
+                                        Jimple.v().newAssignStmt(tmp, Jimple.v().newNewExpr(lambdaClass.getType())));
+                                newUnits.add(Jimple.v().newInvokeStmt(Jimple.v().newSpecialInvokeExpr(tmp,
+                                        Scene.v().makeConstructorRef(lambdaClass, Collections.<Type> emptyList()))));
                                 // LambdaClass.lambdaField = $tmpX
-                                newUnits.add(Jimple.v().newAssignStmt(Jimple.v().newStaticFieldRef(field.makeRef()), tmp));
+                                newUnits.add(
+                                        Jimple.v().newAssignStmt(Jimple.v().newStaticFieldRef(field.makeRef()), tmp));
                                 // l = $tmpX
                                 newUnits.add(Jimple.v().newAssignStmt(l, tmp));
                             } else {
-                                // Static factory method returns the lambda to use.
-                            	newUnits.add(Jimple.v().newAssignStmt(l, 
+                                // Static factory method returns the lambda to
+                                // use.
+                                newUnits.add(Jimple.v().newAssignStmt(l,
                                         Jimple.v().newStaticInvokeExpr(
-                                            Scene.v().makeMethodRef(lambdaClass, 
-                                                    callSite.getTargetMethodName(), 
-                                                    callSite.getTargetMethodParameters(), 
-                                                    samType, true), 
+                                                Scene.v().makeMethodRef(lambdaClass,
+                                                        callSite.getTargetMethodName(),
+                                                        callSite.getTargetMethodParameters(),
+                                                        samType, true),
                                                 expr.getArgs())));
                             }
                             units.insertAfter(newUnits, unit);

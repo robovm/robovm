@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +29,7 @@ import java.util.Map;
 import org.apache.commons.io.FileUtils;
 import org.robovm.compiler.CompilerException;
 import org.robovm.compiler.ModuleBuilder;
+import org.robovm.compiler.Types;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.plugin.AbstractCompilerPlugin;
@@ -36,6 +38,7 @@ import soot.Body;
 import soot.Local;
 import soot.Modifier;
 import soot.PatchingChain;
+import soot.RefType;
 import soot.Scene;
 import soot.SootClass;
 import soot.SootField;
@@ -48,13 +51,19 @@ import soot.Type;
 import soot.Unit;
 import soot.Value;
 import soot.jimple.ClassConstant;
+import soot.jimple.Constant;
+import soot.jimple.ConstantSwitch;
 import soot.jimple.DefinitionStmt;
 import soot.jimple.DynamicInvokeExpr;
 import soot.jimple.IntConstant;
 import soot.jimple.Jimple;
 import soot.jimple.NullConstant;
+import soot.util.Switch;
 
 public class LambdaPlugin extends AbstractCompilerPlugin {
+    static final int BRIDGE = 0x00000040;
+    static final int SYNTHETIC = 0x00001000;
+    
     private static int FLAG_MARKERS = 2;
     private static int FLAG_BRIDGES = 4;
 
@@ -141,9 +150,35 @@ public class LambdaPlugin extends AbstractCompilerPlugin {
                                     }
                                 }
                             }
+                            
+                            // search for additional bridge methods in the
+                            // interface we implement. Javac
+                            // may not emit them in the invoke dynamic call
+                            // see issue #1087
+                            if (bridgeMethods.size() == 0) {
+                                SootClass targetType = SootResolver.v().resolveClass(
+                                        invokedType.returnType().toString().replace('/', '.'), SootClass.SIGNATURES);
+                                String samDescriptor = Types.getDescriptor(samMethodType.getParameterTypes(),
+                                        samMethodType.getReturnType());
+                                for (SootMethod targetTypeMethod : targetType.getMethods()) {
+                                    boolean isBridgeMethod = targetTypeMethod.getName().equals(invokedName);
+                                    isBridgeMethod &= targetTypeMethod.getName().equals(invokedName);
+                                    isBridgeMethod &= targetTypeMethod.getParameterCount() == samMethodType.getParameterTypes().size();
+                                    isBridgeMethod &= ((targetTypeMethod.getModifiers() & BRIDGE) != 0);
+                                    isBridgeMethod &= ((targetTypeMethod.getModifiers() & SYNTHETIC) != 0);
+                                    if(isBridgeMethod) {
+                                        String targetTypeMethodDesc = Types.getDescriptor(targetTypeMethod);
+                                        if (!targetTypeMethodDesc.equals(samDescriptor)) {
+                                            bridgeMethods.add(new BridgeMethodType(targetTypeMethod.getReturnType(),
+                                                    targetTypeMethod.getParameterTypes()));
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            // generate the lambda class
                             callSite = generator.generate(caller, invokedName, invokedType, samMethodType, implMethod,
                                     instantiatedMethodType, markerInterfaces, bridgeMethods);
-
                             File f = clazz.getPath().getGeneratedClassFile(callSite.getLambdaClassName());
                             FileUtils.writeByteArrayToFile(f, callSite.getClassData());
                             // The lambda class is created after the caller is
@@ -209,6 +244,50 @@ public class LambdaPlugin extends AbstractCompilerPlugin {
                     }
                 }
             }
+        }
+    }
+    
+    static class BridgeMethodType extends Constant implements SootMethodType {
+        private static final long serialVersionUID = 1L;
+
+        private final Type returnType;
+        private final List<Type> parameterTypes;
+
+        public BridgeMethodType(Type returnType, List<Type> parameterTypes) {
+            this.returnType = returnType;
+            this.parameterTypes = parameterTypes;
+        }
+
+        public Type getReturnType() {
+            return returnType;
+        }
+
+        public List<Type> getParameterTypes() {
+            return Collections.unmodifiableList(parameterTypes);
+        }
+
+        @Override
+        public Type getType() {
+            return RefType.v("java.lang.invoke.MethodType");
+        }
+
+        @Override
+        public void apply(Switch sw) {
+            ((ConstantSwitch) sw).defaultCase(this);
+        }
+
+        @Override
+        public String toString() {
+            StringBuilder sb = new StringBuilder();
+
+            sb.append('(');
+            for (Iterator<Type> it = parameterTypes.iterator(); it.hasNext();) {
+                sb.append(it.next());
+                if (it.hasNext()) {
+                    sb.append(',');
+                }
+            }
+            return sb.append(')').append(returnType).toString();
         }
     }
 }

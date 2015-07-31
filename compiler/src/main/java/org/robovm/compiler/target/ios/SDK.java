@@ -50,10 +50,9 @@ public class SDK implements Comparable<SDK> {
         File sdkSysVersionFile = new File(root, "System/Library/CoreServices/SystemVersion.plist");
         File platformVersionFile = new File(root, "../../../version.plist");
         File platformInfoFile = new File(root, "../../../Info.plist");
-        if (sdkSettingsFile.exists() && platformVersionFile.exists() && platformInfoFile.exists()) {
+        if (sdkSettingsFile.exists() && platformInfoFile.exists()) {
             NSDictionary sdkSettingsDict = (NSDictionary) PropertyListParser.parse(sdkSettingsFile);
             NSDictionary sdkSysVersionDict = (NSDictionary) PropertyListParser.parse(sdkSysVersionFile);
-            NSDictionary platformVersionDict = (NSDictionary) PropertyListParser.parse(platformVersionFile);
             NSDictionary platformInfoDict = (NSDictionary) PropertyListParser.parse(platformInfoFile);
             
             SDK sdk = new SDK();
@@ -68,7 +67,16 @@ public class SDK implements Comparable<SDK> {
             
             sdk.build = toString(sdkSysVersionDict.objectForKey("ProductBuildVersion"));
 
-            sdk.platformBuild = toString(platformVersionDict.objectForKey("ProductBuildVersion"));
+            if (platformVersionFile.exists()) {
+                NSDictionary platformVersionDict = (NSDictionary) PropertyListParser.parse(platformVersionFile);
+                sdk.platformBuild = toString(platformVersionDict.objectForKey("ProductBuildVersion"));
+            } else {
+                // iOS 9 and above, there's no version.plist file anymore
+                // however, the ProductBuildVersion in SystemVersion.plist
+                // seems to always be the same as the ProductBuildVersion
+                // in the now missing version.plist file
+                sdk.platformBuild = sdk.build;
+            }
             
             NSDictionary additionalInfo = (NSDictionary) platformInfoDict.objectForKey("AdditionalInfo");
             sdk.platformVersion = toString(additionalInfo.objectForKey("DTPlatformVersion"));

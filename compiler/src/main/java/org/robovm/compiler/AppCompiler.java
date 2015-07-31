@@ -383,7 +383,7 @@ public class AppCompiler {
         long start = System.currentTimeMillis();
         Set<Clazz> linkClasses = new HashSet<Clazz>();
         int compiledCount = 0;
-        while (!compileQueue.isEmpty() && !Thread.currentThread().isInterrupted()) {
+        outer: while (!compileQueue.isEmpty() && !Thread.currentThread().isInterrupted()) {
             while (!compileQueue.isEmpty() && !Thread.currentThread().isInterrupted()) {
                 Clazz clazz = compileQueue.pollFirst();
                 if (!linkClasses.contains(clazz)) {
@@ -391,7 +391,7 @@ public class AppCompiler {
                         compiledCount++;
                         if (listenerWrapper.t != null) {
                             // We have a failed compilation. Stop compiling.
-                            break;
+                            break outer;
                         }
                     }
 

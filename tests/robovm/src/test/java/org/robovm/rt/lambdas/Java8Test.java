@@ -591,7 +591,7 @@ public class Java8Test {
     }
   }
   
-  // RoboVM Note: disabled, see issue #1083
+  @Test
   public void testSuperThisRefsInDefenderMethod() {
     CC c = new CC();
     II i1 = c;
@@ -913,7 +913,7 @@ public class Java8Test {
 
   interface ILeft extends ITop { }
 
-  // RoboVM Note: disabled, see issue #1083
+  @Test
   public void testMultipleDefaults_fromInterfaces_left() {
     class A implements ILeft, IRight { }
 
@@ -926,7 +926,7 @@ public class Java8Test {
     assertEquals("IRight.m()", new A().m());
   }
 
-  // RoboVM Note: disabled, see issue #1083
+  @Test
   public void testMultipleDefaults_superclass_left() {
     class A implements ITop { }
     class B extends A implements ILeft, IRight { }

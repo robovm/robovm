@@ -110,7 +110,18 @@ public class ITable {
             } else if (!Modifier.isPublic(resolvedEntry.getModifiers())) {
                 table.add(new ConstantBitcast(BC_NON_PUBLIC_METHOD_CALLED, I8_PTR));
             } else {
-                table.add(new ConstantBitcast(resolvedEntry.getFunctionRef(), I8_PTR));
+                /*
+                 * Found a non-abstract method implementation. Either on the
+                 * class, in one of its super classes or a default method in an
+                 * implemented interface.
+                 */
+                FunctionRef functionRef = resolvedEntry.getFunctionRef();
+                if (!resolvedEntry.declaringClass.equals(clazz.getName())) {
+                    if (!mb.hasSymbol(functionRef.getName())) {
+                        mb.addFunctionDeclaration(new FunctionDeclaration(functionRef));
+                    }
+                }
+                table.add(new ConstantBitcast(functionRef, I8_PTR));
             }
         }
         return new StructureConstantBuilder()
@@ -153,15 +164,73 @@ public class ITable {
             this.name = name;
             this.desc = desc;
         }
-        
-        public ResolvedEntry resolve(SootClass clazz) {
-            while (clazz != null) {
-                for (SootMethod m : clazz.getMethods()) {
-                    if (m.getName().equals(name) && desc.equals(Types.getDescriptor(m))) {
-                        return new ResolvedEntry(this, m);
+
+        /**
+         * Finds the method represented by this {@link Entry} among the
+         * immediate or inherited methods on the specified class or interface.
+         */
+        private ResolvedEntry resolve(final SootClass clazz) {
+            SootClass c = clazz;
+            if (!c.isInterface()) {
+                /*
+                 * This method calls itself recursively for interfaces after
+                 * checking for an matching method in the interface. No need to
+                 * check again.
+                 */
+
+                /*
+                 * Find a match in the class and its super classes.
+                 */
+                while (c != null) {
+                    ResolvedEntry e = resolveImmediate(c);
+                    if (e != null) {
+                        return e;
+                    }
+                    c = c.hasSuperclass() ? c.getSuperclass() : null;
+                }
+            }
+
+            /*
+             * No match found in the class hierarchy. Check for a match in
+             * implemented interfaces.
+             */
+            c = clazz;
+            while (c != null) {
+                /*
+                 * Search immediate interfaces first before descending into
+                 * super interfaces. Depth first can potentially match an
+                 * incorrect default method. See #1083.
+                 */
+                for (SootClass interfaze : c.getInterfaces()) {
+                    ResolvedEntry e = resolveImmediate(interfaze);
+                    if (e != null) {
+                        return e;
                     }
                 }
-                clazz = clazz.hasSuperclass() ? clazz.getSuperclass() : null;
+                /*
+                 * Now recursively search through super interfaces.
+                 */
+                for (SootClass interfaze : c.getInterfaces()) {
+                    ResolvedEntry e = resolve(interfaze);
+                    if (e != null) {
+                        return e;
+                    }
+                }
+                c = c.hasSuperclass() ? c.getSuperclass() : null;
+            }
+
+            return null;
+        }
+
+        /**
+         * Finds a method in the specified class or interface with the same
+         * name and descriptor as the method represented by this {@link Entry}.
+         */
+        private ResolvedEntry resolveImmediate(SootClass clazz) {
+            for (SootMethod m : clazz.getMethods()) {
+                if (m.getName().equals(name) && desc.equals(Types.getDescriptor(m))) {
+                    return new ResolvedEntry(this, m);
+                }
             }
             return null;
         }

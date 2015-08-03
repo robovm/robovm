@@ -13,6 +13,7 @@ private_typedefs:
     '__CFAttributedString *': NSAttributedString
     '__CFData *': NSData
     '__CFURL *': NSURL
+    '__CFDictionary *': NSDictionary
     '__CFCharacterSet *': NSCharacterSet
     
 enums:
@@ -544,7 +545,6 @@ functions:
     CTRun(GetAttributes):
         class: CTRun
         name: getAttributesDictionary
-        return_type: 'NSDictionary<NSString, NSObject>'
     CTRunGet.*Ptr:
         exclude: true
     CTRun(GetGlyphs):

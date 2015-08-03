@@ -48,7 +48,7 @@ import org.robovm.apple.corelocation.*;
     public static class Marshaler {
         @MarshalsPointer
         public static UIKeyboardAnimation toObject(Class<UIKeyboardAnimation> cls, long handle, long flags) {
-            NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
+            NSDictionary o = (NSDictionary) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
             if (o == null) {
                 return null;
             }
@@ -65,7 +65,7 @@ import org.robovm.apple.corelocation.*;
     public static class AsListMarshaler {
         @MarshalsPointer
         public static List<UIKeyboardAnimation> toObject(Class<? extends NSObject> cls, long handle, long flags) {
-            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(NSArray.class, handle, flags);
+            NSArray<NSDictionary> o = (NSArray<NSDictionary>) NSObject.Marshaler.toObject(NSArray.class, handle, flags);
             if (o == null) {
                 return null;
             }
@@ -80,7 +80,7 @@ import org.robovm.apple.corelocation.*;
             if (l == null) {
                 return 0L;
             }
-            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            NSArray<NSDictionary> array = new NSMutableArray<>();
             for (UIKeyboardAnimation i : l) {
                 array.add(i.getDictionary());
             }
@@ -90,7 +90,7 @@ import org.robovm.apple.corelocation.*;
     /*</marshalers>*/
 
     /*<constructors>*/
-    UIKeyboardAnimation(NSDictionary<NSString, NSObject> data) {
+    UIKeyboardAnimation(NSDictionary data) {
         super(data);
     }
     public UIKeyboardAnimation() {}

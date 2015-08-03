@@ -225,12 +225,12 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "setTitleTextAttributes:forState:")
-    public native void setTitleTextAttributesDictionary(NSDictionary<NSString, NSObject> attributes, UIControlState state);
+    public native void setTitleTextAttributesDictionary(NSDictionary attributes, UIControlState state);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "titleTextAttributesForState:")
-    public native NSDictionary<NSString, NSObject> getTitleTextAttributesDictionary(UIControlState state);
+    public native NSDictionary getTitleTextAttributesDictionary(UIControlState state);
     /**
      * @since Available in iOS 5.0 and later.
      */

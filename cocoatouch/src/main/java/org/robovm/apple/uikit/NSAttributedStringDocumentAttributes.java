@@ -48,7 +48,7 @@ import org.robovm.apple.corelocation.*;
     public static class Marshaler {
         @MarshalsPointer
         public static NSAttributedStringDocumentAttributes toObject(Class<NSAttributedStringDocumentAttributes> cls, long handle, long flags) {
-            NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
+            NSDictionary o = (NSDictionary) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
             if (o == null) {
                 return null;
             }
@@ -65,7 +65,7 @@ import org.robovm.apple.corelocation.*;
     public static class AsListMarshaler {
         @MarshalsPointer
         public static List<NSAttributedStringDocumentAttributes> toObject(Class<? extends NSObject> cls, long handle, long flags) {
-            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(NSArray.class, handle, flags);
+            NSArray<NSDictionary> o = (NSArray<NSDictionary>) NSObject.Marshaler.toObject(NSArray.class, handle, flags);
             if (o == null) {
                 return null;
             }
@@ -80,7 +80,7 @@ import org.robovm.apple.corelocation.*;
             if (l == null) {
                 return 0L;
             }
-            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            NSArray<NSDictionary> array = new NSMutableArray<>();
             for (NSAttributedStringDocumentAttributes i : l) {
                 array.add(i.getDictionary());
             }
@@ -90,7 +90,7 @@ import org.robovm.apple.corelocation.*;
     /*</marshalers>*/
 
     /*<constructors>*/
-    NSAttributedStringDocumentAttributes(NSDictionary<NSString, NSObject> data) {
+    NSAttributedStringDocumentAttributes(NSDictionary data) {
         super(data);
     }
     public NSAttributedStringDocumentAttributes() {}
@@ -164,7 +164,7 @@ import org.robovm.apple.corelocation.*;
      */
     public NSAttributedStringAttributes getDefaultAttributes() {
         if (has(NSAttributedStringDocumentAttribute.DefaultAttributes)) {
-            NSDictionary<NSString, NSObject> val = (NSDictionary<NSString, NSObject>) get(NSAttributedStringDocumentAttribute.DefaultAttributes);
+            NSDictionary val = (NSDictionary) get(NSAttributedStringDocumentAttribute.DefaultAttributes);
             return new NSAttributedStringAttributes(val);
         }
         return null;
@@ -346,7 +346,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 7.0 and later.
      */
     public NSAttributedStringDocumentAttributes setTextLayoutSections(List<NSTextLayoutSection> sections) {
-        NSArray<NSDictionary<NSString, NSObject>> list = new NSMutableArray<>();
+        NSArray<NSDictionary<?, ?>> list = new NSMutableArray<>();
         for (NSTextLayoutSection e : sections) {
             list.add(e.getDictionary());
         }

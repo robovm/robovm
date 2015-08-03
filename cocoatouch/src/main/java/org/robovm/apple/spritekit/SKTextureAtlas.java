@@ -92,7 +92,7 @@ import org.robovm.apple.scenekit.*;
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "atlasWithDictionary:")
-    protected static native SKTextureAtlas create(NSDictionary<NSString, NSObject> properties);
+    protected static native SKTextureAtlas create(NSDictionary properties);
     @Method(selector = "preloadTextureAtlases:withCompletionHandler:")
     public static native void preloadTextureAtlases(NSArray<SKTextureAtlas> textureAtlases, @Block Runnable completionHandler);
     @Method(selector = "encodeWithCoder:")

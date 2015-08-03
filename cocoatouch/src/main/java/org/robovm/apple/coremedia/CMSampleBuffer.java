@@ -62,7 +62,7 @@ import org.robovm.apple.audiotoolbox.*;
             return NSNotificationCenter.getDefaultCenter().addObserver(DataFailedNotification(), object.as(NSObject.class), NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke(NSNotification a) {
-                    NSDictionary<NSString, NSObject> data = a.getUserInfo();
+                    NSDictionary<?, ?> data = a.getUserInfo();
                     NSNumber val = (NSNumber) data.get(OSStatusNotificationParameter());
                     OSStatus error = val != null ? OSStatus.valueOf((int)val.longValue()) : null;
                     block.invoke(a.getObject().as(CMSampleBuffer.class), error);
@@ -76,7 +76,7 @@ import org.robovm.apple.audiotoolbox.*;
             return NSNotificationCenter.getDefaultCenter().addObserver(InhibitOutputUntilConduitNotification(), object.as(NSObject.class), NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke(NSNotification a) {
-                    NSDictionary<NSString, NSObject> data = a.getUserInfo();
+                    NSDictionary<?, ?> data = a.getUserInfo();
                     NSNumber val = (NSNumber) data.get(ResumeTagConduitNotificationParameter());
                     long tag = val != null ? val.longValue() : 0;
                     block.invoke(a.getObject().as(CMSampleBuffer.class), tag);
@@ -101,12 +101,12 @@ import org.robovm.apple.audiotoolbox.*;
             return NSNotificationCenter.getDefaultCenter().addObserver(UpcomingOutputPTSRangeChangedConduitNotification(), object.as(NSObject.class), NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke(NSNotification a) {
-                    NSDictionary<NSString, NSObject> data = a.getUserInfo();
+                    NSDictionary<?, ?> data = a.getUserInfo();
                     NSNumber val1 = (NSNumber) data.get(UpcomingOutputPTSRangeMayOverlapQueuedOutputPTSRangeConduitNotificationParameter());
                     boolean mayOverlap = val1 != null ? val1.booleanValue() : false;
-                    NSDictionary<NSString, NSObject> val2 = (NSDictionary<NSString, NSObject>) data.get(MinUpcomingOutputPTSConduitNotificationParameter());
+                    NSDictionary<?, ?> val2 = (NSDictionary<?, ?>) data.get(MinUpcomingOutputPTSConduitNotificationParameter());
                     CMTime min = val2 != null ? CMTime.create(val2) : null;
-                    NSDictionary<NSString, NSObject> val3 = (NSDictionary<NSString, NSObject>) data.get(MaxUpcomingOutputPTSConduitNotificationParameter());
+                    NSDictionary<?, ?> val3 = (NSDictionary<?, ?>) data.get(MaxUpcomingOutputPTSConduitNotificationParameter());
                     CMTime max = val3 != null ? CMTime.create(val3) : null;
                     block.invoke(a.getObject().as(CMSampleBuffer.class), mayOverlap, min, max);
                 }
@@ -115,7 +115,7 @@ import org.robovm.apple.audiotoolbox.*;
         /**
          * @since Available in iOS 4.0 and later.
          */
-        public static NSObject observeBufferConsumed(CMSampleBuffer object, final VoidBlock2<CMSampleBuffer, NSDictionary<NSString, NSObject>> block) {
+        public static NSObject observeBufferConsumed(CMSampleBuffer object, final VoidBlock2<CMSampleBuffer, NSDictionary<?, ?>> block) {
             return NSNotificationCenter.getDefaultCenter().addObserver(BufferConsumedConsumerNotification(), object.as(NSObject.class), NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke(NSNotification a) {

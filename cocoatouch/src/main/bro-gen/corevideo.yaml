@@ -94,7 +94,7 @@ functions:
     CVBuffer(GetAttachments):
         class: CVBuffer
         name: '#{g[0]}'
-        return_type: 'NSDictionary<NSString, ?>'
+        return_type: NSDictionary
         visibility: protected
     CVBuffer(SetAttachments):
         class: CVBuffer
@@ -102,7 +102,7 @@ functions:
         visibility: protected
         parameters:
             theAttachments:
-                type: 'NSDictionary<NSString, ?>'
+                type: NSDictionary
     CVBuffer(Retain|Release):
         exclude: true
     CVBuffer(.*):
@@ -135,14 +135,14 @@ functions:
             cacheAttributes:
                 type: CVMetalTextureCacheAttributes
             textureAttributes:
-                type: 'NSDictionary<NSString, ?>'
+                type: NSDictionary
     CVMetalTextureCache(CreateTexture)FromImage:
         class: CVMetalTextureCache
         name: '#{g[0]}'
         visibility: private
         parameters:
             textureAttributes:
-                type: 'NSDictionary<NSString, ?>'
+                type: NSDictionary
     CVMetalTextureCache(.*):
         class: CVMetalTextureCache
         name: '#{g[0]}'
@@ -164,7 +164,7 @@ functions:
         annotations: ['@WeaklyLinked']
         parameters:
             textureAttributes:
-                type: 'NSDictionary<NSString, ?>'
+                type: NSDictionary
             cacheAttributes:
                 type: CVOpenGLESTextureCacheAttributes
     CVOpenGLESTextureCache(CreateTexture)FromImage:
@@ -173,7 +173,7 @@ functions:
         visibility: private
         parameters:
             textureAttributes:
-                type: 'NSDictionary<NSString, ?>'
+                type: NSDictionary
     CVOpenGLESTextureCache(.*):
         class: CVOpenGLESTextureCache
         name: '#{g[0]}'
@@ -520,7 +520,7 @@ values:
             PlaneAlignment:
                 type: long
             IOSurfaceProperties:
-                type: 'NSDictionary<NSString, NSObject>'
+                type: NSDictionary
             OpenGLESCompatibility:
                 name: compatibleWithOpenGLES
                 type: boolean

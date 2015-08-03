@@ -83,7 +83,7 @@ import org.robovm.apple.dispatch.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "dictionaryRepresentation")
-    public native NSDictionary<NSString, NSObject> asDictionary();
+    public native NSDictionary asDictionary();
     /*</properties>*/
     /*<members>*//*</members>*/
     public void put(String key, NSObject object) {
@@ -98,7 +98,7 @@ import org.robovm.apple.dispatch.*;
     public void put(String key, NSArray<?> array) {
         setArray(array, key);
     }
-    public void put(String key, NSDictionary<?, ?> dictionary) {
+    public void put(String key, NSDictionary dictionary) {
         setDictionary(dictionary, key);
     }
     public void put(String key, long value) {
@@ -142,7 +142,7 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "arrayForKey:")
     public native NSArray<?> getArray(String aKey);
     @Method(selector = "dictionaryForKey:")
-    public native NSDictionary<?, ?> getDictionary(String aKey);
+    public native NSDictionary getDictionary(String aKey);
     @Method(selector = "dataForKey:")
     public native NSData getData(String aKey);
     @Method(selector = "longLongForKey:")
@@ -158,7 +158,7 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "setArray:forKey:")
     protected native void setArray(NSArray<?> anArray, String aKey);
     @Method(selector = "setDictionary:forKey:")
-    protected native void setDictionary(NSDictionary<?, ?> aDictionary, String aKey);
+    protected native void setDictionary(NSDictionary aDictionary, String aKey);
     @Method(selector = "setLongLong:forKey:")
     protected native void setLongLong(long value, String aKey);
     @Method(selector = "setDouble:forKey:")

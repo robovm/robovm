@@ -86,12 +86,12 @@ import org.robovm.apple.metal.*;
      * @since Available in iOS 8.0 and later.
      */
     @Bridge(symbol="CVMetalTextureCacheCreate", optional=true)
-    private static native CVReturn create(CFAllocator allocator, CVMetalTextureCacheAttributes cacheAttributes, MTLDevice metalDevice, NSDictionary<NSString, ?> textureAttributes, CVMetalTextureCache.CVMetalTextureCachePtr cacheOut);
+    private static native CVReturn create(CFAllocator allocator, CVMetalTextureCacheAttributes cacheAttributes, MTLDevice metalDevice, NSDictionary textureAttributes, CVMetalTextureCache.CVMetalTextureCachePtr cacheOut);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Bridge(symbol="CVMetalTextureCacheCreateTextureFromImage", optional=true)
-    private static native CVReturn createTexture(CFAllocator allocator, CVMetalTextureCache textureCache, CVImageBuffer sourceImage, NSDictionary<NSString, ?> textureAttributes, MTLPixelFormat pixelFormat, @MachineSizedUInt long width, @MachineSizedUInt long height, @MachineSizedUInt long planeIndex, CVMetalTexture.CVMetalTexturePtr textureOut);
+    private static native CVReturn createTexture(CFAllocator allocator, CVMetalTextureCache textureCache, CVImageBuffer sourceImage, NSDictionary textureAttributes, MTLPixelFormat pixelFormat, @MachineSizedUInt long width, @MachineSizedUInt long height, @MachineSizedUInt long planeIndex, CVMetalTexture.CVMetalTexturePtr textureOut);
     /**
      * @since Available in iOS 8.0 and later.
      */

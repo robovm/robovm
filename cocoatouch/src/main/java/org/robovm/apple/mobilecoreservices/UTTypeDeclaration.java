@@ -43,7 +43,7 @@ import org.robovm.apple.corefoundation.*;
     public static class Marshaler {
         @MarshalsPointer
         public static UTTypeDeclaration toObject(Class<UTTypeDeclaration> cls, long handle, long flags) {
-            NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
+            NSDictionary o = (NSDictionary) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
             if (o == null) {
                 return null;
             }
@@ -60,7 +60,7 @@ import org.robovm.apple.corefoundation.*;
     public static class AsListMarshaler {
         @MarshalsPointer
         public static List<UTTypeDeclaration> toObject(Class<? extends NSObject> cls, long handle, long flags) {
-            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(NSArray.class, handle, flags);
+            NSArray<NSDictionary> o = (NSArray<NSDictionary>) NSObject.Marshaler.toObject(NSArray.class, handle, flags);
             if (o == null) {
                 return null;
             }
@@ -75,7 +75,7 @@ import org.robovm.apple.corefoundation.*;
             if (l == null) {
                 return 0L;
             }
-            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            NSArray<NSDictionary> array = new NSMutableArray<>();
             for (UTTypeDeclaration i : l) {
                 array.add(i.getDictionary());
             }
@@ -85,7 +85,7 @@ import org.robovm.apple.corefoundation.*;
     /*</marshalers>*/
 
     /*<constructors>*/
-    UTTypeDeclaration(NSDictionary<NSString, NSObject> data) {
+    UTTypeDeclaration(NSDictionary data) {
         super(data);
     }
     public UTTypeDeclaration() {}

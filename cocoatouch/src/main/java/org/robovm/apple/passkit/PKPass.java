@@ -87,7 +87,7 @@ import org.robovm.apple.addressbook.*;
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "userInfo")
-    public native NSDictionary<?, ?> getUserInfo();
+    public native NSDictionary getUserInfo();
     @Property(selector = "passURL")
     public native NSURL getPassURL();
     /*</properties>*/

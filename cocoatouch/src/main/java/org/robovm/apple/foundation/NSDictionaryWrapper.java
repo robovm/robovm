@@ -16,16 +16,16 @@
 package org.robovm.apple.foundation;
 
 public abstract class NSDictionaryWrapper {
-    protected NSDictionary<NSString, NSObject> data;
+    protected NSDictionary data;
     
-    protected NSDictionaryWrapper(NSDictionary<NSString, NSObject> data) {
+    protected NSDictionaryWrapper(NSDictionary data) {
         this.data = data;
     }
     public NSDictionaryWrapper() {
         this.data = new NSMutableDictionary<>();
     }
     
-    public NSDictionary<NSString, NSObject> getDictionary() {
+    public NSDictionary getDictionary() {
         return data;
     }
     

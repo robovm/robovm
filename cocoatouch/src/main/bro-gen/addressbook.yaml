@@ -16,7 +16,7 @@ private_typedefs:
     '__CFString **': NSString.NSStringPtr
     '__CFData *': NSData
     '__CFURL *': NSURL
-    '__CFDictionary *': 'NSDictionary<?, ?>'
+    '__CFDictionary *': NSDictionary
     '__CFArray *': NSArray<?>
     __CFError: NSError
 
@@ -77,9 +77,6 @@ functions:
         name: '#{g[0]}'
         throws: NSErrorException
         return_marshaler: CFType.NoRetainMarshaler
-        parameters:
-            options:
-                type: 'NSDictionary<NSString, ?>'
     ABAddressBook(RequestAccess)WithCompletion:
         class: ABAddressBook
         name: '#{g[0]}'

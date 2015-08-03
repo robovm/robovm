@@ -418,7 +418,7 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "subarrayWithRange:")
     protected native NSArray<T> getSubarray(@ByVal NSRange range);
     @Method(selector = "writeToFile:atomically:")
-    protected native boolean writeFile(String path, boolean useAuxiliaryFile);
+    protected native boolean writeFile(String path, boolean atomically);
     @Method(selector = "writeToURL:atomically:")
     public native boolean write(NSURL url, boolean atomically);
     @Method(selector = "initWithArray:")

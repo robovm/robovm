@@ -143,26 +143,26 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "sizeWithAttributes:")
-    public static native @ByVal CGSize getSize(@Pointer long thiz, NSDictionary<NSString, NSObject> attrs);
+    public static native @ByVal CGSize getSize(@Pointer long thiz, NSDictionary attrs);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "drawAtPoint:withAttributes:")
-    public static native void draw(@Pointer long thiz, @ByVal CGPoint point, NSDictionary<NSString, NSObject> attrs);
+    public static native void draw(@Pointer long thiz, @ByVal CGPoint point, NSDictionary attrs);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "drawInRect:withAttributes:")
-    public static native void draw(@Pointer long thiz, @ByVal CGRect rect, NSDictionary<NSString, NSObject> attrs);
+    public static native void draw(@Pointer long thiz, @ByVal CGRect rect, NSDictionary attrs);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "drawWithRect:options:attributes:context:")
-    public static native void draw(@Pointer long thiz, @ByVal CGRect rect, NSStringDrawingOptions options, NSDictionary<NSString, NSObject> attributes, NSStringDrawingContext context);
+    public static native void draw(@Pointer long thiz, @ByVal CGRect rect, NSStringDrawingOptions options, NSDictionary attributes, NSStringDrawingContext context);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "boundingRectWithSize:options:attributes:context:")
-    public static native @ByVal CGRect getBoundingRect(@Pointer long thiz, @ByVal CGSize size, NSStringDrawingOptions options, NSDictionary<NSString, NSObject> attributes, NSStringDrawingContext context);
+    public static native @ByVal CGRect getBoundingRect(@Pointer long thiz, @ByVal CGSize size, NSStringDrawingOptions options, NSDictionary attributes, NSStringDrawingContext context);
     /*</methods>*/
 }

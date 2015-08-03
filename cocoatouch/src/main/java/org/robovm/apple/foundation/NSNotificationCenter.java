@@ -57,19 +57,49 @@ import org.robovm.apple.dispatch.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
+    public void addObserver(NSObject observer, Selector selector, String name, NSObject object) {
+        addObserver(observer, selector, new NSString(name), object);
+    }
+    public void postNotification(String name, NSObject object) {
+        postNotification(new NSString(name), object);
+    }
+    public void postNotification(String name, NSObject object, NSDictionary<?, ?> userInfo) {
+        postNotification(new NSString(name), object, userInfo);
+    }
+    public void postNotification(NSString name, NSObject object, UIRemoteNotification userInfo) {
+        postNotification(name, object, userInfo.getDictionary());
+    }
+    public void postNotification(String name, NSObject object, UIRemoteNotification userInfo) {
+        postNotification(new NSString(name), object, userInfo.getDictionary());
+    }
+    public void postNotification(NSString name, NSObject object, UILocalNotification userInfo) {
+        postNotification(name, object, userInfo.getUserInfo());
+    }
+    public void postNotification(String name, NSObject object, UILocalNotification userInfo) {
+        postNotification(new NSString(name), object, userInfo.getUserInfo());
+    }
+    public void removeObserver(NSObject observer, String name, NSObject object) {
+        removeObserver(observer, new NSString(name), object);
+    }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public NSObject addObserver(String name, NSObject object, NSOperationQueue queue, @Block VoidBlock1<NSNotification> block) {
+        return addObserver(new NSString(name), object, queue, block);
+    }
     /*<methods>*/
     @Method(selector = "addObserver:selector:name:object:")
-    public native void addObserver(NSObject observer, Selector aSelector, NSString aName, NSObject anObject);
+    public native void addObserver(NSObject observer, Selector aSelector, NSString name, NSObject anObject);
     @Method(selector = "postNotification:")
     public native void postNotification(NSNotification notification);
     @Method(selector = "postNotificationName:object:")
-    public native void postNotification(NSString aName, NSObject anObject);
+    public native void postNotification(NSString name, NSObject anObject);
     @Method(selector = "postNotificationName:object:userInfo:")
-    public native void postNotification(NSString aName, NSObject anObject, NSDictionary<NSString, ?> aUserInfo);
+    public native void postNotification(NSString name, NSObject anObject, NSDictionary userInfo);
     @Method(selector = "removeObserver:")
     public native void removeObserver(NSObject observer);
     @Method(selector = "removeObserver:name:object:")
-    public native void removeObserver(NSObject observer, NSString aName, NSObject anObject);
+    public native void removeObserver(NSObject observer, NSString name, NSObject anObject);
     /**
      * @since Available in iOS 4.0 and later.
      */

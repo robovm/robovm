@@ -78,7 +78,7 @@ import org.robovm.apple.audiounit.*;
     @Property(selector = "videoTracks")
     public native NSArray<AVAssetTrack> getVideoTracks();
     @Property(selector = "videoSettings")
-    protected native NSDictionary<NSString, NSObject> getVideoSettings0();
+    protected native NSDictionary getVideoSettings0();
     @Property(selector = "videoComposition")
     public native AVVideoComposition getVideoComposition();
     @Property(selector = "setVideoComposition:")
@@ -99,8 +99,8 @@ import org.robovm.apple.audiounit.*;
     }
     /*<methods>*/
     @Method(selector = "initWithVideoTracks:videoSettings:")
-    protected native @Pointer long init(NSArray<AVAssetTrack> videoTracks, NSDictionary<NSString, NSObject> videoSettings);
+    protected native @Pointer long init(NSArray<AVAssetTrack> videoTracks, NSDictionary videoSettings);
     @Method(selector = "assetReaderVideoCompositionOutputWithVideoTracks:videoSettings:")
-    protected static native AVAssetReaderVideoCompositionOutput create(NSArray<AVAssetTrack> videoTracks, NSDictionary<NSString, NSObject> videoSettings);
+    protected static native AVAssetReaderVideoCompositionOutput create(NSArray<AVAssetTrack> videoTracks, NSDictionary videoSettings);
     /*</methods>*/
 }

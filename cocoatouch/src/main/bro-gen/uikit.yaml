@@ -266,35 +266,20 @@ categories:
         methods:
             '-boundingRectWithSize:options:attributes:context:':
                 name: getBoundingRect
-                parameters:
-                    attributes:
-                        type: 'NSDictionary<NSString, NSObject>'
             '-drawAtPoint:forWidth.*':
                 name: draw
             '-drawAtPoint:withAttributes:':
                 name: draw
-                parameters:
-                    attrs:
-                        type: 'NSDictionary<NSString, NSObject>'
             '-drawAtPoint:withFont:':
                 name: draw
             '-drawInRect:withAttributes:':
                 name: draw
-                parameters:
-                    attrs:
-                        type: 'NSDictionary<NSString, NSObject>'
             '-drawInRect:withFont:.*':
                 name: draw
             '-drawWithRect:options:attributes:context:':
                 name: draw
-                parameters:
-                    attributes:
-                        type: 'NSDictionary<NSString, NSObject>'
             '-sizeWithAttributes:':
                 name: getSize
-                parameters:
-                    attrs:
-                        type: 'NSDictionary<NSString, NSObject>'
             '-sizeWithFont.*':
                 name: getSize
     NSValue: # DONE
@@ -780,12 +765,8 @@ classes:
         methods:
             '-setTitleTextAttributes:forState:':
                 name: setTitleTextAttributesDictionary
-                parameters:
-                    attributes:
-                        type: 'NSDictionary<NSString, NSObject>'
             '-titleTextAttributesForState:':
                 name: getTitleTextAttributesDictionary
-                return_type: 'NSDictionary<NSString, NSObject>'
     UIBezierPath: # DONE
         methods:
             '+bezierPath':
@@ -1733,7 +1714,6 @@ classes:
                 type: NSArray<UINavigationItem>
             'titleTextAttributes':
                 name: titleTextAttributesDictionary
-                type: 'NSDictionary<NSString, NSObject>'
         methods:
             '-backgroundImageForBarMetrics:':
                 name: getBackgroundImage
@@ -1863,7 +1843,7 @@ classes:
         properties:
             'items':
                 name: items0
-                type: 'NSArray<NSDictionary<NSString, NSObject>>'
+                type: 'NSArray<NSDictionary>'
                 visibility: private
             'images':
                 type: NSArray<UIImage>
@@ -1922,7 +1902,7 @@ classes:
                 visibility: private
                 parameters:
                     items:
-                        type: 'NSArray<NSDictionary<NSString, NSObject>>'
+                        type: 'NSArray<NSDictionary>'
     UIPercentDrivenInteractiveTransition: # DONE
         methods:
             '-updateInteractiveTransition:':
@@ -2217,7 +2197,6 @@ classes:
                 name: getScopeBarButtonDividerImage
             '-scopeBarButtonTitleTextAttributesForState:':
                 name: getScopeBarButtonTitleTextAttributesDictionary
-                return_type: 'NSDictionary<NSString, NSObject>'
             '-searchFieldBackgroundImageForState:':
                 name: getSearchFieldBackgroundImage
             '-setImage:forSearchBarIcon:state:':
@@ -2238,9 +2217,6 @@ classes:
                 trim_after_first_colon: true 
             '-setScopeBarButtonTitleTextAttributes:forState:':
                 name: setScopeBarButtonTitleTextAttributesDictionary
-                parameters:
-                    attributes:
-                        type: 'NSDictionary<NSString, NSObject>'
     UISearchController: # DONE
         methods:
             '-init.*':
@@ -2282,7 +2258,6 @@ classes:
                 name: getTitle
             '-titleTextAttributesForState:':
                 name: getTitleTextAttributesDictionary
-                return_type: 'NSDictionary<NSString, NSObject>'
             '-removeSegmentAtIndex:animated:':
                 name: removeSegment
             '-setTitle:forSegmentAtIndex:':
@@ -2301,9 +2276,6 @@ classes:
                 name: setDividerImage
             '-setTitleTextAttributes:forState:':
                 name: setTitleTextAttributesDictionary
-                parameters:
-                    attributes:
-                        type: 'NSDictionary<NSString, NSObject>'
             '-setContentPositionAdjustment:forSegmentType:barMetrics:':
                 name: setContentPositionAdjustment
     UISimpleTextPrintFormatter: # DONE
@@ -2598,10 +2570,8 @@ classes:
         properties:
             'defaultTextAttributes':
                 name: defaultTextAttributesDictionary
-                type: 'NSDictionary<NSString, NSObject>'
             'typingAttributes':
                 name: typingAttributesDictionary
-                type: 'NSDictionary<NSString, NSObject>'
         methods:
             '-borderRectForBounds:':
                 name: getBorderRect
@@ -2645,10 +2615,8 @@ classes:
         properties:
             'linkTextAttributes':
                 name: linkTextAttributesDictionary
-                type: 'NSDictionary<NSString, NSObject>'
             'typingAttributes':
                 name: typingAttributesDictionary
-                type: 'NSDictionary<NSString, NSObject>'
         methods:
             '-init.*':
                 name: init
@@ -3261,7 +3229,7 @@ protocols:
                 name: handleWatchKitExtensionRequest
                 parameters:
                     reply:
-                        type: '@Block VoidBlock1<NSDictionary<?, ?>>'
+                        type: '@Block VoidBlock1<NSDictionary>'
     UIBarPositioning: {} # DONE
     UIBarPositioningDelegate: # DONE
         methods:

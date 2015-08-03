@@ -23,6 +23,7 @@ import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
 import org.robovm.rt.*;
+import org.robovm.rt.annotation.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -41,13 +42,7 @@ import org.robovm.apple.corefoundation.*;
     /*<ptr>*/public static class MIDIPacketListPtr extends Ptr<MIDIPacketList, MIDIPacketListPtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(MIDIPacketList.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*/
-    public MIDIPacketList() {}
-    public MIDIPacketList(int numPackets, MIDIPacket packet) {
-        this.setNumPackets(numPackets);
-        this.setPacket(packet);
-    }
-    /*</constructors>*/
+    /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
     @StructMember(0) public native int getNumPackets();

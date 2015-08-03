@@ -82,12 +82,12 @@ import org.robovm.apple.metal.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CVBufferGetAttachments", optional=true)
-    protected native NSDictionary<NSString, ?> getAttachments(CVAttachmentMode attachmentMode);
+    protected native NSDictionary getAttachments(CVAttachmentMode attachmentMode);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CVBufferSetAttachments", optional=true)
-    protected native void setAttachments(NSDictionary<NSString, ?> theAttachments, CVAttachmentMode attachmentMode);
+    protected native void setAttachments(NSDictionary theAttachments, CVAttachmentMode attachmentMode);
     /**
      * @since Available in iOS 4.0 and later.
      */

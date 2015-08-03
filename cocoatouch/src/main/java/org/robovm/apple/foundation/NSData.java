@@ -184,7 +184,7 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "subdataWithRange:")
     public native NSData getSubdata(@ByVal NSRange range);
     @Method(selector = "writeToFile:atomically:")
-    protected native boolean writeFile(String path, boolean useAuxiliaryFile);
+    protected native boolean writeFile(String path, boolean atomically);
     @Method(selector = "writeToURL:atomically:")
     public native boolean write(NSURL url, boolean atomically);
     protected boolean writeFile(String path, NSDataWritingOptions writeOptionsMask) throws NSErrorException {

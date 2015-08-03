@@ -117,4 +117,12 @@ import org.robovm.apple.coreimage.*;
     public NSObject get(String key) {
         return data.get(new NSString(key));
     }
+    
+    public String getString(String key) {
+        return String.valueOf(get(key));
+    }
+    
+    public NSDictionary<NSString, NSObject> getDictionary() {
+        return data;
+    }
 }

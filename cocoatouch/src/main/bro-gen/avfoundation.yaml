@@ -284,7 +284,6 @@ classes:
     AVAssetReaderTrackOutput: # DONE
         properties:
             'outputSettings':
-                type: 'NSDictionary<NSString, NSObject>'
                 visibility: protected
             'audioTimePitchAlgorithm':
                 type: AVAudioTimePitchAlgorithm
@@ -292,22 +291,15 @@ classes:
             '-initWithTrack:outputSettings:':
                 name: init
                 constructor: false
-                parameters:
-                    outputSettings:
-                        type: 'NSDictionary<NSString, NSObject>'
             '+assetReaderTrackOutputWithTrack:outputSettings:':
                 name: create
                 visibility: protected
-                parameters:
-                    outputSettings:
-                        type: 'NSDictionary<NSString, NSObject>'
     AVAssetReaderVideoCompositionOutput: # DONE
         properties:
             'videoTracks':
                 type: NSArray<AVAssetTrack>
             'videoSettings':
                 name: videoSettings0
-                type: 'NSDictionary<NSString, NSObject>'
                 visibility: protected
         methods:
             '-initWithVideoTracks:videoSettings:':
@@ -316,16 +308,12 @@ classes:
                 parameters:
                     videoTracks:
                         type: NSArray<AVAssetTrack>
-                    videoSettings:
-                        type: 'NSDictionary<NSString, NSObject>'
             '+assetReaderVideoCompositionOutputWithVideoTracks:videoSettings:':
                 name: create
                 visibility: protected
                 parameters:
                     videoTracks:
                         type: NSArray<AVAssetTrack>
-                    videoSettings:
-                        type: 'NSDictionary<NSString, NSObject>'
     AVAssetResourceLoader: # DONE
         properties:
             'delegateQueue':
@@ -349,9 +337,6 @@ classes:
             '-streamingContentKeyRequestDataForApp:contentIdentifier:options:error:':
                 name: getStreamingContentKeyRequestData
                 throws: NSErrorException
-                parameters:
-                    options:
-                        type: 'NSDictionary<NSString, ?>'
             '-finishLoadingWithResponse:data:redirect:':
                 name: finishLoading
     AVAssetResourceRenewalRequest: {} # DONE
@@ -414,8 +399,6 @@ classes:
                 trim_after_first_colon: true
                 visibility: protected # can be either AVAudioSettings or AVVideoSettings
                 parameters:
-                    outputSettings:
-                        type: NSDictionary<NSString, NSObject>
                     mediaType:
                         type: AVMediaType
             '-canAddInput:':
@@ -438,7 +421,6 @@ classes:
     AVAssetWriterInput: # DONE
         properties:
             'outputSettings':
-                type: NSDictionary<NSString, NSObject>
                 visibility: protected # can be either AVAudioSettings or AVVideoSettings
             'metadata':
                 type: NSArray<AVMetadataItem>
@@ -453,16 +435,12 @@ classes:
                 parameters:
                     mediaType:
                         type: AVMediaType
-                    outputSettings:
-                        type: NSDictionary<NSString, NSObject>
             '-initWithMediaType:outputSettings:sourceFormatHint:':
                 name: init
                 constructor: false # can be either AVAudioSettings or AVVideoSettings
                 parameters:
                     mediaType:
                         type: AVMediaType
-                    outputSettings:
-                        type: NSDictionary<NSString, NSObject>
             '-requestMediaDataWhenReadyOnQueue:usingBlock:':
                 name: requestMediaDataWhenReady
                 annotations: ['@WeaklyLinked']
@@ -474,16 +452,12 @@ classes:
                 parameters:
                     mediaType:
                         type: AVMediaType
-                    outputSettings:
-                        type: NSDictionary<NSString, NSObject>
             '+assetWriterInputWithMediaType:outputSettings:sourceFormatHint:':
                 name: create
                 visibility: protected # can be either AVAudioSettings or AVVideoSettings
                 parameters:
                     mediaType:
                         type: AVMediaType
-                    outputSettings:
-                        type: NSDictionary<NSString, NSObject>
             '-canAddTrackAssociationWithTrackOfInput:type:':
                 name: canAddTrackAssociation
                 parameters:
@@ -1197,7 +1171,6 @@ classes:
         properties:
             'outputSettings':
                 name: outputSettings0
-                type: 'NSDictionary<NSString, NSObject>'
                 visibility: protected
             'availableImageDataCVPixelFormatTypes':
                 type: '@org.robovm.rt.bro.annotation.Marshaler(CVPixelFormatType.AsListMarshaler.class) List<CVPixelFormatType>'
@@ -1222,7 +1195,6 @@ classes:
         properties:
             'videoSettings':
                 name: videoSettings0
-                type: 'NSDictionary<NSString, NSObject>'
                 visibility: protected
             'availableVideoCVPixelFormatTypes':
                 type: List<CVPixelFormatType>
@@ -1239,7 +1211,6 @@ classes:
             '-recommendedVideoSettingsForAssetWriterWithOutputFileType:':
                 name: getRecommendedVideoSettings0
                 visibility: protected
-                return_type: NSDictionary<NSString, NSObject>
                 parameters:
                     outputFileType:
                         type: String

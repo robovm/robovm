@@ -85,9 +85,9 @@ import org.robovm.apple.foundation.*;
     @Property(selector = "setSourceExpression:")
     public native void setSourceExpression(NSExpression v);
     @Property(selector = "userInfo")
-    public native NSDictionary<?, ?> getUserInfo();
+    public native NSDictionary getUserInfo();
     @Property(selector = "setUserInfo:")
-    public native void setUserInfo(NSDictionary<?, ?> v);
+    public native void setUserInfo(NSDictionary v);
     @Property(selector = "entityMigrationPolicyClassName")
     public native String getEntityMigrationPolicyClassName();
     @Property(selector = "setEntityMigrationPolicyClassName:")

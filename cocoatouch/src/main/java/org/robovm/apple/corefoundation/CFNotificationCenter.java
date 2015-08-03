@@ -111,8 +111,8 @@ import org.robovm.apple.coretext.*;
     @Bridge(symbol="CFNotificationCenterRemoveEveryObserver", optional=true)
     public native void removeEveryObserver(CFType observer);
     @Bridge(symbol="CFNotificationCenterPostNotification", optional=true)
-    public native void postNotification(String name, CFType object, NSDictionary<NSString, ?> userInfo, boolean deliverImmediately);
+    public native void postNotification(String name, CFType object, NSDictionary userInfo, boolean deliverImmediately);
     @Bridge(symbol="CFNotificationCenterPostNotificationWithOptions", optional=true)
-    public native void postNotification(String name, CFType object, NSDictionary<NSString, ?> userInfo, CFNotificationPostingOptions options);
+    public native void postNotification(String name, CFType object, NSDictionary userInfo, CFNotificationPostingOptions options);
     /*</methods>*/
 }

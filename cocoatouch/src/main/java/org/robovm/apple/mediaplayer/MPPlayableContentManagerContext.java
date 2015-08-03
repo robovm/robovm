@@ -33,26 +33,34 @@ import org.robovm.apple.coregraphics.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 8.4 and later.
+ */
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ interface /*<name>*/MPPlayableContentDelegate/*</name>*/ 
-    /*<implements>*/extends NSObjectProtocol/*</implements>*/ {
+/*<annotations>*/@Library("MediaPlayer") @NativeClass/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/MPPlayableContentManagerContext/*</name>*/ 
+    extends /*<extends>*/NSObject/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/
-    /*</bind>*/
+    /*<ptr>*/public static class MPPlayableContentManagerContextPtr extends Ptr<MPPlayableContentManagerContext, MPPlayableContentManagerContextPtr> {}/*</ptr>*/
+    /*<bind>*/static { ObjCRuntime.bind(MPPlayableContentManagerContext.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
+    /*<constructors>*/
+    public MPPlayableContentManagerContext() {}
+    protected MPPlayableContentManagerContext(SkipInit skipInit) { super(skipInit); }
+    /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "enforcedContentItemsCount")
+    public native @MachineSizedSInt long getEnforcedContentItemsCount();
+    @Property(selector = "enforcedContentTreeDepth")
+    public native @MachineSizedSInt long getEnforcedContentTreeDepth();
+    @Property(selector = "contentLimitsEnabled")
+    public native boolean isContentLimitsEnabled();
+    @Property(selector = "endpointAvailable")
+    public native boolean isEndpointAvailable();
     /*</properties>*/
+    /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "playableContentManager:initiatePlaybackOfContentItemAtIndexPath:completionHandler:")
-    void initiatePlayback(MPPlayableContentManager contentManager, NSIndexPath indexPath, @Block VoidBlock1<NSError> completionHandler);
-    @Method(selector = "playableContentManager:didUpdateContext:")
-    void didUpdateContext(MPPlayableContentManager contentManager, MPPlayableContentManagerContext context);
+    
     /*</methods>*/
-    /*<adapter>*/
-    /*</adapter>*/
 }

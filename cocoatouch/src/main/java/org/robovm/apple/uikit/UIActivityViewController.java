@@ -54,6 +54,24 @@ import org.robovm.apple.corelocation.*;
     protected UIActivityViewController(SkipInit skipInit) { super(skipInit); }
     public UIActivityViewController(NSArray<?> activityItems, NSArray<UIActivity> applicationActivities) { super((SkipInit) null); initObject(init(activityItems, applicationActivities)); }
     /*</constructors>*/
+    public UIActivityViewController(List<?> activityItems, NSArray<UIActivity> applicationActivities) {
+        super((SkipInit) null);
+        NSArray<NSObject> items = new NSMutableArray<>();
+        for (Object item : activityItems) {
+            if (!(item instanceof NSObject)) {
+                if (item instanceof String) {
+                    items.add(new NSString((String) item));
+                } else if (item instanceof Number) {
+                    items.add(NSNumber.valueOf((Number) item));
+                } else {
+                    throw new IllegalArgumentException("Unsupported activity item type: " + item);
+                }
+            } else {
+                items.add((NSObject)item);
+            }
+        }
+        initObject(init(items, applicationActivities));
+    }
     /*<properties>*/
     /**
      * @since Available in iOS 6.0 and later.

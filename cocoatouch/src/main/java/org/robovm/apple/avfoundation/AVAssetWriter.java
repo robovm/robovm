@@ -130,7 +130,7 @@ import org.robovm.apple.audiounit.*;
     @Method(selector = "initWithURL:fileType:error:")
     private native @Pointer long init(NSURL outputURL, String outputFileType, NSError.NSErrorPtr outError);
     @Method(selector = "canApplyOutputSettings:forMediaType:")
-    protected native boolean canApplyOutputSettings(NSDictionary<NSString, NSObject> outputSettings, AVMediaType mediaType);
+    protected native boolean canApplyOutputSettings(NSDictionary outputSettings, AVMediaType mediaType);
     @Method(selector = "canAddInput:")
     public native boolean canAddInput(AVAssetWriterInput input);
     @Method(selector = "addInput:")

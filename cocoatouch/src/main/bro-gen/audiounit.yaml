@@ -11,7 +11,7 @@ private_typedefs:
     '__CFString **': NSString.NSStringPtr
     '__CFData *': NSData
     '__CFURL *': NSURL
-    '__CFDictionary *': 'NSDictionary<?, ?>'
+    '__CFDictionary *': NSDictionary
     '__CFArray *': NSArray<?>
     '__CFRunLoopTimer *': NSTimer
     'AudioUnitParameterEvent *': AUParameterEvent

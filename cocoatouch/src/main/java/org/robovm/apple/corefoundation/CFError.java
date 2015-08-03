@@ -63,7 +63,7 @@ import org.robovm.apple.coretext.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFErrorCreate", optional=true)
-    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFError create(CFAllocator allocator, String domain, @MachineSizedSInt long code, NSDictionary<NSString, NSObject> userInfo);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFError create(CFAllocator allocator, String domain, @MachineSizedSInt long code, NSDictionary userInfo);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -78,7 +78,7 @@ import org.robovm.apple.coretext.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFErrorCopyUserInfo", optional=true)
-    public native NSDictionary<NSString, NSObject> getUserInfo();
+    public native NSDictionary getUserInfo();
     /**
      * @since Available in iOS 2.0 and later.
      */

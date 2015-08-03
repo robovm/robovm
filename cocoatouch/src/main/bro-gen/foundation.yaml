@@ -22,10 +22,10 @@ typedefs:
     'NSArray **': 'NSArray.NSArrayPtr<?>'
     'NSMutableArray *': 'NSMutableArray<?>'
     'NSMutableArray **': 'NSMutableArray.NSMutableArrayPtr<?>'
-    'NSDictionary *': 'NSDictionary<?, ?>'
-    'NSDictionary **': 'NSDictionary.NSDictionaryPtr<?, ?>'
-    'NSMutableDictionary *': 'NSMutableDictionary<?, ?>'
-    'NSMutableDictionary **': 'NSMutableDictionary.NSMutableDictionaryPtr<?, ?>'
+    'NSDictionary *': 'NSDictionary'
+    'NSDictionary **': 'NSDictionary.NSDictionaryPtr'
+    'NSMutableDictionary *': 'NSMutableDictionary'
+    'NSMutableDictionary **': 'NSMutableDictionary.NSMutableDictionaryPtr'
     'NSSet *': 'NSSet<?>'
     'NSSet **': 'NSSet.NSSetPtr<?>'
     'NSMutableSet *': 'NSMutableSet<?>'
@@ -64,7 +64,7 @@ typedefs:
 private_typedefs:
     'void (^)(id, NSRange, BOOL *)': '@Block("(,@ByVal,)") VoidBlock3<NSObject, NSRange, BooleanPtr>'
     'void (^)(id, NSUInteger, BOOL *)': '@Block("(,@MachineSizedUInt,)") VoidBlock3<NSObject, Long, BooleanPtr>'
-    'void (^)(NSDictionary *, NSRange, BOOL *)': '@Block("(,@ByVal,)") VoidBlock3<NSDictionary<NSString, NSObject>, NSRange, BooleanPtr>'
+    'void (^)(NSDictionary *, NSRange, BOOL *)': '@Block("(,@ByVal,)") VoidBlock3<NSDictionary<?, ?>, NSRange, BooleanPtr>'
 
 enums:
     NSActivityOptions: {}
@@ -263,6 +263,9 @@ classes:
             '-writeToFile:atomically:':
                 name: writeFile
                 visibility: protected
+                parameters:
+                    useAuxiliaryFile:
+                        name: atomically
             '-writeToURL:atomically:':
                 name: write
             '-addObserver:toObjectsAtIndexes:forKeyPath:options:context:':
@@ -290,17 +293,12 @@ classes:
                         type: NSString    
             '-attributesAtIndex:effectiveRange:':
                 name: getAttributesDictionary
-                return_type: 'NSDictionary<NSString, NSObject>'
             '-attributesAtIndex:longestEffectiveRange:inRange:':
                 name: getAttributesDictionary
-                return_type: 'NSDictionary<NSString, NSObject>'
             '-attributedSubstringFromRange:':
                 name: substring
             '-initWithString:attributes:':
                 name: init
-                parameters:
-                    attrs:
-                        type: 'NSDictionary<NSString, NSObject>'
             '-init.*':
                 name: init
             '-enumerateAttributesInRange:options:usingBlock:':
@@ -665,6 +663,9 @@ classes:
             '-writeToFile.*':
                 name: writeFile
                 visibility: protected
+                parameters:
+                    useAuxiliaryFile:
+                        name: atomically
             '-writeToURL:atomically:':
                 name: write
             '-writeToURL:options:error:':
@@ -896,6 +897,9 @@ classes:
             '-writeToFile:atomically:':
                 name: writeFile
                 visibility: protected
+                parameters:
+                    useAuxiliaryFile:
+                        name: atomically
             '-writeToURL:atomically:':
                 name: write
             '-descriptionInStringsFileFormat':
@@ -1640,7 +1644,7 @@ classes:
             'registeredTypeIdentifiers':
                 type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             'previewImageHandler':
-                type: '@Block("(@Block,,)") VoidBlock3<VoidBlock2<NSObject, NSError>, ObjCClass, NSDictionary<NSString, NSObject>>' # todo dictionary marshaling
+                type: '@Block("(@Block,,)") VoidBlock3<VoidBlock2<NSObject, NSError>, ObjCClass, NSDictionary<?, ?>>' # todo dictionary marshaling
         methods:
             '-initWithItem:typeIdentifier:':
                 name: init
@@ -1653,7 +1657,7 @@ classes:
                 trim_after_first_colon: true
                 parameters:
                     loadHandler:
-                        type: '@Block("(@Block,,)") VoidBlock3<VoidBlock2<NSObject, NSError>, ObjCClass, NSDictionary<NSString, NSObject>>' # todo dictionary marshaling
+                        type: '@Block("(@Block,,)") VoidBlock3<VoidBlock2<NSObject, NSError>, ObjCClass, NSDictionary<?, ?>>' # todo dictionary marshaling
             '-hasItemConformingToTypeIdentifier:':
                 trim_after_first_colon: true
             '-loadItemForTypeIdentifier:options:completionHandler:':
@@ -2041,9 +2045,6 @@ classes:
                 name: replace
             '-setAttributes:range:':
                 trim_after_first_colon: true
-                parameters:
-                    attrs:
-                        type: 'NSDictionary<NSString, NSObject>'
             '-addAttribute:value:range:':
                 trim_after_first_colon: true
                 parameters:
@@ -2051,9 +2052,6 @@ classes:
                         type: NSString
             '-addAttributes:range:':
                 trim_after_first_colon: true
-                parameters:
-                    attrs:
-                        type: 'NSDictionary<NSString, NSObject>'
             '-removeAttribute:range:':
                 trim_after_first_colon: true
                 parameters:
@@ -2272,9 +2270,7 @@ classes:
         skip_def_constructor: true
         properties:
             'name':
-                type: NSString
-            'userInfo':
-                type: 'NSDictionary<NSString, NSObject>'
+                type: String
         methods:
             '+notificationWithName:object:.*': {exclude: true}
             '-init': {exclude: true}
@@ -2285,8 +2281,6 @@ classes:
                         type: NSString
                     object:
                         type: NSObject
-                    userInfo:
-                        type: 'NSDictionary<NSString, NSObject>'
             '-init.*':
                 name: init
     NSNotificationCenter: # DONE
@@ -2298,6 +2292,7 @@ classes:
                 trim_after_first_colon: true
                 parameters:
                     aName:
+                        name: name
                         type: NSString
             '-addObserverForName:object:queue:usingBlock:':
                 name: addObserver
@@ -2310,6 +2305,7 @@ classes:
                 trim_after_first_colon: true
                 parameters:
                     aName:
+                        name: name
                         type: NSString
             '-postNotification:':
                 trim_after_first_colon: true
@@ -2317,14 +2313,16 @@ classes:
                 name: postNotification
                 parameters:
                     aName:
+                        name: name
                         type: NSString
             '-postNotificationName:object:userInfo:':
                 name: postNotification
                 parameters:
                     aName:
+                        name: name
                         type: NSString
                     aUserInfo:
-                        type: 'NSDictionary<NSString, ?>'
+                        name: userInfo
     NSNotificationQueue: # DONE
         skip_def_constructor: true
         methods:
@@ -2416,13 +2414,13 @@ classes:
         properties:
             'textAttributesForNil':
                 name: textAttributesDictionaryForNull
-                type: 'NSDictionary<NSString, NSObject>'
+                type: 'NSDictionary<?, ?>'
             'textAttributesForNotANumber':
                 name: textAttributesDictionaryForNaN
-                type: 'NSDictionary<NSString, NSObject>'
+                type: 'NSDictionary<?, ?>'
             'textAttributesFor(.*)':
                 name: 'textAttributesDictionaryFor#{g[0]}'
-                type: 'NSDictionary<NSString, NSObject>'
+                type: 'NSDictionary<?, ?>'
             'nilSymbol':
                 name: nullSymbol
             'notANumberSymbol':
@@ -2664,16 +2662,10 @@ classes:
                 name: evaluate
             '-evaluateWithObject:substitutionVariables:':
                 name: evaluate
-                parameters:
-                    bindings:
-                        type: 'NSDictionary<NSString, ?>'
             '-predicateFormat':
                 property: true
             '-predicateWithSubstitutionVariables:':
                 name: newPredicateWithSubstitutionVariables
-                parameters:
-                    variables:
-                        type: 'NSDictionary<NSString, ?>'
     NSProcessInfo: # DONE
         skip_def_constructor: true
         properties:
@@ -2979,9 +2971,15 @@ classes:
             '-writeToURL:atomically:encoding:error:':
                 name: writeURL
                 throws: NSErrorException
+                parameters:
+                    useAuxiliaryFile:
+                        name: atomically
             '-writeToFile:atomically:encoding:error:':
                 name: writeFile
                 throws: NSErrorException
+                parameters:
+                    useAuxiliaryFile:
+                        name: atomically
             '-stringByAppendingPathComponent:':
                 name: appendPathComponent
             '-stringByAppendingPathExtension:':
@@ -3181,7 +3179,6 @@ classes:
             'dictionaryRepresentation':
                 name: asDictionary
                 omit_prefix: true
-                type: 'NSDictionary<NSString, NSObject>'
         methods:
             '-objectForKey:':
                 name: get

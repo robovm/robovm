@@ -102,7 +102,7 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "initWithExpressionType:")
     protected native @Pointer long init(NSExpressionType type);
     @Method(selector = "expressionValueWithObject:context:")
-    public native NSObject evaluate(NSObject object, NSMutableDictionary<?, ?> context);
+    public native NSObject evaluate(NSObject object, NSMutableDictionary context);
     /**
      * @since Available in iOS 7.0 and later.
      */

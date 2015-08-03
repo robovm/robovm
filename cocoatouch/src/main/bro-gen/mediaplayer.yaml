@@ -209,6 +209,7 @@ classes:
         methods:
             '+sharedContentManager':
                 property: true
+    MPPlayableContentManagerContext: {} # DONE
     MPRatingCommand: {} # DONE
     MPRatingCommandEvent: {} # DONE
     MPRemoteCommand: # DONE
@@ -232,10 +233,7 @@ classes:
             'preferredIntervals':
                 type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsDoubleListMarshaler.class) List<Double>'
     MPSkipIntervalCommandEvent: {} # DONE
-    MPTimedMetadata: # DONE
-        properties:
-            'allMetadata':
-                type: NSDictionary<NSString, NSObject>
+    MPTimedMetadata: {} # DONE
     MPVolumeView: # DONE
         properties:
             'wirelessRoutesAvailable':
@@ -288,6 +286,8 @@ protocols:
         methods:
             '-playableContentManager:initiatePlaybackOfContentItemAtIndexPath:completionHandler:':
                 name: initiatePlayback
+            '-playableContentManager:didUpdateContext:':
+                name: didUpdateContext
 
 functions:
     MPVolumeSettingsAlert(Show|Hide):

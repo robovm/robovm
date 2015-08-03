@@ -81,7 +81,7 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 3.0 and later.
      */
     @Property(selector = "entityVersionHashesByName")
-    public native NSDictionary<?, ?> getEntityVersionHashesByName();
+    public native NSDictionary getEntityVersionHashesByName();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

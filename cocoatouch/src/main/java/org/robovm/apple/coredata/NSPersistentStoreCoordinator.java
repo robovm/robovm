@@ -230,7 +230,7 @@ import org.robovm.apple.foundation.*;
     @Method(selector = "setMetadata:forPersistentStore:")
     public native void setMetadataForPersistentStore(NSPersistentStoreMetadata metadata, NSPersistentStore store);
     @Method(selector = "metadataForPersistentStore:")
-    public native NSDictionary<?, ?> getMetadataForPersistentStore(NSPersistentStore store);
+    public native NSDictionary getMetadataForPersistentStore(NSPersistentStore store);
     @Method(selector = "managedObjectIDForURIRepresentation:")
     public native NSManagedObjectID getManagedObjectIDForURIRepresentation(NSURL url);
     /**

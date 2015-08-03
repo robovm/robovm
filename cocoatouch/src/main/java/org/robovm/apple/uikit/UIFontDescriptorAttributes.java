@@ -48,7 +48,7 @@ import org.robovm.apple.corelocation.*;
     public static class Marshaler {
         @MarshalsPointer
         public static UIFontDescriptorAttributes toObject(Class<UIFontDescriptorAttributes> cls, long handle, long flags) {
-            NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
+            NSDictionary o = (NSDictionary) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
             if (o == null) {
                 return null;
             }
@@ -65,7 +65,7 @@ import org.robovm.apple.corelocation.*;
     public static class AsListMarshaler {
         @MarshalsPointer
         public static List<UIFontDescriptorAttributes> toObject(Class<? extends NSObject> cls, long handle, long flags) {
-            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(NSArray.class, handle, flags);
+            NSArray<NSDictionary> o = (NSArray<NSDictionary>) NSObject.Marshaler.toObject(NSArray.class, handle, flags);
             if (o == null) {
                 return null;
             }
@@ -80,7 +80,7 @@ import org.robovm.apple.corelocation.*;
             if (l == null) {
                 return 0L;
             }
-            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            NSArray<NSDictionary> array = new NSMutableArray<>();
             for (UIFontDescriptorAttributes i : l) {
                 array.add(i.getDictionary());
             }
@@ -90,7 +90,7 @@ import org.robovm.apple.corelocation.*;
     /*</marshalers>*/
 
     /*<constructors>*/
-    UIFontDescriptorAttributes(NSDictionary<NSString, NSObject> data) {
+    UIFontDescriptorAttributes(NSDictionary data) {
         super(data);
     }
     public UIFontDescriptorAttributes() {}
@@ -253,7 +253,7 @@ import org.robovm.apple.corelocation.*;
      */
     public UIFontDescriptorTraits getTraits() {
         if (has(UIFontDescriptorAttribute.Traits)) {
-            NSDictionary<NSString, NSObject> val = (NSDictionary<NSString, NSObject>) get(UIFontDescriptorAttribute.Traits);
+            NSDictionary val = (NSDictionary) get(UIFontDescriptorAttribute.Traits);
             return new UIFontDescriptorTraits(val);
         }
         return null;
@@ -289,8 +289,8 @@ import org.robovm.apple.corelocation.*;
         if (has(UIFontDescriptorAttribute.FeatureSettings)) {
             NSArray<?> val = (NSArray<?>) get(UIFontDescriptorAttribute.FeatureSettings);
             List<UIFontFeatureSetting> list = new ArrayList<>();
-            NSDictionary<NSString, NSObject>[] array = (NSDictionary<NSString, NSObject>[]) val.toArray(new NSDictionary[val.size()]);
-            for (NSDictionary<NSString, NSObject> d : array) {
+            NSDictionary[] array = (NSDictionary[]) val.toArray(new NSDictionary[val.size()]);
+            for (NSDictionary d : array) {
                list.add(new UIFontFeatureSetting(d));
             }
             return list;
@@ -301,7 +301,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 7.0 and later.
      */
     public UIFontDescriptorAttributes setFeatureSettings(List<UIFontFeatureSetting> featureSettings) {
-        NSArray<NSDictionary<NSString, NSObject>> val = new NSMutableArray<>();
+        NSArray<NSDictionary> val = new NSMutableArray<>();
         for (UIFontFeatureSetting e : featureSettings) {
             val.add(e.getDictionary());
         }

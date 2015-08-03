@@ -51,7 +51,7 @@ import org.robovm.apple.opengles.*;
     /*<constructors>*/
     public SCNView() {}
     protected SCNView(SkipInit skipInit) { super(skipInit); }
-    public SCNView(@ByVal CGRect frame, NSDictionary<?, ?> options) { super((SkipInit) null); initObject(init(frame, options)); }
+    public SCNView(@ByVal CGRect frame, NSDictionary options) { super((SkipInit) null); initObject(init(frame, options)); }
     /*</constructors>*/
     public SCNView(CGRect frame) {
     	super(frame);
@@ -150,7 +150,7 @@ import org.robovm.apple.opengles.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithFrame:options:")
-    protected native @Pointer long init(@ByVal CGRect frame, NSDictionary<?, ?> options);
+    protected native @Pointer long init(@ByVal CGRect frame, NSDictionary options);
     /**
      * @since Available in iOS 8.0 and later.
      */

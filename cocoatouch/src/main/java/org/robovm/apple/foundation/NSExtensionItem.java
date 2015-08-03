@@ -69,9 +69,9 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "setAttachments:")
     public native void setAttachments(NSArray<?> v);
     @Property(selector = "userInfo")
-    public native NSDictionary<?, ?> getUserInfo();
+    public native NSDictionary getUserInfo();
     @Property(selector = "setUserInfo:")
-    public native void setUserInfo(NSDictionary<?, ?> v);
+    public native void setUserInfo(NSDictionary v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

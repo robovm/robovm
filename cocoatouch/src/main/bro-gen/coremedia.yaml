@@ -17,7 +17,7 @@ private_typedefs:
     '__CFString **': NSString.NSStringPtr
     '__CFData *': NSData
     '__CFURL *': NSURL
-    '__CFDictionary *': 'NSDictionary<?, ?>'
+    '__CFDictionary *': NSDictionary
     '__CFArray *': NSArray<?>
     '__CFRunLoopTimer *': NSTimer
     '__CFRunLoop *': NSRunLoop
@@ -201,9 +201,6 @@ functions:
         name: '#{g[0]}0'
         visibility: protected
         annotations: ['@WeaklyLinked']
-        parameters:
-            extensions:
-                type: 'NSDictionary<NSString, ?>'
     CMAudioFormatDescription(CreateSummary):
         class: CMAudioFormatDescription
         name: '#{g[0]}0'

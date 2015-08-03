@@ -52,5 +52,7 @@ import org.robovm.apple.coregraphics.*;
     /*<methods>*/
     @NotImplemented("playableContentManager:initiatePlaybackOfContentItemAtIndexPath:completionHandler:")
     public void initiatePlayback(MPPlayableContentManager contentManager, NSIndexPath indexPath, @Block VoidBlock1<NSError> completionHandler) {}
+    @NotImplemented("playableContentManager:didUpdateContext:")
+    public void didUpdateContext(MPPlayableContentManager contentManager, MPPlayableContentManagerContext context) {}
     /*</methods>*/
 }

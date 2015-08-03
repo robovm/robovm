@@ -377,12 +377,12 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "setScopeBarButtonTitleTextAttributes:forState:")
-    public native void setScopeBarButtonTitleTextAttributesDictionary(NSDictionary<NSString, NSObject> attributes, UIControlState state);
+    public native void setScopeBarButtonTitleTextAttributesDictionary(NSDictionary attributes, UIControlState state);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "scopeBarButtonTitleTextAttributesForState:")
-    public native NSDictionary<NSString, NSObject> getScopeBarButtonTitleTextAttributesDictionary(UIControlState state);
+    public native NSDictionary getScopeBarButtonTitleTextAttributesDictionary(UIControlState state);
     /**
      * @since Available in iOS 5.0 and later.
      */

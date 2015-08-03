@@ -57,9 +57,9 @@ import org.robovm.apple.foundation.*;
     @Property(selector = "setValueExpression:")
     public native void setValueExpression(NSExpression v);
     @Property(selector = "userInfo")
-    public native NSDictionary<?, ?> getUserInfo();
+    public native NSDictionary getUserInfo();
     @Property(selector = "setUserInfo:")
-    public native void setUserInfo(NSDictionary<?, ?> v);
+    public native void setUserInfo(NSDictionary v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

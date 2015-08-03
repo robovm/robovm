@@ -243,7 +243,7 @@ public class IOSTarget extends AbstractTarget {
 
         AppLauncher launcher = new AppLauncher(device, getAppDir()) {
             protected void log(String s, Object... args) {
-                config.getLogger().debug(s, args);
+                config.getLogger().info(s, args);
             }
         }
                 .stdout(out)
@@ -257,15 +257,15 @@ public class IOSTarget extends AbstractTarget {
                     boolean first = true;
 
                     public void success() {
-                        config.getLogger().debug("[100%%] Upload complete");
+                        config.getLogger().info("[100%%] Upload complete");
                     }
 
                     public void progress(File path, int percentComplete) {
                         if (first) {
-                            config.getLogger().debug("[  0%%] Beginning upload...");
+                            config.getLogger().info("[  0%%] Beginning upload...");
                         }
                         first = false;
-                        config.getLogger().debug("[%3d%%] Uploading %s...", percentComplete, path);
+                        config.getLogger().info("[%3d%%] Uploading %s...", percentComplete, path);
                     }
 
                     public void error(String message) {}
@@ -274,15 +274,15 @@ public class IOSTarget extends AbstractTarget {
                     boolean first = true;
 
                     public void success() {
-                        config.getLogger().debug("[100%%] Install complete");
+                        config.getLogger().info("[100%%] Install complete");
                     }
 
                     public void progress(String status, int percentComplete) {
                         if (first) {
-                            config.getLogger().debug("[  0%%] Beginning installation...");
+                            config.getLogger().info("[  0%%] Beginning installation...");
                         }
                         first = false;
-                        config.getLogger().debug("[%3d%%] %s", percentComplete, status);
+                        config.getLogger().info("[%3d%%] %s", percentComplete, status);
                     }
 
                     public void error(String message) {}
@@ -381,7 +381,7 @@ public class IOSTarget extends AbstractTarget {
     }
 
     private void copyProvisioningProfile(ProvisioningProfile profile, File destDir) throws IOException {
-        config.getLogger().debug("Copying %s provisioning profile: %s (%s)",
+        config.getLogger().info("Copying %s provisioning profile: %s (%s)",
                 profile.getType(),
                 profile.getName(),
                 profile.getEntitlements().objectForKey("application-identifier"));
@@ -429,19 +429,19 @@ public class IOSTarget extends AbstractTarget {
     }
 
     private void codesignApp(SigningIdentity identity, File entitlementsPList, File appDir) throws IOException {
-        config.getLogger().debug("Code signing app using identity '%s' with fingerprint %s", identity.getName(),
+        config.getLogger().info("Code signing app using identity '%s' with fingerprint %s", identity.getName(),
                 identity.getFingerprint());
         codesign(identity, entitlementsPList, false, false, true, appDir);
     }
 
     private void codesignSwiftLib(SigningIdentity identity, File swiftLib) throws IOException {
-        config.getLogger().debug("Code signing swift dylib '%s' using identity '%s' with fingerprint %s", swiftLib.getName(), identity.getName(),
+        config.getLogger().info("Code signing swift dylib '%s' using identity '%s' with fingerprint %s", swiftLib.getName(), identity.getName(),
                 identity.getFingerprint());
         codesign(identity, null, false, true, false, swiftLib);
     }
 
     private void codesignCustomFramework(SigningIdentity identity, File frameworkDir) throws IOException {
-        config.getLogger().debug("Code signing framework '%s' using identity '%s' with fingerprint %s", frameworkDir.getName(), identity.getName(),
+        config.getLogger().info("Code signing framework '%s' using identity '%s' with fingerprint %s", frameworkDir.getName(), identity.getName(),
                 identity.getFingerprint());
         codesign(identity, null, true, false, true, frameworkDir);
     }
@@ -472,7 +472,7 @@ public class IOSTarget extends AbstractTarget {
 
     private void ldid(File entitlementsPList, File appDir) throws IOException {
         File executableFile = new File(appDir, getExecutable());
-        config.getLogger().debug("Pseudo-signing %s", executableFile.getAbsolutePath());
+        config.getLogger().info("Pseudo-signing %s", executableFile.getAbsolutePath());
         List<Object> args = new ArrayList<Object>();
         if (entitlementsPList != null) {
             args.add("-S" + entitlementsPList.getAbsolutePath());
@@ -576,7 +576,7 @@ public class IOSTarget extends AbstractTarget {
     }
 
     public void archive() throws IOException {
-        config.getLogger().debug("Creating IPA in %s", config.getInstallDir());
+        config.getLogger().info("Creating IPA in %s", config.getInstallDir());
         config.getInstallDir().mkdirs();
         File tmpDir = new File(config.getInstallDir(), getExecutable() + ".app");
         FileUtils.deleteDirectory(tmpDir);
@@ -588,7 +588,7 @@ public class IOSTarget extends AbstractTarget {
 
     private void packageApplication(File appDir) throws IOException {
         File ipaFile = new File(config.getInstallDir(), getExecutable() + ".ipa");
-        config.getLogger().debug("Packaging IPA %s from %s", ipaFile.getName(), appDir.getName());
+        config.getLogger().info("Packaging IPA %s from %s", ipaFile.getName(), appDir.getName());
 
         File tmpDir = new File(config.getInstallDir(), "ipabuild");
         FileUtils.deleteDirectory(tmpDir);
@@ -596,7 +596,7 @@ public class IOSTarget extends AbstractTarget {
 
         File payloadDir = new File(tmpDir, "Payload");
         payloadDir.mkdir();
-        config.getLogger().debug("Copying %s to %s", appDir.getName(), payloadDir);
+        config.getLogger().info("Copying %s to %s", appDir.getName(), payloadDir);
         new Executor(config.getLogger(), "cp")
                 .args("-Rp", appDir, payloadDir)
                 .exec();
@@ -614,13 +614,13 @@ public class IOSTarget extends AbstractTarget {
             }
         }
 
-        config.getLogger().debug("Zipping %s to %s", tmpDir, ipaFile);
+        config.getLogger().info("Zipping %s to %s", tmpDir, ipaFile);
         new Executor(Logger.NULL_LOGGER, "zip")
                 .wd(tmpDir)
                 .args("--symlinks", "--recurse-paths", ipaFile, ".")
                 .exec();
 
-        config.getLogger().debug("Deleting temp dir %s", tmpDir);
+        config.getLogger().info("Deleting temp dir %s", tmpDir);
         FileUtils.deleteDirectory(tmpDir);
     }
 
@@ -856,7 +856,7 @@ public class IOSTarget extends AbstractTarget {
         File tmpInfoPlist = new File(config.getTmpDir(), "Info.plist");
         PropertyListParser.saveAsBinary(newDict, tmpInfoPlist);
 
-        config.getLogger().debug("Installing Info.plist to %s", dir);
+        config.getLogger().info("Installing Info.plist to %s", dir);
         FileUtils.copyFile(tmpInfoPlist, new File(dir, tmpInfoPlist.getName()));
     }
 

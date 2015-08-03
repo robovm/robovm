@@ -287,7 +287,7 @@ public class ClassCompiler {
         OS os = config.getOs();
 
         try {
-            config.getLogger().debug("Compiling %s (%s %s %s)", clazz, os, arch, config.isDebug() ? "debug" : "release");
+            config.getLogger().info("Compiling %s (%s %s %s)", clazz, os, arch, config.isDebug() ? "debug" : "release");
             output.reset();
             compile(clazz, output);
         } catch (Throwable t) {

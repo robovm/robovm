@@ -343,7 +343,7 @@ public class AppCompiler {
     public Set<Clazz> compile(Set<Clazz> rootClasses, boolean compileDependencies,
             final ClassCompilerListener listener) throws IOException {
 
-        config.getLogger().debug("Compiling classes using %d threads", config.getThreads());
+        config.getLogger().info("Compiling classes using %d threads", config.getThreads());
 
         final Executor executor = (config.getThreads() <= 1)
                 ? SAME_THREAD_EXECUTOR
@@ -440,7 +440,7 @@ public class AppCompiler {
         }
 
         long duration = System.currentTimeMillis() - start;
-        config.getLogger().debug("Compiled %d classes in %.2f seconds", compiledCount, duration / 1000.0);
+        config.getLogger().info("Compiled %d classes in %.2f seconds", compiledCount, duration / 1000.0);
 
         return linkClasses;
     }
@@ -464,7 +464,7 @@ public class AppCompiler {
         long start = System.currentTimeMillis();
         linker.link(linkClasses);
         long duration = System.currentTimeMillis() - start;
-        config.getLogger().debug("Linked %d classes in %.2f seconds", linkClasses.size(), duration / 1000.0);
+        config.getLogger().info("Linked %d classes in %.2f seconds", linkClasses.size(), duration / 1000.0);
     }
 
     public static void main(String[] args) throws IOException {

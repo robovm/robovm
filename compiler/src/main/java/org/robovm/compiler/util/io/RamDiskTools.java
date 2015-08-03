@@ -102,23 +102,23 @@ public class RamDiskTools {
             if (store.getUsableSpace() < MIN_FREE_SPACE) {
                 cleanRamDisk(store, volume, config);
                 if (store.getUsableSpace() < MIN_FREE_SPACE) {
-                    config.getLogger().debug("Couldn't free enough space on RAM disk, using hard drive");
+                    config.getLogger().info("Couldn't free enough space on RAM disk, using hard drive");
                     return;
                 }
             }
 
             File newCacheDir = new File(volume, "cache");
             if (!newCacheDir.exists() && !newCacheDir.mkdirs()) {
-                config.getLogger().debug("Couldn't create cache directory on RAM disk, using hard drive");
+                config.getLogger().info("Couldn't create cache directory on RAM disk, using hard drive");
                 return;
             }
             File newTmpDir = new File(volume, "tmp");
             if (!newTmpDir.exists() && !newTmpDir.mkdirs()) {
-                config.getLogger().debug("Couldn't create tmp directory on RAM disk, using hard drive");
+                config.getLogger().info("Couldn't create tmp directory on RAM disk, using hard drive");
                 return;
             }
             newTmpDir = new File(newTmpDir, tmpDir.getAbsolutePath());
-            config.getLogger().debug("Using RAM disk at %s for cache and tmp directory", ROBOVM_RAM_DISK_PATH);
+            config.getLogger().info("Using RAM disk at %s for cache and tmp directory", ROBOVM_RAM_DISK_PATH);
             this.newCacheDir = newCacheDir;
             this.newTmpDir = newTmpDir;
         } catch (Throwable t) {

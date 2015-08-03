@@ -1491,20 +1491,20 @@ public class Config {
             File localPropsFile = new File(basedir, "robovm.local.properties");
             File propsFile = new File(basedir, "robovm.properties");
             if (isTest && testPropsFile.exists()) {
-                config.logger.debug("Loading test RoboVM config properties file: "
+                config.logger.info("Loading test RoboVM config properties file: "
                         + testPropsFile.getAbsolutePath());
                 addProperties(testPropsFile);
             } else {
                 Properties props = new Properties();
                 if (propsFile.exists()) {
-                    config.logger.debug("Loading default RoboVM config properties file: "
+                    config.logger.info("Loading default RoboVM config properties file: "
                             + propsFile.getAbsolutePath());
                     try (Reader reader = new InputStreamReader(new FileInputStream(propsFile), "utf-8")) {
                         props.load(reader);
                     }
                 }
                 if (localPropsFile.exists()) {
-                    config.logger.debug("Loading local RoboVM config properties file: "
+                    config.logger.info("Loading local RoboVM config properties file: "
                             + localPropsFile.getAbsolutePath());
                     try (Reader reader = new InputStreamReader(new FileInputStream(localPropsFile), "utf-8")) {
                         props.load(reader);
@@ -1523,7 +1523,7 @@ public class Config {
             String propValue = props.getProperty(propName);
             if (propValue != null && !propValue.endsWith("Test")) {
                 String newPropValue = propValue + "Test";
-                config.logger.debug("Changing %s property from '%s' to '%s'", propName, propValue, newPropValue);
+                config.logger.info("Changing %s property from '%s' to '%s'", propName, propValue, newPropValue);
                 props.setProperty(propName, newPropValue);
             }
         }
@@ -1543,11 +1543,11 @@ public class Config {
             File testConfigFile = new File(basedir, "robovm.test.xml");
             File configFile = new File(basedir, "robovm.xml");
             if (isTest && testConfigFile.exists()) {
-                config.logger.debug("Loading test RoboVM config file: "
+                config.logger.info("Loading test RoboVM config file: "
                         + testConfigFile.getAbsolutePath());
                 read(testConfigFile);
             } else if (configFile.exists()) {
-                config.logger.debug("Loading default RoboVM config file: "
+                config.logger.info("Loading default RoboVM config file: "
                         + configFile.getAbsolutePath());
                 read(configFile);
             }

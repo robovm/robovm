@@ -34,8 +34,8 @@ import org.apache.commons.exec.ExecuteStreamHandler;
 import org.apache.commons.exec.PumpStreamHandler;
 import org.apache.commons.exec.environment.EnvironmentUtils;
 import org.apache.commons.exec.util.StringUtils;
-import org.robovm.compiler.log.DebugOutputStream;
 import org.robovm.compiler.log.ErrorOutputStream;
+import org.robovm.compiler.log.InfoOutputStream;
 import org.robovm.compiler.log.Logger;
 import org.robovm.compiler.target.Launcher;
 import org.robovm.compiler.util.io.NeverCloseOutputStream;
@@ -266,7 +266,7 @@ public class Executor implements Launcher {
             if (out != null) {
                 pumpOut = out;
             } else {
-                pumpOut = new DebugOutputStream(logger);
+                pumpOut = new InfoOutputStream(logger);
             }
             if (err != null) {
                 pumpErr = err;
@@ -307,7 +307,7 @@ public class Executor implements Launcher {
         
         String[] args = commandLine.getArguments();
         if (args.length == 0) {
-            logger.debug(commandLine.toString());
+            logger.info(commandLine.toString());
             return;
         }
         
@@ -330,7 +330,7 @@ public class Executor implements Launcher {
             }
             
             if (i == args.length - 1 || result.length() > 2048) {
-                logger.debug((first ? "" : "    ") + result.toString());
+                logger.info((first ? "" : "    ") + result.toString());
                 result.delete(0, result.length());
                 first = false;
             }

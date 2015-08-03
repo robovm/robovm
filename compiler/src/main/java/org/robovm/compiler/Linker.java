@@ -401,7 +401,7 @@ public class Linker {
                 mbs[mbIdx].addFunction(createInstanceof(mbs[mbIdx], clazz, typeInfo));
             }
         }
-        config.getLogger().debug("%d methods out of %d included in the executable", reachableMethodCount, totalMethodCount);
+        config.getLogger().info("%d methods out of %d included in the executable", reachableMethodCount, totalMethodCount);
 
         List<File> objectFiles = new ArrayList<File>();
 

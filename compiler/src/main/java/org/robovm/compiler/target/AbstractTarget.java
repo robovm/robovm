@@ -104,7 +104,7 @@ public abstract class AbstractTarget implements Target {
     public void build(List<File> objectFiles) throws IOException {
         File outFile = new File(config.getTmpDir(), config.getExecutableName());
         
-        config.getLogger().debug("Building %s binary %s", config.getTarget().getType(), outFile);
+        config.getLogger().info("Building %s binary %s", config.getTarget().getType(), outFile);
         
         LinkedList<String> ccArgs = new LinkedList<String>();
         LinkedList<String> libs = new LinkedList<String>();
@@ -263,7 +263,7 @@ public abstract class AbstractTarget implements Target {
             if (config.getOs() == OS.linux) {
                 throw new UnsupportedOperationException("Fat binaries are not supported when building linux binaries");
             }
-            config.getLogger().debug("Building fat binary for archs %s", StringUtils.join(slices.keySet()));
+            config.getLogger().info("Building fat binary for archs %s", StringUtils.join(slices.keySet()));
             ToolchainUtil.lipo(config, destFile, files);
         } else if (!files.get(0).equals(destFile)) {
             FileUtils.copyFile(files.get(0), destFile);
@@ -315,7 +315,7 @@ public abstract class AbstractTarget implements Target {
                 }
                 
                 if(isDynamicFramework) {                    
-                    config.getLogger().debug("Copying framework %s from %s to %s", framework, frameworkDir, destDir);
+                    config.getLogger().info("Copying framework %s from %s to %s", framework, frameworkDir, destDir);
                     new Resource(frameworkDir).walk(new Walker() {
                         @Override
                         public boolean processDir(Resource resource, File dir, File destDir) throws IOException {
@@ -385,7 +385,7 @@ public abstract class AbstractTarget implements Target {
 		File swiftDir = new File(ToolchainUtil.findXcodePath(),
 				"Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/" + system);
 		for (String library : swiftLibraries) {
-			config.getLogger().debug("Copying swift lib %s from %s to %s", library, swiftDir, targetDir);
+			config.getLogger().info("Copying swift lib %s from %s to %s", library, swiftDir, targetDir);
 			File swiftLibrary = new File(swiftDir, library);
 			FileUtils.copyFileToDirectory(swiftLibrary, targetDir);
 		}
@@ -406,12 +406,12 @@ public abstract class AbstractTarget implements Target {
     }
 
     protected void copyFile(Resource resource, File file, File destDir) throws IOException {
-        config.getLogger().debug("Copying resource %s to %s", file, destDir);
+        config.getLogger().info("Copying resource %s to %s", file, destDir);
         FileUtils.copyFileToDirectory(file, destDir, true);
     }
     
     public void install() throws IOException {
-        config.getLogger().debug("Installing %s binary to %s", config.getTarget().getType(), config.getInstallDir());
+        config.getLogger().info("Installing %s binary to %s", config.getTarget().getType(), config.getInstallDir());
         config.getInstallDir().mkdirs();
         doInstall(config.getInstallDir(), config.getExecutableName());
     }
@@ -497,12 +497,12 @@ public abstract class AbstractTarget implements Target {
     protected void stripArchive(Path path, File output) throws IOException {
         
         if (!config.isClean() && output.exists() && !path.hasChangedSince(output.lastModified())) {
-            config.getLogger().debug("Not creating stripped archive file %s for unchanged path %s", 
+            config.getLogger().info("Not creating stripped archive file %s for unchanged path %s", 
                     output, path.getFile());
             return;
         }
         
-        config.getLogger().debug("Creating stripped archive file %s", output);
+        config.getLogger().info("Creating stripped archive file %s", output);
 
         ZipOutputStream out = null;
         try {

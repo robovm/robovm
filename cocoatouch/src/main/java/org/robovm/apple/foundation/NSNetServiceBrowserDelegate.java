@@ -59,7 +59,7 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "netServiceBrowserDidStopSearch:")
     void didStopSearch(NSNetServiceBrowser aNetServiceBrowser);
     @Method(selector = "netServiceBrowser:didNotSearch:")
-    void didNotSearch(NSNetServiceBrowser aNetServiceBrowser, NSDictionary<?, ?> errorDict);
+    void didNotSearch(NSNetServiceBrowser aNetServiceBrowser, NSDictionary errorDict);
     @Method(selector = "netServiceBrowser:didFindDomain:moreComing:")
     void didFindDomain(NSNetServiceBrowser aNetServiceBrowser, String domainString, boolean moreComing);
     @Method(selector = "netServiceBrowser:didFindService:moreComing:")

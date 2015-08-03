@@ -64,7 +64,7 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
      * @since Available in iOS 5.0 and later.
      */
     public NSAttributedStringAttributes getTitleTextAttributes() {
-        NSDictionary<NSString, NSObject> dict = getTitleTextAttributesDictionary();
+        NSDictionary dict = getTitleTextAttributesDictionary();
         if (dict == null) return null;
         return new NSAttributedStringAttributes(dict);
     }
@@ -73,7 +73,7 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
      */
     @WeaklyLinked
     public CMTextMarkupAttributes getTitleTextMarkupAttributes() {
-        NSDictionary<NSString, NSObject> dict = getTitleTextAttributesDictionary();
+        NSDictionary dict = getTitleTextAttributesDictionary();
         if (dict == null) return null;
         return new CMTextMarkupAttributes(dict.as(CFDictionary.class));
     }
@@ -82,7 +82,7 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
      */
     @WeaklyLinked
     public CTAttributedStringAttributes getTitleCoreTextAttributes() {
-        NSDictionary<NSString, NSObject> dict = getTitleTextAttributesDictionary();
+        NSDictionary dict = getTitleTextAttributesDictionary();
         if (dict == null) return null;
         return new CTAttributedStringAttributes(dict.as(CFDictionary.class));
     }
@@ -173,12 +173,12 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "titleTextAttributes")
-    public native NSDictionary<NSString, NSObject> getTitleTextAttributesDictionary();
+    public native NSDictionary getTitleTextAttributesDictionary();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "setTitleTextAttributes:")
-    public native void setTitleTextAttributesDictionary(NSDictionary<NSString, NSObject> v);
+    public native void setTitleTextAttributesDictionary(NSDictionary v);
     /**
      * @since Available in iOS 7.0 and later.
      */

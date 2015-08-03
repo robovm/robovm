@@ -164,7 +164,7 @@ import org.robovm.apple.audiotoolbox.*;
      */
     @WeaklyLinked
     @Bridge(symbol="CMAudioFormatDescriptionCreate", optional=true)
-    protected static native OSStatus create0(CFAllocator allocator, AudioStreamBasicDescription asbd, @MachineSizedUInt long layoutSize, AudioChannelLayout layout, @MachineSizedUInt long magicCookieSize, VoidPtr magicCookie, NSDictionary<NSString, ?> extensions, CMAudioFormatDescription.CMAudioFormatDescriptionPtr outDesc);
+    protected static native OSStatus create0(CFAllocator allocator, AudioStreamBasicDescription asbd, @MachineSizedUInt long layoutSize, AudioChannelLayout layout, @MachineSizedUInt long magicCookieSize, VoidPtr magicCookie, NSDictionary extensions, CMAudioFormatDescription.CMAudioFormatDescriptionPtr outDesc);
     /**
      * @since Available in iOS 4.0 and later.
      */

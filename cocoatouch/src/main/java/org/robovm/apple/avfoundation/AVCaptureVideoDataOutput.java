@@ -78,9 +78,9 @@ import org.robovm.apple.audiounit.*;
     @Property(selector = "sampleBufferCallbackQueue")
     public native DispatchQueue getSampleBufferCallbackQueue();
     @Property(selector = "videoSettings")
-    protected native NSDictionary<NSString, NSObject> getVideoSettings0();
+    protected native NSDictionary getVideoSettings0();
     @Property(selector = "setVideoSettings:")
-    protected native void setVideoSettings0(NSDictionary<NSString, NSObject> v);
+    protected native void setVideoSettings0(NSDictionary v);
     /**
      * @since Available in iOS 5.0 and later.
      */
@@ -119,6 +119,6 @@ import org.robovm.apple.audiounit.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "recommendedVideoSettingsForAssetWriterWithOutputFileType:")
-    protected native NSDictionary<NSString, NSObject> getRecommendedVideoSettings0(String outputFileType);
+    protected native NSDictionary getRecommendedVideoSettings0(String outputFileType);
     /*</methods>*/
 }

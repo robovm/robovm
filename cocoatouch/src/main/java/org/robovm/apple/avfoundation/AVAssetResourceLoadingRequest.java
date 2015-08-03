@@ -107,14 +107,14 @@ import org.robovm.apple.audiounit.*;
     public native void finishLoading();
     @Method(selector = "finishLoadingWithError:")
     public native void finishLoading(NSError error);
-    public NSData getStreamingContentKeyRequestData(NSData appIdentifier, NSData contentIdentifier, NSDictionary<NSString, ?> options) throws NSErrorException {
+    public NSData getStreamingContentKeyRequestData(NSData appIdentifier, NSData contentIdentifier, NSDictionary options) throws NSErrorException {
        NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
        NSData result = getStreamingContentKeyRequestData(appIdentifier, contentIdentifier, options, ptr);
        if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
        return result;
     }
     @Method(selector = "streamingContentKeyRequestDataForApp:contentIdentifier:options:error:")
-    private native NSData getStreamingContentKeyRequestData(NSData appIdentifier, NSData contentIdentifier, NSDictionary<NSString, ?> options, NSError.NSErrorPtr outError);
+    private native NSData getStreamingContentKeyRequestData(NSData appIdentifier, NSData contentIdentifier, NSDictionary options, NSError.NSErrorPtr outError);
     /**
      * @since Available in iOS 6.0 and later.
      * @deprecated Deprecated in iOS 7.0.

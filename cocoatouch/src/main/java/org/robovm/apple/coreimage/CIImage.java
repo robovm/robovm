@@ -70,7 +70,7 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 5.0 and later.
      */
     @WeaklyLinked
-    public CIImage(CVPixelBuffer buffer, NSDictionary<?, ?> dict) { super((SkipInit) null); initObject(init(buffer, dict)); }
+    public CIImage(CVPixelBuffer buffer, NSDictionary dict) { super((SkipInit) null); initObject(init(buffer, dict)); }
     public CIImage(CIColor color) { super((SkipInit) null); initObject(init(color)); }
     public CIImage(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
@@ -125,7 +125,7 @@ import org.robovm.apple.uikit.*;
      */
     @WeaklyLinked
     @Method(selector = "initWithCVPixelBuffer:options:")
-    protected native @Pointer long init(CVPixelBuffer buffer, NSDictionary<?, ?> dict);
+    protected native @Pointer long init(CVPixelBuffer buffer, NSDictionary dict);
     @Method(selector = "initWithColor:")
     protected native @Pointer long init(CIColor color);
     @Method(selector = "imageByApplyingTransform:")

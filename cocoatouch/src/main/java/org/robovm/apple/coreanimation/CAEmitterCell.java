@@ -185,9 +185,9 @@ import org.robovm.apple.metal.*;
     @Property(selector = "setEmitterCells:")
     public native void setEmitterCells(NSArray<CAEmitterCell> v);
     @Property(selector = "style")
-    public native NSDictionary<NSString, NSObject> getStyle();
+    public native NSDictionary getStyle();
     @Property(selector = "setStyle:")
-    public native void setStyle(NSDictionary<NSString, NSObject> v);
+    public native void setStyle(NSDictionary v);
     @Property(selector = "beginTime")
     public native double getBeginTime();
     @Property(selector = "setBeginTime:")

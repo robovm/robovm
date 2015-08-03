@@ -54,14 +54,14 @@ import org.robovm.apple.opengles.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "dictionaryRepresentation")
-    public native NSDictionary<?, ?> getDictionaryRepresentation();
+    public native NSDictionary getDictionaryRepresentation();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "handleBindingOfSymbol:usingBlock:")
     public native void handleBindingOfSymbol(String symbol, @Block VoidBlock4<Integer, Integer, SCNNode, SCNRenderer> block);
     @Method(selector = "techniqueWithDictionary:")
-    public static native SCNTechnique create(NSDictionary<?, ?> dictionary);
+    public static native SCNTechnique create(NSDictionary dictionary);
     @Method(selector = "techniqueBySequencingTechniques:")
     public static native SCNTechnique create(NSArray<SCNTechnique> techniques);
     @Method(selector = "addAnimation:forKey:")

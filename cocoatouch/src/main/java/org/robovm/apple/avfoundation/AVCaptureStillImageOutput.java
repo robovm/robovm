@@ -73,9 +73,9 @@ import org.robovm.apple.audiounit.*;
     }
     /*<properties>*/
     @Property(selector = "outputSettings")
-    protected native NSDictionary<NSString, NSObject> getOutputSettings0();
+    protected native NSDictionary getOutputSettings0();
     @Property(selector = "setOutputSettings:")
-    protected native void setOutputSettings0(NSDictionary<NSString, NSObject> v);
+    protected native void setOutputSettings0(NSDictionary v);
     @Property(selector = "availableImageDataCVPixelFormatTypes")
     public native @org.robovm.rt.bro.annotation.Marshaler(CVPixelFormatType.AsListMarshaler.class) List<CVPixelFormatType> getAvailableImageDataCVPixelFormatTypes();
     @Property(selector = "availableImageDataCodecTypes")

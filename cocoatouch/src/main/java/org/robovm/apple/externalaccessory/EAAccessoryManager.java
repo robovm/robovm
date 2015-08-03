@@ -50,7 +50,7 @@ import org.robovm.apple.uikit.*;
             return NSNotificationCenter.getDefaultCenter().addObserver(AccessoryDidConnectNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke(NSNotification a) {
-                    NSDictionary<NSString, NSObject> data = a.getUserInfo();
+                    NSDictionary<?, ?> data = a.getUserInfo();
                     EAAccessory accessory = null;
                     EAAccessory selectedAccessory = null;
                     if (data.containsKey(AccessoryKey())) {
@@ -70,7 +70,7 @@ import org.robovm.apple.uikit.*;
             return NSNotificationCenter.getDefaultCenter().addObserver(AccessoryDidDisconnectNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke(NSNotification a) {
-                    NSDictionary<NSString, NSObject> data = a.getUserInfo();
+                    NSDictionary<?, ?> data = a.getUserInfo();
                     EAAccessory accessory = null;
                     if (data.containsKey(AccessoryKey())) {
                         accessory = (EAAccessory) data.get(AccessoryKey());

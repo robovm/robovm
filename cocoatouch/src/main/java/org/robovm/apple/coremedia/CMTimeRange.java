@@ -171,17 +171,17 @@ import org.robovm.apple.audiotoolbox.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public NSDictionary<?, ?> asDictionary(CFAllocator allocator) { return asDictionary(this, allocator); }
+    public NSDictionary asDictionary(CFAllocator allocator) { return asDictionary(this, allocator); }
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMTimeRangeCopyAsDictionary", optional=true)
-    private static native NSDictionary<?, ?> asDictionary(@ByVal CMTimeRange range, CFAllocator allocator);
+    private static native NSDictionary asDictionary(@ByVal CMTimeRange range, CFAllocator allocator);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMTimeRangeMakeFromDictionary", optional=true)
-    public static native @ByVal CMTimeRange create(NSDictionary<?, ?> dict);
+    public static native @ByVal CMTimeRange create(NSDictionary dict);
     /**
      * @since Available in iOS 4.0 and later.
      */

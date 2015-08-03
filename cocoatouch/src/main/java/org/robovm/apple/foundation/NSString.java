@@ -679,22 +679,22 @@ import org.robovm.apple.dispatch.*;
     public native NSData toData(NSStringEncoding encoding);
     @Method(selector = "initWithCharacters:length:")
     protected native @Pointer long init(@Pointer long characters, @MachineSizedUInt long length);
-    public boolean writeURL(NSURL url, boolean useAuxiliaryFile, NSStringEncoding enc) throws NSErrorException {
+    public boolean writeURL(NSURL url, boolean atomically, NSStringEncoding enc) throws NSErrorException {
        NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
-       boolean result = writeURL(url, useAuxiliaryFile, enc, ptr);
+       boolean result = writeURL(url, atomically, enc, ptr);
        if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
        return result;
     }
     @Method(selector = "writeToURL:atomically:encoding:error:")
-    private native boolean writeURL(NSURL url, boolean useAuxiliaryFile, NSStringEncoding enc, NSError.NSErrorPtr error);
-    public boolean writeFile(String path, boolean useAuxiliaryFile, NSStringEncoding enc) throws NSErrorException {
+    private native boolean writeURL(NSURL url, boolean atomically, NSStringEncoding enc, NSError.NSErrorPtr error);
+    public boolean writeFile(String path, boolean atomically, NSStringEncoding enc) throws NSErrorException {
        NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
-       boolean result = writeFile(path, useAuxiliaryFile, enc, ptr);
+       boolean result = writeFile(path, atomically, enc, ptr);
        if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
        return result;
     }
     @Method(selector = "writeToFile:atomically:encoding:error:")
-    private native boolean writeFile(String path, boolean useAuxiliaryFile, NSStringEncoding enc, NSError.NSErrorPtr error);
+    private native boolean writeFile(String path, boolean atomically, NSStringEncoding enc, NSError.NSErrorPtr error);
     @Method(selector = "stringWithCharacters:length:")
     protected static native @Pointer long create(@Pointer long characters, @MachineSizedUInt long length);
     public static String readURL(NSURL url, NSStringEncoding enc) throws NSErrorException {

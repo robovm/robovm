@@ -105,7 +105,7 @@ import org.robovm.apple.corefoundation.*;
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public static ABAddressBook create(NSDictionary<NSString, ?> options) throws NSErrorException {
+    public static ABAddressBook create(NSDictionary options) throws NSErrorException {
        NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
        ABAddressBook result = create(options, ptr);
        if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
@@ -115,7 +115,7 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="ABAddressBookCreateWithOptions", optional=true)
-    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) ABAddressBook create(NSDictionary<NSString, ?> options, NSError.NSErrorPtr error);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) ABAddressBook create(NSDictionary options, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 6.0.

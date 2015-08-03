@@ -54,8 +54,6 @@ classes:
                 name: requestAccessToAccounts
                 visibility: protected
                 parameters:
-                   options:
-                        type: 'NSDictionary<NSString, ?>'
                    completion:
                         type: '@Block VoidBlock2<Boolean, NSError>'              
             '-renewCredentialsForAccount:completion:':

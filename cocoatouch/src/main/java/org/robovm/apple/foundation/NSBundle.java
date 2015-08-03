@@ -53,7 +53,7 @@ import org.robovm.apple.dispatch.*;
                 @Override
                 public void invoke(NSNotification a) {
                     List<String> classes = null;
-                    NSDictionary<NSString, NSObject> data = a.getUserInfo();
+                    NSDictionary<?, ?> data = a.getUserInfo();
                     if (data.containsKey(LoadedClassesKey())) {
                         NSArray<NSString> val = (NSArray<NSString>)data.get(LoadedClassesKey());
                         classes = val.asStringList();
@@ -142,9 +142,9 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "bundleIdentifier")
     public native String getBundleIdentifier();
     @Property(selector = "infoDictionary")
-    public native NSDictionary<?, ?> getInfoDictionary();
+    public native NSDictionary getInfoDictionary();
     @Property(selector = "localizedInfoDictionary")
-    public native NSDictionary<?, ?> getLocalizedInfoDictionary();
+    public native NSDictionary getLocalizedInfoDictionary();
     @Property(selector = "principalClass")
     public native Class<?> getPrincipalClass();
     @Property(selector = "preferredLocalizations")

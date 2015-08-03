@@ -78,9 +78,9 @@ import org.robovm.apple.foundation.*;
     @Property(selector = "setProperties:")
     public native void setProperties(NSArray<NSPropertyDescription> v);
     @Property(selector = "userInfo")
-    public native NSDictionary<?, ?> getUserInfo();
+    public native NSDictionary getUserInfo();
     @Property(selector = "setUserInfo:")
-    public native void setUserInfo(NSDictionary<?, ?> v);
+    public native void setUserInfo(NSDictionary v);
     @Property(selector = "attributesByName")
     public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSAttributeDescription> getAttributesByName();
     @Property(selector = "relationshipsByName")

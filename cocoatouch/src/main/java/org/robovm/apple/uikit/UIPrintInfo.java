@@ -79,11 +79,11 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "dictionaryRepresentation")
-    public native NSDictionary<?, ?> toDictionary();
+    public native NSDictionary toDictionary();
     @Method(selector = "printInfo")
     public static native UIPrintInfo getPrintInfo();
     @Method(selector = "printInfoWithDictionary:")
-    public static native UIPrintInfo create(NSDictionary<?, ?> dictionary);
+    public static native UIPrintInfo create(NSDictionary dictionary);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder coder);
     @Method(selector = "initWithCoder:")

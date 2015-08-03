@@ -9,12 +9,12 @@ typedefs:
 
 private_typedefs:
     '__CFString *': String
-    '__CFString **': 'NSString.NSStringPtr'
+    '__CFString **': NSString.NSStringPtr
     '__CFData *': NSData
     '__CFURL *': NSURL
-    '__CFDictionary *': 'NSDictionary<?, ?>'
-    '__CFArray *': 'NSArray<?>'
-    '__CFRunLoop *': 'NSRunLoop'
+    '__CFDictionary *': NSDictionary
+    '__CFArray *': NSArray<?>
+    '__CFRunLoop *': NSRunLoop
 
 enums:
     AudioBytePacketTranslationFlags: {first: kBytePacketTranslationFlag_IsEstimate, prefix: kBytePacketTranslationFlag_, bits: true}

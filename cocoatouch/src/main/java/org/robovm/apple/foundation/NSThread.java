@@ -86,7 +86,7 @@ import org.robovm.apple.dispatch.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "threadDictionary")
-    public native NSMutableDictionary<?, ?> getThreadDictionary();
+    public native NSMutableDictionary getThreadDictionary();
     /**
      * @since Available in iOS 8.0 and later.
      */

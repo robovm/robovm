@@ -59,7 +59,7 @@ import org.robovm.apple.coregraphics.*;
     @Property(selector = "timestamp")
     public native double getTimestamp();
     @Property(selector = "allMetadata")
-    public native NSDictionary<NSString, NSObject> getAllMetadata();
+    public native NSDictionary getAllMetadata();
     /*</properties>*/
     /*<members>*//*</members>*/
     /**

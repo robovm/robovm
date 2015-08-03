@@ -582,13 +582,13 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "objectForKey:")
     protected native V getObject(K aKey);
     @Method(selector = "isEqualToDictionary:")
-    protected native boolean equalsTo(NSDictionary<?, ?> otherDictionary);
+    protected native boolean equalsTo(NSDictionary otherDictionary);
     @Method(selector = "writeToFile:atomically:")
-    protected native boolean writeFile(String path, boolean useAuxiliaryFile);
+    protected native boolean writeFile(String path, boolean atomically);
     @Method(selector = "writeToURL:atomically:")
     public native boolean write(NSURL url, boolean atomically);
     @Method(selector = "initWithDictionary:")
-    protected native @Pointer long init(NSDictionary<?, ?> otherDictionary);
+    protected native @Pointer long init(NSDictionary otherDictionary);
     @Method(selector = "initWithObjects:forKeys:")
     protected native @Pointer long init(NSArray<?> objects, NSArray<?> keys);
     @Method(selector = "dictionaryWithContentsOfFile:")

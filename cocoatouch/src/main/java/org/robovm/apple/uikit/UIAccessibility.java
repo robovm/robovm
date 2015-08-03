@@ -51,7 +51,7 @@ import org.robovm.apple.corelocation.*;
             return NSNotificationCenter.getDefaultCenter().addObserver(UIAccessibilityGlobals.AnnouncementDidFinishNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke(NSNotification a) {
-                    NSDictionary<NSString, NSObject> data = a.getUserInfo();
+                    NSDictionary data = a.getUserInfo();
                     NSString string = (NSString)data.get(UIAccessibilityGlobals.AnnouncementKeyStringValue());
                     NSNumber successful = (NSNumber)data.get(UIAccessibilityGlobals.AnnouncementKeyWasSuccessful());
                     block.invoke(string.toString(), successful.booleanValue());

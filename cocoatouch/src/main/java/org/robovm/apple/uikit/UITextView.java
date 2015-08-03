@@ -281,12 +281,12 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "typingAttributes")
-    public native NSDictionary<NSString, NSObject> getTypingAttributesDictionary();
+    public native NSDictionary getTypingAttributesDictionary();
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "setTypingAttributes:")
-    public native void setTypingAttributesDictionary(NSDictionary<NSString, NSObject> v);
+    public native void setTypingAttributesDictionary(NSDictionary v);
     @Property(selector = "inputView")
     public native UIView getInputView();
     @Property(selector = "setInputView:")
@@ -334,12 +334,12 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "linkTextAttributes")
-    public native NSDictionary<NSString, NSObject> getLinkTextAttributesDictionary();
+    public native NSDictionary getLinkTextAttributesDictionary();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "setLinkTextAttributes:")
-    public native void setLinkTextAttributesDictionary(NSDictionary<NSString, NSObject> v);
+    public native void setLinkTextAttributesDictionary(NSDictionary v);
     @Property(selector = "selectedTextRange")
     public native UITextRange getSelectedTextRange();
     @Property(selector = "setSelectedTextRange:")

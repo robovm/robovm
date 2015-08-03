@@ -13,16 +13,11 @@ enums:
         
 classes:
     TWRequest:
-        properties:
-            'parameters':
-                type: 'NSDictionary<NSString, ?>'
         methods:
             '-initWithURL:parameters:requestMethod:':
                 name: init
                 parameters:
                     url: {}
-                    parameters:
-                        type: 'NSDictionary<NSString, ?>'
                     requestMethod: {}
             '-signedURLRequest':
                 name: getSignedURLRequest

@@ -246,9 +246,9 @@ import org.robovm.apple.metal.*;
     @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(CALayerDelegate v);
     @Property(selector = "style")
-    public native NSDictionary<NSString, NSObject> getStyle();
+    public native NSDictionary getStyle();
     @Property(selector = "setStyle:")
-    public native void setStyle(NSDictionary<NSString, NSObject> v);
+    public native void setStyle(NSDictionary v);
     @Property(selector = "visibleRect")
     public native @ByVal CGRect getVisibleRect();
     @Property(selector = "beginTime")

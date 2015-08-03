@@ -317,9 +317,9 @@ import org.robovm.apple.metal.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public NSDictionary<NSString, NSObject> getIOSurfaceProperties() {
+    public NSDictionary getIOSurfaceProperties() {
         if (has(CVPixelBufferAttribute.IOSurfaceProperties)) {
-            NSDictionary<NSString, NSObject> val = get(CVPixelBufferAttribute.IOSurfaceProperties, NSDictionary.class);
+            NSDictionary val = get(CVPixelBufferAttribute.IOSurfaceProperties, NSDictionary.class);
             return val;
         }
         return null;
@@ -327,7 +327,7 @@ import org.robovm.apple.metal.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public CVPixelBufferAttributes setIOSurfaceProperties(NSDictionary<NSString, NSObject> iOSurfaceProperties) {
+    public CVPixelBufferAttributes setIOSurfaceProperties(NSDictionary iOSurfaceProperties) {
         set(CVPixelBufferAttribute.IOSurfaceProperties, iOSurfaceProperties);
         return this;
     }

@@ -54,7 +54,7 @@ import org.robovm.apple.audiotoolbox.*;
                     CMTimebase object = a.getObject() != null ? a.getObject().as(CMTimebase.class) : null;
                     CMTime time = null;
                     
-                    NSDictionary<NSString, NSObject> data = a.getUserInfo();
+                    NSDictionary<?, ?> data = a.getUserInfo();
                     if (data.containsKey(EventTimeNotificationKey())) {
                         time = data.get(EventTimeNotificationKey()).as(CMTime.class);
                     }
@@ -72,7 +72,7 @@ import org.robovm.apple.audiotoolbox.*;
                     CMTimebase object = a.getObject() != null ? a.getObject().as(CMTimebase.class) : null;
                     CMTime time = null;
                     
-                    NSDictionary<NSString, NSObject> data = a.getUserInfo();
+                    NSDictionary<?, ?> data = a.getUserInfo();
                     if (data.containsKey(EventTimeNotificationKey())) {
                         time = data.get(EventTimeNotificationKey()).as(CMTime.class);
                     }

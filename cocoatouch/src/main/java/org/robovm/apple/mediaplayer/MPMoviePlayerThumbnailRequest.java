@@ -44,7 +44,7 @@ import org.robovm.apple.coregraphics.*;
     public static class Marshaler {
         @MarshalsPointer
         public static MPMoviePlayerThumbnailRequest toObject(Class<MPMoviePlayerThumbnailRequest> cls, long handle, long flags) {
-            NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
+            NSDictionary o = (NSDictionary) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
             if (o == null) {
                 return null;
             }
@@ -61,7 +61,7 @@ import org.robovm.apple.coregraphics.*;
     public static class AsListMarshaler {
         @MarshalsPointer
         public static List<MPMoviePlayerThumbnailRequest> toObject(Class<? extends NSObject> cls, long handle, long flags) {
-            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(NSArray.class, handle, flags);
+            NSArray<NSDictionary> o = (NSArray<NSDictionary>) NSObject.Marshaler.toObject(NSArray.class, handle, flags);
             if (o == null) {
                 return null;
             }
@@ -76,7 +76,7 @@ import org.robovm.apple.coregraphics.*;
             if (l == null) {
                 return 0L;
             }
-            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            NSArray<NSDictionary> array = new NSMutableArray<>();
             for (MPMoviePlayerThumbnailRequest i : l) {
                 array.add(i.getDictionary());
             }
@@ -86,7 +86,7 @@ import org.robovm.apple.coregraphics.*;
     /*</marshalers>*/
 
     /*<constructors>*/
-    MPMoviePlayerThumbnailRequest(NSDictionary<NSString, NSObject> data) {
+    MPMoviePlayerThumbnailRequest(NSDictionary data) {
         super(data);
     }
     /*</constructors>*/

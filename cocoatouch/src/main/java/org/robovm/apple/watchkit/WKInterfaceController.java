@@ -70,7 +70,7 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "handleActionWithIdentifier:forLocalNotification:")
     public native void handleAction(String identifier, UILocalNotification localNotification);
     @Method(selector = "handleUserActivity:")
-    public native void handleUserActivity(NSDictionary<?, ?> userInfo);
+    public native void handleUserActivity(NSDictionary userInfo);
     @Method(selector = "setTitle:")
     public native void setTitle(String title);
     @Method(selector = "pushControllerWithName:context:")
@@ -108,12 +108,12 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "clearAllMenuItems")
     public native void clearAllMenuItems();
     @Method(selector = "updateUserActivity:userInfo:webpageURL:")
-    public native void updateUserActivity(String type, NSDictionary<?, ?> userInfo, NSURL webpageURL);
+    public native void updateUserActivity(String type, NSDictionary userInfo, NSURL webpageURL);
     @Method(selector = "invalidateUserActivity")
     public native void invalidateUserActivity();
     @Method(selector = "reloadRootControllersWithNames:contexts:")
     public static native void reloadRootControllers(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> names, NSArray<NSObject> contexts);
     @Method(selector = "openParentApplication:reply:")
-    public static native boolean openParentApplication(NSDictionary<?, ?> userInfo, @Block VoidBlock2<NSDictionary<?, ?>, NSError> reply);
+    public static native boolean openParentApplication(NSDictionary userInfo, @Block VoidBlock2<NSDictionary<?, ?>, NSError> reply);
     /*</methods>*/
 }

@@ -52,7 +52,7 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGLayerCreateWithContext", optional=true)
-    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGLayer create(CGContext context, @ByVal CGSize size, NSDictionary<?, ?> auxiliaryInfo);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGLayer create(CGContext context, @ByVal CGSize size, NSDictionary auxiliaryInfo);
     /**
      * @since Available in iOS 2.0 and later.
      */

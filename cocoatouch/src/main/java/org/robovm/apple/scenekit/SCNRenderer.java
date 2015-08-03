@@ -138,7 +138,7 @@ import org.robovm.apple.opengles.*;
     @Method(selector = "renderAtTime:")
     public native void renderAtTime(double time);
     @Method(selector = "rendererWithContext:options:")
-    public static native SCNRenderer create(EAGLContext context, NSDictionary<?, ?> options);
+    public static native SCNRenderer create(EAGLContext context, NSDictionary options);
     @Method(selector = "hitTest:options:")
     public native NSArray<SCNHitTestResult> hitTest(@ByVal CGPoint thePoint, SCNHitTestOptions options);
     /**

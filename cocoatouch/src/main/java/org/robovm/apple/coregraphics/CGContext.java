@@ -694,12 +694,12 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGContextBeginTransparencyLayer", optional=true)
-    public native void beginTransparencyLayer(NSDictionary<?, ?> auxiliaryInfo);
+    public native void beginTransparencyLayer(NSDictionary auxiliaryInfo);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGContextBeginTransparencyLayerWithRect", optional=true)
-    public native void beginTransparencyLayer(@ByVal CGRect rect, NSDictionary<?, ?> auxiliaryInfo);
+    public native void beginTransparencyLayer(@ByVal CGRect rect, NSDictionary auxiliaryInfo);
     /**
      * @since Available in iOS 2.0 and later.
      */

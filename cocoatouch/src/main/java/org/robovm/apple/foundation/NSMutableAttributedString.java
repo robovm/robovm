@@ -182,11 +182,11 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "replaceCharactersInRange:withString:")
     public native void replace(@ByVal NSRange range, String str);
     @Method(selector = "setAttributes:range:")
-    public native void setAttributes(NSDictionary<NSString, NSObject> attrs, @ByVal NSRange range);
+    public native void setAttributes(NSDictionary attrs, @ByVal NSRange range);
     @Method(selector = "addAttribute:value:range:")
     public native void addAttribute(NSString name, NSObject value, @ByVal NSRange range);
     @Method(selector = "addAttributes:range:")
-    public native void addAttributes(NSDictionary<NSString, NSObject> attrs, @ByVal NSRange range);
+    public native void addAttributes(NSDictionary attrs, @ByVal NSRange range);
     @Method(selector = "removeAttribute:range:")
     public native void removeAttribute(NSString name, @ByVal NSRange range);
     @Method(selector = "replaceCharactersInRange:withAttributedString:")

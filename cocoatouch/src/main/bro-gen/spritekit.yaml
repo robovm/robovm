@@ -547,9 +547,6 @@ classes:
             '+atlasWithDictionary:':
                 name: create
                 visibility: protected
-                parameters:
-                    properties:
-                        type: 'NSDictionary<NSString, NSObject>'
             '+preloadTextureAtlases:withCompletionHandler:':
                 trim_after_first_colon: true
                 parameters:

@@ -68,9 +68,9 @@ import org.robovm.apple.foundation.*;
     @Property(selector = "validationWarnings")
     public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getValidationWarnings();
     @Property(selector = "userInfo")
-    public native NSDictionary<?, ?> getUserInfo();
+    public native NSDictionary getUserInfo();
     @Property(selector = "setUserInfo:")
-    public native void setUserInfo(NSDictionary<?, ?> v);
+    public native void setUserInfo(NSDictionary v);
     /**
      * @since Available in iOS 3.0 and later.
      */

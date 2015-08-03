@@ -241,7 +241,7 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "drawGlyphsForGlyphRange:atPoint:")
     public native void drawGlyphs(@ByVal NSRange glyphsToShow, @ByVal CGPoint origin);
     @Method(selector = "showCGGlyphs:positions:count:font:matrix:attributes:inContext:")
-    protected native void showCGGlyphs(@Pointer long glyphs, CGPoint positions, @MachineSizedUInt long glyphCount, UIFont font, @ByVal CGAffineTransform textMatrix, NSDictionary<?, ?> attributes, CGContext graphicsContext);
+    protected native void showCGGlyphs(@Pointer long glyphs, CGPoint positions, @MachineSizedUInt long glyphCount, UIFont font, @ByVal CGAffineTransform textMatrix, NSDictionary attributes, CGContext graphicsContext);
     @Method(selector = "fillBackgroundRectArray:count:forCharacterRange:color:")
     protected native void fillBackground(CGRect rectArray, @MachineSizedUInt long rectCount, @ByVal NSRange charRange, UIColor color);
     @Method(selector = "drawUnderlineForGlyphRange:underlineType:baselineOffset:lineFragmentRect:lineFragmentGlyphRange:containerOrigin:")

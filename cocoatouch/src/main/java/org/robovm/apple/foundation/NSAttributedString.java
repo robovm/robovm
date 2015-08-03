@@ -55,7 +55,7 @@ import org.robovm.apple.dispatch.*;
     public NSAttributedString() {}
     protected NSAttributedString(SkipInit skipInit) { super(skipInit); }
     public NSAttributedString(String str) { super((SkipInit) null); initObject(init(str)); }
-    public NSAttributedString(String str, NSDictionary<NSString, NSObject> attrs) { super((SkipInit) null); initObject(init(str, attrs)); }
+    public NSAttributedString(String str, NSDictionary attrs) { super((SkipInit) null); initObject(init(str, attrs)); }
     public NSAttributedString(NSAttributedString attrStr) { super((SkipInit) null); initObject(init(attrStr)); }
     /*</constructors>*/
     public NSAttributedString(String str, NSAttributedStringAttributes attrs) {
@@ -310,13 +310,13 @@ import org.robovm.apple.dispatch.*;
     }
     /*<methods>*/
     @Method(selector = "attributesAtIndex:effectiveRange:")
-    public native NSDictionary<NSString, NSObject> getAttributesDictionary(@MachineSizedUInt long location, NSRange range);
+    public native NSDictionary getAttributesDictionary(@MachineSizedUInt long location, NSRange range);
     @Method(selector = "attribute:atIndex:effectiveRange:")
     public native NSObject getAttribute(NSString attrName, @MachineSizedUInt long location, NSRange range);
     @Method(selector = "attributedSubstringFromRange:")
     public native NSAttributedString substring(@ByVal NSRange range);
     @Method(selector = "attributesAtIndex:longestEffectiveRange:inRange:")
-    public native NSDictionary<NSString, NSObject> getAttributesDictionary(@MachineSizedUInt long location, NSRange range, @ByVal NSRange rangeLimit);
+    public native NSDictionary getAttributesDictionary(@MachineSizedUInt long location, NSRange range, @ByVal NSRange rangeLimit);
     @Method(selector = "attribute:atIndex:longestEffectiveRange:inRange:")
     public native NSObject getAttribute(NSString attrName, @MachineSizedUInt long location, NSRange range, @ByVal NSRange rangeLimit);
     @Method(selector = "isEqualToAttributedString:")
@@ -324,14 +324,14 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "initWithString:")
     protected native @Pointer long init(String str);
     @Method(selector = "initWithString:attributes:")
-    protected native @Pointer long init(String str, NSDictionary<NSString, NSObject> attrs);
+    protected native @Pointer long init(String str, NSDictionary attrs);
     @Method(selector = "initWithAttributedString:")
     protected native @Pointer long init(NSAttributedString attrStr);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "enumerateAttributesInRange:options:usingBlock:")
-    public native void enumerateAttributes(@ByVal NSRange enumerationRange, NSAttributedStringEnumerationOptions opts, @Block("(,@ByVal,)") VoidBlock3<NSDictionary<NSString, NSObject>, NSRange, BooleanPtr> block);
+    public native void enumerateAttributes(@ByVal NSRange enumerationRange, NSAttributedStringEnumerationOptions opts, @Block("(,@ByVal,)") VoidBlock3<NSDictionary<?, ?>, NSRange, BooleanPtr> block);
     /**
      * @since Available in iOS 4.0 and later.
      */

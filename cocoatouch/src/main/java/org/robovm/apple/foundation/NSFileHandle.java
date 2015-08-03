@@ -52,7 +52,7 @@ import org.robovm.apple.dispatch.*;
                 @Override
                 public void invoke(NSNotification a) {
                     NSData d = null;
-                    NSDictionary<NSString, NSObject> data = a.getUserInfo();
+                    NSDictionary<?, ?> data = a.getUserInfo();
                     if (data.containsKey(NotificationDataItem())) {
                         d = (NSData)data.get(NotificationDataItem());
                     }
@@ -65,7 +65,7 @@ import org.robovm.apple.dispatch.*;
                 @Override
                 public void invoke(NSNotification a) {
                     NSData d = null;
-                    NSDictionary<NSString, NSObject> data = a.getUserInfo();
+                    NSDictionary<?, ?> data = a.getUserInfo();
                     if (data.containsKey(NotificationDataItem())) {
                         d = (NSData)data.get(NotificationDataItem());
                     }
@@ -78,7 +78,7 @@ import org.robovm.apple.dispatch.*;
                 @Override
                 public void invoke(NSNotification a) {
                     NSFileHandle f = null;
-                    NSDictionary<NSString, NSObject> data = a.getUserInfo();
+                    NSDictionary<?, ?> data = a.getUserInfo();
                     if (data.containsKey(NotificationDataItem())) {
                         f = (NSFileHandle)data.get(NotificationFileHandleItem());
                     }

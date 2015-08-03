@@ -52,7 +52,7 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "type")
     public native String getType();
     @Property(selector = "dictionaryPayload")
-    public native NSDictionary<?, ?> getDictionaryPayload();
+    public native NSDictionary getDictionaryPayload();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

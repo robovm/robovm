@@ -905,7 +905,7 @@ functions:
         return_marshaler: CFType.NoRetainMarshaler
         parameters:
             userInfo:
-                type: 'NSDictionary<NSString, NSObject>'
+                type: NSDictionary
     CFErrorCreateWithUserInfoKeysAndValues:
         exclude: true
     CFErrorCopyDescription:
@@ -913,7 +913,7 @@ functions:
     CFErrorCopy(UserInfo):
         class: CFError
         name: 'get#{g[0]}'
-        return_type: 'NSDictionary<NSString, NSObject>'
+        return_type: NSDictionary
     CFErrorCopy(.*):
         class: CFError
         name: 'get#{g[0]}'
@@ -1090,7 +1090,7 @@ functions:
             object:
                 type: CFType
             userInfo:
-                type: 'NSDictionary<NSString, ?>'
+                type: NSDictionary
             options:
                 type: CFNotificationPostingOptions
     CFNotificationCenter(.*):

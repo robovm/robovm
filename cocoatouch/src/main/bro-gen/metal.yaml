@@ -417,7 +417,15 @@ protocols:
                         type: MTLSamplerState.MTLSamplerStatePtr
             '-setDepthBias:slopeScale:clamp:':
                 trim_after_first_colon: true
+            '-setFragmentBytes:length:atIndex:':
+                trim_after_first_colon: true
+                visibility: protected
+                parameters:
+                    bytes:
+                        type: '@Pointer long'
             '-setFragmentBuffer:offset:atIndex:':
+                trim_after_first_colon: true
+            '-setFragmentBufferOffset:atIndex:':
                 trim_after_first_colon: true
             '-setFragmentBuffers:offsets:withRange:':
                 trim_after_first_colon: true

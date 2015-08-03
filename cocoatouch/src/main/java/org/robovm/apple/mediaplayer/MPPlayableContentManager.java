@@ -58,6 +58,8 @@ import org.robovm.apple.coregraphics.*;
     public native MPPlayableContentDelegate getDelegate();
     @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(MPPlayableContentDelegate v);
+    @Property(selector = "context")
+    public native MPPlayableContentManagerContext getContext();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

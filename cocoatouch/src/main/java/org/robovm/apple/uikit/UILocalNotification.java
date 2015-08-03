@@ -128,9 +128,9 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "setApplicationIconBadgeNumber:")
     public native void setApplicationIconBadgeNumber(@MachineSizedSInt long v);
     @Property(selector = "userInfo")
-    public native NSDictionary<?, ?> getUserInfo();
+    public native NSDictionary getUserInfo();
     @Property(selector = "setUserInfo:")
-    public native void setUserInfo(NSDictionary<?, ?> v);
+    public native void setUserInfo(NSDictionary v);
     /**
      * @since Available in iOS 8.0 and later.
      */

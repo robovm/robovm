@@ -46,7 +46,7 @@ import org.robovm.apple.avfoundation.*;
     public static class Marshaler {
         @MarshalsPointer
         public static PHImageRequestResult toObject(Class<PHImageRequestResult> cls, long handle, long flags) {
-            NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
+            NSDictionary o = (NSDictionary) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
             if (o == null) {
                 return null;
             }
@@ -63,7 +63,7 @@ import org.robovm.apple.avfoundation.*;
     public static class AsListMarshaler {
         @MarshalsPointer
         public static List<PHImageRequestResult> toObject(Class<? extends NSObject> cls, long handle, long flags) {
-            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(NSArray.class, handle, flags);
+            NSArray<NSDictionary> o = (NSArray<NSDictionary>) NSObject.Marshaler.toObject(NSArray.class, handle, flags);
             if (o == null) {
                 return null;
             }
@@ -78,7 +78,7 @@ import org.robovm.apple.avfoundation.*;
             if (l == null) {
                 return 0L;
             }
-            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            NSArray<NSDictionary> array = new NSMutableArray<>();
             for (PHImageRequestResult i : l) {
                 array.add(i.getDictionary());
             }
@@ -88,7 +88,7 @@ import org.robovm.apple.avfoundation.*;
     /*</marshalers>*/
 
     /*<constructors>*/
-    PHImageRequestResult(NSDictionary<NSString, NSObject> data) {
+    PHImageRequestResult(NSDictionary data) {
         super(data);
     }
     /*</constructors>*/

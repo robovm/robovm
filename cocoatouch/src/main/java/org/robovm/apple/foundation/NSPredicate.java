@@ -102,14 +102,14 @@ import org.robovm.apple.dispatch.*;
     
     /*<methods>*/
     @Method(selector = "predicateWithSubstitutionVariables:")
-    public native NSPredicate newPredicateWithSubstitutionVariables(NSDictionary<NSString, ?> variables);
+    public native NSPredicate newPredicateWithSubstitutionVariables(NSDictionary variables);
     @Method(selector = "evaluateWithObject:")
     public native boolean evaluate(NSObject object);
     /**
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "evaluateWithObject:substitutionVariables:")
-    public native boolean evaluate(NSObject object, NSDictionary<NSString, ?> bindings);
+    public native boolean evaluate(NSObject object, NSDictionary bindings);
     /**
      * @since Available in iOS 7.0 and later.
      */

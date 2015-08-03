@@ -67,9 +67,9 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "setTitle:")
     public native void setTitle(String v);
     @Property(selector = "userInfo")
-    public native NSDictionary<?, ?> getUserInfo();
+    public native NSDictionary getUserInfo();
     @Property(selector = "setUserInfo:")
-    public native void setUserInfo(NSDictionary<?, ?> v);
+    public native void setUserInfo(NSDictionary v);
     @Property(selector = "needsSave")
     public native boolean needsSave();
     @Property(selector = "setNeedsSave:")
@@ -92,7 +92,7 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "initWithActivityType:")
     protected native @Pointer long init(String activityType);
     @Method(selector = "addUserInfoEntriesFromDictionary:")
-    public native void addUserInfoEntries(NSDictionary<?, ?> otherDictionary);
+    public native void addUserInfoEntries(NSDictionary otherDictionary);
     @Method(selector = "becomeCurrent")
     public native void becomeCurrent();
     @Method(selector = "invalidate")

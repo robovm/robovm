@@ -244,17 +244,17 @@ import org.robovm.apple.audiotoolbox.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public NSDictionary<?, ?> asDictionary(CFAllocator allocator) { return asDictionary(this, allocator); }
+    public NSDictionary asDictionary(CFAllocator allocator) { return asDictionary(this, allocator); }
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMTimeCopyAsDictionary", optional=true)
-    private static native NSDictionary<?, ?> asDictionary(@ByVal CMTime time, CFAllocator allocator);
+    private static native NSDictionary asDictionary(@ByVal CMTime time, CFAllocator allocator);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMTimeMakeFromDictionary", optional=true)
-    public static native @ByVal CMTime create(NSDictionary<?, ?> dict);
+    public static native @ByVal CMTime create(NSDictionary dict);
     /**
      * @since Available in iOS 4.0 and later.
      */

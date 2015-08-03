@@ -57,8 +57,6 @@ classes:
         properties:
             'emitterCells':
                 type: NSArray<CAEmitterCell>
-            'style':
-                type: NSDictionary<NSString, NSObject>  
             'minificationFilter':
                 type: CAFilter
             'magnificationFilter':
@@ -126,8 +124,6 @@ classes:
                 annotations: ['@WeaklyLinked']
             'actions':
                 type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, CAAction>'
-            'style':
-                type: NSDictionary<NSString, NSObject>
             'minificationFilter':
                 type: CAFilter
             'magnificationFilter':

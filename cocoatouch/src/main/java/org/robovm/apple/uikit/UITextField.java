@@ -237,12 +237,12 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "defaultTextAttributes")
-    public native NSDictionary<NSString, NSObject> getDefaultTextAttributesDictionary();
+    public native NSDictionary getDefaultTextAttributesDictionary();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "setDefaultTextAttributes:")
-    public native void setDefaultTextAttributesDictionary(NSDictionary<NSString, NSObject> v);
+    public native void setDefaultTextAttributesDictionary(NSDictionary v);
     @Property(selector = "placeholder")
     public native String getPlaceholder();
     @Property(selector = "setPlaceholder:")
@@ -297,12 +297,12 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "typingAttributes")
-    public native NSDictionary<NSString, NSObject> getTypingAttributesDictionary();
+    public native NSDictionary getTypingAttributesDictionary();
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "setTypingAttributes:")
-    public native void setTypingAttributesDictionary(NSDictionary<NSString, NSObject> v);
+    public native void setTypingAttributesDictionary(NSDictionary v);
     @Property(selector = "clearButtonMode")
     public native UITextFieldViewMode getClearButtonMode();
     @Property(selector = "setClearButtonMode:")

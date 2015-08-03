@@ -64,12 +64,12 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "previewImageHandler")
-    public native @Block("(@Block,,)") VoidBlock3<VoidBlock2<NSObject, NSError>, ObjCClass, NSDictionary<NSString, NSObject>> getPreviewImageHandler();
+    public native @Block("(@Block,,)") VoidBlock3<VoidBlock2<NSObject, NSError>, ObjCClass, NSDictionary<?, ?>> getPreviewImageHandler();
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "setPreviewImageHandler:")
-    public native void setPreviewImageHandler(@Block("(@Block,,)") VoidBlock3<VoidBlock2<NSObject, NSError>, ObjCClass, NSDictionary<NSString, NSObject>> v);
+    public native void setPreviewImageHandler(@Block("(@Block,,)") VoidBlock3<VoidBlock2<NSObject, NSError>, ObjCClass, NSDictionary<?, ?>> v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -89,7 +89,7 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "initWithContentsOfURL:")
     protected native @Pointer long init(NSURL fileURL);
     @Method(selector = "registerItemForTypeIdentifier:loadHandler:")
-    public native void registerItemForTypeIdentifier(String typeIdentifier, @Block("(@Block,,)") VoidBlock3<VoidBlock2<NSObject, NSError>, ObjCClass, NSDictionary<NSString, NSObject>> loadHandler);
+    public native void registerItemForTypeIdentifier(String typeIdentifier, @Block("(@Block,,)") VoidBlock3<VoidBlock2<NSObject, NSError>, ObjCClass, NSDictionary<?, ?>> loadHandler);
     @Method(selector = "hasItemConformingToTypeIdentifier:")
     public native boolean hasItemConformingToTypeIdentifier(String typeIdentifier);
     @Method(selector = "loadItemForTypeIdentifier:options:completionHandler:")

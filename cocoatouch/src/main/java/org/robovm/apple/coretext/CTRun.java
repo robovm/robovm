@@ -75,18 +75,18 @@ import org.robovm.apple.uikit.*;
     /*<members>*//*</members>*/
     @WeaklyLinked
     public NSAttributedStringAttributes getAttributes() {
-        NSDictionary<NSString, NSObject> dict = getAttributesDictionary();
+        NSDictionary dict = getAttributesDictionary();
         if (dict == null) return null;
         return new NSAttributedStringAttributes(dict);
     }
     @WeaklyLinked
     public CMTextMarkupAttributes getTextMarkupAttributes() {
-        NSDictionary<NSString, NSObject> dict = getAttributesDictionary();
+        NSDictionary dict = getAttributesDictionary();
         if (dict == null) return null;
         return new CMTextMarkupAttributes(getAttributesDictionary().as(CFDictionary.class));
     }
     public CTAttributedStringAttributes getCoreTextAttributes() {
-        NSDictionary<NSString, NSObject> dict = getAttributesDictionary();
+        NSDictionary dict = getAttributesDictionary();
         if (dict == null) return null;
         return new CTAttributedStringAttributes(getAttributesDictionary().as(CFDictionary.class));
     }
@@ -168,7 +168,7 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTRunGetAttributes", optional=true)
-    public native NSDictionary<NSString, NSObject> getAttributesDictionary();
+    public native NSDictionary getAttributesDictionary();
     /**
      * @since Available in iOS 3.2 and later.
      */

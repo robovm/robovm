@@ -61,7 +61,7 @@ import org.robovm.apple.dispatch.*;
     @NotImplemented("netServiceBrowserDidStopSearch:")
     public void didStopSearch(NSNetServiceBrowser aNetServiceBrowser) {}
     @NotImplemented("netServiceBrowser:didNotSearch:")
-    public void didNotSearch(NSNetServiceBrowser aNetServiceBrowser, NSDictionary<?, ?> errorDict) {}
+    public void didNotSearch(NSNetServiceBrowser aNetServiceBrowser, NSDictionary errorDict) {}
     @NotImplemented("netServiceBrowser:didFindDomain:moreComing:")
     public void didFindDomain(NSNetServiceBrowser aNetServiceBrowser, String domainString, boolean moreComing) {}
     @NotImplemented("netServiceBrowser:didFindService:moreComing:")

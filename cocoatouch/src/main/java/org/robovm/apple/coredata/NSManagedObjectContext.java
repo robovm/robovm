@@ -134,7 +134,7 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "userInfo")
-    public native NSMutableDictionary<?, ?> getUserInfo();
+    public native NSMutableDictionary getUserInfo();
     /**
      * @since Available in iOS 5.0 and later.
      */

@@ -44,7 +44,7 @@ import org.robovm.apple.dispatch.*;
     public static class Marshaler {
         @MarshalsPointer
         public static CBPeripheralManagerRestoredState toObject(Class<CBPeripheralManagerRestoredState> cls, long handle, long flags) {
-            NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
+            NSDictionary o = (NSDictionary) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
             if (o == null) {
                 return null;
             }
@@ -61,7 +61,7 @@ import org.robovm.apple.dispatch.*;
     public static class AsListMarshaler {
         @MarshalsPointer
         public static List<CBPeripheralManagerRestoredState> toObject(Class<? extends NSObject> cls, long handle, long flags) {
-            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(NSArray.class, handle, flags);
+            NSArray<NSDictionary> o = (NSArray<NSDictionary>) NSObject.Marshaler.toObject(NSArray.class, handle, flags);
             if (o == null) {
                 return null;
             }
@@ -76,7 +76,7 @@ import org.robovm.apple.dispatch.*;
             if (l == null) {
                 return 0L;
             }
-            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            NSArray<NSDictionary> array = new NSMutableArray<>();
             for (CBPeripheralManagerRestoredState i : l) {
                 array.add(i.getDictionary());
             }
@@ -86,7 +86,7 @@ import org.robovm.apple.dispatch.*;
     /*</marshalers>*/
 
     /*<constructors>*/
-    CBPeripheralManagerRestoredState(NSDictionary<NSString, NSObject> data) {
+    CBPeripheralManagerRestoredState(NSDictionary data) {
         super(data);
     }
     /*</constructors>*/
@@ -118,7 +118,7 @@ import org.robovm.apple.dispatch.*;
      */
     public CBAdvertisementData getAdvertisementData() {
         if (has(Keys.AdvertisementData())) {
-            NSDictionary<NSString, NSObject> val = (NSDictionary<NSString, NSObject>) get(Keys.AdvertisementData());
+            NSDictionary val = (NSDictionary) get(Keys.AdvertisementData());
             return new CBAdvertisementData(val);
         }
         return null;

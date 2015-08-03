@@ -85,7 +85,7 @@ import org.robovm.apple.audiounit.*;
     @Property(selector = "track")
     public native AVAssetTrack getTrack();
     @Property(selector = "outputSettings")
-    protected native NSDictionary<NSString, NSObject> getOutputSettings();
+    protected native NSDictionary getOutputSettings();
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -110,8 +110,8 @@ import org.robovm.apple.audiounit.*;
     }
     /*<methods>*/
     @Method(selector = "initWithTrack:outputSettings:")
-    protected native @Pointer long init(AVAssetTrack track, NSDictionary<NSString, NSObject> outputSettings);
+    protected native @Pointer long init(AVAssetTrack track, NSDictionary outputSettings);
     @Method(selector = "assetReaderTrackOutputWithTrack:outputSettings:")
-    protected static native AVAssetReaderTrackOutput create(AVAssetTrack track, NSDictionary<NSString, NSObject> outputSettings);
+    protected static native AVAssetReaderTrackOutput create(AVAssetTrack track, NSDictionary outputSettings);
     /*</methods>*/
 }

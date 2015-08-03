@@ -69,7 +69,7 @@ import org.robovm.apple.corelocation.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    protected static boolean readFromFileURL(NSMutableAttributedString thiz, NSURL url, NSAttributedStringDocumentAttributes opts, NSDictionary.NSDictionaryPtr<?, ?> dict) throws NSErrorException {
+    protected static boolean readFromFileURL(NSMutableAttributedString thiz, NSURL url, NSAttributedStringDocumentAttributes opts, NSDictionary.NSDictionaryPtr dict) throws NSErrorException {
        NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
        boolean result = readFromFileURL(thiz, url, opts, dict, ptr);
        if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
@@ -79,11 +79,11 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "readFromFileURL:options:documentAttributes:error:")
-    private static native boolean readFromFileURL(NSMutableAttributedString thiz, NSURL url, NSAttributedStringDocumentAttributes opts, NSDictionary.NSDictionaryPtr<?, ?> dict, NSError.NSErrorPtr error);
+    private static native boolean readFromFileURL(NSMutableAttributedString thiz, NSURL url, NSAttributedStringDocumentAttributes opts, NSDictionary.NSDictionaryPtr dict, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 7.0 and later.
      */
-    protected static boolean readFromData(NSMutableAttributedString thiz, NSData data, NSAttributedStringDocumentAttributes opts, NSDictionary.NSDictionaryPtr<?, ?> dict) throws NSErrorException {
+    protected static boolean readFromData(NSMutableAttributedString thiz, NSData data, NSAttributedStringDocumentAttributes opts, NSDictionary.NSDictionaryPtr dict) throws NSErrorException {
        NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
        boolean result = readFromData(thiz, data, opts, dict, ptr);
        if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
@@ -93,6 +93,6 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "readFromData:options:documentAttributes:error:")
-    private static native boolean readFromData(NSMutableAttributedString thiz, NSData data, NSAttributedStringDocumentAttributes opts, NSDictionary.NSDictionaryPtr<?, ?> dict, NSError.NSErrorPtr error);
+    private static native boolean readFromData(NSMutableAttributedString thiz, NSData data, NSAttributedStringDocumentAttributes opts, NSDictionary.NSDictionaryPtr dict, NSError.NSErrorPtr error);
     /*</methods>*/
 }

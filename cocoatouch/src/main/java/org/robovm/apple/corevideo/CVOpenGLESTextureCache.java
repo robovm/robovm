@@ -88,12 +88,12 @@ import org.robovm.apple.metal.*;
      */
     @WeaklyLinked
     @Bridge(symbol="CVOpenGLESTextureCacheCreate", optional=true)
-    private static native CVReturn create(CFAllocator allocator, CVOpenGLESTextureCacheAttributes cacheAttributes, EAGLContext eaglContext, NSDictionary<NSString, ?> textureAttributes, CVOpenGLESTextureCache.CVOpenGLESTextureCachePtr cacheOut);
+    private static native CVReturn create(CFAllocator allocator, CVOpenGLESTextureCacheAttributes cacheAttributes, EAGLContext eaglContext, NSDictionary textureAttributes, CVOpenGLESTextureCache.CVOpenGLESTextureCachePtr cacheOut);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="CVOpenGLESTextureCacheCreateTextureFromImage", optional=true)
-    private static native CVReturn createTexture(CFAllocator allocator, CVOpenGLESTextureCache textureCache, CVImageBuffer sourceImage, NSDictionary<NSString, ?> textureAttributes, int target, int internalFormat, int width, int height, int format, int type, @MachineSizedUInt long planeIndex, CVOpenGLESTexture.CVOpenGLESTexturePtr textureOut);
+    private static native CVReturn createTexture(CFAllocator allocator, CVOpenGLESTextureCache textureCache, CVImageBuffer sourceImage, NSDictionary textureAttributes, int target, int internalFormat, int width, int height, int format, int type, @MachineSizedUInt long planeIndex, CVOpenGLESTexture.CVOpenGLESTexturePtr textureOut);
     /**
      * @since Available in iOS 5.0 and later.
      */

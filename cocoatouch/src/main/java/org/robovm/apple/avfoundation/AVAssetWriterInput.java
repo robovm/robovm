@@ -91,7 +91,7 @@ import org.robovm.apple.audiounit.*;
     @Property(selector = "mediaType")
     public native AVMediaType getMediaType();
     @Property(selector = "outputSettings")
-    protected native NSDictionary<NSString, NSObject> getOutputSettings();
+    protected native NSDictionary getOutputSettings();
     /**
      * @since Available in iOS 6.0 and later.
      */
@@ -243,12 +243,12 @@ import org.robovm.apple.audiounit.*;
     }
     /*<methods>*/
     @Method(selector = "initWithMediaType:outputSettings:")
-    protected native @Pointer long init(AVMediaType mediaType, NSDictionary<NSString, NSObject> outputSettings);
+    protected native @Pointer long init(AVMediaType mediaType, NSDictionary outputSettings);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "initWithMediaType:outputSettings:sourceFormatHint:")
-    protected native @Pointer long init(AVMediaType mediaType, NSDictionary<NSString, NSObject> outputSettings, CMFormatDescription sourceFormatHint);
+    protected native @Pointer long init(AVMediaType mediaType, NSDictionary outputSettings, CMFormatDescription sourceFormatHint);
     @WeaklyLinked
     @Method(selector = "requestMediaDataWhenReadyOnQueue:usingBlock:")
     public native void requestMediaDataWhenReady(DispatchQueue queue, @Block Runnable block);
@@ -257,12 +257,12 @@ import org.robovm.apple.audiounit.*;
     @Method(selector = "markAsFinished")
     public native void markAsFinished();
     @Method(selector = "assetWriterInputWithMediaType:outputSettings:")
-    protected static native AVAssetWriterInput create(AVMediaType mediaType, NSDictionary<NSString, NSObject> outputSettings);
+    protected static native AVAssetWriterInput create(AVMediaType mediaType, NSDictionary outputSettings);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "assetWriterInputWithMediaType:outputSettings:sourceFormatHint:")
-    protected static native AVAssetWriterInput create(AVMediaType mediaType, NSDictionary<NSString, NSObject> outputSettings, CMFormatDescription sourceFormatHint);
+    protected static native AVAssetWriterInput create(AVMediaType mediaType, NSDictionary outputSettings, CMFormatDescription sourceFormatHint);
     /**
      * @since Available in iOS 7.0 and later.
      */

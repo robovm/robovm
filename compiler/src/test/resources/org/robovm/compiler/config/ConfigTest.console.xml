@@ -1,6 +1,7 @@
 <config>
   <os>macosx</os>
   <arch>x86</arch>
+  <arch>x86_64</arch>
   <forceLinkClasses>
     <pattern>javax.**.*</pattern>
   </forceLinkClasses>

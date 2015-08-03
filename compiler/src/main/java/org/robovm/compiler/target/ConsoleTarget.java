@@ -53,7 +53,12 @@ public class ConsoleTarget extends AbstractTarget {
     public Arch getArch() {
         return arch;
     }
-    
+
+    @Override
+    public List<Arch> getDefaultArchs() {
+        return Collections.singletonList(Arch.getDefaultArch());
+    }
+
     @Override
     protected Launcher createLauncher(LaunchParameters launchParameters) throws IOException {
         File dir = config.isSkipInstall() ? config.getTmpDir() : config.getInstallDir();

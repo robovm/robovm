@@ -33,6 +33,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.UUID;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -444,7 +445,7 @@ public class AppCompiler {
         return linkClasses;
     }
 
-    public void compile() throws IOException {
+    private void compile() throws IOException {
         updateCheck();
 
         Set<Clazz> linkClasses = compile(getRootClasses(), true, null);
@@ -473,8 +474,8 @@ public class AppCompiler {
 
         boolean verbose = false;
         boolean run = false;
-        boolean createIpa = false;
-        List<Arch> ipaArchs = new ArrayList<>();
+        boolean archive = false;
+        List<Arch> archs = new ArrayList<>();
         String dumpConfigFile = null;
         List<String> runArgs = new ArrayList<String>();
         try {
@@ -557,7 +558,15 @@ public class AppCompiler {
                     builder.os("auto".equals(s) ? null : OS.valueOf(s));
                 } else if ("-arch".equals(args[i])) {
                     String s = args[++i];
-                    builder.arch("auto".equals(s) ? null : Arch.valueOf(s));
+                    if (!"auto".equals(s)) {
+                        archs.add(Arch.valueOf(s));
+                    }
+                } else if ("-archs".equals(args[i])) {
+                    for (String s : args[++i].split(":")) {
+                        if (!"auto".equals(s)) {
+                            archs.add(Arch.valueOf(s));
+                        }
+                    }
 //                } else if ("-cpu".equals(args[i])) {
 //                    builder.cpu(args[++i]);
                 } else if ("-target".equals(args[i])) {
@@ -628,11 +637,15 @@ public class AppCompiler {
                     printDeviceTypesAndExit();
                 } else if ("-devicetype".equals(args[i])) {
                     builder.iosDeviceType(args[++i]);
+                } else if ("-archive".equals(args[i])) {
+                    archive = true;
                 } else if ("-createipa".equals(args[i])) {
-                    createIpa = true;
+                    archive = true;
                 } else if ("-ipaarchs".equals(args[i])) {
                     for (String s : args[++i].split(":")) {
-                        ipaArchs.add(Arch.valueOf(s));
+                        if (!"auto".equals(s)) {
+                            archs.add(Arch.valueOf(s));
+                        }
                     }
                 } else if (args[i].startsWith("-D")) {
                 } else if (args[i].startsWith("-X")) {
@@ -656,12 +669,14 @@ public class AppCompiler {
                 i++;
             }
 
+            builder.archs(archs.toArray(new Arch[archs.size()]));
+
             while (i < args.length) {
                 runArgs.add(args[i++]);
             }
 
-            if (createIpa && run) {
-                throw new IllegalArgumentException("Specify either -run or -createipa, not both");
+            if (archive && run) {
+                throw new IllegalArgumentException("Specify either -run or -createipa/-archive, not both");
             }
 
             builder.logger(new ConsoleLogger(verbose));
@@ -683,13 +698,6 @@ public class AppCompiler {
 
             compiler = new AppCompiler(builder.build());
 
-            if (createIpa && (!(compiler.config.getTarget() instanceof IOSTarget)
-                    || !(compiler.config.getArch() == Arch.thumbv7 || compiler.config.getArch() == Arch.arm64)
-                    || compiler.config.getOs() != OS.ios)) {
-
-                throw new IllegalArgumentException("Must build for iOS thumbv7/arm64 when creating IPA");
-            }
-
         } catch (Throwable t) {
             String message = t.getMessage();
             if (t instanceof ArrayIndexOutOfBoundsException) {
@@ -705,15 +713,16 @@ public class AppCompiler {
         }
 
         try {
-            if (createIpa) {
-                compiler.createIpa(ipaArchs);
+            if (archive) {
+                compiler.build();
+                compiler.archive();
             } else {
                 if (run && !compiler.config.getTarget().canLaunch()) {
                     throw new IllegalArgumentException("Cannot launch when building " 
                             + compiler.config.getTarget().getType() + " binaries");
                 }
-                compiler.compile();
                 if (run) {
+                    compiler.compile(); // Just compile the first slice if multiple archs have been specified
                     LaunchParameters launchParameters = compiler.config.getTarget().createLaunchParameters();
                     if (launchParameters instanceof IOSSimulatorLaunchParameters) {
                         IOSSimulatorLaunchParameters simParams = (IOSSimulatorLaunchParameters) launchParameters;
@@ -731,6 +740,7 @@ public class AppCompiler {
                     launchParameters.setArguments(runArgs);
                     compiler.launch(launchParameters);
                 } else {
+                    compiler.build();
                     compiler.config.getTarget().install();
                 }
             }
@@ -744,37 +754,55 @@ public class AppCompiler {
     }
 
     /**
-     * Creates an IPA with a single {@link Arch} as specified in
-     * {@link Config#getArch()}.
+     * Builds the binary (possibly a fat binary with multiple archs).
      */
-    public void createIpa() throws IOException {
-        createIpa(new ArrayList<Arch>());
+    public void build() throws IOException {
+        List<Arch> archs = this.config.getArchs();
+        if (archs.isEmpty()) {
+            archs = config.getTarget().getDefaultArchs();
+        }
+        if (archs.isEmpty()) {
+            throw new IllegalArgumentException("No archs specified in config");
+        }
+        if (archs.size() == 1 && this.config.getArch().equals(archs.get(0))) {
+            // No need to clone configs for each slice.
+            compile();
+        } else {
+            Map<Arch, File> slices = new TreeMap<>();
+            for (Arch arch : archs) {
+                this.config.getLogger().info("Building %s slice", arch);
+                Config sliceConfig = this.config.builder()
+                        .arch(arch)
+                        .tmpDir(new File(this.config.getTmpDir(), arch.toString()))
+                        .build();
+                new AppCompiler(sliceConfig).compile();
+                slices.put(arch, new File(sliceConfig.getTmpDir(), sliceConfig.getExecutableName()));
+                for (Path path : sliceConfig.getResourcesPaths()) {
+                    if (!this.config.getResourcesPaths().contains(path)) {
+                        this.config.addResourcesPath(path);
+                    }
+                }
+            }
+            this.config.getTarget().buildFat(slices);
+        }
     }
 
     /**
-     * Creates an IPA with a fat binary containing one slice for each of the
-     * specified {@link Arch}s.
+     * Archives the binary previously built using {@link #build()} along with
+     * all resources specified in the {@link Config} and supporting files and
+     * stores the archive in the {@link Config#getInstallDir()}.
      */
-    public void createIpa(List<Arch> archs) throws IOException {
-        if (archs.isEmpty()) {
-            archs.add(this.config.getArch());
-        }
-        List<File> slices = new ArrayList<>();
-        for (Arch arch : archs) {
-            this.config.getLogger().info("Creating %s slice for IPA", arch);
-            Config sliceConfig = this.config.builder()
-                    .arch(arch)
-                    .tmpDir(new File(this.config.getTmpDir(), arch.toString()))
-                    .build();
-            new AppCompiler(sliceConfig).compile();
-            slices.add(new File(sliceConfig.getTmpDir(), sliceConfig.getExecutableName()));
-            for (Path path : sliceConfig.getResourcesPaths()) {
-                if (!this.config.getResourcesPaths().contains(path)) {
-                    this.config.addResourcesPath(path);
-                }
-            }
-        }
-        ((IOSTarget) this.config.getTarget()).createIpa(slices);
+    public void archive() throws IOException {
+        config.getTarget().archive();
+    }
+
+    /**
+     * Installs the binary previously built using {@link #build()} along with
+     * all resources specified in the {@link Config} and supporting files into
+     * the {@link Config#getInstallDir()}.
+     */
+    public void install() throws IOException {
+        config.getTarget().install();
     }
 
     public int launch(LaunchParameters launchParameters) throws Throwable {
@@ -879,6 +907,9 @@ public class AppCompiler {
         System.err.println("  -arch <name>          The name of the LLVM arch to compile for. Allowed values\n" 
                          + "                        are 'auto', 'x86', 'x86_64', 'thumbv7', 'arm64'. Default is\n" 
                          + "                        'auto' which means use the LLVM default.");
+        System.err.println("  -archs <list>         : separated list of archs. Used to build a fat binary which\n" 
+                         + "                        includes all the specified archs. Allowed values\n" 
+                         + "                        are 'x86', 'x86_64', 'thumbv7', 'arm64'.");
         System.err.println("  -cpu <name>           The name of the LLVM cpu to compile for. The LLVM default\n" 
                          + "                        is used if not specified. Use llc to determine allowed values.");
         System.err.println("  -target <name>        The target to build for. One of:\n" 
@@ -904,6 +935,10 @@ public class AppCompiler {
         System.err.println("  -run                  Run the executable directly without installing it (-d is\n" 
                          + "                        ignored). The executable will be executed from the\n" 
                          + "                        temporary dir specified with -tmp.");
+        System.err.println("  -archive              Archives the binary along with resources and supporting\n" 
+                         + "                        files in a format suitable for distribution (e.g. an IPA\n" 
+                         + "                        file for iOS apps). The archive will be created in the\n" 
+                         + "                        install dir specified using -d.");
         System.err.println("  -debug                Generates debug information");
         System.err.println("  -use-debug-libs       Links against debug versions of the RoboVM VM libraries");
         System.err.println("  -dynamic-jni          Use dynamic JNI. Native methods will be dynamically\n" 
@@ -957,9 +992,9 @@ public class AppCompiler {
         System.err.println("  -help, -?             Display this information");
         System.err.println("Target specific options:");
         System.err.println("  -createipa            (iOS) Create a .IPA file from the app bundle and place it in\n"
-                         + "                        the install dir specified with -d.");
+                         + "                        the install dir specified with -d. Alias for -archive.");
         System.err.println("  -ipaarchs             (iOS) : separated list of architectures to include in the IPA.\n" 
-                         + "                        Either thumbv7 or arm64 or both.");
+                         + "                        Either thumbv7 or arm64 or both. Alias for -archs.");
         System.err.println("  -plist <file>         (iOS) Info.plist file to be used by the app. If not specified\n"
                          + "                        a simple Info.plist will be generated with a CFBundleIdentifier\n" 
                          + "                        based on the main class name or executable file name.");

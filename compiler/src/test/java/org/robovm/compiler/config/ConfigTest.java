@@ -85,7 +85,9 @@ public class ConfigTest {
                 ), config.getResources());
         assertEquals(Arrays.asList("javax.**.*"), config.getForceLinkClasses());
         assertEquals(OS.macosx, config.getOs());
-        assertEquals(Arch.x86, config.getArch());
+        assertEquals(2, config.getArchs().size());
+        assertEquals(Arch.x86, config.getArchs().get(0));
+        assertEquals(Arch.x86_64, config.getArchs().get(1));
     }
     
     @Test
@@ -106,7 +108,8 @@ public class ConfigTest {
                 config.getResources());
         assertEquals(Arrays.asList("javax.**.*"), config.getForceLinkClasses());
         assertEquals(OS.macosx, config.getOs());
-        assertEquals(Arch.x86, config.getArch());
+        assertEquals(1, config.getArchs().size());
+        assertEquals(Arch.x86, config.getArchs().get(0));
     }
     
     @Test
@@ -131,7 +134,7 @@ public class ConfigTest {
                     .flatten(true));
         builder.addForceLinkClass("javax.**.*");
         builder.os(OS.macosx);
-        builder.arch(Arch.x86);
+        builder.archs(Arch.x86, Arch.x86_64);
         
         StringWriter out = new StringWriter();
         builder.write(out, wd);

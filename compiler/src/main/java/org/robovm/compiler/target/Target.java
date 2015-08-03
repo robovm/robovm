@@ -19,6 +19,7 @@ package org.robovm.compiler.target;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import org.robovm.compiler.clazz.Path;
 import org.robovm.compiler.config.Arch;
@@ -54,7 +55,14 @@ public interface Target {
      * method returns that one.
      */
     Arch getArch();
-    
+
+    /**
+     * Returns a list of the default archs to build for if no archs have been
+     * specified in the {@link Config}. Returns an empty list if there are no
+     * defaults.
+     */
+    List<Arch> getDefaultArchs();
+
     String getInstallRelativeArchivePath(Path path);
 
     /**
@@ -76,10 +84,21 @@ public interface Target {
     void build(List<File> objectFiles) throws IOException;
 
     /**
+     * Builds a fat binary out of the specified slices.
+     */
+    public void buildFat(Map<Arch, File> slices) throws IOException;
+
+    /**
      * Installs the built binary and any supporting files into the
      * {@link Config#getInstallDir()} directory.
      */
     void install() throws IOException;
+
+    /**
+     * Creates an archive suitable for distribution and stores it in the
+     * {@link Config#getInstallDir()} directory.
+     */
+    void archive() throws IOException;
 
     /**
      * Launches the built binary if supported.

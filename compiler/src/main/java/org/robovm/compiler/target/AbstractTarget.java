@@ -41,6 +41,7 @@ import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.robovm.compiler.clazz.Path;
 import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
@@ -249,7 +250,27 @@ public abstract class AbstractTarget implements Target {
         
         ToolchainUtil.link(config, ccArgs, objectFiles, libs, outFile);        
     }
-    
+
+    protected String getExecutable() {
+        return config.getExecutableName();
+    }
+
+    @Override
+    public void buildFat(Map<Arch, File> slices) throws IOException {
+        File destFile = new File(config.getTmpDir(), getExecutable());
+        List<File> files = new ArrayList<>(slices.values());
+        if (slices.size() > 1) {
+            if (config.getOs() == OS.linux) {
+                throw new UnsupportedOperationException("Fat binaries are not supported when building linux binaries");
+            }
+            config.getLogger().debug("Building fat binary for archs %s", StringUtils.join(slices.keySet()));
+            ToolchainUtil.lipo(config, destFile, files);
+        } else if (!files.get(0).equals(destFile)) {
+            FileUtils.copyFile(files.get(0), destFile);
+            destFile.setExecutable(true, false);
+        }
+    }
+
     protected void copyResources(File destDir) throws IOException {
         for (Resource res : config.getResources()) {
             res.walk(new Walker() {
@@ -394,7 +415,17 @@ public abstract class AbstractTarget implements Target {
         config.getInstallDir().mkdirs();
         doInstall(config.getInstallDir(), config.getExecutableName());
     }
-    
+
+    @Override
+    public List<Arch> getDefaultArchs() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public void archive() throws IOException {
+        throw new UnsupportedOperationException("Archiving is not supported for this target");
+    }
+
     protected void doInstall(File installDir, String image) throws IOException {
         if (!config.getTmpDir().equals(installDir) || !image.equals(config.getExecutableName())) {
             File destFile = new File(installDir, image);

@@ -132,8 +132,8 @@ public class Config {
     private Cacerts cacerts = null;
     @Element(required = false)
     private OS os = null;
-    @Element(required = false)
-    private Arch arch = null;
+    @ElementList(required = false, inline = true)
+    private ArrayList<Arch> archs = null;
     @ElementList(required = false, entry = "root")
     private ArrayList<String> roots;
     @ElementList(required = false, entry = "pattern")
@@ -216,6 +216,7 @@ public class Config {
     private transient MarshalerLookup marshalerLookup;
     private transient Config configBeforeBuild;
     private transient DependencyGraph dependencyGraph;
+    private transient Arch sliceArch;
 
     protected Config() throws IOException {
         // Add standard plugins
@@ -275,15 +276,20 @@ public class Config {
     }
 
     public Arch getArch() {
-        return arch;
+        return sliceArch;
     }
 
+    public List<Arch> getArchs() {
+        return archs == null ? Collections.<Arch> emptyList()
+                : Collections.unmodifiableList(archs);
+    }
+    
     public String getTriple() {
-        return arch.getLlvmName() + "-unknown-" + os.getLlvmName();
+        return sliceArch.getLlvmName() + "-unknown-" + os.getLlvmName();
     }
 
     public String getClangTriple() {
-        return arch.getClangName() + "-unknown-" + os.getLlvmName();
+        return sliceArch.getClangName() + "-unknown-" + os.getLlvmName();
     }
 
     public DataLayout getDataLayout() {
@@ -695,7 +701,7 @@ public class Config {
 
     private void mergeConfigsFromClasspath() throws IOException {
         List<String> dirs = Arrays.asList(
-                "META-INF/robovm/" + os + "/" + arch,
+                "META-INF/robovm/" + os + "/" + sliceArch,
                 "META-INF/robovm/" + os);
 
         // The algorithm below preserves the order of config data from the
@@ -856,17 +862,22 @@ public class Config {
                 target = new ConsoleTarget();
             }
         }
+
+        if (!getArchs().isEmpty()) {
+            sliceArch = getArchs().get(0);
+        }
+
         target.init(this);
 
         os = target.getOs();
-        arch = target.getArch();
+        sliceArch = target.getArch();
         dataLayout = new DataLayout(getTriple());
 
         osArchDepLibDir = new File(new File(home.libVmDir, os.toString()),
-                arch.toString());
+                sliceArch.toString());
 
         if (treeShakerMode != null && treeShakerMode != TreeShakerMode.none 
-                && os.getFamily() == Family.darwin && arch == Arch.x86) {
+                && os.getFamily() == Family.darwin && sliceArch == Arch.x86) {
 
             logger.warn("Tree shaking is not supported when building "
                     + "for OS X/iOS x86 32-bit due to a bug in Xcode's linker. No tree "
@@ -882,7 +893,7 @@ public class Config {
         this.tmpDir = ramDiskTools.getTmpDir();
 
         File osDir = new File(cacheDir, os.toString());
-        File archDir = new File(osDir, arch.toString());
+        File archDir = new File(osDir, sliceArch.toString());
         osArchCacheDir = new File(archDir, debug ? "debug" : "release");
         osArchCacheDir.mkdirs();
 
@@ -1079,7 +1090,19 @@ public class Config {
         }
 
         public Builder arch(Arch arch) {
-            config.arch = arch;
+            return archs(arch);
+        }
+
+        public Builder archs(Arch ... archs) {
+            return archs(Arrays.asList(archs));
+        }
+
+        public Builder archs(List<Arch> archs) {
+            if (config.archs == null) {
+                config.archs = new ArrayList<>();
+            }
+            config.archs.clear();
+            config.archs.addAll(archs);
             return this;
         }
 

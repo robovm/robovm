@@ -173,7 +173,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 8.2 and later.
      */
     @NotImplemented("application:handleWatchKitExtensionRequest:reply:")
-    public void handleWatchKitExtensionRequest(UIApplication application, NSDictionary userInfo, @Block VoidBlock1<NSDictionary> reply) {}
+    public void handleWatchKitExtensionRequest(UIApplication application, NSDictionary userInfo, @Block VoidBlock1<NSDictionary<?, ?>> reply) {}
     /**
      * @since Available in iOS 4.0 and later.
      */

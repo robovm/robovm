@@ -214,7 +214,7 @@ classes:
     PHImageRequestOptions: # DONE
         properties:
             'progressHandler':
-                type: '@Block VoidBlock4<Double, NSError, BooleanPtr, NSDictionary>'
+                type: '@Block VoidBlock4<Double, NSError, BooleanPtr, NSDictionary<?, ?>>'
     PHObject: {} # DONE
     PHAsset: # DONE
         properties:

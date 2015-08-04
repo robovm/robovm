@@ -413,7 +413,7 @@ public abstract class AbstractTarget implements Target {
     public void install() throws IOException {
         config.getLogger().info("Installing %s binary to %s", config.getTarget().getType(), config.getInstallDir());
         config.getInstallDir().mkdirs();
-        doInstall(config.getInstallDir(), config.getExecutableName());
+        doInstall(config.getInstallDir(), config.getExecutableName(), config.getInstallDir());
     }
 
     @Override
@@ -426,7 +426,7 @@ public abstract class AbstractTarget implements Target {
         throw new UnsupportedOperationException("Archiving is not supported for this target");
     }
 
-    protected void doInstall(File installDir, String image) throws IOException {
+    protected void doInstall(File installDir, String image, File resourcesDir) throws IOException {
         if (!config.getTmpDir().equals(installDir) || !image.equals(config.getExecutableName())) {
             File destFile = new File(installDir, image);
             FileUtils.copyFile(new File(config.getTmpDir(), config.getExecutableName()), destFile);
@@ -438,7 +438,7 @@ public abstract class AbstractTarget implements Target {
             }
         }
         stripArchives(installDir);
-        copyResources(installDir);
+        copyResources(resourcesDir);
         copyDynamicFrameworks(installDir);
     }
 

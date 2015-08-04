@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 RoboVM AB
+ * Copyright (C) 2015 RoboVM AB
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/gpl-2.0.html>.
  */
-package org.robovm.compiler.target.ios;
+package org.robovm.compiler.util;
 
 import static org.junit.Assert.*;
 
@@ -31,21 +31,21 @@ import com.dd.plist.NSDictionary;
 import com.dd.plist.NSString;
 
 /**
- * Tests {@link IOSTarget}.
+ * 
  */
-public class IOSTargetTest {
+public class InfoPListTest {
 
     @Test
     public void testParsePropertyList() throws Exception {
-        File file = File.createTempFile(IOSTargetTest.class.getSimpleName(), ".tmp");
-        byte[] data = IOUtils.toByteArray(getClass().getResourceAsStream("IOSTargetTest.Info.plist.xml"));
+        File file = File.createTempFile(InfoPListTest.class.getSimpleName(), ".tmp");
+        byte[] data = IOUtils.toByteArray(getClass().getResourceAsStream("InfoPListTest.Info.plist.xml"));
         FileUtils.writeByteArrayToFile(file, data);
         Properties props = new Properties();
         props.setProperty("prop1", "value1");
         props.setProperty("prop2", "value2");
         props.setProperty("prop3", "value3");
         props.setProperty("prop4", "value4");
-        NSDictionary dict = (NSDictionary) IOSTarget.parsePropertyList(file, props);
+        NSDictionary dict = (NSDictionary) InfoPList.parsePropertyList(file, props, true);
         assertEquals(new NSString("value1"), dict.objectForKey("Prop1"));
         assertEquals(new NSString("value2foobar"), dict.objectForKey("Prop2"));
         assertEquals(new NSString("foobarvalue3"), dict.objectForKey("Prop3"));

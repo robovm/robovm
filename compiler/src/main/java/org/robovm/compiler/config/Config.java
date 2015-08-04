@@ -167,6 +167,8 @@ public class Config {
     private String iosSdkVersion;
     @Element(required = false, name = "iosInfoPList")
     private File iosInfoPListFile = null;
+    @Element(required = false, name = "infoPList")
+    private File infoPListFile = null;
     @Element(required = false)
     private File iosResourceRulesPList;
     @Element(required = false)
@@ -178,7 +180,7 @@ public class Config {
     private SigningIdentity iosSignIdentity;
     private ProvisioningProfile iosProvisioningProfile;
     private String iosDeviceType;
-    private InfoPList iosInfoPList;
+    private InfoPList infoPList;
 
     private boolean iosSkipSigning = false;
 
@@ -507,10 +509,16 @@ public class Config {
     }
 
     public InfoPList getIosInfoPList() {
-        if (iosInfoPList == null && iosInfoPListFile != null) {
-            iosInfoPList = new InfoPList(iosInfoPListFile);
+        return getInfoPList();
+    }
+
+    public InfoPList getInfoPList() {
+        if (infoPList == null && iosInfoPListFile != null) {
+            infoPList = new InfoPList(iosInfoPListFile);
+        } else if (infoPList == null && infoPListFile != null) {
+            infoPList = new InfoPList(infoPListFile);
         }
-        return iosInfoPList;
+        return infoPList;
     }
 
     public File getIosResourceRulesPList() {
@@ -1411,6 +1419,11 @@ public class Config {
 
         public Builder iosInfoPList(File infoPList) {
             config.iosInfoPListFile = infoPList;
+            return this;
+        }
+
+        public Builder infoPList(File infoPList) {
+            config.infoPListFile = infoPList;
             return this;
         }
 

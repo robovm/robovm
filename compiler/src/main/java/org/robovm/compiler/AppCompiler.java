@@ -622,7 +622,7 @@ public class AppCompiler {
                     }
                     builder.cacerts(cacerts);
                 } else if ("-plist".equals(args[i])) {
-                    builder.iosInfoPList(new File(args[++i]));
+                    builder.infoPList(new File(args[++i]));
                 } else if ("-entitlements".equals(args[i])) {
                     builder.iosEntitlementsPList(new File(args[++i]));
                 } else if ("-resourcerules".equals(args[i])) {
@@ -995,7 +995,7 @@ public class AppCompiler {
                          + "                        the install dir specified with -d. Alias for -archive.");
         System.err.println("  -ipaarchs             (iOS) : separated list of architectures to include in the IPA.\n" 
                          + "                        Either thumbv7 or arm64 or both. Alias for -archs.");
-        System.err.println("  -plist <file>         (iOS) Info.plist file to be used by the app. If not specified\n"
+        System.err.println("  -plist <file>         (iOS/OSX) Info.plist file to be used by the app. If not specified\n"
                          + "                        a simple Info.plist will be generated with a CFBundleIdentifier\n" 
                          + "                        based on the main class name or executable file name.");
         System.err.println("  -entitlements <file>  (iOS) Property list (.plist) file containing entitlements\n" 

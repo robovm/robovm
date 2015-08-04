@@ -868,12 +868,10 @@ classes:
             '+dictionaryWithContentsOfFile:':
                 name: read
                 visibility: protected
-                return_type:
-                    NSDictionary<?, ?>
+                return_type: 'NSDictionary<?, ?>'
             '+dictionaryWithContentsOfURL:':
                 name: read
-                return_type:
-                    NSDictionary<?, ?>
+                return_type: 'NSDictionary<?, ?>'
             '-initWithDictionary:':
                 name: init
                 visibility: protected

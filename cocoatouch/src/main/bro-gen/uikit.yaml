@@ -3229,7 +3229,7 @@ protocols:
                 name: handleWatchKitExtensionRequest
                 parameters:
                     reply:
-                        type: '@Block VoidBlock1<NSDictionary>'
+                        type: '@Block VoidBlock1<NSDictionary<?, ?>>'
     UIBarPositioning: {} # DONE
     UIBarPositioningDelegate: # DONE
         methods:

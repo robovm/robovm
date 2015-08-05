@@ -303,9 +303,9 @@ public final class Runtime {
                             // We bruteforce through search paths
                             // instead
                             if (handle == 0L) {
-                                for (String searchPath: searchPaths) {
+                                for (String searchPath : searchPaths) {
                                     handle = Dl.open(new File(searchPath, libName).getAbsolutePath());
-                                    if(handle != 0L) {
+                                    if (handle != 0L) {
                                         break;
                                     }
                                 }

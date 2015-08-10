@@ -50,6 +50,6 @@ import org.robovm.apple.uikit.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("messageComposeViewController:didFinishWithResult:")
-    public void didFinish(MFMessageComposeViewController controller, MessageComposeResult result) {}
+    public void didFinish(MFMessageComposeViewController controller, MFMessageComposeResult result) {}
     /*</methods>*/
 }

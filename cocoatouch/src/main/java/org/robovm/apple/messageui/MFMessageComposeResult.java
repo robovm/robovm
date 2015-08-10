@@ -35,7 +35,7 @@ import org.robovm.apple.uikit.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/MessageComposeResult/*</name>*/ implements ValuedEnum {
+public enum /*<name>*/MFMessageComposeResult/*</name>*/ implements ValuedEnum {
     /*<values>*/
     Cancelled(0L),
     Sent(1L),
@@ -49,15 +49,15 @@ public enum /*<name>*/MessageComposeResult/*</name>*/ implements ValuedEnum {
 
     private final long n;
 
-    private /*<name>*/MessageComposeResult/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/MFMessageComposeResult/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/MessageComposeResult/*</name>*/ valueOf(long n) {
-        for (/*<name>*/MessageComposeResult/*</name>*/ v : values()) {
+    public static /*<name>*/MFMessageComposeResult/*</name>*/ valueOf(long n) {
+        for (/*<name>*/MFMessageComposeResult/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/MessageComposeResult/*</name>*/.class.getName());
+            + /*<name>*/MFMessageComposeResult/*</name>*/.class.getName());
     }
 }

@@ -48,7 +48,7 @@ import org.robovm.apple.uikit.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "messageComposeViewController:didFinishWithResult:")
-    void didFinish(MFMessageComposeViewController controller, MessageComposeResult result);
+    void didFinish(MFMessageComposeViewController controller, MFMessageComposeResult result);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

@@ -54,9 +54,9 @@ import org.robovm.apple.accounts.*;
     @Property(selector = "serviceType")
     public native SLServiceType getServiceType();
     @Property(selector = "completionHandler")
-    public native @Block VoidBlock3<String, SLRequestMethod, NSURL> getCompletionHandler();
+    public native @Block VoidBlock3<SLComposeViewControllerResult> getCompletionHandler();
     @Property(selector = "setCompletionHandler:")
-    public native void setCompletionHandler(@Block VoidBlock3<String, SLRequestMethod, NSURL> v);
+    public native void setCompletionHandler(@Block VoidBlock3<SLComposeViewControllerResult> v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

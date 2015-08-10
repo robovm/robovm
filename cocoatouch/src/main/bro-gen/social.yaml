@@ -27,7 +27,7 @@ classes:
     SLComposeViewController: # DONE
         properties:
             'completionHandler':
-                type: '@Block VoidBlock3<String, SLRequestMethod, NSURL>'
+                type: '@Block VoidBlock3<SLComposeViewControllerResult>'
             'serviceType':
                 type: SLServiceType
         methods:

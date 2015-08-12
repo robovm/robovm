@@ -227,12 +227,12 @@ else()
   set(EXTGC_MARK_DESCR_OFFSET 12)
 endif()
 
-set(EXTGC_C_FLAGS "${C_CXX_FLAGS} -DGC_DISABLE_INCREMENTAL -DGC_FORCE_UNMAP_ON_GCOLLECT -DMARK_DESCR_OFFSET=${EXTGC_MARK_DESCR_OFFSET}")
+set(EXTGC_C_FLAGS "${C_CXX_FLAGS} -DGC_DISABLE_INCREMENTAL -DGC_DISCOVER_TASK_THREADS -DGC_FORCE_UNMAP_ON_GCOLLECT -DMARK_DESCR_OFFSET=${EXTGC_MARK_DESCR_OFFSET}")
 set(EXTGC_LD_FLAGS "${CMAKE_EXE_LINKER_FLAGS}")
 if(DARWIN)
   set(EXTGC_C_FLAGS "${EXTGC_C_FLAGS} -DNO_DYLD_BIND_FULLY_IMAGE")
 endif()
-set(EXTGC_PARAMS  "--enable-shared=no --enable-munmap=1")
+set(EXTGC_PARAMS  "--enable-shared=no --enable-munmap=1 --enable-parallel-mark=yes")
 if (CMAKE_BUILD_TYPE STREQUAL "debug")
   set(EXTGC_C_FLAGS "${EXTGC_C_FLAGS} -g")
   set(EXTGC_PARAMS "${EXTGC_PARAMS} --enable-gc-debug=yes")
@@ -256,7 +256,7 @@ ExternalProject_Add(libatomic_ops
 ExternalProject_Add(extgc 
   DEPENDS libatomic_ops
   GIT_REPOSITORY git://github.com/robovm/bdwgc.git
-  GIT_TAG 330797462474976093d631058f784c843040e294
+  GIT_TAG 0458ff8c3cc04376bb4584de7729e6dbb6384bad
   UPDATE_COMMAND ""
   PATCH_COMMAND bash -c "rm -rf libatomic_ops && ln -s ../../../libatomic_ops-prefix/src/libatomic_ops libatomic_ops"
   CONFIGURE_COMMAND bash -c "CC=${CMAKE_C_COMPILER} CFLAGS='${EXTGC_C_FLAGS}' LDFLAGS='${EXTGC_LD_FLAGS}' ./configure ${EXT_HOST} ${EXTGC_PARAMS} --prefix=${CMAKE_BINARY_DIR}/gc"

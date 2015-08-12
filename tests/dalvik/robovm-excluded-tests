@@ -4,8 +4,14 @@
 # This has a test with an enormous amount of gotos which makes Soot freak out.
 003-omnibus-opcodes
 
+# Tests package level annotations which we don't support in RoboVM
+004-annotations
+
 # Tests assert which RoboVM doesn't implement.
 029-assert
+
+# Launches a child process (sleep 5) which is not possible on iOS devices
+063-process-manager
 
 # Uses a custom classloader which RoboVM doesn't allow.
 068-classloader
@@ -26,6 +32,10 @@
 
 # Tests dex file format limits
 089-many-methods
+
+# Tests some locales which are not available in the ICU data file embedded in
+# RoboVM executables by default
+092-locale
 
 # Tests Dalvik GC specifics
 098-native-allocations

@@ -33,9 +33,9 @@ cd "${progdir}"
 progdir=`pwd`
 prog="${progdir}"/`basename "${prog}"`
 
-export ROBOVM_DEV_ROOT=$(cd $(dirname $0)/../..; pwd -P)
+export BASE=$(cd $(dirname $0)/../..; pwd -P)
 export JAVA="java"
-export JAVAC="javac -source 1.5 -target 1.5"
+export JAVAC="javac -Xlint:-options -source 1.5 -target 1.5"
 #export RUN="${progdir}/etc/push-and-run-test-jar"
 export RUN="${progdir}/etc/host-run-test-jar"
 

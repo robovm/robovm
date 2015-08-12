@@ -23,4 +23,4 @@ rm classes/UnresClass.class
 ${JAVAC} -d classes `find src2 -name '*.java'`
 
 # RoboVM note: Call robovm-builder instead of dx
-$ROBOVM_DEV_ROOT/tests/dalvik/robovm-builder -cp classes Main > robovm.log 2>&1
+$BASE/tests/dalvik/robovm-builder -cp classes Main > robovm.log 2>&1

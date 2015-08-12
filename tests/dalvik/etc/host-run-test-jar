@@ -77,12 +77,12 @@ while true; do
     fi
 done
 
-if [ "x$ROBOVM_DEV_ROOT" = 'x' ]; then
-    echo "ROBOVM_DEV_ROOT not set"
+if [ "x$BASE" = 'x' ]; then
+    echo "BASE not set"
     exit 1
 fi
 
-$ROBOVM_DEV_ROOT/tests/dalvik/robovm-runner "$(pwd)/test.out" -rvm:log=silent -rvm:mx256M $@
+$BASE/tests/dalvik/robovm-runner "$(pwd)/test.out" -rvm:log=silent -rvm:mx256M $@
 #cp=classes
 #if [ -r classes-ex ]; then
 #    cp=classes:classes-ex

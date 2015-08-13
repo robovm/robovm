@@ -36,7 +36,6 @@ ClassLoader* systemClassLoader = NULL;
 static Class* java_lang_Daemons = NULL;
 static Method* java_lang_Daemons_start = NULL;
 
-extern int registerCoreLibrariesJni(JNIEnv* env);
 #ifdef DARWIN
   extern void registerJARURLProtocol(void);
 #endif
@@ -379,11 +378,9 @@ Env* rvmStartup(Options* options) {
     TRACE("Initializing JNI");
     if (!rvmInitJNI(env)) return NULL;
 
-    // Initialize the RoboVM rt JNI code
-//    RT_JNI_OnLoad(&vm->javaVM, NULL);
-    // Initialize the dalvik rt JNI code
-    TRACE("Initializing dalvik's runtime JNI code");
-    registerCoreLibrariesJni((JNIEnv*) env);
+    // Initialize the rt JNI code
+    TRACEF("Initializing the %s runtime library", rvmRTGetName());
+    if (!rvmRTInit(env)) return NULL;
 
 #ifdef DARWIN
     TRACE("Initializing JAR NSURLProtocol");

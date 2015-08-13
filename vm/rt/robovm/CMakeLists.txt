@@ -3,6 +3,7 @@ project(robovm-rt-core)
 include_directories(../../core/include ${CMAKE_BINARY_DIR}/gc/include)
 
 set(SRC
+  rt.c
   reflection_helpers.c 
   java_lang_Class.c 
   java_lang_ClassCache.c 

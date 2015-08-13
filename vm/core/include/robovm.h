@@ -61,6 +61,7 @@ extern "C" {
 #include "robovm/monitor.h"
 #include "robovm/signal.h"
 #include "robovm/hooks.h"
+#include "robovm/rt.h"
 
 #ifdef __cplusplus
 }

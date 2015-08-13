@@ -29,8 +29,7 @@ set(SRC
 
 if(DARWIN)
   add_definitions(-DNOUNCRYPT)
-  set(SRC ${SRC} minizip/ioapi.c minizip/unzip.c)
-  set(OBJC_SRC darwin.m JARURLProtocol.m)
+  set(OBJC_SRC darwin.m)
   set(SRC ${SRC} ${OBJC_SRC})
   set(OBJC_FLAGS "-x objective-c")
   if(IOS)

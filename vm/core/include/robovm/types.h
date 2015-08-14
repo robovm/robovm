@@ -17,7 +17,6 @@
 #define ROBOVM_TYPES_H
 
 #include <pthread.h>
-#include <jni_types.h>
 #include <jni.h>
 #include <limits.h>
 #include <signal.h>

@@ -125,7 +125,7 @@ public abstract class AbstractTarget implements Target {
             libs.add("-lrobovm-debug" + libSuffix);
         }
         libs.addAll(Arrays.asList(
-                "-lrobovm-core" + libSuffix, "-lgc" + libSuffix, "-lpthread", "-ldl", "-lm"));
+                "-lrobovm-core" + libSuffix, "-lgc" + libSuffix, "-lpthread", "-ldl", "-lm", "-lz"));
         if (config.getOs().getFamily() == OS.Family.linux) {
             libs.add("-lrt");
         }

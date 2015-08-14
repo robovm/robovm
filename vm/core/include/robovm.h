@@ -16,11 +16,13 @@
 #ifndef ROBOVM_H
 #define ROBOVM_H
 
-#ifndef GC_THREADS
-#define GC_THREADS
+#ifdef ROBOVM_CORE_BUILD
+#   ifndef GC_THREADS
+#       define GC_THREADS
+#   endif
+#   include <gc.h>
 #endif
 
-#include <gc.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -30,7 +32,7 @@
 // Keep assert() even in release builds but just abort.
 #ifdef NDEBUG
 #   ifdef assert
-#      undef assert
+#       undef assert
 #   endif
 #   define assert(e) ((void) ((e) ? 0 : rvmAbort(NULL)))
 #endif

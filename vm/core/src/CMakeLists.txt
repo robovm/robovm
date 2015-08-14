@@ -2,6 +2,8 @@ project(core)
 
 include_directories(../include ${CMAKE_BINARY_DIR}/gc/include)
 
+add_definitions(-DROBOVM_CORE_BUILD)
+
 set(SRC
   array.c 
   attribute.c

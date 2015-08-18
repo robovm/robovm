@@ -65,7 +65,7 @@ static ProxyMethod* hasMethod(Env* env, Class* clazz, const char* name, const ch
  */
 static jboolean checkCompatible(Env* env, Class* proxyClass, ProxyMethod* proxyMethod, Method* method, Class** t1, Class** t2) {
     // method's return type must be more specific that that of proxyMethod
-    ClassLoader* classLoader = proxyClass->classLoader;
+    Object* classLoader = proxyClass->classLoader;
     Class* proxyRetType = rvmFindClassByDescriptor(env, rvmGetReturnType(proxyMethod->method.desc), classLoader);
     if (rvmExceptionClear(env)) {
         goto incompatible;
@@ -343,7 +343,7 @@ static ITables* createITables(Env* env, Class* superclass, jint interfacesCount,
     return itables;
 }
 
-Class* rvmProxyCreateProxyClass(Env* env, Class* superclass, ClassLoader* classLoader, char* className, jint interfacesCount, Class** interfaces, 
+Class* rvmProxyCreateProxyClass(Env* env, Class* superclass, Object* classLoader, char* className, jint interfacesCount, Class** interfaces,
         jint instanceDataSize, jint instanceDataOffset, unsigned short instanceRefCount, ProxyHandler handler) {
 
     TypeInfo* typeInfo = createTypeInfo(env, superclass, interfacesCount, interfaces);

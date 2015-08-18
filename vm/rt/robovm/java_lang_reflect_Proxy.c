@@ -201,7 +201,7 @@ static void handler(Env* env, Object* receiver, ProxyMethod* method, jvalue* arg
 }
 
 Class* Java_java_lang_reflect_Proxy_generateProxy(Env* env, Class* java_lang_reflect_Proxy, 
-      Object* name, ObjectArray* interfaces, ClassLoader* loader) {
+      Object* name, ObjectArray* interfaces, Object* loader) {
 
     char* cname = rvmGetStringUTFChars(env, name);
     if (!cname) return NULL;

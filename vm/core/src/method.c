@@ -116,7 +116,7 @@ jboolean rvmInitMethods(Env* env) {
     if (!java_lang_StackTraceElement) {
         return FALSE;
     }
-    java_lang_StackTraceElement_constructor = rvmGetInstanceMethod(env, java_lang_StackTraceElement, "<init>", 
+    java_lang_StackTraceElement_constructor = rvmGetInstanceMethod(env, java_lang_StackTraceElement, "<init>",
                                       "(Ljava/lang/Class;Ljava/lang/String;Ljava/lang/String;I)V");
     if (!java_lang_StackTraceElement_constructor) {
         return FALSE;
@@ -1361,14 +1361,14 @@ jboolean rvmUnregisterNative(Env* env, NativeMethod* method) {
     return TRUE;
 }
 
-void* rvmResolveNativeMethodImpl(Env* env, NativeMethod* method, const char* shortMangledName, const char* longMangledName, ClassLoader* classLoader, void** ptr) {
+void* rvmResolveNativeMethodImpl(Env* env, NativeMethod* method, const char* shortMangledName, const char* longMangledName, Object* classLoader, void** ptr) {
     void* f = method->nativeImpl;
     if (!f) {
         DynamicLib* nativeLibs = NULL;
-        if (!classLoader || classLoader->parent == NULL) {
+        if (!classLoader || rvmGetParentClassLoader(env, classLoader) == NULL) {
             // This is the bootstrap classloader
             nativeLibs = bootNativeLibs;
-        } else if (classLoader->parent->parent == NULL && classLoader->object.clazz->classLoader == NULL) {
+        } else if (rvmGetParentParentClassLoader(env, classLoader) == NULL && classLoader->clazz->classLoader == NULL) {
             // This is the system classloader
             nativeLibs = mainNativeLibs;
         } else {
@@ -1409,12 +1409,12 @@ void* rvmResolveNativeMethodImpl(Env* env, NativeMethod* method, const char* sho
 }
 
 
-jboolean rvmLoadNativeLibrary(Env* env, const char* path, ClassLoader* classLoader) {
+jboolean rvmLoadNativeLibrary(Env* env, const char* path, Object* classLoader) {
     DynamicLib** nativeLibs = NULL;
-    if (!classLoader || classLoader->parent == NULL) {
+    if (!classLoader || rvmGetParentClassLoader(env, classLoader) == NULL) {
         // This is the bootstrap classloader
         nativeLibs = &bootNativeLibs;
-    } else if (classLoader->parent->parent == NULL && classLoader->object.clazz->classLoader == NULL) {
+    } else if (rvmGetParentParentClassLoader(env, classLoader) == NULL && classLoader->clazz->classLoader == NULL) {
         // This is the system classloader
         nativeLibs = &mainNativeLibs;
     } else {

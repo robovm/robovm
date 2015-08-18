@@ -43,7 +43,7 @@ static Class* array_of_java_lang_annotation_Annotation = NULL;
 static ObjectArray* emptyExceptionTypes = NULL;
 static ObjectArray* emptyAnnotations = NULL;
 
-static Class* findType(Env* env, const char* classDesc, ClassLoader* loader) {
+static Class* findType(Env* env, const char* classDesc, Object* loader) {
     Class* c = rvmFindClassByDescriptor(env, classDesc, loader);
     if (!c) {
         if (rvmExceptionOccurred(env)->clazz == java_lang_ClassNotFoundException) {
@@ -216,7 +216,7 @@ static void iterateAttributes(Env* env, void* attributes, jboolean (*f)(Env*, jb
     }
 }
 
-static jboolean parseElementValue(Env* env, void** attributes, Class* type, ClassLoader* classLoader, jvalue* result);
+static jboolean parseElementValue(Env* env, void** attributes, Class* type, Object* classLoader, jvalue* result);
 
 static jboolean parseBooleanElementValue(Env* env, void** attributes, jvalue* result) {
     jbyte tag = getByte(attributes);
@@ -274,7 +274,7 @@ static jboolean parseDoubleElementValue(Env* env, void** attributes, jvalue* res
     return TRUE;
 }
 
-static jboolean parseArrayElementValue(Env* env, void** attributes, Class* arrayClass, ClassLoader* classLoader, jvalue* result) {
+static jboolean parseArrayElementValue(Env* env, void** attributes, Class* arrayClass, Object* classLoader, jvalue* result) {
     jbyte tag = getByte(attributes);
     if (tag != '[') return throwFormatError(env, "Array");
 
@@ -353,7 +353,7 @@ static jboolean parseArrayElementValue(Env* env, void** attributes, Class* array
     return result->l ? TRUE : FALSE;
 }
 
-static jboolean parseClassElementValue(Env* env, void** attributes, ClassLoader* classLoader, jvalue* result) {
+static jboolean parseClassElementValue(Env* env, void** attributes, Object* classLoader, jvalue* result) {
     jbyte tag = getByte(attributes);
     if (tag != 'c') return throwFormatError(env, "java.lang.Class");
     char* className = getString(attributes);
@@ -369,7 +369,7 @@ static jboolean parseStringElementValue(Env* env, void** attributes, jvalue* res
     return result->l ? TRUE : FALSE;
 }
 
-static jboolean parseEnumElementValue(Env* env, void** attributes, ClassLoader* classLoader, jvalue* result) {
+static jboolean parseEnumElementValue(Env* env, void** attributes, Object* classLoader, jvalue* result) {
     jbyte tag = getByte(attributes);
     if (tag != 'e') return throwFormatError(env, "java.lang.Enum");
     char* className = getString(attributes);
@@ -394,7 +394,7 @@ static Method* getAnnotationValueMethod(Env* env, Class* clazz, char* name) {
     return NULL;
 }
 
-static Class* findAnnotationImplClass(Env* env, Class* annotationClass, ClassLoader* classLoader) {
+static Class* findAnnotationImplClass(Env* env, Class* annotationClass, Object* classLoader) {
     char* implName = alloca(strlen(annotationClass->name) + 5 + 1);
     strcpy(implName, annotationClass->name);
     strcat(implName, "$Impl");
@@ -408,7 +408,7 @@ static InstanceField* getAnnotationMemberField(Env* env, Class* annotationImplCl
     return rvmGetInstanceField(env, annotationImplClass, fieldName, "Ljava/lang/Object;");
 }
 
-static jboolean getAnnotationValue(Env* env, void** attributes, Class* expectedAnnotationClass, ClassLoader* classLoader, 
+static jboolean getAnnotationValue(Env* env, void** attributes, Class* expectedAnnotationClass, Object* classLoader,
         jvalue* result, jboolean ignoreClassNotFound) {
 
     char* annotationTypeName = getString(attributes);
@@ -488,14 +488,14 @@ static jboolean getAnnotationValue(Env* env, void** attributes, Class* expectedA
 }
 
 
-static jboolean parseAnnotationElementValue(Env* env, void** attributes, Class* annotationClass, ClassLoader* classLoader, jvalue* result) {
+static jboolean parseAnnotationElementValue(Env* env, void** attributes, Class* annotationClass, Object* classLoader, jvalue* result) {
     jbyte tag = getByte(attributes);
     if (tag != '@') return throwFormatError(env, "Annotation");
 
     return getAnnotationValue(env, attributes, annotationClass, classLoader, result, FALSE);
 }
 
-static jboolean parseElementValue(Env* env, void** attributes, Class* type, ClassLoader* classLoader, jvalue* result) {
+static jboolean parseElementValue(Env* env, void** attributes, Class* type, Object* classLoader, jvalue* result) {
     if (CLASS_IS_PRIMITIVE(type)) {
         switch (type->name[0]) {
         case 'Z':
@@ -662,7 +662,7 @@ static jboolean getAnnotationDefaultIterator(Env* env, jbyte type, void* attribu
 
 static jboolean getRuntimeVisibleAnnotationsIterator(Env* env, jbyte type, void* attributes, void* data) {
     ObjectArray** result = (ObjectArray**) ((void**) data)[0];
-    ClassLoader* classLoader = (ClassLoader*) ((void**) data)[1];
+    Object* classLoader = (Object*) ((void**) data)[1];
     if (type == RUNTIME_VISIBLE_ANNOTATIONS) {
         jint length = getInt(&attributes);
         ObjectArray* annotations = rvmNewObjectArray(env, length, java_lang_annotation_Annotation, NULL, NULL);
@@ -693,7 +693,7 @@ static jboolean getRuntimeVisibleAnnotationsIterator(Env* env, jbyte type, void*
 
 static jboolean getRuntimeVisibleParameterAnnotationsIterator(Env* env, jbyte type, void* attributes, void* data) {
     ObjectArray** result = (ObjectArray**) ((void**) data)[0];
-    ClassLoader* classLoader = (ClassLoader*) ((void**) data)[1];
+    Object* classLoader = (Object*) ((void**) data)[1];
     if (type == RUNTIME_VISIBLE_PARAMETER_ANNOTATIONS) {
         jint numParams = getInt(&attributes);
         ObjectArray* paramAnnotations = rvmNewObjectArray(env, numParams, array_of_java_lang_annotation_Annotation, NULL, NULL);

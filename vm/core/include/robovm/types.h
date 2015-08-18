@@ -47,10 +47,8 @@ typedef struct VITable VITable;
 typedef struct ITables ITables;
 typedef struct ITable ITable;
 typedef struct TypeInfo TypeInfo;
-typedef struct ClassLoader ClassLoader;
 typedef struct DataObject DataObject;
 typedef struct Thread Thread;
-typedef struct JavaThread JavaThread;
 typedef struct Monitor Monitor;
 typedef struct Array Array;
 typedef struct EnclosingMethod EnclosingMethod;
@@ -171,7 +169,7 @@ struct Class {
   VITable* vitable;
   ITables* itables;
   const char* name;        // The name in modified UTF-8.
-  ClassLoader* classLoader;
+  Object* classLoader;
   Class* superclass;       // Superclass pointer. Only java.lang.Object, primitive classes and interfaces have NULL here.
   Class* componentType;
   void* initializer;       // Points to the <clinit> method implementation of the class. NULL if there is no <clinit>.
@@ -187,14 +185,6 @@ struct Class {
   unsigned short classRefCount;
   unsigned short instanceRefCount;
   void* data[0] __attribute__ ((aligned (8)));  // This is where static fields are stored for the class. Must be 8-byte aligned.
-};
-
-// NOTE: The compiler sorts fields by type (ref, volatile long, double, long, float, int, char, short, boolean, byte) and then by name
-// so the order of the fields here don't match the order in ClassLoader.java
-struct ClassLoader {
-  Object object;
-  Object* packages;
-  ClassLoader* parent;
 };
 
 struct DataObject {
@@ -226,37 +216,10 @@ struct Monitor {
   Mutex lock;
 };
 
-// NOTE: The compiler sorts fields. References first, then by alignment and then by name.
-// So the order of the fields here don't match the order in Thread.java
-struct JavaThread {
-  Object object;
-  ClassLoader* contextClassLoader;
-  Object* group;
-  Object* inheritableValues;
-  Object* interruptActions;
-  Object* localValues;
-  Object* lock;
-  Object* name;
-  Object* parkBlocker;
-  Object* target;
-  Object* uncaughtHandler;
-#if defined(RVM_THUMBV7)
-  jlong id __attribute__ ((aligned (8))); // The compiler 8-byte aligns all long fields on ARM 32-bit.
-#else
-  jlong id;
-#endif
-  jlong stackSize;
-  /*volatile*/ jlong threadPtr; // Points to the Thread
-  jint parkState;
-  jint priority;
-  jboolean daemon;
-  jboolean started;
-};
-
 struct Thread {
   jint threadId;
   Env* env;
-  JavaThread* threadObj;
+  Object* threadObj;
   struct Thread* waitNext;
   struct Thread* prev;
   struct Thread* next;
@@ -380,8 +343,8 @@ typedef struct Options {
     jboolean dynamicJNI;
     char** staticLibs; 
     void* runtimeData;
-    Class* (*loadBootClass)(Env*, const char*, ClassLoader*);
-    Class* (*loadUserClass)(Env*, const char*, ClassLoader*);
+    Class* (*loadBootClass)(Env*, const char*, Object*);
+    Class* (*loadUserClass)(Env*, const char*, Object*);
     void (*classInitialized)(Env*, Class*);
     Interface* (*loadInterfaces)(Env*, Class*);
     Field* (*loadFields)(Env*, Class*);

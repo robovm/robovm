@@ -18,10 +18,10 @@
 
 void _rvmHookBeforeAppEntryPoint(Env* env, char* mainClass);
 void _rvmHookBeforeMainThreadAttached(Env* env);
-void _rvmHookThreadCreated(Env* env, JavaThread* threadObj);
-void _rvmHookThreadAttached(Env* env, JavaThread* threadObj, Thread* thread);
-void _rvmHookThreadStarting(Env* env, JavaThread* threadObj, Thread* thread);
-void _rvmHookThreadDetaching(Env* env, JavaThread* threadObj, Thread* thread, Object* throwable);
+void _rvmHookThreadCreated(Env* env, Object* threadObj);
+void _rvmHookThreadAttached(Env* env, Object* threadObj, Thread* thread);
+void _rvmHookThreadStarting(Env* env, Object* threadObj, Thread* thread);
+void _rvmHookThreadDetaching(Env* env, Object* threadObj, Thread* thread, Object* throwable);
 void _rvmHookClassLoaded(Env* env, Class* clazz, void* classInfo);
 void _rvmHookExceptionRaised(Env* env, Object* throwable, jboolean isCaught);
 jboolean _rvmHookSetupTCPChannel(Options* options);
@@ -40,22 +40,22 @@ static inline void rvmHookBeforeMainThreadAttached(Env* env) {
         _rvmHookBeforeMainThreadAttached(env);
     }
 }
-static inline void rvmHookThreadCreated(Env* env, JavaThread* threadObj) {
+static inline void rvmHookThreadCreated(Env* env, Object* threadObj) {
     if (env->vm->options->enableHooks) {
         _rvmHookThreadCreated(env, threadObj);
     }
 }
-static inline void rvmHookThreadAttached(Env* env, JavaThread* threadObj, Thread* thread) {
+static inline void rvmHookThreadAttached(Env* env, Object* threadObj, Thread* thread) {
     if (env->vm->options->enableHooks) {
         _rvmHookThreadAttached(env, threadObj, thread);
     }
 }
-static inline void rvmHookThreadStarting(Env* env, JavaThread* threadObj, Thread* thread) {
+static inline void rvmHookThreadStarting(Env* env, Object* threadObj, Thread* thread) {
     if (env->vm->options->enableHooks) {
         _rvmHookThreadStarting(env, threadObj, thread);
     }
 }
-static inline void rvmHookThreadDetaching(Env* env, JavaThread* threadObj, Thread* thread, Object* throwable) {
+static inline void rvmHookThreadDetaching(Env* env, Object* threadObj, Thread* thread, Object* throwable) {
     if (env->vm->options->enableHooks) {
         _rvmHookThreadDetaching(env, threadObj, thread, throwable);
     }

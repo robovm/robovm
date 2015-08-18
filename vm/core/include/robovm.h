@@ -64,6 +64,7 @@ extern "C" {
 #include "robovm/signal.h"
 #include "robovm/hooks.h"
 #include "robovm/rt.h"
+#include "robovm/lazy_helpers.h"
 
 #ifdef __cplusplus
 }

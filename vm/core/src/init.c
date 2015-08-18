@@ -36,7 +36,7 @@
 #endif
 
 #define LOG_TAG "core.init"
-ClassLoader* systemClassLoader = NULL;
+Object* systemClassLoader = NULL;
 static Class* java_lang_Daemons = NULL;
 static Method* java_lang_Daemons_start = NULL;
 
@@ -394,7 +394,7 @@ Env* rvmStartup(Options* options) {
     TRACE("Creating system ClassLoader");
     systemClassLoader = rvmGetSystemClassLoader(env);
     if (rvmExceptionOccurred(env)) goto error_system_ClassLoader;
-    env->currentThread->threadObj->contextClassLoader = systemClassLoader;
+    rvmRTSetThreadContextClassLoader(env, env->currentThread->threadObj, systemClassLoader);
 
     TRACE("Initialization done");
     env->vm->initialized = TRUE;

@@ -21,10 +21,6 @@
 
 #define LOG_TAG "core.string"
 
-static Method* stringConstructor = NULL;
-static InstanceField* stringValueField = NULL;
-static InstanceField* stringOffsetField = NULL;
-static InstanceField* stringCountField = NULL;
 static uint32_t cacheEntryGCKind;
 static const jchar EMPTY_JCHARS = 0;
 
@@ -204,11 +200,7 @@ static void unicodeToUtf8(char* utf8String, const jchar* unicode, jint unicodeLe
 }
 
 static inline Object* newString(Env* env, CharArray* value, jint offset, jint length) {
-    jvalue args[3];
-    args[0].i = offset;
-    args[1].i = length;
-    args[2].l = (jobject) value;
-    return rvmNewObjectA(env, java_lang_String, stringConstructor, args);
+    return rvmRTNewString(env, value, offset, length);
 }
 
 jboolean rvmInitStrings(Env* env) {
@@ -219,14 +211,6 @@ jboolean rvmInitStrings(Env* env) {
     gcAddRoot(&internedStrings);
     cacheEntryGCKind = gcNewDirectBitmapKind(CACHE_ENTRY_GC_BITMAP);
 
-    stringConstructor = rvmGetInstanceMethod(env, java_lang_String, "<init>", "(II[C)V");
-    if (!stringConstructor) return FALSE;
-    stringValueField = rvmGetInstanceField(env, java_lang_String, "value", "[C");
-    if (!stringValueField) return FALSE;
-    stringOffsetField = rvmGetInstanceField(env, java_lang_String, "offset", "I");
-    if (!stringOffsetField) return FALSE;
-    stringCountField = rvmGetInstanceField(env, java_lang_String, "count", "I");
-    if (!stringCountField) return FALSE;
     return TRUE;
 }
 
@@ -315,49 +299,42 @@ Object* rvmInternString(Env* env, Object* str) {
 }
 
 jint rvmGetStringLength(Env* env, Object* str) {
-    return rvmGetIntInstanceFieldValue(env, str, stringCountField);
+    return rvmRTGetStringLength(env, str);
 }
 
 jchar* rvmGetStringChars(Env* env, Object* str) {
-    CharArray* value = (CharArray*) rvmGetObjectInstanceFieldValue(env, str, stringValueField);
-    jint offset = rvmGetIntInstanceFieldValue(env, str, stringOffsetField);
-    return value->values + offset;
+    return rvmRTGetStringChars(env, str);
 }
 
 jint rvmGetStringUTFLength(Env* env, Object* str) {
-    CharArray* value = (CharArray*) rvmGetObjectInstanceFieldValue(env, str, stringValueField);
-    jint offset = rvmGetIntInstanceFieldValue(env, str, stringOffsetField);
-    jint count = rvmGetIntInstanceFieldValue(env, str, stringCountField);
-    return getUtf8LengthOfUnicode(value->values + offset, count);
+    jchar* chars = rvmGetStringChars(env, str);
+    jint count = rvmGetStringLength(env, str);
+    return getUtf8LengthOfUnicode(chars, count);
 }
 
 char* rvmGetStringUTFChars(Env* env, Object* str) {
-    CharArray* value = (CharArray*) rvmGetObjectInstanceFieldValue(env, str, stringValueField);
-    jint offset = rvmGetIntInstanceFieldValue(env, str, stringOffsetField);
-    jint count = rvmGetIntInstanceFieldValue(env, str, stringCountField);
-
-    jint length = getUtf8LengthOfUnicode(value->values + offset, count);
+    jchar* chars = rvmGetStringChars(env, str);
+    jint count = rvmGetStringLength(env, str);
+    jint length = getUtf8LengthOfUnicode(chars, count);
 
     char* result = rvmAllocateMemoryAtomic(env, length + 1);
     if (!result) return NULL;
 
-    unicodeToUtf8(result, value->values + offset, count);
+    unicodeToUtf8(result, chars, count);
     return result;
 }
 
 void rvmGetStringRegion(Env* env, Object* str, jint start, jint len, jchar* buf) {
     // TODO: Check bounds
-    CharArray* value = (CharArray*) rvmGetObjectInstanceFieldValue(env, str, stringValueField);
-    jint offset = rvmGetIntInstanceFieldValue(env, str, stringOffsetField);
-    //jint count = rvmGetIntInstanceFieldValue(env, str, stringCountField);
-    memcpy(buf, value->values + offset + start, sizeof(jchar) * len);
+    jchar* chars = rvmGetStringChars(env, str);
+    //jint count = rvmGetStringLength(env, str);
+    memcpy(buf, chars + start, sizeof(jchar) * len);
 }
 
 void rvmGetStringUTFRegion(Env *env, Object* str, jint start, jint len, char* buf) {
     // TODO: Check bounds
-    CharArray* value = (CharArray*) rvmGetObjectInstanceFieldValue(env, str, stringValueField);
-    jint offset = rvmGetIntInstanceFieldValue(env, str, stringOffsetField);
-    //jint count = rvmGetIntInstanceFieldValue(env, str, stringCountField);
-    unicodeToUtf8(buf, value->values + offset + start, len);
+    jchar* chars = rvmGetStringChars(env, str);
+    //jint count = rvmGetStringLength(env, str);
+    unicodeToUtf8(buf, chars + start, len);
 }
 

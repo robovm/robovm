@@ -36,8 +36,6 @@ typedef union {
 
 static Class* java_lang_TypeNotPresentException = NULL;
 static Class* java_lang_annotation_AnnotationFormatError = NULL;
-static Class* java_lang_reflect_Method = NULL;
-static Method* java_lang_reflect_Method_init = NULL;
 static Class* java_lang_annotation_Annotation = NULL;
 static Class* array_of_java_lang_annotation_Annotation = NULL;
 static ObjectArray* emptyExceptionTypes = NULL;
@@ -782,10 +780,6 @@ jboolean rvmInitAttributes(Env* env) {
     if (!java_lang_TypeNotPresentException) return FALSE;
     java_lang_annotation_AnnotationFormatError = rvmFindClassUsingLoader(env, "java/lang/annotation/AnnotationFormatError", NULL);
     if (!java_lang_annotation_AnnotationFormatError) return FALSE;
-    java_lang_reflect_Method = rvmFindClassUsingLoader(env, "java/lang/reflect/Method", NULL);
-    if (!java_lang_reflect_Method) return FALSE;
-    java_lang_reflect_Method_init = rvmGetInstanceMethod(env, java_lang_reflect_Method, "<init>", "(J)V");
-    if (!java_lang_reflect_Method_init) return FALSE;
 
     java_lang_annotation_Annotation = rvmFindClassUsingLoader(env, "java/lang/annotation/Annotation", NULL);
     if (!java_lang_annotation_Annotation) return FALSE;

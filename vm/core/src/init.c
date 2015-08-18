@@ -31,6 +31,10 @@
 #include "utlist.h"
 #include <unistd.h>
 
+#if !defined(NDEBUG)
+#   include <execinfo.h>
+#endif
+
 #define LOG_TAG "core.init"
 ClassLoader* systemClassLoader = NULL;
 static Class* java_lang_Daemons = NULL;
@@ -519,6 +523,14 @@ void rvmAbort(char* format, ...) {
         va_end(args);
         fprintf(stderr, "\n");
     }
+#if !defined(NDEBUG)
+     void* callstack[256];
+     int frames = backtrace(callstack, 256);
+     char** strs = backtrace_symbols(callstack, frames);
+     for (int i = 0; i < frames; ++i) {
+         fprintf(stderr, "\t%s\n", strs[i]);
+     }
+#endif
     abort();
 }
 

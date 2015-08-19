@@ -404,12 +404,13 @@ values:
                 type: NSArray<CBMutableService>
             AdvertisementData:
                 type: CBAdvertisementData
-
+    
     # CBUUID
     CBUUID(.*)String:
         enum: CBUUIDIdentifier
         name: '#{g[0]}'
         type: NSString
+
 
     # Make sure we don't miss any values if new ones are introduced in a later version
     (CB.*):

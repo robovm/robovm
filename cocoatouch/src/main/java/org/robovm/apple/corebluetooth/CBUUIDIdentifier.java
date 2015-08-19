@@ -95,57 +95,9 @@ import org.robovm.apple.dispatch.*;
     public static final CBUUIDIdentifier ServerCharacteristicConfiguration = new CBUUIDIdentifier("ServerCharacteristicConfiguration");
     public static final CBUUIDIdentifier CharacteristicFormat = new CBUUIDIdentifier("CharacteristicFormat");
     public static final CBUUIDIdentifier CharacteristicAggregateFormat = new CBUUIDIdentifier("CharacteristicAggregateFormat");
-    /**
-     * @since Available in iOS 5.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     */
-    @Deprecated
-    public static final CBUUIDIdentifier GenericAccessProfile = new CBUUIDIdentifier("GenericAccessProfile");
-    /**
-     * @since Available in iOS 5.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     */
-    @Deprecated
-    public static final CBUUIDIdentifier GenericAttributeProfile = new CBUUIDIdentifier("GenericAttributeProfile");
-    /**
-     * @since Available in iOS 5.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     */
-    @Deprecated
-    public static final CBUUIDIdentifier DeviceName = new CBUUIDIdentifier("DeviceName");
-    /**
-     * @since Available in iOS 5.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     */
-    @Deprecated
-    public static final CBUUIDIdentifier Appearance = new CBUUIDIdentifier("Appearance");
-    /**
-     * @since Available in iOS 5.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     */
-    @Deprecated
-    public static final CBUUIDIdentifier PeripheralPrivacyFlag = new CBUUIDIdentifier("PeripheralPrivacyFlag");
-    /**
-     * @since Available in iOS 5.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     */
-    @Deprecated
-    public static final CBUUIDIdentifier ReconnectionAddress = new CBUUIDIdentifier("ReconnectionAddress");
-    /**
-     * @since Available in iOS 5.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     */
-    @Deprecated
-    public static final CBUUIDIdentifier PeripheralPreferredConnectionParameters = new CBUUIDIdentifier("PeripheralPreferredConnectionParameters");
-    /**
-     * @since Available in iOS 5.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     */
-    @Deprecated
-    public static final CBUUIDIdentifier ServiceChanged = new CBUUIDIdentifier("ServiceChanged");
     /*</constants>*/
     
-    private static /*<name>*/CBUUIDIdentifier/*</name>*/[] values = new /*<name>*/CBUUIDIdentifier/*</name>*/[] {/*<value_list>*/CharacteristicExtendedProperties, CharacteristicUserDescription, ClientCharacteristicConfiguration, ServerCharacteristicConfiguration, CharacteristicFormat, CharacteristicAggregateFormat, GenericAccessProfile, GenericAttributeProfile, DeviceName, Appearance, PeripheralPrivacyFlag, ReconnectionAddress, PeripheralPreferredConnectionParameters, ServiceChanged/*</value_list>*/};
+    private static /*<name>*/CBUUIDIdentifier/*</name>*/[] values = new /*<name>*/CBUUIDIdentifier/*</name>*/[] {/*<value_list>*/CharacteristicExtendedProperties, CharacteristicUserDescription, ClientCharacteristicConfiguration, ServerCharacteristicConfiguration, CharacteristicFormat, CharacteristicAggregateFormat/*</value_list>*/};
     
     /*<name>*/CBUUIDIdentifier/*</name>*/ (String getterName) {
         super(Values.class, getterName);
@@ -180,62 +132,6 @@ import org.robovm.apple.dispatch.*;
         public static native NSString CharacteristicFormat();
         @GlobalValue(symbol="CBUUIDCharacteristicAggregateFormatString", optional=true)
         public static native NSString CharacteristicAggregateFormat();
-        /**
-         * @since Available in iOS 5.0 and later.
-         * @deprecated Deprecated in iOS 7.0.
-         */
-        @Deprecated
-        @GlobalValue(symbol="CBUUIDGenericAccessProfileString", optional=true)
-        public static native NSString GenericAccessProfile();
-        /**
-         * @since Available in iOS 5.0 and later.
-         * @deprecated Deprecated in iOS 7.0.
-         */
-        @Deprecated
-        @GlobalValue(symbol="CBUUIDGenericAttributeProfileString", optional=true)
-        public static native NSString GenericAttributeProfile();
-        /**
-         * @since Available in iOS 5.0 and later.
-         * @deprecated Deprecated in iOS 7.0.
-         */
-        @Deprecated
-        @GlobalValue(symbol="CBUUIDDeviceNameString", optional=true)
-        public static native NSString DeviceName();
-        /**
-         * @since Available in iOS 5.0 and later.
-         * @deprecated Deprecated in iOS 7.0.
-         */
-        @Deprecated
-        @GlobalValue(symbol="CBUUIDAppearanceString", optional=true)
-        public static native NSString Appearance();
-        /**
-         * @since Available in iOS 5.0 and later.
-         * @deprecated Deprecated in iOS 7.0.
-         */
-        @Deprecated
-        @GlobalValue(symbol="CBUUIDPeripheralPrivacyFlagString", optional=true)
-        public static native NSString PeripheralPrivacyFlag();
-        /**
-         * @since Available in iOS 5.0 and later.
-         * @deprecated Deprecated in iOS 7.0.
-         */
-        @Deprecated
-        @GlobalValue(symbol="CBUUIDReconnectionAddressString", optional=true)
-        public static native NSString ReconnectionAddress();
-        /**
-         * @since Available in iOS 5.0 and later.
-         * @deprecated Deprecated in iOS 7.0.
-         */
-        @Deprecated
-        @GlobalValue(symbol="CBUUIDPeripheralPreferredConnectionParametersString", optional=true)
-        public static native NSString PeripheralPreferredConnectionParameters();
-        /**
-         * @since Available in iOS 5.0 and later.
-         * @deprecated Deprecated in iOS 7.0.
-         */
-        @Deprecated
-        @GlobalValue(symbol="CBUUIDServiceChangedString", optional=true)
-        public static native NSString ServiceChanged();
         /*</values>*/
     }
 }

@@ -39,12 +39,47 @@ import org.robovm.apple.imageio.*;
 public final class /*<name>*/ALAssetsGroupType/*</name>*/ extends Bits</*<name>*/ALAssetsGroupType/*</name>*/> {
     /*<values>*/
     public static final ALAssetsGroupType None = new ALAssetsGroupType(0L);
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     public static final ALAssetsGroupType Library = new ALAssetsGroupType(1L);
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     public static final ALAssetsGroupType Album = new ALAssetsGroupType(2L);
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     public static final ALAssetsGroupType Event = new ALAssetsGroupType(4L);
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     public static final ALAssetsGroupType Faces = new ALAssetsGroupType(8L);
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     public static final ALAssetsGroupType SavedPhotos = new ALAssetsGroupType(16L);
+    /**
+     * @since Available in iOS 5.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     public static final ALAssetsGroupType PhotoStream = new ALAssetsGroupType(32L);
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     public static final ALAssetsGroupType All = new ALAssetsGroupType(-1L);
     /*</values>*/
 

@@ -63,13 +63,6 @@ import org.robovm.apple.dispatch.*;
     @Deprecated
     @Property(selector = "RSSI")
     public native NSNumber getRSSI();
-    /**
-     * @since Available in iOS 5.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     */
-    @Deprecated
-    @Property(selector = "isConnected")
-    public native boolean isConnected();
     @Property(selector = "state")
     public native CBPeripheralState getState();
     @Property(selector = "services")
@@ -87,6 +80,11 @@ import org.robovm.apple.dispatch.*;
     public native void discoverCharacteristics(NSArray<CBUUID> characteristicUUIDs, CBService service);
     @Method(selector = "readValueForCharacteristic:")
     public native void readValue(CBCharacteristic characteristic);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "maximumWriteValueLengthForType:")
+    public native @MachineSizedUInt long maximumWriteValueLengthForType$(CBCharacteristicWriteType type);
     @Method(selector = "writeValue:forCharacteristic:type:")
     public native void writeValue(NSData data, CBCharacteristic characteristic, CBCharacteristicWriteType type);
     @Method(selector = "setNotifyValue:forCharacteristic:")

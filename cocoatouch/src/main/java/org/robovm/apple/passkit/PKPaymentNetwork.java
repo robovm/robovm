@@ -94,16 +94,24 @@ import org.robovm.apple.addressbook.*;
      */
     public static final PKPaymentNetwork Amex = new PKPaymentNetwork("Amex");
     /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final PKPaymentNetwork Discover = new PKPaymentNetwork("Discover");
+    /**
      * @since Available in iOS 8.0 and later.
      */
     public static final PKPaymentNetwork MasterCard = new PKPaymentNetwork("MasterCard");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final PKPaymentNetwork PrivateLabel = new PKPaymentNetwork("PrivateLabel");
     /**
      * @since Available in iOS 8.0 and later.
      */
     public static final PKPaymentNetwork Visa = new PKPaymentNetwork("Visa");
     /*</constants>*/
     
-    private static /*<name>*/PKPaymentNetwork/*</name>*/[] values = new /*<name>*/PKPaymentNetwork/*</name>*/[] {/*<value_list>*/Amex, MasterCard, Visa/*</value_list>*/};
+    private static /*<name>*/PKPaymentNetwork/*</name>*/[] values = new /*<name>*/PKPaymentNetwork/*</name>*/[] {/*<value_list>*/Amex, Discover, MasterCard, PrivateLabel, Visa/*</value_list>*/};
     
     /*<name>*/PKPaymentNetwork/*</name>*/ (String getterName) {
         super(Values.class, getterName);
@@ -132,10 +140,20 @@ import org.robovm.apple.addressbook.*;
         @GlobalValue(symbol="PKPaymentNetworkAmex", optional=true)
         public static native NSString Amex();
         /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="PKPaymentNetworkDiscover", optional=true)
+        public static native NSString Discover();
+        /**
          * @since Available in iOS 8.0 and later.
          */
         @GlobalValue(symbol="PKPaymentNetworkMasterCard", optional=true)
         public static native NSString MasterCard();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="PKPaymentNetworkPrivateLabel", optional=true)
+        public static native NSString PrivateLabel();
         /**
          * @since Available in iOS 8.0 and later.
          */

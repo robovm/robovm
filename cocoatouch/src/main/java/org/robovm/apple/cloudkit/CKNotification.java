@@ -71,6 +71,16 @@ import org.robovm.apple.corelocation.*;
     public native NSNumber getBadge();
     @Property(selector = "soundName")
     public native String getSoundName();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "subscriptionID")
+    public native String getSubscriptionID();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "category")
+    public native String getCategory();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

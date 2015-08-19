@@ -54,6 +54,11 @@ import org.robovm.apple.corebluetooth.*;
     public native CLLocation getLocation();
     @Property(selector = "region")
     public native CLRegion getRegion();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "timeZone")
+    public native NSTimeZone getTimeZone();
     @WeaklyLinked
     @Property(selector = "addressDictionary")
     public native ABPersonAddress getAddress();

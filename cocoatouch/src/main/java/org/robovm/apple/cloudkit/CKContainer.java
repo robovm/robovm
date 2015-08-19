@@ -19,6 +19,7 @@ package org.robovm.apple.cloudkit;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -41,6 +42,20 @@ import org.robovm.apple.corelocation.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Notifications {
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        public static NSObject observeAccountChanged(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(AccountChangedNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+    }
+    
     /*<ptr>*/public static class CKContainerPtr extends Ptr<CKContainer, CKContainerPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(CKContainer.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -63,6 +78,11 @@ import org.robovm.apple.corelocation.*;
      */
     @GlobalValue(symbol="CKOwnerDefaultName", optional=true)
     public static native String getDefaultOwnerName();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @GlobalValue(symbol="CKAccountChangedNotification", optional=true)
+    public static native NSString AccountChangedNotification();
     
     @Method(selector = "addOperation:")
     public native void addOperation(CKOperation operation);

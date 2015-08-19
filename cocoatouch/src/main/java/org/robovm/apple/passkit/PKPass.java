@@ -90,6 +90,16 @@ import org.robovm.apple.addressbook.*;
     public native NSDictionary getUserInfo();
     @Property(selector = "passURL")
     public native NSURL getPassURL();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "isRemotePass")
+    public native boolean isRemotePass();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "deviceName")
+    public native String getDeviceName();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

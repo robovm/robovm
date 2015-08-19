@@ -62,6 +62,11 @@ import org.robovm.apple.corefoundation.*;
             + /*<name>*/ABPersonDateLabel/*</name>*/.class.getName());
     }
     /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="kABPersonAnniversaryLabel", optional=true)
     protected static native CFString AnniversaryLabel();
     /*</methods>*/

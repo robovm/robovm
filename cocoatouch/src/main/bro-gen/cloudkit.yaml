@@ -171,6 +171,7 @@ classes:
                 name: init
             '-objectForKey:':
                 name: get
+                return_type: NSObject
             '-setObject:forKey:':
                 name: put
                 visibility: protected # We provide overloaded methods for each allowed type
@@ -438,6 +439,10 @@ values:
     CKOwnerDefaultName:
         class: CKContainer
         name: getDefaultOwnerName
+    CK(AccountChangedNotification):
+        class: CKContainer
+        name: '#{g[0]}'
+        type: NSString
 
     # CKQueryOperation
     CKQueryOperation(MaximumResults):

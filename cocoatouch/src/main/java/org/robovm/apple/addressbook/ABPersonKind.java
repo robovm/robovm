@@ -87,7 +87,17 @@ import org.robovm.apple.corefoundation.*;
     /*</marshalers>*/
 
     /*<constants>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     public static final ABPersonKind Person = new ABPersonKind("Person");
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     public static final ABPersonKind Organization = new ABPersonKind("Organization");
     /*</constants>*/
     
@@ -114,8 +124,18 @@ import org.robovm.apple.corefoundation.*;
     	static { Bro.bind(Values.class); }
 
         /*<values>*/
+        /**
+         * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
+         */
+        @Deprecated
         @GlobalValue(symbol="kABPersonKindPerson", optional=true)
         public static native CFNumber Person();
+        /**
+         * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
+         */
+        @Deprecated
         @GlobalValue(symbol="kABPersonKindOrganization", optional=true)
         public static native CFNumber Organization();
         /*</values>*/

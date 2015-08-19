@@ -28,6 +28,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -58,9 +59,7 @@ import org.robovm.apple.foundation.*;
     }
     /*<ptr>*/public static class GCControllerPtr extends Ptr<GCController, GCControllerPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(GCController.class); }/*</bind>*/
-    /*<constants>*/
-    public static final int UnsetPlayerIndex = -1;
-    /*</constants>*/
+    /*<constants>*//*</constants>*/
     /*<constructors>*/
     public GCController() {}
     protected GCController(SkipInit skipInit) { super(skipInit); }
@@ -70,14 +69,18 @@ import org.robovm.apple.foundation.*;
     public native @Block VoidBlock1<GCController> getControllerPausedHandler();
     @Property(selector = "setControllerPausedHandler:")
     public native void setControllerPausedHandler(@Block VoidBlock1<GCController> v);
+    @Property(selector = "handlerQueue")
+    public native DispatchQueue getHandlerQueue();
+    @Property(selector = "setHandlerQueue:")
+    public native void setHandlerQueue(DispatchQueue v);
     @Property(selector = "vendorName")
     public native String getVendorName();
     @Property(selector = "isAttachedToDevice")
     public native boolean isAttachedToDevice();
     @Property(selector = "playerIndex")
-    public native @MachineSizedSInt long getPlayerIndex();
+    public native GCControllerPlayerIndex getPlayerIndex();
     @Property(selector = "setPlayerIndex:")
-    public native void setPlayerIndex(@MachineSizedSInt long v);
+    public native void setPlayerIndex(GCControllerPlayerIndex v);
     @Property(selector = "gamepad")
     public native GCGamepad getGamepad();
     @Property(selector = "extendedGamepad")

@@ -12,29 +12,29 @@ typedefs:
     NSUInteger: MachineUInt
     _NSZone: NSZone
     id: NSObject
-    Class: 'Class<?>'
-    ObjCClass: 'Class<?>'
+    Class: Class<?>
+    ObjCClass: Class<?>
     'Protocol *': ObjCProtocol
     'NSString *': String
-    'NSString **': 'NSString.NSStringPtr'
+    'NSString **': NSString.NSStringPtr
     'BOOL *': BooleanPtr
-    'NSArray *': 'NSArray<?>'
-    'NSArray **': 'NSArray.NSArrayPtr<?>'
-    'NSMutableArray *': 'NSMutableArray<?>'
-    'NSMutableArray **': 'NSMutableArray.NSMutableArrayPtr<?>'
-    'NSDictionary *': 'NSDictionary'
-    'NSDictionary **': 'NSDictionary.NSDictionaryPtr'
-    'NSMutableDictionary *': 'NSMutableDictionary'
-    'NSMutableDictionary **': 'NSMutableDictionary.NSMutableDictionaryPtr'
-    'NSSet *': 'NSSet<?>'
-    'NSSet **': 'NSSet.NSSetPtr<?>'
-    'NSMutableSet *': 'NSMutableSet<?>'
-    'NSMutableSet **': 'NSMutableSet.NSMutableSetPtr<?>'
-    'NSOrderedSet *': 'NSOrderedSet<?>'
-    'NSOrderedSet **': 'NSOrderedSet.NSOrderedSetPtr<?>'
-    'NSMutableOrderedSet *': 'NSMutableOrderedSet<?>'
-    'NSMutableOrderedSet **': 'NSMutableOrderedSet.NSMutableOrderedSetPtr<?>'
-    'NSEnumerator *': 'NSEnumerator<?>'
+    'NSArray *': NSArray<?>
+    'NSArray **': NSArray.NSArrayPtr<?>
+    'NSMutableArray *': NSMutableArray<?>
+    'NSMutableArray **': NSMutableArray.NSMutableArrayPtr<?>
+    'NSDictionary *': NSDictionary
+    'NSDictionary **': NSDictionary.NSDictionaryPtr
+    'NSMutableDictionary *': NSMutableDictionary
+    'NSMutableDictionary **': NSMutableDictionary.NSMutableDictionaryPtr
+    'NSSet *': NSSet<?>
+    'NSSet **': NSSet.NSSetPtr<?>
+    'NSMutableSet *': NSMutableSet<?>
+    'NSMutableSet **': NSMutableSet.NSMutableSetPtr<?>
+    'NSOrderedSet *': NSOrderedSet<?>
+    'NSOrderedSet **': NSOrderedSet.NSOrderedSetPtr<?>
+    'NSMutableOrderedSet *': NSMutableOrderedSet<?>
+    'NSMutableOrderedSet **': NSMutableOrderedSet.NSMutableOrderedSetPtr<?>
+    'NSEnumerator *': NSEnumerator<?>
     'BOOL (^)(NSUInteger, BOOL *)': '@Block Block2<NSObject, BooleanPtr, Boolean>'
     'BOOL (^)(NSURL *, NSError *)': '@Block Block2<NSURL, NSError, Boolean>'
     'void (^)(NSCachedURLResponse *)': '@Block VoidBlock1<NSCachedURLResponse>'

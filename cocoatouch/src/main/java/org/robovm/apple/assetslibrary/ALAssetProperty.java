@@ -91,35 +91,51 @@ import org.robovm.apple.imageio.*;
     /*<constants>*/
     /**
      * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static final ALAssetProperty Type = new ALAssetProperty("Type");
     /**
      * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static final ALAssetProperty Location = new ALAssetProperty("Location");
     /**
      * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static final ALAssetProperty Duration = new ALAssetProperty("Duration");
     /**
      * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static final ALAssetProperty Orientation = new ALAssetProperty("Orientation");
     /**
      * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static final ALAssetProperty Date = new ALAssetProperty("Date");
     /**
      * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static final ALAssetProperty Representations = new ALAssetProperty("Representations");
     /**
      * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static final ALAssetProperty URLs = new ALAssetProperty("URLs");
     /**
-     * @since Available in iOS 6.0 and later.
+     * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static final ALAssetProperty AssetURL = new ALAssetProperty("AssetURL");
     /*</constants>*/
     
@@ -148,42 +164,58 @@ import org.robovm.apple.imageio.*;
         /*<values>*/
         /**
          * @since Available in iOS 4.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="ALAssetPropertyType", optional=true)
         public static native NSString Type();
         /**
          * @since Available in iOS 4.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="ALAssetPropertyLocation", optional=true)
         public static native NSString Location();
         /**
          * @since Available in iOS 4.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="ALAssetPropertyDuration", optional=true)
         public static native NSString Duration();
         /**
          * @since Available in iOS 4.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="ALAssetPropertyOrientation", optional=true)
         public static native NSString Orientation();
         /**
          * @since Available in iOS 4.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="ALAssetPropertyDate", optional=true)
         public static native NSString Date();
         /**
          * @since Available in iOS 4.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="ALAssetPropertyRepresentations", optional=true)
         public static native NSString Representations();
         /**
          * @since Available in iOS 4.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="ALAssetPropertyURLs", optional=true)
         public static native NSString URLs();
         /**
-         * @since Available in iOS 6.0 and later.
+         * @since Available in iOS 4.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="ALAssetPropertyAssetURL", optional=true)
         public static native NSString AssetURL();
         /*</values>*/

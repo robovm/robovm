@@ -49,6 +49,9 @@ import org.robovm.apple.dispatch.*;
     public CBUUID() {}
     protected CBUUID(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
+    public static CBUUID create(CBUUIDIdentifier identifier) {
+        return create(identifier.value().toString());
+    }
     /*<properties>*/
     @Property(selector = "data")
     public native NSData getData();
@@ -59,14 +62,16 @@ import org.robovm.apple.dispatch.*;
     public native String getUUIDString();
     /*</properties>*/
     /*<members>*//*</members>*/
-    public static CBUUID create(CBUUIDIdentifier identifier) {
-        return create(identifier.value().toString());
-    }
     /*<methods>*/
     @Method(selector = "UUIDWithString:")
     public static native CBUUID create(String theString);
     @Method(selector = "UUIDWithData:")
     public static native CBUUID create(NSData theData);
+    /**
+     * @since Available in iOS 5.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @WeaklyLinked
     @Method(selector = "UUIDWithCFUUID:")
     public static native CBUUID create(CFUUID theUUID);

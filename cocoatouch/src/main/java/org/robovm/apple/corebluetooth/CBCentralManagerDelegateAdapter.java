@@ -54,10 +54,6 @@ import org.robovm.apple.dispatch.*;
     public void didUpdateState(CBCentralManager central) {}
     @NotImplemented("centralManager:willRestoreState:")
     public void willRestoreState(CBCentralManager central, CBCentralManagerRestoredState dict) {}
-    @NotImplemented("centralManager:didRetrievePeripherals:")
-    public void didRetrievePeripherals(CBCentralManager central, NSArray<CBPeripheral> peripherals) {}
-    @NotImplemented("centralManager:didRetrieveConnectedPeripherals:")
-    public void didRetrieveConnectedPeripherals(CBCentralManager central, NSArray<CBPeripheral> peripherals) {}
     @NotImplemented("centralManager:didDiscoverPeripheral:advertisementData:RSSI:")
     public void didDiscoverPeripheral(CBCentralManager central, CBPeripheral peripheral, CBAdvertisementData advertisementData, NSNumber rssi) {}
     @NotImplemented("centralManager:didConnectPeripheral:")

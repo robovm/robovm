@@ -51,5 +51,10 @@ import org.robovm.apple.dispatch.*;
      */
     @GlobalValue(symbol="PKPushTypeVoIP", optional=true)
     public static native String VoIP();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @GlobalValue(symbol="PKPushTypeComplication", optional=true)
+    public static native String Complication();
     /*</methods>*/
 }

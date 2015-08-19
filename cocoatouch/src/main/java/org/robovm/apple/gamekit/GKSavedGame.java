@@ -32,7 +32,9 @@ import org.robovm.apple.uikit.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 8.0 and later.
+ */
 /*</javadoc>*/
 /*<annotations>*/@Library("GameKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/GKSavedGame/*</name>*/ 
@@ -47,15 +49,27 @@ import org.robovm.apple.uikit.*;
     protected GKSavedGame(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "name")
     public native String getName();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "deviceName")
     public native String getDeviceName();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "modificationDate")
     public native NSDate getModificationDate();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "loadDataWithCompletionHandler:")
     public native void loadData(@Block VoidBlock2<NSData, NSError> handler);
     /*</methods>*/

@@ -54,6 +54,11 @@ import org.robovm.apple.coregraphics.*;
     public native boolean isMainFrame();
     @Property(selector = "request")
     public native NSURLRequest getRequest();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "securityOrigin")
+    public native WKSecurityOrigin getSecurityOrigin();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

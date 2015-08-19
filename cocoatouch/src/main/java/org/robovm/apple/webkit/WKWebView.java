@@ -77,6 +77,11 @@ import org.robovm.apple.coregraphics.*;
     public native double getEstimatedProgress();
     @Property(selector = "hasOnlySecureContent")
     public native boolean hasOnlySecureContent();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "certificateChain")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<SecCertificate> getCertificateChain();
     @Property(selector = "canGoBack")
     public native boolean canGoBack();
     @Property(selector = "canGoForward")
@@ -85,6 +90,16 @@ import org.robovm.apple.coregraphics.*;
     public native boolean allowsBackForwardNavigationGestures();
     @Property(selector = "setAllowsBackForwardNavigationGestures:")
     public native void setAllowsBackForwardNavigationGestures(boolean v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "customUserAgent")
+    public native String getCustomUserAgent();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setCustomUserAgent:")
+    public native void setCustomUserAgent(String v);
     @Property(selector = "scrollView")
     public native UIScrollView getScrollView();
     /*</properties>*/
@@ -96,8 +111,18 @@ import org.robovm.apple.coregraphics.*;
     protected native @Pointer long init(NSCoder coder);
     @Method(selector = "loadRequest:")
     public native WKNavigation loadRequest(NSURLRequest request);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "loadFileURL:allowingReadAccessToURL:")
+    public native WKNavigation loadFileURL(NSURL URL, NSURL readAccessURL);
     @Method(selector = "loadHTMLString:baseURL:")
     public native WKNavigation loadHTMLString(String string, NSURL baseURL);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "loadData:MIMEType:characterEncodingName:baseURL:")
+    public native WKNavigation loadData(NSData data, String MIMEType, String characterEncodingName, NSURL baseURL);
     @Method(selector = "goToBackForwardListItem:")
     public native WKNavigation goToBackForwardListItem(WKBackForwardListItem item);
     @Method(selector = "goBack")

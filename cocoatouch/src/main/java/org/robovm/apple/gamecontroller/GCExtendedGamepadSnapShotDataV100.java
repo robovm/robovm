@@ -28,6 +28,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -98,9 +99,11 @@ import org.robovm.apple.foundation.*;
     @StructMember(15) public native GCExtendedGamepadSnapShotDataV100 setRightTrigger(float rightTrigger);
     /*</members>*/
     /*<methods>*/
+    public boolean setData(NSData data) { return setData(this, data); }
     @Bridge(symbol="GCExtendedGamepadSnapShotDataV100FromNSData", optional=true)
-    public native boolean setData(NSData data);
+    private static native boolean setData(@ByVal GCExtendedGamepadSnapShotDataV100 snapshotData, NSData data);
+    public NSData getData() { return getData(this); }
     @Bridge(symbol="NSDataFromGCExtendedGamepadSnapShotDataV100", optional=true)
-    public native NSData getData();
+    private static native NSData getData(@ByVal GCExtendedGamepadSnapShotDataV100 snapshotData);
     /*</methods>*/
 }

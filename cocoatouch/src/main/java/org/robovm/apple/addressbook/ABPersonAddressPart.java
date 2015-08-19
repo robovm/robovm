@@ -87,11 +87,41 @@ import org.robovm.apple.corefoundation.*;
     /*</marshalers>*/
 
     /*<constants>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     public static final ABPersonAddressPart Street = new ABPersonAddressPart("Street");
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     public static final ABPersonAddressPart City = new ABPersonAddressPart("City");
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     public static final ABPersonAddressPart State = new ABPersonAddressPart("State");
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     public static final ABPersonAddressPart ZIP = new ABPersonAddressPart("ZIP");
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     public static final ABPersonAddressPart Country = new ABPersonAddressPart("Country");
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     public static final ABPersonAddressPart CountryCode = new ABPersonAddressPart("CountryCode");
     /*</constants>*/
     
@@ -118,16 +148,46 @@ import org.robovm.apple.corefoundation.*;
     	static { Bro.bind(Values.class); }
 
         /*<values>*/
+        /**
+         * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
+         */
+        @Deprecated
         @GlobalValue(symbol="kABPersonAddressStreetKey", optional=true)
         public static native CFString Street();
+        /**
+         * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
+         */
+        @Deprecated
         @GlobalValue(symbol="kABPersonAddressCityKey", optional=true)
         public static native CFString City();
+        /**
+         * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
+         */
+        @Deprecated
         @GlobalValue(symbol="kABPersonAddressStateKey", optional=true)
         public static native CFString State();
+        /**
+         * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
+         */
+        @Deprecated
         @GlobalValue(symbol="kABPersonAddressZIPKey", optional=true)
         public static native CFString ZIP();
+        /**
+         * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
+         */
+        @Deprecated
         @GlobalValue(symbol="kABPersonAddressCountryKey", optional=true)
         public static native CFString Country();
+        /**
+         * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
+         */
+        @Deprecated
         @GlobalValue(symbol="kABPersonAddressCountryCodeKey", optional=true)
         public static native CFString CountryCode();
         /*</values>*/

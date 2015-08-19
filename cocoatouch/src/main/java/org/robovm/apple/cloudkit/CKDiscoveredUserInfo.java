@@ -51,10 +51,25 @@ import org.robovm.apple.corelocation.*;
     /*<properties>*/
     @Property(selector = "userRecordID")
     public native CKRecordID getUserRecordID();
+    /**
+     * @since Available in iOS 8.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Property(selector = "firstName")
     public native String getFirstName();
+    /**
+     * @since Available in iOS 8.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Property(selector = "lastName")
     public native String getLastName();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "displayContact")
+    public native CNContact getDisplayContact();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

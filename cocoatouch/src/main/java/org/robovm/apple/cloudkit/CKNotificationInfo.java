@@ -85,6 +85,16 @@ import org.robovm.apple.corelocation.*;
     public native boolean shouldSendContentAvailable();
     @Property(selector = "setShouldSendContentAvailable:")
     public native void setShouldSendContentAvailable(boolean v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "category")
+    public native String getCategory();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setCategory:")
+    public native void setCategory(String v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

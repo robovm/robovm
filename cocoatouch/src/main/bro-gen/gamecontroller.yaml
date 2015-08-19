@@ -1,5 +1,5 @@
 package: org.robovm.apple.gamecontroller
-include: [foundation.yaml]
+include: [foundation.yaml, dispatch.yaml]
 library: GameController
 framework: GameController
 clang_args: ['-x', 'objective-c']
@@ -9,10 +9,12 @@ typedefs:
     'void (^)(GCController *)': '@Block VoidBlock1<GCController>'
     
 enums:
+    GCControllerPlayerIndex: {}
         
 classes:
     # Structs
     GCAcceleration: {}
+    GCEulerAngles: {}
     GCRotationRate: {}
     GCQuaternion: {}
 

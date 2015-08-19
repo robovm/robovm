@@ -9,7 +9,8 @@ typedefs:
     'void (^)(NSDate *, NSDate *)': '@Block VoidBlock2<NSDate, NSDate>'
 
 enums:
-    ADErrorCode: { first: ADErrorUnknown }
+    ADErrorCode: {first: ADErrorUnknown}
+    ADClientErrorCode: {first: ADClientErrorUnknown}
     ADAdType: {}
     ADInterstitialPresentationPolicy: {}
 
@@ -31,6 +32,9 @@ categories:
     
 classes:
     ADError:
+        extends: NSError
+        annotations: ['@StronglyLinked']
+    ADClientError:
         extends: NSError
         annotations: ['@StronglyLinked']
 
@@ -60,6 +64,11 @@ classes:
                 name: determineAppInstallationAttribution
             '-lookupAdConversionDetails:':
                 trim_after_first_colon: true
+            '-requestAttributionDetailsWithBlock:':
+                name: requestAttributionDetails
+                parameters:
+                    completionHandler:
+                        type: '@Block VoidBlock2<NSDictionary<?, ?>, NSError>'
             '-addClientToSegments:replaceExisting:':
                 trim_after_first_colon: true
                 parameters:
@@ -109,6 +118,9 @@ functions:
 values:
     ADErrorDomain:
         class: ADError
+        name: getClassDomain
+    ADClientErrorDomain:
+        class: ADClientError
         name: getClassDomain
 
     ADBannerContentSizeIdentifier(.*):

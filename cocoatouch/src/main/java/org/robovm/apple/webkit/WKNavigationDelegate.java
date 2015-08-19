@@ -66,6 +66,11 @@ import org.robovm.apple.coregraphics.*;
     void didFailNavigation(WKWebView webView, WKNavigation navigation, NSError error);
     @Method(selector = "webView:didReceiveAuthenticationChallenge:completionHandler:")
     void didReceiveAuthenticationChallenge(WKWebView webView, NSURLAuthenticationChallenge challenge, @Block VoidBlock2<NSURLSessionAuthChallengeDisposition, NSURLCredential> completionHandler);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "webViewWebContentProcessDidTerminate:")
+    void webContentProcessDidTerminate(WKWebView webView);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

@@ -46,6 +46,7 @@ classes:
                 getter: javaScriptCanOpenWindowsAutomatically
     WKProcessPool: {} # DONE
     WKScriptMessage: {} # DONE
+    WKSecurityOrigin: {} # DONE
     WKUserContentController: # DONE
         properties:
             'userScripts':
@@ -74,6 +75,40 @@ classes:
             '.*':
                 omit_prefix: true
                 visibility: protected
+    WKWebsiteDataRecord: # DONE
+        properties:
+            'dataTypes':
+                type: Set<WKWebsiteDataType>
+                marshaler: WKWebsiteDataType.AsSetMarshaler
+    WKWebsiteDataStore: # DONE
+        methods:
+            '-fetchDataRecordsOfTypes:completionHandler:':
+                name: fetchDataRecords
+                parameters:
+                    dataTypes:
+                        type: Set<WKWebsiteDataType>
+                        marshaler: WKWebsiteDataType.AsSetMarshaler
+                    completionHandler:
+                        type: '@Block VoidBlock1<NSArray<WKWebsiteDataRecord>>'
+            '-removeDataOfTypes.*':
+                name: removeData
+                parameters:
+                    dataTypes:
+                        type: Set<WKWebsiteDataType>
+                        marshaler: WKWebsiteDataType.AsSetMarshaler
+                    websiteDataTypes:
+                        type: Set<WKWebsiteDataType>
+                        marshaler: WKWebsiteDataType.AsSetMarshaler
+                    dataRecords:
+                        type: NSArray<WKWebsiteDataRecord>
+                    completionHandler:
+                        type: '@Block Runnable'
+            '+(defaultDataStore|nonPersistentDataStore)':
+                property: true
+            '+allWebsiteDataTypes':
+                property: true
+                return_type: Set<WKWebsiteDataType>
+                return_marshaler: WKWebsiteDataType.AsSetMarshaler
     WKWebView: # DONE
         annotations: ['@WeaklyLinked']
         properties:
@@ -83,6 +118,9 @@ classes:
                 omit_prefix: true
             'canGoForward':
                 omit_prefix: true
+            'certificateChain':
+                type: List<SecCertificate>
+                marshaler: NSArray.AsListMarshaler
         methods:
             '-init.*':
                 name: init
@@ -91,6 +129,10 @@ classes:
             '-loadHTMLString:baseURL:':
                 trim_after_first_colon: true
             '-goToBackForwardListItem:':
+                trim_after_first_colon: true
+            '-loadFileURL:allowingReadAccessToURL:':
+                trim_after_first_colon: true
+            '-loadData:MIMEType:characterEncodingName:baseURL:':
                 trim_after_first_colon: true
             '-evaluateJavaScript:completionHandler:':
                 trim_after_first_colon: true
@@ -119,6 +161,8 @@ protocols:
                 name: didFailNavigation
             '-webView:didReceiveAuthenticationChallenge:completionHandler:':
                 name: didReceiveAuthenticationChallenge
+            '-webViewWebContentProcessDidTerminate:':
+                name: webContentProcessDidTerminate
     WKScriptMessageHandler: # DONE
         methods:
             '-userContentController:didReceiveScriptMessage:':
@@ -127,6 +171,8 @@ protocols:
         methods:
             '-webView:createWebViewWithConfiguration:forNavigationAction:windowFeatures:':
                 name: createWebView
+            '-webViewDidClose:':
+                name: didClose
             '-webView:runJavaScriptAlertPanelWithMessage:initiatedByFrame:completionHandler:':
                 name: runJavaScriptAlertPanel
             '-webView:runJavaScriptConfirmPanelWithMessage:initiatedByFrame:completionHandler:':
@@ -144,6 +190,11 @@ values:
     WKErrorDomain:
         class: WKError
         name: getClassDomain
+
+    WKWebsiteDataType(.*):
+        enum: WKWebsiteDataType
+        name: '#{g[0]}'
+        type: NSString
    
     # Make sure we don't miss any values if new ones are introduced in a later version
     (k?WK.*):

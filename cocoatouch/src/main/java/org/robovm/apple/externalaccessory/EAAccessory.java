@@ -93,6 +93,11 @@ import org.robovm.apple.uikit.*;
     @Property(selector = "hardwareRevision")
     public native String getHardwareRevision();
     /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "dockType")
+    public native String getDockType();
+    /**
      * @since Available in iOS 3.0 and later.
      */
     @Property(selector = "protocolStrings")

@@ -35,7 +35,9 @@ import org.robovm.apple.imageio.*;
 /*<javadoc>*/
 /**
  * @since Available in iOS 4.0 and later.
+ * @deprecated Deprecated in iOS 9.0.
  */
+@Deprecated
 /*</javadoc>*/
 /*<annotations>*/@Library("AssetsLibrary") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/ALAssetsLibrary/*</name>*/ 
@@ -72,51 +74,90 @@ import org.robovm.apple.imageio.*;
     /*<methods>*/
     /**
      * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @GlobalValue(symbol="ALAssetsLibraryChangedNotification", optional=true)
     public static native NSString ChangedNotification();
     
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Method(selector = "enumerateGroupsWithTypes:usingBlock:failureBlock:")
     public native void enumerateGroups(ALAssetsGroupType types, @Block VoidBlock2<ALAssetsGroup, BooleanPtr> enumerationBlock, @Block VoidBlock1<NSError> failureBlock);
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Method(selector = "assetForURL:resultBlock:failureBlock:")
     public native void getAsset(NSURL assetURL, @Block VoidBlock1<ALAsset> resultBlock, @Block VoidBlock1<NSError> failureBlock);
     /**
      * @since Available in iOS 5.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @Method(selector = "groupForURL:resultBlock:failureBlock:")
     public native void getGroup(NSURL groupURL, @Block VoidBlock1<ALAssetsGroup> resultBlock, @Block VoidBlock1<NSError> failureBlock);
     /**
      * @since Available in iOS 5.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @Method(selector = "addAssetsGroupAlbumWithName:resultBlock:failureBlock:")
     public native void addAssetsGroupAlbum(String name, @Block VoidBlock1<ALAssetsGroup> resultBlock, @Block VoidBlock1<NSError> failureBlock);
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @WeaklyLinked
     @Method(selector = "writeImageToSavedPhotosAlbum:orientation:completionBlock:")
     public native void writeImageToSavedPhotosAlbum(CGImage imageRef, ALAssetOrientation orientation, @Block VoidBlock2<NSURL, NSError> completionBlock);
     /**
      * @since Available in iOS 4.1 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @WeaklyLinked
     @Method(selector = "writeImageToSavedPhotosAlbum:metadata:completionBlock:")
     public native void writeImageToSavedPhotosAlbum(CGImage imageRef, CGImageProperties metadata, @Block VoidBlock2<NSURL, NSError> completionBlock);
     /**
      * @since Available in iOS 4.1 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @WeaklyLinked
     @Method(selector = "writeImageDataToSavedPhotosAlbum:metadata:completionBlock:")
     public native void writeImageDataToSavedPhotosAlbum(NSData imageData, CGImageProperties metadata, @Block VoidBlock2<NSURL, NSError> completionBlock);
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Method(selector = "writeVideoAtPathToSavedPhotosAlbum:completionBlock:")
     public native void writeVideoToSavedPhotosAlbum(NSURL videoPathURL, @Block VoidBlock2<NSURL, NSError> completionBlock);
+    /**
+     * @since Available in iOS 5.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Method(selector = "videoAtPathIsCompatibleWithSavedPhotosAlbum:")
     public native boolean isVideoCompatibleWithSavedPhotosAlbum(NSURL videoPathURL);
     /**
      * @since Available in iOS 6.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @Method(selector = "authorizationStatus")
     public static native ALAuthorizationStatus getAuthorizationStatus();
     /**
      * @since Available in iOS 6.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @Method(selector = "disableSharedPhotoStreamsSupport")
     public static native void disableSharedPhotoStreamsSupport();
     /*</methods>*/

@@ -50,6 +50,11 @@ import org.robovm.apple.coregraphics.*;
     /*<methods>*/
     @Method(selector = "webView:createWebViewWithConfiguration:forNavigationAction:windowFeatures:")
     WKWebView createWebView(WKWebView webView, WKWebViewConfiguration configuration, WKNavigationAction navigationAction, WKWindowFeatures windowFeatures);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "webViewDidClose:")
+    void didClose(WKWebView webView);
     @Method(selector = "webView:runJavaScriptAlertPanelWithMessage:initiatedByFrame:completionHandler:")
     void runJavaScriptAlertPanel(WKWebView webView, String message, WKFrameInfo frame, @Block Runnable completionHandler);
     @Method(selector = "webView:runJavaScriptConfirmPanelWithMessage:initiatedByFrame:completionHandler:")

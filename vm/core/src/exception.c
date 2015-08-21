@@ -73,10 +73,6 @@ void rvmPrintStackTrace(Env* env, Object* throwable) {
 }
 
 void rvmThrow(Env* env, Object* e) {
-    if (!env->vm->initialized) {
-        rvmAbort("%s thrown during VM initialization", e && e->clazz ? e->clazz->name : "?");
-    }
-
     // TODO: Check that e != NULL?
     if (env->throwable) {
         rvmAbort("rvmThrow() called with env->throwable already set");
@@ -100,10 +96,6 @@ void rvmThrow(Env* env, Object* e) {
 }
 
 jboolean rvmThrowNew(Env* env, Class* clazz, const char* message) {
-    if (!env->vm->initialized) {
-        rvmAbort("%s thrown during VM initialization: %s", clazz ? clazz->name : "?", message);
-    }
-
     Method* constructor = rvmGetInstanceMethod(env, clazz, "<init>", "(Ljava/lang/String;)V");
     if (!constructor) return FALSE;
     Object* string = NULL;

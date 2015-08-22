@@ -1583,7 +1583,7 @@ void rvmDumpLoadedClasses(Env* env) {
 }
 
 ObjectArray* rvmListClasses(Env* env, Class* instanceofClass, Object* classLoader) {
-    if (!classLoader || rvmGetParentClassLoader(env, classLoader)) {
+    if (!classLoader || rvmGetParentClassLoader(env, classLoader) == NULL) {
         // This is the bootstrap classloader
         return env->vm->options->listBootClasses(env, instanceofClass);
     }

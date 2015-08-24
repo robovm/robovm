@@ -49,7 +49,9 @@ import org.robovm.apple.avfoundation.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public PHAssetChangeRequest() {}
+    protected PHAssetChangeRequest(long handle) { super(handle); }
     protected PHAssetChangeRequest(SkipInit skipInit) { super(skipInit); }
+    public PHAssetChangeRequest(PHAsset asset) { super(create(asset)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "placeholderForCreatedAsset")
@@ -91,6 +93,6 @@ import org.robovm.apple.avfoundation.*;
     @Method(selector = "deleteAssets:")
     public static native void deleteAssets(NSFastEnumeration assets);
     @Method(selector = "changeRequestForAsset:")
-    public static native PHAssetChangeRequest create(PHAsset asset);
+    private static native @Pointer long create(PHAsset asset);
     /*</methods>*/
 }

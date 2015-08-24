@@ -60,6 +60,16 @@ import org.robovm.apple.foundation.*;
     public native NSNumber getFloorsAscended();
     @Property(selector = "floorsDescended")
     public native NSNumber getFloorsDescended();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "currentPace")
+    public native NSNumber getCurrentPace();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "currentCadence")
+    public native NSNumber getCurrentCadence();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

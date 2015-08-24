@@ -79,25 +79,30 @@ import org.robovm.apple.avfoundation.*;
     public native PHAssetBurstSelectionType getBurstSelectionTypes();
     @Property(selector = "representsBurst")
     public native boolean representsBurst();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "sourceType")
+    public native PHAssetSourceType getSourceType();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "canPerformEditOperation:")
     public native boolean canPerformEditOperation(PHAssetEditOperation editOperation);
     @Method(selector = "fetchAssetsInAssetCollection:options:")
-    public static native PHFetchResult fetchAssetsInAssetCollection(PHAssetCollection assetCollection, PHFetchOptions options);
-    @Method(selector = "fetchAssetsWithMediaType:options:")
-    public static native PHFetchResult fetchAssetsWithMediaType(PHAssetMediaType mediaType, PHFetchOptions options);
+    public static native PHFetchResult<PHAsset> fetchAssetsInAssetCollection(PHAssetCollection assetCollection, PHFetchOptions options);
     @Method(selector = "fetchAssetsWithLocalIdentifiers:options:")
-    public static native PHFetchResult fetchAssetsWithLocalIdentifiers(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> identifiers, PHFetchOptions options);
+    public static native PHFetchResult<PHAsset> fetchAssetsWithLocalIdentifiers(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> identifiers, PHFetchOptions options);
     @Method(selector = "fetchKeyAssetsInAssetCollection:options:")
-    public static native PHFetchResult fetchKeyAssetsInAssetCollection(PHAssetCollection assetCollection, PHFetchOptions options);
+    public static native PHFetchResult<PHAsset> fetchKeyAssetsInAssetCollection(PHAssetCollection assetCollection, PHFetchOptions options);
     @Method(selector = "fetchAssetsWithBurstIdentifier:options:")
-    public static native PHFetchResult fetchAssetsWithBurstIdentifier(String burstIdentifier, PHFetchOptions options);
+    public static native PHFetchResult<PHAsset> fetchAssetsWithBurstIdentifier(String burstIdentifier, PHFetchOptions options);
     @Method(selector = "fetchAssetsWithOptions:")
-    public static native PHFetchResult fetchAssets(PHFetchOptions options);
+    public static native PHFetchResult<PHAsset> fetchAssets(PHFetchOptions options);
+    @Method(selector = "fetchAssetsWithMediaType:options:")
+    public static native PHFetchResult<PHAsset> fetchAssetsWithMediaType(PHAssetMediaType mediaType, PHFetchOptions options);
     @Method(selector = "fetchAssetsWithALAssetURLs:options:")
-    public static native PHFetchResult fetchAssetsWithALAssetURLs(NSArray<NSURL> assetURLs, PHFetchOptions options);
+    public static native PHFetchResult<PHAsset> fetchAssetsWithALAssetURLs(NSArray<NSURL> assetURLs, PHFetchOptions options);
     /**
      * @since Available in iOS 8.0 and later.
      */

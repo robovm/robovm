@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.corelocation.*;
 import org.robovm.apple.addressbook.*;
+import org.robovm.apple.mapkit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -57,13 +58,6 @@ import org.robovm.apple.addressbook.*;
     public native EKSourceType getSourceType();
     @Property(selector = "title")
     public native String getTitle();
-    /**
-     * @since Available in iOS 4.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    @Property(selector = "calendars")
-    public native NSSet<EKCalendar> getCalendars();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

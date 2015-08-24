@@ -1,0 +1,74 @@
+package: org.robovm.apple.replaykit
+include: [foundation.yaml, uikit.yaml]
+library: ReplayKit
+framework: ReplayKit
+clang_args: ['-x', 'objective-c']
+headers:
+    - /System/Library/Frameworks/ReplayKit.framework/Headers/ReplayKit.h
+typedefs: {}
+    
+enums:
+    RPRecordingErrorCode: {}
+        
+classes:
+    RPRecordingError: # DONE
+        extends: NSError
+        annotations: ['@StronglyLinked']
+        
+    RPPreviewViewController: {} # DONE
+    RPScreenRecorder: # DONE
+        skip_def_constructor: true
+        methods:
+            '-startRecordingWithMicrophoneEnabled:handler:':
+                name: startRecording
+            '-stopRecordingWithHandler:':
+                name: stopRecording
+                parameters:
+                    handler:
+                        type: '@Block VoidBlock2<RPPreviewViewController, NSError>'
+            '-discardRecordingWithHandler:':
+                name: discardRecording
+            '+sharedRecorder':
+                property: true
+            '+new':
+                exclude: true
+
+protocols:
+    RPPreviewViewControllerDelegate: # DONE
+        methods:
+            '-previewControllerDidFinish:':
+                name: didFinish
+            '-previewController:didFinishWithActivityTypes:':
+                name: didFinish
+                parameters:
+                    activityTypes:
+                        type: Set<String>
+                        marshaler: NSSet.AsStringSetMarshaler
+    RPScreenRecorderDelegate: # DONE
+        methods:
+            '-screenRecorder:didStopRecordingWithError:previewViewController:':
+                name: didStopRecording
+            '-screenRecorderDidChangeAvailability:':
+                name: didChangeAvailability
+
+functions:
+    # Make sure we don't miss any functions if new ones are introduced in a later version
+    (k?RP.*):
+        class: ReplayKit
+        name: 'Function__#{g[0]}'
+
+values:
+    RPRecordingErrorDomain:
+        class: RPRecordingError
+        name: getClassDomain
+    
+    # Make sure we don't miss any values if new ones are introduced in a later version
+    (k?RP.*):
+        class: ReplayKit
+        name: 'Value__#{g[0]}'
+
+constants:
+    # Make sure we don't miss any constants if new ones are introduced in a later version
+    (k?RP.*):
+        class: ReplayKit
+        name: 'Constant__#{g[0]}'

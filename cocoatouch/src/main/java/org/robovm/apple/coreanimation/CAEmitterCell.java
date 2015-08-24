@@ -168,6 +168,10 @@ import org.robovm.apple.metal.*;
     public native @ByVal CGRect getContentsRect();
     @Property(selector = "setContentsRect:")
     public native void setContentsRect(@ByVal CGRect v);
+    @Property(selector = "contentsScale")
+    public native @MachineSizedFloat double getContentsScale();
+    @Property(selector = "setContentsScale:")
+    public native void setContentsScale(@MachineSizedFloat double v);
     @Property(selector = "minificationFilter")
     public native CAFilter getMinificationFilter();
     @Property(selector = "setMinificationFilter:")

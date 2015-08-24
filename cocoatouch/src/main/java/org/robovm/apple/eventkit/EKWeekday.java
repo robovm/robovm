@@ -31,13 +31,14 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.corelocation.*;
 import org.robovm.apple.addressbook.*;
+import org.robovm.apple.mapkit.*;
 /*</imports>*/
 
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-public enum /*<name>*/EKWeekDay/*</name>*/ implements ValuedEnum {
+/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
+public enum /*<name>*/EKWeekday/*</name>*/ implements ValuedEnum {
     /*<values>*/
     Sunday(1L),
     Monday(2L),
@@ -55,15 +56,15 @@ public enum /*<name>*/EKWeekDay/*</name>*/ implements ValuedEnum {
 
     private final long n;
 
-    private /*<name>*/EKWeekDay/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/EKWeekday/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/EKWeekDay/*</name>*/ valueOf(long n) {
-        for (/*<name>*/EKWeekDay/*</name>*/ v : values()) {
+    public static /*<name>*/EKWeekday/*</name>*/ valueOf(long n) {
+        for (/*<name>*/EKWeekday/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/EKWeekDay/*</name>*/.class.getName());
+            + /*<name>*/EKWeekday/*</name>*/.class.getName());
     }
 }

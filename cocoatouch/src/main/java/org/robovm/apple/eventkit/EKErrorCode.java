@@ -31,13 +31,14 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.corelocation.*;
 import org.robovm.apple.addressbook.*;
+import org.robovm.apple.mapkit.*;
 /*</imports>*/
 
 /*<javadoc>*/
 
 /*</javadoc>*/
 @ForceLinkClass(EKError.class)
-/*<annotations>*//*</annotations>*/
+/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/EKErrorCode/*</name>*/ implements NSErrorCode {
     /*<values>*/
     EventNotMutable(0L),
@@ -65,9 +66,13 @@ public enum /*<name>*/EKErrorCode/*</name>*/ implements NSErrorCode {
     CalendarDoesNotAllowEvents(22L),
     CalendarDoesNotAllowReminders(23L),
     SourceDoesNotAllowReminders(24L),
-    PriorityIsInvalid(25L),
-    InvalidEntityType(26L),
-    Last(27L);
+    SourceDoesNotAllowEvents(25L),
+    PriorityIsInvalid(26L),
+    InvalidEntityType(27L),
+    ProcedureAlarmsNotMutable(28L),
+    EventStoreNotAuthorized(29L),
+    OSNotSupported(30L),
+    Last(31L);
     /*</values>*/
 
     /*<bind>*/

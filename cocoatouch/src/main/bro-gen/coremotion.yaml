@@ -20,6 +20,7 @@ classes:
         annotations: ['@StronglyLinked']
 
     CMAccelerometerData: {} # DONE
+    CMRecordedAccelerometerData: {} # DONE
     CMAltimeter: # DONE
         methods:
             '-startRelativeAltitudeUpdatesToQueue:withHandler:':
@@ -92,7 +93,16 @@ classes:
                 parameters:
                     handler:
                         type: '@Block VoidBlock2<CMPedometerData, NSError>'
-    CMPedometerData: {}
+    CMPedometerData: {} # DONE
+    CMSensorDataList: {}      ### TODO make enumeratable
+    CMSensorRecorder: # DONE
+        methods:
+            '-accelerometerDataSince:':
+                name: getAccelerometerDataSince
+            '-accelerometerDataFrom:to:':
+                name: getAccelerometerDataBetween
+            '-recordAccelerometerFor:':
+                trim_after_first_colon: true
     CMStepCounter: # DONE
         methods:
             '-queryStepCountStartingFrom:to:toQueue:withHandler:':

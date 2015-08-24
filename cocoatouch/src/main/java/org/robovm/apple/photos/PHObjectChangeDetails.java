@@ -40,7 +40,7 @@ import org.robovm.apple.avfoundation.*;
  */
 /*</javadoc>*/
 /*<annotations>*/@Library("Photos") @NativeClass/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/PHObjectChangeDetails/*</name>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/PHObjectChangeDetails/*</name>*/ <T extends PHObject> 
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
@@ -53,9 +53,9 @@ import org.robovm.apple.avfoundation.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "objectBeforeChanges")
-    public native PHObject getObjectBeforeChanges();
+    public native T getObjectBeforeChanges();
     @Property(selector = "objectAfterChanges")
-    public native PHObject getObjectAfterChanges();
+    public native T getObjectAfterChanges();
     @Property(selector = "assetContentChanged")
     public native boolean assetContentChanged();
     @Property(selector = "objectWasDeleted")

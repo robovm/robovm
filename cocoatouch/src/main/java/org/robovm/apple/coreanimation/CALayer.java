@@ -123,8 +123,14 @@ import org.robovm.apple.metal.*;
     public native CAGravity getContentsGravity();
     @Property(selector = "setContentsGravity:")
     public native void setContentsGravity(CAGravity v);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Property(selector = "contentsScale")
     public native @MachineSizedFloat double getContentsScale();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Property(selector = "setContentsScale:")
     public native void setContentsScale(@MachineSizedFloat double v);
     @Property(selector = "contentsCenter")
@@ -151,8 +157,14 @@ import org.robovm.apple.metal.*;
     public native boolean needsDisplayOnBoundsChange();
     @Property(selector = "setNeedsDisplayOnBoundsChange:")
     public native void setNeedsDisplayOnBoundsChange(boolean v);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Property(selector = "drawsAsynchronously")
     public native boolean drawsAsynchronously();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Property(selector = "setDrawsAsynchronously:")
     public native void setDrawsAsynchronously(boolean v);
     @Property(selector = "edgeAntialiasingMask")

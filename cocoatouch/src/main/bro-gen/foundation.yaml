@@ -60,6 +60,10 @@ typedefs:
     'void (^)(NSInputStream *, NSOutputStream *, NSError *)': '@Block VoidBlock3<NSInputStream, NSOutputStream, NSError>'
     'void (^)(NSURLCredential *)': '@Block VoidBlock1<NSURLCredential>'
     NSPropertyListReadOptions: NSPropertyListMutabilityOptions
+    vector_int2: VectorInt2
+    'vector_int2 *': VectorInt2.VectorInt2Ptr
+    vector_float2: VectorFloat2
+    'vector_float2 *': VectorFloat2.VectorFloat2Ptr
 
 private_typedefs:
     'void (^)(id, NSRange, BOOL *)': '@Block("(,@ByVal,)") VoidBlock3<NSObject, NSRange, BooleanPtr>'

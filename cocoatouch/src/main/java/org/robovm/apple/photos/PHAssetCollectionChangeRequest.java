@@ -48,6 +48,8 @@ import org.robovm.apple.avfoundation.*;
     /*<constructors>*/
     public PHAssetCollectionChangeRequest() {}
     protected PHAssetCollectionChangeRequest(SkipInit skipInit) { super(skipInit); }
+    public PHAssetCollectionChangeRequest(PHAssetCollection assetCollection) { super(create(assetCollection)); retain(getHandle()); }
+    public PHAssetCollectionChangeRequest(PHAssetCollection assetCollection, PHFetchResult<PHAsset> assets) { super(create(assetCollection, assets)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "placeholderForCreatedAssetCollection")
@@ -76,8 +78,8 @@ import org.robovm.apple.avfoundation.*;
     @Method(selector = "deleteAssetCollections:")
     public static native void deleteAssetCollections(NSFastEnumeration assetCollections);
     @Method(selector = "changeRequestForAssetCollection:")
-    public static native PHAssetCollectionChangeRequest create(PHAssetCollection assetCollection);
+    private static native @Pointer long create(PHAssetCollection assetCollection);
     @Method(selector = "changeRequestForAssetCollection:assets:")
-    public static native PHAssetCollectionChangeRequest create(PHAssetCollection assetCollection, PHFetchResult assets);
+    private static native @Pointer long create(PHAssetCollection assetCollection, PHFetchResult<PHAsset> assets);
     /*</methods>*/
 }

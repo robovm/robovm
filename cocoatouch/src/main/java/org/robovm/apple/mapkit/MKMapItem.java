@@ -69,6 +69,16 @@ import org.robovm.apple.dispatch.*;
     public native NSURL getUrl();
     @Property(selector = "setUrl:")
     public native void setUrl(NSURL v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "timeZone")
+    public native NSTimeZone getTimeZone();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setTimeZone:")
+    public native void setTimeZone(NSTimeZone v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

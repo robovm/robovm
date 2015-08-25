@@ -50,6 +50,8 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public MKCircle() {}
     protected MKCircle(SkipInit skipInit) { super(skipInit); }
+    public MKCircle(@ByVal CLLocationCoordinate2D coord, double radius) { super(create(coord, radius)); retain(getHandle()); }
+    public MKCircle(@ByVal MKMapRect mapRect) { super(create(mapRect)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "coordinate")
@@ -62,9 +64,9 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "circleWithCenterCoordinate:radius:")
-    public static native MKCircle create(@ByVal CLLocationCoordinate2D coord, double radius);
+    private static native @Pointer long create(@ByVal CLLocationCoordinate2D coord, double radius);
     @Method(selector = "circleWithMapRect:")
-    public static native MKCircle create(@ByVal MKMapRect mapRect);
+    private static native @Pointer long create(@ByVal MKMapRect mapRect);
     @Method(selector = "intersectsMapRect:")
     public native boolean intersects(@ByVal MKMapRect mapRect);
     /**

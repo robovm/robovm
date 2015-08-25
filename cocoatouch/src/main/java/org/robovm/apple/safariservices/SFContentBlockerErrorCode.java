@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.mapkit;
+package org.robovm.apple.safariservices;
 
 /*<imports>*/
 import java.io.*;
@@ -28,31 +28,20 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
-import org.robovm.apple.coregraphics.*;
-import org.robovm.apple.corelocation.*;
 import org.robovm.apple.uikit.*;
-import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /**
- * @since Available in iOS 3.0 and later.
+ * @since Available in iOS 9.0 and later.
  */
 /*</javadoc>*/
-/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/MKMapType/*</name>*/ implements ValuedEnum {
+/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
+public enum /*<name>*/SFContentBlockerErrorCode/*</name>*/ implements NSErrorCode {
     /*<values>*/
-    Standard(0L),
-    Satellite(1L),
-    Hybrid(2L),
-    /**
-     * @since Available in iOS 9.0 and later.
-     */
-    SatelliteFlyover(3L),
-    /**
-     * @since Available in iOS 9.0 and later.
-     */
-    HybridFlyover(4L);
+    NoExtensionFound(1L),
+    NoAttachmentFound(2L),
+    LoadingInterrupted(3L);
     /*</values>*/
 
     /*<bind>*/
@@ -62,15 +51,15 @@ public enum /*<name>*/MKMapType/*</name>*/ implements ValuedEnum {
 
     private final long n;
 
-    private /*<name>*/MKMapType/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/SFContentBlockerErrorCode/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/MKMapType/*</name>*/ valueOf(long n) {
-        for (/*<name>*/MKMapType/*</name>*/ v : values()) {
+    public static /*<name>*/SFContentBlockerErrorCode/*</name>*/ valueOf(long n) {
+        for (/*<name>*/SFContentBlockerErrorCode/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/MKMapType/*</name>*/.class.getName());
+            + /*<name>*/SFContentBlockerErrorCode/*</name>*/.class.getName());
     }
 }

@@ -33,43 +33,27 @@ import org.robovm.apple.uikit.*;
 
 /*<javadoc>*/
 /**
- * @since Available in iOS 7.0 and later.
+ * @since Available in iOS 9.0 and later.
  */
 /*</javadoc>*/
 /*<annotations>*/@Library("SafariServices") @NativeClass/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/SSReadingList/*</name>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/SFContentBlockerManager/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/public static class SSReadingListPtr extends Ptr<SSReadingList, SSReadingListPtr> {}/*</ptr>*/
-    /*<bind>*/static { ObjCRuntime.bind(SSReadingList.class); }/*</bind>*/
+    /*<ptr>*/public static class SFContentBlockerManagerPtr extends Ptr<SFContentBlockerManager, SFContentBlockerManagerPtr> {}/*</ptr>*/
+    /*<bind>*/static { ObjCRuntime.bind(SFContentBlockerManager.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public SSReadingList() {}
-    protected SSReadingList(SkipInit skipInit) { super(skipInit); }
+    public SFContentBlockerManager() {}
+    protected SFContentBlockerManager(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
     
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public boolean addReadingListItem(NSURL URL, String title, String previewText) throws NSErrorException {
-       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
-       boolean result = addReadingListItem(URL, title, previewText, ptr);
-       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
-       return result;
-    }
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @Method(selector = "addReadingListItemWithURL:title:previewText:error:")
-    private native boolean addReadingListItem(NSURL URL, String title, String previewText, NSError.NSErrorPtr error);
-    @Method(selector = "defaultReadingList")
-    public static native SSReadingList getDefaultReadingList();
-    @Method(selector = "supportsURL:")
-    public static native boolean supportsURL(NSURL URL);
+    @Method(selector = "reloadContentBlockerWithIdentifier:completionHandler:")
+    public static native void reloadContentBlocker(String identifier, @Block VoidBlock1<NSError> completionHandler);
     /*</methods>*/
 }

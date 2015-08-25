@@ -114,6 +114,26 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "setPitchEnabled:")
     public native void setPitchEnabled(boolean v);
     /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "showsCompass")
+    public native boolean showsCompass();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setShowsCompass:")
+    public native void setShowsCompass(boolean v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "showsScale")
+    public native boolean showsScale();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setShowsScale:")
+    public native void setShowsScale(boolean v);
+    /**
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "showsPointsOfInterest")
@@ -133,6 +153,16 @@ import org.robovm.apple.dispatch.*;
      */
     @Property(selector = "setShowsBuildings:")
     public native void setShowsBuildings(boolean v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "showsTraffic")
+    public native boolean showsTraffic();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setShowsTraffic:")
+    public native void setShowsTraffic(boolean v);
     @Property(selector = "showsUserLocation")
     public native boolean showsUserLocation();
     @Property(selector = "setShowsUserLocation:")
@@ -177,6 +207,8 @@ import org.robovm.apple.dispatch.*;
     public native void setVisibleMapRect(@ByVal MKMapRect mapRect, boolean animate);
     @Method(selector = "mapRectThatFits:")
     public native @ByVal MKMapRect getMapRectThatFits(@ByVal MKMapRect mapRect);
+    @Method(selector = "_handleSelectionAtPoint:")
+    public native void handleSelectionAtPoint(@ByVal CGPoint locationInView);
     @Method(selector = "setVisibleMapRect:edgePadding:animated:")
     public native void setVisibleMapRect(@ByVal MKMapRect mapRect, @ByVal UIEdgeInsets insets, boolean animate);
     @Method(selector = "mapRectThatFits:edgePadding:")

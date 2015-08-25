@@ -34,36 +34,34 @@ import org.robovm.apple.uikit.*;
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("SafariServices") @StronglyLinked/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/SSReadingListError/*</name>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/SFContentBlockerError/*</name>*/ 
     extends /*<extends>*/NSError/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    protected SSReadingListError(SkipInit skipInit) {
+    protected SFContentBlockerError(SkipInit skipInit) {
         super(skipInit);
     }
     
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/static { Bro.bind(SSReadingListError.class); }/*</bind>*/
+    /*<bind>*/static { Bro.bind(SFContentBlockerError.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     @Override
-    public SSReadingListErrorCode getErrorCode() {
-        SSReadingListErrorCode code = null;
+    public SFContentBlockerErrorCode getErrorCode() {
         try {
-            code = SSReadingListErrorCode.valueOf(getCode());
+            return SFContentBlockerErrorCode.valueOf(getCode());
         } catch (IllegalArgumentException e) {
-            // ignore
+            return null;
         }
-        return code;
     }
     /*<methods>*/
     /**
-     * @since Available in iOS 7.0 and later.
+     * @since Available in iOS 9.0 and later.
      */
-    @GlobalValue(symbol="SSReadingListErrorDomain", optional=true)
+    @GlobalValue(symbol="SFContentBlockerErrorDomain", optional=true)
     public static native String getClassDomain();
     /*</methods>*/
 }

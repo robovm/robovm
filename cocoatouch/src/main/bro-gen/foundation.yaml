@@ -14,6 +14,7 @@ typedefs:
     id: NSObject
     Class: Class<?>
     ObjCClass: Class<?>
+    SEL: Selector
     'Protocol *': ObjCProtocol
     'NSString *': String
     'NSString **': NSString.NSStringPtr

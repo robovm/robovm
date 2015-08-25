@@ -160,9 +160,17 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 4.0 and later.
      */
     public static final CGImagePropertyTIFF PrimaryChromaticities = new CGImagePropertyTIFF("PrimaryChromaticities");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final CGImagePropertyTIFF TileWidth = new CGImagePropertyTIFF("TileWidth");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final CGImagePropertyTIFF TileLength = new CGImagePropertyTIFF("TileLength");
     /*</constants>*/
     
-    private static /*<name>*/CGImagePropertyTIFF/*</name>*/[] values = new /*<name>*/CGImagePropertyTIFF/*</name>*/[] {/*<value_list>*/Compression, PhotometricInterpretation, DocumentName, ImageDescription, Make, Model, Orientation, XResolution, YResolution, ResolutionUnit, Software, TransferFunction, DateTime, Artist, HostComputer, Copyright, WhitePoint, PrimaryChromaticities/*</value_list>*/};
+    private static /*<name>*/CGImagePropertyTIFF/*</name>*/[] values = new /*<name>*/CGImagePropertyTIFF/*</name>*/[] {/*<value_list>*/Compression, PhotometricInterpretation, DocumentName, ImageDescription, Make, Model, Orientation, XResolution, YResolution, ResolutionUnit, Software, TransferFunction, DateTime, Artist, HostComputer, Copyright, WhitePoint, PrimaryChromaticities, TileWidth, TileLength/*</value_list>*/};
     
     /*<name>*/CGImagePropertyTIFF/*</name>*/ (String getterName) {
         super(Values.class, getterName);
@@ -275,6 +283,16 @@ import org.robovm.apple.coregraphics.*;
          */
         @GlobalValue(symbol="kCGImagePropertyTIFFPrimaryChromaticities", optional=true)
         public static native CFString PrimaryChromaticities();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyTIFFTileWidth", optional=true)
+        public static native CFString TileWidth();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyTIFFTileLength", optional=true)
+        public static native CFString TileLength();
         /*</values>*/
     }
 }

@@ -1,5 +1,5 @@
 package: org.robovm.apple.safariservices
-include: [foundation.yaml]
+include: [foundation.yaml, uikit.yaml]
 library: SafariServices
 framework: SafariServices
 clang_args: ['-x', 'objective-c']
@@ -9,12 +9,24 @@ typedefs: {}
     
 enums:
     SSReadingListErrorCode: {first: SSReadingListErrorURLSchemeNotAllowed, prefix: SSReadingListError, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler}
+    SFContentBlockerErrorCode: {}
         
 classes:
+    SFContentBlockerError:
+        extends: NSError
+        annotations: ['@StronglyLinked']
     SSReadingListError:
         extends: NSError
         annotations: ['@StronglyLinked']
 
+    SFContentBlockerManager: # DONE
+        methods:
+            '+reloadContentBlockerWithIdentifier:completionHandler:':
+                name: reloadContentBlocker
+    SFSafariViewController: # DONE
+        methods:
+            '-init.*':
+                name: init
     SSReadingList: # DONE
         methods:
             '-init':
@@ -27,26 +39,47 @@ classes:
             '+supportsURL:':
                 trim_after_first_colon: true
 
-protocols: {}
+protocols:
+    SFSafariViewControllerDelegate: # DONE
+        methods:
+            '-safariViewController:activityItemsForURL:title:':
+                name: getActivityItems
+                return_type: NSArray<UIActivity>
+            '-safariViewControllerDidFinish:':
+                name: didFinish
+            '-safariViewController:didCompleteInitialLoad:':
+                name: didCompleteInitialLoad
 
 functions:
     # Make sure we don't miss any functions if new ones are introduced in a later version
-    (SS.*):
+    (k?SS.*):
+        class: SafariServices
+        name: 'Function__#{g[0]}'
+    (k?SF.*):
         class: SafariServices
         name: 'Function__#{g[0]}'
 
 values:
+    SFContentBlockerErrorDomain:
+        class: SFContentBlockerError
+        name: getClassDomain
     SSReadingListErrorDomain:
         class: SSReadingListError
         name: getClassDomain
 
     # Make sure we don't miss any values if new ones are introduced in a later version
-    (SS.*):
+    (k?SS.*):
+        class: SafariServices
+        name: 'Value__#{g[0]}'
+    (k?SF.*):
         class: SafariServices
         name: 'Value__#{g[0]}'
 
 constants:
     # Make sure we don't miss any constants if new ones are introduced in a later version
-    (SS.*):
+    (k?SS.*):
+        class: SafariServices
+        name: 'Constant__#{g[0]}'
+    (k?SF.*):
         class: SafariServices
         name: 'Constant__#{g[0]}'

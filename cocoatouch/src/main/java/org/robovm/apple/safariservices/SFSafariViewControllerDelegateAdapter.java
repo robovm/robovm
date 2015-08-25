@@ -33,37 +33,27 @@ import org.robovm.apple.uikit.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("SafariServices") @StronglyLinked/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/SSReadingListError/*</name>*/ 
-    extends /*<extends>*/NSError/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+/*<annotations>*//*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/SFSafariViewControllerDelegateAdapter/*</name>*/ 
+    extends /*<extends>*/NSObject/*</extends>*/ 
+    /*<implements>*/implements SFSafariViewControllerDelegate/*</implements>*/ {
 
-    protected SSReadingListError(SkipInit skipInit) {
-        super(skipInit);
-    }
-    
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/static { Bro.bind(SSReadingListError.class); }/*</bind>*/
+    /*<bind>*/
+    /*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
+    /*<properties>*/
+    
+    /*</properties>*/
     /*<members>*//*</members>*/
-    @Override
-    public SSReadingListErrorCode getErrorCode() {
-        SSReadingListErrorCode code = null;
-        try {
-            code = SSReadingListErrorCode.valueOf(getCode());
-        } catch (IllegalArgumentException e) {
-            // ignore
-        }
-        return code;
-    }
     /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="SSReadingListErrorDomain", optional=true)
-    public static native String getClassDomain();
+    @NotImplemented("safariViewController:activityItemsForURL:title:")
+    public NSArray<UIActivity> getActivityItems(SFSafariViewController controller, NSURL URL, String title) { return null; }
+    @NotImplemented("safariViewControllerDidFinish:")
+    public void didFinish(SFSafariViewController controller) {}
+    @NotImplemented("safariViewController:didCompleteInitialLoad:")
+    public void didCompleteInitialLoad(SFSafariViewController controller, boolean didLoadSuccessfully) {}
     /*</methods>*/
 }

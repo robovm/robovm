@@ -32,38 +32,30 @@ import org.robovm.apple.uikit.*;
 /*</imports>*/
 
 /*<javadoc>*/
+/**
+ * @since Available in iOS 9.0 and later.
+ */
 /*</javadoc>*/
-/*<annotations>*/@Library("SafariServices") @StronglyLinked/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/SSReadingListError/*</name>*/ 
-    extends /*<extends>*/NSError/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+/*<annotations>*//*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ interface /*<name>*/SFSafariViewControllerDelegate/*</name>*/ 
+    /*<implements>*/extends NSObjectProtocol/*</implements>*/ {
 
-    protected SSReadingListError(SkipInit skipInit) {
-        super(skipInit);
-    }
-    
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/static { Bro.bind(SSReadingListError.class); }/*</bind>*/
+    /*<bind>*/
+    /*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    @Override
-    public SSReadingListErrorCode getErrorCode() {
-        SSReadingListErrorCode code = null;
-        try {
-            code = SSReadingListErrorCode.valueOf(getCode());
-        } catch (IllegalArgumentException e) {
-            // ignore
-        }
-        return code;
-    }
+    /*<properties>*/
+    
+    /*</properties>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="SSReadingListErrorDomain", optional=true)
-    public static native String getClassDomain();
+    @Method(selector = "safariViewController:activityItemsForURL:title:")
+    NSArray<UIActivity> getActivityItems(SFSafariViewController controller, NSURL URL, String title);
+    @Method(selector = "safariViewControllerDidFinish:")
+    void didFinish(SFSafariViewController controller);
+    @Method(selector = "safariViewController:didCompleteInitialLoad:")
+    void didCompleteInitialLoad(SFSafariViewController controller, boolean didLoadSuccessfully);
     /*</methods>*/
+    /*<adapter>*/
+    /*</adapter>*/
 }

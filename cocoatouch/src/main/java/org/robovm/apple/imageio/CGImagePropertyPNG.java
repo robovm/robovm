@@ -152,9 +152,13 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 8.0 and later.
      */
     public static final CGImagePropertyPNG UnclampedDelayTime = new CGImagePropertyPNG("UnclampedDelayTime");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final CGImagePropertyPNG CompressionFilter = new CGImagePropertyPNG("CompressionFilter");
     /*</constants>*/
     
-    private static /*<name>*/CGImagePropertyPNG/*</name>*/[] values = new /*<name>*/CGImagePropertyPNG/*</name>*/[] {/*<value_list>*/Gamma, InterlaceType, XPixelsPerMeter, YPixelsPerMeter, sRGBIntent, Chromaticities, Author, Copyright, CreationTime, Description, ModificationTime, Software, Title, LoopCount, DelayTime, UnclampedDelayTime/*</value_list>*/};
+    private static /*<name>*/CGImagePropertyPNG/*</name>*/[] values = new /*<name>*/CGImagePropertyPNG/*</name>*/[] {/*<value_list>*/Gamma, InterlaceType, XPixelsPerMeter, YPixelsPerMeter, sRGBIntent, Chromaticities, Author, Copyright, CreationTime, Description, ModificationTime, Software, Title, LoopCount, DelayTime, UnclampedDelayTime, CompressionFilter/*</value_list>*/};
     
     /*<name>*/CGImagePropertyPNG/*</name>*/ (String getterName) {
         super(Values.class, getterName);
@@ -257,6 +261,11 @@ import org.robovm.apple.coregraphics.*;
          */
         @GlobalValue(symbol="kCGImagePropertyAPNGUnclampedDelayTime", optional=true)
         public static native CFString UnclampedDelayTime();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="kCGImagePropertyPNGCompressionFilter", optional=true)
+        public static native CFString CompressionFilter();
         /*</values>*/
     }
 }

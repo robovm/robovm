@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.safariservices;
+package org.robovm.apple.avkit;
 
 /*<imports>*/
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -29,41 +30,40 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
+import org.robovm.apple.avfoundation.*;
+import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.iad.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("SafariServices") @StronglyLinked/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/SSReadingListError/*</name>*/ 
+/*<annotations>*/@Library("AVKit") @StronglyLinked/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/AVKitError/*</name>*/ 
     extends /*<extends>*/NSError/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    protected SSReadingListError(SkipInit skipInit) {
+    protected AVKitError(SkipInit skipInit) {
         super(skipInit);
     }
     
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(SSReadingListError.class); }/*</bind>*/
+    /*<ptr>*/public static class AVKitErrorPtr extends Ptr<AVKitError, AVKitErrorPtr> {}/*</ptr>*/
+    /*<bind>*/static { Bro.bind(AVKitError.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     @Override
-    public SSReadingListErrorCode getErrorCode() {
-        SSReadingListErrorCode code = null;
+    public AVKitErrorCode getErrorCode() {
         try {
-            code = SSReadingListErrorCode.valueOf(getCode());
+            return AVKitErrorCode.valueOf(getCode());
         } catch (IllegalArgumentException e) {
-            // ignore
+            return null;
         }
-        return code;
     }
     /*<methods>*/
     /**
-     * @since Available in iOS 7.0 and later.
+     * @since Available in iOS 9.0 and later.
      */
-    @GlobalValue(symbol="SSReadingListErrorDomain", optional=true)
+    @GlobalValue(symbol="AVKitErrorDomain", optional=true)
     public static native String getClassDomain();
     /*</methods>*/
 }

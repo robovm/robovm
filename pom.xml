@@ -3,12 +3,6 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>org.sonatype.oss</groupId>
-    <artifactId>oss-parent</artifactId>
-    <version>7</version>
-  </parent>
-
   <groupId>org.robovm</groupId>
   <version>1.6.1-SNAPSHOT</version>
   <artifactId>robovm-parent</artifactId>
@@ -39,9 +33,9 @@
 
 
   <scm>
-    <url>https://github.com/robovm/robovm</url>
-    <connection>scm:git:git://github.com/robovm/robovm.git</connection>
-    <developerConnection>scm:git:git@github.com:robovm/robovm.git</developerConnection>
+    <url>https://github.com/robovm/robovm-core</url>
+    <connection>scm:git:git://github.com/robovm/robovm-core.git</connection>
+    <developerConnection>scm:git:git@github.com:robovm/robovm-core.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
 

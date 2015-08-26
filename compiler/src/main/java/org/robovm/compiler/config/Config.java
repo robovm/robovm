@@ -121,8 +121,6 @@ public class Config {
     @Element(required = false)
     private String imageName = null;
     @Element(required = false)
-    private Boolean useDynamicJni = null;
-    @Element(required = false)
     private Boolean skipRuntimeLib = null;
     @Element(required = false)
     private File mainJar;
@@ -324,10 +322,6 @@ public class Config {
 
     public boolean isSkipInstall() {
         return skipInstall;
-    }
-
-    public boolean isUseDynamicJni() {
-        return useDynamicJni != null && useDynamicJni.booleanValue();
     }
 
     public int getThreads() {
@@ -1211,11 +1205,6 @@ public class Config {
 
         public Builder skipInstall(boolean b) {
             config.skipInstall = b;
-            return this;
-        }
-
-        public Builder useDynamicJni(boolean b) {
-            config.useDynamicJni = b;
             return this;
         }
 

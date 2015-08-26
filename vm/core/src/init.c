@@ -356,6 +356,10 @@ Env* rvmStartup(Options* options) {
     if (!initClasspathEntries(env, options->resourcesPath, options->rawBootclasspath, &options->bootclasspath)) return NULL;
     if (!initClasspathEntries(env, options->resourcesPath, options->rawClasspath, &options->classpath)) return NULL;
 
+    // Add the current image (executable) to the list of native libs used for
+    // resolution of native methods in classes loaded by the boot ClassLoader.
+    rvmLoadNativeLibrary(env, NULL, NULL);
+
     // Call init on modules
     TRACE("Initializing classes");
     if (!rvmInitClasses(env)) return NULL;
@@ -395,6 +399,10 @@ Env* rvmStartup(Options* options) {
     systemClassLoader = rvmGetSystemClassLoader(env);
     if (rvmExceptionOccurred(env)) goto error_system_ClassLoader;
     rvmRTSetThreadContextClassLoader(env, env->currentThread->threadObj, systemClassLoader);
+
+    // Add the current image (executable) to the list of native libs used for
+    // resolution of native methods in classes loaded by the system ClassLoader.
+    rvmLoadNativeLibrary(env, NULL, systemClassLoader);
 
     TRACE("Initialization done");
     env->vm->initialized = TRUE;
@@ -545,7 +553,9 @@ DynamicLib* rvmOpenDynamicLib(Env* env, const char* file, char** errorMsg) {
         return NULL;
     }
 
-    TRACEF("Opening dynamic library '%s'", file);
+    if (file) {
+        TRACEF("Opening dynamic library '%s'", file);
+    }
 
     dlib = rvmAllocateMemoryAtomicUncollectable(env, sizeof(DynamicLib));
     if (!dlib) {
@@ -554,6 +564,11 @@ DynamicLib* rvmOpenDynamicLib(Env* env, const char* file, char** errorMsg) {
     }
 
     dlib->handle = handle;
+    if (file) {
+        strncpy(dlib->path, file, sizeof(dlib->path) - 1);
+    } else {
+        strncpy(dlib->path, env->vm->options->imagePath, sizeof(dlib->path) - 1);
+    }
 
     return dlib;
 }

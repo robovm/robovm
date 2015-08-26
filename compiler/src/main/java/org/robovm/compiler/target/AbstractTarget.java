@@ -147,6 +147,8 @@ public abstract class AbstractTarget implements Target {
 
             List<String> exportedSymbols = new ArrayList<String>();
             exportedSymbols.addAll(getTargetExportedSymbols());
+            exportedSymbols.add("Java_*");
+            exportedSymbols.add("JNI_OnLoad_*");
             if (config.isSkipInstall()) {
                 exportedSymbols.add("catch_exception_raise");
             }

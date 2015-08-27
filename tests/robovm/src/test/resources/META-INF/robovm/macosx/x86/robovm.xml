@@ -1,6 +1,7 @@
 <config>
   <libs>
     <lib>pass_return_byval_test.o</lib>
+    <lib>../libStaticJNITest.a</lib>
   </libs>
   <exportedSymbols>
     <symbol>native_*</symbol>

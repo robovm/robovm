@@ -6,6 +6,9 @@ IOS_SDK_VERSION=8.4
 SELF=$(basename $0)
 BASE=$(cd $(dirname $0); pwd -P)
 
+rm -rf $BASE/target/jni
+mkdir -p $BASE/target/jni
+
 if [ $(uname) = 'Darwin' ]; then
   if xcrun -f clang &> /dev/null; then
     CC=$(xcrun -f clang)
@@ -20,8 +23,6 @@ if [ $(uname) = 'Darwin' ]; then
 
   XCODE_PATH=$(xcode-select --print-path)
 
-  rm -rf $BASE/target/jni
-  mkdir -p $BASE/target/jni
   $CC -arch arm64 -isysroot $XCODE_PATH/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS$IOS_SDK_VERSION.sdk -I$BASE/../../vm/core/include/ -o $BASE/target/jni/StaticJNITest-arm64.o -c $BASE/src/test/native/StaticJNITest.c
   $CC -arch armv7 -isysroot $XCODE_PATH/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS$IOS_SDK_VERSION.sdk -I$BASE/../../vm/core/include/ -o $BASE/target/jni/StaticJNITest-thumbv7.o -c $BASE/src/test/native/StaticJNITest.c
   $CC -arch i386 -isysroot $XCODE_PATH/Platforms/MacOSX.platform/Developer/SDKs/MacOSX$MACOSX_SDK_VERSION.sdk -I$BASE/../../vm/core/include/ -o $BASE/target/jni/StaticJNITest-x86.o -c $BASE/src/test/native/StaticJNITest.c
@@ -47,4 +48,19 @@ if [ $(uname) = 'Darwin' ]; then
 else
   CC=$(which gcc)
   CXX=$(which g++)
+
+  $CC -m32 -fPIC -I$BASE/../../vm/core/include/ -o $BASE/target/jni/StaticJNITest-linux-x86.o -c $BASE/src/test/native/StaticJNITest.c
+  $CC -m64 -fPIC -I$BASE/../../vm/core/include/ -o $BASE/target/jni/StaticJNITest-linux-x86_64.o -c $BASE/src/test/native/StaticJNITest.c
+  ar rcs $BASE/target/jni/libStaticJNITest-linux-x86.a $BASE/target/jni/StaticJNITest-linux-x86.o
+  ar rcs $BASE/target/jni/libStaticJNITest-linux-x86_64.a $BASE/target/jni/StaticJNITest-linux-x86_64.o
+  mkdir -p $BASE/src/test/resources/META-INF/robovm/linux/x86
+  mkdir -p $BASE/src/test/resources/META-INF/robovm/linux/x86_64
+  cp $BASE/target/jni/libStaticJNITest-linux-x86.a $BASE/src/test/resources/META-INF/robovm/linux/x86/libStaticJNITest.a
+  cp $BASE/target/jni/libStaticJNITest-linux-x86_64.a $BASE/src/test/resources/META-INF/robovm/linux/x86_64/libStaticJNITest.a
+
+  $CC -m32 -fPIC -I$BASE/../../vm/core/include/ -shared -o $BASE/target/jni/libDynamicJNITest-linux-x86.so $BASE/src/test/native/DynamicJNITest.c
+  $CC -m64 -fPIC -I$BASE/../../vm/core/include/ -shared -o $BASE/target/jni/libDynamicJNITest-linux-x86_64.so $BASE/src/test/native/DynamicJNITest.c
+  cp $BASE/target/jni/libDynamicJNITest-linux-x86.so $BASE/src/test/resources/
+  cp $BASE/target/jni/libDynamicJNITest-linux-x86_64.so $BASE/src/test/resources/
+
 fi

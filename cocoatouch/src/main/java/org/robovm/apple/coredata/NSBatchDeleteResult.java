@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.spritekit;
+package org.robovm.apple.coredata;
 
 /*<imports>*/
 import java.io.*;
@@ -28,36 +28,30 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
-import org.robovm.apple.uikit.*;
-import org.robovm.apple.coregraphics.*;
-import org.robovm.apple.dispatch.*;
-import org.robovm.apple.coreimage.*;
-import org.robovm.apple.avfoundation.*;
-import org.robovm.apple.glkit.*;
-import org.robovm.apple.scenekit.*;
-import org.robovm.apple.gameplaykit.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 9.0 and later.
+ */
 /*</javadoc>*/
-/*<annotations>*/@Library("SpriteKit") @NativeClass/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/SKCropNode/*</name>*/ 
-    extends /*<extends>*/SKNode/*</extends>*/ 
+/*<annotations>*/@Library("CoreData") @NativeClass/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/NSBatchDeleteResult/*</name>*/ 
+    extends /*<extends>*/NSPersistentStoreResult/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/public static class SKCropNodePtr extends Ptr<SKCropNode, SKCropNodePtr> {}/*</ptr>*/
-    /*<bind>*/static { ObjCRuntime.bind(SKCropNode.class); }/*</bind>*/
+    /*<ptr>*/public static class NSBatchDeleteResultPtr extends Ptr<NSBatchDeleteResult, NSBatchDeleteResultPtr> {}/*</ptr>*/
+    /*<bind>*/static { ObjCRuntime.bind(NSBatchDeleteResult.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public SKCropNode() {}
-    protected SKCropNode(SkipInit skipInit) { super(skipInit); }
+    public NSBatchDeleteResult() {}
+    protected NSBatchDeleteResult(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    @Property(selector = "maskNode")
-    public native SKNode getMaskNode();
-    @Property(selector = "setMaskNode:")
-    public native void setMaskNode(SKNode v);
+    @Property(selector = "result")
+    public native NSObject getResult();
+    @Property(selector = "resultType")
+    public native NSBatchDeleteRequestResultType getResultType();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

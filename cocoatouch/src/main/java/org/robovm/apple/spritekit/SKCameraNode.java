@@ -39,29 +39,30 @@ import org.robovm.apple.gameplaykit.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 9.0 and later.
+ */
 /*</javadoc>*/
 /*<annotations>*/@Library("SpriteKit") @NativeClass/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/SKPhysicsJointLimit/*</name>*/ 
-    extends /*<extends>*/SKPhysicsJoint/*</extends>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/SKCameraNode/*</name>*/ 
+    extends /*<extends>*/SKNode/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/public static class SKPhysicsJointLimitPtr extends Ptr<SKPhysicsJointLimit, SKPhysicsJointLimitPtr> {}/*</ptr>*/
-    /*<bind>*/static { ObjCRuntime.bind(SKPhysicsJointLimit.class); }/*</bind>*/
+    /*<ptr>*/public static class SKCameraNodePtr extends Ptr<SKCameraNode, SKCameraNodePtr> {}/*</ptr>*/
+    /*<bind>*/static { ObjCRuntime.bind(SKCameraNode.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public SKPhysicsJointLimit() {}
-    protected SKPhysicsJointLimit(SkipInit skipInit) { super(skipInit); }
+    public SKCameraNode() {}
+    protected SKCameraNode(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    @Property(selector = "maxLength")
-    public native @MachineSizedFloat double getMaxLength();
-    @Property(selector = "setMaxLength:")
-    public native void setMaxLength(@MachineSizedFloat double v);
+    
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "jointWithBodyA:bodyB:anchorA:anchorB:")
-    public static native SKPhysicsJointLimit create(SKPhysicsBody bodyA, SKPhysicsBody bodyB, @ByVal CGPoint anchorA, @ByVal CGPoint anchorB);
+    @Method(selector = "containsNode:")
+    public native boolean containsNode(SKNode node);
+    @Method(selector = "containedNodeSet")
+    public native NSSet<SKNode> getContainedNodeSet();
     /*</methods>*/
 }

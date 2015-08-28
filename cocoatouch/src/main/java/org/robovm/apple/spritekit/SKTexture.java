@@ -35,6 +35,7 @@ import org.robovm.apple.coreimage.*;
 import org.robovm.apple.avfoundation.*;
 import org.robovm.apple.glkit.*;
 import org.robovm.apple.scenekit.*;
+import org.robovm.apple.gameplaykit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -62,6 +63,11 @@ import org.robovm.apple.scenekit.*;
     public native boolean usesMipmaps();
     @Property(selector = "setUsesMipmaps:")
     public native void setUsesMipmaps(boolean v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "CGImage")
+    public native CGImage getCGImage();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

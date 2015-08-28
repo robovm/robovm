@@ -57,6 +57,9 @@ import org.robovm.apple.foundation.*;
     public static final double Version10_9 = 481.0;
     public static final double Version10_9_2 = 481.1;
     public static final double Version10_9_3 = 481.3;
+    public static final double Version10_10 = 526.0;
+    public static final double Version10_10_2 = 526.1;
+    public static final double Version10_10_3 = 526.2;
     public static final double Version_iPhoneOS_3_0 = 241.0;
     public static final double Version_iPhoneOS_3_1 = 248.0;
     public static final double Version_iPhoneOS_3_2 = 310.2;
@@ -70,6 +73,8 @@ import org.robovm.apple.foundation.*;
     public static final double Version_iPhoneOS_6_1 = 419.1;
     public static final double Version_iPhoneOS_7_0 = 479.1;
     public static final double Version_iPhoneOS_7_1 = 479.3;
+    public static final double Version_iPhoneOS_8_0 = 519.0;
+    public static final double Version_iPhoneOS_8_3 = 519.15;
     /*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/

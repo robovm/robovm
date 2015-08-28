@@ -39,29 +39,34 @@ import org.robovm.apple.gameplaykit.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 9.0 and later.
+ */
 /*</javadoc>*/
-/*<annotations>*/@Library("SpriteKit") @NativeClass/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/SKPhysicsJointLimit/*</name>*/ 
-    extends /*<extends>*/SKPhysicsJoint/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
+public enum /*<name>*/SKParticleRenderOrder/*</name>*/ implements ValuedEnum {
+    /*<values>*/
+    OldestLast(0L),
+    OldestFirst(1L),
+    DontCare(2L);
+    /*</values>*/
 
-    /*<ptr>*/public static class SKPhysicsJointLimitPtr extends Ptr<SKPhysicsJointLimit, SKPhysicsJointLimitPtr> {}/*</ptr>*/
-    /*<bind>*/static { ObjCRuntime.bind(SKPhysicsJointLimit.class); }/*</bind>*/
+    /*<bind>*/
+    /*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*/
-    public SKPhysicsJointLimit() {}
-    protected SKPhysicsJointLimit(SkipInit skipInit) { super(skipInit); }
-    /*</constructors>*/
-    /*<properties>*/
-    @Property(selector = "maxLength")
-    public native @MachineSizedFloat double getMaxLength();
-    @Property(selector = "setMaxLength:")
-    public native void setMaxLength(@MachineSizedFloat double v);
-    /*</properties>*/
-    /*<members>*//*</members>*/
-    /*<methods>*/
-    @Method(selector = "jointWithBodyA:bodyB:anchorA:anchorB:")
-    public static native SKPhysicsJointLimit create(SKPhysicsBody bodyA, SKPhysicsBody bodyB, @ByVal CGPoint anchorA, @ByVal CGPoint anchorB);
-    /*</methods>*/
+    /*<methods>*//*</methods>*/
+
+    private final long n;
+
+    private /*<name>*/SKParticleRenderOrder/*</name>*/(long n) { this.n = n; }
+    public long value() { return n; }
+    public static /*<name>*/SKParticleRenderOrder/*</name>*/ valueOf(long n) {
+        for (/*<name>*/SKParticleRenderOrder/*</name>*/ v : values()) {
+            if (v.n == n) {
+                return v;
+            }
+        }
+        throw new IllegalArgumentException("No constant with value " + n + " found in " 
+            + /*<name>*/SKParticleRenderOrder/*</name>*/.class.getName());
+    }
 }

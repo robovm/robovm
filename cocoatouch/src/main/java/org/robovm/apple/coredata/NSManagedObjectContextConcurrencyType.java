@@ -38,6 +38,11 @@ import org.robovm.apple.foundation.*;
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/NSManagedObjectContextConcurrencyType/*</name>*/ implements ValuedEnum {
     /*<values>*/
+    /**
+     * @since Available in iOS 3.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     Confinement(0L),
     PrivateQueue(1L),
     MainQueue(2L);

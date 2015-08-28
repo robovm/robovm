@@ -35,6 +35,7 @@ import org.robovm.apple.coreimage.*;
 import org.robovm.apple.avfoundation.*;
 import org.robovm.apple.glkit.*;
 import org.robovm.apple.scenekit.*;
+import org.robovm.apple.gameplaykit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -95,6 +96,11 @@ import org.robovm.apple.scenekit.*;
     protected static native SKTextureAtlas create(NSDictionary properties);
     @Method(selector = "preloadTextureAtlases:withCompletionHandler:")
     public static native void preloadTextureAtlases(NSArray<SKTextureAtlas> textureAtlases, @Block Runnable completionHandler);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "preloadTextureAtlasesNamed:withCompletionHandler:")
+    public static native void preloadTextureAtlases(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> atlasNames, @Block VoidBlock2<NSError, NSArray<SKTextureAtlas>> completionHandler);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder coder);
     @Method(selector = "initWithCoder:")

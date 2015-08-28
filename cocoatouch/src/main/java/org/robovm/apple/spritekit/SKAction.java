@@ -35,6 +35,7 @@ import org.robovm.apple.coreimage.*;
 import org.robovm.apple.avfoundation.*;
 import org.robovm.apple.glkit.*;
 import org.robovm.apple.scenekit.*;
+import org.robovm.apple.gameplaykit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -51,6 +52,23 @@ import org.robovm.apple.scenekit.*;
     /*<constructors>*/
     public SKAction() {}
     protected SKAction(SkipInit skipInit) { super(skipInit); }
+    public SKAction(double seconds, @Block("(,@MachineSizedFloat)") VoidBlock2<SKNode, Double> block) { super(create(seconds, block)); retain(getHandle()); }
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public SKAction(String name) { super(create(name)); retain(getHandle()); }
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public SKAction(String name, double sec) { super(create(name, sec)); retain(getHandle()); }
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public SKAction(String name, NSURL url) { super(create(name, url)); retain(getHandle()); }
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public SKAction(String name, NSURL url, double sec) { super(create(name, url, sec)); retain(getHandle()); }
     public SKAction(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
@@ -143,14 +161,40 @@ import org.robovm.apple.scenekit.*;
      */
     @Method(selector = "unhide")
     public static native SKAction unhide();
+    /**
+     * @since Available in iOS 7.1 and later.
+     */
     @Method(selector = "setTexture:")
     public static native SKAction setTexture(SKTexture texture);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "setNormalTexture:")
+    public static native SKAction setNormalTexture(SKTexture texture);
+    /**
+     * @since Available in iOS 7.1 and later.
+     */
     @Method(selector = "setTexture:resize:")
     public static native SKAction setTexture(SKTexture texture, boolean resize);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "setNormalTexture:resize:")
+    public static native SKAction setNormalTexture(SKTexture texture, boolean resize);
     @Method(selector = "animateWithTextures:timePerFrame:")
-    public static native SKAction animate(NSArray<SKTexture> textures, double sec);
+    public static native SKAction animateFrames(NSArray<SKTexture> textures, double sec);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "animateWithNormalTextures:timePerFrame:")
+    public static native SKAction animateNormalFrames(NSArray<SKTexture> textures, double sec);
     @Method(selector = "animateWithTextures:timePerFrame:resize:restore:")
-    public static native SKAction animate(NSArray<SKTexture> textures, double sec, boolean resize, boolean restore);
+    public static native SKAction animateFrames(NSArray<SKTexture> textures, double sec, boolean resize, boolean restore);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "animateWithNormalTextures:timePerFrame:resize:restore:")
+    public static native SKAction animateNormalFrames(NSArray<SKTexture> textures, double sec, boolean resize, boolean restore);
     @Method(selector = "playSoundFileNamed:waitForCompletion:")
     public static native SKAction playSound(String soundFile, boolean wait);
     @Method(selector = "colorizeWithColor:colorBlendFactor:duration:")
@@ -199,8 +243,14 @@ import org.robovm.apple.scenekit.*;
      */
     @Method(selector = "reachToNode:rootNode:velocity:")
     public static native SKAction reachToNodeWithVelocity(SKNode node, SKNode root, @MachineSizedFloat double velocity);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "strengthTo:duration:")
     public static native SKAction strengthTo(float strength, double sec);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "strengthBy:duration:")
     public static native SKAction strengthBy(float strength, double sec);
     @Method(selector = "waitForDuration:")
@@ -217,7 +267,152 @@ import org.robovm.apple.scenekit.*;
     @Method(selector = "runAction:onChildWithName:")
     public static native SKAction runAction(SKAction action, String name);
     @Method(selector = "customActionWithDuration:actionBlock:")
-    public static native SKAction customAction(double seconds, @Block("(,@MachineSizedFloat)") VoidBlock2<SKNode, Double> block);
+    private static native @Pointer long create(double seconds, @Block("(,@MachineSizedFloat)") VoidBlock2<SKNode, Double> block);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "actionNamed:")
+    private static native @Pointer long create(String name);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "actionNamed:duration:")
+    private static native @Pointer long create(String name, double sec);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "actionNamed:fromURL:")
+    private static native @Pointer long create(String name, NSURL url);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "actionNamed:fromURL:duration:")
+    private static native @Pointer long create(String name, NSURL url, double sec);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "changeChargeTo:duration:")
+    public static native SKAction changeChargeTo(float v, double duration);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "changeChargeBy:duration:")
+    public static native SKAction changeChargeBy(float v, double duration);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "changeMassTo:duration:")
+    public static native SKAction changeMassTo(float v, double duration);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "changeMassBy:duration:")
+    public static native SKAction changeMassBy(float v, double duration);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "applyForce:duration:")
+    public static native SKAction applyForce(@ByVal CGVector force, double sec);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "applyForce:atPoint:duration:")
+    public static native SKAction applyForce(@ByVal CGVector force, @ByVal CGPoint point, double sec);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "applyTorque:duration:")
+    public static native SKAction applyTorque(@MachineSizedFloat double torque, double sec);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "applyImpulse:duration:")
+    public static native SKAction applyImpulse(@ByVal CGVector impulse, double sec);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "applyImpulse:atPoint:duration:")
+    public static native SKAction applyImpulse(@ByVal CGVector impulse, @ByVal CGPoint point, double sec);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "applyAngularImpulse:duration:")
+    public static native SKAction applyAngularImpulse(@MachineSizedFloat double impulse, double sec);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "play")
+    public static native SKAction play();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "pause")
+    public static native SKAction pause();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "stop")
+    public static native SKAction stop();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "changePlaybackRateTo:duration:")
+    public static native SKAction changePlaybackRateTo(float v, double duration);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "changePlaybackRateBy:duration:")
+    public static native SKAction changePlaybackRateBy(float v, double duration);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "changeVolumeTo:duration:")
+    public static native SKAction changeVolumeTo(float v, double duration);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "changeVolumeBy:duration:")
+    public static native SKAction changeVolumeBy(float v, double duration);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "stereoPanTo:duration:")
+    public static native SKAction stereoPanTo(float v, double duration);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "stereoPanBy:duration:")
+    public static native SKAction stereoPanBy(float v, double duration);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "changeReverbTo:duration:")
+    public static native SKAction changeReverbTo(float v, double duration);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "changeReverbBy:duration:")
+    public static native SKAction changeReverbBy(float v, double duration);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "changeObstructionTo:duration:")
+    public static native SKAction changeObstructionTo(float v, double duration);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "changeObstructionBy:duration:")
+    public static native SKAction changeObstructionBy(float v, double duration);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "changeOcclusionTo:duration:")
+    public static native SKAction changeOcclusionTo(float v, double duration);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "changeOcclusionBy:duration:")
+    public static native SKAction changeOcclusionBy(float v, double duration);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder coder);
     @Method(selector = "initWithCoder:")

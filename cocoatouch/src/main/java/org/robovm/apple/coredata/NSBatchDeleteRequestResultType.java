@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.spritekit;
+package org.robovm.apple.coredata;
 
 /*<imports>*/
 import java.io.*;
@@ -28,33 +28,19 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
-import org.robovm.apple.uikit.*;
-import org.robovm.apple.coregraphics.*;
-import org.robovm.apple.dispatch.*;
-import org.robovm.apple.coreimage.*;
-import org.robovm.apple.avfoundation.*;
-import org.robovm.apple.glkit.*;
-import org.robovm.apple.scenekit.*;
-import org.robovm.apple.gameplaykit.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /**
- * @since Available in iOS 8.0 and later.
+ * @since Available in iOS 9.0 and later.
  */
 /*</javadoc>*/
-/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/SKUniformType/*</name>*/ implements ValuedEnum {
+/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
+public enum /*<name>*/NSBatchDeleteRequestResultType/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    None(0L),
-    Float(1L),
-    FloatVector2(2L),
-    FloatVector3(3L),
-    FloatVector4(4L),
-    FloatMatrix2(5L),
-    FloatMatrix3(6L),
-    FloatMatrix4(7L),
-    Texture(8L);
+    StatusOnly(0L),
+    ObjectIDs(1L),
+    Count(2L);
     /*</values>*/
 
     /*<bind>*/
@@ -64,15 +50,15 @@ public enum /*<name>*/SKUniformType/*</name>*/ implements ValuedEnum {
 
     private final long n;
 
-    private /*<name>*/SKUniformType/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/NSBatchDeleteRequestResultType/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/SKUniformType/*</name>*/ valueOf(long n) {
-        for (/*<name>*/SKUniformType/*</name>*/ v : values()) {
+    public static /*<name>*/NSBatchDeleteRequestResultType/*</name>*/ valueOf(long n) {
+        for (/*<name>*/NSBatchDeleteRequestResultType/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/SKUniformType/*</name>*/.class.getName());
+            + /*<name>*/NSBatchDeleteRequestResultType/*</name>*/.class.getName());
     }
 }

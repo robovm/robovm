@@ -715,7 +715,6 @@ public class IOSTarget extends AbstractTarget {
         if (isSimulatorArch(arch)) {
             dict.put("CFBundleSupportedPlatforms", new NSArray(new NSString("iPhoneSimulator")));
         } else {
-            dict.put("CFBundleResourceSpecification", "ResourceRules.plist");
             dict.put("CFBundleSupportedPlatforms", new NSArray(new NSString("iPhoneOS")));
             dict.put("DTPlatformVersion", sdk.getPlatformVersion());
             dict.put("DTPlatformBuild", sdk.getPlatformBuild());

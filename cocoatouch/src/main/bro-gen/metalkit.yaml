@@ -1,0 +1,40 @@
+package: org.robovm.apple.metalkit
+include: [foundation.yaml]
+library: MetalKit
+framework: MetalKit
+clang_args: ['-x', 'objective-c']
+headers:
+    - /System/Library/Frameworks/MetalKit.framework/Headers/MetalKit.h
+    - /System/Library/Frameworks/MetalKit.framework/Headers/MTKDefines.h
+typedefs: {}
+    
+enums:
+        
+classes:
+    MTKMesh: {}
+    MTKMeshBuffer: {}
+    MTKMeshBufferAllocator: {}
+    MTKSubmesh: {}
+    MTKTextureLoader: {}
+    MTKView: {}
+
+protocols:
+    MTKViewDelegate: {}
+
+functions:
+    # Make sure we don't miss any functions if new ones are introduced in a later version
+    (k?MTK.*):
+        class: MetalKit
+        name: 'Function__#{g[0]}'
+
+values:
+    # Make sure we don't miss any values if new ones are introduced in a later version
+    (k?MTK.*):
+        class: MetalKit
+        name: 'Value__#{g[0]}'
+
+constants:
+    # Make sure we don't miss any constants if new ones are introduced in a later version
+    (k?MTK.*):
+        class: MetalKit
+        name: 'Constant__#{g[0]}'

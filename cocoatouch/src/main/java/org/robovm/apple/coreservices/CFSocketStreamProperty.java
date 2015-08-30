@@ -136,52 +136,78 @@ import org.robovm.apple.corefoundation.*;
      */
     public static final CFSocketStreamProperty SocketRemoteNetService = new CFSocketStreamProperty("SocketRemoteNetService");
     /**
-     * @since Available in iOS 2.0 and later.
+     * @since Available in iOS 9.0 and later.
      */
+    public static final CFSocketStreamProperty SocketExtendedBackgroundIdleMode = new CFSocketStreamProperty("SocketExtendedBackgroundIdleMode");
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     public static final CFSocketStreamProperty HTTPResponseHeader = new CFSocketStreamProperty("HTTPResponseHeader");
     /**
      * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static final CFSocketStreamProperty HTTPFinalURL = new CFSocketStreamProperty("HTTPFinalURL");
     /**
      * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static final CFSocketStreamProperty HTTPFinalRequest = new CFSocketStreamProperty("HTTPFinalRequest");
     /**
      * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static final CFSocketStreamProperty HTTPProxy = new CFSocketStreamProperty("HTTPProxy");
     /**
      * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static final CFSocketStreamProperty HTTPProxyHost = new CFSocketStreamProperty("HTTPProxyHost");
     /**
      * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static final CFSocketStreamProperty HTTPProxyPort = new CFSocketStreamProperty("HTTPProxyPort");
     /**
      * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static final CFSocketStreamProperty HTTPSProxyHost = new CFSocketStreamProperty("HTTPSProxyHost");
     /**
      * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static final CFSocketStreamProperty HTTPSProxyPort = new CFSocketStreamProperty("HTTPSProxyPort");
     /**
      * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static final CFSocketStreamProperty HTTPShouldAutoredirect = new CFSocketStreamProperty("HTTPShouldAutoredirect");
     /**
      * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static final CFSocketStreamProperty HTTPAttemptPersistentConnection = new CFSocketStreamProperty("HTTPAttemptPersistentConnection");
     /**
      * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static final CFSocketStreamProperty HTTPRequestBytesWrittenCount = new CFSocketStreamProperty("HTTPRequestBytesWrittenCount");
     /*</constants>*/
     
-    private static /*<name>*/CFSocketStreamProperty/*</name>*/[] values = new /*<name>*/CFSocketStreamProperty/*</name>*/[] {/*<value_list>*/SSLContext, SSLPeerTrust, SSLSettings, NetworkServiceType, NoCellular, ConnectionIsCellular, SOCKSProxy, ProxyLocalBypass, SocketSecurityLevel, ShouldCloseNativeSocket, SocketRemoteHost, SocketRemoteNetService, HTTPResponseHeader, HTTPFinalURL, HTTPFinalRequest, HTTPProxy, HTTPProxyHost, HTTPProxyPort, HTTPSProxyHost, HTTPSProxyPort, HTTPShouldAutoredirect, HTTPAttemptPersistentConnection, HTTPRequestBytesWrittenCount/*</value_list>*/};
+    private static /*<name>*/CFSocketStreamProperty/*</name>*/[] values = new /*<name>*/CFSocketStreamProperty/*</name>*/[] {/*<value_list>*/SSLContext, SSLPeerTrust, SSLSettings, NetworkServiceType, NoCellular, ConnectionIsCellular, SOCKSProxy, ProxyLocalBypass, SocketSecurityLevel, ShouldCloseNativeSocket, SocketRemoteHost, SocketRemoteNetService, SocketExtendedBackgroundIdleMode, HTTPResponseHeader, HTTPFinalURL, HTTPFinalRequest, HTTPProxy, HTTPProxyHost, HTTPProxyPort, HTTPSProxyHost, HTTPSProxyPort, HTTPShouldAutoredirect, HTTPAttemptPersistentConnection, HTTPRequestBytesWrittenCount/*</value_list>*/};
     
     /*<name>*/CFSocketStreamProperty/*</name>*/ (String getterName) {
         super(Values.class, getterName);
@@ -265,58 +291,85 @@ import org.robovm.apple.corefoundation.*;
         @GlobalValue(symbol="kCFStreamPropertySocketRemoteNetService", optional=true)
         public static native CFString SocketRemoteNetService();
         /**
-         * @since Available in iOS 2.0 and later.
+         * @since Available in iOS 9.0 and later.
          */
+        @GlobalValue(symbol="kCFStreamPropertySocketExtendedBackgroundIdleMode", optional=true)
+        public static native CFString SocketExtendedBackgroundIdleMode();
+        /**
+         * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
+         */
+        @Deprecated
         @GlobalValue(symbol="kCFStreamPropertyHTTPResponseHeader", optional=true)
         public static native CFString HTTPResponseHeader();
         /**
          * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="kCFStreamPropertyHTTPFinalURL", optional=true)
         public static native CFString HTTPFinalURL();
         /**
          * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="kCFStreamPropertyHTTPFinalRequest", optional=true)
         public static native CFString HTTPFinalRequest();
         /**
          * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="kCFStreamPropertyHTTPProxy", optional=true)
         public static native CFString HTTPProxy();
         /**
          * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="kCFStreamPropertyHTTPProxyHost", optional=true)
         public static native CFString HTTPProxyHost();
         /**
          * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="kCFStreamPropertyHTTPProxyPort", optional=true)
         public static native CFString HTTPProxyPort();
         /**
          * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="kCFStreamPropertyHTTPSProxyHost", optional=true)
         public static native CFString HTTPSProxyHost();
         /**
          * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="kCFStreamPropertyHTTPSProxyPort", optional=true)
         public static native CFString HTTPSProxyPort();
         /**
          * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="kCFStreamPropertyHTTPShouldAutoredirect", optional=true)
         public static native CFString HTTPShouldAutoredirect();
         /**
          * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="kCFStreamPropertyHTTPAttemptPersistentConnection", optional=true)
         public static native CFString HTTPAttemptPersistentConnection();
         /**
          * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="kCFStreamPropertyHTTPRequestBytesWrittenCount", optional=true)
         public static native CFString HTTPRequestBytesWrittenCount();
         /*</values>*/

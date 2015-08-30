@@ -42,6 +42,34 @@ public final class /*<name>*/SecAccessControlCreateFlags/*</name>*/ extends Bits
     /*<values>*/
     public static final SecAccessControlCreateFlags None = new SecAccessControlCreateFlags(0L);
     public static final SecAccessControlCreateFlags UserPresence = new SecAccessControlCreateFlags(1L);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final SecAccessControlCreateFlags TouchIDAny = new SecAccessControlCreateFlags(2L);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final SecAccessControlCreateFlags TouchIDCurrentSet = new SecAccessControlCreateFlags(8L);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final SecAccessControlCreateFlags DevicePasscode = new SecAccessControlCreateFlags(16L);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final SecAccessControlCreateFlags Or = new SecAccessControlCreateFlags(16384L);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final SecAccessControlCreateFlags And = new SecAccessControlCreateFlags(32768L);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final SecAccessControlCreateFlags PrivateKeyUsage = new SecAccessControlCreateFlags(1073741824L);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final SecAccessControlCreateFlags ApplicationPassword = new SecAccessControlCreateFlags(-2147483648L);
     /*</values>*/
 
     /*<bind>*/

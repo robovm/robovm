@@ -66,6 +66,11 @@ import org.robovm.apple.foundation.*;
      */
     @Property(selector = "hasChanges")
     public native boolean hasChanges();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Property(selector = "hasPersistentChangedValues")
+    public native boolean hasPersistentChangedValues();
     @Property(selector = "isFault")
     public native boolean isFault();
     /**
@@ -99,6 +104,11 @@ import org.robovm.apple.foundation.*;
      */
     @Method(selector = "hasFaultForRelationshipNamed:")
     public native boolean hasFaultForRelationship(String key);
+    /**
+     * @since Available in iOS 8.3 and later.
+     */
+    @Method(selector = "objectIDsForRelationshipNamed:")
+    public native NSArray<NSManagedObjectID> getObjectIDsForRelationship(String key);
     @Method(selector = "willAccessValueForKey:")
     public native void willAccessValue(String key);
     @Method(selector = "didAccessValueForKey:")

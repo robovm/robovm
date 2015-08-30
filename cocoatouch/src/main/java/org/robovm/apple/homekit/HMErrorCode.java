@@ -28,10 +28,13 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 8.0 and later.
+ */
 /*</javadoc>*/
 @ForceLinkClass(HMError.class)
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
@@ -118,7 +121,19 @@ public enum /*<name>*/HMErrorCode/*</name>*/ implements NSErrorCode {
     AddAccessoryFailed(79L),
     MissingEntitlement(80L),
     CannotUnblockNonBridgeAccessory(81L),
-    DeviceLocked(82L);
+    DeviceLocked(82L),
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    CannotRemoveBuiltinActionSet(83L),
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    LocationForHomeDisabled(84L),
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    NotAuthorizedForLocationServices(85L);
     /*</values>*/
 
     /*<bind>*/

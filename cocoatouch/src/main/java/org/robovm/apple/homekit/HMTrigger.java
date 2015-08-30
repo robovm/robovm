@@ -28,6 +28,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -44,7 +45,6 @@ import org.robovm.apple.foundation.*;
     /*<bind>*/static { ObjCRuntime.bind(HMTrigger.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public HMTrigger() {}
     protected HMTrigger(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
@@ -56,6 +56,11 @@ import org.robovm.apple.foundation.*;
     public native NSArray<HMActionSet> getActionSets();
     @Property(selector = "lastFireDate")
     public native NSDate getLastFireDate();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "uniqueIdentifier")
+    public native NSUUID getUniqueIdentifier();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

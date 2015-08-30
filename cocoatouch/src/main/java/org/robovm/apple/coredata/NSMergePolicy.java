@@ -90,5 +90,33 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
     }
     @Method(selector = "resolveConflicts:error:")
     private native boolean resolveConflicts(NSArray<NSMergeConflict> list, NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public boolean resolveOptimisticLockingVersionConflicts(NSArray<NSMergeConflict> list) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = resolveOptimisticLockingVersionConflicts(list, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "resolveOptimisticLockingVersionConflicts:error:")
+    private native boolean resolveOptimisticLockingVersionConflicts(NSArray<NSMergeConflict> list, NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public boolean resolveConstraintConflicts(NSArray<NSConstraintConflict> list) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = resolveConstraintConflicts(list, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "resolveConstraintConflicts:error:")
+    private native boolean resolveConstraintConflicts(NSArray<NSConstraintConflict> list, NSError.NSErrorPtr error);
     /*</methods>*/
 }

@@ -18,6 +18,7 @@ enums:
     NSPersistentStoreRequestType: {first: NSFetchRequestType, suffix: RequestType, type: MachineUInt}
     NSPersistentStoreUbiquitousTransitionType: {}
     NSSnapshotEventType: {first: NSSnapshotEventUndoInsertion, type: MachineUInt, bits: true}
+    NSBatchDeleteRequestResultType: {}
     NSBatchUpdateRequestResultType: {}
     NSBatchUpdateRequestType: {}
     NSStatusOnlyResultType: {}
@@ -97,6 +98,16 @@ classes:
                 name: setValue
                 visibility: private # arguments switched
     NSAttributeDescription: {} # DONE
+    NSBatchDeleteRequest: # DONE
+        methods:
+            '-initWithFetchRequest:':
+                name: init
+            '-initWithObjectIDs:':
+                name: init
+                parameters:
+                    objects:
+                        type: NSArray<NSManagedObjectID>
+    NSBatchDeleteResult: {} # DONE
     NSBatchUpdateRequest: # DONE
         properties:
             'propertiesToUpdate':
@@ -107,6 +118,27 @@ classes:
             '+batchUpdateRequestWithEntityName:':
                 name: create
     NSBatchUpdateResult: {} # DONE
+    NSConstraintConflict: # DONE
+        properties:
+            'constraint':
+                type: List<String>
+                marshaler: NSArray.AsStringListMarshaler
+            'conflictingObjects':
+                type: NSArray<NSManagedObject>
+            'conflictingSnapshots':
+                type: NSArray<NSDictionary>
+        methods:
+            '-initWithConstraint:databaseObject:databaseSnapshot:conflictingObjects:conflictingSnapshots:':
+                name: init
+                parameters:
+                    contraint:
+                        name: constraint
+                        type: List<String>
+                        marshaler: NSArray.AsStringListMarshaler
+                    conflictingObjects:
+                        type: NSArray<NSManagedObject>
+                    conflictingSnapshots:
+                        type: NSArray<NSDictionary>
     NSEntityDescription: # DONE
         properties:
             'subentitiesByName':
@@ -121,6 +153,10 @@ classes:
                 type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSAttributeDescription>'
             'relationshipsByName':
                 type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSRelationshipDescription>'
+            'compoundIndexes':
+                type: NSArray<NSArray<?>>
+            'uniquenessConstraints':
+                type: NSArray<NSArray<?>>
         methods:
             '-relationshipsWithDestinationEntity:':
                 name: getRelationshipsWithDestination
@@ -293,6 +329,9 @@ classes:
             '-setPrimitiveValue:forKey:':
                 name: setPrimitiveValue
                 visibility: private # switched arguments
+            '-objectIDsForRelationshipNamed:':
+                name: getObjectIDsForRelationship
+                return_type: NSArray<NSManagedObjectID>
             '-committedValuesForKeys:':
                 name: getCommittedValues
                 return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
@@ -364,6 +403,15 @@ classes:
                         type: NSArray<NSManagedObject>
             '-mergeChangesFromContextDidSaveNotification:':
                 trim_after_first_colon: true
+            '-shouldHandleInaccessibleFault:forObjectID:triggeredByProperty:':
+                trim_after_first_colon: true
+            '+new':
+                exclude: true
+            '+mergeChangesFromRemoteContextSave:intoContexts:':
+                trim_after_first_colon: true
+                parameters:
+                    contexts:
+                        type: NSArray<NSManagedObjectContext>
     NSManagedObjectID: # DONE
         methods:
             '-URIRepresentation':
@@ -470,6 +518,18 @@ classes:
                 parameters:
                     list:
                         type: NSArray<NSMergeConflict>
+            '-resolveOptimisticLockingVersionConflicts:error:':
+                trim_after_first_colon: true
+                throws: NSErrorException
+                parameters:
+                    list:
+                        type: NSArray<NSMergeConflict>
+            '-resolveConstraintConflicts:error:':
+                trim_after_first_colon: true
+                throws: NSErrorException
+                parameters:
+                    list:
+                        type: NSArray<NSConstraintConflict>
     NSMigrationManager: # DONE
         methods:
             '-initWithSourceModel:destinationModel:':
@@ -575,6 +635,20 @@ classes:
                 parameters:
                     options:
                         type: NSPersistentStoreOptions
+            '-destroyPersistentStoreAtURL:withType:options:error:':
+                name: destroyPersistentStore
+                throws: NSErrorException
+                parameters:
+                    options:
+                        type: NSPersistentStoreOptions
+            '-replacePersistentStoreAtURL:destinationOptions:withPersistentStoreFromURL:sourceOptions:storeType:error:':
+                name: replacePersistentStore
+                throws: NSErrorException
+                parameters:
+                    destinationOptions:
+                        type: NSPersistentStoreOptions
+                    sourceOptions:
+                        type: NSPersistentStoreOptions
             '-performBlock:':
                 trim_after_first_colon: true
             '-performBlockAndWait:':
@@ -587,6 +661,21 @@ classes:
                 parameters:
                     storeClass:
                         type: 'Class<? extends NSPersistentStore>'
+            '+metadataForPersistentStoreOfType:URL:options:error:':
+                name: getMetadataForPersistentStoreType
+                throws: NSErrorException
+                return_type: NSPersistentStoreMetadata
+                parameters:
+                    options:
+                        type: NSPersistentStoreOptions
+            '+setMetadata:forPersistentStoreOfType:URL:options:error:':
+                name: setMetadataForPersistentStoreType
+                throws: NSErrorException
+                parameters:
+                    metadata:
+                        type: NSPersistentStoreMetadata
+                    options:
+                        type: NSPersistentStoreOptions
             '+metadataForPersistentStoreOfType:URL:error:':
                 name: getMetadataForPersistentStoreType
                 throws: NSErrorException
@@ -790,6 +879,8 @@ values:
             FileProtection:
                 type: NSFileProtection
                 hint: GlobalValueEnumeration<NSString>
+            ForceDestroy:
+                type: boolean
     NSPersistentStore(Timeout)Option:
         dictionary: NSPersistentStoreOptions
         name: '#{g[0]}'
@@ -815,6 +906,10 @@ values:
         name: '#{g[0]}'
         type: NSString
     NS(InferMappingModelAutomatically)Option:
+        dictionary: NSPersistentStoreOptions
+        name: '#{g[0]}'
+        type: NSString
+    NSPersistentStore(ForceDestroy)Option:
         dictionary: NSPersistentStoreOptions
         name: '#{g[0]}'
         type: NSString
@@ -850,6 +945,8 @@ values:
         enum: NSExpressionMigrationKey
         name: '#{g[0]}'
         type: NSString
+    NSFetchRequestExpressionType:
+        exclude: true
 
     # Make sure we don't miss any values if new ones are introduced in a later version
     (k?NS.*):

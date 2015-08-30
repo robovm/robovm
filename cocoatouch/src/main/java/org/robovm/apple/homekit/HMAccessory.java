@@ -28,6 +28,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -50,8 +51,18 @@ import org.robovm.apple.foundation.*;
     /*<properties>*/
     @Property(selector = "name")
     public native String getName();
+    /**
+     * @since Available in iOS 8.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Property(selector = "identifier")
     public native NSUUID getIdentifier();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "uniqueIdentifier")
+    public native NSUUID getUniqueIdentifier();
     @Property(selector = "delegate")
     public native HMAccessoryDelegate getDelegate();
     @Property(selector = "setDelegate:", strongRef = true)
@@ -60,8 +71,23 @@ import org.robovm.apple.foundation.*;
     public native boolean isReachable();
     @Property(selector = "isBridged")
     public native boolean isBridged();
+    /**
+     * @since Available in iOS 8.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Property(selector = "identifiersForBridgedAccessories")
     public native NSArray<NSUUID> getIdentifiersForBridgedAccessories();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "uniqueIdentifiersForBridgedAccessories")
+    public native NSArray<NSUUID> getUniqueIdentifiersForBridgedAccessories();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "category")
+    public native HMAccessoryCategory getCategory();
     @Property(selector = "room")
     public native HMRoom getRoom();
     @Property(selector = "services")

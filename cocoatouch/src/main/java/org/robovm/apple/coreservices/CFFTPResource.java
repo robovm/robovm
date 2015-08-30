@@ -104,7 +104,9 @@ import org.robovm.apple.corefoundation.*;
 
     /**
      * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public long getMode() {
         if (has(Keys.Mode())) {
             CFNumber val = get(Keys.Mode(), CFNumber.class);
@@ -114,7 +116,9 @@ import org.robovm.apple.corefoundation.*;
     }
     /**
      * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public String getName() {
         if (has(Keys.Name())) {
             CFString val = get(Keys.Name(), CFString.class);
@@ -124,7 +128,9 @@ import org.robovm.apple.corefoundation.*;
     }
     /**
      * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public String getOwner() {
         if (has(Keys.Owner())) {
             CFString val = get(Keys.Owner(), CFString.class);
@@ -134,7 +140,9 @@ import org.robovm.apple.corefoundation.*;
     }
     /**
      * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public String getGroup() {
         if (has(Keys.Group())) {
             CFString val = get(Keys.Group(), CFString.class);
@@ -144,7 +152,9 @@ import org.robovm.apple.corefoundation.*;
     }
     /**
      * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public String getLink() {
         if (has(Keys.Link())) {
             CFString val = get(Keys.Link(), CFString.class);
@@ -154,7 +164,9 @@ import org.robovm.apple.corefoundation.*;
     }
     /**
      * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public long getSize() {
         if (has(Keys.Size())) {
             CFNumber val = get(Keys.Size(), CFNumber.class);
@@ -164,7 +176,9 @@ import org.robovm.apple.corefoundation.*;
     }
     /**
      * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public long getType() {
         if (has(Keys.Type())) {
             CFNumber val = get(Keys.Type(), CFNumber.class);
@@ -180,42 +194,58 @@ import org.robovm.apple.corefoundation.*;
         static { Bro.bind(Keys.class); }
         /**
          * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="kCFFTPResourceMode", optional=true)
         public static native CFString Mode();
         /**
          * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="kCFFTPResourceName", optional=true)
         public static native CFString Name();
         /**
          * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="kCFFTPResourceOwner", optional=true)
         public static native CFString Owner();
         /**
          * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="kCFFTPResourceGroup", optional=true)
         public static native CFString Group();
         /**
          * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="kCFFTPResourceLink", optional=true)
         public static native CFString Link();
         /**
          * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="kCFFTPResourceSize", optional=true)
         public static native CFString Size();
         /**
          * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="kCFFTPResourceType", optional=true)
         public static native CFString Type();
         /**
          * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="kCFFTPResourceModDate", optional=true)
         public static native CFString ModDate();
     }

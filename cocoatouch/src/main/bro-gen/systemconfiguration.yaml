@@ -44,11 +44,11 @@ functions:
         return_marshaler: CFType.NoRetainMarshaler
         parameters:
             address:
-                type: 'Struct<?>'
+                type: Struct<?>
             localAddress:
-                type: 'Struct<?>'
+                type: Struct<?>
             remoteAddress:
-                type: 'Struct<?>'
+                type: Struct<?>
     SCNetworkReachability(GetFlags):
         class: SCNetworkReachability
         name: '#{g[0]}'

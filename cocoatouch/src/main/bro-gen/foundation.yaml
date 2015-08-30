@@ -12,9 +12,11 @@ typedefs:
     NSUInteger: MachineUInt
     _NSZone: NSZone
     id: NSObject
+    'id *': NSObject
     Class: Class<?>
     ObjCClass: Class<?>
     SEL: Selector
+    'char *': BytePtr
     'Protocol *': ObjCProtocol
     'NSString *': String
     'NSString **': NSString.NSStringPtr
@@ -23,9 +25,9 @@ typedefs:
     'NSArray **': NSArray.NSArrayPtr<?>
     'NSMutableArray *': NSMutableArray<?>
     'NSMutableArray **': NSMutableArray.NSMutableArrayPtr<?>
-    'NSDictionary *': NSDictionary
+    'NSDictionary *': 'NSDictionary<?, ?>'
     'NSDictionary **': NSDictionary.NSDictionaryPtr
-    'NSMutableDictionary *': NSMutableDictionary
+    'NSMutableDictionary *': 'NSMutableDictionary<?, ?>'
     'NSMutableDictionary **': NSMutableDictionary.NSMutableDictionaryPtr
     'NSSet *': NSSet<?>
     'NSSet **': NSSet.NSSetPtr<?>

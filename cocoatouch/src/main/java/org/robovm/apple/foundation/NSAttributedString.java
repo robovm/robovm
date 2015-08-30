@@ -65,7 +65,6 @@ import org.robovm.apple.dispatch.*;
         }
         initObject(init(str, attrs.getDictionary()));
     }
-    @SuppressWarnings("unchecked")
     public NSAttributedString(String str, CMTextMarkupAttributes attrs) {
         super((SkipInit)null);
         if (attrs == null) {
@@ -73,7 +72,6 @@ import org.robovm.apple.dispatch.*;
         }
         initObject(init(str, attrs.getDictionary().as(NSDictionary.class)));
     }
-    @SuppressWarnings("unchecked")
     public NSAttributedString(String str, CTAttributedStringAttributes attrs) {
         super((SkipInit)null);
         if (attrs == null) {

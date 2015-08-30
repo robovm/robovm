@@ -89,51 +89,75 @@ import org.robovm.apple.corefoundation.*;
     /*<constants>*/
     /**
      * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static final CFFTPStreamProperty UserName = new CFFTPStreamProperty("UserName");
     /**
      * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static final CFFTPStreamProperty Password = new CFFTPStreamProperty("Password");
     /**
      * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static final CFFTPStreamProperty UsePassiveMode = new CFFTPStreamProperty("UsePassiveMode");
     /**
      * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static final CFFTPStreamProperty ResourceSize = new CFFTPStreamProperty("ResourceSize");
     /**
      * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static final CFFTPStreamProperty FetchResourceInfo = new CFFTPStreamProperty("FetchResourceInfo");
     /**
      * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static final CFFTPStreamProperty FileTransferOffset = new CFFTPStreamProperty("FileTransferOffset");
     /**
      * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static final CFFTPStreamProperty AttemptPersistentConnection = new CFFTPStreamProperty("AttemptPersistentConnection");
     /**
      * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static final CFFTPStreamProperty Proxy = new CFFTPStreamProperty("Proxy");
     /**
      * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static final CFFTPStreamProperty ProxyHost = new CFFTPStreamProperty("ProxyHost");
     /**
      * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static final CFFTPStreamProperty ProxyPort = new CFFTPStreamProperty("ProxyPort");
     /**
      * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static final CFFTPStreamProperty ProxyUser = new CFFTPStreamProperty("ProxyUser");
     /**
      * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static final CFFTPStreamProperty ProxyPassword = new CFFTPStreamProperty("ProxyPassword");
     /*</constants>*/
     
@@ -162,62 +186,86 @@ import org.robovm.apple.corefoundation.*;
         /*<values>*/
         /**
          * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="kCFStreamPropertyFTPUserName", optional=true)
         public static native CFString UserName();
         /**
          * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="kCFStreamPropertyFTPPassword", optional=true)
         public static native CFString Password();
         /**
          * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="kCFStreamPropertyFTPUsePassiveMode", optional=true)
         public static native CFString UsePassiveMode();
         /**
          * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="kCFStreamPropertyFTPResourceSize", optional=true)
         public static native CFString ResourceSize();
         /**
          * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="kCFStreamPropertyFTPFetchResourceInfo", optional=true)
         public static native CFString FetchResourceInfo();
         /**
          * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="kCFStreamPropertyFTPFileTransferOffset", optional=true)
         public static native CFString FileTransferOffset();
         /**
          * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="kCFStreamPropertyFTPAttemptPersistentConnection", optional=true)
         public static native CFString AttemptPersistentConnection();
         /**
          * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="kCFStreamPropertyFTPProxy", optional=true)
         public static native CFString Proxy();
         /**
          * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="kCFStreamPropertyFTPProxyHost", optional=true)
         public static native CFString ProxyHost();
         /**
          * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="kCFStreamPropertyFTPProxyPort", optional=true)
         public static native CFString ProxyPort();
         /**
          * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="kCFStreamPropertyFTPProxyUser", optional=true)
         public static native CFString ProxyUser();
         /**
          * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="kCFStreamPropertyFTPProxyPassword", optional=true)
         public static native CFString ProxyPassword();
         /*</values>*/

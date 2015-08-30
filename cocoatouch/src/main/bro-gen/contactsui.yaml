@@ -1,0 +1,81 @@
+package: org.robovm.apple.contactsui
+include: [foundation.yaml, contacts.yaml, uikit.yaml]
+library: ContactsUI
+framework: ContactsUI
+clang_args: ['-x', 'objective-c']
+headers:
+    - /System/Library/Frameworks/ContactsUI.framework/Headers/ContactsUI.h
+typedefs: {}
+    
+enums:
+        
+classes:
+    CNContactPickerViewController: # DONE
+        properties:
+            'displayedPropertyKeys':
+                type: List<CNContactPropertyKey>
+                marshaler: CNContactPropertyKey.AsListMarshaler
+    CNContactViewController: # DONE
+        properties:
+            'displayedPropertyKeys':
+                type: List<CNContactPropertyKey>
+                marshaler: CNContactPropertyKey.AsListMarshaler
+        methods:
+            '-highlightPropertyWithKey:identifier:':
+                name: highlightProperty
+                parameters:
+                    key:
+                        type: CNContactPropertyKey
+            '+descriptorForRequiredKeys':
+                property: true
+            '+viewControllerForContact:':
+                name: createForContact
+            '+viewControllerForUnknownContact:':
+                name: createForUnknownContact
+            '+viewControllerForNewContact:':
+                name: createForNewContact
+
+protocols:
+    CNContactPickerDelegate: # DONE
+        methods:
+            '-contactPickerDidCancel:':
+                name: didCancel
+            '-contactPicker:didSelectContact:':
+                name: didSelectContact
+            '-contactPicker:didSelectContactProperty:':
+                name: didSelectContactProperty
+            '-contactPicker:didSelectContacts:':
+                name: didSelectContacts
+                parameters:
+                    contacts:
+                        type: NSArray<CNContact>
+            '-contactPicker:didSelectContactProperties:':
+                name: didSelectContactProperties
+                parameters:
+                    contactProperties:
+                        type: NSArray<CNContactProperty>
+    CNContactViewControllerDelegate: # DONE
+        methods:
+            '-contactViewController:shouldPerformDefaultActionForContactProperty:':
+                name: shouldPerformDefaultAction
+            '-contactViewController:didCompleteWithContact:':
+                name: didComplete
+
+functions:
+    # Make sure we don't miss any functions if new ones are introduced in a later version
+    (k?CN.*):
+        class: ContactsUI
+        name: 'Function__#{g[0]}'
+
+values:
+   
+    # Make sure we don't miss any values if new ones are introduced in a later version
+    (k?CN.*):
+        class: ContactsUI
+        name: 'Value__#{g[0]}'
+
+constants:
+    # Make sure we don't miss any constants if new ones are introduced in a later version
+    (k?CN.*):
+        class: ContactsUI
+        name: 'Constant__#{g[0]}'

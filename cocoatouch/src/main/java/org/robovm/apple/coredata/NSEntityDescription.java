@@ -114,12 +114,22 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "compoundIndexes")
-    public native NSArray<?> getCompoundIndexes();
+    public native NSArray<NSArray<?>> getCompoundIndexes();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "setCompoundIndexes:")
-    public native void setCompoundIndexes(NSArray<?> v);
+    public native void setCompoundIndexes(NSArray<NSArray<?>> v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "uniquenessConstraints")
+    public native NSArray<NSArray<?>> getUniquenessConstraints();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setUniquenessConstraints:")
+    public native void setUniquenessConstraints(NSArray<NSArray<?>> v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

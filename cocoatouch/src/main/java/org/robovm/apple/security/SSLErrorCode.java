@@ -87,7 +87,9 @@ public enum /*<name>*/SSLErrorCode/*</name>*/ implements ValuedEnum {
     BadRecordMac(-9846L),
     RecordOverflow(-9847L),
     BadConfiguration(-9848L),
-    UnexpectedRecord(-9849L);
+    UnexpectedRecord(-9849L),
+    WeakPeerEphemeralDHKey(-9850L),
+    ClientHelloReceived(-9851L);
     /*</values>*/
 
     /*<bind>*/

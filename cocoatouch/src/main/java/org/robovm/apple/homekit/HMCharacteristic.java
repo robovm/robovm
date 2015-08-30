@@ -28,6 +28,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -50,6 +51,11 @@ import org.robovm.apple.foundation.*;
     /*<properties>*/
     @Property(selector = "characteristicType")
     public native HMCharacteristicType getCharacteristicType();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "localizedDescription")
+    public native String getLocalizedDescription();
     @Property(selector = "service")
     public native HMService getService();
     @Property(selector = "properties")
@@ -60,6 +66,11 @@ import org.robovm.apple.foundation.*;
     public native NSObject getValue();
     @Property(selector = "isNotificationEnabled")
     public native boolean isNotificationEnabled();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "uniqueIdentifier")
+    public native NSUUID getUniqueIdentifier();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

@@ -1,5 +1,5 @@
 package: org.robovm.apple.cloudkit
-include: [foundation.yaml, corelocation.yaml]
+include: [foundation.yaml, corelocation.yaml, contacts.yaml]
 library: CloudKit
 framework: CloudKit
 clang_args: ['-x', 'objective-c']

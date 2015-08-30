@@ -1,0 +1,126 @@
+package: org.robovm.apple.watchconnectivity
+include: [foundation.yaml]
+library: WatchConnectivity
+framework: WatchConnectivity
+clang_args: ['-x', 'objective-c']
+headers:
+    - /System/Library/Frameworks/WatchConnectivity.framework/Headers/WatchConnectivity.h
+typedefs: {}
+    
+enums:
+    WCErrorCode: {}
+        
+classes:
+    WCError:
+        extends: NSError
+        annotations: ['@StronglyLinked']
+
+    WCSession: # DONE
+        properties:
+            'iOSDeviceNeedsUnlockAfterRebootForReachability':
+                getter: doesIOSDeviceNeedUnlockAfterRebootForReachability
+            '(applicationContext|receivedApplicationContext)':
+                type: 'NSDictionary<NSString, ?>'
+            'outstandingUserInfoTransfers':
+                type: NSArray<WCSessionUserInfoTransfer>
+            'outstandingFileTransfers':
+                type: NSArray<WCSessionFileTransfer>
+        methods:
+            '-sendMessage:replyHandler:errorHandler:':
+                trim_after_first_colon: true
+                parameters:
+                    message:
+                        type: 'NSDictionary<NSString, ?>'
+                    replyHandler:
+                        type: '@Block VoidBlock1<NSDictionary<NSString, ?>>'
+            '-sendMessageData:replyHandler:errorHandler:':
+                trim_after_first_colon: true
+            '-updateApplicationContext:error:':
+                trim_after_first_colon: true
+                throws: NSErrorException
+                parameters:
+                    applicationContext:
+                        type: 'NSDictionary<NSString, ?>'
+            '-(transferUserInfo:|transferCurrentComplicationUserInfo:)':
+                trim_after_first_colon: true
+                parameters:
+                    userInfo:
+                        type: 'NSDictionary<NSString, ?>'
+            '-transferFile:metadata:':
+                trim_after_first_colon: true
+                parameters:
+                    metadata:
+                        type: 'NSDictionary<NSString, ?>'
+            '+defaultSession':
+                property: true
+    WCSessionFile: # DONE
+        properties:
+            'metadata':
+                type: 'NSDictionary<NSString, ?>'
+    WCSessionFileTransfer: {} # DONE
+    WCSessionUserInfoTransfer: # DONE
+        properties:
+            'userInfo':
+                type: 'NSDictionary<NSString, ?>'
+
+protocols:
+    WCSessionDelegate: # DONE
+        methods:
+            '-sessionWatchStateDidChange:':
+                name: watchStateDidChange
+            '-sessionReachabilityDidChange:':
+                name: reachabilityDidChange
+            '-session:didReceiveMessage:':
+                name: didReceiveMessage
+                parameters:
+                    message:
+                        type: 'NSDictionary<NSString, ?>'
+            '-session:didReceiveMessage:replyHandler:':
+                name: didReceiveMessage
+                parameters:
+                    message:
+                        type: 'NSDictionary<NSString, ?>'
+                    replyHandler:
+                        type: '@Block VoidBlock1<NSDictionary<NSString, ?>>'
+            '-session:didReceiveMessageData:':
+                name: didReceiveMessageData
+            '-session:didReceiveMessageData:replyHandler:':
+                name: didReceiveMessageData
+            '-session:didReceiveApplicationContext:':
+                name: didReceiveApplicationContext
+                parameters:
+                    applicationContext:
+                        type: 'NSDictionary<NSString, ?>'
+            '-session:didFinishUserInfoTransfer:error:':
+                name: didFinishUserInfoTransfer
+            '-session:didReceiveUserInfo:':
+                name: didReceiveUserInfo
+                parameters:
+                    userInfo:
+                        type: 'NSDictionary<NSString, ?>'
+            '-session:didFinishFileTransfer:error:':
+                name: didFinishFileTransfer
+            '-session:didReceiveFile:':
+                name: didReceiveFile
+
+functions:
+    # Make sure we don't miss any functions if new ones are introduced in a later version
+    (k?WC.*):
+        class: WatchConnectivity
+        name: 'Function__#{g[0]}'
+
+values:
+    WCErrorDomain:
+        class: WCError
+        name: getClassDomain
+
+    # Make sure we don't miss any values if new ones are introduced in a later version
+    (k?WC.*):
+        class: WatchConnectivity
+        name: 'Value__#{g[0]}'
+
+constants:
+    # Make sure we don't miss any constants if new ones are introduced in a later version
+    (k?WC.*):
+        class: WatchConnectivity
+        name: 'Constant__#{g[0]}'

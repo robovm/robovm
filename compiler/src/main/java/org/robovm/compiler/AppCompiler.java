@@ -626,8 +626,6 @@ public class AppCompiler {
                     builder.infoPList(new File(args[++i]));
                 } else if ("-entitlements".equals(args[i])) {
                     builder.iosEntitlementsPList(new File(args[++i]));
-                } else if ("-resourcerules".equals(args[i])) {
-                    builder.iosResourceRulesPList(new File(args[++i]));
                 } else if ("-signidentity".equals(args[i])) {
                     builder.iosSignIdentity(SigningIdentity.find(SigningIdentity.list(), args[++i]));
                 } else if ("-provisioningprofile".equals(args[i])) {

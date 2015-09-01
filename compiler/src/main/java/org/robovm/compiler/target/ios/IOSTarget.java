@@ -75,8 +75,7 @@ public class IOSTarget extends AbstractTarget {
     private static File iosSimPath;
 
     private Arch arch;
-    private SDK sdk;
-    private File resourceRulesPList;
+    private SDK sdk;    
     private File entitlementsPList;
     private SigningIdentity signIdentity;
     private ProvisioningProfile provisioningProfile;

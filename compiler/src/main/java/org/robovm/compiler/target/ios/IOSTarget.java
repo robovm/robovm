@@ -346,8 +346,7 @@ public class IOSTarget extends AbstractTarget {
             // LLDB can't resolve the DWARF info
             if (!config.isDebug()) {
                 strip(installDir, getExecutable());
-            }
-            copyResourcesPList(installDir);
+            }            
             if (config.isIosSkipSigning()) {
                 config.getLogger().warn("Skipping code signing. The resulting app will "
                         + "be unsigned and will not run on unjailbroken devices");
@@ -382,8 +381,7 @@ public class IOSTarget extends AbstractTarget {
         createInfoPList(appDir);
         generateDsym(appDir, getExecutable(), true);
 
-        if (isDeviceArch(arch)) {
-            copyResourcesPList(appDir);
+        if (isDeviceArch(arch)) {            
             if (config.isIosSkipSigning()) {
                 config.getLogger().warn("Skiping code signing. The resulting app will "
                         + "be unsigned and will not run on unjailbroken devices");
@@ -472,15 +470,6 @@ public class IOSTarget extends AbstractTarget {
         new Executor(config.getLogger(), new File(config.getHome().getBinDir(), "ldid"))
                 .args(args)
                 .exec();
-    }
-
-    private void copyResourcesPList(File destDir) throws IOException {
-        File destFile = new File(destDir, "ResourceRules.plist");
-        if (resourceRulesPList != null) {
-            FileUtils.copyFile(resourceRulesPList, destFile);
-        } else {
-            FileUtils.copyURLToFile(getClass().getResource("/ResourceRules.plist"), destFile);
-        }
     }
 
     private File getOrCreateEntitlementsPList(boolean getTaskAllow, String bundleId) throws IOException {

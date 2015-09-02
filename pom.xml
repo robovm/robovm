@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.robovm</groupId>
-  <version>1.6.1-SNAPSHOT</version>
+  <version>1.7.0</version>
   <artifactId>robovm-parent</artifactId>
   <name>RoboVM</name>
   <packaging>pom</packaging>
@@ -36,7 +36,7 @@
     <url>https://github.com/robovm/robovm-core</url>
     <connection>scm:git:git://github.com/robovm/robovm-core.git</connection>
     <developerConnection>scm:git:git@github.com:robovm/robovm-core.git</developerConnection>
-    <tag>HEAD</tag>
+    <tag>robovm-1.7.0</tag>
   </scm>
 
   <issueManagement>

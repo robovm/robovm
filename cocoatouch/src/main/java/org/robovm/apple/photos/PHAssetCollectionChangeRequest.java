@@ -78,8 +78,8 @@ import org.robovm.apple.avfoundation.*;
     @Method(selector = "deleteAssetCollections:")
     public static native void deleteAssetCollections(NSFastEnumeration assetCollections);
     @Method(selector = "changeRequestForAssetCollection:")
-    private static native @Pointer long create(PHAssetCollection assetCollection);
+    protected static native @Pointer long create(PHAssetCollection assetCollection);
     @Method(selector = "changeRequestForAssetCollection:assets:")
-    private static native @Pointer long create(PHAssetCollection assetCollection, PHFetchResult<PHAsset> assets);
+    protected static native @Pointer long create(PHAssetCollection assetCollection, PHFetchResult<PHAsset> assets);
     /*</methods>*/
 }

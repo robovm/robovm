@@ -80,7 +80,7 @@ import org.robovm.apple.audiounit.*;
             return NSNotificationCenter.getDefaultCenter().addObserver(FailedToPlayToEndTimeNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke(NSNotification notification) {
-                    NSDictionary<NSString, NSObject> data = notification.getUserInfo();
+                    NSDictionary<?, ?> data = notification.getUserInfo();
                     NSError error = null;
                     if (data.containsKey(FailedToPlayToEndTimeErrorKey())) {
                         error = (NSError) data.get(FailedToPlayToEndTimeErrorKey());

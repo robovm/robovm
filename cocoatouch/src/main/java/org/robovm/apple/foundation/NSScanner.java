@@ -243,8 +243,6 @@ import org.robovm.apple.dispatch.*;
     private native boolean scanUpToString(String string, NSString.NSStringPtr result);
     @Method(selector = "scanUpToCharactersFromSet:intoString:")
     private native boolean scanUpToCharactersFromSet(NSCharacterSet set, NSString.NSStringPtr result);
-    @Method(selector = "scannerWithString:")
-    public static native NSScanner create(String string);
     @Method(selector = "localizedScannerWithString:")
     public static native NSScanner createLocalized(String string);
     @Method(selector = "scanDecimal:")

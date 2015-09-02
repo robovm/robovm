@@ -85,12 +85,5 @@ import org.robovm.apple.dispatch.*;
     public native void scheduleInRunLoop(NSRunLoop runLoop, String mode);
     @Method(selector = "removeFromRunLoop:forMode:")
     public native void removeFromRunLoop(NSRunLoop runLoop, String mode);
-    @Method(selector = "portWithMachPort:")
-    public static native NSPort create(int machPort);
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Method(selector = "portWithMachPort:options:")
-    public static native NSPort create(int machPort, NSMachPortRights f);
     /*</methods>*/
 }

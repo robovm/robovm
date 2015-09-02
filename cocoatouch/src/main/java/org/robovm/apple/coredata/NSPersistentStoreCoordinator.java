@@ -48,7 +48,7 @@ import org.robovm.apple.foundation.*;
             return NSNotificationCenter.getDefaultCenter().addObserver(StoresWillChangeNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke(NSNotification a) {
-                    NSDictionary<NSString, NSObject> userInfo = a.getUserInfo();
+                    NSDictionary<?, ?> userInfo = a.getUserInfo();
                     NSPersistentStoreCoordinatorChangeNotification data = null;
                     if (userInfo != null) {
                         data = new NSPersistentStoreCoordinatorChangeNotification(userInfo);
@@ -64,7 +64,7 @@ import org.robovm.apple.foundation.*;
             return NSNotificationCenter.getDefaultCenter().addObserver(StoresDidChangeNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke(NSNotification a) {
-                    NSDictionary<NSString, NSObject> userInfo = a.getUserInfo();
+                    NSDictionary<?, ?> userInfo = a.getUserInfo();
                     NSPersistentStoreCoordinatorChangeNotification data = null;
                     if (userInfo != null) {
                         data = new NSPersistentStoreCoordinatorChangeNotification(userInfo);
@@ -230,7 +230,7 @@ import org.robovm.apple.foundation.*;
     @Method(selector = "setMetadata:forPersistentStore:")
     public native void setMetadataForPersistentStore(NSPersistentStoreMetadata metadata, NSPersistentStore store);
     @Method(selector = "metadataForPersistentStore:")
-    public native NSDictionary getMetadataForPersistentStore(NSPersistentStore store);
+    public native NSDictionary<?, ?> getMetadataForPersistentStore(NSPersistentStore store);
     @Method(selector = "managedObjectIDForURIRepresentation:")
     public native NSManagedObjectID getManagedObjectIDForURIRepresentation(NSURL url);
     /**
@@ -318,7 +318,7 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "registeredStoreTypes")
-    public static native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSPersistentStore> getRegisteredStoreTypes();
+    public static native NSDictionary<NSString, NSPersistentStore> getRegisteredStoreTypes();
     /**
      * @since Available in iOS 3.0 and later.
      */

@@ -59,7 +59,7 @@ import org.robovm.apple.foundation.*;
             return NSNotificationCenter.getDefaultCenter().addObserver(DidSaveNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke(NSNotification a) {
-                    NSDictionary<NSString, NSObject> userInfo = a.getUserInfo();
+                    NSDictionary<?, ?> userInfo = a.getUserInfo();
                     NSManagedObjectContextNotification data = null;
                     if (userInfo != null) {
                         data = new NSManagedObjectContextNotification(userInfo);
@@ -75,7 +75,7 @@ import org.robovm.apple.foundation.*;
             return NSNotificationCenter.getDefaultCenter().addObserver(ObjectsDidChangeNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke(NSNotification a) {
-                    NSDictionary<NSString, NSObject> userInfo = a.getUserInfo();
+                    NSDictionary<?, ?> userInfo = a.getUserInfo();
                     NSManagedObjectContextNotification data = null;
                     if (userInfo != null) {
                         data = new NSManagedObjectContextNotification(userInfo);
@@ -134,7 +134,7 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "userInfo")
-    public native NSMutableDictionary getUserInfo();
+    public native NSMutableDictionary<?, ?> getUserInfo();
     /**
      * @since Available in iOS 5.0 and later.
      */
@@ -350,7 +350,7 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 9.0 and later.
      */
     @Method(selector = "mergeChangesFromRemoteContextSave:intoContexts:")
-    public static native void mergeChangesFromRemoteContextSave(NSDictionary changeNotificationData, NSArray<NSManagedObjectContext> contexts);
+    public static native void mergeChangesFromRemoteContextSave(NSDictionary<?, ?> changeNotificationData, NSArray<NSManagedObjectContext> contexts);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder coder);
     @Method(selector = "initWithCoder:")

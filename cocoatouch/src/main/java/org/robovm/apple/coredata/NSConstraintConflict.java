@@ -46,17 +46,17 @@ import org.robovm.apple.foundation.*;
     /*<constructors>*/
     public NSConstraintConflict() {}
     protected NSConstraintConflict(SkipInit skipInit) { super(skipInit); }
-    public NSConstraintConflict(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> constraint, NSManagedObject databaseObject, NSDictionary databaseSnapshot, NSArray<NSManagedObject> conflictingObjects, NSArray<NSDictionary> conflictingSnapshots) { super((SkipInit) null); initObject(init(constraint, databaseObject, databaseSnapshot, conflictingObjects, conflictingSnapshots)); }
+    public NSConstraintConflict(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> constraint, NSManagedObject databaseObject, NSDictionary<?, ?> databaseSnapshot, NSArray<NSManagedObject> conflictingObjects, NSArray<NSDictionary> conflictingSnapshots) { super((SkipInit) null); initObject(init(constraint, databaseObject, databaseSnapshot, conflictingObjects, conflictingSnapshots)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "constraint")
     public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getConstraint();
     @Property(selector = "constraintValues")
-    public native NSDictionary getConstraintValues();
+    public native NSDictionary<?, ?> getConstraintValues();
     @Property(selector = "databaseObject")
     public native NSManagedObject getDatabaseObject();
     @Property(selector = "databaseSnapshot")
-    public native NSDictionary getDatabaseSnapshot();
+    public native NSDictionary<?, ?> getDatabaseSnapshot();
     @Property(selector = "conflictingObjects")
     public native NSArray<NSManagedObject> getConflictingObjects();
     @Property(selector = "conflictingSnapshots")
@@ -65,6 +65,6 @@ import org.robovm.apple.foundation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithConstraint:databaseObject:databaseSnapshot:conflictingObjects:conflictingSnapshots:")
-    protected native @Pointer long init(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> constraint, NSManagedObject databaseObject, NSDictionary databaseSnapshot, NSArray<NSManagedObject> conflictingObjects, NSArray<NSDictionary> conflictingSnapshots);
+    protected native @Pointer long init(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> constraint, NSManagedObject databaseObject, NSDictionary<?, ?> databaseSnapshot, NSArray<NSManagedObject> conflictingObjects, NSArray<NSDictionary> conflictingSnapshots);
     /*</methods>*/
 }

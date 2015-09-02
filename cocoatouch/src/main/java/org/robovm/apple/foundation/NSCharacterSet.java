@@ -53,9 +53,22 @@ import org.robovm.apple.dispatch.*;
     /*</constants>*/
     /*<constructors>*/
     public NSCharacterSet() {}
+    protected NSCharacterSet(long handle) { super(handle); }
     protected NSCharacterSet(SkipInit skipInit) { super(skipInit); }
     public NSCharacterSet(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
+    public NSCharacterSet(@ByVal NSRange aRange) { super(create(aRange)); retain(getHandle()); }
+    public NSCharacterSet(String aString) { super(create(aString)); retain(getHandle()); }
+    public NSCharacterSet(NSData data) { super(create(data)); retain(getHandle()); }
     /*</constructors>*/
+    public NSCharacterSet(File file) {
+        super(createWithFile(file));
+    }
+    private static long createWithFile(File file) {
+        if (file == null) {
+            throw new NullPointerException("file");
+        }
+        return createWithFile(file.getAbsolutePath());
+    }
     /*<properties>*/
     @Property(selector = "bitmapRepresentation")
     public native NSData getBitmapRepresentation();
@@ -63,14 +76,6 @@ import org.robovm.apple.dispatch.*;
     public native NSCharacterSet getInvertedSet();
     /*</properties>*/
     /*<members>*//*</members>*/
-    
-    public static NSCharacterSet create(File file) {
-        if (file == null) {
-            throw new NullPointerException("file");
-        }
-        return createWithFile(file.getAbsolutePath());
-    }
-    
     /*<methods>*/
     @Method(selector = "initWithCoder:")
     protected native @Pointer long init(NSCoder aDecoder);
@@ -116,13 +121,13 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "newlineCharacterSet")
     public static native NSCharacterSet getNewlineCharacterSet();
     @Method(selector = "characterSetWithRange:")
-    public static native NSCharacterSet create(@ByVal NSRange aRange);
+    protected static native @Pointer long create(@ByVal NSRange aRange);
     @Method(selector = "characterSetWithCharactersInString:")
-    public static native NSCharacterSet create(String aString);
+    protected static native @Pointer long create(String aString);
     @Method(selector = "characterSetWithBitmapRepresentation:")
-    public static native NSCharacterSet create(NSData data);
+    protected static native @Pointer long create(NSData data);
     @Method(selector = "characterSetWithContentsOfFile:")
-    private static native NSCharacterSet createWithFile(String fName);
+    private static native @Pointer long createWithFile(String fName);
     /**
      * @since Available in iOS 7.0 and later.
      */

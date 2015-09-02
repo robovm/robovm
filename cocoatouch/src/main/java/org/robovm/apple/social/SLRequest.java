@@ -49,6 +49,7 @@ import org.robovm.apple.accounts.*;
     /*<constructors>*/
     public SLRequest() {}
     protected SLRequest(SkipInit skipInit) { super(skipInit); }
+    public SLRequest(SLServiceType serviceType, SLRequestMethod requestMethod, NSURL url, NSDictionary<NSString, ?> parameters) { super(create(serviceType, requestMethod, url, parameters)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @WeaklyLinked
@@ -62,7 +63,7 @@ import org.robovm.apple.accounts.*;
     @Property(selector = "URL")
     public native NSURL getURL();
     @Property(selector = "parameters")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject> getParameters();
+    public native NSDictionary<NSString, ?> getParameters();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -73,6 +74,6 @@ import org.robovm.apple.accounts.*;
     @Method(selector = "performRequestWithHandler:")
     public native void performRequest(@Block VoidBlock3<NSData, NSHTTPURLResponse, NSError> handler);
     @Method(selector = "requestForServiceType:requestMethod:URL:parameters:")
-    public static native SLRequest create(SLServiceType serviceType, SLRequestMethod requestMethod, NSURL url, @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject> parameters);
+    protected static native @Pointer long create(SLServiceType serviceType, SLRequestMethod requestMethod, NSURL url, NSDictionary<NSString, ?> parameters);
     /*</methods>*/
 }

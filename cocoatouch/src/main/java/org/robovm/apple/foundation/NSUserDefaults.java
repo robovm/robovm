@@ -104,26 +104,26 @@ import org.robovm.apple.dispatch.*;
         put(defaultName, NSArray.fromStrings(strings));
     }
     
-    public void setVolatileDomain(String domainName, NSDictionary domain) {
+    public void setVolatileDomain(String domainName, NSDictionary<NSString, ?> domain) {
         setVolatileDomain(domain, domainName);
     }
-    public void setVolatileDomain(NSUserDefaultsDomain domainName, NSDictionary domain) {
+    public void setVolatileDomain(NSUserDefaultsDomain domainName, NSDictionary<NSString, ?> domain) {
         setVolatileDomain(domain, domainName.value().toString());
     } 
-    public void setPersistentDomain(String domainName, NSDictionary domain) {
+    public void setPersistentDomain(String domainName, NSDictionary<NSString, ?> domain) {
         setPersistentDomain(domain, domainName);
     }
-    public void setPersistentDomain(NSUserDefaultsDomain domainName, NSDictionary domain) {
+    public void setPersistentDomain(NSUserDefaultsDomain domainName, NSDictionary<NSString, ?> domain) {
         setPersistentDomain(domain, domainName.value().toString());
     }
     
-    public NSDictionary getVolatileDomain(NSUserDefaultsDomain domainName) {
+    public NSDictionary<NSString, ?> getVolatileDomain(NSUserDefaultsDomain domainName) {
         return getVolatileDomain(domainName.value().toString());
     }
     public void removeVolatileDomain(NSUserDefaultsDomain domainName) {
         removeVolatileDomain(domainName.value().toString());
     }
-    public NSDictionary getPersistentDomain(NSUserDefaultsDomain domainName) {
+    public NSDictionary<NSString, ?> getPersistentDomain(NSUserDefaultsDomain domainName) {
         return getPersistentDomain(domainName.value().toString());
     }
     public void removePersistentDomain(NSUserDefaultsDomain domainName) {
@@ -147,7 +147,7 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "arrayForKey:")
     public native NSArray<?> getArray(String defaultName);
     @Method(selector = "dictionaryForKey:")
-    public native NSDictionary getDictionary(String defaultName);
+    public native NSDictionary<NSString, ?> getDictionary(String defaultName);
     @Method(selector = "dataForKey:")
     public native NSData getData(String defaultName);
     @Method(selector = "stringArrayForKey:")
@@ -179,17 +179,17 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "setURL:forKey:")
     protected native void setURL(NSURL url, String defaultName);
     @Method(selector = "registerDefaults:")
-    public native void registerDefaults(NSDictionary registrationDictionary);
+    public native void registerDefaults(NSDictionary<NSString, ?> registrationDictionary);
     @Method(selector = "addSuiteNamed:")
     public native void addSuite(String suiteName);
     @Method(selector = "removeSuiteNamed:")
     public native void removeSuite(String suiteName);
     @Method(selector = "dictionaryRepresentation")
-    public native NSDictionary asDictionary();
+    public native NSDictionary<NSString, ?> asDictionary();
     @Method(selector = "volatileDomainForName:")
-    public native NSDictionary getVolatileDomain(String domainName);
+    public native NSDictionary<NSString, ?> getVolatileDomain(String domainName);
     @Method(selector = "setVolatileDomain:forName:")
-    protected native void setVolatileDomain(NSDictionary domain, String domainName);
+    protected native void setVolatileDomain(NSDictionary<NSString, ?> domain, String domainName);
     @Method(selector = "removeVolatileDomainForName:")
     public native void removeVolatileDomain(String domainName);
     /**
@@ -200,9 +200,9 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "persistentDomainNames")
     public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getPersistentDomainNames();
     @Method(selector = "persistentDomainForName:")
-    public native NSDictionary getPersistentDomain(String domainName);
+    public native NSDictionary<NSString, ?> getPersistentDomain(String domainName);
     @Method(selector = "setPersistentDomain:forName:")
-    protected native void setPersistentDomain(NSDictionary domain, String domainName);
+    protected native void setPersistentDomain(NSDictionary<NSString, ?> domain, String domainName);
     @Method(selector = "removePersistentDomainForName:")
     public native void removePersistentDomain(String domainName);
     @Method(selector = "synchronize")

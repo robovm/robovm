@@ -51,6 +51,7 @@ import org.robovm.apple.gameplaykit.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public SKNode() {}
+    protected SKNode(long handle) { super(handle); }
     protected SKNode(SkipInit skipInit) { super(skipInit); }
     public SKNode(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     public SKNode(String filename) { super(create(filename)); retain(getHandle()); }
@@ -188,7 +189,7 @@ import org.robovm.apple.gameplaykit.*;
     @Method(selector = "isEqualToNode:")
     public native boolean equalsTo(SKNode node);
     @Method(selector = "nodeWithFileNamed:")
-    private static native @Pointer long create(String filename);
+    protected static native @Pointer long create(String filename);
     @Method(selector = "obstaclesFromSpriteTextures:accuracy:")
     public static native NSArray<GKPolygonObstacle> getObstaclesFromSpriteTextures(NSArray<SKNode> sprites, float accuracy);
     @Method(selector = "obstaclesFromNodeBounds:")

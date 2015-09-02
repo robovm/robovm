@@ -77,6 +77,16 @@ import org.robovm.apple.dispatch.*;
         getIndexes(p);
         return p.toIntArray(n);
     }
+    /**
+    * @since Available in iOS 7.0 and later.
+    */
+    public int[] getIndexes(NSRange positionRange) {
+        int n = (int) getLength();
+        MachineSizedUIntPtr p = Struct.allocate(MachineSizedUIntPtr.class, (int)positionRange.getLength());
+        getIndexes(p, positionRange);
+        return p.toIntArray(n);
+    }
+    
     
     /* UIKit extensions */
     @WeaklyLinked
@@ -117,9 +127,14 @@ import org.robovm.apple.dispatch.*;
     public native NSIndexPath removeLastIndex();
     @Method(selector = "indexAtPosition:")
     public native @MachineSizedUInt long getIndexAt(@MachineSizedUInt long position);
-    @Method(selector = "getIndexes:")
-    private native void getIndexes(MachineSizedUIntPtr indexes);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Method(selector = "getIndexes:range:")
+    private native void getIndexes(MachineSizedUIntPtr indexes, @ByVal NSRange positionRange);
     @Method(selector = "compare:")
     public native NSComparisonResult compare(NSIndexPath otherObject);
+    @Method(selector = "getIndexes:")
+    private native void getIndexes(MachineSizedUIntPtr indexes);
     /*</methods>*/
 }

@@ -25,6 +25,7 @@ classes:
     CATransform3D: {}
 
     CAAnimation: # DONE
+        skip_handle_constructor: false
         properties:
             'delegate':
                 type: CAAnimationDelegate
@@ -32,8 +33,7 @@ classes:
             '-shouldArchiveValueForKey:':
                 name: shouldArchiveValue
             '+animation':
-                name: create
-                return_type: CAAnimation
+                exclude: true
             '+defaultValueForKey:':
                 name: getDefaultValue
     CAAnimationGroup: # DONE
@@ -50,6 +50,7 @@ classes:
                 trim_after_first_colon: true
             '+displayLinkWithTarget:selector:':
                 name: create
+                constructor: true
     CAEAGLLayer: # DONE
         annotations: ['@WeaklyLinked']
         protocols: [EAGLDrawable]
@@ -65,8 +66,7 @@ classes:
             '-shouldArchiveValueForKey:':
                 name: shouldArchiveValue
             '+emitterCell':
-                name: create
-                return_type: CAEmitterCell
+                exclude: true
             '+defaultValueForKey:':
                 name: getDefaultValue
     CAEmitterLayer: # DONE
@@ -82,7 +82,8 @@ classes:
     CAGradientLayer: # DONE
         properties:
             'colors':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(CGColor.AsListMarshaler.class) List<CGColor>'
+                type: List<CGColor>
+                marshaler: CGColor.AsListMarshaler
             'locations':
                 type: NSArray<NSNumber>
             'type':
@@ -192,12 +193,12 @@ classes:
                 name: removeAnimation
             '-animationKeys':
                 property: true
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                return_type: List<String>
+                return_marshaler: NSArray.AsStringListMarshaler
             '-animationForKey:':
                 name: getAnimation
             '+layer':
-                name: create
-                return_type: CALayer
+                exclude: true
             '+defaultValueForKey:':
                 name: getDefaultValue
             '+needsDisplayForKey:':
@@ -217,22 +218,22 @@ classes:
                 visibility: protected
             '+functionWithName:':
                 name: create
-                return_type: CAMediaTimingFunction
+                constructor: true
                 parameters:
                     name:
                         type: CAMediaTimingFunctionName
             '+functionWithControlPoints::::':
-                name: create
-                return_type: CAMediaTimingFunction
+                exclude: true
     CAMetalLayer: # DONE
         properties:
             '(device|pixelFormat)':
                 annotations: ['@WeaklyLinked']
     CAPropertyAnimation: # DONE
+        skip_handle_constructor: false
         methods:
             '+animationWithKeyPath:':
                 name: create
-                return_type: CAPropertyAnimation
+                constructor: true
     CAReplicatorLayer: {} # DONE
     CAScrollLayer: # DONE
         properties:
@@ -313,7 +314,7 @@ classes:
         methods:
             '+functionWithName:':
                 name: create
-                return_type: CAValueFunction
+                constructor: true
                 parameters:
                     name:
                         type: CAValueFunctionName
@@ -327,7 +328,7 @@ protocols:
                     key:
                         type: NSString
                     dict:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
+                        type: 'NSDictionary<NSString, ?>'
     CAMediaTiming: # DONE
         properties:
             'fillMode':

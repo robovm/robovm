@@ -52,6 +52,7 @@ import org.robovm.apple.gameplaykit.*;
     /*<constructors>*/
     public SKPhysicsJointSpring() {}
     protected SKPhysicsJointSpring(SkipInit skipInit) { super(skipInit); }
+    public SKPhysicsJointSpring(SKPhysicsBody bodyA, SKPhysicsBody bodyB, @ByVal CGPoint anchorA, @ByVal CGPoint anchorB) { super(create(bodyA, bodyB, anchorA, anchorB)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "damping")
@@ -66,6 +67,6 @@ import org.robovm.apple.gameplaykit.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "jointWithBodyA:bodyB:anchorA:anchorB:")
-    public static native SKPhysicsJointSpring create(SKPhysicsBody bodyA, SKPhysicsBody bodyB, @ByVal CGPoint anchorA, @ByVal CGPoint anchorB);
+    protected static native @Pointer long create(SKPhysicsBody bodyA, SKPhysicsBody bodyB, @ByVal CGPoint anchorA, @ByVal CGPoint anchorB);
     /*</methods>*/
 }

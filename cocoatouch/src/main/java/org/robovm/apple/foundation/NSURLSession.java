@@ -54,6 +54,8 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public NSURLSession() {}
     protected NSURLSession(SkipInit skipInit) { super(skipInit); }
+    public NSURLSession(NSURLSessionConfiguration configuration) { super(create(configuration)); retain(getHandle()); }
+    public NSURLSession(NSURLSessionConfiguration configuration, NSURLSessionDelegate delegate, NSOperationQueue queue) { super(create(configuration, delegate, queue)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "delegateQueue")
@@ -85,6 +87,11 @@ import org.robovm.apple.dispatch.*;
     public native void flush(@Block Runnable completionHandler);
     @Method(selector = "getTasksWithCompletionHandler:")
     public native void getTasks(@Block VoidBlock3<NSArray<NSURLSessionDataTask>, NSArray<NSURLSessionUploadTask>, NSArray<NSURLSessionDownloadTask>> completionHandler);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "getAllTasksWithCompletionHandler:")
+    public native void getAllTasks(@Block VoidBlock1<NSArray<NSURLSessionTask>> completionHandler);
     @Method(selector = "dataTaskWithRequest:")
     public native NSURLSessionDataTask newDataTask(NSURLRequest request);
     @Method(selector = "dataTaskWithURL:")
@@ -101,60 +108,35 @@ import org.robovm.apple.dispatch.*;
     public native NSURLSessionDownloadTask newDownloadTask(NSURL url);
     @Method(selector = "downloadTaskWithResumeData:")
     public native NSURLSessionDownloadTask newDownloadTask(NSData resumeData);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "streamTaskWithHostName:port:")
+    public native NSURLSessionStreamTask newStreamTask(String hostname, @MachineSizedSInt long port);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "streamTaskWithNetService:")
+    public native NSURLSessionStreamTask newStreamTask(NSNetService service);
     @Method(selector = "sharedSession")
     public static native NSURLSession getSharedSession();
     @Method(selector = "sessionWithConfiguration:")
-    public static native NSURLSession create(NSURLSessionConfiguration configuration);
+    protected static native @Pointer long create(NSURLSessionConfiguration configuration);
     @Method(selector = "sessionWithConfiguration:delegate:delegateQueue:")
-    public static native NSURLSession create(NSURLSessionConfiguration configuration, NSURLSessionDelegate delegate, NSOperationQueue queue);
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
+    protected static native @Pointer long create(NSURLSessionConfiguration configuration, NSURLSessionDelegate delegate, NSOperationQueue queue);
     @Method(selector = "dataTaskWithRequest:completionHandler:")
     public native NSURLSessionDataTask newDataTask(NSURLRequest request, @Block VoidBlock3<NSData, NSURLResponse, NSError> completionHandler);
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     @Method(selector = "dataTaskWithURL:completionHandler:")
     public native NSURLSessionDataTask newDataTask(NSURL url, @Block VoidBlock3<NSData, NSURLResponse, NSError> completionHandler);
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     @Method(selector = "uploadTaskWithRequest:fromFile:completionHandler:")
     public native NSURLSessionUploadTask newUploadTask(NSURLRequest request, NSURL fileURL, @Block VoidBlock3<NSData, NSURLResponse, NSError> completionHandler);
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     @Method(selector = "uploadTaskWithRequest:fromData:completionHandler:")
     public native NSURLSessionUploadTask newUploadTask(NSURLRequest request, NSData bodyData, @Block VoidBlock3<NSData, NSURLResponse, NSError> completionHandler);
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     @Method(selector = "downloadTaskWithRequest:completionHandler:")
     public native NSURLSessionDownloadTask newDownloadTask(NSURLRequest request, @Block VoidBlock3<NSURL, NSURLResponse, NSError> completionHandler);
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     @Method(selector = "downloadTaskWithURL:completionHandler:")
     public native NSURLSessionDownloadTask newDownloadTask(NSURL url, @Block VoidBlock3<NSURL, NSURLResponse, NSError> completionHandler);
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     @Method(selector = "downloadTaskWithResumeData:completionHandler:")
     public native NSURLSessionDownloadTask newDownloadTask(NSData resumeData, @Block VoidBlock3<NSURL, NSURLResponse, NSError> completionHandler);
-    /**
-     * @since Available in iOS 7.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     */
-    @Deprecated
-    @Method(selector = "dataTaskWithHTTPGetRequest:")
-    public native NSURLSessionDataTask newHTTPGetDataTask(NSURL url);
-    /**
-     * @since Available in iOS 7.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     */
-    @Deprecated
-    @Method(selector = "dataTaskWithHTTPGetRequest:completionHandler:")
-    public native NSURLSessionDataTask newHTTPGetDataTask(NSURL url, @Block VoidBlock3<NSData, NSURLResponse, NSError> completionHandler);
     /*</methods>*/
 }

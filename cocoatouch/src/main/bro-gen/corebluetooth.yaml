@@ -193,13 +193,17 @@ classes:
         methods:
             '+UUIDWithString:':
                 name: create
+                constructor: true
             '+UUIDWithData:':
                 name: create
+                constructor: true
             '+UUIDWithCFUUID:':
                 name: create
                 annotations: ['@WeaklyLinked']
+                constructor: true
             '+UUIDWithNSUUID:':
                 name: create
+                constructor: true
 
 protocols:
     CBCentralManagerDelegate: # DONE

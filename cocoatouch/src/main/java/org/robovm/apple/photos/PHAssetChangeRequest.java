@@ -93,6 +93,6 @@ import org.robovm.apple.avfoundation.*;
     @Method(selector = "deleteAssets:")
     public static native void deleteAssets(NSFastEnumeration assets);
     @Method(selector = "changeRequestForAsset:")
-    private static native @Pointer long create(PHAsset asset);
+    protected static native @Pointer long create(PHAsset asset);
     /*</methods>*/
 }

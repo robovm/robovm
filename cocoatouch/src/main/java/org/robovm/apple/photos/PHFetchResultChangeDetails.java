@@ -79,6 +79,6 @@ import org.robovm.apple.avfoundation.*;
     @Method(selector = "enumerateMovesWithBlock:")
     public native void enumerateMoves(@Block("(@MachineSizedUInt,@MachineSizedUInt)") VoidBlock2<Long, Long> handler);
     @Method(selector = "changeDetailsFromFetchResult:toFetchResult:changedObjects:")
-    private static native @Pointer <T extends PHObject> long create(PHFetchResult<T> fromResult, PHFetchResult<T> toResult, NSArray<T> changedObjects);
+    protected static native @Pointer <T extends PHObject> long create(PHFetchResult<T> fromResult, PHFetchResult<T> toResult, NSArray<T> changedObjects);
     /*</methods>*/
 }

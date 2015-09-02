@@ -80,8 +80,8 @@ import org.robovm.apple.avfoundation.*;
     @Method(selector = "deleteCollectionLists:")
     public static native void deleteCollectionLists(NSFastEnumeration collectionLists);
     @Method(selector = "changeRequestForCollectionList:")
-    private static native @Pointer long create(PHCollectionList collectionList);
+    protected static native @Pointer long create(PHCollectionList collectionList);
     @Method(selector = "changeRequestForCollectionList:childCollections:")
-    private static native @Pointer long create(PHCollectionList collectionList, PHFetchResult childCollections);
+    protected static native @Pointer long create(PHCollectionList collectionList, PHFetchResult childCollections);
     /*</methods>*/
 }

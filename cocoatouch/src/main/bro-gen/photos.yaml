@@ -151,11 +151,13 @@ classes:
                 return_type: PHFetchResult<PHAssetCollection>
             '+transientAssetCollectionWithAssets:title:':
                 name: createTransientAssetCollection
+                constructor: true
                 parameters:
                     assets:
                         type: NSArray<PHAsset>
             '+transientAssetCollectionWithAssetFetchResult:title:':
                 name: createTransientAssetCollection
+                constructor: true
                 parameters:
                     fetchResult:
                         type: PHFetchResult<PHAsset>
@@ -233,6 +235,7 @@ classes:
                     object:
                         type: PHFetchResult<T>
     PHCollection: # DONE
+        skip_handle_constructor: false
         properties:
             '(canContainAssets|canContainCollections)':
                 omit_prefix: true
@@ -248,28 +251,40 @@ classes:
     PHCollectionList: # DONE
         properties:
             'localizedLocationNames':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: List<String>
+                marshaler: NSArray.AsStringListMarshaler
         methods:
             '+fetchCollectionListsContainingCollection:options:':
                 trim_after_first_colon: true
+                return_type: PHFetchResult<PHCollectionList>
             '+fetchCollectionListsWithLocalIdentifiers:options:':
                 trim_after_first_colon: true
+                return_type: PHFetchResult<PHCollectionList>
                 parameters:
                     identifiers:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: List<String>
+                        marshaler: NSArray.AsStringListMarshaler
             '+fetchCollectionListsWithType:subtype:options:':
                 trim_after_first_colon: true
+                return_type: PHFetchResult<PHCollectionList>
             '+fetchMomentListsWithSubtype:containingMoment:options:':
                 name: fetchMomentListsWithSubtypeContainingMoment
+                return_type: PHFetchResult<PHCollectionList>
             '+fetchMomentListsWithSubtype:options:':
                 trim_after_first_colon: true
+                return_type: PHFetchResult<PHCollectionList>
             '+transientCollectionListWithCollections:title:':
                 name: createTransientCollectionList
+                constructor: true
                 parameters:
                     collections:
                         type: NSArray<PHCollection>
             '+transientCollectionListWithCollectionsFetchResult:title:':
                 name: createTransientCollectionList
+                constructor: true
+                parameters:
+                    fetchResult:
+                        type: PHFetchResult<PHCollectionList>
     PHCollectionListChangeRequest: # DONE
         methods:
             '-addChildCollections:':
@@ -401,7 +416,8 @@ classes:
         properties:
             'progressHandler':
                 type: '@Block VoidBlock4<Double, NSError, BooleanPtr, NSDictionary<?, ?>>'
-    PHObject: {} # DONE
+    PHObject: # DONE
+        skip_handle_constructor: false
     PHObjectPlaceholder: {} # DONE
     PHObjectChangeDetails: # DONE
         properties:

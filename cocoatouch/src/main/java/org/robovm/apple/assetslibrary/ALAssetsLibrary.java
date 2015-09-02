@@ -50,7 +50,7 @@ import org.robovm.apple.imageio.*;
                 @Override
                 public void invoke(NSNotification a) {
                     ALAssetsLibraryChangedNotification userInfo = null;
-                    NSDictionary<NSString, NSObject> dict = a.getUserInfo();
+                    NSDictionary<?, ?> dict = a.getUserInfo();
                     if (dict != null) {
                         userInfo = new ALAssetsLibraryChangedNotification(dict);
                     }

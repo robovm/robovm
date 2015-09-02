@@ -50,9 +50,7 @@ import org.robovm.apple.dispatch.*;
 
     /*<ptr>*/public static class NSOperationQueuePtr extends Ptr<NSOperationQueue, NSOperationQueuePtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSOperationQueue.class); }/*</bind>*/
-    /*<constants>*/
-    public static final int DefaultMaxConcurrentOperationCount = -1;
-    /*</constants>*/
+    /*<constants>*//*</constants>*/
     /*<constructors>*/
     public NSOperationQueue() {}
     protected NSOperationQueue(SkipInit skipInit) { super(skipInit); }
@@ -108,6 +106,9 @@ import org.robovm.apple.dispatch.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @GlobalValue(symbol="NSOperationQueueDefaultMaxConcurrentOperationCount", optional=true)
+    public static native @MachineSizedSInt long getDefaultMaxConcurrentOperationCount();
+    
     @Method(selector = "addOperation:")
     public native void addOperation(NSOperation op);
     /**

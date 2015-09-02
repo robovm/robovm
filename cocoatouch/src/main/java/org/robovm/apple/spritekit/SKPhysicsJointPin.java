@@ -52,6 +52,7 @@ import org.robovm.apple.gameplaykit.*;
     /*<constructors>*/
     public SKPhysicsJointPin() {}
     protected SKPhysicsJointPin(SkipInit skipInit) { super(skipInit); }
+    public SKPhysicsJointPin(SKPhysicsBody bodyA, SKPhysicsBody bodyB, @ByVal CGPoint anchor) { super(create(bodyA, bodyB, anchor)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "shouldEnableLimits")
@@ -78,6 +79,6 @@ import org.robovm.apple.gameplaykit.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "jointWithBodyA:bodyB:anchor:")
-    public static native SKPhysicsJointPin create(SKPhysicsBody bodyA, SKPhysicsBody bodyB, @ByVal CGPoint anchor);
+    protected static native @Pointer long create(SKPhysicsBody bodyA, SKPhysicsBody bodyB, @ByVal CGPoint anchor);
     /*</methods>*/
 }

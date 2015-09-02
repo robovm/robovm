@@ -162,11 +162,5 @@ import org.robovm.apple.dispatch.*;
      */
     @Method(selector = "enumerateRangesInRange:options:usingBlock:")
     public native void enumerateRangesInRange(@ByVal NSRange range, NSEnumerationOptions opts, @Block("(@ByVal,)") VoidBlock2<NSRange, BooleanPtr> block);
-    @Method(selector = "indexSet")
-    public static native NSIndexSet create();
-    @Method(selector = "indexSetWithIndex:")
-    public static native NSIndexSet create(@MachineSizedUInt long value);
-    @Method(selector = "indexSetWithIndexesInRange:")
-    public static native NSIndexSet create(@ByVal NSRange range);
     /*</methods>*/
 }

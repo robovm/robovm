@@ -52,6 +52,8 @@ import org.robovm.apple.gameplaykit.*;
     /*<constructors>*/
     public SKTransition() {}
     protected SKTransition(SkipInit skipInit) { super(skipInit); }
+    @WeaklyLinked
+    public SKTransition(CIFilter filter, double sec) { super(create(filter, sec)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "pausesIncomingScene")
@@ -93,6 +95,6 @@ import org.robovm.apple.gameplaykit.*;
     public static native SKTransition doorway(double sec);
     @WeaklyLinked
     @Method(selector = "transitionWithCIFilter:duration:")
-    public static native SKTransition create(CIFilter filter, double sec);
+    protected static native @Pointer long create(CIFilter filter, double sec);
     /*</methods>*/
 }

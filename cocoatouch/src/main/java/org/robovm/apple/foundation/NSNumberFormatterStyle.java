@@ -49,7 +49,23 @@ public enum /*<name>*/NSNumberFormatterStyle/*</name>*/ implements ValuedEnum {
     Currency(2L),
     Percent(3L),
     Scientific(4L),
-    SpellOut(5L);
+    SpellOut(5L),
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    Ordinal(6L),
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    CurrencyISOCode(8L),
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    CurrencyPlural(9L),
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    CurrencyAccounting(10L);
     /*</values>*/
 
     private final long n;

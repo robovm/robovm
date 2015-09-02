@@ -30,6 +30,7 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.apple.addressbook.*;
+import org.robovm.apple.contacts.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -63,7 +64,5 @@ import org.robovm.apple.addressbook.*;
      */
     @Method(selector = "initWithPaymentButtonType:paymentButtonStyle:")
     protected native @Pointer long init(PKPaymentButtonType type, PKPaymentButtonStyle style);
-    @Method(selector = "buttonWithType:style:")
-    public static native PKPaymentButton create(PKPaymentButtonType buttonType, PKPaymentButtonStyle buttonStyle);
     /*</methods>*/
 }

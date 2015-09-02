@@ -46,6 +46,20 @@ import org.robovm.apple.dispatch.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Notifications {
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        public static NSObject observePowerStateDidChange(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(PowerStateDidChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+    }
+    
     /*<ptr>*/public static class NSProcessInfoPtr extends Ptr<NSProcessInfo, NSProcessInfoPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSProcessInfo.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -94,9 +108,20 @@ import org.robovm.apple.dispatch.*;
      */
     @Property(selector = "systemUptime")
     public native double getSystemUptime();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "isLowPowerModeEnabled")
+    public native boolean isLowPowerModeEnabled();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @GlobalValue(symbol="NSProcessInfoPowerStateDidChangeNotification", optional=true)
+    public static native NSString PowerStateDidChangeNotification();
+    
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 8.0.

@@ -48,7 +48,11 @@ public enum /*<name>*/NSURLSessionResponseDisposition/*</name>*/ implements Valu
     /*<values>*/
     Cancel(0L),
     Allow(1L),
-    BecomeDownload(2L);
+    BecomeDownload(2L),
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    BecomeStream(3L);
     /*</values>*/
 
     private final long n;

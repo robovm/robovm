@@ -30,6 +30,7 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.apple.addressbook.*;
+import org.robovm.apple.contacts.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -48,18 +49,12 @@ import org.robovm.apple.addressbook.*;
     /*<constructors>*/
     public PKPaymentSummaryItem() {}
     protected PKPaymentSummaryItem(SkipInit skipInit) { super(skipInit); }
-    /*</constructors>*/
-    public PKPaymentSummaryItem(String label, NSDecimalNumber amount) {
-        super(create(label, amount));
-        retain(getHandle());
-    }
+    public PKPaymentSummaryItem(String label, NSDecimalNumber amount) { super(create(label, amount)); retain(getHandle()); }
     /**
      * @since Available in iOS 9.0 and later.
      */
-    public PKPaymentSummaryItem(String label, NSDecimalNumber amount, PKPaymentSummaryItemType type) {
-        super(create(label, amount, type));
-        retain(getHandle());
-    }
+    public PKPaymentSummaryItem(String label, NSDecimalNumber amount, PKPaymentSummaryItemType type) { super(create(label, amount, type)); retain(getHandle()); }
+    /*</constructors>*/
     /*<properties>*/
     @Property(selector = "label")
     public native String getLabel();

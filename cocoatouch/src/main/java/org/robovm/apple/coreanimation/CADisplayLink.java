@@ -47,7 +47,7 @@ import org.robovm.apple.metal.*;
         void onUpdate(CADisplayLink displayLink);
     }
     
-    private static final String LISTENER_KEY = "listener";
+    private static final LongMap<ListenerWrapper> listeners = new LongMap<>();
     private static final Selector handleUpdate = Selector.register("handleUpdate");
     private static class ListenerWrapper extends NSObject {
         private final OnUpdateListener listener;
@@ -65,7 +65,22 @@ import org.robovm.apple.metal.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     protected CADisplayLink(SkipInit skipInit) { super(skipInit); }
+    public CADisplayLink(NSObject target, Selector sel) { super(create(target, sel)); retain(getHandle()); }
     /*</constructors>*/
+    public CADisplayLink(OnUpdateListener listener) {
+        super(create(listener));
+        retain(getHandle());
+    }
+    
+    private static long create(OnUpdateListener listener) {
+        if (listener == null) {
+            throw new NullPointerException("listener");
+        }
+        ListenerWrapper l = new ListenerWrapper(listener);
+        long result = create(l, handleUpdate);
+        CADisplayLink.listeners.put(result, l);
+        return result;
+    }
     /*<properties>*/
     @Property(selector = "timestamp")
     public native double getTimestamp();
@@ -88,19 +103,9 @@ import org.robovm.apple.metal.*;
         removeFromRunLoop(runloop, mode.value().toString());
     }
     
-    public static CADisplayLink create(OnUpdateListener listener) {
-        if (listener == null) {
-            throw new NullPointerException("listener");
-        }
-        ListenerWrapper l = new ListenerWrapper(listener);
-        CADisplayLink result = create(l, handleUpdate);
-        result.setAssociatedObject(LISTENER_KEY, l);
-        return result;
-    }
-    
     @Override
     protected void dispose(boolean finalizing) {
-        setAssociatedObject(LISTENER_KEY, null);
+        CADisplayLink.listeners.remove(getHandle());
         super.dispose(finalizing);
     }
     /*<methods>*/
@@ -111,6 +116,6 @@ import org.robovm.apple.metal.*;
     @Method(selector = "invalidate")
     public native void invalidate();
     @Method(selector = "displayLinkWithTarget:selector:")
-    public static native CADisplayLink create(NSObject target, Selector sel);
+    protected static native @Pointer long create(NSObject target, Selector sel);
     /*</methods>*/
 }

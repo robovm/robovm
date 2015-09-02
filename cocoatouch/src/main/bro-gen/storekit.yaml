@@ -22,10 +22,11 @@ classes:
     SKDownload: {} # DONE
     SKMutablePayment: {} # DONE
     SKPayment: # DONE
+        skip_handle_constructor: false
         methods:
             '+paymentWithProduct:':
                 name: create
-                return_type: SKPayment
+                constructor: true
     SKPaymentQueue: # DONE
         properties:
             'transactions':

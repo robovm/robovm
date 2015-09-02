@@ -50,6 +50,8 @@ import org.robovm.apple.avfoundation.*;
     /*<constructors>*/
     public PHAssetCollection() {}
     protected PHAssetCollection(SkipInit skipInit) { super(skipInit); }
+    public PHAssetCollection(NSArray<PHAsset> assets, String title) { super(createTransientAssetCollection(assets, title)); retain(getHandle()); }
+    public PHAssetCollection(PHFetchResult<PHAsset> fetchResult, String title) { super(createTransientAssetCollection(fetchResult, title)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "assetCollectionType")
@@ -83,8 +85,8 @@ import org.robovm.apple.avfoundation.*;
     @Method(selector = "fetchMomentsWithOptions:")
     public static native PHFetchResult<PHAssetCollection> fetchMoments(PHFetchOptions options);
     @Method(selector = "transientAssetCollectionWithAssets:title:")
-    public static native PHAssetCollection createTransientAssetCollection(NSArray<PHAsset> assets, String title);
+    protected static native @Pointer long createTransientAssetCollection(NSArray<PHAsset> assets, String title);
     @Method(selector = "transientAssetCollectionWithAssetFetchResult:title:")
-    public static native PHAssetCollection createTransientAssetCollection(PHFetchResult<PHAsset> fetchResult, String title);
+    protected static native @Pointer long createTransientAssetCollection(PHFetchResult<PHAsset> fetchResult, String title);
     /*</methods>*/
 }

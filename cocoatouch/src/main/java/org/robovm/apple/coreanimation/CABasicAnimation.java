@@ -50,6 +50,11 @@ import org.robovm.apple.metal.*;
     public CABasicAnimation() {}
     protected CABasicAnimation(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
+    public CABasicAnimation(String path) {
+        super(create(path));
+        retain(getHandle());
+    }
+    
     public double getNumericFromValue() {
         NSObject val = getFromValue();
         if (val instanceof NSNumber) {
@@ -97,9 +102,7 @@ import org.robovm.apple.metal.*;
     /*<members>*//*</members>*/
 
     @Method(selector = "animationWithKeyPath:")
-    public static native CABasicAnimation create(String path);
-    @Method(selector = "animation")
-    public static native CABasicAnimation create();
+    protected static native @Pointer long create(String path);
     /*<methods>*/
     
     /*</methods>*/

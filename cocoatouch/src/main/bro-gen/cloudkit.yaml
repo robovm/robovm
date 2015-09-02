@@ -49,14 +49,13 @@ classes:
                 name: init
     CKContainer: # DONE
         methods:
-            '-init':
-                exclude: true
             '-addOperation:':
                 trim_after_first_colon: true
             '+defaultContainer':
                 property: true
             '+containerWithIdentifier:':
                 name: create
+                constructor: true
             '-accountStatusWithCompletionHandler:':
                 name: getAccountStatus
             '-statusForApplicationPermission:completionHandler:':
@@ -82,8 +81,6 @@ classes:
                 name: discoverUserInfo
     CKDatabase: # DONE
         methods:
-            '-init':
-                exclude: true
             '-addOperation:':
                 trim_after_first_colon: true
             '-fetchRecordWithID:completionHandler:':
@@ -132,10 +129,9 @@ classes:
                 type: List<String>
                 marshaler: NSArray.AsStringListMarshaler
         methods:
-            '-init':
-                exclude: true
             '+notificationFromRemoteNotificationDictionary:':
                 name: create
+                constructor: true
                 parameters:
                     notificationDictionary:
                         type: org.robovm.apple.uikit.UIRemoteNotification
@@ -250,8 +246,6 @@ classes:
             'fetchRecordsCompletionBlock':
                 type: '@Block VoidBlock2<NSDictionary<CKRecordID, CKRecord>, NSError>'
         methods:
-            '-init':
-                exclude: true
             '-initWithRecordIDs:':
                 name: init
                 parameters:
@@ -266,8 +260,6 @@ classes:
             'fetchRecordZonesCompletionBlock':
                 type: '@Block VoidBlock2<NSDictionary<CKRecordZoneID, CKRecordZone>, NSError>'
         methods:
-            '-init':
-                exclude: true
             '-initWithRecordZoneIDs:':
                 name: init
                 parameters:
@@ -283,8 +275,6 @@ classes:
             'fetchSubscriptionCompletionBlock':
                 type: '@Block VoidBlock2<NSDictionary<NSString, CKSubscription>, NSError>' # TODO asStringMapMarshaler
         methods:
-            '-init':
-                exclude: true
             '-initWithSubscriptionIDs:':
                 name: init
                 parameters:

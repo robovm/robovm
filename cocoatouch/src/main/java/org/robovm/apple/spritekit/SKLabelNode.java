@@ -52,8 +52,12 @@ import org.robovm.apple.gameplaykit.*;
     /*<constructors>*/
     public SKLabelNode() {}
     protected SKLabelNode(SkipInit skipInit) { super(skipInit); }
-    public SKLabelNode(String fontName) { super((SkipInit) null); initObject(init(fontName)); }
+    public SKLabelNode(String text) { super(create(text)); retain(getHandle()); }
     /*</constructors>*/
+    public SKLabelNode(String text, String fontName) {
+        this(text);
+        setFontName(fontName);
+    }
     /*<properties>*/
     @Property(selector = "verticalAlignmentMode")
     public native SKLabelVerticalAlignmentMode getVerticalAlignmentMode();
@@ -94,11 +98,7 @@ import org.robovm.apple.gameplaykit.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "initWithFontNamed:")
-    protected native @Pointer long init(String fontName);
     @Method(selector = "labelNodeWithText:")
-    public static native SKLabelNode createWithText(String text);
-    @Method(selector = "labelNodeWithFontNamed:")
-    public static native SKLabelNode createWithFont(String fontName);
+    protected static native @Pointer long create(String text);
     /*</methods>*/
 }

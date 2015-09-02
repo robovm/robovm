@@ -30,6 +30,7 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.apple.addressbook.*;
+import org.robovm.apple.contacts.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -87,7 +88,7 @@ import org.robovm.apple.addressbook.*;
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "userInfo")
-    public native NSDictionary getUserInfo();
+    public native NSDictionary<?, ?> getUserInfo();
     @Property(selector = "passURL")
     public native NSURL getPassURL();
     /**

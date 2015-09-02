@@ -59,6 +59,16 @@ import org.robovm.apple.dispatch.*;
     public native NSKeyedUnarchiverDelegate getDelegate();
     @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(NSKeyedUnarchiverDelegate v);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @Property(selector = "requiresSecureCoding")
+    public native boolean requiresSecureCoding();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @Property(selector = "setRequiresSecureCoding:")
+    public native void setRequiresSecureCoding(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
     
@@ -78,13 +88,13 @@ import org.robovm.apple.dispatch.*;
     public native void setClassForClassName(Class<? extends NSObject> cls, String codedName);
     @Method(selector = "classForClassName:")
     public native Class<? extends NSObject> getClassForClassName(String codedName);
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @Method(selector = "setRequiresSecureCoding:")
-    public native void setRequiresSecureCoding(boolean b);
     @Method(selector = "unarchiveObjectWithData:")
     public static native NSObject unarchive(NSData data);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "unarchiveTopLevelObjectWithData:error:")
+    public static native NSObject unarchiveTopLevelObjectWithData$error$(NSData data, NSError.NSErrorPtr error);
     @Method(selector = "unarchiveObjectWithFile:")
     private static native NSObject unarchiveObject(String path);
     @Method(selector = "setClass:forClassName:")

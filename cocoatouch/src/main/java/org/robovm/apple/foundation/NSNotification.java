@@ -54,7 +54,7 @@ import org.robovm.apple.dispatch.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public NSNotification(NSString name, NSObject object, NSDictionary userInfo) { super((SkipInit) null); initObject(init(name, object, userInfo)); }
+    public NSNotification(NSString name, NSObject object, NSDictionary<?, ?> userInfo) { super((SkipInit) null); initObject(init(name, object, userInfo)); }
     public NSNotification(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     public NSNotification(String name, NSObject object, NSDictionary<?, ?> userInfo) {
@@ -83,7 +83,7 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "object")
     public native NSObject getObject();
     @Property(selector = "userInfo")
-    public native NSDictionary getUserInfo();
+    public native NSDictionary<?, ?> getUserInfo();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -91,7 +91,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "initWithName:object:userInfo:")
-    protected native @Pointer long init(NSString name, NSObject object, NSDictionary userInfo);
+    protected native @Pointer long init(NSString name, NSObject object, NSDictionary<?, ?> userInfo);
     @Method(selector = "initWithCoder:")
     protected native @Pointer long init(NSCoder aDecoder);
     @Method(selector = "encodeWithCoder:")

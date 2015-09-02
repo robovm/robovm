@@ -150,5 +150,15 @@ import org.robovm.apple.dispatch.*;
     /*<methods>*/
     @Method(selector = "initWithDomain:code:userInfo:")
     protected native @Pointer long init(String domain, @MachineSizedSInt long code, NSErrorUserInfo dict);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "setUserInfoValueProviderForDomain:provider:")
+    public static native void setUserInfoValueProvider(String errorDomain, @Block Block2<NSError, String, NSObject> provider);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "userInfoValueProviderForDomain:")
+    public static native @Block Block2<NSError, String, NSObject> getUserInfoValueProvider(NSError err, String userInfoKey, String errorDomain);
     /*</methods>*/
 }

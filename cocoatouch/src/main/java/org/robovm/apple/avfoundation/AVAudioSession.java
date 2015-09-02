@@ -58,7 +58,7 @@ import org.robovm.apple.audiounit.*;
             return NSNotificationCenter.getDefaultCenter().addObserver(InterruptionNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke(NSNotification a) {
-                    NSDictionary<NSString, NSObject> userInfo = a.getUserInfo();
+                    NSDictionary<?, ?> userInfo = a.getUserInfo();
                     AVAudioSessionInterruptionNotification data = null;
                     if (userInfo != null) {
                         data = new AVAudioSessionInterruptionNotification(userInfo);
@@ -75,7 +75,7 @@ import org.robovm.apple.audiounit.*;
             return NSNotificationCenter.getDefaultCenter().addObserver(RouteChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke(NSNotification a) {
-                    NSDictionary<NSString, NSObject> userInfo = a.getUserInfo();
+                    NSDictionary<?, ?> userInfo = a.getUserInfo();
                     AVAudioSessionRouteChangeNotification data = null;
                     if (userInfo != null) {
                         data = new AVAudioSessionRouteChangeNotification(userInfo);
@@ -113,7 +113,7 @@ import org.robovm.apple.audiounit.*;
             return NSNotificationCenter.getDefaultCenter().addObserver(SilenceSecondaryAudioHintNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke(NSNotification a) {
-                    NSDictionary<NSString, NSObject> userInfo = a.getUserInfo();
+                    NSDictionary<?, ?> userInfo = a.getUserInfo();
                     AVAudioSessionSilenceSecondaryAudioHintType type = null;
                     if (userInfo.containsKey(SilenceSecondaryAudioHintTypeKey())) {
                         NSNumber val = (NSNumber)userInfo.get(SilenceSecondaryAudioHintTypeKey());

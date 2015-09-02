@@ -48,7 +48,9 @@ import org.robovm.apple.metal.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public CAPropertyAnimation() {}
+    protected CAPropertyAnimation(long handle) { super(handle); }
     protected CAPropertyAnimation(SkipInit skipInit) { super(skipInit); }
+    public CAPropertyAnimation(String path) { super(create(path)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "keyPath")
@@ -71,6 +73,6 @@ import org.robovm.apple.metal.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "animationWithKeyPath:")
-    public static native CAPropertyAnimation create(String path);
+    protected static native @Pointer long create(String path);
     /*</methods>*/
 }

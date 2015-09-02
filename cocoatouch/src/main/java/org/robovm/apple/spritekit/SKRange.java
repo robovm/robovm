@@ -71,8 +71,6 @@ import org.robovm.apple.gameplaykit.*;
     /*<methods>*/
     @Method(selector = "initWithLowerLimit:upperLimit:")
     protected native @Pointer long init(@MachineSizedFloat double lower, @MachineSizedFloat double upper);
-    @Method(selector = "rangeWithLowerLimit:upperLimit:")
-    public static native SKRange create(@MachineSizedFloat double lower, @MachineSizedFloat double upper);
     @Method(selector = "rangeWithLowerLimit:")
     public static native SKRange createWithLowerLimit(@MachineSizedFloat double lower);
     @Method(selector = "rangeWithUpperLimit:")

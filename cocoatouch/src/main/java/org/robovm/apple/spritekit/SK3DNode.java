@@ -104,7 +104,5 @@ import org.robovm.apple.gameplaykit.*;
     public native @ByVal SKVector3 projectPoint(@ByVal SKVector3 point);
     @Method(selector = "unprojectPoint:")
     public native @ByVal SKVector3 unprojectPoint(@ByVal SKVector3 point);
-    @Method(selector = "nodeWithViewportSize:")
-    public static native SK3DNode create(@ByVal CGSize viewportSize);
     /*</methods>*/
 }

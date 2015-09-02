@@ -64,7 +64,7 @@ import org.robovm.apple.foundation.*;
     @Property(selector = "setAbstract:")
     public native void setAbstract(boolean v);
     @Property(selector = "subentitiesByName")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSEntityDescription> getSubentitiesByName();
+    public native NSDictionary<NSString, NSEntityDescription> getSubentitiesByName();
     @Property(selector = "subentities")
     public native NSArray<NSEntityDescription> getSubentities();
     @Property(selector = "setSubentities:")
@@ -72,19 +72,19 @@ import org.robovm.apple.foundation.*;
     @Property(selector = "superentity")
     public native NSEntityDescription getSuperentity();
     @Property(selector = "propertiesByName")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSPropertyDescription> getPropertiesByName();
+    public native NSDictionary<NSString, NSPropertyDescription> getPropertiesByName();
     @Property(selector = "properties")
     public native NSArray<NSPropertyDescription> getProperties();
     @Property(selector = "setProperties:")
     public native void setProperties(NSArray<NSPropertyDescription> v);
     @Property(selector = "userInfo")
-    public native NSDictionary getUserInfo();
+    public native NSDictionary<?, ?> getUserInfo();
     @Property(selector = "setUserInfo:")
-    public native void setUserInfo(NSDictionary v);
+    public native void setUserInfo(NSDictionary<?, ?> v);
     @Property(selector = "attributesByName")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSAttributeDescription> getAttributesByName();
+    public native NSDictionary<NSString, NSAttributeDescription> getAttributesByName();
     @Property(selector = "relationshipsByName")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSRelationshipDescription> getRelationshipsByName();
+    public native NSDictionary<NSString, NSRelationshipDescription> getRelationshipsByName();
     /**
      * @since Available in iOS 3.0 and later.
      */

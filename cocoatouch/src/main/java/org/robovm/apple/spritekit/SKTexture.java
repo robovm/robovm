@@ -52,6 +52,13 @@ import org.robovm.apple.gameplaykit.*;
     /*<constructors>*/
     public SKTexture() {}
     protected SKTexture(SkipInit skipInit) { super(skipInit); }
+    public SKTexture(String name) { super(create(name)); retain(getHandle()); }
+    public SKTexture(@ByVal CGRect rect, SKTexture texture) { super(create(rect, texture)); retain(getHandle()); }
+    public SKTexture(CGImage image) { super(create(image)); retain(getHandle()); }
+    public SKTexture(UIImage image) { super(create(image)); retain(getHandle()); }
+    public SKTexture(NSData pixelData, @ByVal CGSize size) { super(create(pixelData, size)); retain(getHandle()); }
+    public SKTexture(NSData pixelData, @ByVal CGSize size, boolean flipped) { super(create(pixelData, size, flipped)); retain(getHandle()); }
+    public SKTexture(NSData pixelData, @ByVal CGSize size, int rowLength, int alignment) { super(create(pixelData, size, rowLength, alignment)); retain(getHandle()); }
     public SKTexture(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
@@ -91,9 +98,9 @@ import org.robovm.apple.gameplaykit.*;
     @Method(selector = "preloadWithCompletionHandler:")
     public native void preload(@Block Runnable completionHandler);
     @Method(selector = "textureWithImageNamed:")
-    public static native SKTexture create(String name);
+    protected static native @Pointer long create(String name);
     @Method(selector = "textureWithRect:inTexture:")
-    public static native SKTexture create(@ByVal CGRect rect, SKTexture texture);
+    protected static native @Pointer long create(@ByVal CGRect rect, SKTexture texture);
     /**
      * @since Available in iOS 8.0 and later.
      */
@@ -105,15 +112,15 @@ import org.robovm.apple.gameplaykit.*;
     @Method(selector = "textureNoiseWithSmoothness:size:grayscale:")
     public static native SKTexture createNoise(@MachineSizedFloat double smoothness, @ByVal CGSize size, boolean grayscale);
     @Method(selector = "textureWithCGImage:")
-    public static native SKTexture create(CGImage image);
+    protected static native @Pointer long create(CGImage image);
     @Method(selector = "textureWithImage:")
-    public static native SKTexture create(UIImage image);
+    protected static native @Pointer long create(UIImage image);
     @Method(selector = "textureWithData:size:")
-    public static native SKTexture create(NSData pixelData, @ByVal CGSize size);
+    protected static native @Pointer long create(NSData pixelData, @ByVal CGSize size);
     @Method(selector = "textureWithData:size:flipped:")
-    public static native SKTexture create(NSData pixelData, @ByVal CGSize size, boolean flipped);
+    protected static native @Pointer long create(NSData pixelData, @ByVal CGSize size, boolean flipped);
     @Method(selector = "textureWithData:size:rowLength:alignment:")
-    public static native SKTexture create(NSData pixelData, @ByVal CGSize size, int rowLength, int alignment);
+    protected static native @Pointer long create(NSData pixelData, @ByVal CGSize size, int rowLength, int alignment);
     @Method(selector = "preloadTextures:withCompletionHandler:")
     public static native void preloadTextures(NSArray<SKTexture> textures, @Block Runnable completionHandler);
     @Method(selector = "encodeWithCoder:")

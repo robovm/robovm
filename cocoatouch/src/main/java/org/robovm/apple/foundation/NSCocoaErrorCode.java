@@ -41,68 +41,70 @@ import org.robovm.apple.dispatch.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
+/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
 @ForceLinkClass(NSCocoaError.class)
 public enum /*<name>*/NSCocoaErrorCode/*</name>*/ implements NSErrorCode {
     /*<values>*/
-    FileNoSuchFileError(4L),
-    FileLockingError(255L),
-    FileReadUnknownError(256L),
-    FileReadNoPermissionError(257L),
-    FileReadInvalidFileNameError(258L),
-    FileReadCorruptFileError(259L),
-    FileReadNoSuchFileError(260L),
-    FileReadInapplicableStringEncodingError(261L),
-    FileReadUnsupportedSchemeError(262L),
+    FileNoSuchFile(4L),
+    FileLocking(255L),
+    FileReadUnknown(256L),
+    FileReadNoPermission(257L),
+    FileReadInvalidFileName(258L),
+    FileReadCorruptFile(259L),
+    FileReadNoSuchFile(260L),
+    FileReadInapplicableStringEncoding(261L),
+    FileReadUnsupportedScheme(262L),
     /**
      * @since Available in iOS 2.0 and later.
      */
-    FileReadTooLargeError(263L),
+    FileReadTooLarge(263L),
     /**
      * @since Available in iOS 2.0 and later.
      */
-    FileReadUnknownStringEncodingError(264L),
-    FileWriteUnknownError(512L),
-    FileWriteNoPermissionError(513L),
-    FileWriteInvalidFileNameError(514L),
+    FileReadUnknownStringEncoding(264L),
+    FileWriteUnknown(512L),
+    FileWriteNoPermission(513L),
+    FileWriteInvalidFileName(514L),
     /**
      * @since Available in iOS 5.0 and later.
      */
-    FileWriteFileExistsError(516L),
-    FileWriteInapplicableStringEncodingError(517L),
-    FileWriteUnsupportedSchemeError(518L),
-    FileWriteOutOfSpaceError(640L),
+    FileWriteFileExists(516L),
+    FileWriteInapplicableStringEncoding(517L),
+    FileWriteUnsupportedScheme(518L),
+    FileWriteOutOfSpace(640L),
     /**
      * @since Available in iOS 4.0 and later.
      */
-    FileWriteVolumeReadOnlyError(642L),
-    KeyValueValidationError(1024L),
-    FormattingError(2048L),
-    UserCancelledError(3072L),
+    FileWriteVolumeReadOnly(642L),
+    FileManagerUnmountUnknown(768L),
+    FileManagerUnmountBusy(769L),
+    KeyValueValidation(1024L),
+    Formatting(2048L),
+    UserCancelled(3072L),
     /**
      * @since Available in iOS 6.0 and later.
      */
-    FeatureUnsupportedError(3328L),
+    FeatureUnsupported(3328L),
     /**
      * @since Available in iOS 2.0 and later.
      */
-    ExecutableNotLoadableError(3584L),
+    ExecutableNotLoadable(3584L),
     /**
      * @since Available in iOS 2.0 and later.
      */
-    ExecutableArchitectureMismatchError(3585L),
+    ExecutableArchitectureMismatch(3585L),
     /**
      * @since Available in iOS 2.0 and later.
      */
-    ExecutableRuntimeMismatchError(3586L),
+    ExecutableRuntimeMismatch(3586L),
     /**
      * @since Available in iOS 2.0 and later.
      */
-    ExecutableLoadError(3587L),
+    ExecutableLoad(3587L),
     /**
      * @since Available in iOS 2.0 and later.
      */
-    ExecutableLinkError(3588L),
+    ExecutableLink(3588L),
     FileErrorMinimum(0L),
     FileErrorMaximum(1023L),
     ValidationErrorMinimum(1024L),
@@ -120,23 +122,23 @@ public enum /*<name>*/NSCocoaErrorCode/*</name>*/ implements NSErrorCode {
     /**
      * @since Available in iOS 4.0 and later.
      */
-    PropertyListReadCorruptError(3840L),
+    PropertyListReadCorrupt(3840L),
     /**
      * @since Available in iOS 4.0 and later.
      */
-    PropertyListReadUnknownVersionError(3841L),
+    PropertyListReadUnknownVersion(3841L),
     /**
      * @since Available in iOS 4.0 and later.
      */
-    PropertyListReadStreamError(3842L),
+    PropertyListReadStream(3842L),
     /**
      * @since Available in iOS 4.0 and later.
      */
-    PropertyListWriteStreamError(3851L),
+    PropertyListWriteStream(3851L),
     /**
      * @since Available in iOS 8.0 and later.
      */
-    PropertyListWriteInvalidError(3852L),
+    PropertyListWriteInvalid(3852L),
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -168,11 +170,11 @@ public enum /*<name>*/NSCocoaErrorCode/*</name>*/ implements NSErrorCode {
     /**
      * @since Available in iOS 7.0 and later.
      */
-    UbiquitousFileUnavailableError(4353L),
+    UbiquitousFileUnavailable(4353L),
     /**
      * @since Available in iOS 7.0 and later.
      */
-    UbiquitousFileNotUploadedDueToQuotaError(4354L),
+    UbiquitousFileNotUploadedDueToQuota(4354L),
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -188,19 +190,19 @@ public enum /*<name>*/NSCocoaErrorCode/*</name>*/ implements NSErrorCode {
     /**
      * @since Available in iOS 8.0 and later.
      */
-    UserActivityHandoffFailedError(4608L),
+    UserActivityHandoffFailed(4608L),
     /**
      * @since Available in iOS 8.0 and later.
      */
-    UserActivityConnectionUnavailableError(4609L),
+    UserActivityConnectionUnavailable(4609L),
     /**
      * @since Available in iOS 8.0 and later.
      */
-    UserActivityRemoteApplicationTimedOutError(4610L),
+    UserActivityRemoteApplicationTimedOut(4610L),
     /**
      * @since Available in iOS 8.0 and later.
      */
-    UserActivityHandoffUserInfoTooLargeError(4611L),
+    UserActivityHandoffUserInfoTooLarge(4611L),
     /**
      * @since Available in iOS 8.0 and later.
      */
@@ -208,7 +210,43 @@ public enum /*<name>*/NSCocoaErrorCode/*</name>*/ implements NSErrorCode {
     /**
      * @since Available in iOS 8.0 and later.
      */
-    UserActivityErrorMaximum(4863L);
+    UserActivityErrorMaximum(4863L),
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    CoderReadCorrupt(4864L),
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    CoderValueNotFound(4865L),
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    CoderErrorMinimum(4864L),
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    CoderErrorMaximum(4991L),
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    BundleErrorMinimum(4992L),
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    BundleErrorMaximum(5119L),
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    BundleOnDemandResourceOutOfSpace(4992L),
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    BundleOnDemandResourceExceededMaximumSize(4993L),
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    BundleOnDemandResourceInvalidTag(4994L);
     /*</values>*/
 
     /*<bind>*/

@@ -58,7 +58,7 @@ import org.robovm.apple.audiounit.*;
             return NSNotificationCenter.getDefaultCenter().addObserver(RuntimeErrorNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke(NSNotification a) {
-                    NSDictionary<NSString, NSObject> data = a.getUserInfo();
+                    NSDictionary<?, ?> data = a.getUserInfo();
                     NSError error = null;
                     if (data.containsKey(NotificationErrorKey())) {
                         error = (NSError) data.get(NotificationErrorKey());

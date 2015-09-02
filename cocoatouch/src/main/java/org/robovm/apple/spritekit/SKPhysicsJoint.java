@@ -51,6 +51,7 @@ import org.robovm.apple.gameplaykit.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public SKPhysicsJoint() {}
+    protected SKPhysicsJoint(long handle) { super(handle); }
     protected SKPhysicsJoint(SkipInit skipInit) { super(skipInit); }
     public SKPhysicsJoint(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/

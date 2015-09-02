@@ -48,6 +48,7 @@ import org.robovm.apple.contacts.*;
     /*<constructors>*/
     public CKNotification() {}
     protected CKNotification(SkipInit skipInit) { super(skipInit); }
+    public CKNotification(org.robovm.apple.uikit.UIRemoteNotification notificationDictionary) { super(create(notificationDictionary)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "notificationType")
@@ -86,6 +87,6 @@ import org.robovm.apple.contacts.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "notificationFromRemoteNotificationDictionary:")
-    public static native CKNotification create(org.robovm.apple.uikit.UIRemoteNotification notificationDictionary);
+    protected static native @Pointer long create(org.robovm.apple.uikit.UIRemoteNotification notificationDictionary);
     /*</methods>*/
 }

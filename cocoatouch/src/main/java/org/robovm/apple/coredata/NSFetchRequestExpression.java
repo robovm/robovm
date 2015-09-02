@@ -46,6 +46,7 @@ import org.robovm.apple.foundation.*;
     /*<constructors>*/
     public NSFetchRequestExpression() {}
     protected NSFetchRequestExpression(SkipInit skipInit) { super(skipInit); }
+    public NSFetchRequestExpression(NSExpression fetch, NSExpression context, boolean countFlag) { super(create(fetch, context, countFlag)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "requestExpression")
@@ -58,6 +59,6 @@ import org.robovm.apple.foundation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "expressionForFetch:context:countOnly:")
-    public static native NSExpression create(NSExpression fetch, NSExpression context, boolean countFlag);
+    protected static native @Pointer long create(NSExpression fetch, NSExpression context, boolean countFlag);
     /*</methods>*/
 }

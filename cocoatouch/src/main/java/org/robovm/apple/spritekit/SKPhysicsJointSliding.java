@@ -52,6 +52,7 @@ import org.robovm.apple.gameplaykit.*;
     /*<constructors>*/
     public SKPhysicsJointSliding() {}
     protected SKPhysicsJointSliding(SkipInit skipInit) { super(skipInit); }
+    public SKPhysicsJointSliding(SKPhysicsBody bodyA, SKPhysicsBody bodyB, @ByVal CGPoint anchor, @ByVal CGVector axis) { super(create(bodyA, bodyB, anchor, axis)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "shouldEnableLimits")
@@ -70,6 +71,6 @@ import org.robovm.apple.gameplaykit.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "jointWithBodyA:bodyB:anchor:axis:")
-    public static native SKPhysicsJointSliding create(SKPhysicsBody bodyA, SKPhysicsBody bodyB, @ByVal CGPoint anchor, @ByVal CGVector axis);
+    protected static native @Pointer long create(SKPhysicsBody bodyA, SKPhysicsBody bodyB, @ByVal CGPoint anchor, @ByVal CGVector axis);
     /*</methods>*/
 }

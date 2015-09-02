@@ -267,27 +267,27 @@ import org.robovm.apple.gameplaykit.*;
     @Method(selector = "runAction:onChildWithName:")
     public static native SKAction runAction(SKAction action, String name);
     @Method(selector = "customActionWithDuration:actionBlock:")
-    private static native @Pointer long create(double seconds, @Block("(,@MachineSizedFloat)") VoidBlock2<SKNode, Double> block);
+    protected static native @Pointer long create(double seconds, @Block("(,@MachineSizedFloat)") VoidBlock2<SKNode, Double> block);
     /**
      * @since Available in iOS 9.0 and later.
      */
     @Method(selector = "actionNamed:")
-    private static native @Pointer long create(String name);
+    protected static native @Pointer long create(String name);
     /**
      * @since Available in iOS 9.0 and later.
      */
     @Method(selector = "actionNamed:duration:")
-    private static native @Pointer long create(String name, double sec);
+    protected static native @Pointer long create(String name, double sec);
     /**
      * @since Available in iOS 9.0 and later.
      */
     @Method(selector = "actionNamed:fromURL:")
-    private static native @Pointer long create(String name, NSURL url);
+    protected static native @Pointer long create(String name, NSURL url);
     /**
      * @since Available in iOS 9.0 and later.
      */
     @Method(selector = "actionNamed:fromURL:duration:")
-    private static native @Pointer long create(String name, NSURL url, double sec);
+    protected static native @Pointer long create(String name, NSURL url, double sec);
     /**
      * @since Available in iOS 9.0 and later.
      */

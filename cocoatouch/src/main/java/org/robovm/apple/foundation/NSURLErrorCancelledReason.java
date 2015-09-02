@@ -43,7 +43,7 @@ import org.robovm.apple.dispatch.*;
  * @since Available in iOS 7.0 and later.
  */
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
+/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/NSURLErrorCancelledReason/*</name>*/ implements ValuedEnum {
     /*<values>*/
     UserForceQuitApplication(0L),

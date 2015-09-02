@@ -54,21 +54,28 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public NSPredicate() {}
     protected NSPredicate(SkipInit skipInit) { super(skipInit); }
+    public NSPredicate(String predicateFormat, NSArray<?> arguments) { super(create(predicateFormat, arguments)); retain(getHandle()); }
+    public NSPredicate(boolean value) { super(create(value)); retain(getHandle()); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public NSPredicate(@Block Block2<NSObject, NSDictionary<NSString, ?>, Boolean> block) { super(create(block)); retain(getHandle()); }
     /*</constructors>*/
-    /*<properties>*/
-    @Property(selector = "predicateFormat")
-    public native String getPredicateFormat();
-    /*</properties>*/
-    /*<members>*//*</members>*/
+    public NSPredicate(String predicateFormat, Object... arguments) {
+        super(create(predicateFormat, arguments));
+    }
+    public NSPredicate(String predicateFormat, NSObject ... arguments) {
+        super(create(predicateFormat, new NSArray<NSObject>(arguments)));
+    }
     
-    public static NSPredicate create(String predicateFormat, Object ... arguments) {
+    private static long create(String predicateFormat, Object... arguments) {
         NSArray<NSObject> args = new NSMutableArray<>();
         int i = 0;
         for (Object o : arguments) {
             if (o instanceof Number) {
-                args.add(NSNumber.valueOf((Number)o));
+                args.add(NSNumber.valueOf((Number) o));
             } else if (o instanceof String) {
-                args.add(new NSString((String)o));
+                args.add(new NSString((String) o));
             } else if (o instanceof NSPredicateKeyPath) {
                 args.add(((NSPredicateKeyPath) o).value());
             } else if (o instanceof Collection) {
@@ -85,6 +92,8 @@ import org.robovm.apple.dispatch.*;
                     d.put(new NSString(e.getKey().toString()), new NSString(e.getValue().toString()));
                 }
                 args.add(d);
+            } else if (o instanceof NSObject) {
+               args.add((NSObject) o); 
             } else if (o == null) {
                 throw new IllegalArgumentException("argument " + i + " cannot be null!");
             } else {
@@ -95,34 +104,34 @@ import org.robovm.apple.dispatch.*;
         
         return create(predicateFormat, args);
     }
-    
-    public static NSPredicate create(String predicateFormat, NSObject ... arguments) {
-        return create(predicateFormat, new NSArray<NSObject>(arguments));
-    }
-    
+    /*<properties>*/
+    @Property(selector = "predicateFormat")
+    public native String getPredicateFormat();
+    /*</properties>*/
+    /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "predicateWithSubstitutionVariables:")
-    public native NSPredicate newPredicateWithSubstitutionVariables(NSDictionary variables);
+    public native NSPredicate newPredicate(NSDictionary<NSString, ?> variables);
     @Method(selector = "evaluateWithObject:")
     public native boolean evaluate(NSObject object);
     /**
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "evaluateWithObject:substitutionVariables:")
-    public native boolean evaluate(NSObject object, NSDictionary bindings);
+    public native boolean evaluate(NSObject object, NSDictionary<NSString, ?> variables);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "allowEvaluation")
     public native void allowEvaluation();
     @Method(selector = "predicateWithFormat:argumentArray:")
-    public static native NSPredicate create(String predicateFormat, NSArray<?> arguments);
+    protected static native @Pointer long create(String predicateFormat, NSArray<?> arguments);
     @Method(selector = "predicateWithValue:")
-    public static native NSPredicate create(boolean value);
+    protected static native @Pointer long create(boolean value);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "predicateWithBlock:")
-    public static native NSPredicate create(@Block Block2<NSObject, NSDictionary<NSString, ?>, Boolean> block);
+    protected static native @Pointer long create(@Block Block2<NSObject, NSDictionary<NSString, ?>, Boolean> block);
     /*</methods>*/
 }

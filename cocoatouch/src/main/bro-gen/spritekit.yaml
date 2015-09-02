@@ -59,7 +59,7 @@ classes:
             '-unprojectPoint:':
                 trim_after_first_colon: true
             '+nodeWithViewportSize:':
-                name: create
+                exclude: true
     SKAction: # DONE
         properties:
             'timingFunction':
@@ -287,11 +287,12 @@ classes:
     SKLabelNode: # DONE
         methods:
             '-initWithFontNamed:':
-                name: init
+                exclude: true
             '+labelNodeWithFontNamed:':
-                name: createWithFont
+                exclude: true
             '+labelNodeWithText:':
-                name: createWithText
+                name: create
+                constructor: true
     SKLightNode: {} # DONE
     SKMutableTexture: # DONE
         methods:
@@ -303,8 +304,9 @@ classes:
                     block:
                         type: '@Block("(,@MachineSizedUInt)") VoidBlock2<VoidPtr, Long>'
             '+mutableTextureWithSize:':
-                name: create
+                exclude: true
     SKNode: # DONE
+        skip_handle_constructor: false
         properties:
             'children':
                 type: NSArray<SKNode>
@@ -419,27 +421,33 @@ classes:
                     bodies:
                         type: NSArray<SKPhysicsBody>
     SKPhysicsContact: {} # DONE
-    SKPhysicsJoint: {} # DONE
+    SKPhysicsJoint: # DONE
+        skip_handle_constructor: false
     SKPhysicsJointFixed: # DONE
         methods:
             '+jointWithBodyA:bodyB:anchor:':
                 name: create
+                constructor: true
     SKPhysicsJointLimit: # DONE
         methods:
             '+jointWithBodyA:bodyB:anchorA:anchorB:':
                 name: create
+                constructor: true
     SKPhysicsJointPin: # DONE
         methods:
             '+jointWithBodyA:bodyB:anchor:':
                 name: create
+                constructor: true
     SKPhysicsJointSliding: # DONE
         methods:
             '+jointWithBodyA:bodyB:anchor:axis:':
                 name: create
+                constructor: true
     SKPhysicsJointSpring: # DONE
         methods:
             '+jointWithBodyA:bodyB:anchorA:anchorB:':
                 name: create
+                constructor: true
     SKPhysicsWorld: # DONE
         methods:
             '-addJoint:':
@@ -465,7 +473,7 @@ classes:
             '-init.*':
                 name: init
             '+rangeWithLowerLimit:upperLimit:':
-                name: create
+                exclude: true
             '+rangeWithLowerLimit:':
                 name: createWithLowerLimit
             '+rangeWithUpperLimit:':
@@ -545,14 +553,13 @@ classes:
                 name: removeUniform
             '+shaderWithSource:uniforms:':
                 name: create
-                parameters:
-                    uniforms:
-                        type: NSArray<SKUniform>
+                exclude: true
             '+shaderWithFileNamed:':
                 name: createWithFile
-                visibility: private # Use File type
+                visibility: protected # Use File type
+                return_type: '@Pointer long'
             '+shader.*':
-                name: create
+                exclude: true
     SKShapeNode: # DONE
         methods:
             '+shapeNodeWithPath.*':
@@ -571,8 +578,17 @@ classes:
         methods:
             '-init.*':
                 name: init
-            '+spriteNodeWith.*':
+            '+spriteNodeWithTexture:size:':
                 name: create
+                constructor: true
+            '+spriteNodeWithTexture:normalMap:':
+                name: create
+                constructor: true
+            '+spriteNodeWithImageNamed:normalMapped:':
+                name: create
+                constructor: true
+            '+spriteNodeWith.*':
+                exclude: true
     SKTexture: # DONE
         methods:
             '-textureByApplyingCIFilter:':
@@ -590,6 +606,7 @@ classes:
                 name: createNoise
             '+textureWith.*':
                 name: create
+                constructor: true
             '+preloadTextures:withCompletionHandler:':
                 trim_after_first_colon: true
                 parameters:
@@ -607,9 +624,11 @@ classes:
                 name: preload
             '+atlasNamed:':
                 name: create
+                constructor: true
             '+atlasWithDictionary:':
                 name: create
                 visibility: protected
+                return_type: '@Pointer long'
             '+preloadTextureAtlases:withCompletionHandler:':
                 trim_after_first_colon: true
                 parameters:
@@ -651,6 +670,7 @@ classes:
                 name: doorway
             '+transitionWithCIFilter:duration:':
                 name: create
+                constructor: true
                 annotations: ['@WeaklyLinked']
     SKUniform: # DONE
         annotations: ['@WeaklyLinked']
@@ -658,7 +678,7 @@ classes:
             '-initWithName:.*':
                 name: init
             '+uniformWithName:.*':
-                name: create
+                exclude: true
     SKVideoNode: # DONE
         methods:
             '-initWithAVPlayer:':

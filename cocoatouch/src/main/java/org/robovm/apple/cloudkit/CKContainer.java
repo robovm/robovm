@@ -62,6 +62,7 @@ import org.robovm.apple.contacts.*;
     /*<constructors>*/
     public CKContainer() {}
     protected CKContainer(SkipInit skipInit) { super(skipInit); }
+    public CKContainer(String containerIdentifier) { super(create(containerIdentifier)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "containerIdentifier")
@@ -89,7 +90,7 @@ import org.robovm.apple.contacts.*;
     @Method(selector = "defaultContainer")
     public static native CKContainer getDefaultContainer();
     @Method(selector = "containerWithIdentifier:")
-    public static native CKContainer create(String containerIdentifier);
+    protected static native @Pointer long create(String containerIdentifier);
     @Method(selector = "accountStatusWithCompletionHandler:")
     public native void getAccountStatus(@Block VoidBlock2<CKAccountStatus, NSError> completionHandler);
     @Method(selector = "statusForApplicationPermission:completionHandler:")

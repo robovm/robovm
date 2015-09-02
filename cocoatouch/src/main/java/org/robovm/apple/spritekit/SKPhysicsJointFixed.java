@@ -52,6 +52,7 @@ import org.robovm.apple.gameplaykit.*;
     /*<constructors>*/
     public SKPhysicsJointFixed() {}
     protected SKPhysicsJointFixed(SkipInit skipInit) { super(skipInit); }
+    public SKPhysicsJointFixed(SKPhysicsBody bodyA, SKPhysicsBody bodyB, @ByVal CGPoint anchor) { super(create(bodyA, bodyB, anchor)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     
@@ -59,6 +60,6 @@ import org.robovm.apple.gameplaykit.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "jointWithBodyA:bodyB:anchor:")
-    public static native SKPhysicsJointFixed create(SKPhysicsBody bodyA, SKPhysicsBody bodyB, @ByVal CGPoint anchor);
+    protected static native @Pointer long create(SKPhysicsBody bodyA, SKPhysicsBody bodyB, @ByVal CGPoint anchor);
     /*</methods>*/
 }

@@ -108,10 +108,10 @@ import org.robovm.apple.dispatch.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static NSTextCheckingResult createRegularExpressionCheckingResult(NSRange[] ranges, NSRegularExpression regularExpression) {
+    public static NSTextCheckingResult getRegularExpressionCheckingResult(NSRange[] ranges, NSRegularExpression regularExpression) {
         NSRange first = Struct.allocate(NSRange.class, ranges.length);
         first.update(ranges);
-        return createRegularExpressionCheckingResult(first, ranges.length, regularExpression);
+        return getRegularExpressionCheckingResult(first, ranges.length, regularExpression);
     }
     
     /*<methods>*/
@@ -126,47 +126,47 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "resultByAdjustingRangesWithOffset:")
     public native NSTextCheckingResult newResultByAdjustingRanges(@MachineSizedSInt long offset);
     @Method(selector = "orthographyCheckingResultWithRange:orthography:")
-    public static native NSTextCheckingResult createOrthographyCheckingResult(@ByVal NSRange range, NSOrthography orthography);
+    public static native NSTextCheckingResult getOrthographyCheckingResult(@ByVal NSRange range, NSOrthography orthography);
     @Method(selector = "spellCheckingResultWithRange:")
-    public static native NSTextCheckingResult createSpellCheckingResult(@ByVal NSRange range);
+    public static native NSTextCheckingResult getSpellCheckingResult(@ByVal NSRange range);
     @Method(selector = "grammarCheckingResultWithRange:details:")
-    public static native NSTextCheckingResult createGrammarCheckingResult(@ByVal NSRange range, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> details);
+    public static native NSTextCheckingResult getGrammarCheckingResult(@ByVal NSRange range, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> details);
     @Method(selector = "dateCheckingResultWithRange:date:")
-    public static native NSTextCheckingResult createDateCheckingResult(@ByVal NSRange range, NSDate date);
+    public static native NSTextCheckingResult getDateCheckingResult(@ByVal NSRange range, NSDate date);
     @Method(selector = "dateCheckingResultWithRange:date:timeZone:duration:")
-    public static native NSTextCheckingResult createDateCheckingResult(@ByVal NSRange range, NSDate date, NSTimeZone timeZone, double duration);
+    public static native NSTextCheckingResult getDateCheckingResult(@ByVal NSRange range, NSDate date, NSTimeZone timeZone, double duration);
     @Method(selector = "addressCheckingResultWithRange:components:")
-    public static native NSTextCheckingResult createAddressCheckingResult(@ByVal NSRange range, NSTextCheckingAddressComponents components);
+    public static native NSTextCheckingResult getAddressCheckingResult(@ByVal NSRange range, NSTextCheckingAddressComponents components);
     @Method(selector = "linkCheckingResultWithRange:URL:")
-    public static native NSTextCheckingResult createLinkCheckingResult(@ByVal NSRange range, NSURL url);
+    public static native NSTextCheckingResult getLinkCheckingResult(@ByVal NSRange range, NSURL url);
     @Method(selector = "quoteCheckingResultWithRange:replacementString:")
-    public static native NSTextCheckingResult createQuoteCheckingResult(@ByVal NSRange range, String replacementString);
+    public static native NSTextCheckingResult getQuoteCheckingResult(@ByVal NSRange range, String replacementString);
     @Method(selector = "dashCheckingResultWithRange:replacementString:")
-    public static native NSTextCheckingResult createDashCheckingResult(@ByVal NSRange range, String replacementString);
+    public static native NSTextCheckingResult getDashCheckingResult(@ByVal NSRange range, String replacementString);
     @Method(selector = "replacementCheckingResultWithRange:replacementString:")
-    public static native NSTextCheckingResult createReplacementCheckingResult(@ByVal NSRange range, String replacementString);
+    public static native NSTextCheckingResult getReplacementCheckingResult(@ByVal NSRange range, String replacementString);
     @Method(selector = "correctionCheckingResultWithRange:replacementString:")
-    public static native NSTextCheckingResult createCorrectionCheckingResult(@ByVal NSRange range, String replacementString);
+    public static native NSTextCheckingResult getCorrectionCheckingResult(@ByVal NSRange range, String replacementString);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "correctionCheckingResultWithRange:replacementString:alternativeStrings:")
-    public static native NSTextCheckingResult createCorrectionCheckingResult(@ByVal NSRange range, String replacementString, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> alternativeStrings);
+    public static native NSTextCheckingResult getCorrectionCheckingResult(@ByVal NSRange range, String replacementString, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> alternativeStrings);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "regularExpressionCheckingResultWithRanges:count:regularExpression:")
-    protected static native NSTextCheckingResult createRegularExpressionCheckingResult(NSRange ranges, @MachineSizedUInt long count, NSRegularExpression regularExpression);
+    protected static native NSTextCheckingResult getRegularExpressionCheckingResult(NSRange ranges, @MachineSizedUInt long count, NSRegularExpression regularExpression);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "phoneNumberCheckingResultWithRange:phoneNumber:")
-    public static native NSTextCheckingResult createPhoneNumberCheckingResult(@ByVal NSRange range, String phoneNumber);
+    public static native NSTextCheckingResult getPhoneNumberCheckingResult(@ByVal NSRange range, String phoneNumber);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "transitInformationCheckingResultWithRange:components:")
-    public static native NSTextCheckingResult createTransitInformationCheckingResult(@ByVal NSRange range, NSTextCheckingTransitComponents components);
+    public static native NSTextCheckingResult getTransitInformationCheckingResult(@ByVal NSRange range, NSTextCheckingTransitComponents components);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder coder);
     @Method(selector = "initWithCoder:")

@@ -1,5 +1,5 @@
 package: org.robovm.apple.passkit
-include: [foundation.yaml, uikit.yaml, addressbook.yaml]
+include: [foundation.yaml, uikit.yaml, addressbook.yaml, contacts.yaml]
 library: PassKit
 framework: PassKit
 clang_args: ['-x', 'objective-c']
@@ -128,7 +128,7 @@ classes:
             '-initWithPaymentButtonType:paymentButtonStyle:':
                 name: init
             '+buttonWithType:style:':
-                name: create # deprecated
+                exclude: true
     PKPaymentMethod: {} # DONE
     PKPaymentPass: {} # DONE
     PKPaymentRequest: # DONE
@@ -144,12 +144,10 @@ classes:
         methods:
             '+summaryItemWithLabel:amount:':
                 name: create
-                visibility: protected
-                return_type: '@Pointer long'
+                constructor: true
             '+summaryItemWithLabel:amount:type:':
                 name: create
-                visibility: protected
-                return_type: '@Pointer long'
+                constructor: true
     PKPaymentToken: # DONE
         properties:
             'paymentNetwork':

@@ -61,7 +61,7 @@ import org.robovm.apple.avfoundation.*;
     @Method(selector = "addResourceWithType:data:options:")
     public native void addResource(PHAssetResourceType type, NSData data, PHAssetResourceCreationOptions options);
     @Method(selector = "creationRequestForAsset")
-    private static native @Pointer long create();
+    protected static native @Pointer long create();
     @Method(selector = "supportsAssetResourceTypes:")
     public static native boolean supportsAssetResourceTypes(@org.robovm.rt.bro.annotation.Marshaler(PHAssetResourceType.AsListMarshaler.class) List<PHAssetResourceType> types);
     /*</methods>*/

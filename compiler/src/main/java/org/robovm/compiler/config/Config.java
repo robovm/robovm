@@ -166,9 +166,7 @@ public class Config {
     @Element(required = false, name = "iosInfoPList")
     private File iosInfoPListFile = null;
     @Element(required = false, name = "infoPList")
-    private File infoPListFile = null;
-    @Element(required = false)
-    private File iosResourceRulesPList;
+    private File infoPListFile = null;    
     @Element(required = false)
     private File iosEntitlementsPList;
 
@@ -513,10 +511,6 @@ public class Config {
             infoPList = new InfoPList(infoPListFile);
         }
         return infoPList;
-    }
-
-    public File getIosResourceRulesPList() {
-        return iosResourceRulesPList;
     }
 
     public File getIosEntitlementsPList() {
@@ -1418,11 +1412,6 @@ public class Config {
 
         public Builder iosEntitlementsPList(File entitlementsPList) {
             config.iosEntitlementsPList = entitlementsPList;
-            return this;
-        }
-
-        public Builder iosResourceRulesPList(File resourceRulesPList) {
-            config.iosResourceRulesPList = resourceRulesPList;
             return this;
         }
 

@@ -1,6 +1,6 @@
 <config>
   <target>ios</target>
   <iosSdkVersion>6.1</iosSdkVersion>
-  <iosInfoPList>Info.plist</iosInfoPList>  
+  <iosInfoPList>Info.plist</iosInfoPList>
   <iosEntitlementsPList>entitlements.plist</iosEntitlementsPList>
 </config>

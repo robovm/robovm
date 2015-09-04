@@ -10,7 +10,7 @@ public class Issue1141Test {
     }
     
     interface BinaryLongFunction {
-        public long sum(Long a, Long b);
+        public Long sum(Long a, Long b);
     }
     
     private static long method(Long identity, LongFunction func, BinaryLongFunction func2) {

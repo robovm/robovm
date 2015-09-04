@@ -5,15 +5,15 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class Issue1141Test {
-    interface LongFunction {
-        public Long func(Long a);
+    interface Function<T> {
+        public T func(T a);
     }
     
-    interface BinaryLongFunction {
-        public Long sum(Long a, Long b);
+    interface BinaryFunction<T> {
+        public T sum(T a, T b);
     }
     
-    private static long method(Long identity, LongFunction func, BinaryLongFunction func2) {
+    private static long method(Long identity, Function<Long> func, BinaryFunction<Long> func2) {
         return identity + func.func(1L) + func2.sum(3L,  4L);
     }
     

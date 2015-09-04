@@ -259,7 +259,7 @@ public class LambdaClassGenerator {
             }
         } else {
             // simple cast which will throw a ClassCastException at runtime
-            mv.visitTypeInsn(Opcodes.CHECKCAST, ((RefType) expected).getClassName().replace('.', '/'));
+            mv.visitTypeInsn(Opcodes.CHECKCAST, Types.getInternalName(expected));
         }
     }
 

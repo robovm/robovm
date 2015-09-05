@@ -182,13 +182,15 @@ public class LambdaClassGenerator {
         // invoke dynamic call. We need to handle that parameter separately as
         // it's not part of the method signature of the implementation
         boolean paramsContainReceiver = isInstanceMethod
-                & !caller.getName().equals(implMethod.getMethodRef().declaringClass().getName());
+                & !caller.getName().equals(implMethod.getMethodRef().declaringClass().getName())
+                && parameters.size() > implMethod.getMethodRef().parameterTypes().size();
         int paramsIndex = 0;
         int localIndex = 1; // we start at slot index 1, because this occupies
                             // slot 0
         if (paramsContainReceiver && !parameters.isEmpty()) {
             Type param = parameters.get(0);
             mv.visitVarInsn(loadOpcodeForType(param), localIndex);
+            castOrWiden(mv, caster, param, implMethod.getMethodRef().declaringClass().getType());
             localIndex += slotsForType(param);
             paramsIndex++;
         }
@@ -238,6 +240,9 @@ public class LambdaClassGenerator {
             // unbox() will do the right thing, e.g. ((Number) v).longValue() if
             // expected is long.
             caster.unbox(getAsmPrimitiveType(expected));
+        } else if (isPrimitiveType(actual) && expected instanceof RefType) {
+            // The inverse of the previous "else if". Boxing is needed.
+            caster.box(getAsmPrimitiveType(actual));
         } else {
             // simple cast which will throw a ClassCastException at runtime
             mv.visitTypeInsn(Opcodes.CHECKCAST, Types.getInternalName(expected));

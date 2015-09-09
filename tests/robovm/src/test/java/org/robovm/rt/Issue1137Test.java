@@ -34,16 +34,15 @@ public class Issue1137Test {
         Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
         boolean found = false;
         while (networkInterfaces.hasMoreElements()) {
-            NetworkInterface itf = networkInterfaces.nextElement();
-            if (itf.isLoopback()) {
-                for (InterfaceAddress addr : itf.getInterfaceAddresses()) {
-                    if (addr.getAddress() instanceof Inet4Address) {
-                        assertTrue(addr.getAddress().isLoopbackAddress());
+            NetworkInterface itf = networkInterfaces.nextElement();            
+            for (InterfaceAddress addr : itf.getInterfaceAddresses()) {
+                if (addr.getAddress() instanceof Inet4Address) {
+                    if(addr.getAddress().isLoopbackAddress()) {
                         found = true;
                         break;
                     }
                 }
-            }
+            }            
         }
         assertTrue(found);   
     }

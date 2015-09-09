@@ -199,7 +199,7 @@ public final class NetworkInterface extends Object {
     private static void collectIpv4Address(String interfaceName, List<InetAddress> addresses,
             List<InterfaceAddress> interfaceAddresses) throws SocketException {
         // RoboVM note: This method used to use ioctl to probe a socket, this failed in various
-        // was on Darwin.
+        // ways on Darwin.
         byte[] bytes = getIpv4Addresses(interfaceName);
         if (bytes != null) {
             for (int i = 0; i < bytes.length; i += 12) {

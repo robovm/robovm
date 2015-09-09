@@ -130,7 +130,7 @@ public final class NetworkInterface extends Object {
      * @throws SocketException if an error occurs.
      * @throws NullPointerException if {@code interfaceName == null}.
      */
-    public static NetworkInterface getByName(String interfaceName) throws SocketException {
+    private static NetworkInterface getByName(String interfaceName) throws SocketException {
         if (interfaceName == null) {
             throw new NullPointerException("interfaceName == null");
         }

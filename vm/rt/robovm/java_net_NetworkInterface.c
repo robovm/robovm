@@ -244,3 +244,58 @@ ByteArray* Java_java_net_NetworkInterface_getIpv6Addresses(Env* env, Class* cls,
     }
     return result;
 }
+
+#define IPV4_BYTES 4
+static jboolean countIpv4AddressesIterator(Env* env, struct ifaddrs *ia, void* data) {
+    jint* count = (jint*) data;
+    if (ia->ifa_addr && ia->ifa_addr->sa_family == AF_INET) {
+        (*count)++;
+    }
+    return TRUE;
+}
+typedef struct {
+    ByteArray* result;
+    jint index;
+} GetIpv4AddressesData;
+static jboolean getIpv4AddressesIterator(Env* env, struct ifaddrs *ia, void* _data) {
+    GetIpv4AddressesData* data = (GetIpv4AddressesData*) _data;
+    if (ia->ifa_addr && ia->ifa_addr->sa_family == AF_INET) {
+        struct sockaddr_in* addr = (struct sockaddr_in*) ia->ifa_addr;
+        struct sockaddr_in* netmask = (struct sockaddr_in*) ia->ifa_netmask;
+        struct sockaddr_in* broadcast = (struct sockaddr_in*) ia->ifa_dstaddr;
+        memcpy(data->result->values + (IPV4_BYTES * 3 * data->index), &addr->sin_addr.s_addr, 4);
+        if (netmask) {
+            memcpy(data->result->values + (IPV4_BYTES * 3 * data->index) + 4, &netmask->sin_addr.s_addr, 4);
+        }
+        if (broadcast) {
+            memcpy(data->result->values + (IPV4_BYTES * 3 * data->index) + 8, &broadcast->sin_addr.s_addr, 4);
+        }
+        data->index++;
+    }
+    return TRUE; // Continue iteration
+}
+ByteArray* Java_java_net_NetworkInterface_getIpv4Addresses(Env* env, Class* cls, Object* interfaceName) {
+    const char* name = rvmGetStringUTFChars(env, interfaceName);
+    if (!name) {
+        return NULL;
+    }
+    jint count = 0;
+    if (!iterateAddrInfo(env, name, countIpv4AddressesIterator, &count)) {
+        return NULL;
+    }
+
+    if (count == 0) {
+        return NULL;
+    }
+
+    ByteArray* result = rvmNewByteArray(env, IPV4_BYTES * 3 * count);
+    if (!result) {
+        return NULL;
+    }
+
+    GetIpv4AddressesData data = {result, 0};
+    if (!iterateAddrInfo(env, name, getIpv4AddressesIterator, &data)) {
+        return NULL;
+    }
+    return result;
+}

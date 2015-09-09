@@ -8,7 +8,7 @@ on run argv
                 tell application "System Events" to set frontmost of process "Simulator" to true
             end if
             if application "iOS Simulator" is running then
-            	tell application "System Events" to set frontmost of process "iOS Simulator" to true
+                tell application "System Events" to set frontmost of process "iOS Simulator" to true
             end if
             exit repeat
         on error msg

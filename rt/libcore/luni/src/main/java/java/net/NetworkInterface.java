@@ -130,7 +130,7 @@ public final class NetworkInterface extends Object {
      * @throws SocketException if an error occurs.
      * @throws NullPointerException if {@code interfaceName == null}.
      */
-    private static NetworkInterface getByName(String interfaceName) throws SocketException {
+    public static NetworkInterface getByName(String interfaceName) throws SocketException {
         if (interfaceName == null) {
             throw new NullPointerException("interfaceName == null");
         }
@@ -297,7 +297,7 @@ public final class NetworkInterface extends Object {
      * at index 20, etc.
      * Added in RoboVM.
      */
-    public static native byte[] getIpv4Addresses(String interfaceName);
+    private static native byte[] getIpv4Addresses(String interfaceName);
     /**
      * Uses getifaddrs() to retrieve the MAC address of the interface with the
      * specified name.

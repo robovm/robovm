@@ -47,6 +47,7 @@ import org.robovm.compiler.config.Config;
 import org.robovm.compiler.config.OS;
 import org.robovm.compiler.config.Resource;
 import org.robovm.compiler.log.Logger;
+import org.robovm.compiler.log.LoggerProxy;
 import org.robovm.compiler.target.AbstractTarget;
 import org.robovm.compiler.target.LaunchParameters;
 import org.robovm.compiler.target.Launcher;
@@ -557,7 +558,16 @@ public class IOSTarget extends AbstractTarget {
         final File dsymDir = new File(dir.getParentFile(), dir.getName() + ".dSYM");
         final File exePath = new File(dir, executable);
         FileUtils.deleteDirectory(dsymDir);
-        final Process process = new Executor(config.getLogger(), "xcrun")
+        Logger logger = new LoggerProxy(config.getLogger()) {
+            @Override
+            public void warn(String format, Object... args) {
+                if (!(format.startsWith("warning:") && format.contains("could not find object file symbol for symbol"))) {
+                    // Suppress this kind of warnings for now. See robovm/robovm#1126.
+                    super.warn(format, args);
+                }
+            }
+        };
+        final Process process = new Executor(logger, "xcrun")
                 .args("dsymutil", "-o", dsymDir, exePath)
                 .execAsync();
         if (copyToIndexedDir) {

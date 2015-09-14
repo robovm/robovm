@@ -233,8 +233,7 @@ public class IOSTarget extends AbstractTarget {
             public void error(String format, Object... args) {
                 if (format.contains(
                         "Requested but did not find extension point with identifier Xcode.DVTFoundation.DevicePlatformMapping")) {
-                    skipWarningsAndErrors = true;
-                    return;
+                    skipWarningsAndErrors = true;                    
                 }
                 if (skipWarningsAndErrors) {
                     config.getLogger().info(format, args);

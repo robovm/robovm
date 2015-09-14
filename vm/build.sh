@@ -3,6 +3,7 @@
 SELF=$(basename $0)
 BASE=$(cd $(dirname $0); pwd -P)
 CLEAN=0
+VERBOSE=
 
 function usage {
   cat <<EOF
@@ -19,6 +20,7 @@ Options:
                           targets. macosx-x86_64, macosx-x86, ios-x86_64,
                           ios-x86, ios-thumbv7 and ios-arm64 on MacOSX and
                           linux-x86_64 and linux-x86 on Linux.
+  --verbose               Enable verbose output during the build.
   --clean                 Cleans the build dir before starting the build.
   --help                  Displays this information and exits.
 EOF
@@ -31,6 +33,7 @@ while [ "${1:0:2}" = '--' ]; do
   case $NAME in
     '--target') TARGETS="$TARGETS $VALUE" ;;
     '--clean') CLEAN=1 ;;
+    '--verbose') VERBOSE=VERBOSE=1 ;;
     '--build') BUILDS="$BUILDS $VALUE" ;;
     '--help')
       usage 0
@@ -110,7 +113,7 @@ for T in $TARGETS; do
     BUILD_TYPE=$B
     mkdir -p "$BASE/target/build/$T-$B"
     rm -rf "$BASE/binaries/$OS/$ARCH/$B"
-    bash -c "cd '$BASE/target/build/$T-$B'; cmake -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DOS=$OS -DARCH=$ARCH '$BASE'; make install"
+    bash -c "cd '$BASE/target/build/$T-$B'; cmake -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DOS=$OS -DARCH=$ARCH '$BASE'; make $VERBOSE install"
     R=$?
     if [[ $R != 0 ]]; then
       echo "$T-$B build failed"

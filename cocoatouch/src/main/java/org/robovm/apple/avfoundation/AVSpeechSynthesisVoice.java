@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -56,10 +57,30 @@ import org.robovm.apple.audiounit.*;
     /*<constructors>*/
     public AVSpeechSynthesisVoice() {}
     protected AVSpeechSynthesisVoice(SkipInit skipInit) { super(skipInit); }
+    public AVSpeechSynthesisVoice(String languageCode) { super(create(languageCode)); retain(getHandle()); }
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public AVSpeechSynthesisVoice(AVSpeechSynthesisVoiceIdentifier identifier) { super(create(identifier)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "language")
     public native String getLanguage();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "identifier")
+    public native String getIdentifier();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "name")
+    public native String getName();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "quality")
+    public native AVSpeechSynthesisVoiceQuality getQuality();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -68,6 +89,11 @@ import org.robovm.apple.audiounit.*;
     @Method(selector = "currentLanguageCode")
     public static native String getCurrentLanguageCode();
     @Method(selector = "voiceWithLanguage:")
-    public static native AVSpeechSynthesisVoice create(String language);
+    protected static native @Pointer long create(String languageCode);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "voiceWithIdentifier:")
+    protected static native @Pointer long create(AVSpeechSynthesisVoiceIdentifier identifier);
     /*</methods>*/
 }

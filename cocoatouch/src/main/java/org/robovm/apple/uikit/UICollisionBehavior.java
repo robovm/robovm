@@ -62,11 +62,11 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "setCollisionMode:")
     public native void setCollisionMode(UICollisionBehaviorMode v);
     @Property(selector = "translatesReferenceBoundsIntoBoundary")
-    public native boolean isTranslatesReferenceBoundsIntoBoundary();
+    public native boolean translatesReferenceBoundsIntoBoundary();
     @Property(selector = "setTranslatesReferenceBoundsIntoBoundary:")
     public native void setTranslatesReferenceBoundsIntoBoundary(boolean v);
     @Property(selector = "boundaryIdentifiers")
-    public native NSArray<?> getBoundaryIdentifiers();
+    public native NSArray getBoundaryIdentifiers();
     @Property(selector = "collisionDelegate")
     public native UICollisionBehaviorDelegate getCollisionDelegate();
     @Property(selector = "setCollisionDelegate:", strongRef = true)

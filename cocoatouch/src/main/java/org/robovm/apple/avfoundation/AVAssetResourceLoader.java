@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -63,6 +64,16 @@ import org.robovm.apple.audiounit.*;
     @WeaklyLinked
     @Property(selector = "delegateQueue")
     public native DispatchQueue getDelegateQueue();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "preloadsEligibleContentKeys")
+    public native boolean preloadsEligibleContentKeys();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setPreloadsEligibleContentKeys:")
+    public native void setPreloadsEligibleContentKeys(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

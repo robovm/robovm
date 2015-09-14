@@ -48,6 +48,7 @@ import org.robovm.apple.metal.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public CALayer() {}
+    protected CALayer(long handle) { super(handle); }
     protected CALayer(SkipInit skipInit) { super(skipInit); }
     public CALayer(CALayer layer) { super((SkipInit) null); initObject(init(layer)); }
     public CALayer(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }

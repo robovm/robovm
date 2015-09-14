@@ -152,12 +152,12 @@ import org.robovm.apple.dispatch.*;
      * @param url
      * @param opts
      * @return
-     * @since Available in iOS 7.0 and later.
+     * @since Available in iOS 9.0 and later.
      * @throws NSErrorException
      */
     @WeaklyLinked
     public boolean read(NSURL url, NSAttributedStringDocumentAttributes opts) throws NSErrorException {
-        return NSMutableAttributedStringExtensions.readFromFileURL(this, url, opts);
+        return NSMutableAttributedStringExtensions.read(this, url, opts);
     }
     /**
      * 
@@ -169,7 +169,7 @@ import org.robovm.apple.dispatch.*;
      */
     @WeaklyLinked
     public boolean read(NSData data, NSAttributedStringDocumentAttributes opts) throws NSErrorException {
-        return NSMutableAttributedStringExtensions.readFromData(this, data, opts);
+        return NSMutableAttributedStringExtensions.read(this, data, opts);
     }
     /**
      * @since Available in iOS 7.0 and later.

@@ -107,6 +107,7 @@ classes:
             'rotationMode':
                 type: CAAnimationRotationMode
     CALayer: # DONE
+        skip_handle_constructor: false
         properties:
             'delegate':
                 type: CALayerDelegate

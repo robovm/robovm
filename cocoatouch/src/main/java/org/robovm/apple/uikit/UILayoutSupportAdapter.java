@@ -52,6 +52,21 @@ import org.robovm.apple.corelocation.*;
     /*<properties>*/
     @NotImplemented("length")
     public @MachineSizedFloat double getLength() { return 0; }
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @NotImplemented("topAnchor")
+    public NSLayoutYAxisAnchor getTopAnchor() { return null; }
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @NotImplemented("bottomAnchor")
+    public NSLayoutYAxisAnchor getBottomAnchor() { return null; }
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @NotImplemented("heightAnchor")
+    public NSLayoutDimension getHeightAnchor() { return null; }
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

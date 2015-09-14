@@ -55,11 +55,6 @@ import org.robovm.apple.corelocation.*;
      */
     @NotImplemented("layoutOrientation")
     public NSTextLayoutOrientation getLayoutOrientation() { return null; }
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @NotImplemented("setLayoutOrientation:")
-    public void setLayoutOrientation(NSTextLayoutOrientation v) {}
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

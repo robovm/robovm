@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -80,6 +81,8 @@ import org.robovm.apple.audiounit.*;
     public native AVAudioEnvironmentDistanceAttenuationParameters getDistanceAttenuationParameters();
     @Property(selector = "reverbParameters")
     public native AVAudioEnvironmentReverbParameters getReverbParameters();
+    @Property(selector = "applicableRenderingAlgorithms")
+    public native @org.robovm.rt.bro.annotation.Marshaler(AVAudio3DMixingRenderingAlgorithm.AsListMarshaler.class) List<AVAudio3DMixingRenderingAlgorithm> getApplicableRenderingAlgorithms();
     @Property(selector = "volume")
     public native float getVolume();
     @Property(selector = "setVolume:")
@@ -115,7 +118,10 @@ import org.robovm.apple.audiounit.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "applicableRenderingAlgorithms")
-    public native @org.robovm.rt.bro.annotation.Marshaler(AVAudio3DMixingRenderingAlgorithm.AsListMarshaler.class) List<AVAudio3DMixingRenderingAlgorithm> getApplicableRenderingAlgorithms();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "destinationForMixer:bus:")
+    public native AVAudioMixingDestination getDestinationForMixer(AVAudioNode mixer, @MachineSizedUInt long bus);
     /*</methods>*/
 }

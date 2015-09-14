@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -48,7 +49,7 @@ import org.robovm.apple.audiounit.*;
 /*<annotations>*/@Library("AVFoundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/AVAudioUnitMIDIInstrument/*</name>*/ 
     extends /*<extends>*/AVAudioUnit/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+    /*<implements>*/implements AVAudioMixing/*</implements>*/ {
 
     /*<ptr>*/public static class AVAudioUnitMIDIInstrumentPtr extends Ptr<AVAudioUnitMIDIInstrument, AVAudioUnitMIDIInstrumentPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(AVAudioUnitMIDIInstrument.class); }/*</bind>*/
@@ -60,7 +61,38 @@ import org.robovm.apple.audiounit.*;
     public AVAudioUnitMIDIInstrument(@ByVal AudioComponentDescription description) { super((SkipInit) null); initObject(init(description)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "volume")
+    public native float getVolume();
+    @Property(selector = "setVolume:")
+    public native void setVolume(float v);
+    @Property(selector = "pan")
+    public native float getPan();
+    @Property(selector = "setPan:")
+    public native void setPan(float v);
+    @Property(selector = "renderingAlgorithm")
+    public native AVAudio3DMixingRenderingAlgorithm getRenderingAlgorithm();
+    @Property(selector = "setRenderingAlgorithm:")
+    public native void setRenderingAlgorithm(AVAudio3DMixingRenderingAlgorithm v);
+    @Property(selector = "rate")
+    public native float getRate();
+    @Property(selector = "setRate:")
+    public native void setRate(float v);
+    @Property(selector = "reverbBlend")
+    public native float getReverbBlend();
+    @Property(selector = "setReverbBlend:")
+    public native void setReverbBlend(float v);
+    @Property(selector = "obstruction")
+    public native float getObstruction();
+    @Property(selector = "setObstruction:")
+    public native void setObstruction(float v);
+    @Property(selector = "occlusion")
+    public native float getOcclusion();
+    @Property(selector = "setOcclusion:")
+    public native void setOcclusion(float v);
+    @Property(selector = "position")
+    public native @ByVal AVAudio3DPoint getPosition();
+    @Property(selector = "setPosition:")
+    public native void setPosition(@ByVal AVAudio3DPoint v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -89,5 +121,10 @@ import org.robovm.apple.audiounit.*;
     public native void sendMIDIEvent(byte midiStatus, byte data1);
     @Method(selector = "sendMIDISysExEvent:")
     public native void sendMIDISysExEvent(NSData midiData);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "destinationForMixer:bus:")
+    public native AVAudioMixingDestination getDestinationForMixer(AVAudioNode mixer, @MachineSizedUInt long bus);
     /*</methods>*/
 }

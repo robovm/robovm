@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -66,7 +67,5 @@ import org.robovm.apple.audiounit.*;
     /*<methods>*/
     @Method(selector = "initWithTrack:")
     protected native @Pointer long init(AVAssetTrack track);
-    @Method(selector = "assetReaderSampleReferenceOutputWithTrack:")
-    public static native AVAssetReaderSampleReferenceOutput create(AVAssetTrack track);
     /*</methods>*/
 }

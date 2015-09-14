@@ -88,6 +88,16 @@ import org.robovm.apple.corelocation.*;
     void performAction(UICollectionView collectionView, Selector action, NSIndexPath indexPath, NSObject sender);
     @Method(selector = "collectionView:transitionLayoutForOldLayout:newLayout:")
     UICollectionViewTransitionLayout getTransitionLayout(UICollectionView collectionView, UICollectionViewLayout fromLayout, UICollectionViewLayout toLayout);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "collectionView:targetIndexPathForMoveFromItemAtIndexPath:toProposedIndexPath:")
+    NSIndexPath getTargetIndexPathForMoveFromItem(UICollectionView collectionView, NSIndexPath originalIndexPath, NSIndexPath proposedIndexPath);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "collectionView:targetContentOffsetForProposedContentOffset:")
+    @ByVal CGPoint getTargetContentOffsetForProposedContentOffset(UICollectionView collectionView, @ByVal CGPoint proposedContentOffset);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

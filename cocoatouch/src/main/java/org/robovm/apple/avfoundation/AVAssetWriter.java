@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -99,6 +100,10 @@ import org.robovm.apple.audiounit.*;
     public native @ByVal CMTime getMovieFragmentInterval();
     @Property(selector = "setMovieFragmentInterval:")
     public native void setMovieFragmentInterval(@ByVal CMTime v);
+    @Property(selector = "overallDurationHint")
+    public native @ByVal CMTime getOverallDurationHint();
+    @Property(selector = "setOverallDurationHint:")
+    public native void setOverallDurationHint(@ByVal CMTime v);
     /**
      * @since Available in iOS 4.3 and later.
      */
@@ -130,7 +135,7 @@ import org.robovm.apple.audiounit.*;
     @Method(selector = "initWithURL:fileType:error:")
     private native @Pointer long init(NSURL outputURL, String outputFileType, NSError.NSErrorPtr outError);
     @Method(selector = "canApplyOutputSettings:forMediaType:")
-    protected native boolean canApplyOutputSettings(NSDictionary outputSettings, AVMediaType mediaType);
+    protected native boolean canApplyOutputSettings(NSDictionary<?, ?> outputSettings, AVMediaType mediaType);
     @Method(selector = "canAddInput:")
     public native boolean canAddInput(AVAssetWriterInput input);
     @Method(selector = "addInput:")
@@ -144,25 +149,10 @@ import org.robovm.apple.audiounit.*;
     @Method(selector = "cancelWriting")
     public native void cancelWriting();
     /**
-     * @since Available in iOS 4.1 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    @Method(selector = "finishWriting")
-    public native boolean finishWriting();
-    /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "finishWritingWithCompletionHandler:")
     public native void finishWriting(@Block Runnable handler);
-    public static AVAssetWriter create(NSURL outputURL, String outputFileType) throws NSErrorException {
-       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
-       AVAssetWriter result = create(outputURL, outputFileType, ptr);
-       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
-       return result;
-    }
-    @Method(selector = "assetWriterWithURL:fileType:error:")
-    private static native AVAssetWriter create(NSURL outputURL, String outputFileType, NSError.NSErrorPtr outError);
     /**
      * @since Available in iOS 7.0 and later.
      */

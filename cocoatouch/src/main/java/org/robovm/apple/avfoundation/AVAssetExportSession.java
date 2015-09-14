@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -66,8 +67,6 @@ import org.robovm.apple.audiounit.*;
      */
     @Property(selector = "asset")
     public native AVAsset getAsset();
-    @Property(selector = "supportedFileTypes")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getSupportedFileTypes();
     @Property(selector = "outputFileType")
     public native String getOutputFileType();
     @Property(selector = "setOutputFileType:")
@@ -76,12 +75,25 @@ import org.robovm.apple.audiounit.*;
     public native NSURL getOutputURL();
     @Property(selector = "setOutputURL:")
     public native void setOutputURL(NSURL v);
+    @Property(selector = "shouldOptimizeForNetworkUse")
+    public native boolean shouldOptimizeForNetworkUse();
+    @Property(selector = "setShouldOptimizeForNetworkUse:")
+    public native void setShouldOptimizeForNetworkUse(boolean v);
     @Property(selector = "status")
     public native AVAssetExportSessionStatus getStatus();
     @Property(selector = "error")
     public native NSError getError();
     @Property(selector = "progress")
     public native float getProgress();
+    @Property(selector = "supportedFileTypes")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getSupportedFileTypes();
+    @Property(selector = "timeRange")
+    public native @ByVal CMTimeRange getTimeRange();
+    @Property(selector = "setTimeRange:")
+    public native void setTimeRange(@ByVal CMTimeRange v);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Property(selector = "maxDuration")
     public native @ByVal CMTime getMaxDuration();
     /**
@@ -89,10 +101,16 @@ import org.robovm.apple.audiounit.*;
      */
     @Property(selector = "estimatedOutputFileLength")
     public native long getEstimatedOutputFileLength();
-    @Property(selector = "timeRange")
-    public native @ByVal CMTimeRange getTimeRange();
-    @Property(selector = "setTimeRange:")
-    public native void setTimeRange(@ByVal CMTimeRange v);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @Property(selector = "fileLengthLimit")
+    public native long getFileLengthLimit();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @Property(selector = "setFileLengthLimit:")
+    public native void setFileLengthLimit(long v);
     @Property(selector = "metadata")
     public native NSArray<AVMetadataItem> getMetadata();
     @Property(selector = "setMetadata:")
@@ -107,10 +125,6 @@ import org.robovm.apple.audiounit.*;
      */
     @Property(selector = "setMetadataItemFilter:")
     public native void setMetadataItemFilter(AVMetadataItemFilter v);
-    @Property(selector = "fileLengthLimit")
-    public native long getFileLengthLimit();
-    @Property(selector = "setFileLengthLimit:")
-    public native void setFileLengthLimit(long v);
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -134,10 +148,6 @@ import org.robovm.apple.audiounit.*;
      */
     @Property(selector = "customVideoCompositor")
     public native AVVideoCompositing getCustomVideoCompositor();
-    @Property(selector = "shouldOptimizeForNetworkUse")
-    public native boolean shouldOptimizeForNetworkUse();
-    @Property(selector = "setShouldOptimizeForNetworkUse:")
-    public native void setShouldOptimizeForNetworkUse(boolean v);
     /**
      * @since Available in iOS 8.0 and later.
      */
@@ -163,11 +173,6 @@ import org.robovm.apple.audiounit.*;
     /*<methods>*/
     @Method(selector = "initWithAsset:presetName:")
     protected native @Pointer long init(AVAsset asset, AVAssetExportPreset presetName);
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @Method(selector = "determineCompatibleFileTypesWithCompletionHandler:")
-    public native void determineCompatibleFileTypes(@Block VoidBlock1<NSArray<NSString>> handler);
     @Method(selector = "exportAsynchronouslyWithCompletionHandler:")
     public native void exportAsynchronously(@Block Runnable handler);
     @Method(selector = "cancelExport")
@@ -182,9 +187,9 @@ import org.robovm.apple.audiounit.*;
     @Method(selector = "determineCompatibilityOfExportPreset:withAsset:outputFileType:completionHandler:")
     public static native void determineCompatibilityOfExportPreset(AVAssetExportPreset presetName, AVAsset asset, String outputFileType, @Block VoidBooleanBlock handler);
     /**
-     * @since Available in iOS 4.1 and later.
+     * @since Available in iOS 6.0 and later.
      */
-    @Method(selector = "exportSessionWithAsset:presetName:")
-    public static native AVAssetExportSession create(AVAsset asset, AVAssetExportPreset presetName);
+    @Method(selector = "determineCompatibleFileTypesWithCompletionHandler:")
+    public native void determineCompatibleFileTypes(@Block VoidBlock1<NSArray<NSString>> handler);
     /*</methods>*/
 }

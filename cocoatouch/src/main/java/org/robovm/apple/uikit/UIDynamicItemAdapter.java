@@ -60,6 +60,16 @@ import org.robovm.apple.corelocation.*;
     public @ByVal CGAffineTransform getTransform() { return null; }
     @NotImplemented("setTransform:")
     public void setTransform(@ByVal CGAffineTransform v) {}
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @NotImplemented("collisionBoundsType")
+    public UIDynamicItemCollisionBoundsType getCollisionBoundsType() { return null; }
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @NotImplemented("collisionBoundingPath")
+    public UIBezierPath getCollisionBoundingPath() { return null; }
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

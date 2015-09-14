@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -75,9 +76,5 @@ import org.robovm.apple.audiounit.*;
     public static native NSPropertyList createPropertyList(NSArray<AVTextStyleRule> textStyleRules);
     @Method(selector = "textStyleRulesFromPropertyList:")
     public static native NSArray<AVTextStyleRule> createTextStyleRulesArray(NSPropertyList plist);
-    @Method(selector = "textStyleRuleWithTextMarkupAttributes:")
-    public static native AVTextStyleRule create(CMTextMarkupAttributes textMarkupAttributes);
-    @Method(selector = "textStyleRuleWithTextMarkupAttributes:textSelector:")
-    public static native AVTextStyleRule create(CMTextMarkupAttributes textMarkupAttributes, String textSelector);
     /*</methods>*/
 }

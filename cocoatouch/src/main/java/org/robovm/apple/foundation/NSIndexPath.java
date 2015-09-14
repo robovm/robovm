@@ -105,14 +105,14 @@ import org.robovm.apple.dispatch.*;
         return (int) NSIndexPathExtensions.getItem(this);
     }
     @WeaklyLinked
-    public static NSIndexPath createWithRow(@MachineSizedSInt long row, @MachineSizedSInt long section) {
+    public static NSIndexPath row(@MachineSizedSInt long row, @MachineSizedSInt long section) {
         return NSIndexPathExtensions.createIndexPathForRowInSection(row, section);
     }
     /**
      * @since Available in iOS 6.0 and later.
      */
     @WeaklyLinked
-    public static NSIndexPath createWithItem(@MachineSizedSInt long item, @MachineSizedSInt long section) {
+    public static NSIndexPath item(@MachineSizedSInt long item, @MachineSizedSInt long section) {
         return NSIndexPathExtensions.createIndexPathForItemInSection(item, section);
     }
     

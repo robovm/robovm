@@ -44,7 +44,7 @@ import org.robovm.apple.corelocation.*;
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSParagraphStyle/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*/implements NSCoding/*</implements>*/ {
+    /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class NSParagraphStylePtr extends Ptr<NSParagraphStyle, NSParagraphStylePtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSParagraphStyle.class); }/*</bind>*/
@@ -52,7 +52,6 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public NSParagraphStyle() {}
     protected NSParagraphStyle(SkipInit skipInit) { super(skipInit); }
-    public NSParagraphStyle(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "lineSpacing")
@@ -91,6 +90,11 @@ import org.robovm.apple.corelocation.*;
      */
     @Property(selector = "defaultTabInterval")
     public native @MachineSizedFloat double getDefaultTabInterval();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "allowsDefaultTighteningForTruncation")
+    public native boolean allowsDefaultTighteningForTruncation();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -98,9 +102,5 @@ import org.robovm.apple.corelocation.*;
     public static native NSParagraphStyle getDefaultParagraphStyle();
     @Method(selector = "defaultWritingDirectionForLanguage:")
     public static native NSWritingDirection getDefaultWritingDirection(String languageName);
-    @Method(selector = "encodeWithCoder:")
-    public native void encode(NSCoder coder);
-    @Method(selector = "initWithCoder:")
-    protected native @Pointer long init(NSCoder aDecoder);
     /*</methods>*/
 }

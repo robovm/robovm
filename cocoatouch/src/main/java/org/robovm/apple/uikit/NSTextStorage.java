@@ -82,16 +82,10 @@ import org.robovm.apple.corelocation.*;
     public native NSArray<NSLayoutManager> getLayoutManagers();
     @Property(selector = "editedMask")
     public native NSTextStorageEditActions getEditedMask();
-    @Property(selector = "setEditedMask:")
-    public native void setEditedMask(NSTextStorageEditActions v);
     @Property(selector = "editedRange")
     public native @ByVal NSRange getEditedRange();
-    @Property(selector = "setEditedRange:")
-    public native void setEditedRange(@ByVal NSRange v);
     @Property(selector = "changeInLength")
     public native @MachineSizedSInt long getChangeInLength();
-    @Property(selector = "setChangeInLength:")
-    public native void setChangeInLength(@MachineSizedSInt long v);
     @Property(selector = "delegate")
     public native NSTextStorageDelegate getDelegate();
     @Property(selector = "setDelegate:", strongRef = true)

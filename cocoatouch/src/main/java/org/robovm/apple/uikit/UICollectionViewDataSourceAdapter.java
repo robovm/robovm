@@ -62,5 +62,15 @@ import org.robovm.apple.corelocation.*;
     public @MachineSizedSInt long getNumberOfSections(UICollectionView collectionView) { return 0; }
     @NotImplemented("collectionView:viewForSupplementaryElementOfKind:atIndexPath:")
     public UICollectionReusableView getViewForSupplementaryElement(UICollectionView collectionView, String kind, NSIndexPath indexPath) { return null; }
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @NotImplemented("collectionView:canMoveItemAtIndexPath:")
+    public boolean canMoveItemAt(UICollectionView collectionView, NSIndexPath indexPath) { return false; }
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @NotImplemented("collectionView:moveItemAtIndexPath:toIndexPath:")
+    public void moveItemAt(UICollectionView collectionView, NSIndexPath sourceIndexPath, NSIndexPath destinationIndexPath) {}
     /*</methods>*/
 }

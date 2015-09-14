@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -73,9 +74,9 @@ import org.robovm.apple.audiounit.*;
     }
     /*<properties>*/
     @Property(selector = "outputSettings")
-    protected native NSDictionary getOutputSettings0();
+    protected native NSDictionary<?, ?> getOutputSettings0();
     @Property(selector = "setOutputSettings:")
-    protected native void setOutputSettings0(NSDictionary v);
+    protected native void setOutputSettings0(NSDictionary<?, ?> v);
     @Property(selector = "availableImageDataCVPixelFormatTypes")
     public native @org.robovm.rt.bro.annotation.Marshaler(CVPixelFormatType.AsListMarshaler.class) List<CVPixelFormatType> getAvailableImageDataCVPixelFormatTypes();
     @Property(selector = "availableImageDataCodecTypes")
@@ -120,6 +121,21 @@ import org.robovm.apple.audiounit.*;
      */
     @Property(selector = "maxBracketedCaptureStillImageCount")
     public native @MachineSizedUInt long getMaxBracketedCaptureStillImageCount();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "isLensStabilizationDuringBracketedCaptureSupported")
+    public native boolean isLensStabilizationDuringBracketedCaptureSupported();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "isLensStabilizationDuringBracketedCaptureEnabled")
+    public native boolean isLensStabilizationDuringBracketedCaptureEnabled();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setLensStabilizationDuringBracketedCaptureEnabled:")
+    public native void setLensStabilizationDuringBracketedCaptureEnabled(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

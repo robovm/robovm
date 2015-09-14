@@ -53,6 +53,7 @@ import org.robovm.apple.corelocation.*;
     public UISwitch() {}
     protected UISwitch(SkipInit skipInit) { super(skipInit); }
     public UISwitch(@ByVal CGRect frame) { super((SkipInit) null); initObject(init(frame)); }
+    public UISwitch(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     /**
@@ -114,6 +115,8 @@ import org.robovm.apple.corelocation.*;
     /*<methods>*/
     @Method(selector = "initWithFrame:")
     protected native @Pointer long init(@ByVal CGRect frame);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     @Method(selector = "setOn:animated:")
     public native void setOn(boolean on, boolean animated);
     /*</methods>*/

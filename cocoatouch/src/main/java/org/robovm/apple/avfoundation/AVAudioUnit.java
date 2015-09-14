@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -64,6 +65,11 @@ import org.robovm.apple.audiounit.*;
     @WeaklyLinked
     @Property(selector = "audioUnit")
     public native AudioUnit getAudioUnit();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "AUAudioUnit")
+    public native AUAudioUnit getAUAudioUnit();
     @Property(selector = "name")
     public native String getName();
     @Property(selector = "manufacturerName")
@@ -80,6 +86,11 @@ import org.robovm.apple.audiounit.*;
        return result;
     }
     @Method(selector = "loadAudioUnitPresetAtURL:error:")
-    private native boolean loadAudioUnitPreset(NSURL url, NSError.NSErrorPtr error);
+    private native boolean loadAudioUnitPreset(NSURL url, NSError.NSErrorPtr outError);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "instantiateWithComponentDescription:options:completionHandler:")
+    public static native void instantiate(@ByVal AudioComponentDescription audioComponentDescription, AudioComponentInstantiationOptions options, @Block VoidBlock2<AVAudioUnit, NSError> completionHandler);
     /*</methods>*/
 }

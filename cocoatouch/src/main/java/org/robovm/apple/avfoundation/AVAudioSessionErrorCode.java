@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -59,6 +60,7 @@ public enum /*<name>*/AVAudioSessionErrorCode/*</name>*/ implements NSErrorCode 
     CannotStartRecording(561145187L),
     BadParam(-50L),
     InsufficientPriority(561017449L),
+    ResourceNotAvailable(561145203L),
     Unspecified(2003329396L);
     /*</values>*/
 

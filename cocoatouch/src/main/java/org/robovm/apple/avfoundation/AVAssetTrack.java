@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -50,6 +51,20 @@ import org.robovm.apple.audiounit.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*/implements AVAsynchronousKeyValueLoading/*</implements>*/ {
 
+    public static class Notifications {
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        public static NSObject observeTrackAssociationsDidChange(AVAssetTrack object, final VoidBlock1<AVAssetTrack> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(TrackAssociationsDidChangeNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification notification) {
+                    block.invoke((AVAssetTrack) notification.getObject());
+                }
+            });
+        }
+    }
+    
     /*<ptr>*/public static class AVAssetTrackPtr extends Ptr<AVAssetTrack, AVAssetTrackPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(AVAssetTrack.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -138,6 +153,12 @@ import org.robovm.apple.audiounit.*;
         return result;
     }
     /*<methods>*/
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @GlobalValue(symbol="AVAssetTrackTrackAssociationsDidChangeNotification", optional=true)
+    public static native NSString TrackAssociationsDidChangeNotification();
+    
     @Method(selector = "hasMediaCharacteristic:")
     public native boolean hasMediaCharacteristic(AVMediaCharacteristic mediaCharacteristic);
     @Method(selector = "segmentForTrackTime:")

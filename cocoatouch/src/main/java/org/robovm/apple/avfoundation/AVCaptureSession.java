@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -92,11 +93,19 @@ import org.robovm.apple.audiounit.*;
         /**
          * @since Available in iOS 4.0 and later.
          */
-        public static NSObject observeWasInterrupted(AVCaptureSession object, final VoidBlock1<AVCaptureSession> block) {
+        public static NSObject observeWasInterrupted(AVCaptureSession object, final VoidBlock2<AVCaptureSession, AVCaptureSessionInterruptionReason> block) {
             return NSNotificationCenter.getDefaultCenter().addObserver(WasInterruptedNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
-                public void invoke(NSNotification a) {
-                    block.invoke((AVCaptureSession)a.getObject());
+                public void invoke(NSNotification notification) {
+                    AVCaptureSessionInterruptionReason reason = AVCaptureSessionInterruptionReason.Unavailable;
+                    if (Foundation.getMajorSystemVersion() >= 9) {
+                        NSDictionary<?, ?> data = notification.getUserInfo();
+                        int value = data.getInt(NotificationInterruptionReasonKey(), 0);
+                        if (value != 0) {
+                            reason = AVCaptureSessionInterruptionReason.valueOf(value);
+                        }
+                    }
+                    block.invoke((AVCaptureSession)notification.getObject(), reason);
                 }
             });
         }
@@ -189,6 +198,11 @@ import org.robovm.apple.audiounit.*;
      */
     @GlobalValue(symbol="AVCaptureSessionWasInterruptedNotification", optional=true)
     public static native NSString WasInterruptedNotification();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @GlobalValue(symbol="AVCaptureSessionInterruptionReasonKey", optional=true)
+    protected static native NSString NotificationInterruptionReasonKey();
     /**
      * @since Available in iOS 4.0 and later.
      */

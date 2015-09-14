@@ -54,33 +54,63 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public NSTextAttachment() {}
     protected NSTextAttachment(SkipInit skipInit) { super(skipInit); }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public NSTextAttachment(NSData contentData, String uti) { super((SkipInit) null); initObject(init(contentData, uti)); }
     public NSTextAttachment(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Property(selector = "contents")
     public native NSData getContents();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Property(selector = "setContents:")
     public native void setContents(NSData v);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Property(selector = "fileType")
     public native String getFileType();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Property(selector = "setFileType:")
     public native void setFileType(String v);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Property(selector = "image")
+    public native UIImage getImage();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Property(selector = "setImage:")
+    public native void setImage(UIImage v);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Property(selector = "bounds")
+    public native @ByVal CGRect getBounds();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Property(selector = "setBounds:")
+    public native void setBounds(@ByVal CGRect v);
     @Property(selector = "fileWrapper")
     public native NSFileWrapper getFileWrapper();
     @Property(selector = "setFileWrapper:")
     public native void setFileWrapper(NSFileWrapper v);
-    @Property(selector = "image")
-    public native UIImage getImage();
-    @Property(selector = "setImage:")
-    public native void setImage(UIImage v);
-    @Property(selector = "bounds")
-    public native @ByVal CGRect getBounds();
-    @Property(selector = "setBounds:")
-    public native void setBounds(@ByVal CGRect v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "initWithData:ofType:")
     protected native @Pointer long init(NSData contentData, String uti);
     /**

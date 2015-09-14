@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -90,13 +91,5 @@ import org.robovm.apple.audiounit.*;
     public native boolean startReading();
     @Method(selector = "cancelReading")
     public native void cancelReading();
-    public static AVAssetReader create(AVAsset asset) throws NSErrorException {
-       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
-       AVAssetReader result = create(asset, ptr);
-       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
-       return result;
-    }
-    @Method(selector = "assetReaderWithAsset:error:")
-    private static native AVAssetReader create(AVAsset asset, NSError.NSErrorPtr outError);
     /*</methods>*/
 }

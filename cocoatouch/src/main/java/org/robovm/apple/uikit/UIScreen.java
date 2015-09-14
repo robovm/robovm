@@ -102,8 +102,6 @@ import org.robovm.apple.corelocation.*;
     /*<properties>*/
     @Property(selector = "bounds")
     public native @ByVal CGRect getBounds();
-    @Property(selector = "applicationFrame")
-    public native @ByVal CGRect getApplicationFrame();
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -139,6 +137,11 @@ import org.robovm.apple.corelocation.*;
      */
     @Property(selector = "setOverscanCompensation:")
     public native void setOverscanCompensation(UIScreenOverscanCompensation v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "overscanCompensationInsets")
+    public native @ByVal UIEdgeInsets getOverscanCompensationInsets();
     /**
      * @since Available in iOS 4.3 and later.
      */
@@ -184,6 +187,16 @@ import org.robovm.apple.corelocation.*;
      */
     @Property(selector = "nativeScale")
     public native @MachineSizedFloat double getNativeScale();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
+    @Property(selector = "applicationFrame")
+    public native @ByVal CGRect getApplicationFrame();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "traitCollection")
     public native UITraitCollection getTraitCollection();
     /*</properties>*/
@@ -228,6 +241,9 @@ import org.robovm.apple.corelocation.*;
      */
     @Method(selector = "snapshotViewAfterScreenUpdates:")
     public native UIView snapshotView(boolean afterUpdates);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "traitCollectionDidChange:")
     public native void traitCollectionDidChange(UITraitCollection previousTraitCollection);
     /*</methods>*/

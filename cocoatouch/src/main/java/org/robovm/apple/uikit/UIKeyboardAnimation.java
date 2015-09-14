@@ -180,6 +180,23 @@ import org.robovm.apple.corelocation.*;
         set(Keys.AnimationCurve(), NSNumber.valueOf(animationCurve.value()));
         return this;
     }
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public boolean isLocal() {
+        if (has(Keys.IsLocal())) {
+            NSNumber val = (NSNumber) get(Keys.IsLocal());
+            return val.booleanValue();
+        }
+        return false;
+    }
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public UIKeyboardAnimation setLocal(boolean local) {
+        set(Keys.IsLocal(), NSNumber.valueOf(local));
+        return this;
+    }
     /*</methods>*/
     
     /*<keys>*/
@@ -206,6 +223,11 @@ import org.robovm.apple.corelocation.*;
          */
         @GlobalValue(symbol="UIKeyboardAnimationCurveUserInfoKey", optional=true)
         public static native NSString AnimationCurve();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="UIKeyboardIsLocalUserInfoKey", optional=true)
+        public static native NSString IsLocal();
     }
     /*</keys>*/
 }

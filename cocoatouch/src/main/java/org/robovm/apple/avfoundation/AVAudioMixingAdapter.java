@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -85,6 +86,10 @@ import org.robovm.apple.audiounit.*;
     @NotImplemented("setPosition:")
     public void setPosition(@ByVal AVAudio3DPoint v) { throw new UnsupportedOperationException(); }    
     /*<methods>*/
-    
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @NotImplemented("destinationForMixer:bus:")
+    public AVAudioMixingDestination getDestinationForMixer(AVAudioNode mixer, @MachineSizedUInt long bus) { return null; }
     /*</methods>*/
 }

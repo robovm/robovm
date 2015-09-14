@@ -45,6 +45,9 @@ public enum /*<name>*/UIPrintInfoOutputType/*</name>*/ implements ValuedEnum {
     General(0L),
     Photo(1L),
     Grayscale(2L),
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     PhotoGrayscale(3L);
     /*</values>*/
 

@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -72,13 +73,5 @@ import org.robovm.apple.audiounit.*;
     /*<methods>*/
     @Method(selector = "initWithDevice:error:")
     private native @Pointer long init(AVCaptureDevice device, NSError.NSErrorPtr outError);
-    public static AVCaptureDeviceInput create(AVCaptureDevice device) throws NSErrorException {
-       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
-       AVCaptureDeviceInput result = create(device, ptr);
-       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
-       return result;
-    }
-    @Method(selector = "deviceInputWithDevice:error:")
-    private static native AVCaptureDeviceInput create(AVCaptureDevice device, NSError.NSErrorPtr outError);
     /*</methods>*/
 }

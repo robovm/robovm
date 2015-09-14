@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -257,9 +258,13 @@ import org.robovm.apple.audiounit.*;
      * @since Available in iOS 4.3 and later.
      */
     public static final AVMetadataKeyQuickTimeMetadata DirectionMotion = new AVMetadataKeyQuickTimeMetadata("DirectionMotion");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final AVMetadataKeyQuickTimeMetadata ContentIdentifier = new AVMetadataKeyQuickTimeMetadata("ContentIdentifier");
     /*</constants>*/
     
-    private static /*<name>*/AVMetadataKeyQuickTimeMetadata/*</name>*/[] values = new /*<name>*/AVMetadataKeyQuickTimeMetadata/*</name>*/[] {/*<value_list>*/Author, Comment, Copyright, CreationDate, Director, DisplayName, Information, Keywords, Producer, Publisher, Album, Artist, Artwork, Description, Software, Year, Genre, iXML, LocationISO6709, Make, Model, Arranger, EncodedBy, OriginalArtist, Performer, Composer, Credits, PhonogramRights, CameraIdentifier, CameraFrameReadoutTime, Title, CollectionUser, RatingUser, LocationName, LocationBody, LocationNote, LocationRole, LocationDate, DirectionFacing, DirectionMotion/*</value_list>*/};
+    private static /*<name>*/AVMetadataKeyQuickTimeMetadata/*</name>*/[] values = new /*<name>*/AVMetadataKeyQuickTimeMetadata/*</name>*/[] {/*<value_list>*/Author, Comment, Copyright, CreationDate, Director, DisplayName, Information, Keywords, Producer, Publisher, Album, Artist, Artwork, Description, Software, Year, Genre, iXML, LocationISO6709, Make, Model, Arranger, EncodedBy, OriginalArtist, Performer, Composer, Credits, PhonogramRights, CameraIdentifier, CameraFrameReadoutTime, Title, CollectionUser, RatingUser, LocationName, LocationBody, LocationNote, LocationRole, LocationDate, DirectionFacing, DirectionMotion, ContentIdentifier/*</value_list>*/};
     
     /*<name>*/AVMetadataKeyQuickTimeMetadata/*</name>*/ (String getterName) {
         super(Values.class, getterName);
@@ -482,6 +487,11 @@ import org.robovm.apple.audiounit.*;
          */
         @GlobalValue(symbol="AVMetadataQuickTimeMetadataKeyDirectionMotion", optional=true)
         public static native NSString DirectionMotion();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="AVMetadataQuickTimeMetadataKeyContentIdentifier", optional=true)
+        public static native NSString ContentIdentifier();
         /*</values>*/
     }
 }

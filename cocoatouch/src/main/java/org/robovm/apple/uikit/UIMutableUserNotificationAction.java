@@ -62,6 +62,26 @@ import org.robovm.apple.corelocation.*;
     public native String getTitle();
     @Property(selector = "setTitle:")
     public native void setTitle(String v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "behavior")
+    public native UIUserNotificationActionBehavior getBehavior();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setBehavior:")
+    public native void setBehavior(UIUserNotificationActionBehavior v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "parameters")
+    public native NSDictionary<?, ?> getParameters();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setParameters:")
+    public native void setParameters(NSDictionary<?, ?> v);
     @Property(selector = "activationMode")
     public native UIUserNotificationActivationMode getActivationMode();
     @Property(selector = "setActivationMode:")

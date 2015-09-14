@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -56,6 +57,15 @@ import org.robovm.apple.audiounit.*;
     /*<constructors>*/
     public AVVideoCompositionCoreAnimationTool() {}
     protected AVVideoCompositionCoreAnimationTool(SkipInit skipInit) { super(skipInit); }
+    @WeaklyLinked
+    public AVVideoCompositionCoreAnimationTool(CALayer layer, int trackID) { super(create(layer, trackID)); retain(getHandle()); }
+    @WeaklyLinked
+    public AVVideoCompositionCoreAnimationTool(CALayer videoLayer, CALayer animationLayer) { super(create(videoLayer, animationLayer)); retain(getHandle()); }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @WeaklyLinked
+    public AVVideoCompositionCoreAnimationTool(NSArray<CALayer> videoLayers, CALayer animationLayer) { super(create(videoLayers, animationLayer)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     
@@ -64,15 +74,15 @@ import org.robovm.apple.audiounit.*;
     /*<methods>*/
     @WeaklyLinked
     @Method(selector = "videoCompositionCoreAnimationToolWithAdditionalLayer:asTrackID:")
-    public static native AVVideoCompositionCoreAnimationTool create(CALayer layer, int trackID);
+    protected static native @Pointer long create(CALayer layer, int trackID);
     @WeaklyLinked
     @Method(selector = "videoCompositionCoreAnimationToolWithPostProcessingAsVideoLayer:inLayer:")
-    public static native AVVideoCompositionCoreAnimationTool create(CALayer videoLayer, CALayer animationLayer);
+    protected static native @Pointer long create(CALayer videoLayer, CALayer animationLayer);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @WeaklyLinked
     @Method(selector = "videoCompositionCoreAnimationToolWithPostProcessingAsVideoLayers:inLayer:")
-    public static native AVVideoCompositionCoreAnimationTool create(NSArray<CALayer> videoLayers, CALayer animationLayer);
+    protected static native @Pointer long create(NSArray<CALayer> videoLayers, CALayer animationLayer);
     /*</methods>*/
 }

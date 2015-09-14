@@ -78,6 +78,26 @@ import org.robovm.apple.corelocation.*;
     public native @MachineSizedFloat double getFrequency();
     @Property(selector = "setFrequency:")
     public native void setFrequency(@MachineSizedFloat double v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "frictionTorque")
+    public native @MachineSizedFloat double getFrictionTorque();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setFrictionTorque:")
+    public native void setFrictionTorque(@MachineSizedFloat double v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "attachmentRange")
+    public native @ByVal UIFloatRange getAttachmentRange();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setAttachmentRange:")
+    public native void setAttachmentRange(@ByVal UIFloatRange v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -89,5 +109,30 @@ import org.robovm.apple.corelocation.*;
     protected native @Pointer long init(UIDynamicItem item1, UIDynamicItem item2);
     @Method(selector = "initWithItem:offsetFromCenter:attachedToItem:offsetFromCenter:")
     protected native @Pointer long init(UIDynamicItem item1, @ByVal UIOffset offset1, UIDynamicItem item2, @ByVal UIOffset offset2);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "slidingAttachmentWithItem:attachedToItem:attachmentAnchor:axisOfTranslation:")
+    public static native UIAttachmentBehavior getSlidingAttachment(UIDynamicItem item1, UIDynamicItem item2, @ByVal CGPoint point, @ByVal CGVector axis);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "slidingAttachmentWithItem:attachmentAnchor:axisOfTranslation:")
+    public static native UIAttachmentBehavior getSlidingAttachment(UIDynamicItem item, @ByVal CGPoint point, @ByVal CGVector axis);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "limitAttachmentWithItem:offsetFromCenter:attachedToItem:offsetFromCenter:")
+    public static native UIAttachmentBehavior getLimitAttachment(UIDynamicItem item1, @ByVal UIOffset offset1, UIDynamicItem item2, @ByVal UIOffset offset2);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "fixedAttachmentWithItem:attachedToItem:attachmentAnchor:")
+    public static native UIAttachmentBehavior getFixedAttachment(UIDynamicItem item1, UIDynamicItem item2, @ByVal CGPoint point);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "pinAttachmentWithItem:attachedToItem:attachmentAnchor:")
+    public static native UIAttachmentBehavior getPinAttachment(UIDynamicItem item1, UIDynamicItem item2, @ByVal CGPoint point);
     /*</methods>*/
 }

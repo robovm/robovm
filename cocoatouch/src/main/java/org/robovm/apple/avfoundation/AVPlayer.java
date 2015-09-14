@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -154,41 +155,6 @@ import org.robovm.apple.audiounit.*;
     @Property(selector = "setExternalPlaybackVideoGravity:")
     public native void setExternalPlaybackVideoGravity(String v);
     /**
-     * @since Available in iOS 5.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    @Property(selector = "allowsAirPlayVideo")
-    public native boolean allowsAirPlayVideo();
-    /**
-     * @since Available in iOS 5.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    @Property(selector = "setAllowsAirPlayVideo:")
-    public native void setAllowsAirPlayVideo(boolean v);
-    /**
-     * @since Available in iOS 5.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    @Property(selector = "isAirPlayVideoActive")
-    public native boolean isAirPlayVideoActive();
-    /**
-     * @since Available in iOS 5.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    @Property(selector = "usesAirPlayVideoWhileAirPlayScreenIsActive")
-    public native boolean usesAirPlayVideoWhileAirPlayScreenIsActive();
-    /**
-     * @since Available in iOS 5.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    @Property(selector = "setUsesAirPlayVideoWhileAirPlayScreenIsActive:")
-    public native void setUsesAirPlayVideoWhileAirPlayScreenIsActive(boolean v);
-    /**
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "outputObscuredDueToInsufficientExternalProtection")
@@ -200,10 +166,6 @@ import org.robovm.apple.audiounit.*;
     protected native @Pointer long init(NSURL URL);
     @Method(selector = "initWithPlayerItem:")
     protected native @Pointer long init(AVPlayerItem item);
-    @Method(selector = "playerWithURL:")
-    public static native AVPlayer create(NSURL URL);
-    @Method(selector = "playerWithPlayerItem:")
-    public static native AVPlayer create(AVPlayerItem item);
     @Method(selector = "play")
     public native void play();
     @Method(selector = "pause")

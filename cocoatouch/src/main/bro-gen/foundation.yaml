@@ -18,7 +18,11 @@ typedefs:
     SEL: Selector
     'void *': VoidPtr
     'char *': BytePtr
+    'unsigned char *': BytePtr
+    'BOOL *': BooleanPtr
     'int *': IntPtr
+    'int16_t * *': ShortPtr.ShortPtrPtr
+    'int32_t * *': IntPtr.IntPtrPtr
     'unsigned int *': IntPtr
     'unsigned long *': MachineSizedUIntPtr
     'NSInteger *': MachineSizedSIntPtr
@@ -26,12 +30,13 @@ typedefs:
     'long long *': LongPtr
     'unsigned long long *': LongPtr
     'float *': FloatPtr
+    'float * *': FloatPtr.FloatPtrPtr
+    'CGFloat *': MachineSizedFloatPtr
     'double *': DoublePtr
     'NSTimeInterval *': DoublePtr
     'Protocol *': ObjCProtocol
     'NSString *': String
     'NSString **': NSString.NSStringPtr
-    'BOOL *': BooleanPtr
     'NSArray *': NSArray<?>
     'NSArray **': NSArray.NSArrayPtr<?>
     'NSMutableArray *': NSMutableArray<?>
@@ -3647,6 +3652,7 @@ classes:
             '-init.*':
                 name: init
     NSURLSession: # DONE
+        skip_handle_constructor: false
         methods:
             '-getTasksWithCompletionHandler:':
                 name: getTasks

@@ -121,34 +121,6 @@ import org.robovm.apple.corelocation.*;
     public native boolean adjustsFontSizeToFitWidth();
     @Property(selector = "setAdjustsFontSizeToFitWidth:")
     public native void setAdjustsFontSizeToFitWidth(boolean v);
-    /**
-     * @since Available in iOS 6.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     */
-    @Deprecated
-    @Property(selector = "adjustsLetterSpacingToFitWidth")
-    public native boolean adjustsLetterSpacingToFitWidth();
-    /**
-     * @since Available in iOS 6.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     */
-    @Deprecated
-    @Property(selector = "setAdjustsLetterSpacingToFitWidth:")
-    public native void setAdjustsLetterSpacingToFitWidth(boolean v);
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    @Property(selector = "minimumFontSize")
-    public native @MachineSizedFloat double getMinimumFontSize();
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    @Property(selector = "setMinimumFontSize:")
-    public native void setMinimumFontSize(@MachineSizedFloat double v);
     @Property(selector = "baselineAdjustment")
     public native UIBaselineAdjustment getBaselineAdjustment();
     @Property(selector = "setBaselineAdjustment:")
@@ -164,6 +136,16 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "setMinimumScaleFactor:")
     public native void setMinimumScaleFactor(@MachineSizedFloat double v);
     /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "allowsDefaultTighteningForTruncation")
+    public native boolean allowsDefaultTighteningForTruncation();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setAllowsDefaultTighteningForTruncation:")
+    public native void setAllowsDefaultTighteningForTruncation(boolean v);
+    /**
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "preferredMaxLayoutWidth")
@@ -173,6 +155,20 @@ import org.robovm.apple.corelocation.*;
      */
     @Property(selector = "setPreferredMaxLayoutWidth:")
     public native void setPreferredMaxLayoutWidth(@MachineSizedFloat double v);
+    /**
+     * @since Available in iOS 6.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
+    @Property(selector = "adjustsLetterSpacingToFitWidth")
+    public native boolean adjustsLetterSpacingToFitWidth();
+    /**
+     * @since Available in iOS 6.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
+    @Property(selector = "setAdjustsLetterSpacingToFitWidth:")
+    public native void setAdjustsLetterSpacingToFitWidth(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

@@ -135,6 +135,8 @@ import org.robovm.apple.corelocation.*;
     }
 
     /*<methods>*/
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     @Method(selector = "moveToPoint:")
     public native void move(@ByVal CGPoint point);
     @Method(selector = "addLineToPoint:")
@@ -191,7 +193,5 @@ import org.robovm.apple.corelocation.*;
     public static native UIBezierPath createFromPath(CGPath CGPath);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder coder);
-    @Method(selector = "initWithCoder:")
-    protected native @Pointer long init(NSCoder aDecoder);
     /*</methods>*/
 }

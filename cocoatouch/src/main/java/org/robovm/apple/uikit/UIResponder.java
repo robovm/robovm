@@ -51,8 +51,8 @@ import org.robovm.apple.corelocation.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public UIResponder() {}
-    protected UIResponder(SkipInit skipInit) { super(skipInit); }
     protected UIResponder(long handle) { super(handle); }
+    protected UIResponder(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
     /**
@@ -75,6 +75,11 @@ import org.robovm.apple.corelocation.*;
      */
     @Property(selector = "inputAccessoryView")
     public native UIView getInputAccessoryView();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "inputAssistantItem")
+    public native UITextInputAssistantItem getInputAssistantItem();
     /**
      * @since Available in iOS 8.0 and later.
      */

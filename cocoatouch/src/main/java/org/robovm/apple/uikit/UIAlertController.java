@@ -56,6 +56,16 @@ import org.robovm.apple.corelocation.*;
     /*<properties>*/
     @Property(selector = "actions")
     public native NSArray<UIAlertAction> getActions();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "preferredAction")
+    public native UIAlertAction getPreferredAction();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setPreferredAction:")
+    public native void setPreferredAction(UIAlertAction v);
     @Property(selector = "textFields")
     public native NSArray<UITextField> getTextFields();
     @Property(selector = "title")

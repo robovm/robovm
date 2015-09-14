@@ -53,6 +53,7 @@ import org.robovm.apple.dispatch.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public NSURLSession() {}
+    protected NSURLSession(long handle) { super(handle); }
     protected NSURLSession(SkipInit skipInit) { super(skipInit); }
     public NSURLSession(NSURLSessionConfiguration configuration) { super(create(configuration)); retain(getHandle()); }
     public NSURLSession(NSURLSessionConfiguration configuration, NSURLSessionDelegate delegate, NSOperationQueue queue) { super(create(configuration, delegate, queue)); retain(getHandle()); }

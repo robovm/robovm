@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -42,34 +43,34 @@ import org.robovm.apple.audiounit.*;
 
 /*<javadoc>*/
 /**
- * @since Available in iOS 4.0 and later.
- * @deprecated Deprecated in iOS 6.0.
+ * @since Available in iOS 9.0 and later.
  */
-@Deprecated
 /*</javadoc>*/
-/*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
-public final class /*<name>*/AVAudioSessionInterruptionFlags/*</name>*/ extends Bits</*<name>*/AVAudioSessionInterruptionFlags/*</name>*/> {
-    /*<values>*/
-    public static final AVAudioSessionInterruptionFlags None = new AVAudioSessionInterruptionFlags(0L);
-    public static final AVAudioSessionInterruptionFlags ShouldResume = new AVAudioSessionInterruptionFlags(1L);
-    /*</values>*/
+/*<annotations>*/@Library("AVFoundation") @NativeClass/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/AVAsynchronousCIImageFilteringRequest/*</name>*/ 
+    extends /*<extends>*/NSObject/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
 
-    /*<bind>*/
-    /*</bind>*/
+    /*<ptr>*/public static class AVAsynchronousCIImageFilteringRequestPtr extends Ptr<AVAsynchronousCIImageFilteringRequest, AVAsynchronousCIImageFilteringRequestPtr> {}/*</ptr>*/
+    /*<bind>*/static { ObjCRuntime.bind(AVAsynchronousCIImageFilteringRequest.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<methods>*//*</methods>*/
-
-    private static final /*<name>*/AVAudioSessionInterruptionFlags/*</name>*/[] values = _values(/*<name>*/AVAudioSessionInterruptionFlags/*</name>*/.class);
-
-    public /*<name>*/AVAudioSessionInterruptionFlags/*</name>*/(long value) { super(value); }
-    private /*<name>*/AVAudioSessionInterruptionFlags/*</name>*/(long value, long mask) { super(value, mask); }
-    protected /*<name>*/AVAudioSessionInterruptionFlags/*</name>*/ wrap(long value, long mask) {
-        return new /*<name>*/AVAudioSessionInterruptionFlags/*</name>*/(value, mask);
-    }
-    protected /*<name>*/AVAudioSessionInterruptionFlags/*</name>*/[] _values() {
-        return values;
-    }
-    public static /*<name>*/AVAudioSessionInterruptionFlags/*</name>*/[] values() {
-        return values.clone();
-    }
+    /*<constructors>*/
+    public AVAsynchronousCIImageFilteringRequest() {}
+    protected AVAsynchronousCIImageFilteringRequest(SkipInit skipInit) { super(skipInit); }
+    /*</constructors>*/
+    /*<properties>*/
+    @Property(selector = "renderSize")
+    public native @ByVal CGSize getRenderSize();
+    @Property(selector = "compositionTime")
+    public native @ByVal CMTime getCompositionTime();
+    @Property(selector = "sourceImage")
+    public native CIImage getSourceImage();
+    /*</properties>*/
+    /*<members>*//*</members>*/
+    /*<methods>*/
+    @Method(selector = "finishWithImage:context:")
+    public native void finish(CIImage filteredImage, CIContext context);
+    @Method(selector = "finishWithError:")
+    public native void finish(NSError error);
+    /*</methods>*/
 }

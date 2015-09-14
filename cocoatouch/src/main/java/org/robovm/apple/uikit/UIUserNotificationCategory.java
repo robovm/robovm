@@ -52,6 +52,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UIUserNotificationCategory() {}
     protected UIUserNotificationCategory(SkipInit skipInit) { super(skipInit); }
+    public UIUserNotificationCategory(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "identifier")
@@ -59,6 +60,8 @@ import org.robovm.apple.corelocation.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     @Method(selector = "actionsForContext:")
     public native NSArray<UIUserNotificationAction> getActions(UIUserNotificationActionContext context);
     /*</methods>*/

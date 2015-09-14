@@ -161,6 +161,11 @@ import org.robovm.apple.corelocation.*;
      */
     @Bridge(symbol="UIAccessibilityConvertPathToScreenCoordinates", optional=true)
     public static native UIBezierPath convertPathToScreenCoordinates(UIBezierPath path, UIView view);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Bridge(symbol="UIAccessibilityFocusedElement", optional=true)
+    public static native NSObject getFocusedElement(String assistiveTechnologyIdentifier);
     @Bridge(symbol="UIAccessibilityPostNotification", optional=true)
     protected static native void postNotification(int notification, NSObject argument);
     /**
@@ -228,6 +233,11 @@ import org.robovm.apple.corelocation.*;
      */
     @Bridge(symbol="UIAccessibilityIsSpeakScreenEnabled", optional=true)
     public static native boolean isSpeakScreenEnabled();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Bridge(symbol="UIAccessibilityIsShakeToUndoEnabled", optional=true)
+    public static native boolean isShakeToUndoEnabled();
     /**
      * @since Available in iOS 7.0 and later.
      */

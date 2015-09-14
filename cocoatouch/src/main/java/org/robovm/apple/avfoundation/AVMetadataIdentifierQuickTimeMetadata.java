@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -261,9 +262,21 @@ import org.robovm.apple.audiounit.*;
      * @since Available in iOS 8.0 and later.
      */
     public static final AVMetadataIdentifierQuickTimeMetadata PreferredAffineTransform = new AVMetadataIdentifierQuickTimeMetadata("PreferredAffineTransform");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final AVMetadataIdentifierQuickTimeMetadata DetectedFace = new AVMetadataIdentifierQuickTimeMetadata("DetectedFace");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final AVMetadataIdentifierQuickTimeMetadata VideoOrientation = new AVMetadataIdentifierQuickTimeMetadata("VideoOrientation");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final AVMetadataIdentifierQuickTimeMetadata ContentIdentifier = new AVMetadataIdentifierQuickTimeMetadata("ContentIdentifier");
     /*</constants>*/
     
-    private static /*<name>*/AVMetadataIdentifierQuickTimeMetadata/*</name>*/[] values = new /*<name>*/AVMetadataIdentifierQuickTimeMetadata/*</name>*/[] {/*<value_list>*/Author, Comment, Copyright, CreationDate, Director, DisplayName, Information, Keywords, Producer, Publisher, Album, Artist, Artwork, Description, Software, Year, Genre, iXML, LocationISO6709, Make, Model, Arranger, EncodedBy, OriginalArtist, Performer, Composer, Credits, PhonogramRights, CameraIdentifier, CameraFrameReadoutTime, Title, CollectionUser, RatingUser, LocationName, LocationBody, LocationNote, LocationRole, LocationDate, DirectionFacing, DirectionMotion, PreferredAffineTransform/*</value_list>*/};
+    private static /*<name>*/AVMetadataIdentifierQuickTimeMetadata/*</name>*/[] values = new /*<name>*/AVMetadataIdentifierQuickTimeMetadata/*</name>*/[] {/*<value_list>*/Author, Comment, Copyright, CreationDate, Director, DisplayName, Information, Keywords, Producer, Publisher, Album, Artist, Artwork, Description, Software, Year, Genre, iXML, LocationISO6709, Make, Model, Arranger, EncodedBy, OriginalArtist, Performer, Composer, Credits, PhonogramRights, CameraIdentifier, CameraFrameReadoutTime, Title, CollectionUser, RatingUser, LocationName, LocationBody, LocationNote, LocationRole, LocationDate, DirectionFacing, DirectionMotion, PreferredAffineTransform, DetectedFace, VideoOrientation, ContentIdentifier/*</value_list>*/};
     
     /*<name>*/AVMetadataIdentifierQuickTimeMetadata/*</name>*/ (String getterName) {
         super(Values.class, getterName);
@@ -491,6 +504,21 @@ import org.robovm.apple.audiounit.*;
          */
         @GlobalValue(symbol="AVMetadataIdentifierQuickTimeMetadataPreferredAffineTransform", optional=true)
         public static native NSString PreferredAffineTransform();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="AVMetadataIdentifierQuickTimeMetadataDetectedFace", optional=true)
+        public static native NSString DetectedFace();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="AVMetadataIdentifierQuickTimeMetadataVideoOrientation", optional=true)
+        public static native NSString VideoOrientation();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="AVMetadataIdentifierQuickTimeMetadataContentIdentifier", optional=true)
+        public static native NSString ContentIdentifier();
         /*</values>*/
     }
 }

@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -62,6 +63,11 @@ import org.robovm.apple.audiounit.*;
     public native long getRequestedOffset();
     @Property(selector = "requestedLength")
     public native @MachineSizedSInt long getRequestedLength();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "requestsAllDataToEndOfResource")
+    public native boolean requestsAllDataToEndOfResource();
     @Property(selector = "currentOffset")
     public native long getCurrentOffset();
     /*</properties>*/

@@ -78,12 +78,6 @@ import org.robovm.apple.corelocation.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static UIFont getPreferredFont(UIFontTextStyle style) {
-        return getPreferredFont(style.value());
-    }
-    /**
      * @since Available in iOS 8.2 and later.
      */
     public static UIFont getSystemFont(double fontSize, UIFontWeight weight) {
@@ -91,7 +85,7 @@ import org.robovm.apple.corelocation.*;
     }
     /*<methods>*/
     @Method(selector = "fontWithSize:")
-    public native UIFont getFontWithSize(@MachineSizedFloat double fontSize);
+    public native UIFont newWithSize(@MachineSizedFloat double fontSize);
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -101,7 +95,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "preferredFontForTextStyle:")
-    protected static native UIFont getPreferredFont(NSString style);
+    public static native UIFont getPreferredFont(UIFontTextStyle style);
     @Method(selector = "fontWithName:size:")
     public static native UIFont getFont(String fontName, @MachineSizedFloat double fontSize);
     @Method(selector = "familyNames")
@@ -119,6 +113,11 @@ import org.robovm.apple.corelocation.*;
      */
     @Method(selector = "systemFontOfSize:weight:")
     public static native UIFont getSystemFont(@MachineSizedFloat double fontSize, @MachineSizedFloat double weight);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "monospacedDigitSystemFontOfSize:weight:")
+    public static native UIFont getMonospacedDigitSystemFont(@MachineSizedFloat double fontSize, @MachineSizedFloat double weight);
     /**
      * @since Available in iOS 7.0 and later.
      */

@@ -44,7 +44,7 @@ import org.robovm.apple.corelocation.*;
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIFontDescriptor/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*/implements NSCoding/*</implements>*/ {
+    /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class UIFontDescriptorPtr extends Ptr<UIFontDescriptor, UIFontDescriptorPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UIFontDescriptor.class); }/*</bind>*/
@@ -52,8 +52,10 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UIFontDescriptor() {}
     protected UIFontDescriptor(SkipInit skipInit) { super(skipInit); }
-    public UIFontDescriptor(UIFontDescriptorAttributes attributes) { super((SkipInit) null); initObject(init(attributes)); }
     public UIFontDescriptor(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
+    public UIFontDescriptor(UIFontDescriptorAttributes attributes) { super((SkipInit) null); initObject(init(attributes)); }
+    public UIFontDescriptor(String fontName, @MachineSizedFloat double size) { super(create(fontName, size)); retain(getHandle()); }
+    public UIFontDescriptor(String fontName, @ByVal CGAffineTransform matrix) { super(create(fontName, matrix)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "postscriptName")
@@ -86,6 +88,8 @@ import org.robovm.apple.corelocation.*;
         return getPreferredFontDescriptor(style.value());
     }
     /*<methods>*/
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     @Method(selector = "objectForKey:")
     protected native NSObject getValue(NSString anAttribute);
     @Method(selector = "fontAttributes")
@@ -106,17 +110,11 @@ import org.robovm.apple.corelocation.*;
     public native UIFontDescriptor newWithFace(String newFace);
     @Method(selector = "fontDescriptorWithFamily:")
     public native UIFontDescriptor newWithFamily(String newFamily);
-    @Method(selector = "fontDescriptorWithFontAttributes:")
-    public static native UIFontDescriptor create(UIFontDescriptorAttributes attributes);
     @Method(selector = "fontDescriptorWithName:size:")
-    public static native UIFontDescriptor create(String fontName, @MachineSizedFloat double size);
+    protected static native @Pointer long create(String fontName, @MachineSizedFloat double size);
     @Method(selector = "fontDescriptorWithName:matrix:")
-    public static native UIFontDescriptor create(String fontName, @ByVal CGAffineTransform matrix);
+    protected static native @Pointer long create(String fontName, @ByVal CGAffineTransform matrix);
     @Method(selector = "preferredFontDescriptorWithTextStyle:")
     protected static native UIFontDescriptor getPreferredFontDescriptor(NSString style);
-    @Method(selector = "encodeWithCoder:")
-    public native void encode(NSCoder coder);
-    @Method(selector = "initWithCoder:")
-    protected native @Pointer long init(NSCoder aDecoder);
     /*</methods>*/
 }

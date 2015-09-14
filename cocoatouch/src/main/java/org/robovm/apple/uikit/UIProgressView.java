@@ -52,13 +52,10 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UIProgressView() {}
     protected UIProgressView(SkipInit skipInit) { super(skipInit); }
+    public UIProgressView(@ByVal CGRect frame) { super((SkipInit) null); initObject(init(frame)); }
+    public UIProgressView(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     public UIProgressView(UIProgressViewStyle style) { super((SkipInit) null); initObject(init(style)); }
     /*</constructors>*/
-    
-    public UIProgressView(CGRect frame) {
-        super(frame);
-    }
-    
     /*<properties>*/
     @Property(selector = "progressViewStyle")
     public native UIProgressViewStyle getProgressViewStyle();
@@ -108,9 +105,23 @@ import org.robovm.apple.corelocation.*;
      */
     @Property(selector = "setTrackImage:")
     public native void setTrackImage(UIImage v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "observedProgress")
+    public native NSProgress getObservedProgress();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setObservedProgress:")
+    public native void setObservedProgress(NSProgress v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @Method(selector = "initWithFrame:")
+    protected native @Pointer long init(@ByVal CGRect frame);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     @Method(selector = "initWithProgressViewStyle:")
     protected native @Pointer long init(UIProgressViewStyle style);
     /**

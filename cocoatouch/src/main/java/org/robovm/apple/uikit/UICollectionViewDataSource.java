@@ -60,6 +60,16 @@ import org.robovm.apple.corelocation.*;
     @MachineSizedSInt long getNumberOfSections(UICollectionView collectionView);
     @Method(selector = "collectionView:viewForSupplementaryElementOfKind:atIndexPath:")
     UICollectionReusableView getViewForSupplementaryElement(UICollectionView collectionView, String kind, NSIndexPath indexPath);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "collectionView:canMoveItemAtIndexPath:")
+    boolean canMoveItemAt(UICollectionView collectionView, NSIndexPath indexPath);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "collectionView:moveItemAtIndexPath:toIndexPath:")
+    void moveItemAt(UICollectionView collectionView, NSIndexPath sourceIndexPath, NSIndexPath destinationIndexPath);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

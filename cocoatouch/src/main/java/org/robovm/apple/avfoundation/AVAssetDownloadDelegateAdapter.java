@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -41,35 +42,32 @@ import org.robovm.apple.audiounit.*;
 /*</imports>*/
 
 /*<javadoc>*/
-/**
- * @since Available in iOS 4.0 and later.
- * @deprecated Deprecated in iOS 6.0.
- */
-@Deprecated
 /*</javadoc>*/
-/*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
-public final class /*<name>*/AVAudioSessionSetActiveFlags/*</name>*/ extends Bits</*<name>*/AVAudioSessionSetActiveFlags/*</name>*/> {
-    /*<values>*/
-    public static final AVAudioSessionSetActiveFlags None = new AVAudioSessionSetActiveFlags(0L);
-    public static final AVAudioSessionSetActiveFlags NotifyOthersOnDeactivation = new AVAudioSessionSetActiveFlags(1L);
-    /*</values>*/
+/*<annotations>*//*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/AVAssetDownloadDelegateAdapter/*</name>*/ 
+    extends /*<extends>*/NSURLSessionTaskDelegateAdapter/*</extends>*/ 
+    /*<implements>*/implements AVAssetDownloadDelegate/*</implements>*/ {
 
+    /*<ptr>*/
+    /*</ptr>*/
     /*<bind>*/
     /*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<methods>*//*</methods>*/
-
-    private static final /*<name>*/AVAudioSessionSetActiveFlags/*</name>*/[] values = _values(/*<name>*/AVAudioSessionSetActiveFlags/*</name>*/.class);
-
-    public /*<name>*/AVAudioSessionSetActiveFlags/*</name>*/(long value) { super(value); }
-    private /*<name>*/AVAudioSessionSetActiveFlags/*</name>*/(long value, long mask) { super(value, mask); }
-    protected /*<name>*/AVAudioSessionSetActiveFlags/*</name>*/ wrap(long value, long mask) {
-        return new /*<name>*/AVAudioSessionSetActiveFlags/*</name>*/(value, mask);
-    }
-    protected /*<name>*/AVAudioSessionSetActiveFlags/*</name>*/[] _values() {
-        return values;
-    }
-    public static /*<name>*/AVAudioSessionSetActiveFlags/*</name>*/[] values() {
-        return values.clone();
-    }
+    /*<constructors>*//*</constructors>*/
+    /*<properties>*/
+    
+    /*</properties>*/
+    /*<members>*//*</members>*/
+    /*<methods>*/
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @NotImplemented("URLSession:assetDownloadTask:didLoadTimeRange:totalTimeRangesLoaded:timeRangeExpectedToLoad:")
+    public void didLoadTimeRange(NSURLSession session, AVAssetDownloadTask assetDownloadTask, @ByVal CMTimeRange timeRange, @org.robovm.rt.bro.annotation.Marshaler(CMTimeRange.AsValuedListMarshaler.class) List<CMTimeRange> loadedTimeRanges, @ByVal CMTimeRange timeRangeExpectedToLoad) {}
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @NotImplemented("URLSession:assetDownloadTask:didResolveMediaSelection:")
+    public void didResolveMediaSelection(NSURLSession session, AVAssetDownloadTask assetDownloadTask, AVMediaSelection resolvedMediaSelection) {}
+    /*</methods>*/
 }

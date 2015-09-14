@@ -53,16 +53,21 @@ import org.robovm.apple.corelocation.*;
     public UIVisualEffectView() {}
     protected UIVisualEffectView(SkipInit skipInit) { super(skipInit); }
     public UIVisualEffectView(UIVisualEffect effect) { super((SkipInit) null); initObject(init(effect)); }
+    public UIVisualEffectView(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "contentView")
     public native UIView getContentView();
     @Property(selector = "effect")
     public native UIVisualEffect getEffect();
+    @Property(selector = "setEffect:")
+    public native void setEffect(UIVisualEffect v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithEffect:")
     protected native @Pointer long init(UIVisualEffect effect);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     /*</methods>*/
 }

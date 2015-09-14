@@ -27,10 +27,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -190,7 +192,59 @@ public class IOSTarget extends AbstractTarget {
 
         File xcodePath = new File(ToolchainUtil.findXcodePath());
         Map<String, String> env = Collections.singletonMap("DEVELOPER_DIR", xcodePath.getAbsolutePath());
-        return new Executor(config.getLogger(), iosSimPath)
+        
+        // See issue https://github.com/robovm/robovm/issues/1150, we need
+        // to swallow the error message by ios-sim on Xcode 7. We need
+        // to remove this
+        Logger proxyLogger = new Logger() {
+            boolean skipWarningsAndErrors = false;
+
+            @Override
+            public void debug(String format, Object... args) {
+                config.getLogger().debug(format, args);
+            }
+
+            @Override
+            public void info(String format, Object... args) {
+                config.getLogger().info(format, args);
+            }
+
+            @Override
+            public void warn(String format, Object... args) {
+                // we swallow the first warning message, then
+                // error() will turn on skipWarningsAndErrors until
+                // we get another warning.
+                if (format.toString().contains("DVTPlugInManager.m:257")) {
+                    config.getLogger().info(format, args);
+                    return;
+                }
+
+                // received the "closing" warning, enable
+                // logging of warnings and errors again
+                if (skipWarningsAndErrors) {
+                    skipWarningsAndErrors = false;
+                    config.getLogger().info(format, args);
+                } else {
+                    config.getLogger().warn(format, args);
+                }
+            }
+
+            @Override
+            public void error(String format, Object... args) {
+                if (format.contains(
+                        "Requested but did not find extension point with identifier Xcode.DVTFoundation.DevicePlatformMapping")) {
+                    skipWarningsAndErrors = true;
+                    return;
+                }
+                if (skipWarningsAndErrors) {
+                    config.getLogger().info(format, args);
+                } else {
+                    config.getLogger().error(format, args);
+                }
+            }
+        };
+        
+        return new Executor(proxyLogger, iosSimPath)
                 .args(args)
                 .wd(launchParameters.getWorkingDirectory())
                 .inheritEnv(false)

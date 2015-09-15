@@ -304,6 +304,15 @@ public final class ObjCClass extends ObjCObject {
             c = ObjCObject.getPeerObject(classPtr);
             if (c == null) {
                 c = getByNameNotLoaded(VM.newStringUTF(ObjCRuntime.class_getName(classPtr)));
+                if (c == null) {
+                    for (String protocol : getProtocols(classPtr, false)) {
+                        Class<? extends ObjCObject> cls = allNativeProtocolProxies.get(protocol);
+                        if (cls != null) {
+                            c = getByType(cls);
+                            break;
+                        }
+                    }
+                }
             }
         }
         if (c == null) {

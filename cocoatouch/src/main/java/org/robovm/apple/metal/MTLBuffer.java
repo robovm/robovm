@@ -60,8 +60,8 @@ import org.robovm.apple.dispatch.*;
     public native MTLCPUCacheMode getCpuCacheMode();
     /*</properties>*/
     /*<members>*//*</members>*/
-    public byte[] getContents() {
-        return VM.newByteArray(getContents0(), (int)getLength());
+    public ByteBuffer getContents() {
+        return VM.newDirectByteBuffer(getContents0(), (int) getLength());
     }
     /*<methods>*/
     @Method(selector = "contents")

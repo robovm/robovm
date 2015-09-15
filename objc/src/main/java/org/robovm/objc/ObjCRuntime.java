@@ -175,6 +175,9 @@ public class ObjCRuntime {
     @Bridge
     public static native @Pointer long objc_getAssociatedObject(@Pointer long object, @Pointer long key);
 
+    @Bridge
+    public static native @Pointer long objc_copyProtocolList (@Pointer long outCount);
+
     /* object */
     
     @Bridge
@@ -219,6 +222,15 @@ public class ObjCRuntime {
     public static native boolean class_conformsToProtocol(@Pointer long cls, @Pointer long protocol);
 
     @Bridge
+    public static native @Pointer long class_copyProtocolList(@Pointer long cls, @Pointer long outCount);
+    
+    @Bridge
+    public static native @Pointer long class_copyMethodList(@Pointer long cls, @Pointer long outCount);
+
+    @Bridge
+    public static native @Pointer long class_copyPropertyList(@Pointer long cls, @Pointer long outCount);
+
+    @Bridge
     public static native boolean class_addMethod(@Pointer long cls, @Pointer long name, @Pointer long imp, @Pointer long types);
     
     @Bridge
@@ -261,6 +273,9 @@ public class ObjCRuntime {
 
     @Bridge
     public static native @Pointer long protocol_getProperty(@Pointer long protocol, @Pointer long name, boolean isRequiredProperty, boolean isInstanceProperty);
+    
+    @Bridge
+    public static native @Pointer long protocol_copyProtocolList(@Pointer long protocol, @Pointer long outCount);
     
     /* ivar */
     

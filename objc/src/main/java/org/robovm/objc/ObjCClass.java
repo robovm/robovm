@@ -16,18 +16,24 @@
 package org.robovm.objc;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.robovm.objc.annotation.BindSelector;
 import org.robovm.objc.annotation.CustomClass;
 import org.robovm.objc.annotation.NativeClass;
+import org.robovm.objc.annotation.NativeProtocolProxy;
 import org.robovm.objc.annotation.TypeEncoding;
 import org.robovm.rt.VM;
+import org.robovm.rt.bro.Bro;
 import org.robovm.rt.bro.annotation.Callback;
 import org.robovm.rt.bro.annotation.Library;
 import org.robovm.rt.bro.annotation.MarshalsPointer;
+import org.robovm.rt.bro.ptr.IntPtr;
 
 @Library("objc")
 public final class ObjCClass extends ObjCObject {
@@ -37,6 +43,7 @@ public final class ObjCClass extends ObjCObject {
     private static final Map<Class<? extends ObjCObject>, ObjCClass> typeToClass = new HashMap<Class<? extends ObjCObject>, ObjCClass>();
     private static final Map<String, ObjCClass> nameToClass = new HashMap<String, ObjCClass>();
     private static final Map<String, Class<? extends ObjCObject>> allNativeClasses = new HashMap<>();
+    private static final Map<String, Class<? extends ObjCObject>> allNativeProtocolProxies = new HashMap<>();
     private static final Map<String, Class<? extends ObjCObject>> allCustomClasses = new HashMap<>();
     static final Map<String, Class<? extends ObjCObject>> allObjCProxyClasses = new HashMap<>();
 
@@ -57,17 +64,26 @@ public final class ObjCClass extends ObjCObject {
                 }
                 allNativeClasses.put(name, cls);
             } else {
-                CustomClass customClassAnno = cls.getAnnotation(CustomClass.class);
-                String name = cls.getName();
-                if (customClassAnno != null) {
-                    String value = customClassAnno.value();
-                    if (value.length() > 0) {
-                        name = value;
+                NativeProtocolProxy nativeProtocolProxyAnno = cls.getAnnotation(NativeProtocolProxy.class);
+                if (nativeProtocolProxyAnno != null) {
+                    String name = nativeProtocolProxyAnno.value();
+                    if (name.length() == 0) {
+                        name = cls.getSimpleName();
                     }
-                } else if (name.indexOf('.') == -1) {
-                    name = "." + name;
+                    allNativeProtocolProxies.put(name, cls);
+                } else {
+                    CustomClass customClassAnno = cls.getAnnotation(CustomClass.class);
+                    String name = cls.getName();
+                    if (customClassAnno != null) {
+                        String value = customClassAnno.value();
+                        if (value.length() > 0) {
+                            name = value;
+                        }
+                    } else if (name.indexOf('.') == -1) {
+                        name = "." + name;
+                    }
+                    allCustomClasses.put(name, cls);
                 }
-                allCustomClasses.put(name, cls);
             }
             
             if (isObjCProxy(cls)) {
@@ -105,12 +121,14 @@ public final class ObjCClass extends ObjCObject {
     private final Class<? extends ObjCObject> type;
     private final String name;
     private final boolean custom;
+    private final boolean protocol;
     
-    private ObjCClass(long handle, Class<? extends ObjCObject> type, String name, boolean custom) {
+    private ObjCClass(long handle, Class<? extends ObjCObject> type, String name, boolean custom, boolean protocol) {
         super(handle, false);
         this.type = type;
         this.name = name;
         this.custom = custom;
+        this.protocol = protocol;
     }
     
     public Class<? extends ObjCObject> getType() {
@@ -125,9 +143,38 @@ public final class ObjCClass extends ObjCObject {
         return custom;
     }
     
+    public boolean isProtocol() {
+        return protocol;
+    }
+    
     @Override
     public String toString() {
         return type.getName();
+    }
+    
+    public String toDebugString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("@interface ").append(getName());
+        long superclass = ObjCRuntime.class_getSuperclass(getHandle());
+        if (superclass != 0) {
+            sb.append(" : ").append(VM.newStringUTF(ObjCRuntime.class_getName(superclass)));
+        }
+        IntPtr outCount = new IntPtr();
+        long protocols = ObjCRuntime.class_copyProtocolList(getHandle(), outCount.getHandle());
+        if (outCount.get() > 0) {
+            sb.append(" <");
+            for (int i = 0; i < outCount.get(); i++) {
+                if (i > 0) {
+                    sb.append(", ");
+                }
+                sb.append(VM.newStringUTF(ObjCRuntime.protocol_getName(VM.getPointer(protocols))));
+                protocols += (Bro.IS_64BIT ? 8 : 4);
+            }
+            sb.append('>');
+        }
+        sb.append('\n');
+        sb.append("@end");
+        return sb.toString();
     }
     
     public static ObjCClass getByName(String objcClassName) {
@@ -145,6 +192,10 @@ public final class ObjCClass extends ObjCObject {
     
     private static ObjCClass getByNameNotLoaded(String objcClassName) {
         Class<? extends ObjCObject> cls = allNativeClasses.get(objcClassName);
+        if (cls != null) {
+            return getByType(cls);
+        }
+        cls = allNativeProtocolProxies.get(objcClassName);
         if (cls != null) {
             return getByType(cls);
         }
@@ -180,21 +231,31 @@ public final class ObjCClass extends ObjCObject {
         synchronized (objcBridgeLock) {
             ObjCClass c = typeToClass.get(type);
             if (c == null) {
-                NativeClass nativeClassAnno = type.getAnnotation(NativeClass.class);
                 String name = null;
+                NativeClass nativeClassAnno = type.getAnnotation(NativeClass.class);
                 if (nativeClassAnno != null) {
                     name = nativeClassAnno.value();
                     name = "".equals(name) ? type.getSimpleName() : name;
+                    long classPtr = ObjCRuntime.objc_getClass(VM.getStringUTFChars(name));
+                    if (classPtr != 0L) {
+                        c = new ObjCClass(classPtr, type, name, false, false);
+                    }
                 } else {
-                    name = getCustomClassName(type);
-                    c = register(type, name);
+                    NativeProtocolProxy nativeProtocolProxyAnno = type.getAnnotation(NativeProtocolProxy.class);
+                    if (nativeProtocolProxyAnno != null) {
+                        name = nativeProtocolProxyAnno.value();
+                        name = "".equals(name) ? type.getSimpleName() : name;
+                        long protocolPtr = ObjCRuntime.objc_getProtocol(VM.getStringUTFChars(name));
+                        if (protocolPtr != 0L) {
+                            c = new ObjCClass(protocolPtr, type, name, false, true);
+                        }
+                    } else {
+                        name = getCustomClassName(type);
+                        c = register(type, name);
+                    }
                 }
                 if (c == null) {
-                    long classPtr = ObjCRuntime.objc_getClass(VM.getStringUTFChars(name));
-                    if (classPtr == 0L) {
-                        throw new ObjCClassNotFoundException(name);
-                    }
-                    c = new ObjCClass(classPtr, type, name, false);
+                    throw new ObjCClassNotFoundException(name);
                 }
                 typeToClass.put(type, c);
                 nameToClass.put(name, c);
@@ -203,11 +264,40 @@ public final class ObjCClass extends ObjCObject {
         }
     }
 
+    @SuppressWarnings("unchecked")
+    private static List<String> getProtocols(long handle, boolean isProtocol) {
+        final long protocols = isProtocol ? ObjCRuntime.protocol_copyProtocolList(handle, 0) 
+                : ObjCRuntime.class_copyProtocolList(handle, 0);
+        if (protocols == 0) {
+            return (List<String>) Collections.EMPTY_LIST;
+        }
+        ArrayList<String> names = new ArrayList<>();
+        for (long protos = protocols; VM.getPointer(protos) != 0; protos += Bro.IS_64BIT ? 8 : 4) {
+            long protocol = VM.getPointer(protocols);
+            names.add(VM.newStringUTF(ObjCRuntime.protocol_getName(protocol)));
+        }
+        for (long protos = protocols; VM.getPointer(protos) != 0; protos += Bro.IS_64BIT ? 8 : 4) {
+            long protocol = VM.getPointer(protocols);
+            names.addAll(getProtocols(protocol, true));
+        }
+        VM.free(protocols);
+        return names;
+    }
+
     public static ObjCClass toObjCClass(final long handle) {
         long classPtr = handle;
         ObjCClass c = ObjCObject.getPeerObject(classPtr);
         if (c == null) {
             c = getByNameNotLoaded(VM.newStringUTF(ObjCRuntime.class_getName(classPtr)));
+        }
+        if (c == null) {
+            for (String protocol : getProtocols(classPtr, false)) {
+                Class<? extends ObjCObject> cls = allNativeProtocolProxies.get(protocol);
+                if (cls != null) {
+                    c = getByType(cls);
+                    break;
+                }
+            }
         }
         while (c == null && classPtr != 0L) {
             classPtr = ObjCRuntime.class_getSuperclass(classPtr);
@@ -226,6 +316,10 @@ public final class ObjCClass extends ObjCObject {
     public static ObjCClass registerCustomClass(Class<? extends ObjCObject> type) {
         if (type.getAnnotation(NativeClass.class) != null) {
             throw new IllegalArgumentException("@NativeClass annotated class " + type.getName() 
+                    + " can not be registered as a custom class");
+        }
+        if (type.getAnnotation(NativeProtocolProxy.class) != null) {
+            throw new IllegalArgumentException("@NativeProtocolProxy annotated class " + type.getName() 
                     + " can not be registered as a custom class");
         }
         synchronized (objcBridgeLock) {
@@ -296,7 +390,7 @@ public final class ObjCClass extends ObjCObject {
         }
         ObjCObject.ObjectOwnershipHelper.registerClass(handle);
         ObjCRuntime.objc_registerClassPair(handle);                                  
-        return new ObjCClass(handle, type, name, !isObjCProxy(type));
+        return new ObjCClass(handle, type, name, !isObjCProxy(type), false);
     }
     
     private static Map<String, Method> getCallbacks(Class<?> type) {

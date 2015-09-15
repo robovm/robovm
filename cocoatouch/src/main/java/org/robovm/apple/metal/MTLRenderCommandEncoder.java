@@ -36,7 +36,7 @@ import org.robovm.apple.dispatch.*;
  * @since Available in iOS 8.0 and later.
  */
 /*</javadoc>*/
-/*<annotations>*/@Library("Metal")/*</annotations>*/
+/*<annotations>*/@Library("Metal") @NativeProtocolProxy/*</annotations>*/
 /*<visibility>*/public final/*</visibility>*/ class /*<name>*/MTLRenderCommandEncoder/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*/implements MTLCommandEncoder/*</implements>*/ {

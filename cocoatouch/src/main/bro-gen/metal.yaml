@@ -159,6 +159,7 @@ classes:
 protocols:
     MTLBlitCommandEncoder: # DONE
         class: true
+        annotations: ['@NativeProtocolProxy']
         visibility: 'public final'
         methods:
             '-copyFromTexture:sourceSlice:sourceLevel:sourceOrigin:sourceSize:toTexture:destinationSlice:destinationLevel:destinationOrigin:':
@@ -175,6 +176,7 @@ protocols:
                 name: copyFromBufferToBuffer
     MTLBuffer: # DONE
         class: true
+        annotations: ['@NativeProtocolProxy']
         visibility: 'public final'
         methods:
             '-contents':
@@ -186,6 +188,7 @@ protocols:
                 return_marshaler: NSObject.NoRetainMarshaler
     MTLCommandBuffer: # DONE
         class: true
+        annotations: ['@NativeProtocolProxy']
         visibility: 'public final'
         properties:
             'retainedReferences':
@@ -222,6 +225,7 @@ protocols:
                 trim_after_first_colon: true
     MTLCommandQueue: # DONE
         class: true
+        annotations: ['@NativeProtocolProxy']
         visibility: 'public final'
         methods:
             '-commandBuffer':
@@ -230,6 +234,7 @@ protocols:
                 property: true
     MTLComputeCommandEncoder: # DONE
         class: true
+        annotations: ['@NativeProtocolProxy']
         visibility: 'public final'
         methods:
             '-setBytes:length:atIndex:':
@@ -278,12 +283,15 @@ protocols:
                 trim_after_first_colon: true
     MTLComputePipelineState: # DONE
         class: true
+        annotations: ['@NativeProtocolProxy']
         visibility: 'public final'
     MTLDepthStencilState: # DONE
         class: true
+        annotations: ['@NativeProtocolProxy']
         visibility: 'public final'
     MTLDevice: # DONE
         class: true
+        annotations: ['@NativeProtocolProxy']
         visibility: 'public final'
         methods:
             '-newCommandQueueWithMaxCommandBufferCount:':
@@ -351,12 +359,14 @@ protocols:
                 trim_after_first_colon: true
     MTLFunction: # DONE
         class: true
+        annotations: ['@NativeProtocolProxy']
         visibility: 'public final'
         properties:
             'vertexAttributes':
                 type: NSArray<MTLVertexAttribute>
     MTLLibrary: # DONE
         class: true
+        annotations: ['@NativeProtocolProxy']
         visibility: 'public final'
         properties:
             'functionNames':
@@ -367,12 +377,14 @@ protocols:
                 return_marshaler: NSObject.NoRetainMarshaler
     MTLParallelRenderCommandEncoder: # DONE
         class: true
+        annotations: ['@NativeProtocolProxy']
         visibility: 'public final'
         methods:
             '-renderCommandEncoder':
                 name: newRenderCommandEncoder
     MTLRenderCommandEncoder: # DONE
         class: true
+        annotations: ['@NativeProtocolProxy']
         visibility: 'public final'
         methods:
             '-setVertexBytes:length:atIndex:':
@@ -471,6 +483,7 @@ protocols:
                 trim_after_first_colon: true
     MTLRenderPipelineState: # DONE
         class: true
+        annotations: ['@NativeProtocolProxy']
         visibility: 'public final'
     MTLResource: # DONE
         methods:
@@ -478,9 +491,11 @@ protocols:
                 trim_after_first_colon: true
     MTLSamplerState: # DONE
         class: true
+        annotations: ['@NativeProtocolProxy']
         visibility: 'public final'
     MTLTexture: # DONE
         class: true
+        annotations: ['@NativeProtocolProxy']
         visibility: 'public final'
         methods:
             '-getBytes:bytesPerRow:bytesPerImage:fromRegion:mipmapLevel:slice:':

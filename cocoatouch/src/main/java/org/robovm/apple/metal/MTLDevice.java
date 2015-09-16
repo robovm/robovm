@@ -36,7 +36,7 @@ import org.robovm.apple.dispatch.*;
  * @since Available in iOS 8.0 and later.
  */
 /*</javadoc>*/
-/*<annotations>*/@Library("Metal")/*</annotations>*/
+/*<annotations>*/@Library("Metal") @NativeProtocolProxy/*</annotations>*/
 /*<visibility>*/public final/*</visibility>*/ class /*<name>*/MTLDevice/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*/implements NSObjectProtocol/*</implements>*/ {
@@ -50,6 +50,11 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*/
     @Property(selector = "name")
     public native String getName();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "maxThreadsPerThreadgroup")
+    public native @ByVal MTLSize getMaxThreadsPerThreadgroup();
     /*</properties>*/
     /*<members>*//*</members>*/
     public MTLBuffer newBuffer(byte[] bytes, MTLResourceOptions options) {
@@ -163,7 +168,31 @@ import org.robovm.apple.dispatch.*;
     public native void newComputePipelineState(MTLFunction computeFunction, @Block VoidBlock2<MTLComputePipelineState, NSError> completionHandler);
     @Method(selector = "newComputePipelineStateWithFunction:options:completionHandler:")
     public native void newComputePipelineState(MTLFunction computeFunction, MTLPipelineOption options, @Block VoidBlock3<MTLComputePipelineState, MTLComputePipelineReflection, NSError> completionHandler);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public MTLComputePipelineState newComputePipelineState(MTLComputePipelineDescriptor descriptor, MTLPipelineOption options, MTLComputePipelineReflection.MTLComputePipelineReflectionPtr reflection) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       MTLComputePipelineState result = newComputePipelineState(descriptor, options, reflection, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "newComputePipelineStateWithDescriptor:options:reflection:error:")
+    private native MTLComputePipelineState newComputePipelineState(MTLComputePipelineDescriptor descriptor, MTLPipelineOption options, MTLComputePipelineReflection.MTLComputePipelineReflectionPtr reflection, NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "newComputePipelineStateWithDescriptor:options:completionHandler:")
+    public native void newComputePipelineState(MTLComputePipelineDescriptor descriptor, MTLPipelineOption options, @Block VoidBlock3<MTLComputePipelineState, MTLComputePipelineReflection, NSError> completionHandler);
     @Method(selector = "supportsFeatureSet:")
     public native boolean supportsFeatureSet(MTLFeatureSet featureSet);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "supportsTextureSampleCount:")
+    public native boolean supportsTextureSampleCount(@MachineSizedUInt long sampleCount);
     /*</methods>*/
 }

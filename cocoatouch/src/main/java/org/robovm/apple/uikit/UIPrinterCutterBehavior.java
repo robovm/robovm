@@ -49,6 +49,33 @@ public enum /*<name>*/UIPrinterCutterBehavior/*</name>*/ implements ValuedEnum {
     CutAfterEachJob(4L);
     /*</values>*/
 
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<UIPrinterCutterBehavior> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSNumber> o = (NSArray<NSNumber>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<UIPrinterCutterBehavior> list = new ArrayList<>();
+            for (NSNumber n : o) {
+                list.add(UIPrinterCutterBehavior.valueOf(n.longValue()));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<UIPrinterCutterBehavior> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSNumber> array = new NSMutableArray<>();
+            for (UIPrinterCutterBehavior i : l) {
+                array.add(NSNumber.valueOf(i.value()));
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    
     /*<bind>*/
     /*</bind>*/
     /*<constants>*//*</constants>*/

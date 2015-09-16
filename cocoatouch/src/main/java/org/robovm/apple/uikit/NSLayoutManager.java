@@ -214,12 +214,27 @@ import org.robovm.apple.corelocation.*;
     public native @MachineSizedUInt long getFirstUnlaidGlyphIndex();
     @Method(selector = "textContainerForGlyphAtIndex:effectiveRange:")
     public native NSTextContainer getTextContainer(@MachineSizedUInt long glyphIndex, NSRange effectiveGlyphRange);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "textContainerForGlyphAtIndex:effectiveRange:withoutAdditionalLayout:")
+    public native NSTextContainer getTextContainer(@MachineSizedUInt long glyphIndex, NSRange effectiveGlyphRange, boolean withoutAdditionalLayout);
     @Method(selector = "usedRectForTextContainer:")
     public native @ByVal CGRect getUsedRectForTextContainer(NSTextContainer container);
     @Method(selector = "lineFragmentRectForGlyphAtIndex:effectiveRange:")
     public native @ByVal CGRect getLineFragmentRect(@MachineSizedUInt long glyphIndex, NSRange effectiveGlyphRange);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "lineFragmentRectForGlyphAtIndex:effectiveRange:withoutAdditionalLayout:")
+    public native @ByVal CGRect getLineFragmentRect(@MachineSizedUInt long glyphIndex, NSRange effectiveGlyphRange, boolean withoutAdditionalLayout);
     @Method(selector = "lineFragmentUsedRectForGlyphAtIndex:effectiveRange:")
     public native @ByVal CGRect getLineFragmentUsedRect(@MachineSizedUInt long glyphIndex, NSRange effectiveGlyphRange);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "lineFragmentUsedRectForGlyphAtIndex:effectiveRange:withoutAdditionalLayout:")
+    public native @ByVal CGRect getLineFragmentUsedRect(@MachineSizedUInt long glyphIndex, NSRange effectiveGlyphRange, boolean withoutAdditionalLayout);
     @Method(selector = "locationForGlyphAtIndex:")
     public native @ByVal CGPoint getLocation(@MachineSizedUInt long glyphIndex);
     @Method(selector = "notShownAttributeForGlyphAtIndex:")

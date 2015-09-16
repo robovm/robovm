@@ -1,5 +1,5 @@
 package: org.robovm.apple.metalkit
-include: [foundation.yaml]
+include: [foundation.yaml, metal.yaml, modelio.yaml, uikit.yaml, coregraphics.yaml, coreanimation.yaml]
 library: MetalKit
 framework: MetalKit
 clang_args: ['-x', 'objective-c']
@@ -11,23 +11,109 @@ typedefs: {}
 enums:
         
 classes:
-    MTKMesh: {}
-    MTKMeshBuffer: {}
-    MTKMeshBufferAllocator: {}
-    MTKSubmesh: {}
-    MTKTextureLoader: {}
-    MTKView: {}
+    MTKTextureLoaderError:
+        extends: NSError
+        annotations: ['@StronglyLinked']
+    MTKModelError:
+        extends: NSError
+        annotations: ['@StronglyLinked']
+
+    MTKMesh: # DONE
+        properties:
+            'vertexBuffers':
+                type: NSArray<MTKMeshBuffer>
+            'submeshes':
+                type: NSArray<MTKSubmesh>
+        methods:
+            '-initWithMesh:device:error:':
+                name: init
+                throws: NSErrorException
+            '+newMeshesFromAsset:device:sourceMeshes:error:': # TODO sourcemeshes?
+                name: newMeshes
+                throws: NSErrorException
+                return_type: NSArray<MTKMesh>
+    MTKMeshBuffer: {} # DONE
+    MTKMeshBufferAllocator: # DONE
+        methods:
+            '-initWithDevice:':
+                name: init
+    MTKSubmesh: {} # DONE
+    MTKTextureLoader: # DONE
+        methods:
+            '-initWithDevice:':
+                name: init
+            '-newTextureWith.*completionHandler:':
+                name: newTexture
+                parameters:
+                    options:
+                        type: MTKTextureLoaderOptions
+                    completionHandler:
+                        type: '@Block VoidBlock2<MTLTexture, NSError>'
+            '-newTextureWith.*error:':
+                name: newTexture
+                throws: NSErrorException
+                parameters:
+                    options:
+                        type: MTKTextureLoaderOptions
+    MTKView: # DONE
+        properties:
+            'enableSetNeedsDisplay':
+                name: needsDisplayEnabled
+                getter: isNeedsDisplayEnabled
+        methods:
+            '-init.*':
+                name: init
 
 protocols:
-    MTKViewDelegate: {}
+    MTKViewDelegate: # DONE
+        methods:
+            '-mtkView:drawableSizeWillChange:':
+                name: drawableSizeWillChange
+            '-drawInMTKView:':
+                name: draw
 
 functions:
+    (MTKModelIOVertexDescriptorFromMetal|MTKMetalVertexDescriptorFromModelIO):
+        class: MTKTypeConverter
+        name: convertVertexDescriptor
+    (MTKModelIOVertexFormatFromMetal|MTKMetalVertexFormatFromModelIO):
+        class: MTKTypeConverter
+        name: convertVertexFormat
+
     # Make sure we don't miss any functions if new ones are introduced in a later version
     (k?MTK.*):
         class: MetalKit
         name: 'Function__#{g[0]}'
 
 values:
+    MTKTextureLoaderErrorDomain:
+        class: MTKTextureLoaderError
+        name: getClassDomain
+    MTKModelErrorDomain:
+        class: MTKModelError
+        name: getClassDomain
+
+    MTKTextureLoaderErrorKey:
+        exclude: true
+    MTKModelErrorKey:
+        exclude: true
+
+    # MTKTextureLoader
+    MTKTextureLoaderOption(.*):
+        dictionary: MTKTextureLoaderOptions
+        name: '#{g[0]}'
+        type: NSString
+        methods:
+            AllocateMipmaps:
+                name: allocatesMipmaps
+                type: boolean
+            SRGB:
+                type: boolean
+            TextureUsage:
+                type: MTLTextureUsage
+            TextureCPUCacheMode:
+                type: MTLCPUCacheMode
+
     # Make sure we don't miss any values if new ones are introduced in a later version
     (k?MTK.*):
         class: MetalKit

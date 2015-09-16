@@ -52,6 +52,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UIDocumentInteractionController() {}
     protected UIDocumentInteractionController(SkipInit skipInit) { super(skipInit); }
+    public UIDocumentInteractionController(NSURL url) { super(create(url)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "delegate")
@@ -96,7 +97,7 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "dismissMenuAnimated:")
     public native void dismissMenu(boolean animated);
     @Method(selector = "interactionControllerWithURL:")
-    public static native UIDocumentInteractionController create(NSURL url);
+    protected static native @Pointer long create(NSURL url);
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 8.3.

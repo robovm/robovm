@@ -45,13 +45,24 @@ import org.robovm.apple.corelocation.*;
 
     public static class Notifications {
         /**
+         * @since Available in iOS 9.0 and later.
+         */
+        public static NSObject observeElementFocused(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(UIAccessibilityGlobals.ElementFocusedNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+        /**
          * @since Available in iOS 6.0 and later.
          */
         public static NSObject observeAnnouncementDidFinish(final VoidBlock2<String, Boolean> block) {
             return NSNotificationCenter.getDefaultCenter().addObserver(UIAccessibilityGlobals.AnnouncementDidFinishNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke(NSNotification a) {
-                    NSDictionary data = a.getUserInfo();
+                    NSDictionary<?, ?> data = a.getUserInfo();
                     NSString string = (NSString)data.get(UIAccessibilityGlobals.AnnouncementKeyStringValue());
                     NSNumber successful = (NSNumber)data.get(UIAccessibilityGlobals.AnnouncementKeyWasSuccessful());
                     block.invoke(string.toString(), successful.booleanValue());
@@ -195,6 +206,17 @@ import org.robovm.apple.corelocation.*;
          */
         public static NSObject observeSpeakScreenStatusDidChange(final Runnable block) {
             return NSNotificationCenter.getDefaultCenter().addObserver(UIAccessibilityGlobals.SpeakScreenStatusDidChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        public static NSObject observeShakeToUndoDidChange(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(UIAccessibilityGlobals.ShakeToUndoDidChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke(NSNotification a) {
                     block.run();

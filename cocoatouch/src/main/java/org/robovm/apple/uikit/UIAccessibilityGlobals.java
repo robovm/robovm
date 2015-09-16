@@ -71,10 +71,20 @@ import org.robovm.apple.corelocation.*;
     @GlobalValue(symbol="UIAccessibilityAnnouncementKeyWasSuccessful", optional=true)
     public static native NSString AnnouncementKeyWasSuccessful();
     /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @GlobalValue(symbol="UIAccessibilityElementFocusedNotification", optional=true)
+    public static native NSString ElementFocusedNotification();
+    /**
      * @since Available in iOS 8.0 and later.
      */
     @GlobalValue(symbol="UIAccessibilityNotificationSwitchControlIdentifier", optional=true)
     public static native String SwitchControlIdentifier();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @GlobalValue(symbol="UIAccessibilityNotificationVoiceOverIdentifier", optional=true)
+    public static native String VoiceOverIdentifier();
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -140,6 +150,11 @@ import org.robovm.apple.corelocation.*;
      */
     @GlobalValue(symbol="UIAccessibilitySpeakScreenStatusDidChangeNotification", optional=true)
     public static native NSString SpeakScreenStatusDidChangeNotification();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @GlobalValue(symbol="UIAccessibilityShakeToUndoDidChangeNotification", optional=true)
+    public static native NSString ShakeToUndoDidChangeNotification();
     
     /**
      * @since Available in iOS 5.0 and later.

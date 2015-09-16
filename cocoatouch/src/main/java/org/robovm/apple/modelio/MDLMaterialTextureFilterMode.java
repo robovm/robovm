@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.uikit;
+package org.robovm.apple.modelio;
 
 /*<imports>*/
 import java.io.*;
@@ -28,43 +28,35 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
-import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
-import org.robovm.apple.coredata.*;
-import org.robovm.apple.coreimage.*;
-import org.robovm.apple.coretext.*;
-import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
-/**
- * @since Available in iOS 2.0 and later.
- * @deprecated Deprecated in iOS 6.0.
- */
-@Deprecated
+
 /*</javadoc>*/
-/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/UILineBreakMode/*</name>*/ implements ValuedEnum {
+/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
+public enum /*<name>*/MDLMaterialTextureFilterMode/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    WordWrap(0L),
-    CharacterWrap(1L),
-    Clip(2L),
-    HeadTruncation(3L),
-    TailTruncation(4L),
-    MiddleTruncation(5L);
+    Nearest(0L),
+    Linear(1L);
     /*</values>*/
+
+    /*<bind>*/
+    /*</bind>*/
+    /*<constants>*//*</constants>*/
+    /*<methods>*//*</methods>*/
 
     private final long n;
 
-    private /*<name>*/UILineBreakMode/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/MDLMaterialTextureFilterMode/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/UILineBreakMode/*</name>*/ valueOf(long n) {
-        for (/*<name>*/UILineBreakMode/*</name>*/ v : values()) {
+    public static /*<name>*/MDLMaterialTextureFilterMode/*</name>*/ valueOf(long n) {
+        for (/*<name>*/MDLMaterialTextureFilterMode/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/UILineBreakMode/*</name>*/.class.getName());
+            + /*<name>*/MDLMaterialTextureFilterMode/*</name>*/.class.getName());
     }
 }

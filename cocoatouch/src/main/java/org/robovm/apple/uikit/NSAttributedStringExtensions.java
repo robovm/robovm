@@ -163,7 +163,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "attributedStringWithAttachment:")
-    protected static native NSAttributedString create(ObjCClass clazz, NSTextAttachment attachment);
-    public static NSAttributedString create(NSTextAttachment attachment) { return create(ObjCClass.getByType(NSAttributedString.class), attachment); }
+    protected static native @Pointer long create(ObjCClass clazz, NSTextAttachment attachment);
+    public static @Pointer long create(NSTextAttachment attachment) { return create(ObjCClass.getByType(NSAttributedString.class), attachment); }
     /*</methods>*/
 }

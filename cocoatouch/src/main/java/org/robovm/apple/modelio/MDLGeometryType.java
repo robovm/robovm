@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.uikit;
+package org.robovm.apple.modelio;
 
 /*<imports>*/
 import java.io.*;
@@ -28,40 +28,39 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
-import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
-import org.robovm.apple.coredata.*;
-import org.robovm.apple.coreimage.*;
-import org.robovm.apple.coretext.*;
-import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
-/**
- * @since Available in iOS 2.0 and later.
- * @deprecated Deprecated in iOS 6.0.
- */
-@Deprecated
+
 /*</javadoc>*/
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/UITextAlignment/*</name>*/ implements ValuedEnum {
+public enum /*<name>*/MDLGeometryType/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    Left(0L),
-    Center(1L),
-    Right(2L);
+    Points(0L),
+    Lines(1L),
+    Triangles(2L),
+    TriangleStrips(3L),
+    Quads(4L),
+    VariableTopology(5L);
     /*</values>*/
+
+    /*<bind>*/
+    /*</bind>*/
+    /*<constants>*//*</constants>*/
+    /*<methods>*//*</methods>*/
 
     private final long n;
 
-    private /*<name>*/UITextAlignment/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/MDLGeometryType/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/UITextAlignment/*</name>*/ valueOf(long n) {
-        for (/*<name>*/UITextAlignment/*</name>*/ v : values()) {
+    public static /*<name>*/MDLGeometryType/*</name>*/ valueOf(long n) {
+        for (/*<name>*/MDLGeometryType/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/UITextAlignment/*</name>*/.class.getName());
+            + /*<name>*/MDLGeometryType/*</name>*/.class.getName());
     }
 }

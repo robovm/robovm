@@ -79,10 +79,23 @@ typedefs:
     'void (^)(NSInputStream *, NSOutputStream *, NSError *)': '@Block VoidBlock3<NSInputStream, NSOutputStream, NSError>'
     'void (^)(NSURLCredential *)': '@Block VoidBlock1<NSURLCredential>'
     NSPropertyListReadOptions: NSPropertyListMutabilityOptions
+    vector_uint2: VectorInt2
     vector_int2: VectorInt2
     'vector_int2 *': VectorInt2.VectorInt2Ptr
+    vector_uint3: VectorInt3
+    vector_int3: VectorInt3
+    'vector_int3 *': VectorInt3.VectorInt3Ptr
+    vector_uint4: VectorInt4
+    vector_int4: VectorInt4
+    'vector_int4 *': VectorInt4.VectorInt4Ptr
     vector_float2: VectorFloat2
     'vector_float2 *': VectorFloat2.VectorFloat2Ptr
+    vector_float3: VectorFloat3
+    'vector_float3 *': VectorFloat3.VectorFloat3Ptr
+    vector_float4: VectorFloat4
+    'vector_float4 *': VectorFloat4.VectorFloat4Ptr
+    matrix_float4x4: MatrixFloat4x4
+    'matrix_float4x4 *': MatrixFloat4x4.MatrixFloat4x4Ptr
 
 private_typedefs:
     ObjectType: NSObject

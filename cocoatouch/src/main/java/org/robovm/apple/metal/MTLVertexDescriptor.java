@@ -58,7 +58,5 @@ import org.robovm.apple.dispatch.*;
     /*<methods>*/
     @Method(selector = "reset")
     public native void reset();
-    @Method(selector = "vertexDescriptor")
-    public static native MTLVertexDescriptor create();
     /*</methods>*/
 }

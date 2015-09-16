@@ -97,12 +97,10 @@ import org.robovm.apple.corelocation.*;
     @WeaklyLinked
     public UIImage(CIImage ciImage, @MachineSizedFloat double scale, UIImageOrientation orientation) { super((SkipInit) null); initObject(init(ciImage, scale, orientation)); }
     /*</constructors>*/
-
     public UIImage(File file) {
         super((SkipInit) null);
         initObject(initWithFile(file.getAbsolutePath()));
     }
-    
     /*<properties>*/
     @Property(selector = "size")
     public native @ByVal CGSize getSize();
@@ -161,6 +159,11 @@ import org.robovm.apple.corelocation.*;
      */
     @Property(selector = "imageAsset")
     public native UIImageAsset getImageAsset();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "flipsForRightToLeftLayoutDirection")
+    public native boolean flipsHorizontally();
     @Property(selector = "leftCapWidth")
     public native @MachineSizedSInt long getLeftCapWidth();
     @Property(selector = "topCapHeight")
@@ -265,10 +268,6 @@ import org.robovm.apple.corelocation.*;
     public native void setAccessibilityIdentifier(String v);
     /*</properties>*/
     /*<members>*//*</members>*/
-    public static UIImage create(File file) {
-        return createFromFile(file.getAbsolutePath());
-    }
-    
     public void saveToPhotosAlbum(VoidBlock2<UIImage, NSError> callback) {
         if (callback != null) {
             long context = id.getAndIncrement();
@@ -328,78 +327,88 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "resizableImageWithCapInsets:")
-    public native UIImage createResizable(@ByVal UIEdgeInsets capInsets);
+    public native UIImage newResizableImage(@ByVal UIEdgeInsets capInsets);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "resizableImageWithCapInsets:resizingMode:")
-    public native UIImage createResizable(@ByVal UIEdgeInsets capInsets, UIImageResizingMode resizingMode);
+    public native UIImage newResizableImage(@ByVal UIEdgeInsets capInsets, UIImageResizingMode resizingMode);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "imageWithAlignmentRectInsets:")
-    public native UIImage create(@ByVal UIEdgeInsets alignmentInsets);
+    public native UIImage newImage(@ByVal UIEdgeInsets alignmentInsets);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "imageWithRenderingMode:")
-    public native UIImage create(UIImageRenderingMode renderingMode);
+    public native UIImage newImage(UIImageRenderingMode renderingMode);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "imageFlippedForRightToLeftLayoutDirection")
+    public native UIImage flipHorizontally();
     @Method(selector = "imageNamed:")
-    public static native UIImage create(String name);
+    public static native UIImage getImage(String name);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "imageNamed:inBundle:compatibleWithTraitCollection:")
-    public static native UIImage create(String name, NSBundle bundle, UITraitCollection traitCollection);
-    @Method(selector = "imageWithContentsOfFile:")
-    protected static native UIImage createFromFile(String path);
-    @Method(selector = "imageWithData:")
-    public static native UIImage create(NSData data);
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @Method(selector = "imageWithData:scale:")
-    public static native UIImage create(NSData data, @MachineSizedFloat double scale);
-    @Method(selector = "imageWithCGImage:")
-    public static native UIImage create(CGImage cgImage);
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Method(selector = "imageWithCGImage:scale:orientation:")
-    public static native UIImage create(CGImage cgImage, @MachineSizedFloat double scale, UIImageOrientation orientation);
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @WeaklyLinked
-    @Method(selector = "imageWithCIImage:")
-    public static native UIImage create(CIImage ciImage);
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @WeaklyLinked
-    @Method(selector = "imageWithCIImage:scale:orientation:")
-    public static native UIImage create(CIImage ciImage, @MachineSizedFloat double scale, UIImageOrientation orientation);
+    public static native UIImage getImage(String name, NSBundle bundle, UITraitCollection traitCollection);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "animatedImageNamed:duration:")
-    public static native UIImage createAnimated(String name, double duration);
+    public static native UIImage getAnimatedImage(String name, double duration);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "animatedResizableImageNamed:capInsets:duration:")
-    public static native UIImage createAnimatedResizable(String name, @ByVal UIEdgeInsets capInsets, double duration);
+    public static native UIImage getAnimatedResizableImage(String name, @ByVal UIEdgeInsets capInsets, double duration);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "animatedResizableImageNamed:capInsets:resizingMode:duration:")
-    public static native UIImage createAnimatedResizable(String name, @ByVal UIEdgeInsets capInsets, UIImageResizingMode resizingMode, double duration);
+    public static native UIImage getAnimatedResizableImage(String name, @ByVal UIEdgeInsets capInsets, UIImageResizingMode resizingMode, double duration);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "animatedImageWithImages:duration:")
-    public static native UIImage createAnimated(NSArray<UIImage> images, double duration);
-    @Method(selector = "stretchableImageWithLeftCapWidth:topCapHeight:")
-    public native UIImage createStretchable(@MachineSizedSInt long leftCapWidth, @MachineSizedSInt long topCapHeight);
+    public static native UIImage getAnimatedImage(NSArray<UIImage> images, double duration);
     /*</methods>*/
+    /**
+     * @Deprecated use {@link #getImage(String)} instead.
+     */
+    @Deprecated
+    public static UIImage create(String name) {
+        return UIImage.getImage(name);
+    }
+    /**
+     * @Deprecated use {@link #getAnimatedImage(String, double)} instead.
+     */
+    @Deprecated
+    public static UIImage createAnimated(String name, double duration) {
+        return UIImage.getAnimatedImage(name, duration);
+    }
+    /**
+     * @Deprecated use {@link #getAnimatedResizableImage(String, UIEdgeInsets, double)} instead.
+     */
+    @Deprecated
+    public static UIImage createAnimatedResizable(String name, @ByVal UIEdgeInsets capInsets, double duration) {
+        return UIImage.getAnimatedResizableImage(name, capInsets, duration);
+    }
+    /**
+     * @Deprecated use {@link #getAnimatedResizableImage(String, UIEdgeInsets, UIImageResizingMode, double)} instead.
+     */
+    @Deprecated
+    public static UIImage createAnimatedResizable(String name, @ByVal UIEdgeInsets capInsets, UIImageResizingMode resizingMode, double duration) {
+        return UIImage.getAnimatedResizableImage(name, capInsets, resizingMode, duration);
+    }
+    /**
+     * @Deprecated use {@link #getAnimatedImage(NSArray, double)} instead.
+     */
+    @Deprecated
+    public static UIImage createAnimated(NSArray<UIImage> images, double duration) {
+        return UIImage.getAnimatedImage(images, duration);
+    }
 }

@@ -39,14 +39,13 @@ import org.robovm.apple.corelocation.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
+/*<annotations>*/@Library("UIKit")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIFloatRange/*</name>*/ 
     extends /*<extends>*/Struct<UIFloatRange>/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class UIFloatRangePtr extends Ptr<UIFloatRange, UIFloatRangePtr> {}/*</ptr>*/
-    /*<bind>*/
-    /*</bind>*/
+    /*<bind>*/static { Bro.bind(UIFloatRange.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public UIFloatRange() {}
@@ -62,5 +61,35 @@ import org.robovm.apple.corelocation.*;
     @StructMember(1) public native @MachineSizedFloat double getMaximum();
     @StructMember(1) public native UIFloatRange setMaximum(@MachineSizedFloat double maximum);
     /*</members>*/
-    /*<methods>*//*</methods>*/
+    /*<methods>*/
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @GlobalValue(symbol="UIFloatRangeZero", optional=true)
+    public static native @ByVal UIFloatRange Zero();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @GlobalValue(symbol="UIFloatRangeInfinite", optional=true)
+    public static native @ByVal UIFloatRange Infinite();
+    
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public boolean isInfinite() { return isInfinite(this); }
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Bridge(symbol="UIFloatRangeIsInfinite", optional=true)
+    private static native boolean isInfinite(@ByVal UIFloatRange range);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public boolean equalsTo(UIFloatRange otherRange) { return equalsTo(this, otherRange); }
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Bridge(symbol="UIFloatRangeIsEqualToRange", optional=true)
+    private static native boolean equalsTo(@ByVal UIFloatRange range, @ByVal UIFloatRange otherRange);
+    /*</methods>*/
 }

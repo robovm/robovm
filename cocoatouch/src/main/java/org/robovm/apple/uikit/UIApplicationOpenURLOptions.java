@@ -132,9 +132,9 @@ import org.robovm.apple.corelocation.*;
     /**
      * @since Available in iOS 9.0 and later.
      */
-    public NSPropertyList getAnnotation() {
+    public NSObject getAnnotation() {
         if (has(Keys.Annotation())) {
-            NSPropertyList val = (NSPropertyList) get(Keys.Annotation());
+            NSObject val = (NSObject) get(Keys.Annotation());
             return val;
         }
         return null;
@@ -142,7 +142,7 @@ import org.robovm.apple.corelocation.*;
     /**
      * @since Available in iOS 9.0 and later.
      */
-    public UIApplicationOpenURLOptions setAnnotation(NSPropertyList annotation) {
+    public UIApplicationOpenURLOptions setAnnotation(NSObject annotation) {
         set(Keys.Annotation(), annotation);
         return this;
     }

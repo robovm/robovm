@@ -29,6 +29,10 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.metal.*;
+import org.robovm.apple.modelio.*;
+import org.robovm.apple.uikit.*;
+import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.coreanimation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -130,7 +134,5 @@ import org.robovm.apple.metal.*;
     public native void releaseDrawables();
     @Method(selector = "draw")
     public native void draw();
-    @Method(selector = "encodeWithCoder:")
-    public native void encode(NSCoder coder);
     /*</methods>*/
 }

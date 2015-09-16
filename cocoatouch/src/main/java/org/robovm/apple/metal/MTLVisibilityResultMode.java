@@ -40,7 +40,8 @@ import org.robovm.apple.dispatch.*;
 public enum /*<name>*/MTLVisibilityResultMode/*</name>*/ implements ValuedEnum {
     /*<values>*/
     Disabled(0L),
-    Boolean(1L);
+    Boolean(1L),
+    Counting(2L);
     /*</values>*/
 
     /*<bind>*/

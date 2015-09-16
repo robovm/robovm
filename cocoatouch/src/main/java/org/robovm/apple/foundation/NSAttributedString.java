@@ -79,6 +79,14 @@ import org.robovm.apple.dispatch.*;
         }
         initObject(init(str, attrs.getDictionary().as(NSDictionary.class)));
     }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @WeaklyLinked
+    public NSAttributedString(NSTextAttachment attachment) {
+        super(NSAttributedStringExtensions.create(attachment));
+        retain(getHandle());
+    }
     /*<properties>*/
     @Property(selector = "string")
     public native String getString();
@@ -302,13 +310,6 @@ import org.robovm.apple.dispatch.*;
     @WeaklyLinked
     public CGRect getBoundingRect(@ByVal CGSize size, NSStringDrawingOptions options, NSStringDrawingContext context) {
         return NSAttributedStringExtensions.getBoundingRect(this, size, options, context);
-    }
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @WeaklyLinked
-    public static NSAttributedString create(NSTextAttachment attachment) {
-        return NSAttributedStringExtensions.create(attachment);
     }
     /*<methods>*/
     @Method(selector = "attributesAtIndex:effectiveRange:")

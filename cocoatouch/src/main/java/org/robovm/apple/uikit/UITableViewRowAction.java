@@ -52,6 +52,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UITableViewRowAction() {}
     protected UITableViewRowAction(SkipInit skipInit) { super(skipInit); }
+    public UITableViewRowAction(UITableViewRowActionStyle style, String title, @Block VoidBlock2<UITableViewRowAction, NSIndexPath> handler) { super(create(style, title, handler)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "style")
@@ -72,6 +73,6 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "rowActionWithStyle:title:handler:")
-    public static native UITableViewRowAction create(UITableViewRowActionStyle style, String title, @Block VoidBlock2<UITableViewRowAction, NSIndexPath> handler);
+    protected static native @Pointer long create(UITableViewRowActionStyle style, String title, @Block VoidBlock2<UITableViewRowAction, NSIndexPath> handler);
     /*</methods>*/
 }

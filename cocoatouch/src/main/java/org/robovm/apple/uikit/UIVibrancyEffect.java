@@ -53,6 +53,7 @@ import org.robovm.rt.annotation.WeaklyLinked;
     /*<constructors>*/
     public UIVibrancyEffect() {}
     protected UIVibrancyEffect(SkipInit skipInit) { super(skipInit); }
+    public UIVibrancyEffect(UIBlurEffect blurEffect) { super(create(blurEffect)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     
@@ -67,6 +68,6 @@ import org.robovm.rt.annotation.WeaklyLinked;
     
     /*<methods>*/
     @Method(selector = "effectForBlurEffect:")
-    public static native UIVibrancyEffect create(UIBlurEffect blurEffect);
+    protected static native @Pointer long create(UIBlurEffect blurEffect);
     /*</methods>*/
 }

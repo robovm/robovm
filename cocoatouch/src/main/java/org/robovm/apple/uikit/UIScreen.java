@@ -228,7 +228,7 @@ import org.robovm.apple.corelocation.*;
      */
     @WeaklyLinked
     @Method(selector = "displayLinkWithTarget:selector:")
-    public native CADisplayLink createDisplayLink(NSObject target, Selector sel);
+    public native CADisplayLink getDisplayLink(NSObject target, Selector sel);
     /**
      * @since Available in iOS 3.2 and later.
      */

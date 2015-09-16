@@ -65,7 +65,7 @@ import org.robovm.apple.audiounit.*;
      * @since Available in iOS 4.0 and later.
      */
     @NotImplemented("endInterruptionWithFlags:")
-    public void endInterruption(AVAudioSessionInterruptionFlags flags) {}
+    public void endInterruption(AVAudioSessionInterruptionOptions flags) {}
     @NotImplemented("endInterruption")
     public void endInterruption() {}
     @NotImplemented("inputIsAvailableChanged:")

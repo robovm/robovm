@@ -33,9 +33,7 @@ enums:
     AVAudioSessionCategoryOptions: {}
     AVAudioSessionInterruptionType: { marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     AVAudioSessionErrorCode: { prefix: AVAudioSessionErrorCode, AVAudioSessionErrorInsufficientPriority: InsufficientPriority }
-    AVAudioSessionInterruptionFlags: {exclude: true}
     AVAudioSessionRecordPermission: {}
-    AVAudioSessionSetActiveFlags: {exclude: true}
     AVAudioSessionSilenceSecondaryAudioHintType: {}
     AVAudioQuality: { first: AVAudioQualityMin }
     AVAudioUnitReverbPreset: {}
@@ -2335,7 +2333,7 @@ protocols:
                 name: endInterruption
                 parameters:
                     flags:
-                        type: AVAudioSessionInterruptionFlags
+                        type: AVAudioSessionInterruptionOptions
             '-inputIsAvailableChanged:':
                 name: inputAvailabilityChanged
     AVCaptureAudioDataOutputSampleBufferDelegate: # DONE

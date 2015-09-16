@@ -436,8 +436,8 @@ classes:
                 name: create
                 constructor: true
             '+constraintsWithVisualFormat:options:metrics:views:':
-                name: create
-                constructor: true
+                name: createConstraints
+                return_type: NSArray<NSLayoutConstraint>
                 parameters:
                     metrics:
                         type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringNumberMapMarshaler.class) Map<String, Number>'

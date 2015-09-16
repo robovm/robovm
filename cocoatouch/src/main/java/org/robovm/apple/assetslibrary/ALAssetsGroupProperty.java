@@ -91,19 +91,27 @@ import org.robovm.apple.imageio.*;
     /*<constants>*/
     /**
      * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static final ALAssetsGroupProperty Name = new ALAssetsGroupProperty("Name");
     /**
      * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static final ALAssetsGroupProperty Type = new ALAssetsGroupProperty("Type");
     /**
      * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static final ALAssetsGroupProperty PersistentID = new ALAssetsGroupProperty("PersistentID");
     /**
      * @since Available in iOS 5.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static final ALAssetsGroupProperty URL = new ALAssetsGroupProperty("URL");
     /*</constants>*/
     
@@ -132,22 +140,30 @@ import org.robovm.apple.imageio.*;
         /*<values>*/
         /**
          * @since Available in iOS 4.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="ALAssetsGroupPropertyName", optional=true)
         public static native NSString Name();
         /**
          * @since Available in iOS 4.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="ALAssetsGroupPropertyType", optional=true)
         public static native NSString Type();
         /**
          * @since Available in iOS 4.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="ALAssetsGroupPropertyPersistentID", optional=true)
         public static native NSString PersistentID();
         /**
          * @since Available in iOS 5.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="ALAssetsGroupPropertyURL", optional=true)
         public static native NSString URL();
         /*</values>*/

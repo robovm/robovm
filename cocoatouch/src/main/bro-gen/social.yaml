@@ -44,14 +44,14 @@ classes:
                         type: SLServiceType
             '+composeViewControllerForServiceType:':
                 name: create
+                constructor: true
                 parameters:
                     serviceType:
                         type: SLServiceType
     SLRequest: # DONE
         properties:
             'parameters':
-                type: 'Map<String, NSObject>'
-                marshaler: NSDictionary.AsStringMapMarshaler
+                type: 'NSDictionary<NSString, ?>'
             'account':
                 annotations: ['@WeaklyLinked']
         methods:
@@ -66,12 +66,12 @@ classes:
                         type: '@Block VoidBlock3<NSData, NSHTTPURLResponse, NSError>'
             '+requestForServiceType:requestMethod:URL:parameters:':
                 name: create
+                constructor: true
                 parameters:
                     serviceType:
                         type: SLServiceType
                     parameters:
-                        type: 'Map<String, NSObject>'
-                        marshaler: NSDictionary.AsStringMapMarshaler
+                        type: 'NSDictionary<NSString, ?>'
 
 protocols: {}
 

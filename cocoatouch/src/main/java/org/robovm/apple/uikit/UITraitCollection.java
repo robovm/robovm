@@ -52,6 +52,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UITraitCollection() {}
     protected UITraitCollection(SkipInit skipInit) { super(skipInit); }
+    public UITraitCollection(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "userInterfaceIdiom")
@@ -65,6 +66,8 @@ import org.robovm.apple.corelocation.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     @Method(selector = "containsTraitsInCollection:")
     public native boolean containsTraits(UITraitCollection trait);
     @Method(selector = "traitCollectionWithTraitsFromCollections:")

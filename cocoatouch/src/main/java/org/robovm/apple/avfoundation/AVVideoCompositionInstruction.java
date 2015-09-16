@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -62,8 +63,6 @@ import org.robovm.apple.audiounit.*;
     public native @ByVal CMTimeRange getTimeRange();
     @Property(selector = "backgroundColor")
     public native CGColor getBackgroundColor();
-    @Property(selector = "setBackgroundColor:")
-    public native void setBackgroundColor(CGColor v);
     @Property(selector = "layerInstructions")
     public native NSArray<AVVideoCompositionLayerInstruction> getLayerInstructions();
     @Property(selector = "enablePostProcessing")

@@ -17,6 +17,8 @@ private_typedefs:
     '__CFError *': NSError
     '__CFReadStream *': NSInputStream
     '__CFWriteStream *': NSOutputStream
+    'CFReadStreamRef *': NSInputStream.NSInputStreamPtr
+    'CFWriteStreamRef *': NSOutputStream.NSOutputStreamPtr
     
 enums:
     CFHostInfoType: {}

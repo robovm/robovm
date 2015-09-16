@@ -54,6 +54,11 @@ import org.robovm.apple.dispatch.*;
     MTLDevice getDevice();
     @Property(selector = "cpuCacheMode")
     MTLCPUCacheMode getCpuCacheMode();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "storageMode")
+    MTLStorageMode getStorageMode();
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "setPurgeableState:")

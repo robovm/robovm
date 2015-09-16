@@ -30,6 +30,7 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.security.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -44,7 +45,11 @@ public enum /*<name>*/WKErrorCode/*</name>*/ implements NSErrorCode {
     Unknown(1L),
     WebContentProcessTerminated(2L),
     WebViewInvalidated(3L),
-    JavaScriptExceptionOccurred(4L);
+    JavaScriptExceptionOccurred(4L),
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    JavaScriptResultTypeIsUnsupported(5L);
     /*</values>*/
 
     /*<bind>*/

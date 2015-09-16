@@ -88,12 +88,5 @@ import org.robovm.apple.dispatch.*;
     public static native void deallocateMemoryPages(VoidPtr ptr, @MachineSizedUInt long bytes);
     @Bridge(symbol="NSCopyMemoryPages", optional=true)
     public static native void copyMemoryPages(VoidPtr source, VoidPtr dest, @MachineSizedUInt long bytes);
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    @Bridge(symbol="NSRealMemoryAvailable", optional=true)
-    public static native @MachineSizedUInt long getRealMemoryAvailable();
     /*</methods>*/
 }

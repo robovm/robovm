@@ -50,6 +50,11 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public MKMapCamera() {}
     protected MKMapCamera(SkipInit skipInit) { super(skipInit); }
+    public MKMapCamera(@ByVal CLLocationCoordinate2D centerCoordinate, @ByVal CLLocationCoordinate2D eyeCoordinate, double eyeAltitude) { super(create(centerCoordinate, eyeCoordinate, eyeAltitude)); retain(getHandle()); }
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public MKMapCamera(@ByVal CLLocationCoordinate2D centerCoordinate, double distance, @MachineSizedFloat double pitch, double heading) { super(create(centerCoordinate, distance, pitch, heading)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "centerCoordinate")
@@ -71,9 +76,12 @@ import org.robovm.apple.dispatch.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "camera")
-    public static native MKMapCamera create();
     @Method(selector = "cameraLookingAtCenterCoordinate:fromEyeCoordinate:eyeAltitude:")
-    public static native MKMapCamera create(@ByVal CLLocationCoordinate2D centerCoordinate, @ByVal CLLocationCoordinate2D eyeCoordinate, double eyeAltitude);
+    private static native @Pointer long create(@ByVal CLLocationCoordinate2D centerCoordinate, @ByVal CLLocationCoordinate2D eyeCoordinate, double eyeAltitude);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "cameraLookingAtCenterCoordinate:fromDistance:pitch:heading:")
+    private static native @Pointer long create(@ByVal CLLocationCoordinate2D centerCoordinate, double distance, @MachineSizedFloat double pitch, double heading);
     /*</methods>*/
 }

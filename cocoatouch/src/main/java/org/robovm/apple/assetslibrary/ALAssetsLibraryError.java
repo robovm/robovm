@@ -63,7 +63,9 @@ import org.robovm.apple.imageio.*;
     /*<methods>*/
     /**
      * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @GlobalValue(symbol="ALAssetsLibraryErrorDomain", optional=true)
     public static native String getClassDomain();
     /*</methods>*/

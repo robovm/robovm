@@ -215,7 +215,7 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CGImagePropertyExif SubsecTimeOrginal = new CGImagePropertyExif("SubsecTimeOrginal");
+    public static final CGImagePropertyExif SubsecTimeOriginal = new CGImagePropertyExif("SubsecTimeOriginal");
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -366,7 +366,7 @@ import org.robovm.apple.coregraphics.*;
     public static final CGImagePropertyExif Gamma = new CGImagePropertyExif("Gamma");
     /*</constants>*/
     
-    private static /*<name>*/CGImagePropertyExif/*</name>*/[] values = new /*<name>*/CGImagePropertyExif/*</name>*/[] {/*<value_list>*/ExposureTime, FNumber, ExposureProgram, SpectralSensitivity, ISOSpeedRatings, OECF, SensitivityType, StandardOutputSensitivity, RecommendedExposureIndex, ISOSpeed, ISOSpeedLatitudeyyy, ISOSpeedLatitudezzz, Version, DateTimeOriginal, DateTimeDigitized, ComponentsConfiguration, CompressedBitsPerPixel, ShutterSpeedValue, ApertureValue, BrightnessValue, ExposureBiasValue, MaxApertureValue, SubjectDistance, MeteringMode, LightSource, Flash, FocalLength, SubjectArea, MakerNote, UserComment, SubsecTime, SubsecTimeOrginal, SubsecTimeDigitized, FlashPixVersion, ColorSpace, PixelXDimension, PixelYDimension, RelatedSoundFile, FlashEnergy, SpatialFrequencyResponse, FocalPlaneXResolution, FocalPlaneYResolution, FocalPlaneResolutionUnit, SubjectLocation, ExposureIndex, SensingMethod, FileSource, SceneType, CFAPattern, CustomRendered, ExposureMode, WhiteBalance, DigitalZoomRatio, FocalLenIn35mmFilm, SceneCaptureType, GainControl, Contrast, Saturation, Sharpness, DeviceSettingDescription, SubjectDistRange, ImageUniqueID, CameraOwnerName, BodySerialNumber, LensSpecification, LensMake, LensModel, LensSerialNumber, Gamma/*</value_list>*/};
+    private static /*<name>*/CGImagePropertyExif/*</name>*/[] values = new /*<name>*/CGImagePropertyExif/*</name>*/[] {/*<value_list>*/ExposureTime, FNumber, ExposureProgram, SpectralSensitivity, ISOSpeedRatings, OECF, SensitivityType, StandardOutputSensitivity, RecommendedExposureIndex, ISOSpeed, ISOSpeedLatitudeyyy, ISOSpeedLatitudezzz, Version, DateTimeOriginal, DateTimeDigitized, ComponentsConfiguration, CompressedBitsPerPixel, ShutterSpeedValue, ApertureValue, BrightnessValue, ExposureBiasValue, MaxApertureValue, SubjectDistance, MeteringMode, LightSource, Flash, FocalLength, SubjectArea, MakerNote, UserComment, SubsecTime, SubsecTimeOriginal, SubsecTimeDigitized, FlashPixVersion, ColorSpace, PixelXDimension, PixelYDimension, RelatedSoundFile, FlashEnergy, SpatialFrequencyResponse, FocalPlaneXResolution, FocalPlaneYResolution, FocalPlaneResolutionUnit, SubjectLocation, ExposureIndex, SensingMethod, FileSource, SceneType, CFAPattern, CustomRendered, ExposureMode, WhiteBalance, DigitalZoomRatio, FocalLenIn35mmFilm, SceneCaptureType, GainControl, Contrast, Saturation, Sharpness, DeviceSettingDescription, SubjectDistRange, ImageUniqueID, CameraOwnerName, BodySerialNumber, LensSpecification, LensMake, LensModel, LensSerialNumber, Gamma/*</value_list>*/};
     
     /*<name>*/CGImagePropertyExif/*</name>*/ (String getterName) {
         super(Values.class, getterName);
@@ -547,8 +547,8 @@ import org.robovm.apple.coregraphics.*;
         /**
          * @since Available in iOS 4.0 and later.
          */
-        @GlobalValue(symbol="kCGImagePropertyExifSubsecTimeOrginal", optional=true)
-        public static native CFString SubsecTimeOrginal();
+        @GlobalValue(symbol="kCGImagePropertyExifSubsecTimeOriginal", optional=true)
+        public static native CFString SubsecTimeOriginal();
         /**
          * @since Available in iOS 4.0 and later.
          */

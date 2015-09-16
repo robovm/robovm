@@ -50,6 +50,36 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*/
     @Property(selector = "rootResource")
     public native MTLResource getRootResource();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "parentTexture")
+    public native MTLTexture getParentTexture();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "parentRelativeLevel")
+    public native @MachineSizedUInt long getParentRelativeLevel();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "parentRelativeSlice")
+    public native @MachineSizedUInt long getParentRelativeSlice();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "buffer")
+    public native MTLBuffer getBuffer();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "bufferOffset")
+    public native @MachineSizedUInt long getBufferOffset();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "bufferBytesPerRow")
+    public native @MachineSizedUInt long getBufferBytesPerRow();
     @Property(selector = "textureType")
     public native MTLTextureType getTextureType();
     @Property(selector = "pixelFormat")
@@ -66,6 +96,8 @@ import org.robovm.apple.dispatch.*;
     public native @MachineSizedUInt long getSampleCount();
     @Property(selector = "arrayLength")
     public native @MachineSizedUInt long getArrayLength();
+    @Property(selector = "usage")
+    public native MTLTextureUsage getUsage();
     @Property(selector = "isFramebufferOnly")
     public native boolean isFramebufferOnly();
     @Property(selector = "label")
@@ -76,6 +108,11 @@ import org.robovm.apple.dispatch.*;
     public native MTLDevice getDevice();
     @Property(selector = "cpuCacheMode")
     public native MTLCPUCacheMode getCpuCacheMode();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "storageMode")
+    public native MTLStorageMode getStorageMode();
     /*</properties>*/
     /*<members>*//*</members>*/
     public byte[] getBytes(int length, @MachineSizedUInt long bytesPerRow, @MachineSizedUInt long bytesPerImage, @ByVal MTLRegion region, @MachineSizedUInt long level, @MachineSizedUInt long slice) {
@@ -105,6 +142,8 @@ import org.robovm.apple.dispatch.*;
     protected native void replaceRegion(@ByVal MTLRegion region, @MachineSizedUInt long level, @Pointer long pixelBytes, @MachineSizedUInt long bytesPerRow);
     @Method(selector = "newTextureViewWithPixelFormat:")
     public native @org.robovm.rt.bro.annotation.Marshaler(NSObject.NoRetainMarshaler.class) MTLTexture newTextureView(MTLPixelFormat pixelFormat);
+    @Method(selector = "newTextureViewWithPixelFormat:textureType:levels:slices:")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSObject.NoRetainMarshaler.class) MTLTexture newTextureView(MTLPixelFormat pixelFormat, MTLTextureType textureType, @ByVal NSRange levelRange, @ByVal NSRange sliceRange);
     @Method(selector = "setPurgeableState:")
     public native MTLPurgeableState setPurgeableState(MTLPurgeableState state);
     /*</methods>*/

@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -77,8 +78,5 @@ import org.robovm.apple.audiounit.*;
     @WeaklyLinked
     @Method(selector = "appendPixelBuffer:withPresentationTime:")
     public native boolean appendPixelBuffer(CVPixelBuffer pixelBuffer, @ByVal CMTime presentationTime);
-    @WeaklyLinked
-    @Method(selector = "assetWriterInputPixelBufferAdaptorWithAssetWriterInput:sourcePixelBufferAttributes:")
-    public static native AVAssetWriterInputPixelBufferAdaptor create(AVAssetWriterInput input, CVPixelBufferAttributes sourcePixelBufferAttributes);
     /*</methods>*/
 }

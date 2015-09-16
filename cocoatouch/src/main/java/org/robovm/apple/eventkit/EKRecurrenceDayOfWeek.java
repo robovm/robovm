@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.corelocation.*;
 import org.robovm.apple.addressbook.*;
+import org.robovm.apple.mapkit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -49,21 +50,20 @@ import org.robovm.apple.addressbook.*;
     /*<constructors>*/
     public EKRecurrenceDayOfWeek() {}
     protected EKRecurrenceDayOfWeek(SkipInit skipInit) { super(skipInit); }
-    public EKRecurrenceDayOfWeek(@MachineSizedSInt long dayOfTheWeek, @MachineSizedSInt long weekNumber) { super((SkipInit) null); initObject(init(dayOfTheWeek, weekNumber)); }
+    public EKRecurrenceDayOfWeek(EKWeekday dayOfTheWeek, @MachineSizedSInt long weekNumber) { super((SkipInit) null); initObject(init(dayOfTheWeek, weekNumber)); }
+    public EKRecurrenceDayOfWeek(EKWeekday dayOfTheWeek) { super(create(dayOfTheWeek)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "dayOfTheWeek")
-    public native @MachineSizedSInt long getDayOfTheWeek();
+    public native EKWeekday getDayOfTheWeek();
     @Property(selector = "weekNumber")
     public native @MachineSizedSInt long getWeekNumber();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithDayOfTheWeek:weekNumber:")
-    protected native @Pointer long init(@MachineSizedSInt long dayOfTheWeek, @MachineSizedSInt long weekNumber);
+    protected native @Pointer long init(EKWeekday dayOfTheWeek, @MachineSizedSInt long weekNumber);
     @Method(selector = "dayOfWeek:")
-    public static native EKRecurrenceDayOfWeek create(@MachineSizedSInt long dayOfTheWeek);
-    @Method(selector = "dayOfWeek:weekNumber:")
-    public static native EKRecurrenceDayOfWeek create(@MachineSizedSInt long dayOfTheWeek, @MachineSizedSInt long weekNumber);
+    private static native @Pointer long create(EKWeekday dayOfTheWeek);
     /*</methods>*/
 }

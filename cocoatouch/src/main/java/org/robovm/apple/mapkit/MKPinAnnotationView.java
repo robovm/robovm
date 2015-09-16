@@ -58,17 +58,51 @@ import org.robovm.apple.dispatch.*;
     	super(frame);
     }
     /*<properties>*/
-    @Property(selector = "pinColor")
-    public native MKPinAnnotationColor getPinColor();
-    @Property(selector = "setPinColor:")
-    public native void setPinColor(MKPinAnnotationColor v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "pinTintColor")
+    public native UIColor getPinTintColor();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setPinTintColor:")
+    public native void setPinTintColor(UIColor v);
     @Property(selector = "animatesDrop")
     public native boolean animatesDrop();
     @Property(selector = "setAnimatesDrop:")
     public native void setAnimatesDrop(boolean v);
+    /**
+     * @since Available in iOS 3.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
+    @Property(selector = "pinColor")
+    public native MKPinAnnotationColor getPinColor();
+    /**
+     * @since Available in iOS 3.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
+    @Property(selector = "setPinColor:")
+    public native void setPinColor(MKPinAnnotationColor v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "redPinColor")
+    public static native UIColor getRedPinColor();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "greenPinColor")
+    public static native UIColor getGreenPinColor();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "purplePinColor")
+    public static native UIColor getPurplePinColor();
     /*</methods>*/
 }

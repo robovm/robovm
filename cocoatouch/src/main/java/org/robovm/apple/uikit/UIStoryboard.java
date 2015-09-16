@@ -52,6 +52,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UIStoryboard() {}
     protected UIStoryboard(SkipInit skipInit) { super(skipInit); }
+    public UIStoryboard(String name, NSBundle storyboardBundleOrNil) { super(create(name, storyboardBundleOrNil)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     
@@ -63,6 +64,6 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "instantiateViewControllerWithIdentifier:")
     public native UIViewController instantiateViewController(String identifier);
     @Method(selector = "storyboardWithName:bundle:")
-    public static native UIStoryboard create(String name, NSBundle storyboardBundleOrNil);
+    protected static native @Pointer long create(String name, NSBundle storyboardBundleOrNil);
     /*</methods>*/
 }

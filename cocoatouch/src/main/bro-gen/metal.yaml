@@ -6,26 +6,31 @@ clang_args: ['-x', 'objective-c']
 headers:
     - /System/Library/Frameworks/Metal.framework/Headers/Metal.h
 private_typedefs:
-    'void (^)(id<MTLLibrary>, NSError *)': '@Block VoidBlock2<MTLLibrary, NSError>'
-    'void (^)(id<MTLRenderPipelineState>, NSError *)': '@Block VoidBlock2<MTLRenderPipelineState, NSError>'
-    'void (^)(id<MTLRenderPipelineState>, MTLRenderPipelineReflection *, NSError *)': '@Block VoidBlock3<MTLRenderPipelineState, MTLRenderPipelineReflection, NSError>'
-    'void (^)(id<MTLComputePipelineState>, NSError *)': '@Block VoidBlock2<MTLComputePipelineState, NSError>'
-    'void (^)(id<MTLComputePipelineState>, MTLComputePipelineReflection *, NSError *)': '@Block VoidBlock3<MTLComputePipelineState, MTLComputePipelineReflection, NSError>'    
+    MTLNewLibraryCompletionHandler: '@Block VoidBlock2<MTLLibrary, NSError>'
+    MTLNewRenderPipelineStateCompletionHandler: '@Block VoidBlock2<MTLRenderPipelineState, NSError>'
+    MTLNewRenderPipelineStateWithReflectionCompletionHandler: '@Block VoidBlock3<MTLRenderPipelineState, MTLRenderPipelineReflection, NSError>'
+    MTLNewComputePipelineStateCompletionHandler: '@Block VoidBlock2<MTLComputePipelineState, NSError>'
+    MTLNewComputePipelineStateWithReflectionCompletionHandler: '@Block VoidBlock3<MTLComputePipelineState, MTLComputePipelineReflection, NSError>'    
     'void (^)(void *, NSUInteger)': '@Block("(@Pointer,@MachineSizedUInt)") VoidBlock2<Long, Long>'
+    'MTLAutoreleasedRenderPipelineReflection *': MTLRenderPipelineReflection.MTLRenderPipelineReflectionPtr
+    'MTLAutoreleasedComputePipelineReflection *': MTLComputePipelineReflection.MTLComputePipelineReflectionPtr
 
 enums:
+    MTLBlitOption: {}
     MTLPixelFormat: {}
     MTLPurgeableState: {}
     MTLCPUCacheMode: {}
-    MTLResourceOptions: {}
+    MTLDepthClipMode: {prefix: MTLDepthClipMode}
+    MTLResourceOptions: {skip_none: true, ignore: '(MTLResourceOptionCPUCacheModeDefault|MTLResourceOptionCPUCacheModeWriteCombined)'}
     MTLFunctionType: {}
-    MTLLibraryErrorCode: { first: MTLLibraryErrorUnsupported }
-    MTLRenderPipelineErrorCode: { first: MTLRenderPipelineErrorInternal }
+    MTLLanguageVersion: {prefix: MTLLanguage}
+    MTLLibraryErrorCode: {first: MTLLibraryErrorUnsupported}
+    MTLRenderPipelineErrorCode: {first: MTLRenderPipelineErrorInternal}
     MTLFeatureSet: {}
     MTLPipelineOption: {}
     MTLTextureType: {}
     MTLCommandBufferStatus: {}
-    MTLCommandBufferErrorCode: { first: MTLCommandBufferErrorNone }
+    MTLCommandBufferErrorCode: {first: MTLCommandBufferErrorNone}
     MTLCompareFunction: {}
     MTLStencilOperation: {}
     MTLLoadAction: {}
@@ -42,11 +47,14 @@ enums:
     MTLIndexType: {}
     MTLVisibilityResultMode: {}
     MTLCullMode: {}
-    MTLWinding: { prefix: MTLWinding }
+    MTLWinding: {prefix: MTLWinding}
     MTLTriangleFillMode: {}
     MTLSamplerMinMagFilter: {}
     MTLSamplerMipFilter: {}
     MTLSamplerAddressMode: {}
+    MTLMultisampleDepthResolveFilter: {}
+    MTLStorageMode: {}
+    MTLTextureUsage: {}
 
 classes:
     MTLCommandBufferError:
@@ -61,6 +69,9 @@ classes:
 
     # Structs
     MTLClearColor: {} # DONE
+    MTLDispatchThreadgroupsIndirectArguments: {} # DONE
+    MTLDrawIndexedPrimitivesIndirectArguments: {} # DONE
+    MTLDrawPrimitivesIndirectArguments: {} # DONE
     MTLOrigin: {} # DONE
     MTLRegion: {} # DONE
     MTLScissorRect: {} # DONE
@@ -79,6 +90,10 @@ classes:
             'preprocessorMacros':
                 type: 'Map<String, String>'
                 marshaler: NSDictionary.AsStringStringMapMarshaler
+    MTLComputePipelineDescriptor: # DONE
+        properties:
+            'threadGroupSizeIsMultipleOfThreadExecutionWidth':
+                name: threadGroupSizeMultipleOfThreadExecutionWidth
     MTLComputePipelineReflection: # DONE
         properties:
             'arguments':
@@ -97,7 +112,7 @@ classes:
     MTLRenderPassDescriptor: # DONE
         methods:
             '+renderPassDescriptor':
-                name: create
+                exclude: true
     MTLRenderPipelineColorAttachmentDescriptor: {} # DONE
     MTLRenderPipelineColorAttachmentDescriptorArray: # DONE
         methods:
@@ -154,7 +169,7 @@ classes:
     MTLVertexDescriptor: # DONE
         methods:
             '+vertexDescriptor':
-                name: create
+                exclude: true
 
 protocols:
     MTLBlitCommandEncoder: # DONE
@@ -162,11 +177,11 @@ protocols:
         annotations: ['@NativeProtocolProxy']
         visibility: 'public final'
         methods:
-            '-copyFromTexture:sourceSlice:sourceLevel:sourceOrigin:sourceSize:toTexture:destinationSlice:destinationLevel:destinationOrigin:':
+            '-copyFromTexture.*toTexture.*':
                 name: copyFromTextureToTexture
-            '-copyFromBuffer:sourceOffset:sourceBytesPerRow:sourceBytesPerImage:sourceSize:toTexture:destinationSlice:destinationLevel:destinationOrigin:':
+            '-copyFromBuffer.*toTexture.*':
                 name: copyFromBufferToTexture
-            '-copyFromTexture:sourceSlice:sourceLevel:sourceOrigin:sourceSize:toBuffer:destinationOffset:destinationBytesPerRow:destinationBytesPerImage:':
+            '-copyFromTexture.*toBuffer.*':
                 name: copyFromTextureToBuffer
             '-generateMipmapsForTexture:':
                 trim_after_first_colon: true
@@ -331,27 +346,19 @@ protocols:
                 throws: NSErrorException
             '-newLibraryWithSource:options:completionHandler:':
                 trim_after_first_colon: true
-            '-newRenderPipelineStateWithDescriptor:error:':
+            '-newRenderPipelineState.*error:':
                 name: newRenderPipelineState
                 throws: NSErrorException
-            '-newRenderPipelineStateWithDescriptor:options:reflection:error:':
+            '-newRenderPipelineState.*':
                 name: newRenderPipelineState
-                throws: NSErrorException
-            '-newRenderPipelineStateWithDescriptor:completionHandler:':
-                name: newRenderPipelineState
-            '-newRenderPipelineStateWithDescriptor:options:completionHandler:':
-                name: newRenderPipelineState
-            '-newComputePipelineStateWithFunction:error:':
+            '-newComputePipelineState.*error:':
                 name: newComputePipelineState
                 throws: NSErrorException
-            '-newComputePipelineStateWithFunction:options:reflection:error:':
-                name: newComputePipelineState
-                throws: NSErrorException
-            '-newComputePipelineStateWithFunction:completionHandler:':
-                name: newComputePipelineState
-            '-newComputePipelineStateWithFunction:options:completionHandler:':
+            '-newComputePipelineState.*':
                 name: newComputePipelineState
             '-supportsFeatureSet:':
+                trim_after_first_colon: true
+            '-supportsTextureSampleCount:':
                 trim_after_first_colon: true
     MTLDrawable: # DONE
         methods:
@@ -471,6 +478,8 @@ protocols:
                         type: MTLSamplerState.MTLSamplerStatePtr
             '-setBlendColorRed:green:blue:alpha:':
                 name: setBlendColor
+            '-setStencilFrontReferenceValue:backReferenceValue:':
+                name: setStencilReferenceValue
             '-setVisibilityResultMode:offset:':
                 trim_after_first_colon: true
             '-drawPrimitives:vertexStart:vertexCount:instanceCount:':
@@ -522,7 +531,7 @@ protocols:
                 parameters:
                     pixelBytes:
                         type: '@Pointer long'
-            '-newTextureViewWithPixelFormat:':
+            '-newTextureViewWith.*':
                 name: newTextureView
                 return_marshaler: NSObject.NoRetainMarshaler
 
@@ -557,6 +566,11 @@ values:
         name: 'Value__#{g[0]}'
 
 constants:
+    MTLResourceCPUCacheModeShift:
+        exclude: true
+    MTLResourceStorageModeShift:
+        exclude: true
+
     # Make sure we don't miss any constants if new ones are introduced in a later version
     (k?MTL.*):
         class: Metal

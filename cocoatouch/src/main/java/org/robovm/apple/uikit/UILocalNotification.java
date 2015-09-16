@@ -128,9 +128,9 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "setApplicationIconBadgeNumber:")
     public native void setApplicationIconBadgeNumber(@MachineSizedSInt long v);
     @Property(selector = "userInfo")
-    public native NSDictionary getUserInfo();
+    public native NSDictionary<?, ?> getUserInfo();
     @Property(selector = "setUserInfo:")
-    public native void setUserInfo(NSDictionary v);
+    public native void setUserInfo(NSDictionary<?, ?> v);
     /**
      * @since Available in iOS 8.0 and later.
      */
@@ -150,9 +150,9 @@ import org.robovm.apple.corelocation.*;
     @GlobalValue(symbol="UILocalNotificationDefaultSoundName", optional=true)
     public static native String getDefaultSoundName();
     
-    @Method(selector = "encodeWithCoder:")
-    public native void encode(NSCoder coder);
     @Method(selector = "initWithCoder:")
     protected native @Pointer long init(NSCoder aDecoder);
+    @Method(selector = "encodeWithCoder:")
+    public native void encode(NSCoder coder);
     /*</methods>*/
 }

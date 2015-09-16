@@ -28,6 +28,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -123,9 +124,81 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 8.0 and later.
      */
     public static final HMServiceType LockManagement = new HMServiceType("LockManagement");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMServiceType AirQualitySensor = new HMServiceType("AirQualitySensor");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMServiceType Battery = new HMServiceType("Battery");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMServiceType CarbonDioxideSensor = new HMServiceType("CarbonDioxideSensor");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMServiceType CarbonMonoxideSensor = new HMServiceType("CarbonMonoxideSensor");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMServiceType ContactSensor = new HMServiceType("ContactSensor");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMServiceType Door = new HMServiceType("Door");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMServiceType HumiditySensor = new HMServiceType("HumiditySensor");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMServiceType LeakSensor = new HMServiceType("LeakSensor");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMServiceType LightSensor = new HMServiceType("LightSensor");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMServiceType MotionSensor = new HMServiceType("MotionSensor");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMServiceType OccupancySensor = new HMServiceType("OccupancySensor");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMServiceType SecuritySystem = new HMServiceType("SecuritySystem");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMServiceType StatefulProgrammableSwitch = new HMServiceType("StatefulProgrammableSwitch");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMServiceType StatelessProgrammableSwitch = new HMServiceType("StatelessProgrammableSwitch");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMServiceType SmokeSensor = new HMServiceType("SmokeSensor");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMServiceType TemperatureSensor = new HMServiceType("TemperatureSensor");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMServiceType Window = new HMServiceType("Window");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMServiceType WindowCovering = new HMServiceType("WindowCovering");
     /*</constants>*/
     
-    private static /*<name>*/HMServiceType/*</name>*/[] values = new /*<name>*/HMServiceType/*</name>*/[] {/*<value_list>*/Lightbulb, Switch, Thermostat, GarageDoorOpener, AccessoryInformation, Fan, Outlet, LockMechanism, LockManagement/*</value_list>*/};
+    private static /*<name>*/HMServiceType/*</name>*/[] values = new /*<name>*/HMServiceType/*</name>*/[] {/*<value_list>*/Lightbulb, Switch, Thermostat, GarageDoorOpener, AccessoryInformation, Fan, Outlet, LockMechanism, LockManagement, AirQualitySensor, Battery, CarbonDioxideSensor, CarbonMonoxideSensor, ContactSensor, Door, HumiditySensor, LeakSensor, LightSensor, MotionSensor, OccupancySensor, SecuritySystem, StatefulProgrammableSwitch, StatelessProgrammableSwitch, SmokeSensor, TemperatureSensor, Window, WindowCovering/*</value_list>*/};
     
     /*<name>*/HMServiceType/*</name>*/ (String getterName) {
         super(Values.class, getterName);
@@ -193,6 +266,96 @@ import org.robovm.apple.foundation.*;
          */
         @GlobalValue(symbol="HMServiceTypeLockManagement", optional=true)
         public static native NSString LockManagement();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMServiceTypeAirQualitySensor", optional=true)
+        public static native NSString AirQualitySensor();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMServiceTypeBattery", optional=true)
+        public static native NSString Battery();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMServiceTypeCarbonDioxideSensor", optional=true)
+        public static native NSString CarbonDioxideSensor();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMServiceTypeCarbonMonoxideSensor", optional=true)
+        public static native NSString CarbonMonoxideSensor();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMServiceTypeContactSensor", optional=true)
+        public static native NSString ContactSensor();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMServiceTypeDoor", optional=true)
+        public static native NSString Door();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMServiceTypeHumiditySensor", optional=true)
+        public static native NSString HumiditySensor();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMServiceTypeLeakSensor", optional=true)
+        public static native NSString LeakSensor();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMServiceTypeLightSensor", optional=true)
+        public static native NSString LightSensor();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMServiceTypeMotionSensor", optional=true)
+        public static native NSString MotionSensor();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMServiceTypeOccupancySensor", optional=true)
+        public static native NSString OccupancySensor();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMServiceTypeSecuritySystem", optional=true)
+        public static native NSString SecuritySystem();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMServiceTypeStatefulProgrammableSwitch", optional=true)
+        public static native NSString StatefulProgrammableSwitch();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMServiceTypeStatelessProgrammableSwitch", optional=true)
+        public static native NSString StatelessProgrammableSwitch();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMServiceTypeSmokeSensor", optional=true)
+        public static native NSString SmokeSensor();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMServiceTypeTemperatureSensor", optional=true)
+        public static native NSString TemperatureSensor();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMServiceTypeWindow", optional=true)
+        public static native NSString Window();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMServiceTypeWindowCovering", optional=true)
+        public static native NSString WindowCovering();
         /*</values>*/
     }
 }

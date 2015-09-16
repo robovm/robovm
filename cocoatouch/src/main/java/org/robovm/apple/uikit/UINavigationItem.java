@@ -53,17 +53,13 @@ import org.robovm.apple.corelocation.*;
     public UINavigationItem() {}
     protected UINavigationItem(SkipInit skipInit) { super(skipInit); }
     public UINavigationItem(String title) { super((SkipInit) null); initObject(init(title)); }
-    public UINavigationItem(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
+    public UINavigationItem(NSCoder coder) { super((SkipInit) null); initObject(init(coder)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "title")
     public native String getTitle();
     @Property(selector = "setTitle:")
     public native void setTitle(String v);
-    @Property(selector = "backBarButtonItem")
-    public native UIBarButtonItem getBackBarButtonItem();
-    @Property(selector = "setBackBarButtonItem:")
-    public native void setBackBarButtonItem(UIBarButtonItem v);
     @Property(selector = "titleView")
     public native UIView getTitleView();
     @Property(selector = "setTitleView:")
@@ -72,6 +68,10 @@ import org.robovm.apple.corelocation.*;
     public native String getPrompt();
     @Property(selector = "setPrompt:")
     public native void setPrompt(String v);
+    @Property(selector = "backBarButtonItem")
+    public native UIBarButtonItem getBackBarButtonItem();
+    @Property(selector = "setBackBarButtonItem:")
+    public native void setBackBarButtonItem(UIBarButtonItem v);
     @Property(selector = "hidesBackButton")
     public native boolean hidesBackButton();
     @Property(selector = "setHidesBackButton:")
@@ -119,6 +119,8 @@ import org.robovm.apple.corelocation.*;
     /*<methods>*/
     @Method(selector = "initWithTitle:")
     protected native @Pointer long init(String title);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder coder);
     @Method(selector = "setHidesBackButton:animated:")
     public native void setHidesBackButton(boolean hidesBackButton, boolean animated);
     /**
@@ -137,7 +139,5 @@ import org.robovm.apple.corelocation.*;
     public native void setRightBarButtonItem(UIBarButtonItem item, boolean animated);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder coder);
-    @Method(selector = "initWithCoder:")
-    protected native @Pointer long init(NSCoder aDecoder);
     /*</methods>*/
 }

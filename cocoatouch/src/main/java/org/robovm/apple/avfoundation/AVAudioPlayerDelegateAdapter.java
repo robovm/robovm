@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -75,20 +76,6 @@ import org.robovm.apple.audiounit.*;
      */
     @Deprecated
     @NotImplemented("audioPlayerEndInterruption:withOptions:")
-    public void endInterruptionWithOptions(AVAudioPlayer player, @MachineSizedUInt long flags) {}
-    /**
-     * @since Available in iOS 4.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    @NotImplemented("audioPlayerEndInterruption:withFlags:")
-    public void endInterruptionWithFlags(AVAudioPlayer player, @MachineSizedUInt long flags) {}
-    /**
-     * @since Available in iOS 2.2 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    @NotImplemented("audioPlayerEndInterruption:")
-    public void endInterruption(AVAudioPlayer player) {}
+    public void endInterruption(AVAudioPlayer player, @MachineSizedUInt long flags) {}
     /*</methods>*/
 }

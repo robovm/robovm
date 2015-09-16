@@ -49,6 +49,7 @@ import org.robovm.apple.avfoundation.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public PHCollection() {}
+    protected PHCollection(long handle) { super(handle); }
     protected PHCollection(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
@@ -64,8 +65,8 @@ import org.robovm.apple.avfoundation.*;
     @Method(selector = "canPerformEditOperation:")
     public native boolean canPerformEditOperation(PHCollectionEditOperation anOperation);
     @Method(selector = "fetchCollectionsInCollectionList:options:")
-    public static native PHFetchResult fetchCollectionsInCollectionList(PHCollectionList collectionList, PHFetchOptions options);
+    public static native PHFetchResult<PHCollection> fetchCollectionsInCollectionList(PHCollectionList collectionList, PHFetchOptions options);
     @Method(selector = "fetchTopLevelUserCollectionsWithOptions:")
-    public static native PHFetchResult fetchTopLevelUserCollections(PHFetchOptions options);
+    public static native PHFetchResult<PHCollection> fetchTopLevelUserCollections(PHFetchOptions options);
     /*</methods>*/
 }

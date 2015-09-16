@@ -23,7 +23,7 @@ classes:
             '-setHasContent:forWidgetWithBundleIdentifier:':
                 name: setHasContentForWidgetWithBundleID
             '+widgetController':
-                name: create
+                exclude: true
 
 protocols:
     NCWidgetProviding: # DONE

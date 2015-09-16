@@ -56,6 +56,14 @@ import org.robovm.apple.dispatch.*;
     public MKDirectionsRequest(NSURL url) { super((SkipInit) null); initObject(init(url)); }
     /*</constructors>*/
     /*<properties>*/
+    @Property(selector = "source")
+    public native MKMapItem getSource();
+    @Property(selector = "setSource:")
+    public native void setSource(MKMapItem v);
+    @Property(selector = "destination")
+    public native MKMapItem getDestination();
+    @Property(selector = "setDestination:")
+    public native void setDestination(MKMapItem v);
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -99,26 +107,6 @@ import org.robovm.apple.dispatch.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @Method(selector = "source")
-    public native MKMapItem getSource();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @Method(selector = "setSource:")
-    public native void setSource(MKMapItem source);
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @Method(selector = "destination")
-    public native MKMapItem getDestination();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @Method(selector = "setDestination:")
-    public native void setDestination(MKMapItem destination);
     /**
      * @since Available in iOS 6.0 and later.
      */

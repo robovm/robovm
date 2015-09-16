@@ -30,6 +30,7 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.apple.addressbook.*;
+import org.robovm.apple.contacts.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -78,18 +79,58 @@ import org.robovm.apple.addressbook.*;
     public native PKAddressField getRequiredBillingAddressFields();
     @Property(selector = "setRequiredBillingAddressFields:")
     public native void setRequiredBillingAddressFields(PKAddressField v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Property(selector = "billingAddress")
     public native ABRecord getBillingAddress();
+    /**
+     * @since Available in iOS 8.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Property(selector = "setBillingAddress:", strongRef = true)
     public native void setBillingAddress(ABRecord v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "billingContact")
+    public native PKContact getBillingContact();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setBillingContact:")
+    public native void setBillingContact(PKContact v);
     @Property(selector = "requiredShippingAddressFields")
     public native PKAddressField getRequiredShippingAddressFields();
     @Property(selector = "setRequiredShippingAddressFields:")
     public native void setRequiredShippingAddressFields(PKAddressField v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Property(selector = "shippingAddress")
     public native ABRecord getShippingAddress();
+    /**
+     * @since Available in iOS 8.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Property(selector = "setShippingAddress:", strongRef = true)
     public native void setShippingAddress(ABRecord v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "shippingContact")
+    public native PKContact getShippingContact();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setShippingContact:")
+    public native void setShippingContact(PKContact v);
     @Property(selector = "shippingMethods")
     public native NSArray<PKShippingMethod> getShippingMethods();
     @Property(selector = "setShippingMethods:")

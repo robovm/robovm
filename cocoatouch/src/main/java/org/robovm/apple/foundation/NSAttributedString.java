@@ -55,7 +55,7 @@ import org.robovm.apple.dispatch.*;
     public NSAttributedString() {}
     protected NSAttributedString(SkipInit skipInit) { super(skipInit); }
     public NSAttributedString(String str) { super((SkipInit) null); initObject(init(str)); }
-    public NSAttributedString(String str, NSDictionary attrs) { super((SkipInit) null); initObject(init(str, attrs)); }
+    public NSAttributedString(String str, NSDictionary<NSString, ?> attrs) { super((SkipInit) null); initObject(init(str, attrs)); }
     public NSAttributedString(NSAttributedString attrStr) { super((SkipInit) null); initObject(init(attrStr)); }
     /*</constructors>*/
     public NSAttributedString(String str, NSAttributedStringAttributes attrs) {
@@ -65,7 +65,6 @@ import org.robovm.apple.dispatch.*;
         }
         initObject(init(str, attrs.getDictionary()));
     }
-    @SuppressWarnings("unchecked")
     public NSAttributedString(String str, CMTextMarkupAttributes attrs) {
         super((SkipInit)null);
         if (attrs == null) {
@@ -73,13 +72,20 @@ import org.robovm.apple.dispatch.*;
         }
         initObject(init(str, attrs.getDictionary().as(NSDictionary.class)));
     }
-    @SuppressWarnings("unchecked")
     public NSAttributedString(String str, CTAttributedStringAttributes attrs) {
         super((SkipInit)null);
         if (attrs == null) {
             throw new NullPointerException("attrs");
         }
         initObject(init(str, attrs.getDictionary().as(NSDictionary.class)));
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @WeaklyLinked
+    public NSAttributedString(NSTextAttachment attachment) {
+        super(NSAttributedStringExtensions.create(attachment));
+        retain(getHandle());
     }
     /*<properties>*/
     @Property(selector = "string")
@@ -227,8 +233,10 @@ import org.robovm.apple.dispatch.*;
      * @throws NSErrorException
      */
     @WeaklyLinked
-    public static NSAttributedString create(NSURL url, NSAttributedStringDocumentAttributes options) throws NSErrorException {
-        return NSAttributedStringExtensions.createFromURL(url, options);
+    public NSAttributedString(NSURL url, NSAttributedStringDocumentAttributes options) throws NSErrorException {
+        super((SkipInit) null);
+        long h = NSObject.alloc(ObjCClass.getByType(NSAttributedString.class));
+        initObject(NSAttributedStringExtensions.init(ObjCObject.toObjCObject(NSAttributedString.class, h, NSObject.FLAG_NO_RETAIN), url, options, null));
     }
     /**
      * 
@@ -239,8 +247,10 @@ import org.robovm.apple.dispatch.*;
      * @throws NSErrorException
      */
     @WeaklyLinked
-    public static NSAttributedString create(NSData data, NSAttributedStringDocumentAttributes options) throws NSErrorException {
-        return NSAttributedStringExtensions.createFromData(data, options);
+    public NSAttributedString(NSData data, NSAttributedStringDocumentAttributes options) throws NSErrorException {
+        super((SkipInit) null);
+        long h = NSObject.alloc(ObjCClass.getByType(NSAttributedString.class));
+        initObject(NSAttributedStringExtensions.init(ObjCObject.toObjCObject(NSAttributedString.class, h, NSObject.FLAG_NO_RETAIN), data, options, null));
     }
     /**
      * 
@@ -301,22 +311,15 @@ import org.robovm.apple.dispatch.*;
     public CGRect getBoundingRect(@ByVal CGSize size, NSStringDrawingOptions options, NSStringDrawingContext context) {
         return NSAttributedStringExtensions.getBoundingRect(this, size, options, context);
     }
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @WeaklyLinked
-    public static NSAttributedString create(NSTextAttachment attachment) {
-        return NSAttributedStringExtensions.create(attachment);
-    }
     /*<methods>*/
     @Method(selector = "attributesAtIndex:effectiveRange:")
-    public native NSDictionary getAttributesDictionary(@MachineSizedUInt long location, NSRange range);
+    public native NSDictionary<NSString, ?> getAttributesDictionary(@MachineSizedUInt long location, NSRange range);
     @Method(selector = "attribute:atIndex:effectiveRange:")
     public native NSObject getAttribute(NSString attrName, @MachineSizedUInt long location, NSRange range);
     @Method(selector = "attributedSubstringFromRange:")
     public native NSAttributedString substring(@ByVal NSRange range);
     @Method(selector = "attributesAtIndex:longestEffectiveRange:inRange:")
-    public native NSDictionary getAttributesDictionary(@MachineSizedUInt long location, NSRange range, @ByVal NSRange rangeLimit);
+    public native NSDictionary<NSString, ?> getAttributesDictionary(@MachineSizedUInt long location, NSRange range, @ByVal NSRange rangeLimit);
     @Method(selector = "attribute:atIndex:longestEffectiveRange:inRange:")
     public native NSObject getAttribute(NSString attrName, @MachineSizedUInt long location, NSRange range, @ByVal NSRange rangeLimit);
     @Method(selector = "isEqualToAttributedString:")
@@ -324,14 +327,14 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "initWithString:")
     protected native @Pointer long init(String str);
     @Method(selector = "initWithString:attributes:")
-    protected native @Pointer long init(String str, NSDictionary attrs);
+    protected native @Pointer long init(String str, NSDictionary<NSString, ?> attrs);
     @Method(selector = "initWithAttributedString:")
     protected native @Pointer long init(NSAttributedString attrStr);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "enumerateAttributesInRange:options:usingBlock:")
-    public native void enumerateAttributes(@ByVal NSRange enumerationRange, NSAttributedStringEnumerationOptions opts, @Block("(,@ByVal,)") VoidBlock3<NSDictionary<?, ?>, NSRange, BooleanPtr> block);
+    public native void enumerateAttributes(@ByVal NSRange enumerationRange, NSAttributedStringEnumerationOptions opts, @Block("(,@ByVal,)") VoidBlock3<NSDictionary<NSString, ?>, NSRange, BooleanPtr> block);
     /**
      * @since Available in iOS 4.0 and later.
      */

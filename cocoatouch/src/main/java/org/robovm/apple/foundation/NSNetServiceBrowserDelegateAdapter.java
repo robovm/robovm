@@ -57,18 +57,18 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("netServiceBrowserWillSearch:")
-    public void willSearch(NSNetServiceBrowser aNetServiceBrowser) {}
+    public void willSearch(NSNetServiceBrowser browser) {}
     @NotImplemented("netServiceBrowserDidStopSearch:")
-    public void didStopSearch(NSNetServiceBrowser aNetServiceBrowser) {}
+    public void didStopSearch(NSNetServiceBrowser browser) {}
     @NotImplemented("netServiceBrowser:didNotSearch:")
-    public void didNotSearch(NSNetServiceBrowser aNetServiceBrowser, NSDictionary errorDict) {}
+    public void didNotSearch(NSNetServiceBrowser browser, NSDictionary<NSString, NSNumber> errorDict) {}
     @NotImplemented("netServiceBrowser:didFindDomain:moreComing:")
-    public void didFindDomain(NSNetServiceBrowser aNetServiceBrowser, String domainString, boolean moreComing) {}
+    public void didFindDomain(NSNetServiceBrowser browser, String domainString, boolean moreComing) {}
     @NotImplemented("netServiceBrowser:didFindService:moreComing:")
-    public void didFindService(NSNetServiceBrowser aNetServiceBrowser, NSNetService aNetService, boolean moreComing) {}
+    public void didFindService(NSNetServiceBrowser browser, NSNetService service, boolean moreComing) {}
     @NotImplemented("netServiceBrowser:didRemoveDomain:moreComing:")
-    public void didRemoveDomain(NSNetServiceBrowser aNetServiceBrowser, String domainString, boolean moreComing) {}
+    public void didRemoveDomain(NSNetServiceBrowser browser, String domainString, boolean moreComing) {}
     @NotImplemented("netServiceBrowser:didRemoveService:moreComing:")
-    public void didRemoveService(NSNetServiceBrowser aNetServiceBrowser, NSNetService aNetService, boolean moreComing) {}
+    public void didRemoveService(NSNetServiceBrowser browser, NSNetService service, boolean moreComing) {}
     /*</methods>*/
 }

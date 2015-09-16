@@ -148,7 +148,7 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
      * @since Available in iOS 5.0 and later.
      */
     public NSAttributedStringAttributes getTitleTextAttributes(UIControlState state) {
-        NSDictionary<NSString, NSObject> dict = getTitleTextAttributesDictionary(state);
+        NSDictionary<NSString, ?> dict = getTitleTextAttributesDictionary(state);
         if (dict == null) return null;
         return new NSAttributedStringAttributes(dict);
     }
@@ -157,7 +157,7 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
      */
     @WeaklyLinked
     public CMTextMarkupAttributes getTitleTextMarkupAttributes(UIControlState state) {
-        NSDictionary<NSString, NSObject> dict = getTitleTextAttributesDictionary(state);
+        NSDictionary<NSString, ?> dict = getTitleTextAttributesDictionary(state);
         if (dict == null) return null; 
         return new CMTextMarkupAttributes(dict.as(CFDictionary.class));
     }
@@ -166,7 +166,7 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
      */
     @WeaklyLinked
     public CTAttributedStringAttributes getTitleCoreTextAttributes(UIControlState state) {
-        NSDictionary<NSString, NSObject> dict = getTitleTextAttributesDictionary(state);
+        NSDictionary<NSString, ?> dict = getTitleTextAttributesDictionary(state);
         if (dict == null) return null; 
         return new CTAttributedStringAttributes(dict.as(CFDictionary.class));
     }
@@ -225,12 +225,12 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "setTitleTextAttributes:forState:")
-    public native void setTitleTextAttributesDictionary(NSDictionary attributes, UIControlState state);
+    public native void setTitleTextAttributesDictionary(NSDictionary<NSString, ?> attributes, UIControlState state);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "titleTextAttributesForState:")
-    public native NSDictionary getTitleTextAttributesDictionary(UIControlState state);
+    public native NSDictionary<NSString, ?> getTitleTextAttributesDictionary(UIControlState state);
     /**
      * @since Available in iOS 5.0 and later.
      */

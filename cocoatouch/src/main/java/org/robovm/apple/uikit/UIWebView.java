@@ -185,6 +185,16 @@ import org.robovm.apple.corelocation.*;
      */
     @Property(selector = "pageCount")
     public native @MachineSizedUInt long getPageCount();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "allowsPictureInPictureMediaPlayback")
+    public native boolean allowsPictureInPictureMediaPlayback();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setAllowsPictureInPictureMediaPlayback:")
+    public native void setAllowsPictureInPictureMediaPlayback(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

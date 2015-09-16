@@ -53,8 +53,14 @@ import org.robovm.apple.dispatch.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public NSExpression() {}
+    protected NSExpression(long handle) { super(handle); }
     protected NSExpression(SkipInit skipInit) { super(skipInit); }
     public NSExpression(NSExpressionType type) { super((SkipInit) null); initObject(init(type)); }
+    public NSExpression(NSCoder coder) { super((SkipInit) null); initObject(init(coder)); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public NSExpression(String expressionFormat, NSArray<?> arguments) { super(create(expressionFormat, arguments)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "expressionType")
@@ -92,6 +98,16 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "rightExpression")
     public native NSExpression getRightExpression();
     /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "trueExpression")
+    public native NSExpression getTrueExpression();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "falseExpression")
+    public native NSExpression getFalseExpression();
+    /**
      * @since Available in iOS 4.0 and later.
      */
     @Property(selector = "expressionBlock")
@@ -101,8 +117,10 @@ import org.robovm.apple.dispatch.*;
     /*<methods>*/
     @Method(selector = "initWithExpressionType:")
     protected native @Pointer long init(NSExpressionType type);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder coder);
     @Method(selector = "expressionValueWithObject:context:")
-    public native NSObject evaluate(NSObject object, NSMutableDictionary context);
+    public native NSObject evaluate(NSObject object, NSMutableDictionary<?, ?> context);
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -112,7 +130,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "expressionWithFormat:argumentArray:")
-    public static native NSExpression createFromFormat(String expressionFormat, NSArray<?> arguments);
+    protected static native @Pointer long create(String expressionFormat, NSArray<?> arguments);
     @Method(selector = "expressionForConstantValue:")
     public static native NSExpression createForConstantValue(NSObject obj);
     @Method(selector = "expressionForEvaluatedObject")
@@ -163,5 +181,10 @@ import org.robovm.apple.dispatch.*;
      */
     @Method(selector = "expressionForBlock:arguments:")
     public static native NSExpression createForBlock(@Block Block3<NSObject, NSArray<NSExpression>, NSMutableDictionary<?, ?>, NSObject> block, NSArray<?> arguments);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "expressionForConditional:trueExpression:falseExpression:")
+    public static native NSExpression createForConditional(NSPredicate predicate, NSExpression trueExpression, NSExpression falseExpression);
     /*</methods>*/
 }

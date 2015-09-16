@@ -79,6 +79,10 @@ import org.robovm.apple.metal.*;
     public native CATextAlignmentMode getAlignmentMode();
     @Property(selector = "setAlignmentMode:")
     public native void setAlignmentMode(CATextAlignmentMode v);
+    @Property(selector = "allowsFontSubpixelQuantization")
+    public native boolean allowsFontSubpixelQuantization();
+    @Property(selector = "setAllowsFontSubpixelQuantization:")
+    public native void setAllowsFontSubpixelQuantization(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
 

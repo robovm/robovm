@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -65,7 +66,6 @@ import org.robovm.apple.audiounit.*;
         super((SkipInit)null);
         initObject(init(track, outputSettings.getDictionary()));
     }
-    @SuppressWarnings("unchecked")
     public AVAssetReaderTrackOutput(AVAssetTrack track, AVPixelBufferAttributes outputSettings) {
         super((SkipInit)null);
         initObject(init(track, outputSettings.getDictionary().as(NSDictionary.class)));
@@ -85,7 +85,7 @@ import org.robovm.apple.audiounit.*;
     @Property(selector = "track")
     public native AVAssetTrack getTrack();
     @Property(selector = "outputSettings")
-    protected native NSDictionary getOutputSettings();
+    protected native NSDictionary<?, ?> getOutputSettings();
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -98,20 +98,8 @@ import org.robovm.apple.audiounit.*;
     public native void setAudioTimePitchAlgorithm(AVAudioTimePitchAlgorithm v);
     /*</properties>*/
     /*<members>*//*</members>*/
-    public static AVAssetReaderTrackOutput create(AVAssetTrack track, AVAudioSettings outputSettings) {
-        return create(track, outputSettings.getDictionary());
-    }
-    public static AVAssetReaderTrackOutput create(AVAssetTrack track, AVVideoSettings outputSettings) {
-        return create(track, outputSettings.getDictionary());
-    }
-    @SuppressWarnings("unchecked")
-    public static AVAssetReaderTrackOutput create(AVAssetTrack track, AVPixelBufferAttributes outputSettings) {
-        return create(track, outputSettings.getDictionary().as(NSDictionary.class));
-    }
     /*<methods>*/
     @Method(selector = "initWithTrack:outputSettings:")
-    protected native @Pointer long init(AVAssetTrack track, NSDictionary outputSettings);
-    @Method(selector = "assetReaderTrackOutputWithTrack:outputSettings:")
-    protected static native AVAssetReaderTrackOutput create(AVAssetTrack track, NSDictionary outputSettings);
+    protected native @Pointer long init(AVAssetTrack track, NSDictionary<?, ?> outputSettings);
     /*</methods>*/
 }

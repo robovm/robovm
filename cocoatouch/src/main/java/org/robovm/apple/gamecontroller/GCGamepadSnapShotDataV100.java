@@ -28,6 +28,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -80,9 +81,11 @@ import org.robovm.apple.foundation.*;
     @StructMember(9) public native GCGamepadSnapShotDataV100 setRightShoulder(float rightShoulder);
     /*</members>*/
     /*<methods>*/
+    public boolean setData(NSData data) { return setData(this, data); }
     @Bridge(symbol="GCGamepadSnapShotDataV100FromNSData", optional=true)
-    public native boolean setData(NSData data);
+    private static native boolean setData(@ByVal GCGamepadSnapShotDataV100 snapshotData, NSData data);
+    public NSData getData() { return getData(this); }
     @Bridge(symbol="NSDataFromGCGamepadSnapShotDataV100", optional=true)
-    public native NSData getData();
+    private static native NSData getData(@ByVal GCGamepadSnapShotDataV100 snapshotData);
     /*</methods>*/
 }

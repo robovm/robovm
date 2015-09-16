@@ -40,8 +40,8 @@ import org.robovm.apple.avfoundation.*;
  */
 /*</javadoc>*/
 /*<annotations>*/@Library("Photos") @NativeClass/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/PHFetchResult/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/PHFetchResult/*</name>*/ <T extends PHObject>
+    extends /*<extends>*/NSObject/*</extends>*/
     /*<implements>*/implements NSFastEnumeration/*</implements>*/ {
 
     /*<ptr>*/public static class PHFetchResultPtr extends Ptr<PHFetchResult, PHFetchResultPtr> {}/*</ptr>*/
@@ -55,28 +55,52 @@ import org.robovm.apple.avfoundation.*;
     @Property(selector = "count")
     public native @MachineSizedUInt long size();
     @Property(selector = "firstObject")
-    public native PHObject first();
+    public native T first();
     @Property(selector = "lastObject")
-    public native PHObject last();
+    public native T last();
     /*</properties>*/
     /*<members>*//*</members>*/
+    public void enumerateObjects(final Block2<T, Long, Boolean> block) {
+        enumerateObjects0(new VoidBlock3<NSObject, Long, BooleanPtr>() {
+            @Override
+            public void invoke(NSObject a, Long b, BooleanPtr c) {
+                c.set(block.invoke((T)a, b));
+            }
+        });
+    }
+    public void enumerateObjects(NSEnumerationOptions opts, final Block2<T, Long, Boolean> block) {
+        enumerateObjects0(opts, new VoidBlock3<NSObject, Long, BooleanPtr>() {
+            @Override
+            public void invoke(NSObject a, Long b, BooleanPtr c) {
+                c.set(block.invoke((T)a, b));
+            }
+        });
+    }
+    public void enumerateObjects(NSIndexSet s, NSEnumerationOptions opts, final Block2<T, Long, Boolean> block) {
+        enumerateObjects0(s, opts, new VoidBlock3<NSObject, Long, BooleanPtr>() {
+            @Override
+            public void invoke(NSObject a, Long b, BooleanPtr c) {
+                c.set(block.invoke((T)a, b));
+            }
+        });
+    }
     /*<methods>*/
     @Method(selector = "objectAtIndex:")
-    public native PHObject get(@MachineSizedUInt long index);
+    public native T get(@MachineSizedUInt long index);
     @Method(selector = "containsObject:")
-    public native boolean contains(PHObject anObject);
+    public native boolean contains(T anObject);
     @Method(selector = "indexOfObject:")
-    public native @MachineSizedUInt long indexOf(PHObject anObject);
+    public native @MachineSizedUInt long indexOf(T anObject);
     @Method(selector = "indexOfObject:inRange:")
-    public native @MachineSizedUInt long indexOf(PHObject anObject, @ByVal NSRange range);
+    public native @MachineSizedUInt long indexOf(T anObject, @ByVal NSRange range);
     @Method(selector = "objectsAtIndexes:")
-    public native NSArray<PHObject> getAll(NSIndexSet indexes);
+    public native NSArray<T> getAll(NSIndexSet indexes);
     @Method(selector = "enumerateObjectsUsingBlock:")
-    public native void enumerateObjects(@Block("(,@MachineSizedUInt,)") VoidBlock3<NSObject, Long, BooleanPtr> block);
+    protected native void enumerateObjects0(@Block("(,@MachineSizedUInt,)") VoidBlock3<NSObject, Long, BooleanPtr> block);
     @Method(selector = "enumerateObjectsWithOptions:usingBlock:")
-    public native void enumerateObjects(NSEnumerationOptions opts, @Block("(,@MachineSizedUInt,)") VoidBlock3<NSObject, Long, BooleanPtr> block);
+    protected native void enumerateObjects0(NSEnumerationOptions opts, @Block("(,@MachineSizedUInt,)") VoidBlock3<NSObject, Long, BooleanPtr> block);
     @Method(selector = "enumerateObjectsAtIndexes:options:usingBlock:")
-    public native void enumerateObjects(NSIndexSet s, NSEnumerationOptions opts, @Block("(,@MachineSizedUInt,)") VoidBlock3<NSObject, Long, BooleanPtr> block);
+    protected native void enumerateObjects0(NSIndexSet s, NSEnumerationOptions opts, @Block("(,@MachineSizedUInt,)") VoidBlock3<NSObject, Long, BooleanPtr> block);
     @Method(selector = "countOfAssetsWithMediaType:")
     public native @MachineSizedUInt long getCountOfAssetsWithMediaType(PHAssetMediaType mediaType);
     /*</methods>*/

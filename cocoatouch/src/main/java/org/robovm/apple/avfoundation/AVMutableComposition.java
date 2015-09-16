@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -56,6 +57,10 @@ import org.robovm.apple.audiounit.*;
     /*<constructors>*/
     public AVMutableComposition() {}
     protected AVMutableComposition(SkipInit skipInit) { super(skipInit); }
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public AVMutableComposition(AVURLAssetOptions urlAssetInitializationOptions) { super(create(urlAssetInitializationOptions)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "tracks")
@@ -67,8 +72,11 @@ import org.robovm.apple.audiounit.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "composition")
-    public static native AVMutableComposition create();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "compositionWithURLAssetInitializationOptions:")
+    protected static native @Pointer long create(AVURLAssetOptions urlAssetInitializationOptions);
     public boolean insertTimeRange(@ByVal CMTimeRange timeRange, AVAsset asset, @ByVal CMTime startTime) throws NSErrorException {
        NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
        boolean result = insertTimeRange(timeRange, asset, startTime, ptr);
@@ -89,5 +97,11 @@ import org.robovm.apple.audiounit.*;
     public native void removeTrack(AVCompositionTrack track);
     @Method(selector = "mutableTrackCompatibleWithTrack:")
     public native AVMutableCompositionTrack getCompatibleMutableTrack(AVAssetTrack track);
+    @Method(selector = "trackWithTrackID:")
+    public native AVMutableCompositionTrack getTrack(int trackID);
+    @Method(selector = "tracksWithMediaType:")
+    public native NSArray<AVCompositionTrack> getTracksForMediaType(AVMediaType mediaType);
+    @Method(selector = "tracksWithMediaCharacteristic:")
+    public native NSArray<AVCompositionTrack> getTracksForMediaCharacteristic(AVMediaCharacteristic mediaCharacteristic);
     /*</methods>*/
 }

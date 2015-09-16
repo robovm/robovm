@@ -287,6 +287,8 @@ values:
             CreateThumbnailWithTransform:
                 name: shouldCreateThumbnailWithTransform
                 type: boolean
+            SubsampleFactor:
+                type: int
 
     # CGImageProperty
     kCGImageProperty(8BIMDictionary):
@@ -395,11 +397,14 @@ values:
         enum: CGImagePropertyJFIF
         name: '#{g[0]}'
         type: CFString
+        
     kCGImagePropertyExifAux(.*):
         dictionary: CGImagePropertyExifAuxData
         enum: CGImagePropertyExifAux
         name: '#{g[0]}'
         type: CFString
+    kCGImagePropertyExifSubsecTimeOrginal:
+        exclude: true
     kCGImagePropertyExif(.*):
         dictionary: CGImagePropertyExifData
         enum: CGImagePropertyExif

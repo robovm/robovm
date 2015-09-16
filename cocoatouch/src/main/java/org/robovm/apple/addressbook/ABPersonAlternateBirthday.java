@@ -161,33 +161,45 @@ import org.robovm.apple.corefoundation.*;
     }
     /*<methods>*/
     /**
-     * @since Available in iOS 8.0 and later.
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @GlobalValue(symbol="kABPersonAlternateBirthdayCalendarIdentifierKey", optional=true)
     protected static native CFString CalendarIdentifierKey();
     /**
-     * @since Available in iOS 8.0 and later.
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @GlobalValue(symbol="kABPersonAlternateBirthdayEraKey", optional=true)
     protected static native CFString EraKey();
     /**
-     * @since Available in iOS 8.0 and later.
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @GlobalValue(symbol="kABPersonAlternateBirthdayYearKey", optional=true)
     protected static native CFString YearKey();
     /**
-     * @since Available in iOS 8.0 and later.
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @GlobalValue(symbol="kABPersonAlternateBirthdayMonthKey", optional=true)
     protected static native CFString MonthKey();
     /**
-     * @since Available in iOS 8.0 and later.
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @GlobalValue(symbol="kABPersonAlternateBirthdayIsLeapMonthKey", optional=true)
     protected static native CFString IsLeapMonthKey();
     /**
-     * @since Available in iOS 8.0 and later.
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @GlobalValue(symbol="kABPersonAlternateBirthdayDayKey", optional=true)
     protected static native CFString DayKey();
     /*</methods>*/

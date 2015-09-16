@@ -35,6 +35,7 @@ import org.robovm.apple.coreimage.*;
 import org.robovm.apple.avfoundation.*;
 import org.robovm.apple.glkit.*;
 import org.robovm.apple.scenekit.*;
+import org.robovm.apple.gameplaykit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -51,23 +52,24 @@ import org.robovm.apple.scenekit.*;
     /*<constructors>*/
     public SKTextureAtlas() {}
     protected SKTextureAtlas(SkipInit skipInit) { super(skipInit); }
+    public SKTextureAtlas(String name) { super(create(name)); retain(getHandle()); }
     public SKTextureAtlas(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
-    /*<properties>*/
-    @Property(selector = "textureNames")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getTextureNames();
-    /*</properties>*/
-    /*<members>*//*</members>*/
     /**
-     * Creates a new texture atlas object from the specified texture files.
+     * Constructs a new texture atlas object from the specified texture files.
      * @param properties The keys of this map represent the texture names. 
      * The associated values can be of type String, NSURL or UIImage.
      * @return
      * @since Available in iOS 8.0 and later.
      */
-    public static SKTextureAtlas create(Map<String, Object> textures) {
-        NSDictionary<NSString, NSObject> properties = new NSMutableDictionary<>();
-        for (Map.Entry<String, Object> entry : textures.entrySet()) {
+    public SKTextureAtlas(Map<String, ?> textures) {
+        super(create(textures));
+        retain(getHandle());
+    }
+    
+    private static long create(Map<String, ?> textures) {
+        NSDictionary<NSString, ?> properties = new NSMutableDictionary<>();
+        for (Map.Entry<String, ?> entry : textures.entrySet()) {
             NSString key = new NSString(entry.getKey());
             NSObject value = null;
             if (entry.getValue() instanceof String) {
@@ -81,20 +83,30 @@ import org.robovm.apple.scenekit.*;
         }
         return create(properties);
     }
+    /*<properties>*/
+    @Property(selector = "textureNames")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getTextureNames();
+    /*</properties>*/
+    /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "textureNamed:")
     public native SKTexture getTexture(String name);
     @Method(selector = "preloadWithCompletionHandler:")
     public native void preload(@Block Runnable completionHandler);
     @Method(selector = "atlasNamed:")
-    public static native SKTextureAtlas create(String name);
+    protected static native @Pointer long create(String name);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "atlasWithDictionary:")
-    protected static native SKTextureAtlas create(NSDictionary properties);
+    protected static native @Pointer long create(NSDictionary<?, ?> properties);
     @Method(selector = "preloadTextureAtlases:withCompletionHandler:")
     public static native void preloadTextureAtlases(NSArray<SKTextureAtlas> textureAtlases, @Block Runnable completionHandler);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "preloadTextureAtlasesNamed:withCompletionHandler:")
+    public static native void preloadTextureAtlases(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> atlasNames, @Block VoidBlock2<NSError, NSArray<SKTextureAtlas>> completionHandler);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder coder);
     @Method(selector = "initWithCoder:")

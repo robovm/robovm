@@ -134,8 +134,8 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "stopMonitoring")
     public native void stopMonitoring();
     @Method(selector = "dictionaryFromTXTRecordData:")
-    public static native NSDictionary getDictionaryFromTXTRecordData(NSData txtData);
+    public static native NSDictionary<NSString, NSData> getDictionaryFromTXTRecordData(NSData txtData);
     @Method(selector = "dataFromTXTRecordDictionary:")
-    public static native NSData getDataFromTXTRecordDictionary(NSDictionary txtDictionary);
+    public static native NSData getDataFromTXTRecordDictionary(NSDictionary<NSString, NSData> txtDictionary);
     /*</methods>*/
 }

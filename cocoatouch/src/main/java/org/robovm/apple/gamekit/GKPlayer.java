@@ -69,6 +69,11 @@ import org.robovm.apple.uikit.*;
     @Property(selector = "alias")
     public native String getAlias();
     /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "guestIdentifier")
+    public native String getGuestIdentifier();
+    /**
      * @since Available in iOS 4.1 and later.
      * @deprecated Deprecated in iOS 8.0.
      */
@@ -83,6 +88,11 @@ import org.robovm.apple.uikit.*;
     
     @Method(selector = "loadPlayersForIdentifiers:withCompletionHandler:")
     public static native void loadPlayers(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> identifiers, @Block VoidBlock2<NSArray<GKPlayer>, NSError> completionHandler);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "anonymousGuestPlayerWithIdentifier:")
+    public static native GKPlayer getAnonymousGuestPlayer(String guestIdentifier);
     /**
      * @since Available in iOS 5.0 and later.
      */

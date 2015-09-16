@@ -147,9 +147,9 @@ import org.robovm.rt.annotation.WeaklyLinked;
             return NSNotificationCenter.getDefaultCenter().addObserver(PlaybackDidFinishNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke (NSNotification a) {
-                    NSDictionary<NSString, NSObject> data = a.getUserInfo();
+                    NSDictionary<?, ?> data = a.getUserInfo();
                     NSNumber val = (NSNumber) data.get(PlaybackDidFinishReasonUserInfoKey());
-                    NSError error = (NSError) data.get(new NSString("error"));
+                    NSError error = (NSError) data.get("error");
                     block.invoke((MPMoviePlayerController) a.getObject(), MPMovieFinishReason.valueOf(val.intValue()), error);
                 }
             });
@@ -239,7 +239,7 @@ import org.robovm.rt.annotation.WeaklyLinked;
                 @SuppressWarnings("unchecked")
                 @Override
                 public void invoke (NSNotification a) {
-                    NSDictionary<NSString, NSObject> userInfo = a.getUserInfo();
+                    NSDictionary<?, ?> userInfo = a.getUserInfo();
                     NSArray<MPTimedMetadata> arr = (NSArray<MPTimedMetadata>) userInfo.get(TimedMetadataUserInfoKey());
                     block.invoke((MPMoviePlayerController) a.getObject(), arr);
                 }

@@ -58,6 +58,10 @@ import org.robovm.apple.corelocation.*;
     public native @MachineSizedFloat double getMinimumScaleFactor();
     @Property(selector = "setMinimumScaleFactor:")
     public native void setMinimumScaleFactor(@MachineSizedFloat double v);
+    @Property(selector = "actualScaleFactor")
+    public native @MachineSizedFloat double getActualScaleFactor();
+    @Property(selector = "totalBounds")
+    public native @ByVal CGRect getTotalBounds();
     /**
      * @since Available in iOS 6.0 and later.
      * @deprecated Deprecated in iOS 7.0.
@@ -72,8 +76,6 @@ import org.robovm.apple.corelocation.*;
     @Deprecated
     @Property(selector = "setMinimumTrackingAdjustment:")
     public native void setMinimumTrackingAdjustment(@MachineSizedFloat double v);
-    @Property(selector = "actualScaleFactor")
-    public native @MachineSizedFloat double getActualScaleFactor();
     /**
      * @since Available in iOS 6.0 and later.
      * @deprecated Deprecated in iOS 7.0.
@@ -81,8 +83,6 @@ import org.robovm.apple.corelocation.*;
     @Deprecated
     @Property(selector = "actualTrackingAdjustment")
     public native @MachineSizedFloat double getActualTrackingAdjustment();
-    @Property(selector = "totalBounds")
-    public native @ByVal CGRect getTotalBounds();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

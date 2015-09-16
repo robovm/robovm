@@ -79,7 +79,11 @@ public enum /*<name>*/CBErrorCode/*</name>*/ implements NSErrorCode {
     /**
      * @since Available in iOS 7.1 and later.
      */
-    ConnectionFailed(10L);
+    ConnectionFailed(10L),
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    ConnectionLimitReached(11L);
     /*</values>*/
 
     /*<bind>*/

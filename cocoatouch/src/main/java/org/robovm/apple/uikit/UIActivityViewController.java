@@ -52,6 +52,8 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UIActivityViewController() {}
     protected UIActivityViewController(SkipInit skipInit) { super(skipInit); }
+    public UIActivityViewController(String nibNameOrNil, NSBundle nibBundleOrNil) { super((SkipInit) null); initObject(init(nibNameOrNil, nibBundleOrNil)); }
+    public UIActivityViewController(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     public UIActivityViewController(NSArray<?> activityItems, NSArray<UIActivity> applicationActivities) { super((SkipInit) null); initObject(init(activityItems, applicationActivities)); }
     /*</constructors>*/
     public UIActivityViewController(List<?> activityItems, NSArray<UIActivity> applicationActivities) {
@@ -104,6 +106,10 @@ import org.robovm.apple.corelocation.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @Method(selector = "initWithNibName:bundle:")
+    protected native @Pointer long init(String nibNameOrNil, NSBundle nibBundleOrNil);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     @Method(selector = "initWithActivityItems:applicationActivities:")
     protected native @Pointer long init(NSArray<?> activityItems, NSArray<UIActivity> applicationActivities);
     /*</methods>*/

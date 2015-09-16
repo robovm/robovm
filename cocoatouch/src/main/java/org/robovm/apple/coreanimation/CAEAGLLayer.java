@@ -51,6 +51,16 @@ import org.robovm.apple.metal.*;
     protected CAEAGLLayer(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "presentsWithTransaction")
+    public native boolean presentsWithTransaction();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setPresentsWithTransaction:")
+    public native void setPresentsWithTransaction(boolean v);
     @Property(selector = "drawableProperties")
     public native EAGLDrawableProperties getDrawableProperties();
     @Property(selector = "setDrawableProperties:")

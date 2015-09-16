@@ -270,6 +270,20 @@ import org.robovm.apple.dispatch.*;
     protected native void encodeBytes0(@Pointer long byteaddr, @MachineSizedUInt long length);
     @Method(selector = "decodeObject")
     public native NSObject decodeObject();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public NSObject decodeTopLevelObject() throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       NSObject result = decodeTopLevelObject(ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "decodeTopLevelObjectAndReturnError:")
+    private native NSObject decodeTopLevelObject(NSError.NSErrorPtr error);
     @Method(selector = "decodeBytesWithReturnedLength:")
     protected native BytePtr decodeBytes0(MachineSizedUIntPtr lengthp);
     @Method(selector = "setObjectZone:")
@@ -298,6 +312,20 @@ import org.robovm.apple.dispatch.*;
     public native boolean containsValue(String key);
     @Method(selector = "decodeObjectForKey:")
     protected native NSObject decodeObject0(String key);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public NSObject decodeTopLevelObject(String key) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       NSObject result = decodeTopLevelObject(key, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "decodeTopLevelObjectForKey:error:")
+    private native NSObject decodeTopLevelObject(String key, NSError.NSErrorPtr error);
     @Method(selector = "decodeBoolForKey:")
     protected native boolean decodeBool0(String key);
     @Method(selector = "decodeIntForKey:")
@@ -328,14 +356,47 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "decodeObjectOfClass:forKey:")
     protected native NSObject decodeObject0(Class<? extends NSObject> aClass, String key);
     /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public NSObject decodeTopLevelObject(Class<? extends NSObject> aClass, String key) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       NSObject result = decodeTopLevelObject(aClass, key, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "decodeTopLevelObjectOfClass:forKey:error:")
+    private native NSObject decodeTopLevelObject(Class<? extends NSObject> aClass, String key, NSError.NSErrorPtr error);
+    /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "decodeObjectOfClasses:forKey:")
     protected native NSObject decodeObject0(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<ObjCClass> classes, String key);
     /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public NSObject decodeTopLevelObject(NSSet<?> classes, String key) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       NSObject result = decodeTopLevelObject(classes, key, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "decodeTopLevelObjectOfClasses:forKey:error:")
+    private native NSObject decodeTopLevelObject(NSSet<?> classes, String key, NSError.NSErrorPtr error);
+    /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "decodePropertyListForKey:")
     protected native NSObject decodePropertyList0(String key);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "failWithError:")
+    public native void fail(NSError error);
     /*</methods>*/
 }

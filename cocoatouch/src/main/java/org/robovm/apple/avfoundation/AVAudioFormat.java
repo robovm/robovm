@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -64,6 +65,10 @@ import org.robovm.apple.audiounit.*;
     public AVAudioFormat(AVAudioCommonFormat format, double sampleRate, int channels, boolean interleaved) { super((SkipInit) null); initObject(init(format, sampleRate, channels, interleaved)); }
     public AVAudioFormat(AVAudioCommonFormat format, double sampleRate, boolean interleaved, AVAudioChannelLayout layout) { super((SkipInit) null); initObject(init(format, sampleRate, interleaved, layout)); }
     public AVAudioFormat(AVAudioSettings settings) { super((SkipInit) null); initObject(init(settings)); }
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public AVAudioFormat(CMAudioFormatDescription formatDescription) { super((SkipInit) null); initObject(init(formatDescription)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "isStandard")
@@ -83,6 +88,11 @@ import org.robovm.apple.audiounit.*;
     public native AVAudioChannelLayout getChannelLayout();
     @Property(selector = "settings")
     public native AVAudioSettings getSettings();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "formatDescription")
+    public native CMAudioFormatDescription getFormatDescription();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -101,6 +111,11 @@ import org.robovm.apple.audiounit.*;
     protected native @Pointer long init(AVAudioCommonFormat format, double sampleRate, boolean interleaved, AVAudioChannelLayout layout);
     @Method(selector = "initWithSettings:")
     protected native @Pointer long init(AVAudioSettings settings);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "initWithCMAudioFormatDescription:")
+    protected native @Pointer long init(CMAudioFormatDescription formatDescription);
     @Method(selector = "isEqual:")
     public native boolean equalsTo(AVAudioFormat object);
     /*</methods>*/

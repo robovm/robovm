@@ -52,6 +52,7 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public NSInvocation() {}
     protected NSInvocation(SkipInit skipInit) { super(skipInit); }
+    public NSInvocation(NSMethodSignature sig) { super(create(sig)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "methodSignature")
@@ -84,6 +85,6 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "invokeWithTarget:")
     public native void invoke(NSObject target);
     @Method(selector = "invocationWithMethodSignature:")
-    public static native NSInvocation create(NSMethodSignature sig);
+    protected static native @Pointer long create(NSMethodSignature sig);
     /*</methods>*/
 }

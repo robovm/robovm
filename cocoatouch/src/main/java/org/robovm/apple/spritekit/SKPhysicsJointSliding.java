@@ -35,6 +35,7 @@ import org.robovm.apple.coreimage.*;
 import org.robovm.apple.avfoundation.*;
 import org.robovm.apple.glkit.*;
 import org.robovm.apple.scenekit.*;
+import org.robovm.apple.gameplaykit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -51,6 +52,7 @@ import org.robovm.apple.scenekit.*;
     /*<constructors>*/
     public SKPhysicsJointSliding() {}
     protected SKPhysicsJointSliding(SkipInit skipInit) { super(skipInit); }
+    public SKPhysicsJointSliding(SKPhysicsBody bodyA, SKPhysicsBody bodyB, @ByVal CGPoint anchor, @ByVal CGVector axis) { super(create(bodyA, bodyB, anchor, axis)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "shouldEnableLimits")
@@ -69,6 +71,6 @@ import org.robovm.apple.scenekit.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "jointWithBodyA:bodyB:anchor:axis:")
-    public static native SKPhysicsJointSliding create(SKPhysicsBody bodyA, SKPhysicsBody bodyB, @ByVal CGPoint anchor, @ByVal CGVector axis);
+    protected static native @Pointer long create(SKPhysicsBody bodyA, SKPhysicsBody bodyB, @ByVal CGPoint anchor, @ByVal CGVector axis);
     /*</methods>*/
 }

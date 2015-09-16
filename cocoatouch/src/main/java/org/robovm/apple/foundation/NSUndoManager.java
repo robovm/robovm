@@ -123,7 +123,7 @@ import org.robovm.apple.dispatch.*;
                 @Override
                 public void invoke(NSNotification a) {
                     boolean b = false;
-                    NSDictionary<NSString, NSObject> data = a.getUserInfo();
+                    NSDictionary<?, ?> data = a.getUserInfo();
                     if (data.containsKey(GroupIsDiscardableKey())) {
                         NSNumber val = (NSNumber)data.get(GroupIsDiscardableKey());
                         b = val.booleanValue();
@@ -149,9 +149,7 @@ import org.robovm.apple.dispatch.*;
     
     /*<ptr>*/public static class NSUndoManagerPtr extends Ptr<NSUndoManager, NSUndoManagerPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSUndoManager.class); }/*</bind>*/
-    /*<constants>*/
-    public static final int CloseGroupingRunLoopOrdering = 350000;
-    /*</constants>*/
+    /*<constants>*//*</constants>*/
     /*<constructors>*/
     public NSUndoManager() {}
     protected NSUndoManager(SkipInit skipInit) { super(skipInit); }
@@ -210,6 +208,8 @@ import org.robovm.apple.dispatch.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @GlobalValue(symbol="NSUndoCloseGroupingRunLoopOrdering", optional=true)
+    public static native @MachineSizedUInt long getCloseGroupingRunLoopOrdering();
     /**
      * @since Available in iOS 5.0 and later.
      */
@@ -278,6 +278,11 @@ import org.robovm.apple.dispatch.*;
     public native void registerUndo(NSObject target, Selector selector, NSObject anObject);
     @Method(selector = "prepareWithInvocationTarget:")
     public native NSObject prepareWithInvocation(NSObject target);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "registerUndoWithTarget:handler:")
+    public native void registerUndo(NSObject target, @Block VoidBlock1<NSObject> undoHandler);
     /**
      * @since Available in iOS 5.0 and later.
      */

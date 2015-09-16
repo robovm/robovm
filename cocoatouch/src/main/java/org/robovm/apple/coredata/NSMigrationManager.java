@@ -74,9 +74,9 @@ import org.robovm.apple.foundation.*;
     @Property(selector = "migrationProgress")
     public native float getMigrationProgress();
     @Property(selector = "userInfo")
-    public native NSDictionary getUserInfo();
+    public native NSDictionary<?, ?> getUserInfo();
     @Property(selector = "setUserInfo:")
-    public native void setUserInfo(NSDictionary v);
+    public native void setUserInfo(NSDictionary<?, ?> v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /**

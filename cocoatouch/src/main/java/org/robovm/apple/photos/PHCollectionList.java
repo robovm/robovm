@@ -50,6 +50,8 @@ import org.robovm.apple.avfoundation.*;
     /*<constructors>*/
     public PHCollectionList() {}
     protected PHCollectionList(SkipInit skipInit) { super(skipInit); }
+    public PHCollectionList(NSArray<PHCollection> collections, String title) { super(createTransientCollectionList(collections, title)); retain(getHandle()); }
+    public PHCollectionList(PHFetchResult<PHCollectionList> fetchResult, String title) { super(createTransientCollectionList(fetchResult, title)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "collectionListType")
@@ -66,18 +68,18 @@ import org.robovm.apple.avfoundation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "fetchCollectionListsContainingCollection:options:")
-    public static native PHFetchResult fetchCollectionListsContainingCollection(PHCollection collection, PHFetchOptions options);
+    public static native PHFetchResult<PHCollectionList> fetchCollectionListsContainingCollection(PHCollection collection, PHFetchOptions options);
     @Method(selector = "fetchCollectionListsWithLocalIdentifiers:options:")
-    public static native PHFetchResult fetchCollectionListsWithLocalIdentifiers(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> identifiers, PHFetchOptions options);
+    public static native PHFetchResult<PHCollectionList> fetchCollectionListsWithLocalIdentifiers(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> identifiers, PHFetchOptions options);
     @Method(selector = "fetchCollectionListsWithType:subtype:options:")
-    public static native PHFetchResult fetchCollectionListsWithType(PHCollectionListType collectionListType, PHCollectionListSubtype subtype, PHFetchOptions options);
+    public static native PHFetchResult<PHCollectionList> fetchCollectionListsWithType(PHCollectionListType collectionListType, PHCollectionListSubtype subtype, PHFetchOptions options);
     @Method(selector = "fetchMomentListsWithSubtype:containingMoment:options:")
-    public static native PHFetchResult fetchMomentListsWithSubtypeContainingMoment(PHCollectionListSubtype momentListSubtype, PHAssetCollection moment, PHFetchOptions options);
+    public static native PHFetchResult<PHCollectionList> fetchMomentListsWithSubtypeContainingMoment(PHCollectionListSubtype momentListSubtype, PHAssetCollection moment, PHFetchOptions options);
     @Method(selector = "fetchMomentListsWithSubtype:options:")
-    public static native PHFetchResult fetchMomentListsWithSubtype(PHCollectionListSubtype momentListSubtype, PHFetchOptions options);
+    public static native PHFetchResult<PHCollectionList> fetchMomentListsWithSubtype(PHCollectionListSubtype momentListSubtype, PHFetchOptions options);
     @Method(selector = "transientCollectionListWithCollections:title:")
-    public static native PHCollectionList createTransientCollectionList(NSArray<PHCollection> collections, String title);
+    protected static native @Pointer long createTransientCollectionList(NSArray<PHCollection> collections, String title);
     @Method(selector = "transientCollectionListWithCollectionsFetchResult:title:")
-    public static native PHCollectionList createTransientCollectionList(PHFetchResult fetchResult, String title);
+    protected static native @Pointer long createTransientCollectionList(PHFetchResult<PHCollectionList> fetchResult, String title);
     /*</methods>*/
 }

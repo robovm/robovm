@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.corelocation.*;
 import org.robovm.apple.addressbook.*;
+import org.robovm.apple.mapkit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -48,16 +49,10 @@ import org.robovm.apple.addressbook.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public EKCalendarItem() {}
+    protected EKCalendarItem(long handle) { super(handle); }
     protected EKCalendarItem(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    /**
-     * @since Available in iOS 5.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    @Property(selector = "UUID")
-    public native String getUUID();
     @Property(selector = "calendar")
     public native EKCalendar getCalendar();
     @Property(selector = "setCalendar:")

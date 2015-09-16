@@ -44,6 +44,15 @@ public enum /*<name>*/UIScreenOverscanCompensation/*</name>*/ implements ValuedE
     /*<values>*/
     Scale(0L),
     InsetBounds(1L),
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    None(2L),
+    /**
+     * @since Available in iOS 5.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     InsetApplicationFrame(2L);
     /*</values>*/
 

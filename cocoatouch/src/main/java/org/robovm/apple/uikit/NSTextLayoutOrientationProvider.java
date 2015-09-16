@@ -54,11 +54,6 @@ import org.robovm.apple.corelocation.*;
      */
     @Property(selector = "layoutOrientation")
     NSTextLayoutOrientation getLayoutOrientation();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @Property(selector = "setLayoutOrientation:")
-    void setLayoutOrientation(NSTextLayoutOrientation v);
     /*</properties>*/
     /*<methods>*/
     

@@ -88,10 +88,6 @@ import org.robovm.apple.corefoundation.*;
 
     /*<constants>*/
     /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final CFStreamNetworkServiceType VoIP = new CFStreamNetworkServiceType("VoIP");
-    /**
      * @since Available in iOS 5.0 and later.
      */
     public static final CFStreamNetworkServiceType Video = new CFStreamNetworkServiceType("Video");
@@ -103,9 +99,15 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 5.0 and later.
      */
     public static final CFStreamNetworkServiceType Background = new CFStreamNetworkServiceType("Background");
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
+    public static final CFStreamNetworkServiceType VoIP = new CFStreamNetworkServiceType("VoIP");
     /*</constants>*/
     
-    private static /*<name>*/CFStreamNetworkServiceType/*</name>*/[] values = new /*<name>*/CFStreamNetworkServiceType/*</name>*/[] {/*<value_list>*/VoIP, Video, Voice, Background/*</value_list>*/};
+    private static /*<name>*/CFStreamNetworkServiceType/*</name>*/[] values = new /*<name>*/CFStreamNetworkServiceType/*</name>*/[] {/*<value_list>*/Video, Voice, Background, VoIP/*</value_list>*/};
     
     /*<name>*/CFStreamNetworkServiceType/*</name>*/ (String getterName) {
         super(Values.class, getterName);
@@ -129,11 +131,6 @@ import org.robovm.apple.corefoundation.*;
 
         /*<values>*/
         /**
-         * @since Available in iOS 4.0 and later.
-         */
-        @GlobalValue(symbol="kCFStreamNetworkServiceTypeVoIP", optional=true)
-        public static native CFString VoIP();
-        /**
          * @since Available in iOS 5.0 and later.
          */
         @GlobalValue(symbol="kCFStreamNetworkServiceTypeVideo", optional=true)
@@ -148,6 +145,13 @@ import org.robovm.apple.corefoundation.*;
          */
         @GlobalValue(symbol="kCFStreamNetworkServiceTypeBackground", optional=true)
         public static native CFString Background();
+        /**
+         * @since Available in iOS 4.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
+         */
+        @Deprecated
+        @GlobalValue(symbol="kCFStreamNetworkServiceTypeVoIP", optional=true)
+        public static native CFString VoIP();
         /*</values>*/
     }
 }

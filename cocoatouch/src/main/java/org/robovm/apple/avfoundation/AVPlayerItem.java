@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -80,7 +81,7 @@ import org.robovm.apple.audiounit.*;
             return NSNotificationCenter.getDefaultCenter().addObserver(FailedToPlayToEndTimeNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke(NSNotification notification) {
-                    NSDictionary<NSString, NSObject> data = notification.getUserInfo();
+                    NSDictionary<?, ?> data = notification.getUserInfo();
                     NSError error = null;
                     if (data.containsKey(FailedToPlayToEndTimeErrorKey())) {
                         error = (NSError) data.get(FailedToPlayToEndTimeErrorKey());
@@ -263,6 +264,16 @@ import org.robovm.apple.audiounit.*;
     @Property(selector = "isPlaybackBufferEmpty")
     public native boolean isPlaybackBufferEmpty();
     /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "canUseNetworkResourcesForLiveStreamingWhilePaused")
+    public native boolean canUseNetworkResourcesForLiveStreamingWhilePaused();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setCanUseNetworkResourcesForLiveStreamingWhilePaused:")
+    public native void setCanUseNetworkResourcesForLiveStreamingWhilePaused(boolean v);
+    /**
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "preferredPeakBitRate")
@@ -272,6 +283,11 @@ import org.robovm.apple.audiounit.*;
      */
     @Property(selector = "setPreferredPeakBitRate:")
     public native void setPreferredPeakBitRate(double v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "currentMediaSelection")
+    public native AVMediaSelection getCurrentMediaSelection();
     /**
      * @since Available in iOS 6.0 and later.
      */
@@ -325,15 +341,6 @@ import org.robovm.apple.audiounit.*;
      */
     @Method(selector = "initWithAsset:automaticallyLoadedAssetKeys:")
     protected native @Pointer long init(AVAsset asset, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> automaticallyLoadedAssetKeys);
-    @Method(selector = "playerItemWithURL:")
-    public static native AVPlayerItem create(NSURL URL);
-    @Method(selector = "playerItemWithAsset:")
-    public static native AVPlayerItem create(AVAsset asset);
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @Method(selector = "playerItemWithAsset:automaticallyLoadedAssetKeys:")
-    public static native AVPlayerItem create(AVAsset asset, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> automaticallyLoadedAssetKeys);
     @Method(selector = "currentTime")
     public native @ByVal CMTime getCurrentTime();
     @Method(selector = "seekToTime:")

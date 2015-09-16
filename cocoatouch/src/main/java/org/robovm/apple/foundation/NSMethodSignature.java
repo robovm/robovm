@@ -52,6 +52,7 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public NSMethodSignature() {}
     protected NSMethodSignature(SkipInit skipInit) { super(skipInit); }
+    public NSMethodSignature(@org.robovm.rt.bro.annotation.Marshaler(StringMarshalers.AsDefaultCharsetZMarshaler.class) String types) { super(create(types)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "numberOfArguments")
@@ -70,6 +71,6 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "isOneway")
     public native boolean isOneway();
     @Method(selector = "signatureWithObjCTypes:")
-    public static native NSMethodSignature create(@org.robovm.rt.bro.annotation.Marshaler(StringMarshalers.AsDefaultCharsetZMarshaler.class) String types);
+    protected static native @Pointer long create(@org.robovm.rt.bro.annotation.Marshaler(StringMarshalers.AsDefaultCharsetZMarshaler.class) String types);
     /*</methods>*/
 }

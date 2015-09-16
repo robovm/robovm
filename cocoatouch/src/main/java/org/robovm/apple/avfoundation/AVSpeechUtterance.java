@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -88,16 +89,23 @@ import org.robovm.apple.audiounit.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="AVSpeechUtteranceMinimumSpeechRate", optional=true)
     public static native float getMinimumSpeechRate();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="AVSpeechUtteranceMaximumSpeechRate", optional=true)
     public static native float getMaximumSpeechRate();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="AVSpeechUtteranceDefaultSpeechRate", optional=true)
     public static native float getDefaultSpeechRate();
     
     @Method(selector = "initWithString:")
     protected native @Pointer long init(String string);
-    @Method(selector = "speechUtteranceWithString:")
-    public static native AVSpeechUtterance create(String string);
     /*</methods>*/
 }

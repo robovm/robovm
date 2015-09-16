@@ -121,5 +121,10 @@ import org.robovm.apple.corelocation.*;
      */
     @GlobalValue(symbol="UIActivityTypeAirDrop", optional=true)
     public static native String AirDrop();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @GlobalValue(symbol="UIActivityTypeOpenInIBooks", optional=true)
+    public static native String OpenInIBooks();
     /*</methods>*/
 }

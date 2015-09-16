@@ -52,6 +52,9 @@ import org.robovm.apple.dispatch.*;
         this.setY(y);
     }
     /*</constructors>*/
+    public MKMapPoint(CLLocationCoordinate2D coordinate) {
+        super(create(coordinate));
+    }
     /*<properties>*//*</properties>*/
     /*<members>*/
     @StructMember(0) public native double getX();
@@ -74,7 +77,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="MKMapPointForCoordinate", optional=true)
-    public static native @ByVal MKMapPoint create(@ByVal CLLocationCoordinate2D coordinate);
+    private static native @Pointer long create(@ByVal CLLocationCoordinate2D coordinate);
     /**
      * @since Available in iOS 4.0 and later.
      */

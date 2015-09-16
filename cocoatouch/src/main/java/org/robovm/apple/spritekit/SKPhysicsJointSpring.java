@@ -35,6 +35,7 @@ import org.robovm.apple.coreimage.*;
 import org.robovm.apple.avfoundation.*;
 import org.robovm.apple.glkit.*;
 import org.robovm.apple.scenekit.*;
+import org.robovm.apple.gameplaykit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -51,6 +52,7 @@ import org.robovm.apple.scenekit.*;
     /*<constructors>*/
     public SKPhysicsJointSpring() {}
     protected SKPhysicsJointSpring(SkipInit skipInit) { super(skipInit); }
+    public SKPhysicsJointSpring(SKPhysicsBody bodyA, SKPhysicsBody bodyB, @ByVal CGPoint anchorA, @ByVal CGPoint anchorB) { super(create(bodyA, bodyB, anchorA, anchorB)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "damping")
@@ -65,6 +67,6 @@ import org.robovm.apple.scenekit.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "jointWithBodyA:bodyB:anchorA:anchorB:")
-    public static native SKPhysicsJointSpring create(SKPhysicsBody bodyA, SKPhysicsBody bodyB, @ByVal CGPoint anchorA, @ByVal CGPoint anchorB);
+    protected static native @Pointer long create(SKPhysicsBody bodyA, SKPhysicsBody bodyB, @ByVal CGPoint anchorA, @ByVal CGPoint anchorB);
     /*</methods>*/
 }

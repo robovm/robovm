@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.corelocation.*;
 import org.robovm.apple.addressbook.*;
+import org.robovm.apple.mapkit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -49,6 +50,7 @@ import org.robovm.apple.addressbook.*;
     /*<constructors>*/
     public EKReminder() {}
     protected EKReminder(SkipInit skipInit) { super(skipInit); }
+    public EKReminder(EKEventStore eventStore) { super(create(eventStore)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "startDateComponents")
@@ -68,13 +70,13 @@ import org.robovm.apple.addressbook.*;
     @Property(selector = "setCompletionDate:")
     public native void setCompletionDate(NSDate v);
     @Property(selector = "priority")
-    public native @MachineSizedSInt long getPriority();
+    public native @MachineSizedUInt long getPriority();
     @Property(selector = "setPriority:")
-    public native void setPriority(@MachineSizedSInt long v);
+    public native void setPriority(@MachineSizedUInt long v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "reminderWithEventStore:")
-    public static native EKReminder create(EKEventStore eventStore);
+    private static native @Pointer long create(EKEventStore eventStore);
     /*</methods>*/
 }

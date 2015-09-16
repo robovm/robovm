@@ -51,24 +51,32 @@ import org.robovm.apple.dispatch.*;
     public MKGeodesicPolyline() {}
     protected MKGeodesicPolyline(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
+    public MKGeodesicPolyline(MKMapPoint[] points) {
+        super(create0(points));
+        retain(getHandle());
+    }
+    public MKGeodesicPolyline(CLLocationCoordinate2D[] coords) {
+        super(create0(coords));
+        retain(getHandle());
+    }
     /*<properties>*/
     
     /*</properties>*/
     /*<members>*//*</members>*/
-    public static MKGeodesicPolyline create(MKMapPoint[] points) {
+    private static long create0(MKMapPoint[] points) {
         MKMapPoint first = Struct.allocate(MKMapPoint.class, points.length);
         first.update(points);
         return create(first, points.length);
     }
-    public static MKGeodesicPolyline create(CLLocationCoordinate2D[] coords) {
+    private static long create0(CLLocationCoordinate2D[] coords) {
         CLLocationCoordinate2D first = Struct.allocate(CLLocationCoordinate2D.class, coords.length);
         first.update(coords);
         return create(first, coords.length);
     }
     /*<methods>*/
     @Method(selector = "polylineWithPoints:count:")
-    private static native MKGeodesicPolyline create(MKMapPoint points, @MachineSizedUInt long count);
+    private static native @Pointer long create(MKMapPoint points, @MachineSizedUInt long count);
     @Method(selector = "polylineWithCoordinates:count:")
-    private static native MKGeodesicPolyline create(CLLocationCoordinate2D coords, @MachineSizedUInt long count);
+    private static native @Pointer long create(CLLocationCoordinate2D coords, @MachineSizedUInt long count);
     /*</methods>*/
 }

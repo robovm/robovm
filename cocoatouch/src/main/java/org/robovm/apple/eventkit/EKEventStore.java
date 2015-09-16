@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.corelocation.*;
 import org.robovm.apple.addressbook.*;
+import org.robovm.apple.mapkit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -67,12 +68,10 @@ import org.robovm.apple.addressbook.*;
     @Property(selector = "eventStoreIdentifier")
     public native String getEventStoreIdentifier();
     /**
-     * @since Available in iOS 4.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
+     * @since Available in iOS 5.0 and later.
      */
-    @Deprecated
-    @Property(selector = "calendars")
-    public native NSArray<EKCalendar> getCalendars();
+    @Property(selector = "sources")
+    public native NSArray<EKSource> getSources();
     @Property(selector = "defaultCalendarForNewEvents")
     public native EKCalendar getDefaultCalendarForNewEvents();
     /*</properties>*/
@@ -89,11 +88,6 @@ import org.robovm.apple.addressbook.*;
      */
     @Method(selector = "requestAccessToEntityType:completion:")
     public native void requestAccess(EKEntityType entityType, @Block VoidBlock2<Boolean, NSError> completion);
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @Method(selector = "sources")
-    public native NSArray<EKSource> getSources();
     /**
      * @since Available in iOS 5.0 and later.
      */

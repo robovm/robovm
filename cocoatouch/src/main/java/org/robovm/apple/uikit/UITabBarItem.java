@@ -52,6 +52,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UITabBarItem() {}
     protected UITabBarItem(SkipInit skipInit) { super(skipInit); }
+    public UITabBarItem(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     public UITabBarItem(String title, UIImage image, @MachineSizedSInt long tag) { super((SkipInit) null); initObject(init(title, image, tag)); }
     /**
      * @since Available in iOS 7.0 and later.
@@ -74,9 +75,21 @@ import org.robovm.apple.corelocation.*;
     public native String getBadgeValue();
     @Property(selector = "setBadgeValue:")
     public native void setBadgeValue(String v);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "titlePositionAdjustment")
+    public native @ByVal UIOffset getTitlePositionAdjustment();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "setTitlePositionAdjustment:")
+    public native void setTitlePositionAdjustment(@ByVal UIOffset v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     @Method(selector = "initWithTitle:image:tag:")
     protected native @Pointer long init(String title, UIImage image, @MachineSizedSInt long tag);
     /**
@@ -107,15 +120,5 @@ import org.robovm.apple.corelocation.*;
     @Deprecated
     @Method(selector = "finishedUnselectedImage")
     public native UIImage getFinishedUnselectedImage();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @Method(selector = "setTitlePositionAdjustment:")
-    public native void setTitlePositionAdjustment(@ByVal UIOffset adjustment);
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @Method(selector = "titlePositionAdjustment")
-    public native @ByVal UIOffset getTitlePositionAdjustment();
     /*</methods>*/
 }

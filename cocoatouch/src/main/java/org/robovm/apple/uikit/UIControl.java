@@ -51,6 +51,7 @@ import org.robovm.apple.corelocation.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public UIControl() {}
+    protected UIControl(long handle) { super(handle); }
     protected UIControl(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     

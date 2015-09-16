@@ -96,7 +96,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "splitViewControllerSupportedInterfaceOrientations:")
-    @MachineSizedUInt long getSupportedInterfaceOrientations(UISplitViewController splitViewController);
+    UIInterfaceOrientationMask getSupportedInterfaceOrientations(UISplitViewController splitViewController);
     /**
      * @since Available in iOS 7.0 and later.
      */

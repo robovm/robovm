@@ -53,6 +53,11 @@ import org.robovm.apple.uikit.*;
     @Method(selector = "match:didReceiveData:fromRemotePlayer:")
     void didReceiveData(GKMatch match, NSData data, GKPlayer player);
     /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "match:didReceiveData:forRecipient:fromRemotePlayer:")
+    void didReceiveData(GKMatch match, NSData data, GKPlayer recipient, GKPlayer player);
+    /**
      * @since Available in iOS 4.1 and later.
      * @deprecated Deprecated in iOS 8.0.
      */

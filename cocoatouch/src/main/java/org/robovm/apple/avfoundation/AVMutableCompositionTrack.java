@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -92,7 +93,7 @@ import org.robovm.apple.audiounit.*;
        return result;
     }
     @Method(selector = "insertTimeRange:ofTrack:atTime:error:")
-    private native boolean insertTimeRange(@ByVal CMTimeRange timeRange, AVAssetTrack track, @ByVal CMTime startTime, NSError.NSErrorPtr error);
+    private native boolean insertTimeRange(@ByVal CMTimeRange timeRange, AVAssetTrack track, @ByVal CMTime startTime, NSError.NSErrorPtr outError);
     /**
      * @since Available in iOS 5.0 and later.
      */
@@ -106,7 +107,7 @@ import org.robovm.apple.audiounit.*;
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "insertTimeRanges:ofTracks:atTime:error:")
-    private native boolean insertTimeRanges(@org.robovm.rt.bro.annotation.Marshaler(CMTimeRange.AsValuedListMarshaler.class) List<CMTimeRange> timeRanges, NSArray<AVAssetTrack> tracks, @ByVal CMTime startTime, NSError.NSErrorPtr error);
+    private native boolean insertTimeRanges(@org.robovm.rt.bro.annotation.Marshaler(CMTimeRange.AsValuedListMarshaler.class) List<CMTimeRange> timeRanges, NSArray<AVAssetTrack> tracks, @ByVal CMTime startTime, NSError.NSErrorPtr outError);
     @Method(selector = "insertEmptyTimeRange:")
     public native void insertEmptyTimeRange(@ByVal CMTimeRange timeRange);
     @Method(selector = "removeTimeRange:")
@@ -120,6 +121,6 @@ import org.robovm.apple.audiounit.*;
        return result;
     }
     @Method(selector = "validateTrackSegments:error:")
-    private native boolean validateTrackSegments(NSArray<AVCompositionTrackSegment> trackSegments, NSError.NSErrorPtr error);
+    private native boolean validateTrackSegments(NSArray<AVCompositionTrackSegment> trackSegments, NSError.NSErrorPtr outError);
     /*</methods>*/
 }

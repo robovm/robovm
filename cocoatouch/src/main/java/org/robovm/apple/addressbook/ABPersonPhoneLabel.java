@@ -76,24 +76,53 @@ import org.robovm.apple.corefoundation.*;
             + /*<name>*/ABPersonPhoneLabel/*</name>*/.class.getName());
     }
     /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="kABPersonPhoneMobileLabel", optional=true)
     protected static native CFString MobileLabel();
     /**
-     * @since Available in iOS 3.0 and later.
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @GlobalValue(symbol="kABPersonPhoneIPhoneLabel", optional=true)
     protected static native CFString IPhoneLabel();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="kABPersonPhoneMainLabel", optional=true)
     protected static native CFString MainLabel();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="kABPersonPhoneHomeFAXLabel", optional=true)
     protected static native CFString HomeFAXLabel();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="kABPersonPhoneWorkFAXLabel", optional=true)
     protected static native CFString WorkFAXLabel();
     /**
-     * @since Available in iOS 5.0 and later.
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @GlobalValue(symbol="kABPersonPhoneOtherFAXLabel", optional=true)
     protected static native CFString OtherFAXLabel();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="kABPersonPhonePagerLabel", optional=true)
     protected static native CFString PagerLabel();
     /*</methods>*/

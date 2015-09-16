@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -129,9 +130,13 @@ import org.robovm.apple.audiounit.*;
      * @since Available in iOS 4.0 and later.
      */
     public static final AVMediaType Muxed = new AVMediaType("Muxed");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final AVMediaType MetadataObject = new AVMediaType("MetadataObject");
     /*</constants>*/
     
-    private static /*<name>*/AVMediaType/*</name>*/[] values = new /*<name>*/AVMediaType/*</name>*/[] {/*<value_list>*/Video, Audio, Text, ClosedCaption, Subtitle, Timecode, Metadata, Muxed/*</value_list>*/};
+    private static /*<name>*/AVMediaType/*</name>*/[] values = new /*<name>*/AVMediaType/*</name>*/[] {/*<value_list>*/Video, Audio, Text, ClosedCaption, Subtitle, Timecode, Metadata, Muxed, MetadataObject/*</value_list>*/};
     
     /*<name>*/AVMediaType/*</name>*/ (String getterName) {
         super(Values.class, getterName);
@@ -194,6 +199,11 @@ import org.robovm.apple.audiounit.*;
          */
         @GlobalValue(symbol="AVMediaTypeMuxed", optional=true)
         public static native NSString Muxed();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="AVMediaTypeMetadataObject", optional=true)
+        public static native NSString MetadataObject();
         /*</values>*/
     }
 }

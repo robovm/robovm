@@ -77,6 +77,26 @@ import org.robovm.apple.corelocation.*;
     public native @MachineSizedFloat double getAngularResistance();
     @Property(selector = "setAngularResistance:")
     public native void setAngularResistance(@MachineSizedFloat double v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "charge")
+    public native @MachineSizedFloat double getCharge();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setCharge:")
+    public native void setCharge(@MachineSizedFloat double v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "isAnchored")
+    public native boolean isAnchored();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setAnchored:")
+    public native void setAnchored(boolean v);
     @Property(selector = "allowsRotation")
     public native boolean allowsRotation();
     @Property(selector = "setAllowsRotation:")

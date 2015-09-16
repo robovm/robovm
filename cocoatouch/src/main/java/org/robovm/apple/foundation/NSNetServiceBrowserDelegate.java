@@ -55,19 +55,19 @@ import org.robovm.apple.dispatch.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "netServiceBrowserWillSearch:")
-    void willSearch(NSNetServiceBrowser aNetServiceBrowser);
+    void willSearch(NSNetServiceBrowser browser);
     @Method(selector = "netServiceBrowserDidStopSearch:")
-    void didStopSearch(NSNetServiceBrowser aNetServiceBrowser);
+    void didStopSearch(NSNetServiceBrowser browser);
     @Method(selector = "netServiceBrowser:didNotSearch:")
-    void didNotSearch(NSNetServiceBrowser aNetServiceBrowser, NSDictionary errorDict);
+    void didNotSearch(NSNetServiceBrowser browser, NSDictionary<NSString, NSNumber> errorDict);
     @Method(selector = "netServiceBrowser:didFindDomain:moreComing:")
-    void didFindDomain(NSNetServiceBrowser aNetServiceBrowser, String domainString, boolean moreComing);
+    void didFindDomain(NSNetServiceBrowser browser, String domainString, boolean moreComing);
     @Method(selector = "netServiceBrowser:didFindService:moreComing:")
-    void didFindService(NSNetServiceBrowser aNetServiceBrowser, NSNetService aNetService, boolean moreComing);
+    void didFindService(NSNetServiceBrowser browser, NSNetService service, boolean moreComing);
     @Method(selector = "netServiceBrowser:didRemoveDomain:moreComing:")
-    void didRemoveDomain(NSNetServiceBrowser aNetServiceBrowser, String domainString, boolean moreComing);
+    void didRemoveDomain(NSNetServiceBrowser browser, String domainString, boolean moreComing);
     @Method(selector = "netServiceBrowser:didRemoveService:moreComing:")
-    void didRemoveService(NSNetServiceBrowser aNetServiceBrowser, NSNetService aNetService, boolean moreComing);
+    void didRemoveService(NSNetServiceBrowser browser, NSNetService service, boolean moreComing);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

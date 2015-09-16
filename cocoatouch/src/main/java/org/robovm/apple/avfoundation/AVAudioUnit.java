@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -80,6 +81,6 @@ import org.robovm.apple.audiounit.*;
        return result;
     }
     @Method(selector = "loadAudioUnitPresetAtURL:error:")
-    private native boolean loadAudioUnitPreset(NSURL url, NSError.NSErrorPtr error);
+    private native boolean loadAudioUnitPreset(NSURL url, NSError.NSErrorPtr outError);
     /*</methods>*/
 }

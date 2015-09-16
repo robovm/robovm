@@ -53,6 +53,7 @@ import org.robovm.apple.corelocation.*;
     public UICollectionViewTransitionLayout() {}
     protected UICollectionViewTransitionLayout(SkipInit skipInit) { super(skipInit); }
     public UICollectionViewTransitionLayout(UICollectionViewLayout currentLayout, UICollectionViewLayout newLayout) { super((SkipInit) null); initObject(init(currentLayout, newLayout)); }
+    public UICollectionViewTransitionLayout(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "transitionProgress")
@@ -68,6 +69,8 @@ import org.robovm.apple.corelocation.*;
     /*<methods>*/
     @Method(selector = "initWithCurrentLayout:nextLayout:")
     protected native @Pointer long init(UICollectionViewLayout currentLayout, UICollectionViewLayout newLayout);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     @Method(selector = "updateValue:forAnimatedKey:")
     public native void updateValue(@MachineSizedFloat double value, String key);
     @Method(selector = "valueForAnimatedKey:")

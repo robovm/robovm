@@ -60,6 +60,8 @@ import org.robovm.apple.corelocation.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     @Method(selector = "invalidateLayout")
     public native void invalidateLayout();
     /**
@@ -169,9 +171,27 @@ import org.robovm.apple.corelocation.*;
      */
     @Method(selector = "indexPathsToInsertForDecorationViewOfKind:")
     public native NSArray<NSIndexPath> getIndexPathsToInsertForDecorationView(String elementKind);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "targetIndexPathForInteractivelyMovingItem:withPosition:")
+    public native NSIndexPath getTargetIndexPathForInteractivelyMovingItem(NSIndexPath previousIndexPath, @ByVal CGPoint position);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "layoutAttributesForInteractivelyMovingItemAtIndexPath:withTargetPosition:")
+    public native UICollectionViewLayoutAttributes getLayoutAttributesForInteractivelyMovingItem(NSIndexPath indexPath, @ByVal CGPoint position);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "invalidationContextForInteractivelyMovingItems:withTargetPosition:previousIndexPaths:previousPosition:")
+    public native UICollectionViewLayoutInvalidationContext getInvalidationContextForInteractivelyMovingItems(NSArray<?> targetIndexPaths, @ByVal CGPoint targetPosition, NSArray<NSIndexPath> previousIndexPaths, @ByVal CGPoint previousPosition);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "invalidationContextForEndingInteractiveMovementOfItemsToFinalIndexPaths:previousIndexPaths:movementCancelled:")
+    public native UICollectionViewLayoutInvalidationContext getInvalidationContextForEndingInteractiveMovement(NSArray<NSIndexPath> indexPaths, NSArray<NSIndexPath> previousIndexPaths, boolean movementCancelled);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder coder);
-    @Method(selector = "initWithCoder:")
-    protected native @Pointer long init(NSCoder aDecoder);
     /*</methods>*/
 }

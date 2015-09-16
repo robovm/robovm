@@ -201,7 +201,7 @@ import org.robovm.apple.dispatch.*;
         if (c instanceof NSArray) {
             initObject(init((NSArray<T>) c));
         } else {
-            NSObject[] objects = c.toArray(new NSObject[c.size()]);
+            ObjCObject[] objects = c.toArray(new ObjCObject[c.size()]);
             initWithObjects(objects);
         }
     }
@@ -236,7 +236,7 @@ import org.robovm.apple.dispatch.*;
         }
     }
     
-    private void initWithObjects(NSObject[] objects) {
+    private void initWithObjects(ObjCObject[] objects) {
         VoidPtr.VoidPtrPtr ptr = null;
         if (objects.length > 0) {
             ptr = Struct.allocate(VoidPtr.VoidPtrPtr.class, objects.length);

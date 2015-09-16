@@ -29,6 +29,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.corelocation.*;
+import org.robovm.apple.contacts.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -47,6 +48,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public CKNotification() {}
     protected CKNotification(SkipInit skipInit) { super(skipInit); }
+    public CKNotification(org.robovm.apple.uikit.UIRemoteNotification notificationDictionary) { super(create(notificationDictionary)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "notificationType")
@@ -71,10 +73,20 @@ import org.robovm.apple.corelocation.*;
     public native NSNumber getBadge();
     @Property(selector = "soundName")
     public native String getSoundName();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "subscriptionID")
+    public native String getSubscriptionID();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "category")
+    public native String getCategory();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "notificationFromRemoteNotificationDictionary:")
-    public static native CKNotification create(org.robovm.apple.uikit.UIRemoteNotification notificationDictionary);
+    protected static native @Pointer long create(org.robovm.apple.uikit.UIRemoteNotification notificationDictionary);
     /*</methods>*/
 }

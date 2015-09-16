@@ -49,7 +49,7 @@ import org.robovm.apple.uikit.*;
             return NSNotificationCenter.getDefaultCenter().addObserver(TextMessageAvailabilityDidChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke(NSNotification a) {
-                    NSDictionary<NSString, ?> data = a.getUserInfo();
+                    NSDictionary<?, ?> data = a.getUserInfo();
                     if (data.containsKey(TextMessageAvailabilityKey())) {
                         NSNumber val = (NSNumber)data.get(TextMessageAvailabilityKey());
                         block.invoke(val.booleanValue());

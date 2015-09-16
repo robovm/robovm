@@ -35,6 +35,7 @@ import org.robovm.apple.coreimage.*;
 import org.robovm.apple.avfoundation.*;
 import org.robovm.apple.glkit.*;
 import org.robovm.apple.scenekit.*;
+import org.robovm.apple.gameplaykit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -57,18 +58,6 @@ import org.robovm.apple.scenekit.*;
     public native SKTexture getParticleTexture();
     @Property(selector = "setParticleTexture:")
     public native void setParticleTexture(SKTexture v);
-    @Property(selector = "particleZPosition")
-    public native @MachineSizedFloat double getParticleZPosition();
-    @Property(selector = "setParticleZPosition:")
-    public native void setParticleZPosition(@MachineSizedFloat double v);
-    @Property(selector = "particleZPositionRange")
-    public native @MachineSizedFloat double getParticleZPositionRange();
-    @Property(selector = "setParticleZPositionRange:")
-    public native void setParticleZPositionRange(@MachineSizedFloat double v);
-    @Property(selector = "particleZPositionSpeed")
-    public native @MachineSizedFloat double getParticleZPositionSpeed();
-    @Property(selector = "setParticleZPositionSpeed:")
-    public native void setParticleZPositionSpeed(@MachineSizedFloat double v);
     @Property(selector = "particleBlendMode")
     public native SKBlendMode getParticleBlendMode();
     @Property(selector = "setParticleBlendMode:")
@@ -241,6 +230,48 @@ import org.robovm.apple.scenekit.*;
     public native SKShader getShader();
     @Property(selector = "setShader:")
     public native void setShader(SKShader v);
+    @Property(selector = "particleZPosition")
+    public native @MachineSizedFloat double getParticleZPosition();
+    @Property(selector = "setParticleZPosition:")
+    public native void setParticleZPosition(@MachineSizedFloat double v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "particleRenderOrder")
+    public native SKParticleRenderOrder getParticleRenderOrder();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setParticleRenderOrder:")
+    public native void setParticleRenderOrder(SKParticleRenderOrder v);
+    /**
+     * @since Available in iOS 7.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
+    @Property(selector = "particleZPositionRange")
+    public native @MachineSizedFloat double getParticleZPositionRange();
+    /**
+     * @since Available in iOS 7.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
+    @Property(selector = "setParticleZPositionRange:")
+    public native void setParticleZPositionRange(@MachineSizedFloat double v);
+    /**
+     * @since Available in iOS 7.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
+    @Property(selector = "particleZPositionSpeed")
+    public native @MachineSizedFloat double getParticleZPositionSpeed();
+    /**
+     * @since Available in iOS 7.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
+    @Property(selector = "setParticleZPositionSpeed:")
+    public native void setParticleZPositionSpeed(@MachineSizedFloat double v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -56,6 +57,14 @@ import org.robovm.apple.audiounit.*;
     /*<constructors>*/
     public AVMutableVideoComposition() {}
     protected AVMutableVideoComposition(SkipInit skipInit) { super(skipInit); }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public AVMutableVideoComposition(AVAsset asset) { super(create(asset)); retain(getHandle()); }
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public AVMutableVideoComposition(AVAsset asset, @Block VoidBlock1<AVAsynchronousCIImageFilteringRequest> ciFiltersApplier) { super(create(asset, ciFiltersApplier)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     /**
@@ -91,12 +100,15 @@ import org.robovm.apple.audiounit.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "videoComposition")
-    public static native AVMutableVideoComposition create();
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "videoCompositionWithPropertiesOfAsset:")
-    public static native AVMutableVideoComposition create(AVAsset asset);
+    protected static native @Pointer long create(AVAsset asset);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "videoCompositionWithAsset:applyingCIFiltersWithHandler:")
+    protected static native @Pointer long create(AVAsset asset, @Block VoidBlock1<AVAsynchronousCIImageFilteringRequest> ciFiltersApplier);
     /*</methods>*/
 }

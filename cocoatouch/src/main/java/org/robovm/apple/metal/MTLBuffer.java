@@ -58,6 +58,11 @@ import org.robovm.apple.dispatch.*;
     public native MTLDevice getDevice();
     @Property(selector = "cpuCacheMode")
     public native MTLCPUCacheMode getCpuCacheMode();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "storageMode")
+    public native MTLStorageMode getStorageMode();
     /*</properties>*/
     /*<members>*//*</members>*/
     public ByteBuffer getContents() {
@@ -66,6 +71,9 @@ import org.robovm.apple.dispatch.*;
     /*<methods>*/
     @Method(selector = "contents")
     protected native @Pointer long getContents0();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "newTextureWithDescriptor:offset:bytesPerRow:")
     public native @org.robovm.rt.bro.annotation.Marshaler(NSObject.NoRetainMarshaler.class) MTLTexture newTexture(MTLTextureDescriptor descriptor, @MachineSizedUInt long offset, @MachineSizedUInt long bytesPerRow);
     @Method(selector = "setPurgeableState:")

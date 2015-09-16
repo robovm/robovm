@@ -58,6 +58,26 @@ import org.robovm.apple.dispatch.*;
     public native MKMapItem getDestination();
     @Property(selector = "expectedTravelTime")
     public native double getExpectedTravelTime();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "distance")
+    public native double getDistance();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "expectedArrivalDate")
+    public native NSDate getExpectedArrivalDate();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "expectedDepartureDate")
+    public native NSDate getExpectedDepartureDate();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "transportType")
+    public native MKDirectionsTransportType getTransportType();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

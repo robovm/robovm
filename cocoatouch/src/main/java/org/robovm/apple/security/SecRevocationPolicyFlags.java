@@ -35,7 +35,7 @@ import org.robovm.apple.dispatch.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
+/*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/SecRevocationPolicyFlags/*</name>*/ extends Bits</*<name>*/SecRevocationPolicyFlags/*</name>*/> {
     /*<values>*/
     public static final SecRevocationPolicyFlags None = new SecRevocationPolicyFlags(0L);

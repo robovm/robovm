@@ -50,6 +50,8 @@ import org.robovm.apple.avfoundation.*;
     /*<constructors>*/
     public PHCollectionListChangeRequest() {}
     protected PHCollectionListChangeRequest(SkipInit skipInit) { super(skipInit); }
+    public PHCollectionListChangeRequest(PHCollectionList collectionList) { super(create(collectionList)); retain(getHandle()); }
+    public PHCollectionListChangeRequest(PHCollectionList collectionList, PHFetchResult childCollections) { super(create(collectionList, childCollections)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "placeholderForCreatedCollectionList")
@@ -78,8 +80,8 @@ import org.robovm.apple.avfoundation.*;
     @Method(selector = "deleteCollectionLists:")
     public static native void deleteCollectionLists(NSFastEnumeration collectionLists);
     @Method(selector = "changeRequestForCollectionList:")
-    public static native PHCollectionListChangeRequest create(PHCollectionList collectionList);
+    protected static native @Pointer long create(PHCollectionList collectionList);
     @Method(selector = "changeRequestForCollectionList:childCollections:")
-    public static native PHCollectionListChangeRequest create(PHCollectionList collectionList, PHFetchResult childCollections);
+    protected static native @Pointer long create(PHCollectionList collectionList, PHFetchResult childCollections);
     /*</methods>*/
 }

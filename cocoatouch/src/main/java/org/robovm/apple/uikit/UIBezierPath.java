@@ -135,6 +135,8 @@ import org.robovm.apple.corelocation.*;
     }
 
     /*<methods>*/
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     @Method(selector = "moveToPoint:")
     public native void move(@ByVal CGPoint point);
     @Method(selector = "addLineToPoint:")
@@ -178,20 +180,18 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "addClip")
     public native void addClip();
     @Method(selector = "bezierPathWithRect:")
-    public static native UIBezierPath createFromRect(@ByVal CGRect rect);
+    public static native UIBezierPath newRect(@ByVal CGRect rect);
     @Method(selector = "bezierPathWithOvalInRect:")
-    public static native UIBezierPath createFromOval(@ByVal CGRect rect);
+    public static native UIBezierPath newOval(@ByVal CGRect rect);
     @Method(selector = "bezierPathWithRoundedRect:cornerRadius:")
-    public static native UIBezierPath createFromRoundedRect(@ByVal CGRect rect, @MachineSizedFloat double cornerRadius);
+    public static native UIBezierPath newRoundedRect(@ByVal CGRect rect, @MachineSizedFloat double cornerRadius);
     @Method(selector = "bezierPathWithRoundedRect:byRoundingCorners:cornerRadii:")
-    public static native UIBezierPath createFromRoundedRect(@ByVal CGRect rect, UIRectCorner corners, @ByVal CGSize cornerRadii);
+    public static native UIBezierPath newRoundedRect(@ByVal CGRect rect, UIRectCorner corners, @ByVal CGSize cornerRadii);
     @Method(selector = "bezierPathWithArcCenter:radius:startAngle:endAngle:clockwise:")
-    public static native UIBezierPath createFromArc(@ByVal CGPoint center, @MachineSizedFloat double radius, @MachineSizedFloat double startAngle, @MachineSizedFloat double endAngle, boolean clockwise);
+    public static native UIBezierPath newArc(@ByVal CGPoint center, @MachineSizedFloat double radius, @MachineSizedFloat double startAngle, @MachineSizedFloat double endAngle, boolean clockwise);
     @Method(selector = "bezierPathWithCGPath:")
-    public static native UIBezierPath createFromPath(CGPath CGPath);
+    public static native UIBezierPath newPath(CGPath CGPath);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder coder);
-    @Method(selector = "initWithCoder:")
-    protected native @Pointer long init(NSCoder aDecoder);
     /*</methods>*/
 }

@@ -76,19 +76,5 @@ import org.robovm.apple.corelocation.*;
     public void willBeginSendingToApplication(UIDocumentInteractionController controller, String application) {}
     @NotImplemented("documentInteractionController:didEndSendingToApplication:")
     public void didEndSendingToApplication(UIDocumentInteractionController controller, String application) {}
-    /**
-     * @since Available in iOS 3.2 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    @NotImplemented("documentInteractionController:canPerformAction:")
-    public boolean canPerformAction(UIDocumentInteractionController controller, Selector action) { return false; }
-    /**
-     * @since Available in iOS 3.2 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    @NotImplemented("documentInteractionController:performAction:")
-    public boolean performAction(UIDocumentInteractionController controller, Selector action) { return false; }
     /*</methods>*/
 }

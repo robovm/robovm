@@ -52,12 +52,23 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UIUserNotificationAction() {}
     protected UIUserNotificationAction(SkipInit skipInit) { super(skipInit); }
+    public UIUserNotificationAction(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "identifier")
     public native String getIdentifier();
     @Property(selector = "title")
     public native String getTitle();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "behavior")
+    public native UIUserNotificationActionBehavior getBehavior();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "parameters")
+    public native NSDictionary<?, ?> getParameters();
     @Property(selector = "activationMode")
     public native UIUserNotificationActivationMode getActivationMode();
     @Property(selector = "isAuthenticationRequired")
@@ -67,6 +78,7 @@ import org.robovm.apple.corelocation.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     /*</methods>*/
 }

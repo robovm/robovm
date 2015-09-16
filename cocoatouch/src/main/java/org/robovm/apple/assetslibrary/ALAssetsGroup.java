@@ -35,7 +35,9 @@ import org.robovm.apple.imageio.*;
 /*<javadoc>*/
 /**
  * @since Available in iOS 4.0 and later.
+ * @deprecated Deprecated in iOS 9.0.
  */
+@Deprecated
 /*</javadoc>*/
 /*<annotations>*/@Library("AssetsLibrary") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/ALAssetsGroup/*</name>*/ 
@@ -52,7 +54,9 @@ import org.robovm.apple.imageio.*;
     /*<properties>*/
     /**
      * @since Available in iOS 5.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @Property(selector = "isEditable")
     public native boolean isEditable();
     /*</properties>*/
@@ -88,24 +92,61 @@ import org.robovm.apple.imageio.*;
         return null;
     }
     /*<methods>*/
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Method(selector = "valueForProperty:")
     public native NSObject getValue(ALAssetsGroupProperty property);
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @WeaklyLinked
     @Method(selector = "posterImage")
     public native CGImage getPosterImage();
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Method(selector = "setAssetsFilter:")
     public native void setAssetsFilter(ALAssetsFilter filter);
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Method(selector = "numberOfAssets")
     public native @MachineSizedSInt long getNumberOfAssets();
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Method(selector = "enumerateAssetsUsingBlock:")
     public native void enumerateAssets(@Block("(,@MachineSizedUInt,)") VoidBlock3<ALAsset, Long, BooleanPtr> enumerationBlock);
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Method(selector = "enumerateAssetsWithOptions:usingBlock:")
     public native void enumerateAssets(NSEnumerationOptions options, @Block("(,@MachineSizedUInt,)") VoidBlock3<ALAsset, Long, BooleanPtr> enumerationBlock);
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Method(selector = "enumerateAssetsAtIndexes:options:usingBlock:")
     public native void enumerateAssets(NSIndexSet indexSet, NSEnumerationOptions options, @Block("(,@MachineSizedUInt,)") VoidBlock3<ALAsset, Long, BooleanPtr> enumerationBlock);
     /**
      * @since Available in iOS 5.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @Method(selector = "addAsset:")
     public native boolean addAsset(ALAsset asset);
     /*</methods>*/

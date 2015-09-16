@@ -142,9 +142,9 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "bundleIdentifier")
     public native String getBundleIdentifier();
     @Property(selector = "infoDictionary")
-    public native NSDictionary getInfoDictionary();
+    public native NSDictionary<NSString, ?> getInfoDictionary();
     @Property(selector = "localizedInfoDictionary")
-    public native NSDictionary getLocalizedInfoDictionary();
+    public native NSDictionary<NSString, ?> getLocalizedInfoDictionary();
     @Property(selector = "principalClass")
     public native Class<?> getPrincipalClass();
     @Property(selector = "preferredLocalizations")

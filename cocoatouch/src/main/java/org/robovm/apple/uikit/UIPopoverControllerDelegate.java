@@ -52,13 +52,25 @@ import org.robovm.apple.corelocation.*;
     
     /*</properties>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 3.2 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Method(selector = "popoverControllerShouldDismissPopover:")
     boolean shouldDismiss(UIPopoverController popoverController);
+    /**
+     * @since Available in iOS 3.2 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Method(selector = "popoverControllerDidDismissPopover:")
     void didDismiss(UIPopoverController popoverController);
     /**
      * @since Available in iOS 7.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @Method(selector = "popoverController:willRepositionPopoverToRect:inView:")
     void willReposition(UIPopoverController popoverController, CGRect rect, UIView.UIViewPtr view);
     /*</methods>*/

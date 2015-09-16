@@ -35,6 +35,7 @@ import org.robovm.apple.coreimage.*;
 import org.robovm.apple.avfoundation.*;
 import org.robovm.apple.glkit.*;
 import org.robovm.apple.scenekit.*;
+import org.robovm.apple.gameplaykit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -51,6 +52,7 @@ import org.robovm.apple.scenekit.*;
     /*<constructors>*/
     public SKPhysicsJointLimit() {}
     protected SKPhysicsJointLimit(SkipInit skipInit) { super(skipInit); }
+    public SKPhysicsJointLimit(SKPhysicsBody bodyA, SKPhysicsBody bodyB, @ByVal CGPoint anchorA, @ByVal CGPoint anchorB) { super(create(bodyA, bodyB, anchorA, anchorB)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "maxLength")
@@ -61,6 +63,6 @@ import org.robovm.apple.scenekit.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "jointWithBodyA:bodyB:anchorA:anchorB:")
-    public static native SKPhysicsJointLimit create(SKPhysicsBody bodyA, SKPhysicsBody bodyB, @ByVal CGPoint anchorA, @ByVal CGPoint anchorB);
+    protected static native @Pointer long create(SKPhysicsBody bodyA, SKPhysicsBody bodyB, @ByVal CGPoint anchorA, @ByVal CGPoint anchorB);
     /*</methods>*/
 }

@@ -96,8 +96,6 @@ import org.robovm.apple.dispatch.*;
     public native boolean send(NSDate limitDate, NSMutableArray<?> components, NSPort receivePort, @MachineSizedUInt long headerSpaceReserved);
     @Method(selector = "sendBeforeDate:msgid:components:from:reserved:")
     public native boolean send(NSDate limitDate, @MachineSizedUInt long msgID, NSMutableArray<?> components, NSPort receivePort, @MachineSizedUInt long headerSpaceReserved);
-    @Method(selector = "port")
-    public static native NSPort create();
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder coder);
     @Method(selector = "initWithCoder:")

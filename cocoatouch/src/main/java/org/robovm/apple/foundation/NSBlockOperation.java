@@ -53,6 +53,7 @@ import org.robovm.apple.dispatch.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     protected NSBlockOperation(SkipInit skipInit) { super(skipInit); }
+    public NSBlockOperation(@Block Runnable block) { super(create(block)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     
@@ -62,6 +63,6 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "addExecutionBlock:")
     public native void addExecutionBlock(@Block Runnable block);
     @Method(selector = "blockOperationWithBlock:")
-    public static native NSBlockOperation create(@Block Runnable block);
+    protected static native @Pointer long create(@Block Runnable block);
     /*</methods>*/
 }

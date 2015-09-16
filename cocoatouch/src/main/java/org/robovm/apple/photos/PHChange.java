@@ -57,8 +57,8 @@ import org.robovm.apple.avfoundation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "changeDetailsForObject:")
-    public native PHObjectChangeDetails getChangeDetailsForObject(PHObject object);
+    public native <T extends PHObject> PHObjectChangeDetails<T> getChangeDetailsForObject(T object);
     @Method(selector = "changeDetailsForFetchResult:")
-    public native PHFetchResultChangeDetails getChangeDetailsForFetchResult(PHFetchResult object);
+    public native <T extends PHObject> PHFetchResultChangeDetails<T> getChangeDetailsForFetchResult(PHFetchResult<T> object);
     /*</methods>*/
 }

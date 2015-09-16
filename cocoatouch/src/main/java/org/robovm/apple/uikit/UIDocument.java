@@ -44,7 +44,7 @@ import org.robovm.apple.corelocation.*;
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIDocument/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*/implements NSFilePresenter/*</implements>*/ {
+    /*<implements>*/implements NSFilePresenter, NSProgressReporting/*</implements>*/ {
 
     public static class Notifications {
         /**
@@ -98,6 +98,8 @@ import org.robovm.apple.corelocation.*;
     public native NSURL getPresentedItemURL();
     @Property(selector = "presentedItemOperationQueue")
     public native NSOperationQueue getPresentedItemOperationQueue();
+    @Property(selector = "progress")
+    public native NSProgress getProgress();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -141,9 +142,21 @@ import org.robovm.apple.audiounit.*;
      * @since Available in iOS 5.0 and later.
      */
     public static final AVMediaCharacteristic DescribesVideoForAccessibility = new AVMediaCharacteristic("DescribesVideoForAccessibility");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final AVMediaCharacteristic LanguageTranslation = new AVMediaCharacteristic("LanguageTranslation");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final AVMediaCharacteristic DubbedTranslation = new AVMediaCharacteristic("DubbedTranslation");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final AVMediaCharacteristic VoiceOverTranslation = new AVMediaCharacteristic("VoiceOverTranslation");
     /*</constants>*/
     
-    private static /*<name>*/AVMediaCharacteristic/*</name>*/[] values = new /*<name>*/AVMediaCharacteristic/*</name>*/[] {/*<value_list>*/Visual, Audible, Legible, FrameBased, IsMainProgramContent, IsAuxiliaryContent, ContainsOnlyForcedSubtitles, TranscribesSpokenDialogForAccessibility, DescribesMusicAndSoundForAccessibility, EasyToRead, DescribesVideoForAccessibility/*</value_list>*/};
+    private static /*<name>*/AVMediaCharacteristic/*</name>*/[] values = new /*<name>*/AVMediaCharacteristic/*</name>*/[] {/*<value_list>*/Visual, Audible, Legible, FrameBased, IsMainProgramContent, IsAuxiliaryContent, ContainsOnlyForcedSubtitles, TranscribesSpokenDialogForAccessibility, DescribesMusicAndSoundForAccessibility, EasyToRead, DescribesVideoForAccessibility, LanguageTranslation, DubbedTranslation, VoiceOverTranslation/*</value_list>*/};
     
     /*<name>*/AVMediaCharacteristic/*</name>*/ (String getterName) {
         super(Values.class, getterName);
@@ -221,6 +234,21 @@ import org.robovm.apple.audiounit.*;
          */
         @GlobalValue(symbol="AVMediaCharacteristicDescribesVideoForAccessibility", optional=true)
         public static native NSString DescribesVideoForAccessibility();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="AVMediaCharacteristicLanguageTranslation", optional=true)
+        public static native NSString LanguageTranslation();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="AVMediaCharacteristicDubbedTranslation", optional=true)
+        public static native NSString DubbedTranslation();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="AVMediaCharacteristicVoiceOverTranslation", optional=true)
+        public static native NSString VoiceOverTranslation();
         /*</values>*/
     }
 }

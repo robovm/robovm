@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.corelocation.*;
 import org.robovm.apple.addressbook.*;
+import org.robovm.apple.mapkit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -49,6 +50,8 @@ import org.robovm.apple.addressbook.*;
     /*<constructors>*/
     public EKRecurrenceEnd() {}
     protected EKRecurrenceEnd(SkipInit skipInit) { super(skipInit); }
+    public EKRecurrenceEnd(NSDate endDate) { super(create(endDate)); retain(getHandle()); }
+    public EKRecurrenceEnd(@MachineSizedUInt long occurrenceCount) { super(create(occurrenceCount)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "endDate")
@@ -59,8 +62,8 @@ import org.robovm.apple.addressbook.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "recurrenceEndWithEndDate:")
-    public static native EKRecurrenceEnd create(NSDate endDate);
+    private static native @Pointer long create(NSDate endDate);
     @Method(selector = "recurrenceEndWithOccurrenceCount:")
-    public static native EKRecurrenceEnd create(@MachineSizedUInt long occurrenceCount);
+    private static native @Pointer long create(@MachineSizedUInt long occurrenceCount);
     /*</methods>*/
 }

@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -68,7 +69,5 @@ import org.robovm.apple.audiounit.*;
     protected native @Pointer long init(AVAssetReaderTrackOutput trackOutput);
     @Method(selector = "nextTimedMetadataGroup")
     public native AVTimedMetadataGroup nextTimedMetadataGroup();
-    @Method(selector = "assetReaderOutputMetadataAdaptorWithAssetReaderTrackOutput:")
-    public static native AVAssetReaderOutputMetadataAdaptor create(AVAssetReaderTrackOutput trackOutput);
     /*</methods>*/
 }

@@ -73,7 +73,11 @@ public enum /*<name>*/NSExpressionType/*</name>*/ implements ValuedEnum {
      * @since Available in iOS 7.0 and later.
      */
     AnyKey(15L),
-    Block(19L);
+    Block(19L),
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    Conditional(20L);
     /*</values>*/
 
     private final long n;

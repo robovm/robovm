@@ -1,5 +1,5 @@
 package: org.robovm.apple.homekit
-include: [foundation.yaml]
+include: [foundation.yaml, corelocation.yaml]
 library: HomeKit
 framework: HomeKit
 clang_args: ['-x', 'objective-c']
@@ -12,11 +12,21 @@ typedefs:
     'void (^)(HMServiceGroup *, NSError *)': '@Block VoidBlock2<HMServiceGroup, NSError>'
     'void (^)(HMActionSet *, NSError *)': '@Block VoidBlock2<HMActionSet, NSError>'
     'void (^)(HMHome *, NSError *)': '@Block VoidBlock2<HMHome, NSError>'
+private_typedefs:
+    TriggerValueType: T
+    TargetValueType: T
     
 enums:
+    HMAccessoryCategoryType: {}
+    HMActionSetType: {}
+    HMCharacteristicValueAirParticulateSize: {}
+    HMCharacteristicValueAirQuality: {}
+    HMCharacteristicValueCurrentSecuritySystemState: {}
     HMCharacteristicValueDoorState: {}
     HMCharacteristicValueHeatingCooling: {}
+    HMCharacteristicValuePositionState: {}
     HMCharacteristicValueRotationDirection: {prefix: HMCharacteristicValueRotationDirection}
+    HMCharacteristicValueTargetSecuritySystemState: {}
     HMCharacteristicValueTemperatureUnit: {}
     HMCharacteristicValueLockMechanismState: {}
     HMCharacteristicValueLockMechanismLastKnownAction: {}
@@ -29,7 +39,7 @@ classes:
     
     HMAccessory: # DONE
         properties:
-            'identifiersForBridgedAccessories':
+            '(identifiersForBridgedAccessories|uniqueIdentifiersForBridgedAccessories)':
                 type: NSArray<NSUUID>
             'services':
                 type: NSArray<HMService>
@@ -42,27 +52,38 @@ classes:
         properties:
             'discoveredAccessories':
                 type: NSArray<HMAccessory>
+    HMAccessoryCategory: # DONE
+        properties:
+            'categoryType':
+                type: HMAccessoryCategoryType
     HMAction: {} # DONE
-    HMCharacteristicWriteAction: # DONE
-        methods:
-            '-init':
-                exclude: true
-            '-initWithCharacteristic:targetValue:':
-                name: init
-            '-updateTargetValue:completionHandler:':
-                trim_after_first_colon: true
     HMActionSet: # DONE
+        skip_def_constructor: true
         properties:
             'actions':
                 type: NSArray<HMAction>
+            'actionSetType':
+                type: HMActionSetType
         methods:
-            '-init':
-                exclude: true
             '-updateName:completionHandler:':
                 trim_after_first_colon: true
             '-addAction:completionHandler:':
                 trim_after_first_colon: true
             '-removeAction:completionHandler:':
+                trim_after_first_colon: true
+    HMCharacteristicEvent: # DONE
+        skip_def_constructor: true
+        methods:
+            '-initWithCharacteristic:triggerValue:':
+                name: init
+            '-updateTriggerValue:completionHandler:':
+                trim_after_first_colon: true
+    HMCharacteristicWriteAction: # DONE
+        skip_def_constructor: true
+        methods:
+            '-initWithCharacteristic:targetValue:':
+                name: init
+            '-updateTargetValue:completionHandler:':
                 trim_after_first_colon: true
     HMCharacteristic: # DONE
         properties:
@@ -86,7 +107,44 @@ classes:
                 type: HMCharacteristicMetadataFormat
             'units':
                 type: HMCharacteristicMetadataUnits
+    HMEvent: {} # DONE
+    HMEventTrigger: # DONE
+        skip_def_constructor: true
+        properties:
+            'events':
+                type: NSArray<HMEvent>
+        methods:
+            '-initWithName:events:predicate:':
+                name: init
+                parameters:
+                    events:
+                        type: NSArray<HMEvent>
+            '-addEvent:completionHandler:':
+                trim_after_first_colon: true
+            '-removeEvent:completionHandler:':
+                trim_after_first_colon: true
+            '-updatePredicate:completionHandler:':
+                trim_after_first_colon: true
+            '+predicateForEvaluatingTriggerOccurringBeforeSignificantEvent:applyingOffset:':
+                name: getPredicateForEvaluatingTriggerOccurringBeforeSignificantEvent
+                parameters:
+                    significantEvent:
+                        type: HMSignificantEvent
+            '+predicateForEvaluatingTriggerOccurringAfterSignificantEvent:applyingOffset:':
+                name: getPredicateForEvaluatingTriggerOccurringAfterSignificantEvent
+                parameters:
+                    significantEvent:
+                        type: HMSignificantEvent
+            '+predicateForEvaluatingTriggerOccurringBeforeDateWithComponents:':
+                name: getPredicateForEvaluatingTriggerOccurringBeforeDate
+            '+predicateForEvaluatingTriggerOccurringOnDateWithComponents:':
+                name: getPredicateForEvaluatingTriggerOccurringOnDate
+            '+predicateForEvaluatingTriggerOccurringAfterDateWithComponents:':
+                name: getPredicateForEvaluatingTriggerOccurringAfterDate
+            '+predicateForEvaluatingTriggerWithCharacteristic:relatedBy:toValue:':
+                name: getPredicateForEvaluatingTrigger
     HMHome: # DONE
+        skip_def_constructor: true
         properties:
             'accessories':
                 type: NSArray<HMAccessory>
@@ -103,8 +161,6 @@ classes:
             'triggers':
                 type: NSArray<HMTrigger>
         methods:
-            '-init':
-                exclude: true
             '-updateName:completionHandler:':
                 trim_after_first_colon: true
             '-addAccessory:completionHandler:':
@@ -126,6 +182,8 @@ classes:
                 name: addUser
             '-removeUser:completionHandler:':
                 trim_after_first_colon: true
+            '-manageUsersWithCompletionHandler:':
+                name: manageUsers
             '-addRoomWithName:completionHandler:':
                 name: addRoom
             '-removeRoom:completionHandler:':
@@ -136,6 +194,8 @@ classes:
                 name: addZone
             '-removeZone:completionHandler:':
                 trim_after_first_colon: true
+            '-homeAccessControlForUser:':
+                name: getHomeAccessControlForUser
             '-addServiceGroupWithName:completionHandler:':
                 name: addServiceGroup
             '-removeServiceGroup:completionHandler:':
@@ -146,10 +206,17 @@ classes:
                 trim_after_first_colon: true
             '-executeActionSet:completionHandler:':
                 trim_after_first_colon: true
+            '-builtinActionSetOfType:':
+                name: getBuiltinActionSet
+                parameters:
+                    actionSetType:
+                        type: HMActionSetType
             '-addTrigger:completionHandler:':
                 trim_after_first_colon: true
             '-removeTrigger:completionHandler:':
                 trim_after_first_colon: true
+    HMHomeAccessControl: # DONE
+        skip_def_constructor: true
     HMHomeManager: # DONE
         properties:
             'homes':
@@ -161,13 +228,19 @@ classes:
                 name: addHome
             '-removeHome:completionHandler:':
                 trim_after_first_colon: true
+    HMLocationEvent: # DONE
+        skip_def_constructor: true
+        methods:
+            '-initWithRegion:':
+                name: init
+            '-updateRegion:completionHandler:':
+                trim_after_first_colon: true
     HMRoom: # DONE
+        skip_def_constructor: true
         properties:
             'accessories':
                 type: NSArray<HMAccessory>
         methods:
-            '-init':
-                exclude: true
             '-updateName:completionHandler:':
                 trim_after_first_colon: true
     HMService: # DONE
@@ -187,12 +260,11 @@ classes:
                     serviceType:
                         type: HMServiceType
     HMServiceGroup: # DONE
+        skip_def_constructor: true
         properties:
             'services':
                 type: NSArray<HMService>
         methods:
-            '-init':
-                exclude: true
             '-updateName:completionHandler:':
                 trim_after_first_colon: true
             '-addService:completionHandler:':
@@ -200,12 +272,11 @@ classes:
             '-removeService:completionHandler:':
                 trim_after_first_colon: true
     HMTrigger: # DONE
+        skip_def_constructor: true
         properties:
             'actionSets':
                 type: NSArray<HMActionSet>
         methods:
-            '-init':
-                exclude: true
             '-updateName:completionHandler:':
                 trim_after_first_colon: true
             '-addActionSet:completionHandler:':
@@ -215,9 +286,8 @@ classes:
             '-enable:completionHandler:':
                 trim_after_first_colon: true
     HMTimerTrigger: # DONE
+        skip_def_constructor: true
         methods:
-            '-init':
-                exclude: true
             '-initWithName:fireDate:timeZone:recurrence:recurrenceCalendar:':
                 name: init
             '-updateFireDate:completionHandler:':
@@ -227,16 +297,13 @@ classes:
             '-updateRecurrence:completionHandler:':
                 trim_after_first_colon: true
     HMUser: # DONE
-        methods:
-            '-init':
-                exclude: true
+        skip_def_constructor: true
     HMZone: # DONE
+        skip_def_constructor: true
         properties:
             'rooms':
                 type: NSArray<HMRoom>
         methods:
-            '-init':
-                exclude: true
             '-updateName:completionHandler:':
                 trim_after_first_colon: true
             '-addRoom:completionHandler:':
@@ -352,6 +419,18 @@ values:
         type: NSString
         extends: NSErrorUserInfoKey
 
+    # HMAccessoryCategory
+    HMAccessoryCategoryType(.*):
+        enum: HMAccessoryCategoryType
+        name: '#{g[0]}'
+        type: NSString
+
+    # HMActionSet
+    HMActionSetType(.*):
+        enum: HMActionSetType
+        name: '#{g[0]}'
+        type: NSString
+
     # HMCharacteristic
     HMCharacteristicProperty(.*):
         enum: HMCharacteristicProperty
@@ -371,6 +450,17 @@ values:
         enum: HMCharacteristicMetadataUnits
         name: '#{g[0]}'
         type: NSString
+
+    # HMEventTrigger
+    HMSignificantEvent(.*):
+        enum: HMSignificantEvent
+        name: '#{g[0]}'
+        type: NSString
+    HM(.*)KeyPath:
+        enum: HMPredicateKeyPath
+        name: '#{g[0]}'
+        type: NSString
+        extends: NSPredicateKeyPath
 
     # HMService
     HMServiceType(.*):

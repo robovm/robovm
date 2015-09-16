@@ -40,6 +40,7 @@ import org.robovm.apple.dispatch.*;
 public enum /*<name>*/MTLSamplerAddressMode/*</name>*/ implements ValuedEnum {
     /*<values>*/
     ClampToEdge(0L),
+    MirrorClampToEdge(1L),
     Repeat(2L),
     MirrorRepeat(3L),
     ClampToZero(4L);

@@ -45,6 +45,10 @@ public final class /*<name>*/MKDirectionsTransportType/*</name>*/ extends Bits</
     public static final MKDirectionsTransportType None = new MKDirectionsTransportType(0L);
     public static final MKDirectionsTransportType Automobile = new MKDirectionsTransportType(1L);
     public static final MKDirectionsTransportType Walking = new MKDirectionsTransportType(2L);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final MKDirectionsTransportType Transit = new MKDirectionsTransportType(4L);
     public static final MKDirectionsTransportType Any = new MKDirectionsTransportType(268435455L);
     /*</values>*/
 

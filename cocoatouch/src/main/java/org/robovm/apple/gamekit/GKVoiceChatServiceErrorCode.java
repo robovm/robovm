@@ -32,7 +32,11 @@ import org.robovm.apple.uikit.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 3.0 and later.
+ * @deprecated Deprecated in iOS 7.0.
+ */
+@Deprecated
 /*</javadoc>*/
 @ForceLinkClass(GKVoiceChatServiceError.class)
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/

@@ -108,6 +108,11 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "sharedHTTPCookieStorage")
     public static native NSHTTPCookieStorage getSharedHTTPCookieStorage();
     /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "sharedCookieStorageForGroupContainerIdentifier:")
+    public static native NSHTTPCookieStorage getSharedCookieStorageForGroupContainer(String identifier);
+    /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "storeCookies:forTask:")

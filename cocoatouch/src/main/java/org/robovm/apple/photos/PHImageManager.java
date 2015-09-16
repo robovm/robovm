@@ -56,6 +56,8 @@ import org.robovm.apple.avfoundation.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @GlobalValue(symbol="PHInvalidImageRequestID", optional=true)
+    public static native int getInvalidImageRequestID();
     /**
      * @since Available in iOS 8.0 and later.
      */

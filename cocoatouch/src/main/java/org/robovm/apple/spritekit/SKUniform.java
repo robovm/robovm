@@ -35,6 +35,7 @@ import org.robovm.apple.coreimage.*;
 import org.robovm.apple.avfoundation.*;
 import org.robovm.apple.glkit.*;
 import org.robovm.apple.scenekit.*;
+import org.robovm.apple.gameplaykit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -122,24 +123,6 @@ import org.robovm.apple.scenekit.*;
     protected native @Pointer long init(String name, @ByVal GLKMatrix3 value);
     @Method(selector = "initWithName:floatMatrix4:")
     protected native @Pointer long init(String name, @ByVal GLKMatrix4 value);
-    @Method(selector = "uniformWithName:")
-    public static native SKUniform create(String name);
-    @Method(selector = "uniformWithName:texture:")
-    public static native SKUniform create(String name, SKTexture texture);
-    @Method(selector = "uniformWithName:float:")
-    public static native SKUniform create(String name, float value);
-    @Method(selector = "uniformWithName:floatVector2:")
-    public static native SKUniform create(String name, @ByVal GLKVector2 value);
-    @Method(selector = "uniformWithName:floatVector3:")
-    public static native SKUniform create(String name, @ByVal GLKVector3 value);
-    @Method(selector = "uniformWithName:floatVector4:")
-    public static native SKUniform create(String name, @ByVal GLKVector4 value);
-    @Method(selector = "uniformWithName:floatMatrix2:")
-    public static native SKUniform create(String name, @ByVal GLKMatrix2 value);
-    @Method(selector = "uniformWithName:floatMatrix3:")
-    public static native SKUniform create(String name, @ByVal GLKMatrix3 value);
-    @Method(selector = "uniformWithName:floatMatrix4:")
-    public static native SKUniform create(String name, @ByVal GLKMatrix4 value);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder coder);
     @Method(selector = "initWithCoder:")

@@ -70,6 +70,16 @@ import org.robovm.apple.corelocation.*;
     public native @ByVal CGRect getSourceRect();
     @Property(selector = "setSourceRect:")
     public native void setSourceRect(@ByVal CGRect v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "canOverlapSourceViewRect")
+    public native boolean canOverlapSourceViewRect();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setCanOverlapSourceViewRect:")
+    public native void setCanOverlapSourceViewRect(boolean v);
     @Property(selector = "barButtonItem")
     public native UIBarButtonItem getBarButtonItem();
     @Property(selector = "setBarButtonItem:")

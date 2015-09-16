@@ -58,7 +58,7 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "desiredPushTypes")
     public native @org.robovm.rt.bro.annotation.Marshaler(NSSet.AsStringSetMarshaler.class) Set<String> getDesiredPushTypes();
     @Property(selector = "setDesiredPushTypes:")
-    public native void setDesiredPushTypes(@org.robovm.rt.bro.annotation.Marshaler(NSSet.AsStringSetMarshaler.class)Set<String> v);
+    public native void setDesiredPushTypes(@org.robovm.rt.bro.annotation.Marshaler(NSSet.AsStringSetMarshaler.class) Set<String> v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

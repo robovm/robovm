@@ -66,6 +66,11 @@ import org.robovm.apple.foundation.*;
      */
     @Property(selector = "hasChanges")
     public native boolean hasChanges();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Property(selector = "hasPersistentChangedValues")
+    public native boolean hasPersistentChangedValues();
     @Property(selector = "isFault")
     public native boolean isFault();
     /**
@@ -99,6 +104,11 @@ import org.robovm.apple.foundation.*;
      */
     @Method(selector = "hasFaultForRelationshipNamed:")
     public native boolean hasFaultForRelationship(String key);
+    /**
+     * @since Available in iOS 8.3 and later.
+     */
+    @Method(selector = "objectIDsForRelationshipNamed:")
+    public native NSArray<NSManagedObjectID> getObjectIDsForRelationship(String key);
     @Method(selector = "willAccessValueForKey:")
     public native void willAccessValue(String key);
     @Method(selector = "didAccessValueForKey:")
@@ -145,14 +155,14 @@ import org.robovm.apple.foundation.*;
     @Method(selector = "setPrimitiveValue:forKey:")
     private native void setPrimitiveValue(NSObject value, String key);
     @Method(selector = "committedValuesForKeys:")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject> getCommittedValues(NSArray<?> keys);
+    public native NSDictionary<NSString, ?> getCommittedValues(NSArray<?> keys);
     @Method(selector = "changedValues")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject> getChangedValues();
+    public native NSDictionary<NSString, ?> getChangedValues();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "changedValuesForCurrentEvent")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject> getChangedValuesForCurrentEvent();
+    public native NSDictionary<NSString, ?> getChangedValuesForCurrentEvent();
     private boolean validateValue(NSObject value, String key) throws NSErrorException {
        NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
        boolean result = validateValue(value, key, ptr);

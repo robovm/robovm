@@ -168,6 +168,10 @@ import org.robovm.apple.metal.*;
     public native @ByVal CGRect getContentsRect();
     @Property(selector = "setContentsRect:")
     public native void setContentsRect(@ByVal CGRect v);
+    @Property(selector = "contentsScale")
+    public native @MachineSizedFloat double getContentsScale();
+    @Property(selector = "setContentsScale:")
+    public native void setContentsScale(@MachineSizedFloat double v);
     @Property(selector = "minificationFilter")
     public native CAFilter getMinificationFilter();
     @Property(selector = "setMinificationFilter:")
@@ -185,9 +189,9 @@ import org.robovm.apple.metal.*;
     @Property(selector = "setEmitterCells:")
     public native void setEmitterCells(NSArray<CAEmitterCell> v);
     @Property(selector = "style")
-    public native NSDictionary getStyle();
+    public native NSDictionary<?, ?> getStyle();
     @Property(selector = "setStyle:")
-    public native void setStyle(NSDictionary v);
+    public native void setStyle(NSDictionary<?, ?> v);
     @Property(selector = "beginTime")
     public native double getBeginTime();
     @Property(selector = "setBeginTime:")
@@ -225,8 +229,6 @@ import org.robovm.apple.metal.*;
     /*<methods>*/
     @Method(selector = "shouldArchiveValueForKey:")
     public native boolean shouldArchiveValue(String key);
-    @Method(selector = "emitterCell")
-    public static native CAEmitterCell create();
     @Method(selector = "defaultValueForKey:")
     public static native NSObject getDefaultValue(String key);
     @Method(selector = "encodeWithCoder:")

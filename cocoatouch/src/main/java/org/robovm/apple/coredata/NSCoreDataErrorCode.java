@@ -38,6 +38,7 @@ import org.robovm.apple.foundation.*;
 public enum /*<name>*/NSCoreDataErrorCode/*</name>*/ implements NSErrorCode {
     /*<values>*/
     ManagedObjectValidation(1550L),
+    ManagedObjectConstraintValidation(1551L),
     ValidationMultipleErrors(1560L),
     ValidationMissingMandatoryProperty(1570L),
     ValidationRelationshipLacksMinimumCount(1580L),
@@ -56,6 +57,7 @@ public enum /*<name>*/NSCoreDataErrorCode/*</name>*/ implements NSErrorCode {
     ManagedObjectReferentialIntegrity(133000L),
     ManagedObjectExternalRelationship(133010L),
     ManagedObjectMerge(133020L),
+    ManagedObjectConstraintMerge(133021L),
     PersistentStoreInvalidType(134000L),
     PersistentStoreTypeMismatch(134010L),
     PersistentStoreIncompatibleSchema(134020L),
@@ -69,6 +71,7 @@ public enum /*<name>*/NSCoreDataErrorCode/*</name>*/ implements NSErrorCode {
     PersistentStoreUnsupportedRequestType(134091L),
     PersistentStoreIncompatibleVersionHash(134100L),
     Migration(134110L),
+    MigrationConstraintViolation(134111L),
     MigrationCancelled(134120L),
     MigrationMissingSourceModel(134130L),
     MigrationMissingMappingModel(134140L),

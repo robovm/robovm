@@ -47,6 +47,7 @@ public final class /*<name>*/UIDocumentState/*</name>*/ extends Bits</*<name>*/U
     public static final UIDocumentState InConflict = new UIDocumentState(2L);
     public static final UIDocumentState SavingError = new UIDocumentState(4L);
     public static final UIDocumentState EditingDisabled = new UIDocumentState(8L);
+    public static final UIDocumentState ProgressAvailable = new UIDocumentState(16L);
     /*</values>*/
 
     private static final /*<name>*/UIDocumentState/*</name>*/[] values = _values(/*<name>*/UIDocumentState/*</name>*/.class);

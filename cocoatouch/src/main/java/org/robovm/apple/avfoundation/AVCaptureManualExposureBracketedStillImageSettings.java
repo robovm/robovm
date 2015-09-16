@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -56,6 +57,7 @@ import org.robovm.apple.audiounit.*;
     /*<constructors>*/
     public AVCaptureManualExposureBracketedStillImageSettings() {}
     protected AVCaptureManualExposureBracketedStillImageSettings(SkipInit skipInit) { super(skipInit); }
+    public AVCaptureManualExposureBracketedStillImageSettings(@ByVal CMTime duration, float ISO) { super(create(duration, ISO)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "exposureDuration")
@@ -66,6 +68,6 @@ import org.robovm.apple.audiounit.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "manualExposureSettingsWithExposureDuration:ISO:")
-    public static native AVCaptureManualExposureBracketedStillImageSettings create(@ByVal CMTime duration, float ISO);
+    protected static native @Pointer long create(@ByVal CMTime duration, float ISO);
     /*</methods>*/
 }

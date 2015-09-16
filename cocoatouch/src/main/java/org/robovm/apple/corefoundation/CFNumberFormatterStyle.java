@@ -46,7 +46,23 @@ public enum /*<name>*/CFNumberFormatterStyle/*</name>*/ implements ValuedEnum {
     CurrencyStyle(2L),
     PercentStyle(3L),
     ScientificStyle(4L),
-    SpellOutStyle(5L);
+    SpellOutStyle(5L),
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    OrdinalStyle(6L),
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    CurrencyISOCodeStyle(8L),
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    CurrencyPluralStyle(9L),
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    CurrencyAccountingStyle(10L);
     /*</values>*/
 
     private final long n;

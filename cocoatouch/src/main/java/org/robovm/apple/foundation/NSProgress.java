@@ -55,7 +55,19 @@ import org.robovm.apple.dispatch.*;
     public NSProgress() {}
     protected NSProgress(SkipInit skipInit) { super(skipInit); }
     public NSProgress(NSProgress parentProgressOrNil, NSProgressUserInfo userInfoOrNil) { super((SkipInit) null); initObject(init(parentProgressOrNil, userInfoOrNil)); }
+    public NSProgress(long unitCount) { super(create(unitCount)); retain(getHandle()); }
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public NSProgress(long unitCount, NSProgress parent, long portionOfParentTotalUnitCount) { super(create(unitCount, parent, portionOfParentTotalUnitCount)); retain(getHandle()); }
     /*</constructors>*/
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public NSProgress(long unitCount, boolean discrete) {
+        super(discrete ? createDiscrete(unitCount) : create(unitCount));
+        retain(getHandle());
+    }
     /*<properties>*/
     @Property(selector = "totalUnitCount")
     public native long getTotalUnitCount();
@@ -93,6 +105,16 @@ import org.robovm.apple.dispatch.*;
     public native @Block Runnable getPausingHandler();
     @Property(selector = "setPausingHandler:")
     public native void setPausingHandler(@Block Runnable v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "resumingHandler")
+    public native @Block Runnable getResumingHandler();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setResumingHandler:")
+    public native void setResumingHandler(@Block Runnable v);
     @Property(selector = "isIndeterminate")
     public native boolean isIndeterminate();
     @Property(selector = "fractionCompleted")
@@ -118,15 +140,35 @@ import org.robovm.apple.dispatch.*;
     public native void becomeCurrent(long unitCount);
     @Method(selector = "resignCurrent")
     public native void resignCurrent();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "addChild:withPendingUnitCount:")
+    public native void addChild(NSProgress child, long inUnitCount);
     @Method(selector = "setUserInfoObject:forKey:")
     protected native void setUserInfoObject(NSObject objectOrNil, NSString key);
     @Method(selector = "cancel")
     public native void cancel();
     @Method(selector = "pause")
     public native void pause();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "resume")
+    public native void resume();
     @Method(selector = "currentProgress")
     public static native NSProgress getCurrentProgress();
     @Method(selector = "progressWithTotalUnitCount:")
-    public static native NSProgress create(long unitCount);
+    protected static native @Pointer long create(long unitCount);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "discreteProgressWithTotalUnitCount:")
+    protected static native @Pointer long createDiscrete(long unitCount);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "progressWithTotalUnitCount:parent:pendingUnitCount:")
+    protected static native @Pointer long create(long unitCount, NSProgress parent, long portionOfParentTotalUnitCount);
     /*</methods>*/
 }

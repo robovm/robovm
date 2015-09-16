@@ -1,0 +1,407 @@
+package: org.robovm.apple.contacts
+include: [foundation.yaml]
+library: Contacts
+framework: Contacts
+clang_args: ['-x', 'objective-c']
+headers:
+    - /System/Library/Frameworks/Contacts.framework/Headers/Contacts.h
+    - /System/Library/Frameworks/Contacts.framework/Headers/ContactsDefines.h
+typedefs:
+    CNKeyDescriptor: String
+private_typedefs:
+    ValueType: NSObject
+    
+enums:
+    CNContactType: {}
+    CNContactSortOrder: {}
+    CNContactFormatterStyle: {}
+    CNContactDisplayNameOrder: {}
+    CNEntityType: {prefix: CNEntityType}
+    CNAuthorizationStatus: {}
+    CNContainerType: {}
+    CNErrorCode: {}
+    CNPostalAddressFormatterStyle: {prefix: CNPostalAddressFormatterStyle}
+
+classes:
+    CNError:
+        extends: NSError
+        annotations: ['@StronglyLinked']
+
+    CNContact: # DONE
+        properties:
+            'phoneNumbers':
+                type: NSArray<CNLabeledValue<CNPhoneNumber>>
+            '(emailAddresses|urlAddresses)':
+                type: NSArray<CNLabeledValue<String>>
+            'postalAddresses':
+                type: NSArray<CNLabeledValue<CNPostalAddress>>
+            'contactRelations':
+                type: NSArray<CNLabeledValue<CNContactRelation>>
+            'socialProfiles':
+                type: NSArray<CNLabeledValue<CNSocialProfile>>
+            'instantMessageAddresses':
+                type: NSArray<CNLabeledValue<CNInstantMessageAddress>>
+            'dates':
+                type: NSArray<CNLabeledValue<NSDateComponents>>
+        methods:
+            '-isKeyAvailable:':
+                trim_after_first_colon: true
+                parameters:
+                    key:
+                        type: CNContactPropertyKey
+            '-areKeysAvailable:':
+                trim_after_first_colon: true
+                parameters:
+                    keyDescriptors:
+                        name: keys
+                        type: List<CNContactPropertyKey>
+                        marshaler: CNContactPropertyKey.AsListMarshaler
+            '-isUnifiedWithContactWithIdentifier:':
+                name: isUnifiedWithContact
+            '+localizedStringForKey:':
+                name: getLocalizedProperty
+                parameters:
+                    key:
+                        type: CNContactPropertyKey
+            '+comparatorForNameSortOrder:':
+                name: getNameComparator
+                return_type: '@Block Block2<String, String, NSComparisonResult>'
+            '+descriptorForAllComparatorKeys':
+                property: true
+            '+predicateForContactsMatchingName:':
+                name: getPredicateForContacts
+            '+predicateForContactsWithIdentifiers:':
+                name:  getPredicateForContacts
+                parameters:
+                    identifiers:
+                        type: List<String>
+                        marshaler: NSArray.AsStringListMarshaler
+            '+predicateForContactsInGroupWithIdentifier:':
+                name: getPredicateForContactsInGroup
+            '+predicateForContactsInContainerWithIdentifier:':
+                name: getPredicateForContactsInContainer
+    CNContactFetchRequest: # DONE
+        properties:
+            'keysToFetch':
+                type: List<CNContactPropertyKey>
+                marshaler: CNContactPropertyKey.AsListMarshaler
+        methods:
+            '-initWithKeysToFetch:':
+                name: init
+                parameters:
+                    keysToFetch:
+                        type: List<CNContactPropertyKey>
+                        marshaler: CNContactPropertyKey.AsListMarshaler
+    CNContactFormatter: # DONE
+        methods:
+            '-stringFromContact:':
+                name: format
+            '-attributedStringFromContact:defaultAttributes:':
+                name: format
+            '+descriptorForRequiredKeysForStyle:':
+                name: getDescriptorForRequiredKeys
+            '+stringFromContact:style:':
+                name: format
+            '+attributedStringFromContact:style:defaultAttributes:':
+                name: format
+            '+nameOrderForContact:':
+                name: getNameOrder
+            '+delimiterForContact:':
+                name: getDelimiter
+    CNContactProperty: # DONE
+        properties:
+            'key':
+                type: CNContactPropertyKey
+    CNContactRelation: # DONE
+        methods:
+            '-initWithName:':
+                name: init
+            '+contactRelationWithName:':
+                exclude: true
+    CNContactStore: # DONE
+        methods:
+            '-requestAccessForEntityType:completionHandler:':
+                trim_after_first_colon: true
+                parameters:
+                    completionHandler:
+                        type: '@Block VoidBlock2<Boolean, NSError>'
+            '-unifiedContactsMatchingPredicate:keysToFetch:error:':
+                name: getUnifiedContactsMatchingPredicate
+                throws: NSErrorException
+                return_type: NSArray<CNContact>
+                parameters:
+                    keys:
+                        type: List<CNContactPropertyKey>
+                        marshaler: CNContactPropertyKey.AsListMarshaler
+            '-unifiedContactWithIdentifier:keysToFetch:error:':
+                name: getUnifiedContact
+                throws: NSErrorException
+                parameters:
+                    keys:
+                        type: List<CNContactPropertyKey>
+                        marshaler: CNContactPropertyKey.AsListMarshaler
+            '-enumerateContactsWithFetchRequest:error:usingBlock:':
+                name: enumerateContacts
+                visibility: private
+                parameters:
+                    block:
+                        type: '@Block VoidBlock2<CNContact, BooleanPtr>'
+            '-groupsMatchingPredicate:error:':
+                name: getGroupsMatchingPredicate
+                throws: NSErrorException
+                return_type: NSArray<CNGroup>
+            '-containersMatchingPredicate:error:':
+                name: getContainersMatchingPredicate
+                throws: NSErrorException
+                return_type: NSArray<CNContainer>
+            '-executeSaveRequest:error:':
+                trim_after_first_colon: true
+                throws: NSErrorException
+            '-defaultContainerIdentifier':
+                property: true
+            '+authorizationStatusForEntityType:':
+                name: getAuthorizationStatusForEntityType
+    CNContactVCardSerialization: # DONE
+        methods:
+            '+descriptorForRequiredKeys':
+                property: true
+            '+dataWithContacts:error:':
+                name: convertContactsToData
+                throws: NSErrorException
+                parameters:
+                    contacts:
+                        type: NSArray<CNContact>
+            '+contactsWithData:error:':
+                name: convertsDataToContacts
+                throws: NSErrorException
+                return_type: NSArray<CNContact>
+    CNContactsUserDefaults: # DONE
+        methods:
+            '+sharedDefaults':
+                property: true
+    CNContainer: # DONE
+        methods:
+            '+predicateForContainersWithIdentifiers:':
+                name: getPredicateForContainers
+                parameters:
+                    identifiers:
+                        type: List<String>
+                        marshaler: NSArray.AsStringListMarshaler
+            '+predicateForContainerOfContactWithIdentifier:':
+                name: getPredicateForContactContainer
+            '+predicateForContainerOfGroupWithIdentifier:':
+                name: getPredicateForGroupContainer
+    CNGroup: # DONE
+        methods:
+            '+predicateForGroupsWithIdentifiers:':
+                name: getPredicateForGroups
+                parameters:
+                    identifiers:
+                        type: List<String>
+                        marshaler: NSArray.AsStringListMarshaler
+            '+predicateForGroupsInContainerWithIdentifier:':
+                name: getPredicateForGroupsInContainer
+    CNInstantMessageAddress: # DONE
+        methods:
+            '-initWithUsername:service:':
+                name: init    
+            '+localizedStringForKey:':
+                name: getLocalizedProperty
+                parameters:
+                    key:
+                        type: CNInstantMessageAddressPropertyKey
+            '+localizedStringForService:':
+                name: getLocalizedService
+    CNLabeledValue: # DONE
+        properties:
+            'value':
+                name: value0
+                visibility: private
+        methods:
+            '+labeledValueWithLabel:value:':
+                exclude: true
+            '-initWithLabel:value:':
+                name: init
+                constructor: false
+                visibility: private
+            '-labeledValueBySettingLabel:':
+                name: setLabel
+                return_type: CNLabeledValue<T>
+            '-labeledValueBySettingValue:':
+                name: setValue
+                visibility: private
+                return_type: CNLabeledValue<T>
+            '-labeledValueBySettingLabel:value:':
+                name: setLabelAndValue
+                visibility: private
+                return_type: CNLabeledValue<T>
+            '+localizedStringForLabel:':
+                name: getLocalizedLabel
+    CNMutableContact: # DONE
+        properties:
+            'phoneNumbers':
+                type: NSArray<CNLabeledValue<CNPhoneNumber>>
+            '(emailAddresses|urlAddresses)':
+                type: NSArray<CNLabeledValue<String>>
+            'postalAddresses':
+                type: NSArray<CNLabeledValue<CNPostalAddress>>
+            'contactRelations':
+                type: NSArray<CNLabeledValue<CNContactRelation>>
+            'socialProfiles':
+                type: NSArray<CNLabeledValue<CNSocialProfile>>
+            'instantMessageAddresses':
+                type: NSArray<CNLabeledValue<CNInstantMessageAddress>>
+            'dates':
+                type: NSArray<CNLabeledValue<NSDateComponents>>
+    CNMutableGroup: {} # DONE
+    CNMutablePostalAddress: {} # DONE
+    CNPhoneNumber: # DONE
+        methods:
+            '-initWithStringValue:':
+                name: init
+            '+phoneNumberWithStringValue:':
+                exclude: true
+    CNPostalAddress: # DONE
+        methods:
+            '+localizedStringForKey:':
+                name: getLocalizedProperty
+                parameters:
+                    key:
+                        type: CNPostalAddressPropertyKey
+    CNPostalAddressFormatter: # DONE
+        methods:
+            '-stringFromPostalAddress:':
+                name: format
+            '-attributedStringFromPostalAddress:withDefaultAttributes:':
+                name: format
+            '+stringFromPostalAddress:style:':
+                name: format
+            '+attributedStringFromPostalAddress:style:withDefaultAttributes:':
+                name: format
+    CNSaveRequest: # DONE
+        methods:
+            '-addContact:toContainerWithIdentifier:':
+                name: addContactToContainer
+            '-updateContact:':
+                trim_after_first_colon: true
+            '-deleteContact:':
+                trim_after_first_colon: true
+            '-addGroup:toContainerWithIdentifier:':
+                name: addGroupToContainer
+            '-updateGroup:':
+                trim_after_first_colon: true
+            '-deleteGroup:':
+                trim_after_first_colon: true
+            '-addMember:toGroup:':
+                name: addMemberToGroup
+            '-removeMember:fromGroup:':
+                name: removeMemberFromGroup
+    CNSocialProfile: # DONE
+        methods:
+            '-initWithUrlString:username:userIdentifier:service:':
+                name: init
+            '+localizedStringForKey:':
+                name: getLocalizedProperty
+                parameters:
+                    key:
+                        type: CNSocialProfilePropertyKey
+            '+localizedStringForService:':
+                name: getLocalizedService
+
+protocols:
+    # CNKeyDescriptor: ignored # DONE
+
+functions:
+    # Make sure we don't miss any functions if new ones are introduced in a later version
+    (k?CN.*):
+        class: Contacts
+        name: 'Function__#{g[0]}'
+
+values:
+    CNErrorDomain:
+        class: CNError
+        name: getClassDomain
+    CNContactPropertyNotFetchedExceptionName:
+        exclude: true
+    CNErrorUserInfo(.*)Key:
+        enum: CNErrorUserInfoKey
+        name: '#{g[0]}'
+        type: NSString
+        extends: NSErrorUserInfoKey
+
+    # CNContact
+    CNContact(.*)Key:
+        enum: CNContactPropertyKey
+        name: '#{g[0]}'
+        type: NSString
+
+    # CNContactStore
+    CNContactStore(DidChangeNotification):
+        class: CNContactStore
+        name: '#{g[0]}'
+        type: NSString
+
+    # CNContainer
+    CNContainer(.*)Key:
+        enum: CNContainerPropertyKey
+        name: '#{g[0]}'
+        type: NSString
+
+    # CNGroup
+    CNGroup(.*)Key:
+        enum: CNGroupKey
+        name: '#{g[0]}'
+        type: NSString
+
+    # CNPostalAddress
+    CNPostalAddress(.*)Key:
+        enum: CNPostalAddressPropertyKey
+        name: '#{g[0]}'
+        type: NSString
+    
+    # CNInstantMessageAddress
+    CNInstantMessage(.*)Key:
+        enum: CNInstantMessageAddressPropertyKey
+        name: '#{g[0]}'
+        type: NSString
+    CNInstantMessageService(.*):
+        enum: CNInstantMessageService
+        name: '#{g[0]}'
+        type: NSString
+
+    # CNSocialProfile
+    CNSocialProfile(.*)Key:
+        enum: CNSocialProfilePropertyKey
+        name: '#{g[0]}'
+        type: NSString
+    CNSocialProfileService(.*):
+        enum: CNSocialProfileService
+        name: '#{g[0]}'
+        type: NSString
+
+    # CNLabel
+    CNLabelPhoneNumber(.*):
+        enum: CNLabelPhoneNumber
+        name: '#{g[0]}'
+        extends: CNLabel
+        type: NSString
+    CNLabelContactRelation(.*):
+        enum: CNLabelContactRelation
+        name: '#{g[0]}'
+        extends: CNLabel
+        type: NSString
+    CNLabel(.*):
+        enum: CNLabel
+        name: '#{g[0]}'
+        type: NSString
+
+    # Make sure we don't miss any values if new ones are introduced in a later version
+    (k?CN.*):
+        class: Contacts
+        name: 'Value__#{g[0]}'
+
+constants:
+    # Make sure we don't miss any constants if new ones are introduced in a later version
+    (k?CN.*):
+        class: Contacts
+        name: 'Constant__#{g[0]}'

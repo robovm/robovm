@@ -45,10 +45,13 @@ import org.robovm.apple.corelocation.*;
 public final class /*<name>*/NSStringDrawingOptions/*</name>*/ extends Bits</*<name>*/NSStringDrawingOptions/*</name>*/> {
     /*<values>*/
     public static final NSStringDrawingOptions None = new NSStringDrawingOptions(0L);
-    public static final NSStringDrawingOptions TruncatesLastVisibleLine = new NSStringDrawingOptions(32L);
     public static final NSStringDrawingOptions UsesLineFragmentOrigin = new NSStringDrawingOptions(1L);
     public static final NSStringDrawingOptions UsesFontLeading = new NSStringDrawingOptions(2L);
     public static final NSStringDrawingOptions UsesDeviceMetrics = new NSStringDrawingOptions(8L);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public static final NSStringDrawingOptions TruncatesLastVisibleLine = new NSStringDrawingOptions(32L);
     /*</values>*/
 
     /*<bind>*/

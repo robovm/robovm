@@ -63,6 +63,7 @@ import org.robovm.apple.corelocation.*;
     public UITableView() {}
     protected UITableView(SkipInit skipInit) { super(skipInit); }
     public UITableView(@ByVal CGRect frame, UITableViewStyle style) { super((SkipInit) null); initObject(init(frame, style)); }
+    public UITableView(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     
     public UITableView(CGRect frame) {
@@ -142,6 +143,12 @@ import org.robovm.apple.corelocation.*;
      */
     @Property(selector = "setBackgroundView:")
     public native void setBackgroundView(UIView v);
+    @Property(selector = "numberOfSections")
+    public native @MachineSizedSInt long getNumberOfSections();
+    @Property(selector = "visibleCells")
+    public native NSArray<UITableViewCell> getVisibleCells();
+    @Property(selector = "indexPathsForVisibleRows")
+    public native NSArray<NSIndexPath> getIndexPathsForVisibleRows();
     @Property(selector = "isEditing")
     public native boolean isEditing();
     @Property(selector = "setEditing:")
@@ -180,6 +187,13 @@ import org.robovm.apple.corelocation.*;
      */
     @Property(selector = "setAllowsMultipleSelectionDuringEditing:")
     public native void setAllowsMultipleSelectionDuringEditing(boolean v);
+    @Property(selector = "indexPathForSelectedRow")
+    public native NSIndexPath getIndexPathForSelectedRow();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "indexPathsForSelectedRows")
+    public native NSArray<NSIndexPath> getIndexPathsForSelectedRows();
     @Property(selector = "sectionIndexMinimumDisplayRowCount")
     public native @MachineSizedSInt long getSectionIndexMinimumDisplayRowCount();
     @Property(selector = "setSectionIndexMinimumDisplayRowCount:")
@@ -232,6 +246,16 @@ import org.robovm.apple.corelocation.*;
      */
     @Property(selector = "setSeparatorEffect:")
     public native void setSeparatorEffect(UIVisualEffect v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "cellLayoutMarginsFollowReadableWidth")
+    public native boolean cellLayoutMarginsFollowReadableWidth();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setCellLayoutMarginsFollowReadableWidth:")
+    public native void setCellLayoutMarginsFollowReadableWidth(boolean v);
     @Property(selector = "tableHeaderView")
     public native UIView getTableHeaderView();
     @Property(selector = "setTableHeaderView:")
@@ -258,6 +282,8 @@ import org.robovm.apple.corelocation.*;
     
     @Method(selector = "initWithFrame:style:")
     protected native @Pointer long init(@ByVal CGRect frame, UITableViewStyle style);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     @Method(selector = "reloadData")
     public native void reloadData();
     /**
@@ -265,8 +291,6 @@ import org.robovm.apple.corelocation.*;
      */
     @Method(selector = "reloadSectionIndexTitles")
     public native void reloadSectionIndexTitles();
-    @Method(selector = "numberOfSections")
-    public native @MachineSizedSInt long getNumberOfSections();
     @Method(selector = "numberOfRowsInSection:")
     public native @MachineSizedSInt long getNumberOfRowsInSection(@MachineSizedSInt long section);
     @Method(selector = "rectForSection:")
@@ -285,10 +309,6 @@ import org.robovm.apple.corelocation.*;
     public native NSArray<NSIndexPath> getIndexPathsForRowsInRect(@ByVal CGRect rect);
     @Method(selector = "cellForRowAtIndexPath:")
     public native UITableViewCell getCellForRow(NSIndexPath indexPath);
-    @Method(selector = "visibleCells")
-    public native NSArray<UITableViewCell> getVisibleCells();
-    @Method(selector = "indexPathsForVisibleRows")
-    public native NSArray<NSIndexPath> getIndexPathsForVisibleRows();
     /**
      * @since Available in iOS 6.0 and later.
      */
@@ -337,13 +357,6 @@ import org.robovm.apple.corelocation.*;
     public native void moveRow(NSIndexPath indexPath, NSIndexPath newIndexPath);
     @Method(selector = "setEditing:animated:")
     public native void setEditing(boolean editing, boolean animated);
-    @Method(selector = "indexPathForSelectedRow")
-    public native NSIndexPath getIndexPathForSelectedRow();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @Method(selector = "indexPathsForSelectedRows")
-    public native NSArray<NSIndexPath> getIndexPathsForSelectedRows();
     @Method(selector = "selectRowAtIndexPath:animated:scrollPosition:")
     public native void selectRow(NSIndexPath indexPath, boolean animated, UITableViewScrollPosition scrollPosition);
     @Method(selector = "deselectRowAtIndexPath:animated:")

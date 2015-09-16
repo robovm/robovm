@@ -90,6 +90,7 @@ public enum /*<name>*/CFNetworkErrors/*</name>*/ implements ValuedEnum {
     URLErrorCallIsActive(-1019L),
     URLErrorDataNotAllowed(-1020L),
     URLErrorRequestBodyStreamExhausted(-1021L),
+    URLErrorAppTransportSecurityRequiresSecureConnection(-1022L),
     URLErrorFileDoesNotExist(-1100L),
     URLErrorFileIsDirectory(-1101L),
     URLErrorNoPermissionsToReadFile(-1102L),

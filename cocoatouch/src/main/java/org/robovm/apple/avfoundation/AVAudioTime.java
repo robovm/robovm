@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -90,15 +91,6 @@ import org.robovm.apple.audiounit.*;
     protected native @Pointer long init(long hostTime, long sampleTime, double sampleRate);
     @Method(selector = "extrapolateTimeFromAnchor:")
     public native AVAudioTime extrapolateTimeFromAnchor(AVAudioTime anchorTime);
-    @WeaklyLinked
-    @Method(selector = "timeWithAudioTimeStamp:sampleRate:")
-    public static native AVAudioTime create(AudioTimeStamp ts, double sampleRate);
-    @Method(selector = "timeWithHostTime:")
-    public static native AVAudioTime create(long hostTime);
-    @Method(selector = "timeWithSampleTime:atRate:")
-    public static native AVAudioTime create(long sampleTime, double sampleRate);
-    @Method(selector = "timeWithHostTime:sampleTime:atRate:")
-    public static native AVAudioTime create(long hostTime, long sampleTime, double sampleRate);
     @Method(selector = "hostTimeForSeconds:")
     public static native long convertSecondsToHostTime(double seconds);
     @Method(selector = "secondsForHostTime:")

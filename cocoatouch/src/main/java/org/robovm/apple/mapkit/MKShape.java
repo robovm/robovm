@@ -49,6 +49,7 @@ import org.robovm.apple.dispatch.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public MKShape() {}
+    protected MKShape(long handle) { super(handle); }
     protected MKShape(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/

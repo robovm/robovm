@@ -140,6 +140,21 @@ import org.robovm.apple.corelocation.*;
     @ByVal CGRect getDictationResultPlaceholderFrame(NSObject placeholder);
     @Method(selector = "removeDictationResultPlaceholder:willInsertResult:")
     void removeDictationResultPlaceholder(NSObject placeholder, boolean willInsertResult);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "beginFloatingCursorAtPoint:")
+    void beginFloatingCursor(@ByVal CGPoint point);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "updateFloatingCursorAtPoint:")
+    void updateFloatingCursor(@ByVal CGPoint point);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "endFloatingCursor")
+    void endFloatingCursor();
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

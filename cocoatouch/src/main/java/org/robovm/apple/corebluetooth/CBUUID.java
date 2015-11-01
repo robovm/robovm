@@ -48,7 +48,24 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public CBUUID() {}
     protected CBUUID(SkipInit skipInit) { super(skipInit); }
+    public CBUUID(String theString) { super(create(theString)); retain(getHandle()); }
+    public CBUUID(NSData theData) { super(create(theData)); retain(getHandle()); }
+    /**
+     * @since Available in iOS 5.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
+    @WeaklyLinked
+    public CBUUID(CFUUID theUUID) { super(create(theUUID)); retain(getHandle()); }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public CBUUID(NSUUID theUUID) { super(create(theUUID)); retain(getHandle()); }
     /*</constructors>*/
+    public CBUUID(CBUUIDIdentifier identifier) {
+        super(create(identifier.value().toString()));
+        retain(getHandle());
+    }
     /*<properties>*/
     @Property(selector = "data")
     public native NSData getData();
@@ -59,21 +76,23 @@ import org.robovm.apple.dispatch.*;
     public native String getUUIDString();
     /*</properties>*/
     /*<members>*//*</members>*/
-    public static CBUUID create(CBUUIDIdentifier identifier) {
-        return create(identifier.value().toString());
-    }
     /*<methods>*/
     @Method(selector = "UUIDWithString:")
-    public static native CBUUID create(String theString);
+    protected static native @Pointer long create(String theString);
     @Method(selector = "UUIDWithData:")
-    public static native CBUUID create(NSData theData);
+    protected static native @Pointer long create(NSData theData);
+    /**
+     * @since Available in iOS 5.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @WeaklyLinked
     @Method(selector = "UUIDWithCFUUID:")
-    public static native CBUUID create(CFUUID theUUID);
+    protected static native @Pointer long create(CFUUID theUUID);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "UUIDWithNSUUID:")
-    public static native CBUUID create(NSUUID theUUID);
+    protected static native @Pointer long create(NSUUID theUUID);
     /*</methods>*/
 }

@@ -60,6 +60,8 @@ import org.robovm.apple.dispatch.*;
     public void didReceiveResponse(NSURLSession session, NSURLSessionDataTask dataTask, NSURLResponse response, @Block VoidBlock1<NSURLSessionResponseDisposition> completionHandler) {}
     @NotImplemented("URLSession:dataTask:didBecomeDownloadTask:")
     public void didBecomeDownloadTask(NSURLSession session, NSURLSessionDataTask dataTask, NSURLSessionDownloadTask downloadTask) {}
+    @NotImplemented("URLSession:dataTask:didBecomeStreamTask:")
+    public void didBecomeStreamTask(NSURLSession session, NSURLSessionDataTask dataTask, NSURLSessionStreamTask streamTask) {}
     @NotImplemented("URLSession:dataTask:didReceiveData:")
     public void didReceiveData(NSURLSession session, NSURLSessionDataTask dataTask, NSData data) {}
     @NotImplemented("URLSession:dataTask:willCacheResponse:completionHandler:")

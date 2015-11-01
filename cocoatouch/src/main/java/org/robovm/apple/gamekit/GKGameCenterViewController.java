@@ -59,16 +59,12 @@ import org.robovm.apple.uikit.*;
     public native void setViewState(GKGameCenterViewControllerState v);
     /**
      * @since Available in iOS 4.1 and later.
-     * @deprecated Deprecated in iOS 7.0.
      */
-    @Deprecated
     @Property(selector = "leaderboardTimeScope")
     public native GKLeaderboardTimeScope getLeaderboardTimeScope();
     /**
      * @since Available in iOS 4.1 and later.
-     * @deprecated Deprecated in iOS 7.0.
      */
-    @Deprecated
     @Property(selector = "setLeaderboardTimeScope:")
     public native void setLeaderboardTimeScope(GKLeaderboardTimeScope v);
     /**

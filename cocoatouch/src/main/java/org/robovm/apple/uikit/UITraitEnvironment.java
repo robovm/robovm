@@ -49,10 +49,16 @@ import org.robovm.apple.corelocation.*;
     /*</bind>*/
     /*<constants>*//*</constants>*/
     /*<properties>*/
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "traitCollection")
     UITraitCollection getTraitCollection();
     /*</properties>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "traitCollectionDidChange:")
     void traitCollectionDidChange(UITraitCollection previousTraitCollection);
     /*</methods>*/

@@ -52,12 +52,19 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public NSMutableCharacterSet() {}
     protected NSMutableCharacterSet(SkipInit skipInit) { super(skipInit); }
+    public NSMutableCharacterSet(@ByVal NSRange aRange) { super(create(aRange)); retain(getHandle()); }
+    public NSMutableCharacterSet(String aString) { super(create(aString)); retain(getHandle()); }
+    public NSMutableCharacterSet(NSData data) { super(create(data)); retain(getHandle()); }
     /*</constructors>*/
+    public NSMutableCharacterSet(File file) {
+        super(createWithFile(file));
+        retain(getHandle());
+    }
     /*<properties>*/
     
     /*</properties>*/
     /*<members>*//*</members>*/
-    public static NSMutableCharacterSet create(File file) {
+    private static long createWithFile(File file) {
         if (file == null) {
             throw new NullPointerException("file");
         }
@@ -112,12 +119,12 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "newlineCharacterSet")
     public static native NSMutableCharacterSet getNewlineCharacterSet();
     @Method(selector = "characterSetWithRange:")
-    public static native NSMutableCharacterSet create(@ByVal NSRange aRange);
+    protected static native @Pointer long create(@ByVal NSRange aRange);
     @Method(selector = "characterSetWithCharactersInString:")
-    public static native NSMutableCharacterSet create(String aString);
+    protected static native @Pointer long create(String aString);
     @Method(selector = "characterSetWithBitmapRepresentation:")
-    public static native NSMutableCharacterSet create(NSData data);
+    protected static native @Pointer long create(NSData data);
     @Method(selector = "characterSetWithContentsOfFile:")
-    private static native NSMutableCharacterSet createWithFile(String fName);
+    private static native @Pointer long createWithFile(String fName);
     /*</methods>*/
 }

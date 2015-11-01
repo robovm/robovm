@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -55,6 +56,7 @@ import org.robovm.apple.audiounit.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public AVComposition() {}
+    protected AVComposition(long handle) { super(handle); }
     protected AVComposition(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
@@ -62,9 +64,19 @@ import org.robovm.apple.audiounit.*;
     public native NSArray<AVAssetTrack> getTracks();
     @Property(selector = "naturalSize")
     public native @ByVal CGSize getNaturalSize();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "URLAssetInitializationOptions")
+    public native AVURLAssetOptions getURLAssetInitializationOptions();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    
+    @Method(selector = "trackWithTrackID:")
+    public native AVCompositionTrack getTrack(int trackID);
+    @Method(selector = "tracksWithMediaType:")
+    public native NSArray<AVCompositionTrack> getTracksForMediaType(AVMediaType mediaType);
+    @Method(selector = "tracksWithMediaCharacteristic:")
+    public native NSArray<AVCompositionTrack> getTracksForMediaCharacteristic(AVMediaCharacteristic mediaCharacteristic);
     /*</methods>*/
 }

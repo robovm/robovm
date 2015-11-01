@@ -28,6 +28,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -48,7 +49,11 @@ import org.robovm.apple.foundation.*;
     protected HMAction(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "uniqueIdentifier")
+    public native NSUUID getUniqueIdentifier();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

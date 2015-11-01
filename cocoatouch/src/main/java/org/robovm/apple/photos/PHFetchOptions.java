@@ -68,6 +68,26 @@ import org.robovm.apple.avfoundation.*;
     public native boolean includesAllBurstAssets();
     @Property(selector = "setIncludeAllBurstAssets:")
     public native void setIncludesAllBurstAssets(boolean v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "includeAssetSourceTypes")
+    public native PHAssetSourceType getIncludeAssetSourceTypes();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setIncludeAssetSourceTypes:")
+    public native void setIncludeAssetSourceTypes(PHAssetSourceType v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "fetchLimit")
+    public native @MachineSizedUInt long getFetchLimit();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setFetchLimit:")
+    public native void setFetchLimit(@MachineSizedUInt long v);
     @Property(selector = "wantsIncrementalChangeDetails")
     public native boolean wantsIncrementalChangeDetails();
     @Property(selector = "setWantsIncrementalChangeDetails:")

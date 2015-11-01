@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -56,6 +57,7 @@ import org.robovm.apple.audiounit.*;
     /*<constructors>*/
     public AVPlayerLayer() {}
     protected AVPlayerLayer(SkipInit skipInit) { super(skipInit); }
+    public AVPlayerLayer(AVPlayer player) { super(create(player)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "player")
@@ -73,10 +75,20 @@ import org.robovm.apple.audiounit.*;
      */
     @Property(selector = "videoRect")
     public native @ByVal CGRect getVideoRect();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "pixelBufferAttributes")
+    public native CVPixelBufferAttributes getPixelBufferAttributes();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setPixelBufferAttributes:")
+    public native void setPixelBufferAttributes(CVPixelBufferAttributes v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "playerLayerWithPlayer:")
-    public static native AVPlayerLayer create(AVPlayer player);
+    protected static native @Pointer long create(AVPlayer player);
     /*</methods>*/
 }

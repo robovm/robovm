@@ -70,6 +70,26 @@ import org.robovm.apple.iad.*;
     public native @ByVal CGRect getVideoBounds();
     @Property(selector = "contentOverlayView")
     public native UIView getContentOverlayView();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "allowsPictureInPicturePlayback")
+    public native boolean allowsPictureInPicturePlayback();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setAllowsPictureInPicturePlayback:")
+    public native void setAllowsPictureInPicturePlayback(boolean v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "delegate")
+    public native AVPlayerViewControllerDelegate getDelegate();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setDelegate:", strongRef = true)
+    public native void setDelegate(AVPlayerViewControllerDelegate v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /**

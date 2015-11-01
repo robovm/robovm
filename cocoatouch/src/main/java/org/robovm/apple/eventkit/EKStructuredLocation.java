@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.corelocation.*;
 import org.robovm.apple.addressbook.*;
+import org.robovm.apple.mapkit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -49,6 +50,11 @@ import org.robovm.apple.addressbook.*;
     /*<constructors>*/
     public EKStructuredLocation() {}
     protected EKStructuredLocation(SkipInit skipInit) { super(skipInit); }
+    public EKStructuredLocation(String title) { super(create(title)); retain(getHandle()); }
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public EKStructuredLocation(MKMapItem mapItem) { super(create(mapItem)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "title")
@@ -67,6 +73,11 @@ import org.robovm.apple.addressbook.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "locationWithTitle:")
-    public static native EKStructuredLocation create(String title);
+    private static native @Pointer long create(String title);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "locationWithMapItem:")
+    private static native @Pointer long create(MKMapItem mapItem);
     /*</methods>*/
 }

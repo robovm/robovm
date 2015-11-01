@@ -56,13 +56,6 @@ import org.robovm.apple.dispatch.*;
     @NotImplemented("peripheralDidUpdateName:")
     public void didUpdateName(CBPeripheral peripheral) {}
     /**
-     * @since Available in iOS 6.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     */
-    @Deprecated
-    @NotImplemented("peripheralDidInvalidateServices:")
-    public void didInvalidateServices(CBPeripheral peripheral) {}
-    /**
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("peripheral:didModifyServices:")

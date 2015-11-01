@@ -235,7 +235,7 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "respondsToSelector:")
     public native boolean respondsToSelector(Selector aSelector);
     @Method(selector = "init")
-    private native @Pointer long init();
+    protected native @Pointer long init();
     @Method(selector = "retain")
     public final native NSObject retain();
     @Method(selector = "release")

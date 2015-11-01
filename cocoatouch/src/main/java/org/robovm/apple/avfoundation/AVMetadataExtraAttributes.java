@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -150,6 +151,23 @@ import org.robovm.apple.audiounit.*;
         set(Keys.BaseURI(), new NSString(baseURI));
         return this;
     }
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public String getInfo() {
+        if (has(Keys.Info())) {
+            NSString val = (NSString) get(Keys.Info());
+            return val.toString();
+        }
+        return null;
+    }
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public AVMetadataExtraAttributes setInfo(String info) {
+        set(Keys.Info(), new NSString(info));
+        return this;
+    }
     /*</methods>*/
     
     /*<keys>*/
@@ -166,6 +184,11 @@ import org.robovm.apple.audiounit.*;
          */
         @GlobalValue(symbol="AVMetadataExtraAttributeBaseURIKey", optional=true)
         public static native NSString BaseURI();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="AVMetadataExtraAttributeInfoKey", optional=true)
+        public static native NSString Info();
     }
     /*</keys>*/
 }

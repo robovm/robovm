@@ -28,6 +28,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -44,7 +45,6 @@ import org.robovm.apple.foundation.*;
     /*<bind>*/static { ObjCRuntime.bind(HMHome.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public HMHome() {}
     protected HMHome(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
@@ -56,8 +56,23 @@ import org.robovm.apple.foundation.*;
     public native String getName();
     @Property(selector = "isPrimary")
     public native boolean isPrimary();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "uniqueIdentifier")
+    public native NSUUID getUniqueIdentifier();
     @Property(selector = "accessories")
     public native NSArray<HMAccessory> getAccessories();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "currentUser")
+    public native HMUser getCurrentUser();
+    /**
+     * @since Available in iOS 8.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Property(selector = "users")
     public native NSArray<HMUser> getUsers();
     @Property(selector = "rooms")
@@ -85,10 +100,30 @@ import org.robovm.apple.foundation.*;
     public native NSArray<HMService> getServicesWithTypes(@org.robovm.rt.bro.annotation.Marshaler(HMServiceType.AsListMarshaler.class) List<HMServiceType> serviceTypes);
     @Method(selector = "unblockAccessory:completionHandler:")
     public native void unblockAccessory(HMAccessory accessory, @Block VoidBlock1<NSError> completion);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "manageUsersWithCompletionHandler:")
+    public native void manageUsers(@Block VoidBlock1<NSError> completion);
+    /**
+     * @since Available in iOS 8.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Method(selector = "addUserWithCompletionHandler:")
     public native void addUser(@Block VoidBlock2<HMUser, NSError> completion);
+    /**
+     * @since Available in iOS 8.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Method(selector = "removeUser:completionHandler:")
     public native void removeUser(HMUser user, @Block VoidBlock1<NSError> completion);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "homeAccessControlForUser:")
+    public native HMHomeAccessControl getHomeAccessControlForUser(HMUser user);
     @Method(selector = "addRoomWithName:completionHandler:")
     public native void addRoom(String roomName, @Block VoidBlock2<HMRoom, NSError> completion);
     @Method(selector = "removeRoom:completionHandler:")
@@ -109,6 +144,11 @@ import org.robovm.apple.foundation.*;
     public native void removeActionSet(HMActionSet actionSet, @Block VoidBlock1<NSError> completion);
     @Method(selector = "executeActionSet:completionHandler:")
     public native void executeActionSet(HMActionSet actionSet, @Block VoidBlock1<NSError> completion);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "builtinActionSetOfType:")
+    public native HMActionSet getBuiltinActionSet(HMActionSetType actionSetType);
     @Method(selector = "addTrigger:completionHandler:")
     public native void addTrigger(HMTrigger trigger, @Block VoidBlock1<NSError> completion);
     @Method(selector = "removeTrigger:completionHandler:")

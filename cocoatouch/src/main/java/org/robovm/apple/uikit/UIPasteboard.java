@@ -51,7 +51,7 @@ import org.robovm.apple.corelocation.*;
             return NSNotificationCenter.getDefaultCenter().addObserver(ChangedNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke(NSNotification a) {
-                    NSDictionary<NSString, NSObject> userInfo = a.getUserInfo();
+                    NSDictionary<?, ?> userInfo = a.getUserInfo();
                     UIPasteboardChangedNotification data = null;
                     if (userInfo != null) {
                         data = new UIPasteboardChangedNotification(userInfo);

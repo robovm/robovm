@@ -138,19 +138,36 @@ public abstract class AbstractTarget implements Target {
         
         ccArgs.add("-L");
         ccArgs.add(config.getOsArchDepLibDir().getAbsolutePath());
+
+        List<String> exportedSymbols = new ArrayList<String>();
+        exportedSymbols.addAll(getTargetExportedSymbols());
+        exportedSymbols.add("JNI_OnLoad_*");
+        exportedSymbols.addAll(config.getExportedSymbols());
+
         if (config.getOs().getFamily() == OS.Family.linux) {
             ccArgs.add("-Wl,-rpath=$ORIGIN");
             ccArgs.add("-Wl,--gc-sections");
 //            ccArgs.add("-Wl,--print-gc-sections");
+
+            if (!exportedSymbols.isEmpty()) {
+                // Create an ld version script which makes the exported symbols global
+                // and all other symbols local.
+                StringBuilder sb = new StringBuilder();
+                sb.append("{\n    ");
+                sb.append(StringUtils.join(exportedSymbols, ";\n    "));
+                sb.append(";\n};\n");
+
+                File dynamicListFile = new File(config.getTmpDir(), "exported_symbols");
+                FileUtils.writeStringToFile(dynamicListFile, sb.toString());
+                ccArgs.add("-Wl,--dynamic-list=" + dynamicListFile.getAbsolutePath());
+            }
+
         } else if (config.getOs().getFamily() == OS.Family.darwin) {
             ccArgs.add("-ObjC");
 
-            List<String> exportedSymbols = new ArrayList<String>();
-            exportedSymbols.addAll(getTargetExportedSymbols());
             if (config.isSkipInstall()) {
                 exportedSymbols.add("catch_exception_raise");
             }
-            exportedSymbols.addAll(config.getExportedSymbols());
             for (int i = 0; i < exportedSymbols.size(); i++) {
                 // On Darwin symbols are always prefixed with a '_'. We'll prepend
                 // '_' to each symbol here so the user won't have to.

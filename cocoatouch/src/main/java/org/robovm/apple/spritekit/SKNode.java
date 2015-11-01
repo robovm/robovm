@@ -35,6 +35,7 @@ import org.robovm.apple.coreimage.*;
 import org.robovm.apple.avfoundation.*;
 import org.robovm.apple.glkit.*;
 import org.robovm.apple.scenekit.*;
+import org.robovm.apple.gameplaykit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -50,9 +51,14 @@ import org.robovm.apple.scenekit.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public SKNode() {}
+    protected SKNode(long handle) { super(handle); }
     protected SKNode(SkipInit skipInit) { super(skipInit); }
     public SKNode(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
+    public SKNode(String filename) { super(create(filename)); retain(getHandle()); }
     /*</constructors>*/
+    public SKNode(File file) {
+        this(file.getAbsolutePath());
+    }
     /*<properties>*/
     @Property(selector = "frame")
     public native @ByVal CGRect getFrame();
@@ -124,9 +130,6 @@ import org.robovm.apple.scenekit.*;
     public native void setConstraints(NSArray<SKConstraint> v);
     /*</properties>*/
     /*<members>*//*</members>*/
-    public static SKNode create(File file) {
-        return create(file.getAbsolutePath());
-    }
     /*<methods>*/
     @Method(selector = "initWithCoder:")
     protected native @Pointer long init(NSCoder aDecoder);
@@ -144,6 +147,8 @@ import org.robovm.apple.scenekit.*;
     public native void removeAllChildren();
     @Method(selector = "removeFromParent")
     public native void removeFromParent();
+    @Method(selector = "moveToParent:")
+    public native void moveToParent(SKNode parent);
     @Method(selector = "childNodeWithName:")
     public native SKNode getChild(String name);
     @Method(selector = "enumerateChildNodesWithName:usingBlock:")
@@ -183,10 +188,14 @@ import org.robovm.apple.scenekit.*;
     public native boolean intersectsNode(SKNode node);
     @Method(selector = "isEqualToNode:")
     public native boolean equalsTo(SKNode node);
-    @Method(selector = "node")
-    public static native SKNode create();
     @Method(selector = "nodeWithFileNamed:")
-    private static native SKNode create(String filename);
+    protected static native @Pointer long create(String filename);
+    @Method(selector = "obstaclesFromSpriteTextures:accuracy:")
+    public static native NSArray<GKPolygonObstacle> getObstaclesFromSpriteTextures(NSArray<SKNode> sprites, float accuracy);
+    @Method(selector = "obstaclesFromNodeBounds:")
+    public static native NSArray<GKPolygonObstacle> getObstaclesFromNodeBounds(NSArray<SKNode> nodes);
+    @Method(selector = "obstaclesFromNodePhysicsBodies:")
+    public static native NSArray<GKPolygonObstacle> getObstaclesFromNodePhysicsBodies(NSArray<SKNode> nodes);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder coder);
     /*</methods>*/

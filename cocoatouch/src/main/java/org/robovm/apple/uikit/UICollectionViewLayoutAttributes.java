@@ -110,6 +110,16 @@ import org.robovm.apple.corelocation.*;
     public native UICollectionElementCategory getRepresentedElementCategory();
     @Property(selector = "representedElementKind")
     public native String getRepresentedElementKind();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "collisionBoundsType")
+    public native UIDynamicItemCollisionBoundsType getCollisionBoundsType();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "collisionBoundingPath")
+    public native UIBezierPath getCollisionBoundingPath();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

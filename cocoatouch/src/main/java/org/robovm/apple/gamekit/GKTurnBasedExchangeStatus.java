@@ -32,7 +32,9 @@ import org.robovm.apple.uikit.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 7.0 and later.
+ */
 /*</javadoc>*/
 /*<annotations>*/@Marshaler(ValuedEnum.AsSignedByteMarshaler.class)/*</annotations>*/
 public enum /*<name>*/GKTurnBasedExchangeStatus/*</name>*/ implements ValuedEnum {

@@ -35,6 +35,7 @@ import org.robovm.apple.coreimage.*;
 import org.robovm.apple.avfoundation.*;
 import org.robovm.apple.glkit.*;
 import org.robovm.apple.scenekit.*;
+import org.robovm.apple.gameplaykit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -67,7 +68,5 @@ import org.robovm.apple.scenekit.*;
     protected native @Pointer long init(@ByVal CGSize size, int format);
     @Method(selector = "modifyPixelDataWithBlock:")
     public native void modifyPixelData(@Block("(,@MachineSizedUInt)") VoidBlock2<VoidPtr, Long> block);
-    @Method(selector = "mutableTextureWithSize:")
-    public static native SKMutableTexture create(@ByVal CGSize size);
     /*</methods>*/
 }

@@ -656,77 +656,138 @@ import org.robovm.apple.corefoundation.*;
         return this;
     }
     /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Bridge(symbol="ABPersonCreate", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(ABRecord.NoRetainMarshaler.class) ABPerson create();
     /**
-     * @since Available in iOS 4.0 and later.
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @Bridge(symbol="ABPersonCreateInSource", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(ABRecord.NoRetainMarshaler.class) ABPerson create(ABSource source);
     /**
-     * @since Available in iOS 4.0 and later.
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @Bridge(symbol="ABPersonCopySource", optional=true)
     public native @org.robovm.rt.bro.annotation.Marshaler(ABRecord.NoRetainMarshaler.class) ABSource getSource();
     /**
-     * @since Available in iOS 4.0 and later.
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @Bridge(symbol="ABPersonCopyArrayOfAllLinkedPeople", optional=true)
     public native @org.robovm.rt.bro.annotation.Marshaler(ABPerson.AsListMarshaler.class) List<ABPerson> getAllLinkedPeople();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Bridge(symbol="ABPersonGetSortOrdering", optional=true)
     public static native ABPersonSortOrdering getSortOrdering();
     /**
      * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
+     * @deprecated Deprecated in iOS 9.0.
      */
     @Deprecated
     @Bridge(symbol="ABPersonGetCompositeNameFormat", optional=true)
     public static native ABPersonCompositeNameFormat getConstantCompositeNameFormat();
     /**
-     * @since Available in iOS 7.0 and later.
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @Bridge(symbol="ABPersonGetCompositeNameFormatForRecord", optional=true)
     public native ABPersonCompositeNameFormat getCompositeNameFormat();
     /**
-     * @since Available in iOS 7.0 and later.
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @Bridge(symbol="ABPersonCopyCompositeNameDelimiterForRecord", optional=true)
     public native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getCompositeNameDelimiter();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     public boolean setImageData(NSData imageData) throws NSErrorException {
        NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
        boolean result = setImageData(imageData, ptr);
        if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
        return result;
     }
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Bridge(symbol="ABPersonSetImageData", optional=true)
     private native boolean setImageData(NSData imageData, NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Bridge(symbol="ABPersonCopyImageData", optional=true)
     public native @org.robovm.rt.bro.annotation.Marshaler(NSObject.NoRetainMarshaler.class) NSData getImageData();
     /**
-     * @since Available in iOS 4.1 and later.
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @Bridge(symbol="ABPersonCopyImageDataWithFormat", optional=true)
     public native @org.robovm.rt.bro.annotation.Marshaler(NSObject.NoRetainMarshaler.class) NSData getImageData(ABPersonImageFormat format);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Bridge(symbol="ABPersonHasImageData", optional=true)
     public native boolean hasImageData();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     public boolean removeImageData() throws NSErrorException {
        NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
        boolean result = removeImageData(ptr);
        if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
        return result;
     }
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Bridge(symbol="ABPersonRemoveImageData", optional=true)
     private native boolean removeImageData(NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Bridge(symbol="ABPersonComparePeopleByName", optional=true)
     public native CFComparisonResult compareTo(ABRecord person2, ABPersonSortOrdering ordering);
     /**
-     * @since Available in iOS 5.0 and later.
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @Bridge(symbol="ABPersonCreatePeopleInSourceWithVCardRepresentation", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(ABPerson.AsListMarshaler.class) List<ABPerson> createPeopleWithVCardRepresentation(ABSource source, NSData vCardData);
     /**
-     * @since Available in iOS 5.0 and later.
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @Bridge(symbol="ABPersonCreateVCardRepresentationWithPeople", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(NSObject.NoRetainMarshaler.class) NSData createVCardRepresentationWithPeople(@org.robovm.rt.bro.annotation.Marshaler(ABPerson.AsListMarshaler.class) List<ABPerson> people);
     /*</methods>*/

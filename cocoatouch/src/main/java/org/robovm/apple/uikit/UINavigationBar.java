@@ -173,12 +173,12 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "titleTextAttributes")
-    public native NSDictionary getTitleTextAttributesDictionary();
+    public native NSDictionary<NSString, ?> getTitleTextAttributesDictionary();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "setTitleTextAttributes:")
-    public native void setTitleTextAttributesDictionary(NSDictionary v);
+    public native void setTitleTextAttributesDictionary(NSDictionary<NSString, ?> v);
     /**
      * @since Available in iOS 7.0 and later.
      */

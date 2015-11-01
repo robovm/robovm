@@ -52,6 +52,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UIUserNotificationSettings() {}
     protected UIUserNotificationSettings(SkipInit skipInit) { super(skipInit); }
+    public UIUserNotificationSettings(UIUserNotificationType types, NSSet<UIUserNotificationCategory> categories) { super(create(types, categories)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "types")
@@ -62,6 +63,6 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "settingsForTypes:categories:")
-    public static native UIUserNotificationSettings create(UIUserNotificationType types, NSSet<UIUserNotificationCategory> categories);
+    protected static native @Pointer long create(UIUserNotificationType types, NSSet<UIUserNotificationCategory> categories);
     /*</methods>*/
 }

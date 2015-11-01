@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -118,7 +119,7 @@ import org.robovm.apple.audiounit.*;
      */
     public static final AVFileType _3GPP = new AVFileType("_3GPP");
     /**
-     * @since Available in iOS 7.0 and later.
+     * @since Available in iOS 4.0 and later.
      */
     public static final AVFileType _3GPP2 = new AVFileType("_3GPP2");
     /**
@@ -153,9 +154,21 @@ import org.robovm.apple.audiounit.*;
      * @since Available in iOS 7.0 and later.
      */
     public static final AVFileType AC3 = new AVFileType("AC3");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final AVFileType EnhancedAC3 = new AVFileType("EnhancedAC3");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final AVFileType StreamingKeyDeliveryContentKey = new AVFileType("StreamingKeyDeliveryContentKey");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final AVFileType StreamingKeyDeliveryPersistentContentKey = new AVFileType("StreamingKeyDeliveryPersistentContentKey");
     /*</constants>*/
     
-    private static /*<name>*/AVFileType/*</name>*/[] values = new /*<name>*/AVFileType/*</name>*/[] {/*<value_list>*/QuickTimeMovie, MPEG4, AppleM4V, AppleM4A, _3GPP, _3GPP2, CoreAudioFormat, WAVE, AIFF, AIFC, AMR, MPEGLayer3, SunAU, AC3/*</value_list>*/};
+    private static /*<name>*/AVFileType/*</name>*/[] values = new /*<name>*/AVFileType/*</name>*/[] {/*<value_list>*/QuickTimeMovie, MPEG4, AppleM4V, AppleM4A, _3GPP, _3GPP2, CoreAudioFormat, WAVE, AIFF, AIFC, AMR, MPEGLayer3, SunAU, AC3, EnhancedAC3, StreamingKeyDeliveryContentKey, StreamingKeyDeliveryPersistentContentKey/*</value_list>*/};
     
     /*<name>*/AVFileType/*</name>*/ (String getterName) {
         super(Values.class, getterName);
@@ -204,7 +217,7 @@ import org.robovm.apple.audiounit.*;
         @GlobalValue(symbol="AVFileType3GPP", optional=true)
         public static native NSString _3GPP();
         /**
-         * @since Available in iOS 7.0 and later.
+         * @since Available in iOS 4.0 and later.
          */
         @GlobalValue(symbol="AVFileType3GPP2", optional=true)
         public static native NSString _3GPP2();
@@ -248,6 +261,21 @@ import org.robovm.apple.audiounit.*;
          */
         @GlobalValue(symbol="AVFileTypeAC3", optional=true)
         public static native NSString AC3();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="AVFileTypeEnhancedAC3", optional=true)
+        public static native NSString EnhancedAC3();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="AVStreamingKeyDeliveryContentKeyType", optional=true)
+        public static native NSString StreamingKeyDeliveryContentKey();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="AVStreamingKeyDeliveryPersistentContentKeyType", optional=true)
+        public static native NSString StreamingKeyDeliveryPersistentContentKey();
         /*</values>*/
     }
 }

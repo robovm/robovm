@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -50,12 +51,50 @@ import org.robovm.apple.audiounit.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*/implements AVAsynchronousKeyValueLoading/*</implements>*/ {
 
+    public static class Notifications {
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        public static NSObject observeDurationDidChange(AVAsset object, final VoidBlock1<AVAsset> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(DurationDidChangeNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification notification) {
+                    block.invoke((AVAsset) notification.getObject());
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        public static NSObject observeChapterMetadataGroupsDidChange(AVAsset object, final VoidBlock1<AVAsset> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(ChapterMetadataGroupsDidChangeNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification notification) {
+                    block.invoke((AVAsset) notification.getObject());
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        public static NSObject observeMediaSelectionGroupsDidChange(AVAsset object, final VoidBlock1<AVAsset> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(MediaSelectionGroupsDidChangeNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification notification) {
+                    block.invoke((AVAsset) notification.getObject());
+                }
+            });
+        }
+    }
+    
     /*<ptr>*/public static class AVAssetPtr extends Ptr<AVAsset, AVAssetPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(AVAsset.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public AVAsset() {}
+    protected AVAsset(long handle) { super(handle); }
     protected AVAsset(SkipInit skipInit) { super(skipInit); }
+    public AVAsset(NSURL URL) { super(create(URL)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "duration")
@@ -74,7 +113,7 @@ import org.robovm.apple.audiounit.*;
     @Property(selector = "referenceRestrictions")
     public native AVAssetReferenceRestrictions getReferenceRestrictions();
     @Property(selector = "tracks")
-    public native NSArray<AVAssetTrack> getTracks();
+    public native NSArray<? extends AVAssetTrack> getTracks();
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -107,10 +146,25 @@ import org.robovm.apple.audiounit.*;
     @Property(selector = "availableMediaCharacteristicsWithMediaSelectionOptions")
     public native @org.robovm.rt.bro.annotation.Marshaler(AVMediaCharacteristic.AsListMarshaler.class) List<AVMediaCharacteristic> getAvailableMediaCharacteristicsWithMediaSelectionOptions();
     /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "preferredMediaSelection")
+    public native AVMediaSelection getPreferredMediaSelection();
+    /**
      * @since Available in iOS 4.2 and later.
      */
     @Property(selector = "hasProtectedContent")
     public native boolean hasProtectedContent();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "canContainFragments")
+    public native boolean canContainFragments();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "containsFragments")
+    public native boolean containsFragments();
     /**
      * @since Available in iOS 4.3 and later.
      */
@@ -136,6 +190,11 @@ import org.robovm.apple.audiounit.*;
      */
     @Property(selector = "isCompatibleWithSavedPhotosAlbum")
     public native boolean isCompatibleWithSavedPhotosAlbum();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "isCompatibleWithAirPlayVideo")
+    public native boolean isCompatibleWithAirPlayVideo();
     /*</properties>*/
     /*<members>*//*</members>*/
     /**
@@ -153,8 +212,24 @@ import org.robovm.apple.audiounit.*;
         return result;
     }
     /*<methods>*/
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @GlobalValue(symbol="AVAssetDurationDidChangeNotification", optional=true)
+    public static native NSString DurationDidChangeNotification();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @GlobalValue(symbol="AVAssetChapterMetadataGroupsDidChangeNotification", optional=true)
+    public static native NSString ChapterMetadataGroupsDidChangeNotification();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @GlobalValue(symbol="AVAssetMediaSelectionGroupsDidChangeNotification", optional=true)
+    public static native NSString MediaSelectionGroupsDidChangeNotification();
+    
     @Method(selector = "assetWithURL:")
-    public static native AVAsset create(NSURL URL);
+    protected static native @Pointer long create(NSURL URL);
     @Method(selector = "cancelLoading")
     public native void cancelLoading();
     @Method(selector = "trackWithTrackID:")

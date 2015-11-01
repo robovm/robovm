@@ -668,17 +668,15 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "characterAtIndex:")
     protected native short getCharactersAt(@MachineSizedUInt long index);
     @Method(selector = "getCharacters:range:")
-    protected native void getCharacters(@Pointer long buffer, @ByVal NSRange aRange);
+    protected native void getCharacters(@Pointer long buffer, @ByVal NSRange range);
     @Method(selector = "hasPrefix:")
-    public native boolean hasPrefix(String aString);
+    public native boolean hasPrefix(String str);
     @Method(selector = "hasSuffix:")
-    public native boolean hasSuffix(String aString);
+    public native boolean hasSuffix(String str);
     @Method(selector = "dataUsingEncoding:allowLossyConversion:")
     public native NSData toData(NSStringEncoding encoding, boolean lossy);
     @Method(selector = "dataUsingEncoding:")
     public native NSData toData(NSStringEncoding encoding);
-    @Method(selector = "initWithCharacters:length:")
-    protected native @Pointer long init(@Pointer long characters, @MachineSizedUInt long length);
     public boolean writeURL(NSURL url, boolean atomically, NSStringEncoding enc) throws NSErrorException {
        NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
        boolean result = writeURL(url, atomically, enc, ptr);
@@ -695,6 +693,8 @@ import org.robovm.apple.dispatch.*;
     }
     @Method(selector = "writeToFile:atomically:encoding:error:")
     private native boolean writeFile(String path, boolean atomically, NSStringEncoding enc, NSError.NSErrorPtr error);
+    @Method(selector = "initWithCharacters:length:")
+    protected native @Pointer long init(@Pointer long characters, @MachineSizedUInt long length);
     @Method(selector = "stringWithCharacters:length:")
     protected static native @Pointer long create(@Pointer long characters, @MachineSizedUInt long length);
     public static String readURL(NSURL url, NSStringEncoding enc) throws NSErrorException {
@@ -722,8 +722,18 @@ import org.robovm.apple.dispatch.*;
      */
     @Method(selector = "stringByAddingPercentEncodingWithAllowedCharacters:")
     public native String addPercentEncoding(NSCharacterSet allowedCharacters);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Method(selector = "stringByAddingPercentEscapesUsingEncoding:")
     public native String addPercentEscapes(NSStringEncoding enc);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Method(selector = "stringByReplacingPercentEscapesUsingEncoding:")
     public native String replacePercentEscapes(NSStringEncoding enc);
     /*</methods>*/

@@ -94,17 +94,33 @@ import org.robovm.apple.corelocation.*;
 
     /*<constants>*/
     /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final UIFontTextStyle Title1 = new UIFontTextStyle("Title1");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final UIFontTextStyle Title2 = new UIFontTextStyle("Title2");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final UIFontTextStyle Title3 = new UIFontTextStyle("Title3");
+    /**
      * @since Available in iOS 7.0 and later.
      */
     public static final UIFontTextStyle Headline = new UIFontTextStyle("Headline");
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public static final UIFontTextStyle Body = new UIFontTextStyle("Body");
+    public static final UIFontTextStyle Subheadline = new UIFontTextStyle("Subheadline");
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public static final UIFontTextStyle Subheadline = new UIFontTextStyle("Subheadline");
+    public static final UIFontTextStyle Body = new UIFontTextStyle("Body");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final UIFontTextStyle Callout = new UIFontTextStyle("Callout");
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -119,7 +135,7 @@ import org.robovm.apple.corelocation.*;
     public static final UIFontTextStyle Caption2 = new UIFontTextStyle("Caption2");
     /*</constants>*/
     
-    private static /*<name>*/UIFontTextStyle/*</name>*/[] values = new /*<name>*/UIFontTextStyle/*</name>*/[] {/*<value_list>*/Headline, Body, Subheadline, Footnote, Caption1, Caption2/*</value_list>*/};
+    private static /*<name>*/UIFontTextStyle/*</name>*/[] values = new /*<name>*/UIFontTextStyle/*</name>*/[] {/*<value_list>*/Title1, Title2, Title3, Headline, Subheadline, Body, Callout, Footnote, Caption1, Caption2/*</value_list>*/};
     
     /*<name>*/UIFontTextStyle/*</name>*/ (String getterName) {
         super(Values.class, getterName);
@@ -143,6 +159,21 @@ import org.robovm.apple.corelocation.*;
 
         /*<values>*/
         /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="UIFontTextStyleTitle1", optional=true)
+        public static native NSString Title1();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="UIFontTextStyleTitle2", optional=true)
+        public static native NSString Title2();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="UIFontTextStyleTitle3", optional=true)
+        public static native NSString Title3();
+        /**
          * @since Available in iOS 7.0 and later.
          */
         @GlobalValue(symbol="UIFontTextStyleHeadline", optional=true)
@@ -150,13 +181,18 @@ import org.robovm.apple.corelocation.*;
         /**
          * @since Available in iOS 7.0 and later.
          */
-        @GlobalValue(symbol="UIFontTextStyleBody", optional=true)
-        public static native NSString Body();
+        @GlobalValue(symbol="UIFontTextStyleSubheadline", optional=true)
+        public static native NSString Subheadline();
         /**
          * @since Available in iOS 7.0 and later.
          */
-        @GlobalValue(symbol="UIFontTextStyleSubheadline", optional=true)
-        public static native NSString Subheadline();
+        @GlobalValue(symbol="UIFontTextStyleBody", optional=true)
+        public static native NSString Body();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="UIFontTextStyleCallout", optional=true)
+        public static native NSString Callout();
         /**
          * @since Available in iOS 7.0 and later.
          */

@@ -1,5 +1,5 @@
 package: org.robovm.apple.eventkit
-include: [foundation.yaml, coregraphics.yaml, corelocation.yaml, addressbook.yaml]
+include: [foundation.yaml, coregraphics.yaml, corelocation.yaml, addressbook.yaml, mapkit.yaml]
 library: EventKit
 framework: EventKit
 clang_args: ['-x', 'objective-c']
@@ -14,17 +14,20 @@ enums:
     EKEventStatus: { first: EKEventStatusNone }
     EKSpan: { first: EKSpanThisEvent }
     EKAuthorizationStatus: {}
-    EKWeekDay: { first: EKSunday }
+    EKWeekday: {first: EKWeekdaySunday, ignore: 'EK(?!Weekday).*', prefix: EKWeekday}
     EKRecurrenceFrequency: { first: EKRecurrenceFrequencyDaily }
     EKParticipantType: { first: EKParticipantTypeUnknown }
     EKParticipantRole: { first: EKParticipantRoleUnknown }
     EKParticipantStatus: { first: EKParticipantStatusUnknown }
+    EKParticipantScheduleStatus: {}
     EKCalendarType: { first: EKCalendarTypeLocal }
     EKCalendarEventAvailabilityMask: { first: EKCalendarEventAvailabilityNone, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
     EKSourceType: { first: EKSourceTypeLocal }
     EKEntityType: { first: EKEntityTypeEvent, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     EKEntityMask: { first: EKEntityMaskEvent, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
     EKAlarmProximity: { first: EKAlarmProximityNone }
+    EKAlarmType: {}
+    EKReminderPriority: {}
         
 classes:
     EKError:
@@ -35,18 +38,20 @@ classes:
         methods:
             '+alarmWithAbsoluteDate:':
                 name: create
+                constructor: true
             '+alarmWithRelativeOffset:':
                 name: create
+                constructor: true
     EKCalendar: # DONE
         properties:
             'CGColor':
                 annotations: ['@WeaklyLinked']
         methods:
-            '+calendarWithEventStore:':
-                name: create
             '+calendarForEntityType:eventStore:':
                 name: create
+                constructor: true
     EKCalendarItem: # DONE
+        skip_handle_constructor: false
         properties:
             'attendees':
                 type: NSArray<EKParticipant>
@@ -80,19 +85,19 @@ classes:
                 trim_after_first_colon: true
             '+eventWithEventStore:':
                 name: create
+                constructor: true
     EKEventStore: # DONE
         properties:
             'calendars':
                 type: NSArray<EKCalendar>
+            'sources':
+                type: NSArray<EKSource>
         methods:
             '-requestAccessToEntityType:completion:':
                 name: requestAccess
                 parameters:
                     completion:
                         type: '@Block VoidBlock2<Boolean, NSError>'
-            '-sources':
-                property: true
-                return_type: NSArray<EKSource>
             '-sourceWithIdentifier:':
                 name: getSource
             '-calendarsForEntityType:':
@@ -173,7 +178,8 @@ classes:
                 throws: NSErrorException
             '+authorizationStatusForEntityType:':
                 name: getAuthorizationStatusForEntityType
-    EKObject: {} # DONE
+    EKObject: # DONE
+        skip_handle_constructor: false
     EKParticipant: # DONE
         properties:
             'isCurrentUser':
@@ -188,16 +194,17 @@ classes:
                 name: init
             '+dayOfWeek:':
                 name: create
+                constructor: true
             '+dayOfWeek:weekNumber:':
-                name: create
+                exclude: true
     EKRecurrenceEnd: # DONE
         methods:
             '+recurrenceEndWithEndDate:':
                 name: create
-                return_type: EKRecurrenceEnd
+                constructor: true
             '+recurrenceEndWithOccurrenceCount:':
                 name: create
-                return_type: EKRecurrenceEnd
+                constructor: true
     EKRecurrenceRule: # DONE
         properties:
             'daysOfTheWeek':
@@ -234,10 +241,8 @@ classes:
         methods:
             '+reminderWithEventStore:':
                 name: create
+                constructor: true
     EKSource: # DONE
-        properties:
-            'calendars':
-                type: NSSet<EKCalendar>
         methods:
             '-calendarsForEntityType:':
                 name: getCalendars
@@ -246,6 +251,10 @@ classes:
         methods:
             '+locationWithTitle:':
                 name: create
+                constructor: true
+            '+locationWithMapItem:':
+                name: create
+                constructor: true
 protocols: {}
 
 functions:

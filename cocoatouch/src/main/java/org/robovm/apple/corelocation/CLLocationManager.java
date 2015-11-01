@@ -96,6 +96,16 @@ import org.robovm.apple.corebluetooth.*;
      */
     @Property(selector = "setPausesLocationUpdatesAutomatically:")
     public native void setPausesLocationUpdatesAutomatically(boolean v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "allowsBackgroundLocationUpdates")
+    public native boolean allowsBackgroundLocationUpdates();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setAllowsBackgroundLocationUpdates:")
+    public native void setAllowsBackgroundLocationUpdates(boolean v);
     @Property(selector = "location")
     public native CLLocation getLocation();
     /**
@@ -165,6 +175,11 @@ import org.robovm.apple.corebluetooth.*;
     public native void startUpdatingLocation();
     @Method(selector = "stopUpdatingLocation")
     public native void stopUpdatingLocation();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "requestLocation")
+    public native void requestLocation();
     /**
      * @since Available in iOS 3.0 and later.
      */

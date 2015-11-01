@@ -64,5 +64,15 @@ import org.robovm.apple.foundation.*;
     public static native boolean isDistanceAvailable();
     @Method(selector = "isFloorCountingAvailable")
     public static native boolean isFloorCountingAvailable();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "isPaceAvailable")
+    public static native boolean isPaceAvailable();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "isCadenceAvailable")
+    public static native boolean isCadenceAvailable();
     /*</methods>*/
 }

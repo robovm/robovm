@@ -30,6 +30,7 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.apple.addressbook.*;
+import org.robovm.apple.contacts.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -52,12 +53,32 @@ import org.robovm.apple.addressbook.*;
     /*<properties>*/
     @Property(selector = "token")
     public native PKPaymentToken getToken();
+    /**
+     * @since Available in iOS 8.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @WeaklyLinked
     @Property(selector = "billingAddress")
     public native ABPerson getBillingAddress();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "billingContact")
+    public native PKContact getBillingContact();
+    /**
+     * @since Available in iOS 8.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @WeaklyLinked
     @Property(selector = "shippingAddress")
     public native ABPerson getShippingAddress();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "shippingContact")
+    public native PKContact getShippingContact();
     @Property(selector = "shippingMethod")
     public native PKShippingMethod getShippingMethod();
     /*</properties>*/

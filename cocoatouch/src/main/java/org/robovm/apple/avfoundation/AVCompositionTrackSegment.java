@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -73,9 +74,5 @@ import org.robovm.apple.audiounit.*;
     protected native @Pointer long init(NSURL URL, int trackID, @ByVal CMTimeRange sourceTimeRange, @ByVal CMTimeRange targetTimeRange);
     @Method(selector = "initWithTimeRange:")
     protected native @Pointer long init(@ByVal CMTimeRange timeRange);
-    @Method(selector = "compositionTrackSegmentWithURL:trackID:sourceTimeRange:targetTimeRange:")
-    public static native AVCompositionTrackSegment create(NSURL URL, int trackID, @ByVal CMTimeRange sourceTimeRange, @ByVal CMTimeRange targetTimeRange);
-    @Method(selector = "compositionTrackSegmentWithTimeRange:")
-    public static native AVCompositionTrackSegment create(@ByVal CMTimeRange timeRange);
     /*</methods>*/
 }

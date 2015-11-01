@@ -49,6 +49,7 @@ import org.robovm.apple.accounts.*;
     /*<constructors>*/
     public SLComposeViewController() {}
     protected SLComposeViewController(SkipInit skipInit) { super(skipInit); }
+    public SLComposeViewController(SLServiceType serviceType) { super(create(serviceType)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "serviceType")
@@ -73,6 +74,6 @@ import org.robovm.apple.accounts.*;
     @Method(selector = "isAvailableForServiceType:")
     public static native boolean isAvailable(SLServiceType serviceType);
     @Method(selector = "composeViewControllerForServiceType:")
-    public static native SLComposeViewController create(SLServiceType serviceType);
+    protected static native @Pointer long create(SLServiceType serviceType);
     /*</methods>*/
 }

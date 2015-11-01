@@ -42,7 +42,11 @@ public enum /*<name>*/CBPeripheralState/*</name>*/ implements ValuedEnum {
     /*<values>*/
     Disconnected(0L),
     Connecting(1L),
-    Connected(2L);
+    Connected(2L),
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    Disconnecting(3L);
     /*</values>*/
 
     /*<bind>*/

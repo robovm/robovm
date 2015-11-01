@@ -52,6 +52,12 @@ import org.robovm.apple.dispatch.*;
         this.setSpan(span);
     }
     /*</constructors>*/
+    public MKCoordinateRegion(CLLocationCoordinate2D centerCoordinate, double latitudinalMeters, double longitudinalMeters) {
+        super(create(centerCoordinate, latitudinalMeters, longitudinalMeters));
+    }
+    public MKCoordinateRegion(MKMapRect rect) {
+        super(create(rect));
+    }
     /*<properties>*//*</properties>*/
     /*<members>*/
     @StructMember(0) public native @ByVal CLLocationCoordinate2D getCenter();
@@ -61,11 +67,11 @@ import org.robovm.apple.dispatch.*;
     /*</members>*/
     /*<methods>*/
     @Bridge(symbol="MKCoordinateRegionMakeWithDistance", optional=true)
-    public static native @ByVal MKCoordinateRegion create(@ByVal CLLocationCoordinate2D centerCoordinate, double latitudinalMeters, double longitudinalMeters);
+    private static native @Pointer long create(@ByVal CLLocationCoordinate2D centerCoordinate, double latitudinalMeters, double longitudinalMeters);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="MKCoordinateRegionForMapRect", optional=true)
-    public static native @ByVal MKCoordinateRegion create(@ByVal MKMapRect rect);
+    private static native @Pointer long create(@ByVal MKMapRect rect);
     /*</methods>*/
 }

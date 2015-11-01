@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -64,7 +65,7 @@ import org.robovm.apple.audiounit.*;
      * @since Available in iOS 4.0 and later.
      */
     @NotImplemented("endInterruptionWithFlags:")
-    public void endInterruption(AVAudioSessionInterruptionFlags flags) {}
+    public void endInterruption(AVAudioSessionInterruptionOptions flags) {}
     @NotImplemented("endInterruption")
     public void endInterruption() {}
     @NotImplemented("inputIsAvailableChanged:")

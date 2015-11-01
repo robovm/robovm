@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -68,7 +69,5 @@ import org.robovm.apple.audiounit.*;
     protected native @Pointer long init(AVAssetWriterInput input);
     @Method(selector = "appendTimedMetadataGroup:")
     public native boolean appendTimedMetadataGroup(AVTimedMetadataGroup timedMetadataGroup);
-    @Method(selector = "assetWriterInputMetadataAdaptorWithAssetWriterInput:")
-    public static native AVAssetWriterInputMetadataAdaptor create(AVAssetWriterInput input);
     /*</methods>*/
 }

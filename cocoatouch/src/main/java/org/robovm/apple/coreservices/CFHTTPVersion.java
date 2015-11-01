@@ -95,9 +95,13 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     public static final CFHTTPVersion Version1_1 = new CFHTTPVersion("Version1_1");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final CFHTTPVersion Version2_0 = new CFHTTPVersion("Version2_0");
     /*</constants>*/
     
-    private static /*<name>*/CFHTTPVersion/*</name>*/[] values = new /*<name>*/CFHTTPVersion/*</name>*/[] {/*<value_list>*/Version1_0, Version1_1/*</value_list>*/};
+    private static /*<name>*/CFHTTPVersion/*</name>*/[] values = new /*<name>*/CFHTTPVersion/*</name>*/[] {/*<value_list>*/Version1_0, Version1_1, Version2_0/*</value_list>*/};
     
     /*<name>*/CFHTTPVersion/*</name>*/ (String getterName) {
         super(Values.class, getterName);
@@ -130,6 +134,11 @@ import org.robovm.apple.corefoundation.*;
          */
         @GlobalValue(symbol="kCFHTTPVersion1_1", optional=true)
         public static native CFString Version1_1();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="kCFHTTPVersion2_0", optional=true)
+        public static native CFString Version2_0();
         /*</values>*/
     }
 }

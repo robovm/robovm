@@ -90,7 +90,7 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
      * @since Available in iOS 7.0 and later.
      */
     public NSAttributedStringAttributes getDefaultTextAttributes() {
-        NSDictionary<NSString, NSObject> dict = getDefaultTextAttributesDictionary();
+        NSDictionary<NSString, ?> dict = getDefaultTextAttributesDictionary();
         if (dict == null) return null;
         return new NSAttributedStringAttributes(dict);
     }
@@ -99,7 +99,7 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
      */
     @WeaklyLinked
     public CMTextMarkupAttributes getDefaultTextMarkupAttributes() {
-        NSDictionary<NSString, NSObject> dict = getDefaultTextAttributesDictionary();
+        NSDictionary<NSString, ?> dict = getDefaultTextAttributesDictionary();
         if (dict == null) return null;
         return new CMTextMarkupAttributes(dict.as(CFDictionary.class));
     }
@@ -108,7 +108,7 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
      */
     @WeaklyLinked
     public CTAttributedStringAttributes getDefaultCoreTextAttributes() {
-        NSDictionary<NSString, NSObject> dict = getDefaultTextAttributesDictionary();
+        NSDictionary<NSString, ?> dict = getDefaultTextAttributesDictionary();
         if (dict == null) return null;
         return new CTAttributedStringAttributes(dict.as(CFDictionary.class));
     }
@@ -148,7 +148,7 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
      * @since Available in iOS 6.0 and later.
      */
     public NSAttributedStringAttributes getTypingAttributes() {
-        NSDictionary<NSString, NSObject> dict = getTypingAttributesDictionary();
+        NSDictionary<NSString, ?> dict = getTypingAttributesDictionary();
         if (dict == null) return null;
         return new NSAttributedStringAttributes(dict);
     }
@@ -157,7 +157,7 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
      */
     @WeaklyLinked
     public CMTextMarkupAttributes getTypingTextMarkupAttributes() {
-        NSDictionary<NSString, NSObject> dict = getTypingAttributesDictionary();
+        NSDictionary<NSString, ?> dict = getTypingAttributesDictionary();
         if (dict == null) return null;
         return new CMTextMarkupAttributes(dict.as(CFDictionary.class));
     }
@@ -166,7 +166,7 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
      */
     @WeaklyLinked
     public CTAttributedStringAttributes getTypingCoreTextAttributes() {
-        NSDictionary<NSString, NSObject> dict = getTypingAttributesDictionary();
+        NSDictionary<NSString, ?> dict = getTypingAttributesDictionary();
         if (dict == null) return null;
         return new CTAttributedStringAttributes(dict.as(CFDictionary.class));
     }
@@ -237,12 +237,12 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "defaultTextAttributes")
-    public native NSDictionary getDefaultTextAttributesDictionary();
+    public native NSDictionary<NSString, ?> getDefaultTextAttributesDictionary();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "setDefaultTextAttributes:")
-    public native void setDefaultTextAttributesDictionary(NSDictionary v);
+    public native void setDefaultTextAttributesDictionary(NSDictionary<NSString, ?> v);
     @Property(selector = "placeholder")
     public native String getPlaceholder();
     @Property(selector = "setPlaceholder:")
@@ -297,12 +297,12 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "typingAttributes")
-    public native NSDictionary getTypingAttributesDictionary();
+    public native NSDictionary<NSString, ?> getTypingAttributesDictionary();
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "setTypingAttributes:")
-    public native void setTypingAttributesDictionary(NSDictionary v);
+    public native void setTypingAttributesDictionary(NSDictionary<NSString, ?> v);
     @Property(selector = "clearButtonMode")
     public native UITextFieldViewMode getClearButtonMode();
     @Property(selector = "setClearButtonMode:")
@@ -497,6 +497,21 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
     public native @ByVal CGRect getDictationResultPlaceholderFrame(NSObject placeholder);
     @Method(selector = "removeDictationResultPlaceholder:willInsertResult:")
     public native void removeDictationResultPlaceholder(NSObject placeholder, boolean willInsertResult);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "beginFloatingCursorAtPoint:")
+    public native void beginFloatingCursor(@ByVal CGPoint point);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "updateFloatingCursorAtPoint:")
+    public native void updateFloatingCursor(@ByVal CGPoint point);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "endFloatingCursor")
+    public native void endFloatingCursor();
     @Method(selector = "hasText")
     public native boolean hasText();
     @Method(selector = "insertText:")

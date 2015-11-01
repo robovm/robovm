@@ -99,9 +99,13 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 6.0 and later.
      */
     public static final MKDirectionsMode Walking = new MKDirectionsMode("Walking");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final MKDirectionsMode Transit = new MKDirectionsMode("Transit");
     /*</constants>*/
     
-    private static /*<name>*/MKDirectionsMode/*</name>*/[] values = new /*<name>*/MKDirectionsMode/*</name>*/[] {/*<value_list>*/Driving, Walking/*</value_list>*/};
+    private static /*<name>*/MKDirectionsMode/*</name>*/[] values = new /*<name>*/MKDirectionsMode/*</name>*/[] {/*<value_list>*/Driving, Walking, Transit/*</value_list>*/};
     
     /*<name>*/MKDirectionsMode/*</name>*/ (String getterName) {
         super(Values.class, getterName);
@@ -134,6 +138,11 @@ import org.robovm.apple.dispatch.*;
          */
         @GlobalValue(symbol="MKLaunchOptionsDirectionsModeWalking", optional=true)
         public static native NSString Walking();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="MKLaunchOptionsDirectionsModeTransit", optional=true)
+        public static native NSString Transit();
         /*</values>*/
     }
 }

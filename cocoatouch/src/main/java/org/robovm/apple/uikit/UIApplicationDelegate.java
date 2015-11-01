@@ -77,13 +77,25 @@ import org.robovm.apple.corelocation.*;
     void didBecomeActive(UIApplication application);
     @Method(selector = "applicationWillResignActive:")
     void willResignActive(UIApplication application);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Method(selector = "application:handleOpenURL:")
     boolean handleOpenURL(UIApplication application, NSURL url);
     /**
      * @since Available in iOS 4.2 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @Method(selector = "application:openURL:sourceApplication:annotation:")
     boolean openURL(UIApplication application, NSURL url, String sourceApplication, NSPropertyList annotation);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "application:openURL:options:")
+    boolean openURL(UIApplication app, NSURL url, UIApplicationOpenURLOptions options);
     @Method(selector = "applicationDidReceiveMemoryWarning:")
     void didReceiveMemoryWarning(UIApplication application);
     @Method(selector = "applicationWillTerminate:")
@@ -129,10 +141,20 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "application:handleActionWithIdentifier:forLocalNotification:completionHandler:")
     void handleLocalNotificationAction(UIApplication application, String identifier, UILocalNotification notification, @Block Runnable completionHandler);
     /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "application:handleActionWithIdentifier:forRemoteNotification:withResponseInfo:completionHandler:")
+    void handleRemoteNotificationAction(UIApplication application, String identifier, UIRemoteNotification userInfo, NSDictionary<?, ?> responseInfo, @Block Runnable completionHandler);
+    /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "application:handleActionWithIdentifier:forRemoteNotification:completionHandler:")
     void handleRemoteNotificationAction(UIApplication application, String identifier, UIRemoteNotification userInfo, @Block Runnable completionHandler);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "application:handleActionWithIdentifier:forLocalNotification:withResponseInfo:completionHandler:")
+    void handleLocalNotificationAction(UIApplication application, String identifier, UILocalNotification notification, NSDictionary<?, ?> responseInfo, @Block Runnable completionHandler);
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -152,7 +174,12 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 8.2 and later.
      */
     @Method(selector = "application:handleWatchKitExtensionRequest:reply:")
-    void handleWatchKitExtensionRequest(UIApplication application, NSDictionary userInfo, @Block VoidBlock1<NSDictionary<?, ?>> reply);
+    void handleWatchKitExtensionRequest(UIApplication application, NSDictionary<?, ?> userInfo, @Block VoidBlock1<NSDictionary<?, ?>> reply);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "applicationShouldRequestHealthAuthorization:")
+    void shouldRequestHealthAuthorization(UIApplication application);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -177,7 +204,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "application:supportedInterfaceOrientationsForWindow:")
-    @MachineSizedUInt long getSupportedInterfaceOrientations(UIApplication application, UIWindow window);
+    UIInterfaceOrientationMask getSupportedInterfaceOrientations(UIApplication application, UIWindow window);
     /**
      * @since Available in iOS 8.0 and later.
      */

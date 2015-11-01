@@ -120,7 +120,7 @@ values:
         class: UTType
         static_class: MarkupLanguage
         name: '#{g[0]}'
-    kUTType(SourceCode|AssemblyLanguageSource|CSource|ObjectiveCSource|CPlusPlusSource|ObjectiveCPlusPlusSource|CHeader|CPlusPlusHeader|JavaSource):
+    kUTType(SourceCode|AssemblyLanguageSource|CSource|ObjectiveCSource|CPlusPlusSource|ObjectiveCPlusPlusSource|CHeader|CPlusPlusHeader|JavaSource|SwiftSource):
         class: UTType
         static_class: ProgrammingLanguage
         name: '#{g[0]}'

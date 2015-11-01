@@ -110,6 +110,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UIBarButtonItem() {}
     protected UIBarButtonItem(SkipInit skipInit) { super(skipInit); }
+    public UIBarButtonItem(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     public UIBarButtonItem(UIImage image, UIBarButtonItemStyle style, NSObject target, Selector action) { super((SkipInit) null); initObject(init(image, style, target, action)); }
     /**
      * @since Available in iOS 5.0 and later.
@@ -118,7 +119,6 @@ import org.robovm.apple.corelocation.*;
     public UIBarButtonItem(String title, UIBarButtonItemStyle style, NSObject target, Selector action) { super((SkipInit) null); initObject(init(title, style, target, action)); }
     public UIBarButtonItem(UIBarButtonSystemItem systemItem, NSObject target, Selector action) { super((SkipInit) null); initObject(init(systemItem, target, action)); }
     public UIBarButtonItem(UIView customView) { super((SkipInit) null); initObject(init(customView)); }
-    public UIBarButtonItem(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     
     public void setOnClickListener(OnClickListener listener) {
@@ -167,9 +167,16 @@ import org.robovm.apple.corelocation.*;
      */
     @Property(selector = "setTintColor:")
     public native void setTintColor(UIColor v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "buttonGroup")
+    public native UIBarButtonItemGroup getButtonGroup();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     @Method(selector = "initWithImage:style:target:action:")
     protected native @Pointer long init(UIImage image, UIBarButtonItemStyle style, NSObject target, Selector action);
     /**
@@ -255,7 +262,5 @@ import org.robovm.apple.corelocation.*;
     public native @MachineSizedFloat double getBackButtonBackgroundVerticalPositionAdjustment(UIBarMetrics barMetrics);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder coder);
-    @Method(selector = "initWithCoder:")
-    protected native @Pointer long init(NSCoder aDecoder);
     /*</methods>*/
 }

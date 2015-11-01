@@ -46,7 +46,12 @@ import org.robovm.apple.uikit.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public SKPayment() {}
+    protected SKPayment(long handle) { super(handle); }
     protected SKPayment(SkipInit skipInit) { super(skipInit); }
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    public SKPayment(SKProduct product) { super(create(product)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     /**
@@ -81,6 +86,6 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "paymentWithProduct:")
-    public static native SKPayment create(SKProduct product);
+    protected static native @Pointer long create(SKProduct product);
     /*</methods>*/
 }

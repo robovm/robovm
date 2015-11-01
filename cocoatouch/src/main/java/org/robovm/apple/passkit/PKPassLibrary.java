@@ -30,6 +30,7 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.apple.addressbook.*;
+import org.robovm.apple.contacts.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -47,7 +48,20 @@ import org.robovm.apple.addressbook.*;
             return NSNotificationCenter.getDefaultCenter().addObserver(DidChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke (NSNotification a) {
-                    NSDictionary<NSString, NSObject> userInfo = a.getUserInfo();
+                    NSDictionary userInfo = a.getUserInfo();
+                    PKPassLibraryNotification data = null;
+                    if (userInfo != null) {
+                        data = new PKPassLibraryNotification(userInfo);
+                    }
+                    block.invoke(data);
+                }
+            });
+        }
+        public static NSObject observeRemotePaymentPassesDidChange(final VoidBlock1<PKPassLibraryNotification> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(RemotePaymentPassesDidChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke (NSNotification a) {
+                    NSDictionary userInfo = a.getUserInfo();
                     PKPassLibraryNotification data = null;
                     if (userInfo != null) {
                         data = new PKPassLibraryNotification(userInfo);
@@ -75,7 +89,17 @@ import org.robovm.apple.addressbook.*;
      */
     @GlobalValue(symbol="PKPassLibraryDidChangeNotification", optional=true)
     public static native NSString DidChangeNotification();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @GlobalValue(symbol="PKPassLibraryRemotePaymentPassesDidChangeNotification", optional=true)
+    public static native NSString RemotePaymentPassesDidChangeNotification();
     
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "isPaymentPassActivationAvailable")
+    public native boolean isPaymentPassActivationAvailable();
     @Method(selector = "passes")
     public native NSArray<PKPass> getPasses();
     @Method(selector = "passWithPassTypeIdentifier:serialNumber:")
@@ -85,6 +109,11 @@ import org.robovm.apple.addressbook.*;
      */
     @Method(selector = "passesOfType:")
     public native NSArray<PKPass> getPassesOfType(PKPassType passType);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "remotePaymentPasses")
+    public native NSArray<PKPass> getRemotePaymentPasses();
     @Method(selector = "removePass:")
     public native void removePass(PKPass pass);
     @Method(selector = "containsPass:")
@@ -102,21 +131,48 @@ import org.robovm.apple.addressbook.*;
     @Method(selector = "openPaymentSetup")
     public native void openPaymentSetup();
     /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "canAddPaymentPassWithPrimaryAccountIdentifier:")
+    public native boolean canAddPaymentPass(String primaryAccountIdentifier);
+    /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "activatePaymentPass:withActivationData:completion:")
     public native void activatePaymentPass(PKPaymentPass paymentPass, NSData activationData, @Block VoidBlock2<Boolean, NSError> completion);
     /**
      * @since Available in iOS 8.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @Method(selector = "activatePaymentPass:withActivationCode:completion:")
     public native void activatePaymentPass(PKPaymentPass paymentPass, String activationCode, @Block VoidBlock2<Boolean, NSError> completion);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "isPassLibraryAvailable")
     public static native boolean isPassLibraryAvailable();
     /**
-     * @since Available in iOS 8.0 and later.
+     * @since Available in iOS 9.0 and later.
      */
+    @Method(selector = "requestAutomaticPassPresentationSuppressionWithResponseHandler:")
+    public static native @MachineSizedUInt long requestAutomaticPassPresentationSuppression(@Block VoidBlock1<PKAutomaticPassPresentationSuppressionResult> responseHandler);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "endAutomaticPassPresentationSuppressionWithRequestToken:")
+    public static native void endAutomaticPassPresentationSuppression(@MachineSizedUInt long requestToken);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "isSuppressingAutomaticPassPresentation")
+    public static native boolean isSuppressingAutomaticPassPresentation();
+    /**
+     * @since Available in iOS 8.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Method(selector = "isPaymentPassActivationAvailable")
-    public static native boolean isPaymentPassActivationAvailable();
+    public static native boolean isDevicePaymentPassActivationAvailable();
     /*</methods>*/
 }

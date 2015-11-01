@@ -54,12 +54,9 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
     /*<constructors>*/
     public UISearchBar() {}
     protected UISearchBar(SkipInit skipInit) { super(skipInit); }
+    public UISearchBar(@ByVal CGRect frame) { super((SkipInit) null); initObject(init(frame)); }
+    public UISearchBar(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
-    
-    public UISearchBar(CGRect frame) {
-        super(frame);
-    }
-    
     /*<properties>*/
     @Property(selector = "barStyle")
     public native UIBarStyle getBarStyle();
@@ -109,6 +106,11 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
      */
     @Property(selector = "setSearchResultsButtonSelected:")
     public native void setSearchResultsButtonSelected(boolean v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "inputAssistantItem")
+    public native UITextInputAssistantItem getInputAssistantItem();
     @Property(selector = "tintColor")
     public native UIColor getTintColor();
     @Property(selector = "setTintColor:")
@@ -295,7 +297,7 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
      * @since Available in iOS 5.0 and later.
      */
     public NSAttributedStringAttributes getScopeBarButtonTitleTextAttributes(UIControlState state) {
-        NSDictionary<NSString, NSObject> dict = getScopeBarButtonTitleTextAttributesDictionary(state);
+        NSDictionary<NSString, ?> dict = getScopeBarButtonTitleTextAttributesDictionary(state);
         if (dict == null) return null;
         return new NSAttributedStringAttributes(dict);
     }
@@ -304,7 +306,7 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
      */
     @WeaklyLinked
     public CMTextMarkupAttributes getScopeBarButtonTitleTextMarkupAttributes(UIControlState state) {
-        NSDictionary<NSString, NSObject> dict = getScopeBarButtonTitleTextAttributesDictionary(state);
+        NSDictionary<NSString, ?> dict = getScopeBarButtonTitleTextAttributesDictionary(state);
         if (dict == null) return null;
         return new CMTextMarkupAttributes(dict.as(CFDictionary.class));
     }
@@ -313,11 +315,15 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
      */
     @WeaklyLinked
     public CTAttributedStringAttributes getScopeBarButtonTitleCoreTextAttributes(UIControlState state) {
-        NSDictionary<NSString, NSObject> dict = getScopeBarButtonTitleTextAttributesDictionary(state);
+        NSDictionary<NSString, ?> dict = getScopeBarButtonTitleTextAttributesDictionary(state);
         if (dict == null) return null;
         return new CTAttributedStringAttributes(dict.as(CFDictionary.class));
     }
     /*<methods>*/
+    @Method(selector = "initWithFrame:")
+    protected native @Pointer long init(@ByVal CGRect frame);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     /**
      * @since Available in iOS 3.0 and later.
      */
@@ -377,12 +383,12 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "setScopeBarButtonTitleTextAttributes:forState:")
-    public native void setScopeBarButtonTitleTextAttributesDictionary(NSDictionary attributes, UIControlState state);
+    public native void setScopeBarButtonTitleTextAttributesDictionary(NSDictionary<NSString, ?> attributes, UIControlState state);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "scopeBarButtonTitleTextAttributesForState:")
-    public native NSDictionary getScopeBarButtonTitleTextAttributesDictionary(UIControlState state);
+    public native NSDictionary<NSString, ?> getScopeBarButtonTitleTextAttributesDictionary(UIControlState state);
     /**
      * @since Available in iOS 5.0 and later.
      */

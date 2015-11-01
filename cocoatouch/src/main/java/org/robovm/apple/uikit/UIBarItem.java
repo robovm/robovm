@@ -54,6 +54,7 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
     /*<constructors>*/
     public UIBarItem() {}
     protected UIBarItem(SkipInit skipInit) { super(skipInit); }
+    public UIBarItem(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "isEnabled")
@@ -157,15 +158,17 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
         return new CTAttributedStringAttributes(dict.as(CFDictionary.class));
     }
     /*<methods>*/
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "setTitleTextAttributes:forState:")
-    public native void setTitleTextAttributesDictionary(NSDictionary attributes, UIControlState state);
+    public native void setTitleTextAttributesDictionary(NSDictionary<NSString, ?> attributes, UIControlState state);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "titleTextAttributesForState:")
-    public native NSDictionary getTitleTextAttributesDictionary(UIControlState state);
+    public native NSDictionary<NSString, ?> getTitleTextAttributesDictionary(UIControlState state);
     /*</methods>*/
 }

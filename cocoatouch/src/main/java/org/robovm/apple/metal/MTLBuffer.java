@@ -36,7 +36,7 @@ import org.robovm.apple.dispatch.*;
  * @since Available in iOS 8.0 and later.
  */
 /*</javadoc>*/
-/*<annotations>*/@Library("Metal")/*</annotations>*/
+/*<annotations>*/@Library("Metal") @NativeProtocolProxy/*</annotations>*/
 /*<visibility>*/public final/*</visibility>*/ class /*<name>*/MTLBuffer/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*/implements MTLResource/*</implements>*/ {
@@ -58,14 +58,22 @@ import org.robovm.apple.dispatch.*;
     public native MTLDevice getDevice();
     @Property(selector = "cpuCacheMode")
     public native MTLCPUCacheMode getCpuCacheMode();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "storageMode")
+    public native MTLStorageMode getStorageMode();
     /*</properties>*/
     /*<members>*//*</members>*/
-    public byte[] getContents() {
-        return VM.newByteArray(getContents0(), (int)getLength());
+    public ByteBuffer getContents() {
+        return VM.newDirectByteBuffer(getContents0(), (int) getLength());
     }
     /*<methods>*/
     @Method(selector = "contents")
     protected native @Pointer long getContents0();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "newTextureWithDescriptor:offset:bytesPerRow:")
     public native @org.robovm.rt.bro.annotation.Marshaler(NSObject.NoRetainMarshaler.class) MTLTexture newTexture(MTLTextureDescriptor descriptor, @MachineSizedUInt long offset, @MachineSizedUInt long bytesPerRow);
     @Method(selector = "setPurgeableState:")

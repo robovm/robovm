@@ -10,6 +10,9 @@
 # Tests assert which RoboVM doesn't implement.
 029-assert
 
+# Too large variance in wait time on device.
+053-wait-some
+
 # Launches a child process (sleep 5) which is not possible on iOS devices
 063-process-manager
 

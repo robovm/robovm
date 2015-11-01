@@ -30,6 +30,7 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.apple.addressbook.*;
+import org.robovm.apple.contacts.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -59,8 +60,23 @@ import org.robovm.apple.addressbook.*;
     void willAuthorizePayment(PKPaymentAuthorizationViewController controller);
     @Method(selector = "paymentAuthorizationViewController:didSelectShippingMethod:completion:")
     void didSelectShippingMethod(PKPaymentAuthorizationViewController controller, PKShippingMethod shippingMethod, @Block VoidBlock2<PKPaymentAuthorizationStatus, NSArray<PKPaymentSummaryItem>> completion);
+    /**
+     * @since Available in iOS 8.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Method(selector = "paymentAuthorizationViewController:didSelectShippingAddress:completion:")
     void didSelectShippingAddress(PKPaymentAuthorizationViewController controller, ABRecord address, @Block VoidBlock3<PKPaymentAuthorizationStatus, NSArray<PKShippingMethod>, NSArray<PKPaymentSummaryItem>> completion);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "paymentAuthorizationViewController:didSelectShippingContact:completion:")
+    void didSelectShippingContact(PKPaymentAuthorizationViewController controller, PKContact contact, @Block VoidBlock3<PKPaymentAuthorizationStatus, NSArray<PKShippingMethod>, NSArray<PKPaymentSummaryItem>> completion);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "paymentAuthorizationViewController:didSelectPaymentMethod:completion:")
+    void didSelectPaymentMethod(PKPaymentAuthorizationViewController controller, PKPaymentMethod paymentMethod, @Block VoidBlock1<NSArray<PKPaymentSummaryItem>> completion);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

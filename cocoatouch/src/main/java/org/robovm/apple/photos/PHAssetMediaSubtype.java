@@ -45,6 +45,10 @@ public final class /*<name>*/PHAssetMediaSubtype/*</name>*/ extends Bits</*<name
     public static final PHAssetMediaSubtype None = new PHAssetMediaSubtype(0L);
     public static final PHAssetMediaSubtype PhotoPanorama = new PHAssetMediaSubtype(1L);
     public static final PHAssetMediaSubtype PhotoHDR = new PHAssetMediaSubtype(2L);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final PHAssetMediaSubtype PhotoScreenshot = new PHAssetMediaSubtype(4L);
     public static final PHAssetMediaSubtype VideoStreamed = new PHAssetMediaSubtype(65536L);
     public static final PHAssetMediaSubtype VideoHighFrameRate = new PHAssetMediaSubtype(131072L);
     public static final PHAssetMediaSubtype VideoTimelapse = new PHAssetMediaSubtype(262144L);

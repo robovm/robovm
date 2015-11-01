@@ -41,7 +41,7 @@ import org.robovm.apple.dispatch.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
+/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
 @ForceLinkClass(NSURLError.class)
 public enum /*<name>*/NSURLErrorCode/*</name>*/ implements NSErrorCode {
     /*<values>*/
@@ -65,6 +65,10 @@ public enum /*<name>*/NSURLErrorCode/*</name>*/ implements NSErrorCode {
     CannotDecodeRawData(-1015L),
     CannotDecodeContentData(-1016L),
     CannotParseResponse(-1017L),
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    AppTransportSecurityRequiresSecureConnection(-1022L),
     FileDoesNotExist(-1100L),
     FileIsDirectory(-1101L),
     NoPermissionsToReadFile(-1102L),

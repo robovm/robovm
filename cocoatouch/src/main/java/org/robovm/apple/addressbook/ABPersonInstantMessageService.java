@@ -87,30 +87,65 @@ import org.robovm.apple.corefoundation.*;
     /*</marshalers>*/
 
     /*<constants>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     public static final ABPersonInstantMessageService Yahoo = new ABPersonInstantMessageService("Yahoo");
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     public static final ABPersonInstantMessageService Jabber = new ABPersonInstantMessageService("Jabber");
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     public static final ABPersonInstantMessageService MSN = new ABPersonInstantMessageService("MSN");
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     public static final ABPersonInstantMessageService ICQ = new ABPersonInstantMessageService("ICQ");
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     public static final ABPersonInstantMessageService AIM = new ABPersonInstantMessageService("AIM");
     /**
-     * @since Available in iOS 5.0 and later.
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static final ABPersonInstantMessageService QQ = new ABPersonInstantMessageService("QQ");
     /**
-     * @since Available in iOS 5.0 and later.
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static final ABPersonInstantMessageService GoogleTalk = new ABPersonInstantMessageService("GoogleTalk");
     /**
-     * @since Available in iOS 5.0 and later.
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static final ABPersonInstantMessageService Skype = new ABPersonInstantMessageService("Skype");
     /**
-     * @since Available in iOS 5.0 and later.
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static final ABPersonInstantMessageService Facebook = new ABPersonInstantMessageService("Facebook");
     /**
-     * @since Available in iOS 5.0 and later.
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static final ABPersonInstantMessageService GaduGadu = new ABPersonInstantMessageService("GaduGadu");
     /*</constants>*/
     
@@ -137,39 +172,74 @@ import org.robovm.apple.corefoundation.*;
     	static { Bro.bind(Values.class); }
 
         /*<values>*/
+        /**
+         * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
+         */
+        @Deprecated
         @GlobalValue(symbol="kABPersonInstantMessageServiceYahoo", optional=true)
         public static native CFString Yahoo();
+        /**
+         * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
+         */
+        @Deprecated
         @GlobalValue(symbol="kABPersonInstantMessageServiceJabber", optional=true)
         public static native CFString Jabber();
+        /**
+         * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
+         */
+        @Deprecated
         @GlobalValue(symbol="kABPersonInstantMessageServiceMSN", optional=true)
         public static native CFString MSN();
+        /**
+         * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
+         */
+        @Deprecated
         @GlobalValue(symbol="kABPersonInstantMessageServiceICQ", optional=true)
         public static native CFString ICQ();
+        /**
+         * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
+         */
+        @Deprecated
         @GlobalValue(symbol="kABPersonInstantMessageServiceAIM", optional=true)
         public static native CFString AIM();
         /**
-         * @since Available in iOS 5.0 and later.
+         * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="kABPersonInstantMessageServiceQQ", optional=true)
         public static native CFString QQ();
         /**
-         * @since Available in iOS 5.0 and later.
+         * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="kABPersonInstantMessageServiceGoogleTalk", optional=true)
         public static native CFString GoogleTalk();
         /**
-         * @since Available in iOS 5.0 and later.
+         * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="kABPersonInstantMessageServiceSkype", optional=true)
         public static native CFString Skype();
         /**
-         * @since Available in iOS 5.0 and later.
+         * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="kABPersonInstantMessageServiceFacebook", optional=true)
         public static native CFString Facebook();
         /**
-         * @since Available in iOS 5.0 and later.
+         * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="kABPersonInstantMessageServiceGaduGadu", optional=true)
         public static native CFString GaduGadu();
         /*</values>*/

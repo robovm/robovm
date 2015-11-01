@@ -63,6 +63,11 @@ import org.robovm.apple.dispatch.*;
     public native void setDelegate(CBCentralManagerDelegate v);
     @Property(selector = "state")
     public native CBCentralManagerState getState();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "isScanning")
+    public native boolean isScanning();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -76,25 +81,10 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "initWithDelegate:queue:options:")
     protected native @Pointer long init(CBCentralManagerDelegate delegate, DispatchQueue queue, CBCentralManagerOptions options);
     /**
-     * @since Available in iOS 5.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     */
-    @Deprecated
-    @WeaklyLinked
-    @Method(selector = "retrievePeripherals:")
-    public native void retrievePeripherals(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<CFUUID> peripheralUUIDs);
-    /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "retrievePeripheralsWithIdentifiers:")
     public native NSArray<CBPeripheral> retrievePeripheralsWithId(NSArray<NSUUID> identifiers);
-    /**
-     * @since Available in iOS 5.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     */
-    @Deprecated
-    @Method(selector = "retrieveConnectedPeripherals")
-    public native void retrieveConnectedPeripherals();
     /**
      * @since Available in iOS 7.0 and later.
      */

@@ -362,11 +362,14 @@ classes:
                 name: loadPlayers
                 parameters:
                     identifiers:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: List<String>
+                        marshaler: NSArray.AsStringListMarshaler
                     completionHandler:
                         type: '@Block VoidBlock2<NSArray<GKPlayer>, NSError>'
             '-loadPhotoForSize:withCompletionHandler:':
                 name: loadPhoto
+            '+anonymousGuestPlayerWithIdentifier:':
+                name: getAnonymousGuestPlayer
     GKSavedGame: # DONE
         methods:
             '-loadDataWithCompletionHandler:':
@@ -645,6 +648,8 @@ protocols:
         methods:
             '-match:didReceiveData:fromRemotePlayer:':
                 name: didReceiveData
+            '-match:didReceiveData:forRecipient:fromRemotePlayer:':
+                name: didReceiveData
             '-match:didReceiveData:fromPlayer:':
                 name: didReceiveData
             '-match:player:didChangeState:':
@@ -741,6 +746,8 @@ protocols:
                 parameters:
                     replies:
                         type: NSArray<GKTurnBasedExchange>
+            '-player:wantsToQuitMatch:':
+                name: wantsToQuitMatch
             '-player:didRequestMatchWithOtherPlayers:':
                 name: didRequestMatch
                 parameters:

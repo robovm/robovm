@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -56,6 +57,7 @@ import org.robovm.apple.audiounit.*;
     /*<constructors>*/
     public AVMutableVideoCompositionLayerInstruction() {}
     protected AVMutableVideoCompositionLayerInstruction(SkipInit skipInit) { super(skipInit); }
+    public AVMutableVideoCompositionLayerInstruction(AVAssetTrack track) { super(create(track)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "trackID")
@@ -93,8 +95,6 @@ import org.robovm.apple.audiounit.*;
     @Method(selector = "setCropRectangle:atTime:")
     public native void setCropRectangle(@ByVal CGRect cropRectangle, @ByVal CMTime time);
     @Method(selector = "videoCompositionLayerInstructionWithAssetTrack:")
-    public static native AVMutableVideoCompositionLayerInstruction create(AVAssetTrack track);
-    @Method(selector = "videoCompositionLayerInstruction")
-    public static native AVMutableVideoCompositionLayerInstruction create();
+    protected static native @Pointer long create(AVAssetTrack track);
     /*</methods>*/
 }

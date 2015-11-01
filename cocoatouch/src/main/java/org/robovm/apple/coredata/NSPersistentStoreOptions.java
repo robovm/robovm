@@ -345,6 +345,23 @@ import org.robovm.apple.foundation.*;
         return this;
     }
     /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public boolean isForceDestroy() {
+        if (has(Keys.ForceDestroy())) {
+            NSNumber val = (NSNumber) get(Keys.ForceDestroy());
+            return val.booleanValue();
+        }
+        return false;
+    }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public NSPersistentStoreOptions setForceDestroy(boolean forceDestroy) {
+        set(Keys.ForceDestroy(), NSNumber.valueOf(forceDestroy));
+        return this;
+    }
+    /**
      * @since Available in iOS 5.0 and later.
      */
     public NSFileProtection getFileProtection() {
@@ -437,6 +454,11 @@ import org.robovm.apple.foundation.*;
          */
         @GlobalValue(symbol="NSPersistentStoreRebuildFromUbiquitousContentOption", optional=true)
         public static native NSString RebuildFromUbiquitousContent();
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        @GlobalValue(symbol="NSPersistentStoreForceDestroyOption", optional=true)
+        public static native NSString ForceDestroy();
         /**
          * @since Available in iOS 5.0 and later.
          */

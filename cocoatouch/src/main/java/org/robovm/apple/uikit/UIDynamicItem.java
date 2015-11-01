@@ -59,6 +59,16 @@ import org.robovm.apple.corelocation.*;
     @ByVal CGAffineTransform getTransform();
     @Property(selector = "setTransform:")
     void setTransform(@ByVal CGAffineTransform v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "collisionBoundsType")
+    UIDynamicItemCollisionBoundsType getCollisionBoundsType();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "collisionBoundingPath")
+    UIBezierPath getCollisionBoundingPath();
     /*</properties>*/
     /*<methods>*/
     

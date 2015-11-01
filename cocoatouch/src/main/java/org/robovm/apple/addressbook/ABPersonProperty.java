@@ -104,67 +104,201 @@ import org.robovm.apple.corefoundation.*;
         return getLocalizedPropertyName(value());
     }
     /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="kABPersonFirstNameProperty", optional=true)
     protected static native int FirstNameValue();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="kABPersonLastNameProperty", optional=true)
     protected static native int LastNameValue();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="kABPersonMiddleNameProperty", optional=true)
     protected static native int MiddleNameValue();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="kABPersonPrefixProperty", optional=true)
     protected static native int PrefixValue();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="kABPersonSuffixProperty", optional=true)
     protected static native int SuffixValue();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="kABPersonNicknameProperty", optional=true)
     protected static native int NicknameValue();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="kABPersonFirstNamePhoneticProperty", optional=true)
     protected static native int FirstNamePhoneticValue();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="kABPersonLastNamePhoneticProperty", optional=true)
     protected static native int LastNamePhoneticValue();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="kABPersonMiddleNamePhoneticProperty", optional=true)
     protected static native int MiddleNamePhoneticValue();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="kABPersonOrganizationProperty", optional=true)
     protected static native int OrganizationValue();
-    @GlobalValue(symbol="kABPersonJobTitleProperty", optional=true)
-    protected static native int JobTitleValue();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="kABPersonDepartmentProperty", optional=true)
     protected static native int DepartmentValue();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
+    @GlobalValue(symbol="kABPersonJobTitleProperty", optional=true)
+    protected static native int JobTitleValue();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="kABPersonEmailProperty", optional=true)
     protected static native int EmailValue();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="kABPersonBirthdayProperty", optional=true)
     protected static native int BirthdayValue();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="kABPersonNoteProperty", optional=true)
     protected static native int NoteValue();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="kABPersonCreationDateProperty", optional=true)
     protected static native int CreationDateValue();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="kABPersonModificationDateProperty", optional=true)
     protected static native int ModificationDateValue();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="kABPersonAddressProperty", optional=true)
     protected static native int AddressValue();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="kABPersonDateProperty", optional=true)
     protected static native int DateValue();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="kABPersonKindProperty", optional=true)
     protected static native int KindValue();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="kABPersonPhoneProperty", optional=true)
     protected static native int PhoneValue();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="kABPersonInstantMessageProperty", optional=true)
     protected static native int InstantMessageValue();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="kABPersonURLProperty", optional=true)
     protected static native int URLValue();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="kABPersonRelatedNamesProperty", optional=true)
     protected static native int RelatedNamesValue();
     /**
-     * @since Available in iOS 5.0 and later.
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @GlobalValue(symbol="kABPersonSocialProfileProperty", optional=true)
     protected static native int SocialProfileValue();
     /**
-     * @since Available in iOS 8.0 and later.
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @GlobalValue(symbol="kABPersonAlternateBirthdayProperty", optional=true)
     protected static native int AlternateBirthdayValue();
     
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Bridge(symbol="ABPersonGetTypeOfProperty", optional=true)
     protected static native ABPropertyType getType(int property);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Bridge(symbol="ABPersonCopyLocalizedPropertyName", optional=true)
     protected static native String getLocalizedPropertyName(int property);
     /*</methods>*/

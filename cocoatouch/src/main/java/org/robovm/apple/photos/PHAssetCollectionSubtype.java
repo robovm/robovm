@@ -59,6 +59,14 @@ public enum /*<name>*/PHAssetCollectionSubtype/*</name>*/ implements ValuedEnum 
     SmartAlbumBursts(207L),
     SmartAlbumSlomoVideos(208L),
     SmartAlbumUserLibrary(209L),
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    SmartAlbumSelfPortraits(210L),
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    SmartAlbumScreenshots(211L),
     Any(Bro.IS_32BIT ? 0x7fffffffL : 0x7fffffffffffffffL);
     /*</values>*/
 

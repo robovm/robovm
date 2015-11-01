@@ -48,6 +48,7 @@ import org.robovm.apple.metal.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public CALayer() {}
+    protected CALayer(long handle) { super(handle); }
     protected CALayer(SkipInit skipInit) { super(skipInit); }
     public CALayer(CALayer layer) { super((SkipInit) null); initObject(init(layer)); }
     public CALayer(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
@@ -123,8 +124,14 @@ import org.robovm.apple.metal.*;
     public native CAGravity getContentsGravity();
     @Property(selector = "setContentsGravity:")
     public native void setContentsGravity(CAGravity v);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Property(selector = "contentsScale")
     public native @MachineSizedFloat double getContentsScale();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Property(selector = "setContentsScale:")
     public native void setContentsScale(@MachineSizedFloat double v);
     @Property(selector = "contentsCenter")
@@ -151,8 +158,14 @@ import org.robovm.apple.metal.*;
     public native boolean needsDisplayOnBoundsChange();
     @Property(selector = "setNeedsDisplayOnBoundsChange:")
     public native void setNeedsDisplayOnBoundsChange(boolean v);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Property(selector = "drawsAsynchronously")
     public native boolean drawsAsynchronously();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Property(selector = "setDrawsAsynchronously:")
     public native void setDrawsAsynchronously(boolean v);
     @Property(selector = "edgeAntialiasingMask")
@@ -246,9 +259,9 @@ import org.robovm.apple.metal.*;
     @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(CALayerDelegate v);
     @Property(selector = "style")
-    public native NSDictionary getStyle();
+    public native NSDictionary<?, ?> getStyle();
     @Property(selector = "setStyle:")
-    public native void setStyle(NSDictionary v);
+    public native void setStyle(NSDictionary<?, ?> v);
     @Property(selector = "visibleRect")
     public native @ByVal CGRect getVisibleRect();
     @Property(selector = "beginTime")
@@ -364,8 +377,6 @@ import org.robovm.apple.metal.*;
     public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getAnimationKeys();
     @Method(selector = "animationForKey:")
     public native CAAnimation getAnimation(String key);
-    @Method(selector = "layer")
-    public static native CALayer create();
     @Method(selector = "defaultValueForKey:")
     public static native NSObject getDefaultValue(String key);
     @Method(selector = "needsDisplayForKey:")

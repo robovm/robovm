@@ -216,11 +216,6 @@ import org.robovm.apple.foundation.*;
      */
     @Method(selector = "initWithEntityName:")
     protected native @Pointer long init(String entityName);
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Method(selector = "fetchRequestWithEntityName:")
-    public static native NSFetchRequest create(String entityName);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder coder);
     @Method(selector = "initWithCoder:")

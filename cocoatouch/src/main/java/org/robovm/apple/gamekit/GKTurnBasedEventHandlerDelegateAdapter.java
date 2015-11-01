@@ -65,14 +65,14 @@ import org.robovm.apple.uikit.*;
     public void handleTurnEvent(GKTurnBasedMatch match, boolean didBecomeActive) {}
     /**
      * @since Available in iOS 5.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
+     * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @NotImplemented("handleTurnEventForMatch:")
     public void handleTurnEvent(GKTurnBasedMatch match) {}
     /**
      * @since Available in iOS 6.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
+     * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @NotImplemented("handleMatchEnded:")

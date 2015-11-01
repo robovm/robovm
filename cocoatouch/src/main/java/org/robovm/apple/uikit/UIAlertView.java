@@ -39,7 +39,9 @@ import org.robovm.apple.corelocation.*;
 /*<javadoc>*/
 /**
  * @since Available in iOS 2.0 and later.
+ * @deprecated Deprecated in iOS 9.0.
  */
+@Deprecated
 /*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIAlertView/*</name>*/ 
@@ -52,11 +54,9 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UIAlertView() {}
     protected UIAlertView(SkipInit skipInit) { super(skipInit); }
+    public UIAlertView(@ByVal CGRect frame) { super((SkipInit) null); initObject(init(frame)); }
+    public UIAlertView(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
-    
-    public UIAlertView(CGRect frame) {
-        super(frame);
-    }
     
     public UIAlertView(String title, String message, UIAlertViewDelegate delegate, String cancelButtonTitle, 
             String ... otherButtonTitles) {
@@ -107,6 +107,10 @@ import org.robovm.apple.corelocation.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @Method(selector = "initWithFrame:")
+    protected native @Pointer long init(@ByVal CGRect frame);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     @Method(selector = "addButtonWithTitle:")
     public native @MachineSizedSInt long addButton(String title);
     @Method(selector = "buttonTitleAtIndex:")

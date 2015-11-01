@@ -71,13 +71,17 @@ import org.robovm.apple.corefoundation.*;
     }
     /*<methods>*/
     /**
-     * @since Available in iOS 4.0 and later.
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @GlobalValue(symbol="kABSourceNameProperty", optional=true)
     protected static native int NameValue();
     /**
-     * @since Available in iOS 4.0 and later.
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @GlobalValue(symbol="kABSourceTypeProperty", optional=true)
     protected static native int TypeValue();
     /*</methods>*/

@@ -30,6 +30,7 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.security.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -62,26 +63,96 @@ import org.robovm.apple.coregraphics.*;
     public native WKUserContentController getUserContentController();
     @Property(selector = "setUserContentController:")
     public native void setUserContentController(WKUserContentController v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "websiteDataStore")
+    public native WKWebsiteDataStore getWebsiteDataStore();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setWebsiteDataStore:")
+    public native void setWebsiteDataStore(WKWebsiteDataStore v);
     @Property(selector = "suppressesIncrementalRendering")
     public native boolean suppressesIncrementalRendering();
     @Property(selector = "setSuppressesIncrementalRendering:")
     public native void setSuppressesIncrementalRendering(boolean v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "applicationNameForUserAgent")
+    public native String getApplicationNameForUserAgent();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setApplicationNameForUserAgent:")
+    public native void setApplicationNameForUserAgent(String v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "allowsAirPlayForMediaPlayback")
+    public native boolean allowsAirPlayForMediaPlayback();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setAllowsAirPlayForMediaPlayback:")
+    public native void setAllowsAirPlayForMediaPlayback(boolean v);
     @Property(selector = "allowsInlineMediaPlayback")
     public native boolean allowsInlineMediaPlayback();
     @Property(selector = "setAllowsInlineMediaPlayback:")
     public native void setAllowsInlineMediaPlayback(boolean v);
-    @Property(selector = "mediaPlaybackRequiresUserAction")
-    public native boolean mediaPlaybackRequiresUserAction();
-    @Property(selector = "setMediaPlaybackRequiresUserAction:")
-    public native void setMediaPlaybackRequiresUserAction(boolean v);
-    @Property(selector = "mediaPlaybackAllowsAirPlay")
-    public native boolean mediaPlaybackAllowsAirPlay();
-    @Property(selector = "setMediaPlaybackAllowsAirPlay:")
-    public native void setMediaPlaybackAllowsAirPlay(boolean v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "requiresUserActionForMediaPlayback")
+    public native boolean requiresUserActionForMediaPlayback();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setRequiresUserActionForMediaPlayback:")
+    public native void setRequiresUserActionForMediaPlayback(boolean v);
     @Property(selector = "selectionGranularity")
     public native WKSelectionGranularity getSelectionGranularity();
     @Property(selector = "setSelectionGranularity:")
     public native void setSelectionGranularity(WKSelectionGranularity v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "allowsPictureInPictureMediaPlayback")
+    public native boolean allowsPictureInPictureMediaPlayback();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setAllowsPictureInPictureMediaPlayback:")
+    public native void setAllowsPictureInPictureMediaPlayback(boolean v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
+    @Property(selector = "mediaPlaybackRequiresUserAction")
+    public native boolean mediaPlaybackRequiresUserAction();
+    /**
+     * @since Available in iOS 8.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
+    @Property(selector = "setMediaPlaybackRequiresUserAction:")
+    public native void setMediaPlaybackRequiresUserAction(boolean v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
+    @Property(selector = "mediaPlaybackAllowsAirPlay")
+    public native boolean mediaPlaybackAllowsAirPlay();
+    /**
+     * @since Available in iOS 8.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
+    @Property(selector = "setMediaPlaybackAllowsAirPlay:")
+    public native void setMediaPlaybackAllowsAirPlay(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

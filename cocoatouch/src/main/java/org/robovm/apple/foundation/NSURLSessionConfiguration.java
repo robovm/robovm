@@ -157,6 +157,16 @@ import org.robovm.apple.coreservices.CFProxy;
     public native NSURLCache getURLCache();
     @Property(selector = "setURLCache:")
     public native void setURLCache(NSURLCache v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "shouldUseExtendedBackgroundIdleMode")
+    public native boolean shouldUseExtendedBackgroundIdleMode();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setShouldUseExtendedBackgroundIdleMode:")
+    public native void setShouldUseExtendedBackgroundIdleMode(boolean v);
     @Property(selector = "protocolClasses")
     public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<ObjCClass> getProtocolClasses();
     @Property(selector = "setProtocolClasses:")

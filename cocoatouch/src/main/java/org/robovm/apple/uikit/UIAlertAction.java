@@ -52,6 +52,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UIAlertAction() {}
     protected UIAlertAction(SkipInit skipInit) { super(skipInit); }
+    public UIAlertAction(String title, UIAlertActionStyle style, @Block VoidBlock1<UIAlertAction> handler) { super(create(title, style, handler)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "title")
@@ -66,6 +67,6 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "actionWithTitle:style:handler:")
-    public static native UIAlertAction create(String title, UIAlertActionStyle style, @Block VoidBlock1<UIAlertAction> handler);
+    protected static native @Pointer long create(String title, UIAlertActionStyle style, @Block VoidBlock1<UIAlertAction> handler);
     /*</methods>*/
 }

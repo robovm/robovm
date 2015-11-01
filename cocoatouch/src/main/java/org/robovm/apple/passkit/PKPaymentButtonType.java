@@ -30,16 +30,23 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.apple.addressbook.*;
+import org.robovm.apple.contacts.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 8.3 and later.
+ */
 /*</javadoc>*/
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/PKPaymentButtonType/*</name>*/ implements ValuedEnum {
     /*<values>*/
     Plain(0L),
-    Buy(1L);
+    Buy(1L),
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    SetUp(2L);
     /*</values>*/
 
     /*<bind>*/

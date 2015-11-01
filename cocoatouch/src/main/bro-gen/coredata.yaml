@@ -18,6 +18,7 @@ enums:
     NSPersistentStoreRequestType: {first: NSFetchRequestType, suffix: RequestType, type: MachineUInt}
     NSPersistentStoreUbiquitousTransitionType: {}
     NSSnapshotEventType: {first: NSSnapshotEventUndoInsertion, type: MachineUInt, bits: true}
+    NSBatchDeleteRequestResultType: {}
     NSBatchUpdateRequestResultType: {}
     NSBatchUpdateRequestType: {}
     NSStatusOnlyResultType: {}
@@ -87,7 +88,7 @@ classes:
     NSAtomicStoreCacheNode: # DONE
         properties:
             'propertyCache':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
+                type: 'NSDictionary<NSString, ?>'
         methods:
             '-initWithObjectID:':
                 name: init
@@ -97,30 +98,65 @@ classes:
                 name: setValue
                 visibility: private # arguments switched
     NSAttributeDescription: {} # DONE
+    NSBatchDeleteRequest: # DONE
+        methods:
+            '-initWithFetchRequest:':
+                name: init
+            '-initWithObjectIDs:':
+                name: init
+                parameters:
+                    objects:
+                        type: NSArray<NSManagedObjectID>
+    NSBatchDeleteResult: {} # DONE
     NSBatchUpdateRequest: # DONE
         properties:
             'propertiesToUpdate':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSExpression>'
+                type: 'NSDictionary<NSString, NSExpression>'
         methods:
             '-init.*':
                 name: init
             '+batchUpdateRequestWithEntityName:':
-                name: create
+                exclude: true
     NSBatchUpdateResult: {} # DONE
+    NSConstraintConflict: # DONE
+        properties:
+            'constraint':
+                type: List<String>
+                marshaler: NSArray.AsStringListMarshaler
+            'conflictingObjects':
+                type: NSArray<NSManagedObject>
+            'conflictingSnapshots':
+                type: NSArray<NSDictionary>
+        methods:
+            '-initWithConstraint:databaseObject:databaseSnapshot:conflictingObjects:conflictingSnapshots:':
+                name: init
+                parameters:
+                    contraint:
+                        name: constraint
+                        type: List<String>
+                        marshaler: NSArray.AsStringListMarshaler
+                    conflictingObjects:
+                        type: NSArray<NSManagedObject>
+                    conflictingSnapshots:
+                        type: NSArray<NSDictionary>
     NSEntityDescription: # DONE
         properties:
             'subentitiesByName':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSEntityDescription>'
+                type: 'NSDictionary<NSString, NSEntityDescription>'
             'subentities':
                 type: NSArray<NSEntityDescription>
             'propertiesByName':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSPropertyDescription>'
+                type: 'NSDictionary<NSString, NSPropertyDescription>'
             'properties':
                 type: NSArray<NSPropertyDescription>
             'attributesByName':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSAttributeDescription>'
+                type: 'NSDictionary<NSString, NSAttributeDescription>'
             'relationshipsByName':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSRelationshipDescription>'
+                type: 'NSDictionary<NSString, NSRelationshipDescription>'
+            'compoundIndexes':
+                type: NSArray<NSArray<?>>
+            'uniquenessConstraints':
+                type: NSArray<NSArray<?>>
         methods:
             '-relationshipsWithDestinationEntity:':
                 name: getRelationshipsWithDestination
@@ -166,9 +202,11 @@ classes:
     NSFetchedResultsController: # DONE
         properties:
             'sectionIndexTitles':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: List<String>
+                marshaler: NSArray.AsStringListMarshaler
             'sections':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<NSFetchedResultsSectionInfo>'
+                type: List<NSFetchedResultsSectionInfo>
+                marshaler: NSArray.AsListMarshaler
             'fetchedObjects':
                 type: NSArray<NSManagedObject>
         methods:
@@ -192,9 +230,11 @@ classes:
             'sortDescriptors':
                 type: NSArray<NSSortDescriptor>
             'affectedStores':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: List<String>
+                marshaler: NSArray.AsStringListMarshaler
             'relationshipKeyPathsForPrefetching':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: List<String>
+                marshaler: NSArray.AsStringListMarshaler
             'propertiesToFetch':
                 type: NSArray<NSPropertyDescription>
             'propertiesToGroupBy':
@@ -205,11 +245,12 @@ classes:
             '-initWithEntityName:':
                 name: init
             '+fetchRequestWithEntityName:':
-                name: create
+                exclude: true
     NSFetchRequestExpression: # DONE
         methods:
             '+expressionForFetch:context:countOnly:':
                 name: create
+                constructor: true
     NSIncrementalStore: # DONE
         methods:
             '-loadMetadata:':
@@ -255,12 +296,12 @@ classes:
                 name: init
                 parameters:
                     values:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
+                        type: 'NSDictionary<NSString, ?>'
             '-updateWithValues:version:':
                 name: update
                 parameters:
                     values:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
+                        type: 'NSDictionary<NSString, ?>'
             '-valueForPropertyDescription:':
                 name: getValue
     NSManagedObject: # DONE
@@ -293,15 +334,18 @@ classes:
             '-setPrimitiveValue:forKey:':
                 name: setPrimitiveValue
                 visibility: private # switched arguments
+            '-objectIDsForRelationshipNamed:':
+                name: getObjectIDsForRelationship
+                return_type: NSArray<NSManagedObjectID>
             '-committedValuesForKeys:':
                 name: getCommittedValues
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
+                return_type: 'NSDictionary<NSString, ?>'
             '-changedValues':
                 property: true
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
+                return_type: 'NSDictionary<NSString, ?>'
             '-changedValuesForCurrentEvent':
                 property: true
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
+                return_type: 'NSDictionary<NSString, ?>'
             '-validateValue:forKey:error:':
                 name: validateValue
                 throws: NSErrorException
@@ -364,6 +408,15 @@ classes:
                         type: NSArray<NSManagedObject>
             '-mergeChangesFromContextDidSaveNotification:':
                 trim_after_first_colon: true
+            '-shouldHandleInaccessibleFault:forObjectID:triggeredByProperty:':
+                trim_after_first_colon: true
+            '+new':
+                exclude: true
+            '+mergeChangesFromRemoteContextSave:intoContexts:':
+                trim_after_first_colon: true
+                parameters:
+                    contexts:
+                        type: NSArray<NSManagedObjectContext>
     NSManagedObjectID: # DONE
         methods:
             '-URIRepresentation':
@@ -371,15 +424,16 @@ classes:
     NSManagedObjectModel: # DONE
         properties:
             'entitiesByName':    
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSEntityDescription>'
+                type: 'NSDictionary<NSString, NSEntityDescription>'
             'entities':
                 type: NSArray<NSEntityDescription>
             'configurations':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: List<String>
+                marshaler: NSArray.AsStringListMarshaler
             'localizationDictionary':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>'
+                type: 'NSDictionary<NSString, NSString>'
             'fetchRequestTemplatesByName':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSFetchRequest>'
+                type: 'NSDictionary<NSString, NSFetchRequest>'
         methods:
             '-init':
                 exclude: true
@@ -401,7 +455,7 @@ classes:
                 name: getFetchRequestTemplate
                 parameters:
                     variables:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
+                        type: 'NSDictionary<NSString, ?>'
             '-isConfiguration:compatibleWithStoreMetadata:':
                 name: isConfigurationCompatibleWithStoreMetadata
                 parameters:
@@ -436,30 +490,33 @@ classes:
             'entityMappings':
                 type: NSArray<NSEntityMapping>
             'entityMappingsByName':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSEntityMapping>'
+                type: 'NSDictionary<NSString, NSEntityMapping>'
         methods:
             '-initWithContentsOfURL:':
                 name: init
             '+mappingModelFromBundles:forSourceModel:destinationModel:':
                 name: create
+                constructor: true
                 parameters:
                     bundles:
                         type: NSArray<NSBundle>
             '+inferredMappingModelForSourceModel:destinationModel:error:':
                 name: createInferred
                 throws: NSErrorException
+                return_type: '@Pointer long'
+                visibility: protected
     NSMergeConflict: # DONE
         properties:
             '.*Snapshot':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
+                type: 'NSDictionary<NSString, ?>'
         methods:
             '-initWithSource:newVersion:oldVersion:cachedSnapshot:persistedSnapshot:':
                 name: init
                 parameters:
                     cachesnap:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
+                        type: 'NSDictionary<NSString, ?>'
                     persnap:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
+                        type: 'NSDictionary<NSString, ?>'
     NSMergePolicy: # DONE
         methods:
             '-init.*':
@@ -470,6 +527,18 @@ classes:
                 parameters:
                     list:
                         type: NSArray<NSMergeConflict>
+            '-resolveOptimisticLockingVersionConflicts:error:':
+                trim_after_first_colon: true
+                throws: NSErrorException
+                parameters:
+                    list:
+                        type: NSArray<NSMergeConflict>
+            '-resolveConstraintConflicts:error:':
+                trim_after_first_colon: true
+                throws: NSErrorException
+                parameters:
+                    list:
+                        type: NSArray<NSConstraintConflict>
     NSMigrationManager: # DONE
         methods:
             '-initWithSourceModel:destinationModel:':
@@ -575,18 +644,47 @@ classes:
                 parameters:
                     options:
                         type: NSPersistentStoreOptions
+            '-destroyPersistentStoreAtURL:withType:options:error:':
+                name: destroyPersistentStore
+                throws: NSErrorException
+                parameters:
+                    options:
+                        type: NSPersistentStoreOptions
+            '-replacePersistentStoreAtURL:destinationOptions:withPersistentStoreFromURL:sourceOptions:storeType:error:':
+                name: replacePersistentStore
+                throws: NSErrorException
+                parameters:
+                    destinationOptions:
+                        type: NSPersistentStoreOptions
+                    sourceOptions:
+                        type: NSPersistentStoreOptions
             '-performBlock:':
                 trim_after_first_colon: true
             '-performBlockAndWait:':
                 trim_after_first_colon: true
             '+registeredStoreTypes':
                 property: true
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSPersistentStore>'
+                return_type: 'NSDictionary<NSString, NSPersistentStore>'
             '+registerStoreClass:forStoreType:':
                 name: registerStoreClassForType
                 parameters:
                     storeClass:
                         type: 'Class<? extends NSPersistentStore>'
+            '+metadataForPersistentStoreOfType:URL:options:error:':
+                name: getMetadataForPersistentStoreType
+                throws: NSErrorException
+                return_type: NSPersistentStoreMetadata
+                parameters:
+                    options:
+                        type: NSPersistentStoreOptions
+            '+setMetadata:forPersistentStoreOfType:URL:options:error:':
+                name: setMetadataForPersistentStoreType
+                throws: NSErrorException
+                parameters:
+                    metadata:
+                        type: NSPersistentStoreMetadata
+                    options:
+                        type: NSPersistentStoreOptions
             '+metadataForPersistentStoreOfType:URL:error:':
                 name: getMetadataForPersistentStoreType
                 throws: NSErrorException
@@ -606,14 +704,16 @@ classes:
     NSPersistentStoreRequest: # DONE
         properties:
             'affectedStores':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: List<String>
+                marshaler: NSArray.AsStringListMarshaler
     NSPersistentStoreResult: {} # DONE
     NSPropertyDescription: # DONE
         properties:
             'validationPredicates':
                 type: NSArray<NSPredicate>
             'validationWarnings':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: List<String>
+                marshaler: NSArray.AsStringListMarshaler
         methods:
             '-setValidationPredicates:withValidationWarnings:':
                 name: setValidationPredicatesAndWarnings
@@ -621,7 +721,8 @@ classes:
                     validationPredicates:
                         type: NSArray<NSPredicate>
                     validationWarnings:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: List<String>
+                        marshaler: NSArray.AsStringListMarshaler
     NSPropertyMapping: {} # DONE
     NSRelationshipDescription: {} # DONE
     NSSaveChangesRequest: # DONE
@@ -790,6 +891,8 @@ values:
             FileProtection:
                 type: NSFileProtection
                 hint: GlobalValueEnumeration<NSString>
+            ForceDestroy:
+                type: boolean
     NSPersistentStore(Timeout)Option:
         dictionary: NSPersistentStoreOptions
         name: '#{g[0]}'
@@ -815,6 +918,10 @@ values:
         name: '#{g[0]}'
         type: NSString
     NS(InferMappingModelAutomatically)Option:
+        dictionary: NSPersistentStoreOptions
+        name: '#{g[0]}'
+        type: NSString
+    NSPersistentStore(ForceDestroy)Option:
         dictionary: NSPersistentStoreOptions
         name: '#{g[0]}'
         type: NSString
@@ -850,6 +957,8 @@ values:
         enum: NSExpressionMigrationKey
         name: '#{g[0]}'
         type: NSString
+    NSFetchRequestExpressionType:
+        exclude: true
 
     # Make sure we don't miss any values if new ones are introduced in a later version
     (k?NS.*):

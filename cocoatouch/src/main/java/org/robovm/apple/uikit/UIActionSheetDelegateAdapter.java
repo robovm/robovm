@@ -54,16 +54,46 @@ import org.robovm.apple.corelocation.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 8.3.
+     */
+    @Deprecated
     @NotImplemented("actionSheet:clickedButtonAtIndex:")
     public void clicked(UIActionSheet actionSheet, @MachineSizedSInt long buttonIndex) {}
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 8.3.
+     */
+    @Deprecated
     @NotImplemented("actionSheetCancel:")
     public void cancel(UIActionSheet actionSheet) {}
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 8.3.
+     */
+    @Deprecated
     @NotImplemented("willPresentActionSheet:")
     public void willPresent(UIActionSheet actionSheet) {}
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 8.3.
+     */
+    @Deprecated
     @NotImplemented("didPresentActionSheet:")
     public void didPresent(UIActionSheet actionSheet) {}
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 8.3.
+     */
+    @Deprecated
     @NotImplemented("actionSheet:willDismissWithButtonIndex:")
     public void willDismiss(UIActionSheet actionSheet, @MachineSizedSInt long buttonIndex) {}
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 8.3.
+     */
+    @Deprecated
     @NotImplemented("actionSheet:didDismissWithButtonIndex:")
     public void didDismiss(UIActionSheet actionSheet, @MachineSizedSInt long buttonIndex) {}
     /*</methods>*/

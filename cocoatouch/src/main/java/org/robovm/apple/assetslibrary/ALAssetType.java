@@ -91,15 +91,21 @@ import org.robovm.apple.imageio.*;
     /*<constants>*/
     /**
      * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static final ALAssetType Photo = new ALAssetType("Photo");
     /**
      * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static final ALAssetType Video = new ALAssetType("Video");
     /**
      * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static final ALAssetType Unknown = new ALAssetType("Unknown");
     /*</constants>*/
     
@@ -128,17 +134,23 @@ import org.robovm.apple.imageio.*;
         /*<values>*/
         /**
          * @since Available in iOS 4.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="ALAssetTypePhoto", optional=true)
         public static native NSString Photo();
         /**
          * @since Available in iOS 4.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="ALAssetTypeVideo", optional=true)
         public static native NSString Video();
         /**
          * @since Available in iOS 4.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="ALAssetTypeUnknown", optional=true)
         public static native NSString Unknown();
         /*</values>*/

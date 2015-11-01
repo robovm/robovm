@@ -44,12 +44,12 @@ import org.robovm.apple.corelocation.*;
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/NSControlCharacterAction/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    ZeroAdvancementAction(1L),
-    WhitespaceAction(2L),
-    HorizontalTabAction(4L),
-    LineBreakAction(8L),
-    ParagraphBreakAction(16L),
-    ContainerBreakAction(32L);
+    ZeroAdvancement(1L),
+    Whitespace(2L),
+    HorizontalTab(4L),
+    LineBreak(8L),
+    ParagraphBreak(16L),
+    ContainerBreak(32L);
     /*</values>*/
 
     private final long n;

@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.corelocation.*;
 import org.robovm.apple.addressbook.*;
+import org.robovm.apple.mapkit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -49,6 +50,7 @@ import org.robovm.apple.addressbook.*;
     /*<constructors>*/
     public EKEvent() {}
     protected EKEvent(SkipInit skipInit) { super(skipInit); }
+    public EKEvent(EKEventStore eventStore) { super(create(eventStore)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "eventIdentifier")
@@ -65,6 +67,16 @@ import org.robovm.apple.addressbook.*;
     public native NSDate getEndDate();
     @Property(selector = "setEndDate:")
     public native void setEndDate(NSDate v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "structuredLocation")
+    public native EKStructuredLocation getStructuredLocation();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setStructuredLocation:")
+    public native void setStructuredLocation(EKStructuredLocation v);
     @Property(selector = "organizer")
     public native EKParticipant getOrganizer();
     @Property(selector = "availability")
@@ -76,8 +88,20 @@ import org.robovm.apple.addressbook.*;
     @Property(selector = "isDetached")
     public native boolean isDetached();
     /**
-     * @since Available in iOS 5.0 and later.
+     * @since Available in iOS 9.0 and later.
      */
+    @Property(selector = "occurrenceDate")
+    public native NSDate getOccurrenceDate();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "birthdayContactIdentifier")
+    public native String getBirthdayContactIdentifier();
+    /**
+     * @since Available in iOS 5.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Property(selector = "birthdayPersonID")
     public native @MachineSizedSInt long getBirthdayPersonID();
     /*</properties>*/
@@ -88,6 +112,6 @@ import org.robovm.apple.addressbook.*;
     @Method(selector = "refresh")
     public native boolean refresh();
     @Method(selector = "eventWithEventStore:")
-    public static native EKEvent create(EKEventStore eventStore);
+    private static native @Pointer long create(EKEventStore eventStore);
     /*</methods>*/
 }

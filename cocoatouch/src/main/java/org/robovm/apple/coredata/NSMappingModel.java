@@ -47,27 +47,35 @@ import org.robovm.apple.foundation.*;
     public NSMappingModel() {}
     protected NSMappingModel(SkipInit skipInit) { super(skipInit); }
     public NSMappingModel(NSURL url) { super((SkipInit) null); initObject(init(url)); }
+    public NSMappingModel(NSArray<NSBundle> bundles, NSManagedObjectModel sourceModel, NSManagedObjectModel destinationModel) { super(create(bundles, sourceModel, destinationModel)); retain(getHandle()); }
     /*</constructors>*/
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    public NSMappingModel(NSManagedObjectModel sourceModel, NSManagedObjectModel destinationModel) throws NSErrorException {
+        super(createInferred(sourceModel, destinationModel));
+        retain(getHandle());
+    }
     /*<properties>*/
     @Property(selector = "entityMappings")
     public native NSArray<NSEntityMapping> getEntityMappings();
     @Property(selector = "setEntityMappings:")
     public native void setEntityMappings(NSArray<NSEntityMapping> v);
     @Property(selector = "entityMappingsByName")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSEntityMapping> getEntityMappingsByName();
+    public native NSDictionary<NSString, NSEntityMapping> getEntityMappingsByName();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithContentsOfURL:")
     protected native @Pointer long init(NSURL url);
     @Method(selector = "mappingModelFromBundles:forSourceModel:destinationModel:")
-    public static native NSMappingModel create(NSArray<NSBundle> bundles, NSManagedObjectModel sourceModel, NSManagedObjectModel destinationModel);
+    protected static native @Pointer long create(NSArray<NSBundle> bundles, NSManagedObjectModel sourceModel, NSManagedObjectModel destinationModel);
     /**
      * @since Available in iOS 3.0 and later.
      */
-    public static NSMappingModel createInferred(NSManagedObjectModel sourceModel, NSManagedObjectModel destinationModel) throws NSErrorException {
+    protected static @Pointer long createInferred(NSManagedObjectModel sourceModel, NSManagedObjectModel destinationModel) throws NSErrorException {
        NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
-       NSMappingModel result = createInferred(sourceModel, destinationModel, ptr);
+       long result = createInferred(sourceModel, destinationModel, ptr);
        if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
        return result;
     }
@@ -75,6 +83,6 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "inferredMappingModelForSourceModel:destinationModel:error:")
-    private static native NSMappingModel createInferred(NSManagedObjectModel sourceModel, NSManagedObjectModel destinationModel, NSError.NSErrorPtr error);
+    private static native @Pointer long createInferred(NSManagedObjectModel sourceModel, NSManagedObjectModel destinationModel, NSError.NSErrorPtr error);
     /*</methods>*/
 }

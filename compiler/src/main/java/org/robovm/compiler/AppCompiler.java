@@ -540,7 +540,8 @@ public class AppCompiler {
                 } else if ("-dump-intermediates".equals(args[i])) {
                     builder.dumpIntermediates(true);
                 } else if ("-dynamic-jni".equals(args[i])) {
-                    builder.useDynamicJni(true);
+                    // TODO: Old option not used any longer. We still accept it
+                    // for now. Delete it in a future release.
                 } else if ("-skiprt".equals(args[i])) {
                     builder.skipRuntimeLib(true);
                 } else if ("-skipsign".equals(args[i])) {
@@ -625,8 +626,6 @@ public class AppCompiler {
                     builder.infoPList(new File(args[++i]));
                 } else if ("-entitlements".equals(args[i])) {
                     builder.iosEntitlementsPList(new File(args[++i]));
-                } else if ("-resourcerules".equals(args[i])) {
-                    builder.iosResourceRulesPList(new File(args[++i]));
                 } else if ("-signidentity".equals(args[i])) {
                     builder.iosSignIdentity(SigningIdentity.find(SigningIdentity.list(), args[++i]));
                 } else if ("-provisioningprofile".equals(args[i])) {
@@ -941,10 +940,6 @@ public class AppCompiler {
                          + "                        install dir specified using -d.");
         System.err.println("  -debug                Generates debug information");
         System.err.println("  -use-debug-libs       Links against debug versions of the RoboVM VM libraries");
-        System.err.println("  -dynamic-jni          Use dynamic JNI. Native methods will be dynamically\n" 
-                         + "                        linked at runtime. Native methods in classes in the boot\n"
-                         + "                        classpath will always use static JNI. On iOS only static\n" 
-                         + "                        JNI is supported and this option is ignored.");
         System.err.println("  -libs <list>          : separated list of static library files (.a), object\n"
                          + "                        files (.o) and system libraries that should be included\n" 
                          + "                        when linking the final executable.");

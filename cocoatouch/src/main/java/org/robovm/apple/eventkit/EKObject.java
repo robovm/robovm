@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.corelocation.*;
 import org.robovm.apple.addressbook.*;
+import org.robovm.apple.mapkit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -46,17 +47,17 @@ import org.robovm.apple.addressbook.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public EKObject() {}
+    protected EKObject(long handle) { super(handle); }
     protected EKObject(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "hasChanges")
+    public native boolean hasChanges();
+    @Property(selector = "isNew")
+    public native boolean isNew();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "hasChanges")
-    public native boolean hasChanges();
-    @Method(selector = "isNew")
-    public native boolean isNew();
     @Method(selector = "reset")
     public native void reset();
     @Method(selector = "rollback")

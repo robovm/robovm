@@ -30,6 +30,7 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.security.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -54,6 +55,11 @@ import org.robovm.apple.coregraphics.*;
     public native boolean isMainFrame();
     @Property(selector = "request")
     public native NSURLRequest getRequest();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "securityOrigin")
+    public native WKSecurityOrigin getSecurityOrigin();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

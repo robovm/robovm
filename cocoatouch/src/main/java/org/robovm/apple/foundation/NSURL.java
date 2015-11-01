@@ -57,9 +57,18 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
     /*<constructors>*/
     public NSURL() {}
     protected NSURL(SkipInit skipInit) { super(skipInit); }
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     public NSURL(String scheme, String host, String path) { super((SkipInit) null); initObject(init(scheme, host, path)); }
     public NSURL(String URLString) { super((SkipInit) null); initObject(init(URLString)); }
     public NSURL(String URLString, NSURL baseURL) { super((SkipInit) null); initObject(init(URLString, baseURL)); }
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public NSURL(NSData data, NSURL baseURL) { super((SkipInit) null); initObject(init(data, baseURL)); }
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -71,6 +80,13 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
        initObject(handle);
     }
     /*</constructors>*/
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public NSURL(NSData data, NSURL baseURL, boolean absoluteURL) {
+        super((SkipInit) null);
+        initObject(absoluteURL ? initAbsoluteURL(data, baseURL) : init(data, baseURL));
+    }
     
     public NSURL(File file) {
         super((SkipInit) null);
@@ -88,6 +104,11 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
     }
 
     /*<properties>*/
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "dataRepresentation")
+    public native NSData getDataRepresentation();
     @Property(selector = "absoluteString")
     public native String getAbsoluteString();
     @Property(selector = "relativeString")
@@ -118,6 +139,11 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
     public native String getQuery();
     @Property(selector = "relativePath")
     public native String getRelativePath();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "hasDirectoryPath")
+    public native boolean hasDirectoryPath();
     @Property(selector = "isFileURL")
     public native boolean isFileURL();
     @Property(selector = "standardizedURL")
@@ -331,8 +357,23 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
         return null;
     }
     /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Method(selector = "initWithScheme:host:path:")
     protected native @Pointer long init(String scheme, String host, String path);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "initFileURLWithPath:isDirectory:relativeToURL:")
+    protected native @Pointer long initFileURL(String path, boolean isDir, NSURL baseURL);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "initFileURLWithPath:relativeToURL:")
+    protected native @Pointer long initFileURL(String path, NSURL baseURL);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -344,6 +385,16 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
     protected native @Pointer long init(String URLString);
     @Method(selector = "initWithString:relativeToURL:")
     protected native @Pointer long init(String URLString, NSURL baseURL);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "initWithDataRepresentation:relativeToURL:")
+    protected native @Pointer long init(NSData data, NSURL baseURL);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "initAbsoluteURLWithDataRepresentation:relativeToURL:")
+    protected native @Pointer long initAbsoluteURL(NSData data, NSURL baseURL);
     /**
      * @since Available in iOS 4.0 and later.
      */

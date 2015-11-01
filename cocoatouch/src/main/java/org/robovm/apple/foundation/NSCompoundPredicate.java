@@ -55,6 +55,7 @@ import org.robovm.apple.dispatch.*;
     public NSCompoundPredicate() {}
     protected NSCompoundPredicate(SkipInit skipInit) { super(skipInit); }
     public NSCompoundPredicate(NSCompoundPredicateType type, NSArray<NSPredicate> subpredicates) { super((SkipInit) null); initObject(init(type, subpredicates)); }
+    public NSCompoundPredicate(NSCoder coder) { super((SkipInit) null); initObject(initWithCoder$(coder)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "compoundPredicateType")
@@ -66,6 +67,8 @@ import org.robovm.apple.dispatch.*;
     /*<methods>*/
     @Method(selector = "initWithType:subpredicates:")
     protected native @Pointer long init(NSCompoundPredicateType type, NSArray<NSPredicate> subpredicates);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long initWithCoder$(NSCoder coder);
     @Method(selector = "andPredicateWithSubpredicates:")
     public static native NSCompoundPredicate createAndPredicate(NSArray<NSPredicate> subpredicates);
     @Method(selector = "orPredicateWithSubpredicates:")

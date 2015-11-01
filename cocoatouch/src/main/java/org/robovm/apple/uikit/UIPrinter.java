@@ -52,6 +52,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UIPrinter() {}
     protected UIPrinter(SkipInit skipInit) { super(skipInit); }
+    public UIPrinter(NSURL url) { super(create(url)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "URL")
@@ -74,6 +75,6 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "contactPrinter:")
     public native void contactPrinter(@Block VoidBooleanBlock completionHandler);
     @Method(selector = "printerWithURL:")
-    public static native UIPrinter create(NSURL url);
+    protected static native @Pointer long create(NSURL url);
     /*</methods>*/
 }

@@ -58,7 +58,7 @@ import org.robovm.apple.dispatch.*;
                 public void invoke(NSNotification a) {
                     String reason = null;
                     List<String> keys = null;
-                    NSDictionary<NSString, NSObject> data = a.getUserInfo();
+                    NSDictionary<?, ?> data = a.getUserInfo();
                     if (data.containsKey(ChangeReasonKey())) {
                         NSString val = (NSString)data.get(ChangeReasonKey());
                         reason = val.toString();
@@ -83,7 +83,7 @@ import org.robovm.apple.dispatch.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "dictionaryRepresentation")
-    public native NSDictionary asDictionary();
+    public native NSDictionary<NSString, ?> asDictionary();
     /*</properties>*/
     /*<members>*//*</members>*/
     public void put(String key, NSObject object) {
@@ -98,7 +98,7 @@ import org.robovm.apple.dispatch.*;
     public void put(String key, NSArray<?> array) {
         setArray(array, key);
     }
-    public void put(String key, NSDictionary dictionary) {
+    public void put(String key, NSDictionary<NSString, ?> dictionary) {
         setDictionary(dictionary, key);
     }
     public void put(String key, long value) {
@@ -111,7 +111,7 @@ import org.robovm.apple.dispatch.*;
         setBool(value, key);
     }
 
-    public Map<String, NSObject> asMap() {
+    public Map<String, ?> asMap() {
         return asDictionary().asStringMap();
     }
     /*<methods>*/
@@ -142,7 +142,7 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "arrayForKey:")
     public native NSArray<?> getArray(String aKey);
     @Method(selector = "dictionaryForKey:")
-    public native NSDictionary getDictionary(String aKey);
+    public native NSDictionary<NSString, ?> getDictionary(String aKey);
     @Method(selector = "dataForKey:")
     public native NSData getData(String aKey);
     @Method(selector = "longLongForKey:")
@@ -158,7 +158,7 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "setArray:forKey:")
     protected native void setArray(NSArray<?> anArray, String aKey);
     @Method(selector = "setDictionary:forKey:")
-    protected native void setDictionary(NSDictionary aDictionary, String aKey);
+    protected native void setDictionary(NSDictionary<NSString, ?> aDictionary, String aKey);
     @Method(selector = "setLongLong:forKey:")
     protected native void setLongLong(long value, String aKey);
     @Method(selector = "setDouble:forKey:")

@@ -40,7 +40,7 @@ import org.robovm.apple.coretext.*;
  * @since Available in iOS 4.0 and later.
  */
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
+/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/CFPropertyListError/*</name>*/ implements ValuedEnum {
     /*<values>*/
     ReadCorruptError(3840L),

@@ -36,7 +36,7 @@ import org.robovm.apple.dispatch.*;
  * @since Available in iOS 8.0 and later.
  */
 /*</javadoc>*/
-/*<annotations>*/@Library("Metal")/*</annotations>*/
+/*<annotations>*/@Library("Metal") @NativeProtocolProxy/*</annotations>*/
 /*<visibility>*/public final/*</visibility>*/ class /*<name>*/MTLRenderCommandEncoder/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*/implements MTLCommandEncoder/*</implements>*/ {
@@ -156,6 +156,11 @@ import org.robovm.apple.dispatch.*;
     public native void setFrontFacingWinding(MTLWinding frontFacingWinding);
     @Method(selector = "setCullMode:")
     public native void setCullMode(MTLCullMode cullMode);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "setDepthClipMode:")
+    public native void setDepthClipMode(MTLDepthClipMode depthClipMode);
     @Method(selector = "setDepthBias:slopeScale:clamp:")
     public native void setDepthBias(float depthBias, float slopeScale, float clamp);
     @Method(selector = "setScissorRect:")
@@ -194,6 +199,11 @@ import org.robovm.apple.dispatch.*;
     public native void setDepthStencilState(MTLDepthStencilState depthStencilState);
     @Method(selector = "setStencilReferenceValue:")
     public native void setStencilReferenceValue(int referenceValue);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "setStencilFrontReferenceValue:backReferenceValue:")
+    public native void setStencilReferenceValue(int frontReferenceValue, int backReferenceValue);
     @Method(selector = "setVisibilityResultMode:offset:")
     public native void setVisibilityResultMode(MTLVisibilityResultMode mode, @MachineSizedUInt long offset);
     @Method(selector = "drawPrimitives:vertexStart:vertexCount:instanceCount:")

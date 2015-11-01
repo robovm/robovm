@@ -54,13 +54,6 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "peripheralDidUpdateName:")
     void didUpdateName(CBPeripheral peripheral);
     /**
-     * @since Available in iOS 6.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     */
-    @Deprecated
-    @Method(selector = "peripheralDidInvalidateServices:")
-    void didInvalidateServices(CBPeripheral peripheral);
-    /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "peripheral:didModifyServices:")

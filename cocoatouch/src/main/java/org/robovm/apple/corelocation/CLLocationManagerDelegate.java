@@ -127,6 +127,9 @@ import org.robovm.apple.corebluetooth.*;
      */
     @Method(selector = "locationManager:didFinishDeferredUpdatesWithError:")
     void didFinishDeferredUpdates(CLLocationManager manager, NSError error);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "locationManager:didVisit:")
     void didVisit(CLLocationManager manager, CLVisit visit);
     /*</methods>*/

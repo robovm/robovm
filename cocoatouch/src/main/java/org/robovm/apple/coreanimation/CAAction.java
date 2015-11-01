@@ -52,7 +52,7 @@ import org.robovm.apple.metal.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "runActionForKey:object:arguments:")
-    void runAction(String event, NSObject anObject, @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject> dict);
+    void runAction(String event, NSObject anObject, NSDictionary<NSString, ?> dict);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

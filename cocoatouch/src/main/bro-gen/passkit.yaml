@@ -1,5 +1,5 @@
 package: org.robovm.apple.passkit
-include: [foundation.yaml, uikit.yaml, addressbook.yaml]
+include: [foundation.yaml, uikit.yaml, addressbook.yaml, contacts.yaml]
 library: PassKit
 framework: PassKit
 clang_args: ['-x', 'objective-c']
@@ -17,16 +17,27 @@ enums:
     PKPaymentAuthorizationStatus: {}
     PKPaymentButtonStyle: {}
     PKPaymentButtonType: {}
+    PKPaymentMethodType: {skip_none: true}
     PKPaymentPassActivationState: {}
+    PKPaymentSummaryItemType: {}
     PKAddressField: {}
     PKMerchantCapability: {}
     PKShippingType: {}
+    PKAddPassButtonStyle: {prefix: PKAddPassButtonStyle}
+    PKAddPaymentPassError: {}
+    PKAutomaticPassPresentationSuppressionResult: {}
 
 classes:
     PKPassKitError:
         extends: NSError
         annotations: ['@StronglyLinked']
 
+    PKAddPassButton: # DONE
+        methods:
+            '-initWithAddPassButtonStyle:':
+                name: init
+            '+addPassButtonWithStyle:':
+                name: addPassButton
     PKAddPassesViewController: # DONE
         methods:
             '-initWithPass:':
@@ -39,6 +50,16 @@ classes:
                 parameters:
                     passes:
                         type: NSArray<PKPass>
+    PKAddPaymentPassRequest: {} # DONE
+    PKAddPaymentPassRequestConfiguration: # DONE
+        methods:
+            '-initWithEncryptionScheme:':
+                name: init
+    PKAddPaymentPassViewController: # DONE
+        methods:
+            '-initWithRequestConfiguration:delegate:':
+                name: init
+    PKContact: {} # DONE
     PKObject: {} # DONE
     PKPass: # DONE
         properties:
@@ -68,8 +89,22 @@ classes:
             '-passesOfType:':
                 name: getPassesOfType
                 return_type: NSArray<PKPass>
+            '-remotePaymentPasses':
+                property: true
+                return_type: NSArray<PKPass>
             '-activatePaymentPass.*':
                 trim_after_first_colon: true
+            '-canAddPaymentPassWithPrimaryAccountIdentifier:':
+                name: canAddPaymentPass
+            '+requestAutomaticPassPresentationSuppressionWithResponseHandler:':
+                name: requestAutomaticPassPresentationSuppression
+                parameters:
+                    responseHandler:
+                        type: '@Block VoidBlock1<PKAutomaticPassPresentationSuppressionResult>'
+            '+endAutomaticPassPresentationSuppressionWithRequestToken:':
+                name: endAutomaticPassPresentationSuppression
+            '+isPaymentPassActivationAvailable':
+                name: isDevicePaymentPassActivationAvailable
     PKPayment: # DONE
         properties:
             'billingAddress':
@@ -82,20 +117,25 @@ classes:
         methods:
             '-initWithPaymentRequest:':
                 name: init
-            '+canMakePaymentsUsingNetworks:':
+            '+canMakePaymentsUsingNetworks.*':
                 trim_after_first_colon: true
                 parameters:
                     supportedNetworks:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(PKPaymentNetwork.AsListMarshaler.class) List<PKPaymentNetwork>'
+                        type: List<PKPaymentNetwork>
+                        marshaler: PKPaymentNetwork.AsListMarshaler
     PKPaymentButton: # DONE
         methods:
+            '-initWithPaymentButtonType:paymentButtonStyle:':
+                name: init
             '+buttonWithType:style:':
-                name: create
+                exclude: true
+    PKPaymentMethod: {} # DONE
     PKPaymentPass: {} # DONE
     PKPaymentRequest: # DONE
         properties:
             'supportedNetworks':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(PKPaymentNetwork.AsListMarshaler.class) List<PKPaymentNetwork>'
+                type: List<PKPaymentNetwork>
+                marshaler: PKPaymentNetwork.AsListMarshaler
             'paymentSummaryItems':
                 type: NSArray<PKPaymentSummaryItem>
             'shippingMethods':
@@ -104,6 +144,10 @@ classes:
         methods:
             '+summaryItemWithLabel:amount:':
                 name: create
+                constructor: true
+            '+summaryItemWithLabel:amount:type:':
+                name: create
+                constructor: true
     PKPaymentToken: # DONE
         properties:
             'paymentNetwork':
@@ -115,6 +159,17 @@ protocols:
         methods:
             '-addPassesViewControllerDidFinish:':
                 name: didFinish
+    PKAddPaymentPassViewControllerDelegate: # DONE
+        methods:
+            '-addPaymentPassViewController:generateRequestWithCertificateChain:nonce:nonceSignature:completionHandler:':
+                name: generateRequest
+                parameters:
+                    certificates:
+                        type: NSArray<NSData>
+                    handler:
+                        type: '@Block VoidBlock1<PKAddPaymentPassRequest>'
+            '-addPaymentPassViewController:didFinishAddingPaymentPass:error:':
+                name: didFinishAddingPaymentPass
     PKPaymentAuthorizationViewControllerDelegate: # DONE
         methods:
             '-paymentAuthorizationViewController:didAuthorizePayment:completion:':
@@ -133,6 +188,16 @@ protocols:
                 parameters:
                     completion:
                         type: '@Block VoidBlock3<PKPaymentAuthorizationStatus, NSArray<PKShippingMethod>, NSArray<PKPaymentSummaryItem>>'
+            '-paymentAuthorizationViewController:didSelectShippingContact:completion:':
+                name: didSelectShippingContact
+                parameters:
+                    completion:
+                        type: '@Block VoidBlock3<PKPaymentAuthorizationStatus, NSArray<PKShippingMethod>, NSArray<PKPaymentSummaryItem>>'
+            '-paymentAuthorizationViewController:didSelectPaymentMethod:completion:':
+                name: didSelectPaymentMethod
+                parameters:
+                    completion:
+                        type: '@Block VoidBlock1<NSArray<PKPaymentSummaryItem>>'
 
 functions:
     # Make sure we don't miss any functions if new ones are introduced in a later version
@@ -145,7 +210,7 @@ values:
         class: PKPassKitError
 
     # PKPassLibrary
-    PKPassLibrary(DidChangeNotification):
+    PKPassLibrary(.*Notification):
         class: PKPassLibrary
         name: '#{g[0]}'
         type: NSString
@@ -174,6 +239,12 @@ values:
     # PKPayment
     PKPaymentNetwork(.*):
         enum: PKPaymentNetwork
+        name: '#{g[0]}'
+        type: NSString
+
+    # PKEncryptionScheme
+    PKEncryptionScheme(.*):
+        enum: PKEncryptionScheme
         name: '#{g[0]}'
         type: NSString
 

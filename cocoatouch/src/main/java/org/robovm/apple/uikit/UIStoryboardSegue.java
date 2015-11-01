@@ -53,6 +53,10 @@ import org.robovm.apple.corelocation.*;
     public UIStoryboardSegue() {}
     protected UIStoryboardSegue(SkipInit skipInit) { super(skipInit); }
     public UIStoryboardSegue(String identifier, UIViewController source, UIViewController destination) { super((SkipInit) null); initObject(init(identifier, source, destination)); }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public UIStoryboardSegue(String identifier, UIViewController source, UIViewController destination, @Block Runnable performHandler) { super(create(identifier, source, destination, performHandler)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "identifier")
@@ -72,6 +76,6 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "segueWithIdentifier:source:destination:performHandler:")
-    public static native UIStoryboardSegue create(String identifier, UIViewController source, UIViewController destination, @Block Runnable performHandler);
+    protected static native @Pointer long create(String identifier, UIViewController source, UIViewController destination, @Block Runnable performHandler);
     /*</methods>*/
 }

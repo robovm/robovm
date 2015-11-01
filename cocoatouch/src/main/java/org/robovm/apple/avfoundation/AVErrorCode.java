@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -82,6 +83,11 @@ public enum /*<name>*/AVErrorCode/*</name>*/ implements NSErrorCode {
     EncoderNotFound(-11834L),
     ContentIsNotAuthorized(-11835L),
     ApplicationIsNotAuthorized(-11836L),
+    /**
+     * @since Available in iOS 4.3 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     DeviceIsNotAvailableInBackground(-11837L),
     OperationNotSupportedForAsset(-11838L),
     DecoderTemporarilyUnavailable(-11839L),
@@ -116,7 +122,15 @@ public enum /*<name>*/AVErrorCode/*</name>*/ implements NSErrorCode {
     /**
      * @since Available in iOS 8.3 and later.
      */
-    AirPlayReceiverRequiresInternet(-11857L);
+    AirPlayReceiverRequiresInternet(-11857L),
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    VideoCompositorFailed(-11858L),
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    RecordingAlreadyInProgress(-11859L);
     /*</values>*/
 
     /*<bind>*/

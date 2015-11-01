@@ -105,7 +105,9 @@ import org.robovm.apple.imageio.*;
 
     /**
      * @since Available in iOS 6.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public NSSet<NSURL> getUpdatedAssets() {
         if (has(Keys.UpdatedAssets())) {
             NSSet<NSURL> val = (NSSet<NSURL>) get(Keys.UpdatedAssets());
@@ -115,7 +117,9 @@ import org.robovm.apple.imageio.*;
     }
     /**
      * @since Available in iOS 6.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public NSSet<NSURL> getInsertedAssetGroups() {
         if (has(Keys.InsertedAssetGroups())) {
             NSSet<NSURL> val = (NSSet<NSURL>) get(Keys.InsertedAssetGroups());
@@ -125,7 +129,9 @@ import org.robovm.apple.imageio.*;
     }
     /**
      * @since Available in iOS 6.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public NSSet<NSURL> getUpdatedAssetGroups() {
         if (has(Keys.UpdatedAssetGroups())) {
             NSSet<NSURL> val = (NSSet<NSURL>) get(Keys.UpdatedAssetGroups());
@@ -135,7 +141,9 @@ import org.robovm.apple.imageio.*;
     }
     /**
      * @since Available in iOS 6.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public NSSet<NSURL> getDeletedAssetGroups() {
         if (has(Keys.DeletedAssetGroups())) {
             NSSet<NSURL> val = (NSSet<NSURL>) get(Keys.DeletedAssetGroups());
@@ -151,22 +159,30 @@ import org.robovm.apple.imageio.*;
         static { Bro.bind(Keys.class); }
         /**
          * @since Available in iOS 6.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="ALAssetLibraryUpdatedAssetsKey", optional=true)
         public static native NSString UpdatedAssets();
         /**
          * @since Available in iOS 6.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="ALAssetLibraryInsertedAssetGroupsKey", optional=true)
         public static native NSString InsertedAssetGroups();
         /**
          * @since Available in iOS 6.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="ALAssetLibraryUpdatedAssetGroupsKey", optional=true)
         public static native NSString UpdatedAssetGroups();
         /**
          * @since Available in iOS 6.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="ALAssetLibraryDeletedAssetGroupsKey", optional=true)
         public static native NSString DeletedAssetGroups();
     }

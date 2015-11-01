@@ -73,9 +73,19 @@ import org.robovm.apple.avfoundation.*;
     @WeaklyLinked
     @Property(selector = "fullSizeImageOrientation")
     public native org.robovm.apple.imageio.CGImagePropertyOrientation getFullSizeImageOrientation();
+    /**
+     * @since Available in iOS 8.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @WeaklyLinked
     @Property(selector = "avAsset")
     public native AVAsset getAvAsset();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "audiovisualAsset")
+    public native AVAsset getAudiovisualAsset();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

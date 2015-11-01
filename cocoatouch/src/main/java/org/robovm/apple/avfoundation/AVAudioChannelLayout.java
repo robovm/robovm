@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -78,10 +79,5 @@ import org.robovm.apple.audiounit.*;
     protected native @Pointer long init(AudioChannelLayout layout);
     @Method(selector = "isEqual:")
     public native boolean equalsTo(AVAudioChannelLayout object);
-    @Method(selector = "layoutWithLayoutTag:")
-    public static native AVAudioChannelLayout create(AudioChannelLayoutTag layoutTag);
-    @WeaklyLinked
-    @Method(selector = "layoutWithLayout:")
-    public static native AVAudioChannelLayout create(AudioChannelLayout layout);
     /*</methods>*/
 }

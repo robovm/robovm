@@ -55,6 +55,16 @@ import org.robovm.apple.corelocation.*;
     public UISnapBehavior(UIDynamicItem item, @ByVal CGPoint point) { super((SkipInit) null); initObject(init(item, point)); }
     /*</constructors>*/
     /*<properties>*/
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "snapPoint")
+    public native @ByVal CGPoint getSnapPoint();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setSnapPoint:")
+    public native void setSnapPoint(@ByVal CGPoint v);
     @Property(selector = "damping")
     public native @MachineSizedFloat double getDamping();
     @Property(selector = "setDamping:")

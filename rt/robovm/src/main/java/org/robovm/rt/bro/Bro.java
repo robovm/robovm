@@ -29,6 +29,8 @@ import org.robovm.rt.bro.ptr.VoidPtr;
  */
 public class Bro {
     public static final boolean IS_DARWIN;
+    public static final boolean IS_IOS;
+    public static final boolean IS_MACOSX;
     public static final boolean IS_LINUX;
     public static final boolean IS_X86;
     public static final boolean IS_ARM;
@@ -38,7 +40,9 @@ public class Bro {
     static {
         String os = System.getProperty("os.name", "").toLowerCase();
         String arch = System.getProperty("os.arch", "").toLowerCase();
-        IS_DARWIN = os.contains("mac") || os.contains("ios");
+        IS_IOS = os.contains("ios");
+        IS_MACOSX = !IS_IOS && os.contains("mac");
+        IS_DARWIN = IS_IOS || IS_MACOSX;
         IS_LINUX = !IS_DARWIN && os.contains("linux");
         IS_X86 = arch.contains("x86");
         IS_ARM = !IS_X86 && (arch.contains("arm") || arch.contains("aarch64"));

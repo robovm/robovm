@@ -51,6 +51,7 @@ import org.robovm.apple.corelocation.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public UIView() {}
+    protected UIView(long handle) { super(handle); }
     protected UIView(SkipInit skipInit) { super(skipInit); }
     public UIView(@ByVal CGRect frame) { super((SkipInit) null); initObject(init(frame)); }
     public UIView(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
@@ -67,6 +68,16 @@ import org.robovm.apple.corelocation.*;
     @WeaklyLinked
     @Property(selector = "layer")
     public native CALayer getLayer();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "semanticContentAttribute")
+    public native UISemanticContentAttribute getSemanticContentAttribute();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setSemanticContentAttribute:")
+    public native void setSemanticContentAttribute(UISemanticContentAttribute v);
     @Property(selector = "frame")
     public native @ByVal CGRect getFrame();
     @Property(selector = "setFrame:")
@@ -135,6 +146,16 @@ import org.robovm.apple.corelocation.*;
      */
     @Property(selector = "setPreservesSuperviewLayoutMargins:")
     public native void setPreservesSuperviewLayoutMargins(boolean v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "layoutMarginsGuide")
+    public native UILayoutGuide getLayoutMarginsGuide();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "readableContentGuide")
+    public native UILayoutGuide getReadableContentGuide();
     @Property(selector = "clipsToBounds")
     public native boolean clipsToBounds();
     @Property(selector = "setClipsToBounds:")
@@ -163,20 +184,6 @@ import org.robovm.apple.corelocation.*;
     public native UIViewContentMode getContentMode();
     @Property(selector = "setContentMode:")
     public native void setContentMode(UIViewContentMode v);
-    /**
-     * @since Available in iOS 3.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    @Property(selector = "contentStretch")
-    public native @ByVal CGRect getContentStretch();
-    /**
-     * @since Available in iOS 3.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    @Property(selector = "setContentStretch:")
-    public native void setContentStretch(@ByVal CGRect v);
     /**
      * @since Available in iOS 8.0 and later.
      */
@@ -230,6 +237,96 @@ import org.robovm.apple.corelocation.*;
     /**
      * @since Available in iOS 6.0 and later.
      */
+    @Property(selector = "constraints")
+    public native NSArray<NSLayoutConstraint> getConstraints();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @Property(selector = "translatesAutoresizingMaskIntoConstraints")
+    public native boolean translatesAutoresizingMaskIntoConstraints();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @Property(selector = "setTranslatesAutoresizingMaskIntoConstraints:")
+    public native void setTranslatesAutoresizingMaskIntoConstraints(boolean v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "viewForFirstBaselineLayout")
+    public native UIView getViewForFirstBaselineLayout();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "viewForLastBaselineLayout")
+    public native UIView getViewForLastBaselineLayout();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "layoutGuides")
+    public native NSArray<UILayoutGuide> getLayoutGuides();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "leadingAnchor")
+    public native NSLayoutXAxisAnchor getLeadingAnchor();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "trailingAnchor")
+    public native NSLayoutXAxisAnchor getTrailingAnchor();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "leftAnchor")
+    public native NSLayoutXAxisAnchor getLeftAnchor();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "rightAnchor")
+    public native NSLayoutXAxisAnchor getRightAnchor();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "topAnchor")
+    public native NSLayoutYAxisAnchor getTopAnchor();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "bottomAnchor")
+    public native NSLayoutYAxisAnchor getBottomAnchor();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "widthAnchor")
+    public native NSLayoutDimension getWidthAnchor();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "heightAnchor")
+    public native NSLayoutDimension getHeightAnchor();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "centerXAnchor")
+    public native NSLayoutXAxisAnchor getCenterXAnchor();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "centerYAnchor")
+    public native NSLayoutYAxisAnchor getCenterYAnchor();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "firstBaselineAnchor")
+    public native NSLayoutYAxisAnchor getFirstBaselineAnchor();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "lastBaselineAnchor")
+    public native NSLayoutYAxisAnchor getLastBaselineAnchor();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Property(selector = "restorationIdentifier")
     public native String getRestorationIdentifier();
     /**
@@ -237,6 +334,19 @@ import org.robovm.apple.corelocation.*;
      */
     @Property(selector = "setRestorationIdentifier:")
     public native void setRestorationIdentifier(String v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "collisionBoundsType")
+    public native UIDynamicItemCollisionBoundsType getCollisionBoundsType();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "collisionBoundingPath")
+    public native UIBezierPath getCollisionBoundingPath();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "traitCollection")
     public native UITraitCollection getTraitCollection();
     /**
@@ -260,9 +370,16 @@ import org.robovm.apple.corelocation.*;
     
     @Method(selector = "initWithFrame:")
     protected native @Pointer long init(@ByVal CGRect frame);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     @WeaklyLinked
     @Method(selector = "layerClass")
     public static native Class<? extends CALayer> getLayerClass();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "userInterfaceLayoutDirectionForSemanticContentAttribute:")
+    public static native UIUserInterfaceLayoutDirection getUserInterfaceLayoutDirectionForSemanticContentAttribute(UISemanticContentAttribute attribute);
     @Method(selector = "hitTest:withEvent:")
     public native UIView hitTest(@ByVal CGPoint point, UIEvent event);
     @Method(selector = "pointInside:withEvent:")
@@ -369,6 +486,11 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "performWithoutAnimation:")
     public static native void performWithoutAnimation(@Block Runnable actionsWithoutAnimation);
     /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "inheritedAnimationDuration")
+    public static native double getInheritedAnimationDuration();
+    /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "animateWithDuration:delay:options:animations:completion:")
@@ -441,11 +563,6 @@ import org.robovm.apple.corelocation.*;
     /**
      * @since Available in iOS 6.0 and later.
      */
-    @Method(selector = "constraints")
-    public native NSArray<NSLayoutConstraint> getConstraints();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
     @Method(selector = "addConstraint:")
     public native void addConstraint(NSLayoutConstraint constraint);
     /**
@@ -486,16 +603,6 @@ import org.robovm.apple.corelocation.*;
     /**
      * @since Available in iOS 6.0 and later.
      */
-    @Method(selector = "translatesAutoresizingMaskIntoConstraints")
-    public native boolean translatesAutoresizingMaskIntoConstraints();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @Method(selector = "setTranslatesAutoresizingMaskIntoConstraints:")
-    public native void setTranslatesAutoresizingMaskIntoConstraints(boolean flag);
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
     @Method(selector = "requiresConstraintBasedLayout")
     public static native boolean requiresConstraintBasedLayout();
     /**
@@ -515,7 +622,9 @@ import org.robovm.apple.corelocation.*;
     public native @ByVal UIEdgeInsets getAlignmentRectInsets();
     /**
      * @since Available in iOS 6.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @Method(selector = "viewForBaselineLayout")
     public native UIView getViewForBaselineLayout();
     /**
@@ -558,6 +667,16 @@ import org.robovm.apple.corelocation.*;
      */
     @Method(selector = "systemLayoutSizeFittingSize:withHorizontalFittingPriority:verticalFittingPriority:")
     public native @ByVal CGSize getSystemLayoutSizeFittingSize(@ByVal CGSize targetSize, float horizontalFittingPriority, float verticalFittingPriority);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "addLayoutGuide:")
+    public native void addLayoutGuide(UILayoutGuide layoutGuide);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "removeLayoutGuide:")
+    public native void removeLayoutGuide(UILayoutGuide layoutGuide);
     /**
      * @since Available in iOS 6.0 and later.
      */
@@ -606,8 +725,9 @@ import org.robovm.apple.corelocation.*;
     public native void draw(@ByVal CGRect rect, UIViewPrintFormatter formatter);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder coder);
-    @Method(selector = "initWithCoder:")
-    protected native @Pointer long init(NSCoder aDecoder);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "traitCollectionDidChange:")
     public native void traitCollectionDidChange(UITraitCollection previousTraitCollection);
     /**

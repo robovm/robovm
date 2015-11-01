@@ -8,6 +8,7 @@ typedefs:
     Boolean: boolean
     CGFloat: MachineFloat
     CGGlyph: short
+    'CGGlyph *': ShortPtr
 private_typedefs:
     '__CFString *': String
     '__CFString **': NSString.NSStringPtr

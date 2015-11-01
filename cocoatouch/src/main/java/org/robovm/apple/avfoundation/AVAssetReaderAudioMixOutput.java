@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -82,7 +83,5 @@ import org.robovm.apple.audiounit.*;
     /*<methods>*/
     @Method(selector = "initWithAudioTracks:audioSettings:")
     protected native @Pointer long init(NSArray<AVAssetTrack> audioTracks, AVAudioSettings audioSettings);
-    @Method(selector = "assetReaderAudioMixOutputWithAudioTracks:audioSettings:")
-    public static native AVAssetReaderAudioMixOutput create(NSArray<AVAssetTrack> audioTracks, AVAudioSettings audioSettings);
     /*</methods>*/
 }

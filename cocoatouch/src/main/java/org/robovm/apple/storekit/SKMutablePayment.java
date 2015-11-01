@@ -51,8 +51,12 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 3.0 and later.
      */
+    public SKMutablePayment(SKProduct product) {
+        super(create(product));
+        retain(getHandle());
+    }
     @Method(selector = "paymentWithProduct:")
-    public static native SKMutablePayment create(SKProduct product);
+    protected static native @Pointer long create(SKProduct product);
     /*<properties>*/
     /**
      * @since Available in iOS 7.0 and later.

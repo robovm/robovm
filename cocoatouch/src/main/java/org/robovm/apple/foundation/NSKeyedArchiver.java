@@ -63,6 +63,16 @@ import org.robovm.apple.dispatch.*;
     public native NSPropertyListFormat getOutputFormat();
     @Property(selector = "setOutputFormat:")
     public native void setOutputFormat(NSPropertyListFormat v);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @Property(selector = "requiresSecureCoding")
+    public native boolean requiresSecureCoding();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @Property(selector = "setRequiresSecureCoding:")
+    public native void setRequiresSecureCoding(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
     
@@ -91,11 +101,6 @@ import org.robovm.apple.dispatch.*;
     public native void setClassNameForClass(String codedName, Class<? extends NSObject> cls);
     @Method(selector = "classNameForClass:")
     public native String getClassNameForClass(Class<? extends NSObject> cls);
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @Method(selector = "setRequiresSecureCoding:")
-    public native void setRequiresSecureCoding(boolean b);
     @Method(selector = "archivedDataWithRootObject:")
     public static native NSData archive(NSObject rootObject);
     @Method(selector = "archiveRootObject:toFile:")

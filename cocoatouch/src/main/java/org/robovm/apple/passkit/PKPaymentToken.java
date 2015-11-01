@@ -30,6 +30,7 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.apple.addressbook.*;
+import org.robovm.apple.contacts.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -50,8 +51,23 @@ import org.robovm.apple.addressbook.*;
     protected PKPaymentToken(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "paymentMethod")
+    public native PKPaymentMethod getPaymentMethod();
+    /**
+     * @since Available in iOS 8.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Property(selector = "paymentInstrumentName")
     public native String getPaymentInstrumentName();
+    /**
+     * @since Available in iOS 8.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Property(selector = "paymentNetwork")
     public native PKPaymentNetwork getPaymentNetwork();
     @Property(selector = "transactionIdentifier")

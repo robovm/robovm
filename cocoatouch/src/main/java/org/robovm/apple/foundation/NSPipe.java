@@ -61,7 +61,6 @@ import org.robovm.apple.dispatch.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "pipe")
-    public static native NSPipe create();
+    
     /*</methods>*/
 }

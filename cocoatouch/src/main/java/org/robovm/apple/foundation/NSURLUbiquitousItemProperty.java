@@ -122,18 +122,6 @@ import org.robovm.apple.dispatch.*;
      */
     public static final NSURLUbiquitousItemProperty IsUploading = new NSURLUbiquitousItemProperty("IsUploading");
     /**
-     * @since Available in iOS 5.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    public static final NSURLUbiquitousItemProperty PercentDownloaded = new NSURLUbiquitousItemProperty("PercentDownloaded");
-    /**
-     * @since Available in iOS 5.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    public static final NSURLUbiquitousItemProperty PercentUploaded = new NSURLUbiquitousItemProperty("PercentUploaded");
-    /**
      * @since Available in iOS 7.0 and later.
      */
     public static final NSURLUbiquitousItemProperty DownloadingStatus = new NSURLUbiquitousItemProperty("DownloadingStatus");
@@ -155,7 +143,7 @@ import org.robovm.apple.dispatch.*;
     public static final NSURLUbiquitousItemProperty ContainerDisplayName = new NSURLUbiquitousItemProperty("ContainerDisplayName");
     /*</constants>*/
     
-    private static /*<name>*/NSURLUbiquitousItemProperty/*</name>*/[] values = new /*<name>*/NSURLUbiquitousItemProperty/*</name>*/[] {/*<value_list>*/IsUbiquitousItem, HasUnresolvedConflicts, IsDownloaded, IsDownloading, IsUploaded, IsUploading, PercentDownloaded, PercentUploaded, DownloadingStatus, DownloadingError, UploadingError, DownloadRequested, ContainerDisplayName/*</value_list>*/};
+    private static /*<name>*/NSURLUbiquitousItemProperty/*</name>*/[] values = new /*<name>*/NSURLUbiquitousItemProperty/*</name>*/[] {/*<value_list>*/IsUbiquitousItem, HasUnresolvedConflicts, IsDownloaded, IsDownloading, IsUploaded, IsUploading, DownloadingStatus, DownloadingError, UploadingError, DownloadRequested, ContainerDisplayName/*</value_list>*/};
     
     /*<name>*/NSURLUbiquitousItemProperty/*</name>*/ (String getterName) {
         super(Values.class, getterName);
@@ -210,20 +198,6 @@ import org.robovm.apple.dispatch.*;
          */
         @GlobalValue(symbol="NSURLUbiquitousItemIsUploadingKey", optional=true)
         public static native NSString IsUploading();
-        /**
-         * @since Available in iOS 5.0 and later.
-         * @deprecated Deprecated in iOS 6.0.
-         */
-        @Deprecated
-        @GlobalValue(symbol="NSURLUbiquitousItemPercentDownloadedKey", optional=true)
-        public static native NSString PercentDownloaded();
-        /**
-         * @since Available in iOS 5.0 and later.
-         * @deprecated Deprecated in iOS 6.0.
-         */
-        @Deprecated
-        @GlobalValue(symbol="NSURLUbiquitousItemPercentUploadedKey", optional=true)
-        public static native NSString PercentUploaded();
         /**
          * @since Available in iOS 7.0 and later.
          */

@@ -52,6 +52,8 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UINib() {}
     protected UINib(SkipInit skipInit) { super(skipInit); }
+    public UINib(String name, NSBundle bundleOrNil) { super(create(name, bundleOrNil)); retain(getHandle()); }
+    public UINib(NSData data, NSBundle bundleOrNil) { super(create(data, bundleOrNil)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     
@@ -59,10 +61,10 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "instantiateWithOwner:options:")
-    public native NSArray<NSObject> instantiate(NSObject ownerOrNil, UINibLoadingOptions optionsOrNil);
+    public native NSArray<?> instantiate(NSObject ownerOrNil, UINibLoadingOptions optionsOrNil);
     @Method(selector = "nibWithNibName:bundle:")
-    public static native UINib create(String name, NSBundle bundleOrNil);
+    protected static native @Pointer long create(String name, NSBundle bundleOrNil);
     @Method(selector = "nibWithData:bundle:")
-    public static native UINib create(NSData data, NSBundle bundleOrNil);
+    protected static native @Pointer long create(NSData data, NSBundle bundleOrNil);
     /*</methods>*/
 }

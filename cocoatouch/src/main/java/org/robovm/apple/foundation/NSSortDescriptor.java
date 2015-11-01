@@ -63,6 +63,7 @@ import org.robovm.apple.dispatch.*;
     protected NSSortDescriptor(SkipInit skipInit) { super(skipInit); }
     public NSSortDescriptor(String key, boolean ascending) { super((SkipInit) null); initObject(init(key, ascending)); }
     public NSSortDescriptor(String key, boolean ascending, Selector selector) { super((SkipInit) null); initObject(init(key, ascending, selector)); }
+    public NSSortDescriptor(NSCoder coder) { super((SkipInit) null); initObject(initWithCoder$(coder)); }
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -89,6 +90,8 @@ import org.robovm.apple.dispatch.*;
     protected native @Pointer long init(String key, boolean ascending);
     @Method(selector = "initWithKey:ascending:selector:")
     protected native @Pointer long init(String key, boolean ascending, Selector selector);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long initWithCoder$(NSCoder coder);
     /**
      * @since Available in iOS 7.0 and later.
      */

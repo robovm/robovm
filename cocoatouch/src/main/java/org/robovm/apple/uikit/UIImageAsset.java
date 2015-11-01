@@ -52,12 +52,15 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UIImageAsset() {}
     protected UIImageAsset(SkipInit skipInit) { super(skipInit); }
+    public UIImageAsset(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     @Method(selector = "imageWithTraitCollection:")
     public native UIImage getImage(UITraitCollection traitCollection);
     @Method(selector = "registerImage:withTraitCollection:")

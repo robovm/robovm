@@ -92,6 +92,26 @@ import org.robovm.apple.corelocation.*;
     public native @ByVal UIEdgeInsets getSectionInset();
     @Property(selector = "setSectionInset:")
     public native void setSectionInset(@ByVal UIEdgeInsets v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "sectionHeadersPinToVisibleBounds")
+    public native boolean isSectionHeadersPinToVisibleBounds();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setSectionHeadersPinToVisibleBounds:")
+    public native void setSectionHeadersPinToVisibleBounds(boolean v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "sectionFootersPinToVisibleBounds")
+    public native boolean isSectionFootersPinToVisibleBounds();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setSectionFootersPinToVisibleBounds:")
+    public native void setSectionFootersPinToVisibleBounds(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

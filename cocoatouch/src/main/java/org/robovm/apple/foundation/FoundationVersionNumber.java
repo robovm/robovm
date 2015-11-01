@@ -118,6 +118,10 @@ import org.robovm.apple.dispatch.*;
     public static final int Version10_9 = 1056;
     public static final int Version10_9_1 = 1056;
     public static final double Version10_9_2 = 1056.13;
+    public static final double Version10_10 = 1151.16;
+    public static final double Version10_10_1 = 1151.16;
+    public static final double Version10_10_2 = 1152.14;
+    public static final double Version10_10_3 = 1153.20;
     public static final double Version_iPhoneOS_2_0 = 678.24;
     public static final double Version_iPhoneOS_2_1 = 678.26;
     public static final double Version_iPhoneOS_2_2 = 678.29;
@@ -134,6 +138,10 @@ import org.robovm.apple.dispatch.*;
     public static final double Version_iOS_6_1 = 993.00;
     public static final double Version_iOS_7_0 = 1047.20;
     public static final double Version_iOS_7_1 = 1047.25;
+    public static final double Version_iOS_8_0 = 1140.11;
+    public static final double Version_iOS_8_1 = 1141.1;
+    public static final double Version_iOS_8_2 = 1142.14;
+    public static final double Version_iOS_8_3 = 1144.17;
     public static final int VersionWithFileManagerResourceForkSupport = 412;
     /*</constants>*/
     /*<constructors>*//*</constructors>*/

@@ -48,20 +48,60 @@ import org.robovm.apple.corefoundation.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Bridge(symbol="ABMultiValueGetPropertyType", optional=true)
     public native ABPropertyType getPropertyType();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Bridge(symbol="ABMultiValueGetCount", optional=true)
     public native @MachineSizedSInt long getCount();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Bridge(symbol="ABMultiValueCopyValueAtIndex", optional=true)
     public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFType getValue(@MachineSizedSInt long index);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Bridge(symbol="ABMultiValueCopyArrayOfAllValues", optional=true)
     public native @org.robovm.rt.bro.annotation.Marshaler(CFType.AsListMarshaler.class) List<CFType> getAllValues();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Bridge(symbol="ABMultiValueCopyLabelAtIndex", optional=true)
     public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFString getLabel(@MachineSizedSInt long index);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Bridge(symbol="ABMultiValueGetIndexForIdentifier", optional=true)
     public native @MachineSizedSInt long indexOf(int identifier);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Bridge(symbol="ABMultiValueGetIdentifierAtIndex", optional=true)
     public native int getIdentifier(@MachineSizedSInt long index);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Bridge(symbol="ABMultiValueGetFirstIndexOfValue", optional=true)
     public native @MachineSizedSInt long indexOf(CFType value);
     /*</methods>*/

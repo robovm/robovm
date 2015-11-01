@@ -52,12 +52,11 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UIButton() {}
     protected UIButton(SkipInit skipInit) { super(skipInit); }
+    public UIButton(UIButtonType buttonType) { super(create0(buttonType)); retain(getHandle()); }
     /*</constructors>*/
-    
     public UIButton(CGRect frame) {
         super(frame);
     }
-    
     /*<properties>*/
     @Property(selector = "contentEdgeInsets")
     public native @ByVal UIEdgeInsets getContentEdgeInsets();
@@ -166,6 +165,13 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "imageRectForContentRect:")
     public native @ByVal CGRect getImageRect(@ByVal CGRect contentRect);
     @Method(selector = "buttonWithType:")
-    public static native UIButton create(UIButtonType buttonType);
+    protected static native @Pointer long create0(UIButtonType buttonType);
     /*</methods>*/
+    /**
+     * @Deprecated Use the constructor instead.
+     */
+    @Deprecated
+    public static UIButton create(UIButtonType buttonType) {
+        return new UIButton(buttonType);
+    }
 }

@@ -44,7 +44,13 @@ public final class /*<name>*/UIDataDetectorTypes/*</name>*/ extends Bits</*<name
     /*<values>*/
     public static final UIDataDetectorTypes PhoneNumber = new UIDataDetectorTypes(1L);
     public static final UIDataDetectorTypes Link = new UIDataDetectorTypes(2L);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     public static final UIDataDetectorTypes Address = new UIDataDetectorTypes(4L);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     public static final UIDataDetectorTypes CalendarEvent = new UIDataDetectorTypes(8L);
     public static final UIDataDetectorTypes None = new UIDataDetectorTypes(0L);
     public static final UIDataDetectorTypes All = new UIDataDetectorTypes(Bro.IS_32BIT ? 0xffffffffL : 0xffffffffffffffffL);

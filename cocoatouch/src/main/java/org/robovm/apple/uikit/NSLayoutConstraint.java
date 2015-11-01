@@ -52,6 +52,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public NSLayoutConstraint() {}
     protected NSLayoutConstraint(SkipInit skipInit) { super(skipInit); }
+    public NSLayoutConstraint(NSObject view1, NSLayoutAttribute attr1, NSLayoutRelation relation, NSObject view2, NSLayoutAttribute attr2, @MachineSizedFloat double multiplier, @MachineSizedFloat double c) { super(create(view1, attr1, relation, view2, attr2, multiplier, c)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "priority")
@@ -102,9 +103,9 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "constraintsWithVisualFormat:options:metrics:views:")
-    public static native NSArray<NSLayoutConstraint> create(String format, NSLayoutFormatOptions opts, @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringNumberMapMarshaler.class) Map<String, Number> metrics, @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObjectProtocol> views);
+    public static native NSArray<NSLayoutConstraint> createConstraints(String format, NSLayoutFormatOptions opts, @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringNumberMapMarshaler.class) Map<String, Number> metrics, @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObjectProtocol> views);
     @Method(selector = "constraintWithItem:attribute:relatedBy:toItem:attribute:multiplier:constant:")
-    public static native NSLayoutConstraint create(NSObject view1, NSLayoutAttribute attr1, NSLayoutRelation relation, NSObject view2, NSLayoutAttribute attr2, @MachineSizedFloat double multiplier, @MachineSizedFloat double c);
+    protected static native @Pointer long create(NSObject view1, NSLayoutAttribute attr1, NSLayoutRelation relation, NSObject view2, NSLayoutAttribute attr2, @MachineSizedFloat double multiplier, @MachineSizedFloat double c);
     /**
      * @since Available in iOS 8.0 and later.
      */

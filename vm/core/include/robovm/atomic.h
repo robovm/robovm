@@ -30,7 +30,7 @@ static inline jboolean rvmAtomicCompareAndSwapInt(jint* ptr, jint oldval, jint n
 
 static inline jboolean rvmAtomicCompareAndSwapLong(jlong* ptr, jlong oldval, jlong newval) {
 #if defined(DARWIN)
-    return OSAtomicCompareAndSwap64(oldval, newval, ptr) ? TRUE : FALSE;
+    return OSAtomicCompareAndSwapLong(oldval, newval, (long *)ptr) ? TRUE : FALSE;
 #else
     return __sync_bool_compare_and_swap(ptr, oldval, newval) ? TRUE : FALSE;
 #endif
@@ -48,8 +48,8 @@ static inline jint rvmAtomicLoadInt(jint* ptr) {
     return __sync_fetch_and_or(ptr, 0);
 }
 
-static inline jlong rvmAtomicLoadLong(jlong* ptr) {
-    return __sync_fetch_and_or(ptr, 0LL);
+static inline long rvmAtomicLoadLong(jlong* ptr) {
+    return __sync_fetch_and_or((long *)ptr, 0L);
 }
 
 static inline void* rvmAtomicLoadPtr(void** ptr) {

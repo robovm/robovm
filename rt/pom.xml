@@ -20,6 +20,15 @@
     </license>
   </licenses>
 
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.5</version>
+      <scope>test</scope>
+    </dependency>  
+  </dependencies>
+
   <build>
     <resources>
       <resource><directory>robovm/src/main/resources</directory></resource>
@@ -75,6 +84,7 @@
         <version>1.7</version>
         <executions>
           <execution>
+            <id>add-source</id>
             <phase>generate-sources</phase>
             <goals><goal>add-source</goal></goals>
             <configuration>
@@ -94,6 +104,16 @@
                 <source>external/javasqlite/src/main/java</source>
                 <source>external/okhttp/src/main/java</source>
                 <source>external/okhttp/android/main/java</source>
+              </sources>
+            </configuration>
+          </execution>
+          <execution>
+            <id>add-test-source</id>
+            <phase>generate-sources</phase>
+            <goals><goal>add-test-source</goal></goals>
+            <configuration>
+              <sources>
+                <source>robovm/src/test/java</source>
               </sources>
             </configuration>
           </execution>
@@ -120,7 +140,14 @@
           <maxmemory>2g</maxmemory>
         </configuration>
       </plugin>
-
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <forkMode>once</forkMode>
+          <argLine>-Djava.library.path=${project.build.directory}/lib/</argLine>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
@@ -130,6 +157,35 @@
             <phase>process-classes</phase>
             <configuration>
               <target>
+
+                <!-- create dir for target iconv shared library and builds it with platform specific settings -->
+                <echo>Preparing build of shared libiconv</echo>               
+                <mkdir dir="${project.build.directory}/lib"/>
+
+                <condition property="cc" value="gcc">
+                  <and>
+                    <os name="linux"/>
+                    <os family="unix"/>
+                  </and>
+                </condition>
+                
+                <exec command="xcrun -f clang" osfamily="mac" outputproperty="cc"/>
+                <condition property="so.ext" value="so"><os name="linux" /></condition>
+                <condition property="so.ext" value="dylib"><os family="mac" /></condition>
+                <condition property="extra.args" value="-fPIC"><os name="linux" /></condition>
+                <condition property="extra.args" value="-liconv"><os family="mac" /></condition>
+                
+                <!-- build shared library for linux/mac depending on conditions--> 
+                <echo>Building shared library</echo>
+                <exec executable="${cc}">
+                  <arg value="-I${basedir}/../vm/core/include"/>
+                  <arg value="${extra.args}" />
+                  <arg value="-shared" />
+                  <arg value="-o" />
+                  <arg value="${project.build.directory}/lib/libiconvprovider.${so.ext}" />
+                  <arg value="${basedir}/../vm/rt/robovm/org_robovm_rt_iconv_IconvProvider.c" />
+                </exec>
+                
                 <taskdef name="jarjar" classname="com.tonicsystems.jarjar.JarJarTask" classpathref="maven.plugin.classpath" />
 
                 <!-- Use jarjar to change the package name org.bouncycastle to com.android.org.bouncycastle and 

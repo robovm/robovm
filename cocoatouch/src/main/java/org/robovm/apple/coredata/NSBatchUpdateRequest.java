@@ -67,9 +67,9 @@ import org.robovm.apple.foundation.*;
     @Property(selector = "setResultType:")
     public native void setResultType(NSBatchUpdateRequestResultType v);
     @Property(selector = "propertiesToUpdate")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSExpression> getPropertiesToUpdate();
+    public native NSDictionary<NSString, NSExpression> getPropertiesToUpdate();
     @Property(selector = "setPropertiesToUpdate:")
-    public native void setPropertiesToUpdate(@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSExpression> v);
+    public native void setPropertiesToUpdate(NSDictionary<NSString, NSExpression> v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -77,7 +77,5 @@ import org.robovm.apple.foundation.*;
     protected native @Pointer long init(String entityName);
     @Method(selector = "initWithEntity:")
     protected native @Pointer long init(NSEntityDescription entity);
-    @Method(selector = "batchUpdateRequestWithEntityName:")
-    public static native NSBatchUpdateRequest create(String entityName);
     /*</methods>*/
 }

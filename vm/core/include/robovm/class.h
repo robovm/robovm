@@ -147,7 +147,10 @@ static inline jboolean rvmIsClassTypeInfoAssignable(Env* env, TypeInfo* sti, Typ
 extern jboolean rvmInitClasses(Env* env);
 extern jboolean rvmInitPrimitiveWrapperClasses(Env* env);
 
-extern Class* rvmAllocateClass(Env* env, const char* className, Class* superclass, ClassLoader* classLoader, jint flags, TypeInfo* typeInfo,
+extern Object* rvmGetParentClassLoader(Env* env, Object* classLoader);
+extern Object* rvmGetParentParentClassLoader(Env* env, Object* classLoader);
+
+extern Class* rvmAllocateClass(Env* env, const char* className, Class* superclass, Object* classLoader, jint flags, TypeInfo* typeInfo,
 		VITable* vitable, ITables* itables, jint classDataSize, jint instanceDataSize, jint instanceDataOffset, unsigned short classRefCount, unsigned short instanceRefCount, 
         void* attributes, void* initializer);
 extern Interface* rvmAllocateInterface(Env* env, Class* interf);
@@ -167,11 +170,11 @@ extern CallbackMethod* rvmAddCallbackMethod(Env* env, Class* clazz, const char* 
 extern jboolean rvmRegisterClass(Env* env, Class* clazz);
 
 extern Class* rvmFindClass(Env* env, const char* className);
-extern Class* rvmFindClassInClasspathForLoader(Env* env, const char* className, ClassLoader* classLoader);
-extern Class* rvmFindClassUsingLoader(Env* env, const char* className, ClassLoader* classLoader);
-extern Class* rvmFindClassByDescriptor(Env* env, const char* desc, ClassLoader* classLoader);
-extern Class* rvmFindLoadedClass(Env* env, const char* className, ClassLoader* classLoader);
-extern ClassLoader* rvmGetSystemClassLoader(Env* env);
+extern Class* rvmFindClassInClasspathForLoader(Env* env, const char* className, Object* classLoader);
+extern Class* rvmFindClassUsingLoader(Env* env, const char* className, Object* classLoader);
+extern Class* rvmFindClassByDescriptor(Env* env, const char* desc, Object* classLoader);
+extern Class* rvmFindLoadedClass(Env* env, const char* className, Object* classLoader);
+extern Object* rvmGetSystemClassLoader(Env* env);
 
 extern Interface* rvmGetInterfaces(Env* env, Class* clazz);
 extern Field* rvmGetFields(Env* env, Class* clazz);
@@ -220,7 +223,7 @@ extern jboolean rvmIsSamePackage(Class* c1, Class* c2);
 extern jboolean rvmIsAssignableFrom(Env* env, Class* sub, Class* sup);
 extern jboolean rvmIsInstanceOf(Env* env, Object* obj, Class* clazz);
 
-extern ObjectArray* rvmListClasses(Env* env, Class* instanceofClass, ClassLoader* classLoader);
+extern ObjectArray* rvmListClasses(Env* env, Class* instanceofClass, Object* classLoader);
 
 extern void rvmObtainClassLock(Env* env);
 extern void rvmReleaseClassLock(Env* env);

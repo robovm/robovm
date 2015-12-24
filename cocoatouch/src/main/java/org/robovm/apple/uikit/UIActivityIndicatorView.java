@@ -53,12 +53,9 @@ import org.robovm.apple.corelocation.*;
     public UIActivityIndicatorView() {}
     protected UIActivityIndicatorView(SkipInit skipInit) { super(skipInit); }
     public UIActivityIndicatorView(UIActivityIndicatorViewStyle style) { super((SkipInit) null); initObject(init(style)); }
+    public UIActivityIndicatorView(@ByVal CGRect frame) { super((SkipInit) null); initObject(init(frame)); }
+    public UIActivityIndicatorView(NSCoder coder) { super((SkipInit) null); initObject(init(coder)); }
     /*</constructors>*/
-    
-    public UIActivityIndicatorView(CGRect frame) {
-        super(frame);
-    }
-    
     /*<properties>*/
     @Property(selector = "activityIndicatorViewStyle")
     public native UIActivityIndicatorViewStyle getActivityIndicatorViewStyle();
@@ -83,6 +80,10 @@ import org.robovm.apple.corelocation.*;
     /*<methods>*/
     @Method(selector = "initWithActivityIndicatorStyle:")
     protected native @Pointer long init(UIActivityIndicatorViewStyle style);
+    @Method(selector = "initWithFrame:")
+    protected native @Pointer long init(@ByVal CGRect frame);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder coder);
     @Method(selector = "startAnimating")
     public native void startAnimating();
     @Method(selector = "stopAnimating")

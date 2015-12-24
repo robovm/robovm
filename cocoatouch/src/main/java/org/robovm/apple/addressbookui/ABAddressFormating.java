@@ -48,6 +48,11 @@ import org.robovm.apple.corefoundation.CFDictionary;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Bridge(symbol="ABCreateStringWithAddressDictionary", optional=true)
     public static native String createString(CFDictionary address, boolean addCountryName);
     /*</methods>*/

@@ -36,7 +36,7 @@ import org.robovm.apple.dispatch.*;
  * @since Available in iOS 8.0 and later.
  */
 /*</javadoc>*/
-/*<annotations>*/@Library("Metal")/*</annotations>*/
+/*<annotations>*/@Library("Metal") @NativeProtocolProxy/*</annotations>*/
 /*<visibility>*/public final/*</visibility>*/ class /*<name>*/MTLBlitCommandEncoder/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*/implements MTLCommandEncoder/*</implements>*/ {
@@ -61,8 +61,18 @@ import org.robovm.apple.dispatch.*;
     public native void copyFromTextureToTexture(MTLTexture sourceTexture, @MachineSizedUInt long sourceSlice, @MachineSizedUInt long sourceLevel, @ByVal MTLOrigin sourceOrigin, @ByVal MTLSize sourceSize, MTLTexture destinationTexture, @MachineSizedUInt long destinationSlice, @MachineSizedUInt long destinationLevel, @ByVal MTLOrigin destinationOrigin);
     @Method(selector = "copyFromBuffer:sourceOffset:sourceBytesPerRow:sourceBytesPerImage:sourceSize:toTexture:destinationSlice:destinationLevel:destinationOrigin:")
     public native void copyFromBufferToTexture(MTLBuffer sourceBuffer, @MachineSizedUInt long sourceOffset, @MachineSizedUInt long sourceBytesPerRow, @MachineSizedUInt long sourceBytesPerImage, @ByVal MTLSize sourceSize, MTLTexture destinationTexture, @MachineSizedUInt long destinationSlice, @MachineSizedUInt long destinationLevel, @ByVal MTLOrigin destinationOrigin);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "copyFromBuffer:sourceOffset:sourceBytesPerRow:sourceBytesPerImage:sourceSize:toTexture:destinationSlice:destinationLevel:destinationOrigin:options:")
+    public native void copyFromBufferToTexture(MTLBuffer sourceBuffer, @MachineSizedUInt long sourceOffset, @MachineSizedUInt long sourceBytesPerRow, @MachineSizedUInt long sourceBytesPerImage, @ByVal MTLSize sourceSize, MTLTexture destinationTexture, @MachineSizedUInt long destinationSlice, @MachineSizedUInt long destinationLevel, @ByVal MTLOrigin destinationOrigin, MTLBlitOption options);
     @Method(selector = "copyFromTexture:sourceSlice:sourceLevel:sourceOrigin:sourceSize:toBuffer:destinationOffset:destinationBytesPerRow:destinationBytesPerImage:")
     public native void copyFromTextureToBuffer(MTLTexture sourceTexture, @MachineSizedUInt long sourceSlice, @MachineSizedUInt long sourceLevel, @ByVal MTLOrigin sourceOrigin, @ByVal MTLSize sourceSize, MTLBuffer destinationBuffer, @MachineSizedUInt long destinationOffset, @MachineSizedUInt long destinationBytesPerRow, @MachineSizedUInt long destinationBytesPerImage);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "copyFromTexture:sourceSlice:sourceLevel:sourceOrigin:sourceSize:toBuffer:destinationOffset:destinationBytesPerRow:destinationBytesPerImage:options:")
+    public native void copyFromTextureToBuffer(MTLTexture sourceTexture, @MachineSizedUInt long sourceSlice, @MachineSizedUInt long sourceLevel, @ByVal MTLOrigin sourceOrigin, @ByVal MTLSize sourceSize, MTLBuffer destinationBuffer, @MachineSizedUInt long destinationOffset, @MachineSizedUInt long destinationBytesPerRow, @MachineSizedUInt long destinationBytesPerImage, MTLBlitOption options);
     @Method(selector = "generateMipmapsForTexture:")
     public native void generateMipmapsForTexture(MTLTexture texture);
     @Method(selector = "fillBuffer:range:value:")

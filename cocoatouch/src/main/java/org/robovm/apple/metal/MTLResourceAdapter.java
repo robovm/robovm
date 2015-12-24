@@ -53,6 +53,11 @@ import org.robovm.apple.dispatch.*;
     public MTLDevice getDevice() { return null; }
     @NotImplemented("cpuCacheMode")
     public MTLCPUCacheMode getCpuCacheMode() { return null; }
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @NotImplemented("storageMode")
+    public MTLStorageMode getStorageMode() { return null; }
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

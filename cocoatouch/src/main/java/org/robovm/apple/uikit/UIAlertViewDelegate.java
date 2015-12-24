@@ -52,18 +52,53 @@ import org.robovm.apple.corelocation.*;
     
     /*</properties>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Method(selector = "alertView:clickedButtonAtIndex:")
     void clicked(UIAlertView alertView, @MachineSizedSInt long buttonIndex);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Method(selector = "alertViewCancel:")
     void cancel(UIAlertView alertView);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Method(selector = "willPresentAlertView:")
     void willPresent(UIAlertView alertView);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Method(selector = "didPresentAlertView:")
     void didPresent(UIAlertView alertView);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Method(selector = "alertView:willDismissWithButtonIndex:")
     void willDismiss(UIAlertView alertView, @MachineSizedSInt long buttonIndex);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Method(selector = "alertView:didDismissWithButtonIndex:")
     void didDismiss(UIAlertView alertView, @MachineSizedSInt long buttonIndex);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Method(selector = "alertViewShouldEnableFirstOtherButton:")
     boolean shouldEnableFirstOtherButton(UIAlertView alertView);
     /*</methods>*/

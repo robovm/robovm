@@ -35,7 +35,6 @@ import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
 import org.robovm.apple.corelocation.*;
 /*</imports>*/
-import org.robovm.rt.annotation.WeaklyLinked;
 import org.robovm.apple.iad.ADInterstitialPresentationPolicy;
 import org.robovm.apple.mediaplayer.MPMoviePlayerViewController;
 
@@ -68,6 +67,7 @@ import org.robovm.apple.mediaplayer.MPMoviePlayerViewController;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public UIViewController() {}
+    protected UIViewController(long handle) { super(handle); }
     protected UIViewController(SkipInit skipInit) { super(skipInit); }
     public UIViewController(String nibNameOrNil, NSBundle nibBundleOrNil) { super((SkipInit) null); initObject(init(nibNameOrNil, nibBundleOrNil)); }
     public UIViewController(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
@@ -77,6 +77,11 @@ import org.robovm.apple.mediaplayer.MPMoviePlayerViewController;
     public native UIView getView();
     @Property(selector = "setView:")
     public native void setView(UIView v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "viewIfLoaded")
+    public native UIView getViewIfLoaded();
     @Property(selector = "nibName")
     public native String getNibName();
     @Property(selector = "nibBundle")
@@ -92,13 +97,6 @@ import org.robovm.apple.mediaplayer.MPMoviePlayerViewController;
     public native void setTitle(String v);
     @Property(selector = "parentViewController")
     public native UIViewController getParentViewController();
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    @Property(selector = "modalViewController")
-    public native UIViewController getModalViewController();
     /**
      * @since Available in iOS 5.0 and later.
      */
@@ -341,6 +339,9 @@ import org.robovm.apple.mediaplayer.MPMoviePlayerViewController;
     public native void setTabBarItem(UITabBarItem v);
     @Property(selector = "tabBarController")
     public native UITabBarController getTabBarController();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "traitCollection")
     public native UITraitCollection getTraitCollection();
     @Property(selector = "restorationParent")
@@ -441,22 +442,15 @@ import org.robovm.apple.mediaplayer.MPMoviePlayerViewController;
     
     @Method(selector = "initWithNibName:bundle:")
     protected native @Pointer long init(String nibNameOrNil, NSBundle nibBundleOrNil);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     @Method(selector = "loadView")
     public native void loadView();
     /**
-     * @since Available in iOS 5.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
+     * @since Available in iOS 9.0 and later.
      */
-    @Deprecated
-    @Method(selector = "viewWillUnload")
-    public native void viewWillUnload();
-    /**
-     * @since Available in iOS 3.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    @Method(selector = "viewDidUnload")
-    public native void viewDidUnload();
+    @Method(selector = "loadViewIfNeeded")
+    public native void loadViewIfNeeded();
     @Method(selector = "viewDidLoad")
     public native void viewDidLoad();
     /**
@@ -485,13 +479,32 @@ import org.robovm.apple.mediaplayer.MPMoviePlayerViewController;
     @Method(selector = "canPerformUnwindSegueAction:fromViewController:withSender:")
     public native boolean canPerformUnwind(Selector action, UIViewController fromViewController, NSObject sender);
     /**
-     * @since Available in iOS 6.0 and later.
+     * @since Available in iOS 9.0 and later.
      */
+    @Method(selector = "allowedChildViewControllersForUnwindingFromSource:")
+    public native NSArray<UIViewController> getAllowedChildViewControllersForUnwinding(UIStoryboardUnwindSegueSource source);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "childViewControllerContainingSegueSource:")
+    public native UIViewController getChildViewControllerContainingSegueSource(UIStoryboardUnwindSegueSource source);
+    /**
+     * @since Available in iOS 6.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Method(selector = "viewControllerForUnwindSegueAction:fromViewController:withSender:")
     public native UIViewController getViewControllerForUnwind(Selector action, UIViewController fromViewController, NSObject sender);
     /**
-     * @since Available in iOS 6.0 and later.
+     * @since Available in iOS 9.0 and later.
      */
+    @Method(selector = "unwindForSegue:towardsViewController:")
+    public native void unwind(UIStoryboardSegue unwindSegue, UIViewController subsequentVC);
+    /**
+     * @since Available in iOS 6.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Method(selector = "segueForUnwindingToViewController:fromViewController:identifier:")
     public native UIStoryboardSegue getSegueForUnwinding(UIViewController toViewController, UIViewController fromViewController, String identifier);
     @Method(selector = "viewWillAppear:")
@@ -545,20 +558,6 @@ import org.robovm.apple.mediaplayer.MPMoviePlayerViewController;
     @Method(selector = "dismissViewControllerAnimated:completion:")
     public native void dismissViewController(boolean animated, @Block Runnable completion);
     /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    @Method(selector = "presentModalViewController:animated:")
-    public native void presentModalViewController(UIViewController modalViewController, boolean animated);
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    @Method(selector = "dismissModalViewControllerAnimated:")
-    public native void dismissModalViewController(boolean animated);
-    /**
      * @since Available in iOS 4.3 and later.
      */
     @Method(selector = "disablesAutomaticKeyboardDismissal")
@@ -598,13 +597,6 @@ import org.robovm.apple.mediaplayer.MPMoviePlayerViewController;
      */
     @Method(selector = "showDetailViewController:sender:")
     public native void showDetailViewController(UIViewController vc, NSObject sender);
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    @Method(selector = "shouldAutorotateToInterfaceOrientation:")
-    public native boolean shouldAutorotate(UIInterfaceOrientation toInterfaceOrientation);
     /**
      * @since Available in iOS 6.0 and later.
      */
@@ -710,13 +702,6 @@ import org.robovm.apple.mediaplayer.MPMoviePlayerViewController;
     @Method(selector = "overrideTraitCollectionForChildViewController:")
     public native UITraitCollection getOverrideTraitCollection(UIViewController childViewController);
     /**
-     * @since Available in iOS 5.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    @Method(selector = "automaticallyForwardAppearanceAndRotationMethodsToChildViewControllers")
-    public native boolean isAutomaticallyForwardAppearanceAndRotationMethodsToChildViewControllers();
-    /**
      * @since Available in iOS 6.0 and later.
      * @deprecated Deprecated in iOS 8.0.
      */
@@ -759,6 +744,16 @@ import org.robovm.apple.mediaplayer.MPMoviePlayerViewController;
     @Method(selector = "updateViewConstraints")
     public native void updateViewConstraints();
     /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "addKeyCommand:")
+    public native void addKeyCommand(UIKeyCommand keyCommand);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "removeKeyCommand:")
+    public native void removeKeyCommand(UIKeyCommand keyCommand);
+    /**
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "setToolbarItems:animated:")
@@ -780,8 +775,9 @@ import org.robovm.apple.mediaplayer.MPMoviePlayerViewController;
     public native UIViewController separateSecondaryViewController(UISplitViewController splitViewController);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder coder);
-    @Method(selector = "initWithCoder:")
-    protected native @Pointer long init(NSCoder aDecoder);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "traitCollectionDidChange:")
     public native void traitCollectionDidChange(UITraitCollection previousTraitCollection);
     @Method(selector = "beginRequestWithExtensionContext:")

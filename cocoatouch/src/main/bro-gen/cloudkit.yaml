@@ -1,5 +1,5 @@
 package: org.robovm.apple.cloudkit
-include: [foundation.yaml, corelocation.yaml]
+include: [foundation.yaml, corelocation.yaml, contacts.yaml]
 library: CloudKit
 framework: CloudKit
 clang_args: ['-x', 'objective-c']
@@ -49,14 +49,13 @@ classes:
                 name: init
     CKContainer: # DONE
         methods:
-            '-init':
-                exclude: true
             '-addOperation:':
                 trim_after_first_colon: true
             '+defaultContainer':
                 property: true
             '+containerWithIdentifier:':
                 name: create
+                constructor: true
             '-accountStatusWithCompletionHandler:':
                 name: getAccountStatus
             '-statusForApplicationPermission:completionHandler:':
@@ -82,8 +81,6 @@ classes:
                 name: discoverUserInfo
     CKDatabase: # DONE
         methods:
-            '-init':
-                exclude: true
             '-addOperation:':
                 trim_after_first_colon: true
             '-fetchRecordWithID:completionHandler:':
@@ -129,12 +126,12 @@ classes:
     CKNotification: # DONE
         properties:
             'alertLocalizationArgs':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: List<String>
+                marshaler: NSArray.AsStringListMarshaler
         methods:
-            '-init':
-                exclude: true
             '+notificationFromRemoteNotificationDictionary:':
                 name: create
+                constructor: true
                 parameters:
                     notificationDictionary:
                         type: org.robovm.apple.uikit.UIRemoteNotification
@@ -147,9 +144,11 @@ classes:
     CKNotificationInfo: # DONE
         properties:
             'alertLocalizationArgs':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: List<String>
+                marshaler: NSArray.AsStringListMarshaler
             'desiredKeys':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: List<String>
+                marshaler: NSArray.AsStringListMarshaler
     CKQuery: # DONE
         properties:
             'sortDescriptors':
@@ -171,6 +170,7 @@ classes:
                 name: init
             '-objectForKey:':
                 name: get
+                return_type: NSObject
             '-setObject:forKey:':
                 name: put
                 visibility: protected # We provide overloaded methods for each allowed type
@@ -179,7 +179,8 @@ classes:
                         type: NSObject # We don't use CKRecordValue here because we don't want to make several Foundation objects implement the CKRecordValue interface.
             '-(allKeys|allTokens|changedKeys)':
                 property: true
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                return_type: List<String>
+                return_marshaler: NSArray.AsStringListMarshaler
             '-encodeSystemFieldsWithCoder:':
                 name: encodeSystemFields
             '-objectForKeyedSubscript:':
@@ -230,7 +231,8 @@ classes:
     CKFetchRecordChangesOperation: # DONE
         properties:
             'desiredKeys':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: List<String>
+                marshaler: NSArray.AsStringListMarshaler
         methods:
             '-init.*':
                 name: init
@@ -239,12 +241,11 @@ classes:
             'recordIDs':
                 type: NSArray<CKRecordID>
             'desiredKeys':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: List<String>
+                marshaler: NSArray.AsStringListMarshaler
             'fetchRecordsCompletionBlock':
                 type: '@Block VoidBlock2<NSDictionary<CKRecordID, CKRecord>, NSError>'
         methods:
-            '-init':
-                exclude: true
             '-initWithRecordIDs:':
                 name: init
                 parameters:
@@ -259,8 +260,6 @@ classes:
             'fetchRecordZonesCompletionBlock':
                 type: '@Block VoidBlock2<NSDictionary<CKRecordZoneID, CKRecordZone>, NSError>'
         methods:
-            '-init':
-                exclude: true
             '-initWithRecordZoneIDs:':
                 name: init
                 parameters:
@@ -271,17 +270,17 @@ classes:
     CKFetchSubscriptionsOperation: # DONE
         properties:
             'subscriptionIDs':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: List<String>
+                marshaler: NSArray.AsStringListMarshaler
             'fetchSubscriptionCompletionBlock':
                 type: '@Block VoidBlock2<NSDictionary<NSString, CKSubscription>, NSError>' # TODO asStringMapMarshaler
         methods:
-            '-init':
-                exclude: true
             '-initWithSubscriptionIDs:':
                 name: init
                 parameters:
                     subscriptionIDs:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: List<String>
+                        marshaler: NSArray.AsStringListMarshaler
             '+fetchAllSubscriptionsOperation':
                 name: createFetchAllSubscriptionsOperation
     CKModifyRecordsOperation: # DONE
@@ -325,7 +324,8 @@ classes:
             'subscriptionsToSave':
                 type: NSArray<CKSubscription>
             'subscriptionIDsToDelete':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: List<String>
+                marshaler: NSArray.AsStringListMarshaler
             'modifySubscriptionsCompletionBlock':
                 type: '@Block VoidBlock3<NSArray<CKSubscription>, NSArray<NSString>, NSError>' # TODO asStringListMarshaler
         methods:
@@ -339,7 +339,8 @@ classes:
     CKQueryOperation: # DONE
         properties:
             'desiredKeys':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: List<String>
+                marshaler: NSArray.AsStringListMarshaler
         methods:
             '-init':
                 exclude: true
@@ -355,7 +356,8 @@ classes:
     CKDiscoverUserInfosOperation: # DONE
         properties:
             'emailAddresses':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: List<String>
+                marshaler: NSArray.AsStringListMarshaler
             'userRecordIDs':
                 type: NSArray<CKRecordID>
             'discoverUserInfosCompletionBlock':
@@ -367,7 +369,8 @@ classes:
                 name: init
                 parameters:
                     emailAddresses:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: List<String>
+                        marshaler: NSArray.AsStringListMarshaler
                     userRecordIDs:
                         type: NSArray<CKRecordID>
     CKFetchNotificationChangesOperation: # DONE
@@ -438,6 +441,10 @@ values:
     CKOwnerDefaultName:
         class: CKContainer
         name: getDefaultOwnerName
+    CK(AccountChangedNotification):
+        class: CKContainer
+        name: '#{g[0]}'
+        type: NSString
 
     # CKQueryOperation
     CKQueryOperation(MaximumResults):

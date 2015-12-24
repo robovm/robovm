@@ -52,12 +52,28 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UIKeyCommand() {}
     protected UIKeyCommand(SkipInit skipInit) { super(skipInit); }
+    public UIKeyCommand(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
+    public UIKeyCommand(String input, UIKeyModifierFlags modifierFlags, Selector action) { super(create(input, modifierFlags, action)); retain(getHandle()); }
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public UIKeyCommand(String input, UIKeyModifierFlags modifierFlags, Selector action, String discoverabilityTitle) { super(create(input, modifierFlags, action, discoverabilityTitle)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "input")
     public native String getInput();
     @Property(selector = "modifierFlags")
     public native UIKeyModifierFlags getModifierFlags();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "discoverabilityTitle")
+    public native String getDiscoverabilityTitle();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setDiscoverabilityTitle:")
+    public native void setDiscoverabilityTitle(String v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -87,7 +103,14 @@ import org.robovm.apple.corelocation.*;
     @GlobalValue(symbol="UIKeyInputEscape", optional=true)
     public static native String Escape();
     
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     @Method(selector = "keyCommandWithInput:modifierFlags:action:")
-    public static native UIKeyCommand create(String input, UIKeyModifierFlags modifierFlags, Selector action);
+    protected static native @Pointer long create(String input, UIKeyModifierFlags modifierFlags, Selector action);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "keyCommandWithInput:modifierFlags:action:discoverabilityTitle:")
+    protected static native @Pointer long create(String input, UIKeyModifierFlags modifierFlags, Selector action, String discoverabilityTitle);
     /*</methods>*/
 }

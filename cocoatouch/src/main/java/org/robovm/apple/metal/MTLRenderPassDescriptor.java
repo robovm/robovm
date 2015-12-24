@@ -66,7 +66,6 @@ import org.robovm.apple.dispatch.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "renderPassDescriptor")
-    public static native MTLRenderPassDescriptor create();
+    
     /*</methods>*/
 }

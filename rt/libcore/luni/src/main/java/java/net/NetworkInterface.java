@@ -195,40 +195,23 @@ public final class NetworkInterface extends Object {
             }
         }
     }
-
+    
     private static void collectIpv4Address(String interfaceName, List<InetAddress> addresses,
             List<InterfaceAddress> interfaceAddresses) throws SocketException {
-        FileDescriptor fd = null;
-        try {
-            fd = Libcore.os.socket(AF_INET, SOCK_DGRAM, 0);
-            InetAddress address = Libcore.os.ioctlInetAddress(fd, SIOCGIFADDR, interfaceName);
-            InetAddress broadcast = Inet4Address.ANY;
-            try {
-                broadcast = Libcore.os.ioctlInetAddress(fd, SIOCGIFBRDADDR, interfaceName);
-            } catch (ErrnoException e) {
-                // RoboVM note: On Darwin ioctl(SIOCGIFBRDADDR) returns EINVAL for lo0
-                if (!DARWIN || e.errno != EINVAL) {
-                    throw e;
-                }
+        // RoboVM note: This method used to use ioctl to probe a socket, this failed in various
+        // ways on Darwin.
+        byte[] bytes = getIpv4Addresses(interfaceName);
+        if (bytes != null) {
+            for (int i = 0; i < bytes.length; i += 12) {
+                Inet4Address address = new Inet4Address(
+                        new byte[] { bytes[i + 0], bytes[i + 1], bytes[i + 2], bytes[i + 3] }, null);
+                Inet4Address netmask = new Inet4Address(
+                        new byte[] { bytes[i + 4], bytes[i + 5], bytes[i + 6], bytes[i + 7] }, null);
+                Inet4Address broadcast = new Inet4Address(
+                        new byte[] { bytes[i + 8], bytes[i + 9], bytes[i + 10], bytes[i + 11] }, null);
+                addresses.add(address);
+                interfaceAddresses.add(new InterfaceAddress(address, broadcast, netmask));
             }
-            InetAddress netmask = Libcore.os.ioctlInetAddress(fd, SIOCGIFNETMASK, interfaceName);
-            if (broadcast.equals(Inet4Address.ANY)) {
-                broadcast = null;
-            }
-
-            addresses.add(address);
-            interfaceAddresses.add(new InterfaceAddress((Inet4Address) address,
-                    (Inet4Address) broadcast, (Inet4Address) netmask));
-        } catch (ErrnoException errnoException) {
-            if (errnoException.errno != EADDRNOTAVAIL) {
-                // EADDRNOTAVAIL just means no IPv4 address for this interface.
-                // Anything else is a real error.
-                throw rethrowAsSocketException(errnoException);
-            }
-        } catch (Exception ex) {
-            throw rethrowAsSocketException(ex);
-        } finally {
-            IoUtils.closeQuietly(fd);
         }
     }
 
@@ -305,6 +288,16 @@ public final class NetworkInterface extends Object {
      * Added in RoboVM.
      */
     private static native byte[] getIpv6Addresses(String interfaceName);
+    /**
+     * Uses getifaddrs() to retrieve the IPv4 addresses of the interface with
+     * the specified name. Returns <code>null</code> if the interface has no
+     * IPv4 addresses. Otherwise a byte array is returned with address 1 at 
+     * index 0 and its netmask at index 4 and its broadcast address at index 8,
+     * address 2 at index 12 and its netmask at index 16 and its broadcast address
+     * at index 20, etc.
+     * Added in RoboVM.
+     */
+    private static native byte[] getIpv4Addresses(String interfaceName);
     /**
      * Uses getifaddrs() to retrieve the MAC address of the interface with the
      * specified name.

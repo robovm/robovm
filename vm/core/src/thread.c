@@ -222,7 +222,7 @@ static void freeThreadId(jint threadId) {
     assert(!rvmIsBitSet(threadIdMap, threadId - 1));
 }
 
-static jboolean initThread(Env* env, Thread* thread, JavaThread* threadObj) {
+static jboolean initThread(Env* env, Thread* thread, Object* threadObj) {
     // NOTE: threadsLock must be held
     int err = 0;
     pthread_cond_init(&thread->waitCond, NULL);
@@ -241,9 +241,9 @@ static jboolean initThread(Env* env, Thread* thread, JavaThread* threadObj) {
     thread->threadId = getNextThreadId();
     thread->threadObj = threadObj;
     thread->env = env;
-    threadObj->threadPtr = PTR_TO_LONG(thread);
     env->currentThread = thread;
     env->attachCount = 1;
+    rvmRTSetNativeThread(env, threadObj, thread);
     return TRUE;
 }
 
@@ -319,7 +319,7 @@ static jint attachThread(VM* vm, Env** envPtr, char* name, Object* group, jboole
     env->currentThread = thread;
     rvmChangeThreadStatus(env, thread, THREAD_RUNNING);
     
-    JavaThread* threadObj = (JavaThread*) rvmAllocateObject(env, java_lang_Thread);
+    Object* threadObj = rvmAllocateObject(env, java_lang_Thread);
     if (!threadObj) goto error;
 
     rvmLockThreadsList();
@@ -341,10 +341,7 @@ static jint attachThread(VM* vm, Env** envPtr, char* name, Object* group, jboole
         if (!threadName) goto error_remove;
     }
 
-    Method* threadConstructor = rvmGetInstanceMethod(env, java_lang_Thread, "<init>", "(JLjava/lang/String;Ljava/lang/ThreadGroup;Z)V");
-    if (!threadConstructor) goto error_remove;
-
-    rvmCallNonvirtualVoidInstanceMethod(env, (Object*) threadObj, threadConstructor, PTR_TO_LONG(thread), threadName, group, daemon);
+    rvmRTInitAttachedThread(env, threadObj, thread, threadName, group, daemon);
     if (rvmExceptionOccurred(env)) goto error_remove;
 
     *envPtr = env;
@@ -371,10 +368,10 @@ static void threadExitUncaughtException(Env* env, Thread* thread) {
     // Ignore exception thrown by getUncaughtException()
     rvmExceptionClear(env);
     if (!handler) {
-        handler = thread->threadObj->group;
+        handler = rvmRTGetThreadGroup(env, thread->threadObj);
     }
     if (handler) {
-        rvmCallVoidInstanceMethod(env, handler, uncaughtExceptionMethod, (Object*) thread->threadObj, throwable);
+        rvmCallVoidInstanceMethod(env, handler, uncaughtExceptionMethod, thread->threadObj, throwable);
     } else {
         rvmPrintStackTrace(env, throwable);
     }
@@ -396,7 +393,7 @@ static jint detachThread(Env* env, jboolean ignoreAttachCount, jboolean unregist
     // TODO: Release all monitors still held by this thread (should only be monitors acquired from JNI code)
 
     Thread* thread = env->currentThread;
-    JavaThread* threadObj = thread->threadObj;
+    Object* threadObj = thread->threadObj;
 
     if (wasAttached) {
         rvmHookThreadDetaching(env, threadObj, thread, env->throwable);
@@ -406,18 +403,16 @@ static jint detachThread(Env* env, jboolean ignoreAttachCount, jboolean unregist
         threadExitUncaughtException(env, thread);
     }
 
-    if (threadObj->group) {
-        rvmCallVoidInstanceMethod(env, threadObj->group, removeThreadMethod, threadObj);
+    Object* group = rvmRTGetThreadGroup(env, threadObj);
+    if (group) {
+        rvmCallVoidInstanceMethod(env, group, removeThreadMethod, threadObj);
         rvmExceptionClear(env);
     }
 
     // Set threadPtr to null
-    rvmAtomicStoreLong(&thread->threadObj->threadPtr, 0);
+    rvmRTClearNativeThread(env, thread->threadObj);
 
-    // Notify anyone waiting on this thread (using Thread.join())
-    rvmLockObject(env, threadObj->lock);
-    rvmObjectNotifyAll(env, threadObj->lock);
-    rvmUnlockObject(env, threadObj->lock);
+    rvmRTResumeJoiningThreads(env, threadObj);
 
     rvmLockThreadsList();
     thread->status = THREAD_ZOMBIE;
@@ -512,14 +507,14 @@ jint rvmDetachCurrentThread(VM* vm, jboolean ignoreAttachCount, jboolean unregis
 typedef struct ThreadEntryPointArgs {
     Env* env;
     Thread* thread;
-    JavaThread* threadObj;
+    Object* threadObj;
 } ThreadEntryPointArgs;
 
 static void* startThreadEntryPoint(void* _args) {
     ThreadEntryPointArgs* args = (ThreadEntryPointArgs*) _args;
     Env* env = args->env;
     Thread* thread = args->thread;
-    JavaThread* threadObj = args->threadObj;
+    Object* threadObj = args->threadObj;
 
     rvmLockThreadsList();
     jboolean failure = TRUE;
@@ -544,14 +539,14 @@ static void* startThreadEntryPoint(void* _args) {
     if (!failure) {
         rvmChangeThreadStatus(env, thread, THREAD_RUNNING);
 
-        rvmChangeThreadPriority(env, thread, thread->threadObj->priority);
+        rvmChangeThreadPriority(env, thread, rvmRTGetThreadPriority(env, thread->threadObj));
 
         rvmHookThreadStarting(env, threadObj, thread);
         Method* run = rvmGetInstanceMethod(env, java_lang_Thread, "run", "()V");
         if (run) {
             setThreadTLS(env, thread);
             jvalue emptyArgs[0];
-            rvmCallVoidInstanceMethodA(env, (Object*) threadObj, run, emptyArgs);
+            rvmCallVoidInstanceMethodA(env, threadObj, run, emptyArgs);
         }
     }
 
@@ -561,7 +556,7 @@ static void* startThreadEntryPoint(void* _args) {
     return NULL;
 }
 
-jlong rvmStartThread(Env* env, JavaThread* threadObj) {
+jlong rvmStartThread(Env* env, Object* threadObj) {
     Env* newEnv = rvmCreateEnv(env->vm);
     if (!newEnv) {
         rvmThrowOutOfMemoryError(env); // rvmCreateEnv() doesn't throw OutOfMemoryError if allocation fails
@@ -569,7 +564,7 @@ jlong rvmStartThread(Env* env, JavaThread* threadObj) {
     }
 
     rvmLockThreadsList();
-    if (threadObj->threadPtr != 0) {
+    if (rvmRTGetNativeThread(env, threadObj) != NULL) {
         rvmThrowIllegalStateException(env, "thread has already been started");
         rvmUnlockThreadsList();
         return 0;
@@ -580,7 +575,7 @@ jlong rvmStartThread(Env* env, JavaThread* threadObj) {
         return 0;
     }
 
-    size_t stackSize = (size_t) threadObj->stackSize;
+    size_t stackSize = (size_t) rvmRTGetThreadStackSize(env, threadObj);
     if (stackSize == 0) {
         stackSize = THREAD_DEFAULT_STACK_SIZE;
     } else if (stackSize < THREAD_MIN_STACK_SIZE) {
@@ -635,7 +630,7 @@ void rvmJoinNonDaemonThreads(Env* env) {
         Thread* thread = NULL;
         DL_FOREACH(threads, thread) {
             assert(thread->threadObj != NULL);
-            if (!thread->threadObj->daemon) {
+            if (!rvmRTIsDaemonThread(env, thread->threadObj)) {
                 count++;
             }
         }

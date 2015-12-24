@@ -52,6 +52,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UIDocumentInteractionController() {}
     protected UIDocumentInteractionController(SkipInit skipInit) { super(skipInit); }
+    public UIDocumentInteractionController(NSURL url) { super(create(url)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "delegate")
@@ -96,17 +97,47 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "dismissMenuAnimated:")
     public native void dismissMenu(boolean animated);
     @Method(selector = "interactionControllerWithURL:")
-    public static native UIDocumentInteractionController create(NSURL url);
+    protected static native @Pointer long create(NSURL url);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 8.3.
+     */
+    @Deprecated
     @Method(selector = "actionSheet:clickedButtonAtIndex:")
     public native void clicked(UIActionSheet actionSheet, @MachineSizedSInt long buttonIndex);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 8.3.
+     */
+    @Deprecated
     @Method(selector = "actionSheetCancel:")
     public native void cancel(UIActionSheet actionSheet);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 8.3.
+     */
+    @Deprecated
     @Method(selector = "willPresentActionSheet:")
     public native void willPresent(UIActionSheet actionSheet);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 8.3.
+     */
+    @Deprecated
     @Method(selector = "didPresentActionSheet:")
     public native void didPresent(UIActionSheet actionSheet);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 8.3.
+     */
+    @Deprecated
     @Method(selector = "actionSheet:willDismissWithButtonIndex:")
     public native void willDismiss(UIActionSheet actionSheet, @MachineSizedSInt long buttonIndex);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 8.3.
+     */
+    @Deprecated
     @Method(selector = "actionSheet:didDismissWithButtonIndex:")
     public native void didDismiss(UIActionSheet actionSheet, @MachineSizedSInt long buttonIndex);
     /*</methods>*/

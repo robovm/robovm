@@ -49,6 +49,7 @@ import org.robovm.apple.dispatch.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public MKMultiPoint() {}
+    protected MKMultiPoint(long handle) { super(handle); }
     protected MKMultiPoint(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/

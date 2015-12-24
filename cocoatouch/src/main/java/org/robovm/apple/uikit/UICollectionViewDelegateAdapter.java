@@ -90,5 +90,15 @@ import org.robovm.apple.corelocation.*;
     public void performAction(UICollectionView collectionView, Selector action, NSIndexPath indexPath, NSObject sender) {}
     @NotImplemented("collectionView:transitionLayoutForOldLayout:newLayout:")
     public UICollectionViewTransitionLayout getTransitionLayout(UICollectionView collectionView, UICollectionViewLayout fromLayout, UICollectionViewLayout toLayout) { return null; }
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @NotImplemented("collectionView:targetIndexPathForMoveFromItemAtIndexPath:toProposedIndexPath:")
+    public NSIndexPath getTargetIndexPathForMoveFromItem(UICollectionView collectionView, NSIndexPath originalIndexPath, NSIndexPath proposedIndexPath) { return null; }
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @NotImplemented("collectionView:targetContentOffsetForProposedContentOffset:")
+    public @ByVal CGPoint getTargetContentOffsetForProposedContentOffset(UICollectionView collectionView, @ByVal CGPoint proposedContentOffset) { return null; }
     /*</methods>*/
 }

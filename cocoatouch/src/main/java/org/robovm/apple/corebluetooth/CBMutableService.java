@@ -51,14 +51,6 @@ import org.robovm.apple.dispatch.*;
     public CBMutableService(CBUUID UUID, boolean isPrimary) { super((SkipInit) null); initObject(init(UUID, isPrimary)); }
     /*</constructors>*/
     /*<properties>*/
-    @Property(selector = "UUID")
-    public native CBUUID getUUID();
-    @Property(selector = "setUUID:")
-    public native void setUUID(CBUUID v);
-    @Property(selector = "isPrimary")
-    public native boolean isPrimary();
-    @Property(selector = "setIsPrimary:")
-    public native void setPrimary(boolean v);
     @Property(selector = "includedServices")
     public native NSArray<CBService> getIncludedServices();
     @Property(selector = "setIncludedServices:")

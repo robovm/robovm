@@ -75,5 +75,10 @@ import org.robovm.apple.corelocation.*;
      */
     @NotImplemented("printInteractionController:cutLengthForPaper:")
     public @MachineSizedFloat double getCutLength(UIPrintInteractionController printInteractionController, UIPrintPaper paper) { return 0; }
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @NotImplemented("printInteractionController:chooseCutterBehavior:")
+    public UIPrinterCutterBehavior chooseCutterBehavior(UIPrintInteractionController printInteractionController, @org.robovm.rt.bro.annotation.Marshaler(UIPrinterCutterBehavior.AsListMarshaler.class) List<UIPrinterCutterBehavior> availableBehaviors) { return null; }
     /*</methods>*/
 }

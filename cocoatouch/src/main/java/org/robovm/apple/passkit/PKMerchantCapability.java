@@ -30,6 +30,7 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.apple.addressbook.*;
+import org.robovm.apple.contacts.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -43,6 +44,14 @@ public final class /*<name>*/PKMerchantCapability/*</name>*/ extends Bits</*<nam
     public static final PKMerchantCapability None = new PKMerchantCapability(0L);
     public static final PKMerchantCapability _3DS = new PKMerchantCapability(1L);
     public static final PKMerchantCapability EMV = new PKMerchantCapability(2L);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final PKMerchantCapability Credit = new PKMerchantCapability(4L);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final PKMerchantCapability Debit = new PKMerchantCapability(8L);
     /*</values>*/
 
     /*<bind>*/

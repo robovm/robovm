@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.corelocation.*;
 import org.robovm.apple.addressbook.*;
+import org.robovm.apple.mapkit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -49,6 +50,10 @@ import org.robovm.apple.addressbook.*;
     /*<constructors>*/
     public EKCalendar() {}
     protected EKCalendar(SkipInit skipInit) { super(skipInit); }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public EKCalendar(EKEntityType entityType, EKEventStore eventStore) { super(create(entityType, eventStore)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "source")
@@ -95,16 +100,9 @@ import org.robovm.apple.addressbook.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     /**
-     * @since Available in iOS 4.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    @Method(selector = "calendarWithEventStore:")
-    public static native EKCalendar create(EKEventStore eventStore);
-    /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "calendarForEntityType:eventStore:")
-    public static native EKCalendar create(EKEntityType entityType, EKEventStore eventStore);
+    private static native @Pointer long create(EKEntityType entityType, EKEventStore eventStore);
     /*</methods>*/
 }

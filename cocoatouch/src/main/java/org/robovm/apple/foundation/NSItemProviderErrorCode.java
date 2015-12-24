@@ -49,7 +49,11 @@ public enum /*<name>*/NSItemProviderErrorCode/*</name>*/ implements NSErrorCode 
     /*<values>*/
     Unknown(-1L),
     ItemUnavailable(-1000L),
-    UnexpectedValueClass(-1100L);
+    UnexpectedValueClass(-1100L),
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    UnavailableCoercion(-1200L);
     /*</values>*/
 
     /*<bind>*/

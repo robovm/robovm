@@ -17,8 +17,8 @@
 # Stop if something fails.
 set -e
 
-if [ "x$ROBOVM_DEV_ROOT" == 'x' ]; then
-    echo "ROBOVM_DEV_ROOT not set"
+if [ "x$BASE" == 'x' ]; then
+    echo "BASE not set"
     exit 1
 fi
 
@@ -36,4 +36,4 @@ if [ -r src-ex ]; then
     cp=classes:classes-ex
 fi
 
-$ROBOVM_DEV_ROOT/tests/dalvik/robovm-builder -forcelinkclasses '##.#' -cp "$cp" Main > robovm.log 2>&1
+$BASE/tests/dalvik/robovm-builder -forcelinkclasses '##.#' -cp "$cp" Main > robovm.log 2>&1

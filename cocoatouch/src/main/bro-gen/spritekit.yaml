@@ -1,5 +1,5 @@
 package: org.robovm.apple.spritekit
-include: [foundation.yaml, uikit.yaml, coregraphics.yaml, dispatch.yaml, coreimage.yaml, avfoundation.yaml, glkit.yaml, scenekit.yaml]
+include: [foundation.yaml, uikit.yaml, coregraphics.yaml, dispatch.yaml, coreimage.yaml, avfoundation.yaml, glkit.yaml, scenekit.yaml, gameplaykit.yaml]
 library: SpriteKit
 framework: SpriteKit
 clang_args: ['-x', 'objective-c']
@@ -20,6 +20,7 @@ enums:
     SKLabelVerticalAlignmentMode: {}
     SKLabelHorizontalAlignmentMode: {}
     SKBlendMode: {}
+    SKParticleRenderOrder: {}
     SKSceneScaleMode: {}
     SKTextureFilteringMode: {}
     SKTransitionDirection: {}
@@ -58,7 +59,7 @@ classes:
             '-unprojectPoint:':
                 trim_after_first_colon: true
             '+nodeWithViewportSize:':
-                name: create
+                exclude: true
     SKAction: # DONE
         properties:
             'timingFunction':
@@ -114,8 +115,15 @@ classes:
                 trim_after_first_colon: true
             '+setTexture:.*':
                 trim_after_first_colon: true
+            '+setNormalTexture:.*':
+                trim_after_first_colon: true
             '+animateWithTextures:timePerFrame:.*':
-                name: animate
+                name: animateFrames
+                parameters:
+                    textures:
+                        type: NSArray<SKTexture>
+            '+animateWithNormalTextures:timePerFrame:.*':
+                name: animateNormalFrames
                 parameters:
                     textures:
                         type: NSArray<SKTexture>
@@ -162,7 +170,31 @@ classes:
             '+runAction:onChildWithName:':
                 trim_after_first_colon: true
             '+customActionWithDuration:actionBlock:':
-                name: customAction
+                name: create
+                constructor: true
+            '+actionNamed.*':
+                name: create
+                constructor: true
+            '+change.*':
+                trim_after_first_colon: true
+            '+apply.*':
+                trim_after_first_colon: true
+            '+stereoPan.*':
+                trim_after_first_colon: true
+    SKAudioNode: # DONE
+        properties:
+            'avAudioNode':
+                name: AVAudioNode
+        methods:
+            '-init.*':
+                name: init
+    SKCameraNode: # DONE
+        methods:
+            '-containsNode:':
+                trim_after_first_colon: true
+            '-containedNodeSet':
+                property: true
+                return_type: NSSet<SKNode>
     SKConstraint: # DONE
         methods:
             '+positionX:':
@@ -255,11 +287,12 @@ classes:
     SKLabelNode: # DONE
         methods:
             '-initWithFontNamed:':
-                name: init
+                exclude: true
             '+labelNodeWithFontNamed:':
-                name: createWithFont
+                exclude: true
             '+labelNodeWithText:':
-                name: createWithText
+                name: create
+                constructor: true
     SKLightNode: {} # DONE
     SKMutableTexture: # DONE
         methods:
@@ -271,8 +304,9 @@ classes:
                     block:
                         type: '@Block("(,@MachineSizedUInt)") VoidBlock2<VoidPtr, Long>'
             '+mutableTextureWithSize:':
-                name: create
+                exclude: true
     SKNode: # DONE
+        skip_handle_constructor: false
         properties:
             'children':
                 type: NSArray<SKNode>
@@ -294,6 +328,8 @@ classes:
                 parameters:
                     nodes:
                         type: NSArray<SKNode>
+            '-moveToParent:':
+                trim_after_first_colon: true
             '-childNodeWithName:':
                 name: getChild
             '-enumerateChildNodesWithName:usingBlock:':
@@ -324,11 +360,29 @@ classes:
                 return_type: NSArray<SKNode>
             '-isEqualToNode:':
                 name: equalsTo
+            '+obstaclesFromSpriteTextures:accuracy:':
+                name: getObstaclesFromSpriteTextures
+                return_type: NSArray<GKPolygonObstacle>
+                parameters:
+                    sprites:
+                        type: NSArray<SKNode>
+            '+obstaclesFromNodeBounds:':
+                name: getObstaclesFromNodeBounds
+                return_type: NSArray<GKPolygonObstacle>
+                parameters:
+                    nodes:
+                        type: NSArray<SKNode>
+            '+obstaclesFromNodePhysicsBodies:':
+                name: getObstaclesFromNodePhysicsBodies
+                return_type: NSArray<GKPolygonObstacle>
+                parameters:
+                    nodes:
+                        type: NSArray<SKNode>
             '+node':
-                name: create
+                exclude: true
             '+nodeWithFileNamed:':
                 name: create
-                visibility: private # Use File type
+                constructor: true
     SKPhysicsBody: # DONE
         properties:
             'joints':
@@ -367,27 +421,33 @@ classes:
                     bodies:
                         type: NSArray<SKPhysicsBody>
     SKPhysicsContact: {} # DONE
-    SKPhysicsJoint: {} # DONE
+    SKPhysicsJoint: # DONE
+        skip_handle_constructor: false
     SKPhysicsJointFixed: # DONE
         methods:
             '+jointWithBodyA:bodyB:anchor:':
                 name: create
+                constructor: true
     SKPhysicsJointLimit: # DONE
         methods:
             '+jointWithBodyA:bodyB:anchorA:anchorB:':
                 name: create
+                constructor: true
     SKPhysicsJointPin: # DONE
         methods:
             '+jointWithBodyA:bodyB:anchor:':
                 name: create
+                constructor: true
     SKPhysicsJointSliding: # DONE
         methods:
             '+jointWithBodyA:bodyB:anchor:axis:':
                 name: create
+                constructor: true
     SKPhysicsJointSpring: # DONE
         methods:
             '+jointWithBodyA:bodyB:anchorA:anchorB:':
                 name: create
+                constructor: true
     SKPhysicsWorld: # DONE
         methods:
             '-addJoint:':
@@ -413,7 +473,7 @@ classes:
             '-init.*':
                 name: init
             '+rangeWithLowerLimit:upperLimit:':
-                name: create
+                exclude: true
             '+rangeWithLowerLimit:':
                 name: createWithLowerLimit
             '+rangeWithUpperLimit:':
@@ -428,6 +488,16 @@ classes:
         methods:
             '-init.*':
                 name: init
+    SKReferenceNode: # DONE
+        methods:
+            '-init.*':
+                name: init
+            '-didLoadReferenceNode:':
+                trim_after_first_colon: true
+            '+referenceNodeWithFileNamed:':
+                exclude: true
+            '+referenceNodeWithURL:':
+                exclude: true
     SKRegion: # DONE
         methods:
             '-init.*':
@@ -462,7 +532,7 @@ classes:
             '-didChangeSize:':
                 trim_after_first_colon: true
             '+sceneWithSize:':
-                name: create
+                exclude: true
     SKShader: # DONE
         properties:
             'uniforms':
@@ -483,14 +553,13 @@ classes:
                 name: removeUniform
             '+shaderWithSource:uniforms:':
                 name: create
-                parameters:
-                    uniforms:
-                        type: NSArray<SKUniform>
+                exclude: true
             '+shaderWithFileNamed:':
                 name: createWithFile
-                visibility: private # Use File type
+                visibility: protected # Use File type
+                return_type: '@Pointer long'
             '+shader.*':
-                name: create
+                exclude: true
     SKShapeNode: # DONE
         methods:
             '+shapeNodeWithPath.*':
@@ -509,8 +578,17 @@ classes:
         methods:
             '-init.*':
                 name: init
-            '+spriteNodeWith.*':
+            '+spriteNodeWithTexture:size:':
                 name: create
+                constructor: true
+            '+spriteNodeWithTexture:normalMap:':
+                name: create
+                constructor: true
+            '+spriteNodeWithImageNamed:normalMapped:':
+                name: create
+                constructor: true
+            '+spriteNodeWith.*':
+                exclude: true
     SKTexture: # DONE
         methods:
             '-textureByApplyingCIFilter:':
@@ -528,6 +606,7 @@ classes:
                 name: createNoise
             '+textureWith.*':
                 name: create
+                constructor: true
             '+preloadTextures:withCompletionHandler:':
                 trim_after_first_colon: true
                 parameters:
@@ -536,7 +615,8 @@ classes:
     SKTextureAtlas: # DONE
         properties:
             'textureNames':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: List<String>
+                marshaler: NSArray.AsStringListMarshaler
         methods:
             '-textureNamed:':
                 name: getTexture
@@ -544,14 +624,24 @@ classes:
                 name: preload
             '+atlasNamed:':
                 name: create
+                constructor: true
             '+atlasWithDictionary:':
                 name: create
                 visibility: protected
+                return_type: '@Pointer long'
             '+preloadTextureAtlases:withCompletionHandler:':
                 trim_after_first_colon: true
                 parameters:
                     textureAtlases:
                         type: NSArray<SKTextureAtlas>
+            '+preloadTextureAtlasesNamed:withCompletionHandler:':
+                name: preloadTextureAtlases
+                parameters:
+                    atlasNames:
+                        type: List<String>
+                        marshaler: NSArray.AsStringListMarshaler
+                    completionHandler:
+                        type: '@Block VoidBlock2<NSError, NSArray<SKTextureAtlas>>'
     SKTransition: # DONE
         methods:
             '+crossFadeWithDuration:':
@@ -580,6 +670,7 @@ classes:
                 name: doorway
             '+transitionWithCIFilter:duration:':
                 name: create
+                constructor: true
                 annotations: ['@WeaklyLinked']
     SKUniform: # DONE
         annotations: ['@WeaklyLinked']
@@ -587,19 +678,20 @@ classes:
             '-initWithName:.*':
                 name: init
             '+uniformWithName:.*':
-                name: create
+                exclude: true
     SKVideoNode: # DONE
         methods:
             '-initWithAVPlayer:':
                 name: init
                 annotations: ['@WeaklyLinked']
+            '-initWithVideoFileNamed:':
+                exclude: true
+            '-initWithVideoURL:':
+                exclude: true
             '-initWith.*':
                 name: init
-            '+videoNodeWithAVPlayer:':
-                name: create
-                annotations: ['@WeaklyLinked']
             '+videoNodeWith.*':
-                name: create    
+                exclude: true
     SKView: # DONE
         methods:
             '-presentScene:.*':
@@ -644,6 +736,9 @@ values:
         name: 'Value__#{g[0]}'
 
 constants:
+    SK_VERSION:
+        exclude: true
+
     # Make sure we don't miss any constants if new ones are introduced in a later version
     (k?SK.*):
         class: SpriteKit

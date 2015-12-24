@@ -35,6 +35,7 @@ import org.robovm.apple.coreimage.*;
 import org.robovm.apple.avfoundation.*;
 import org.robovm.apple.glkit.*;
 import org.robovm.apple.scenekit.*;
+import org.robovm.apple.gameplaykit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -56,6 +57,9 @@ import org.robovm.apple.scenekit.*;
     public SKSpriteNode(String name) { super((SkipInit) null); initObject(init(name)); }
     public SKSpriteNode(UIColor color, @ByVal CGSize size) { super((SkipInit) null); initObject(init(color, size)); }
     public SKSpriteNode(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
+    public SKSpriteNode(SKTexture texture, @ByVal CGSize size) { super(create(texture, size)); retain(getHandle()); }
+    public SKSpriteNode(SKTexture texture, SKTexture normalMap) { super(create(texture, normalMap)); retain(getHandle()); }
+    public SKSpriteNode(String name, boolean generateNormalMap) { super(create(name, generateNormalMap)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "texture")
@@ -150,16 +154,10 @@ import org.robovm.apple.scenekit.*;
     @Method(selector = "initWithCoder:")
     protected native @Pointer long init(NSCoder aDecoder);
     @Method(selector = "spriteNodeWithTexture:size:")
-    public static native SKSpriteNode create(SKTexture texture, @ByVal CGSize size);
-    @Method(selector = "spriteNodeWithTexture:")
-    public static native SKSpriteNode create(SKTexture texture);
+    protected static native @Pointer long create(SKTexture texture, @ByVal CGSize size);
     @Method(selector = "spriteNodeWithTexture:normalMap:")
-    public static native SKSpriteNode create(SKTexture texture, SKTexture normalMap);
-    @Method(selector = "spriteNodeWithImageNamed:")
-    public static native SKSpriteNode create(String name);
+    protected static native @Pointer long create(SKTexture texture, SKTexture normalMap);
     @Method(selector = "spriteNodeWithImageNamed:normalMapped:")
-    public static native SKSpriteNode create(String name, boolean generateNormalMap);
-    @Method(selector = "spriteNodeWithColor:size:")
-    public static native SKSpriteNode create(UIColor color, @ByVal CGSize size);
+    protected static native @Pointer long create(String name, boolean generateNormalMap);
     /*</methods>*/
 }

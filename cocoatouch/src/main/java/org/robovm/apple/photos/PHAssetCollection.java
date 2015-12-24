@@ -50,6 +50,8 @@ import org.robovm.apple.avfoundation.*;
     /*<constructors>*/
     public PHAssetCollection() {}
     protected PHAssetCollection(SkipInit skipInit) { super(skipInit); }
+    public PHAssetCollection(NSArray<PHAsset> assets, String title) { super(createTransientAssetCollection(assets, title)); retain(getHandle()); }
+    public PHAssetCollection(PHFetchResult<PHAsset> fetchResult, String title) { super(createTransientAssetCollection(fetchResult, title)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "assetCollectionType")
@@ -71,20 +73,20 @@ import org.robovm.apple.avfoundation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "fetchAssetCollectionsWithLocalIdentifiers:options:")
-    public static native PHFetchResult fetchAssetCollectionsWithLocalIdentifiers(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> identifiers, PHFetchOptions options);
+    public static native PHFetchResult<PHAssetCollection> fetchAssetCollectionsWithLocalIdentifiers(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> identifiers, PHFetchOptions options);
     @Method(selector = "fetchAssetCollectionsWithType:subtype:options:")
-    public static native PHFetchResult fetchAssetCollectionsWithType(PHAssetCollectionType type, PHAssetCollectionSubtype subtype, PHFetchOptions options);
+    public static native PHFetchResult<PHAssetCollection> fetchAssetCollectionsWithType(PHAssetCollectionType type, PHAssetCollectionSubtype subtype, PHFetchOptions options);
     @Method(selector = "fetchAssetCollectionsContainingAsset:withType:options:")
-    public static native PHFetchResult fetchAssetCollectionsContainingAsset(PHAsset asset, PHAssetCollectionType type, PHFetchOptions options);
+    public static native PHFetchResult<PHAssetCollection> fetchAssetCollectionsContainingAsset(PHAsset asset, PHAssetCollectionType type, PHFetchOptions options);
     @Method(selector = "fetchAssetCollectionsWithALAssetGroupURLs:options:")
-    public static native PHFetchResult fetchAssetCollectionsWithALAssetGroupURLs(NSArray<NSURL> assetGroupURLs, PHFetchOptions options);
+    public static native PHFetchResult<PHAssetCollection> fetchAssetCollectionsWithALAssetGroupURLs(NSArray<NSURL> assetGroupURLs, PHFetchOptions options);
     @Method(selector = "fetchMomentsInMomentList:options:")
-    public static native PHFetchResult fetchMomentsInMomentList(PHCollectionList momentList, PHFetchOptions options);
+    public static native PHFetchResult<PHAssetCollection> fetchMomentsInMomentList(PHCollectionList momentList, PHFetchOptions options);
     @Method(selector = "fetchMomentsWithOptions:")
-    public static native PHFetchResult fetchMoments(PHFetchOptions options);
+    public static native PHFetchResult<PHAssetCollection> fetchMoments(PHFetchOptions options);
     @Method(selector = "transientAssetCollectionWithAssets:title:")
-    public static native PHAssetCollection createTransientAssetCollection(NSArray<PHAsset> assets, String title);
+    protected static native @Pointer long createTransientAssetCollection(NSArray<PHAsset> assets, String title);
     @Method(selector = "transientAssetCollectionWithAssetFetchResult:title:")
-    public static native PHAssetCollection createTransientAssetCollection(PHFetchResult fetchResult, String title);
+    protected static native @Pointer long createTransientAssetCollection(PHFetchResult<PHAsset> fetchResult, String title);
     /*</methods>*/
 }

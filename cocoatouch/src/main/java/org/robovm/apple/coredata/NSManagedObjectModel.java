@@ -51,7 +51,7 @@ import org.robovm.apple.foundation.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "entitiesByName")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSEntityDescription> getEntitiesByName();
+    public native NSDictionary<NSString, NSEntityDescription> getEntitiesByName();
     @Property(selector = "entities")
     public native NSArray<NSEntityDescription> getEntities();
     @Property(selector = "setEntities:")
@@ -59,14 +59,14 @@ import org.robovm.apple.foundation.*;
     @Property(selector = "configurations")
     public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getConfigurations();
     @Property(selector = "localizationDictionary")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String> getLocalizationDictionary();
+    public native NSDictionary<NSString, NSString> getLocalizationDictionary();
     @Property(selector = "setLocalizationDictionary:")
-    public native void setLocalizationDictionary(@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String> v);
+    public native void setLocalizationDictionary(NSDictionary<NSString, NSString> v);
     /**
      * @since Available in iOS 3.0 and later.
      */
     @Property(selector = "fetchRequestTemplatesByName")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSFetchRequest> getFetchRequestTemplatesByName();
+    public native NSDictionary<NSString, NSFetchRequest> getFetchRequestTemplatesByName();
     /**
      * @since Available in iOS 3.0 and later.
      */
@@ -81,7 +81,7 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 3.0 and later.
      */
     @Property(selector = "entityVersionHashesByName")
-    public native NSDictionary getEntityVersionHashesByName();
+    public native NSDictionary<?, ?> getEntityVersionHashesByName();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -96,7 +96,7 @@ import org.robovm.apple.foundation.*;
     @Method(selector = "fetchRequestTemplateForName:")
     public native NSFetchRequest getFetchRequestTemplate(String name);
     @Method(selector = "fetchRequestFromTemplateWithName:substitutionVariables:")
-    public native NSFetchRequest getFetchRequestTemplate(String name, @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject> variables);
+    public native NSFetchRequest getFetchRequestTemplate(String name, NSDictionary<NSString, ?> variables);
     /**
      * @since Available in iOS 3.0 and later.
      */

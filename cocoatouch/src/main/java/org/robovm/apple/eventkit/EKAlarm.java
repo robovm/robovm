@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.corelocation.*;
 import org.robovm.apple.addressbook.*;
+import org.robovm.apple.mapkit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -49,6 +50,8 @@ import org.robovm.apple.addressbook.*;
     /*<constructors>*/
     public EKAlarm() {}
     protected EKAlarm(SkipInit skipInit) { super(skipInit); }
+    public EKAlarm(NSDate date) { super(create(date)); retain(getHandle()); }
+    public EKAlarm(double offset) { super(create(offset)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "relativeOffset")
@@ -71,8 +74,8 @@ import org.robovm.apple.addressbook.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "alarmWithAbsoluteDate:")
-    public static native EKAlarm create(NSDate date);
+    private static native @Pointer long create(NSDate date);
     @Method(selector = "alarmWithRelativeOffset:")
-    public static native EKAlarm create(double offset);
+    private static native @Pointer long create(double offset);
     /*</methods>*/
 }

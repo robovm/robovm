@@ -61,12 +61,16 @@ import org.robovm.apple.uikit.*;
     public void didFail(GKTurnBasedMatchmakerViewController viewController, NSError error) {}
     /**
      * @since Available in iOS 5.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @NotImplemented("turnBasedMatchmakerViewController:didFindMatch:")
     public void didFindMatch(GKTurnBasedMatchmakerViewController viewController, GKTurnBasedMatch match) {}
     /**
      * @since Available in iOS 5.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @NotImplemented("turnBasedMatchmakerViewController:playerQuitForMatch:")
     public void playerQuit(GKTurnBasedMatchmakerViewController viewController, GKTurnBasedMatch match) {}
     /*</methods>*/

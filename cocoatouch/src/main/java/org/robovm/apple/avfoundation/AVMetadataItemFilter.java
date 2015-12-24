@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -63,6 +64,6 @@ import org.robovm.apple.audiounit.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "metadataItemFilterForSharing")
-    public static native AVMetadataItemFilter createForSharing();
+    public static native AVMetadataItemFilter getSharingFilter();
     /*</methods>*/
 }

@@ -1,4 +1,3 @@
 # RoboVM
 
-Please see [robovm.com](http://www.robovm.com) for downloads, build and
-installation instructions and other documentation.
+Please see [robovm.com](http://robovm.com) for more information.

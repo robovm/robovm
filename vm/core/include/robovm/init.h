@@ -16,7 +16,7 @@
 #ifndef ROBOVM_INIT_H
 #define ROBOVM_INIT_H
 
-extern ClassLoader* systemClassLoader;
+extern Object* systemClassLoader;
 
 extern void rvmParseOption(char* arg, Options* options);
 extern jboolean rvmInitOptions(int argc, char* argv[], Options* options, jboolean ignoreRvmArgs);

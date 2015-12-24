@@ -141,7 +141,7 @@ Class* Java_java_lang_Class_getSuperclass(Env* env, Class* thiz) {
     return thiz->superclass;
 }
 
-ClassLoader* Java_java_lang_Class_getClassLoader(Env* env, Class* c, Class* clazz) {
+Object* Java_java_lang_Class_getClassLoader(Env* env, Class* c, Class* clazz) {
     return clazz->classLoader;
 }
 
@@ -282,7 +282,7 @@ ObjectArray* Java_java_lang_Class_getDeclaredAnnotations0(Env* env, Class* clazz
 }
 
 Class* Java_java_lang_Class_classForName(Env* env, Class* cls, Object* className, jboolean initializeBoolean,
-            ClassLoader* classLoader) {
+            Object* classLoader) {
 
     if (!className) {
         rvmThrowNullPointerException(env);

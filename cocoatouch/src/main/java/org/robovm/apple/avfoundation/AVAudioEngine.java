@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -103,6 +104,11 @@ import org.robovm.apple.audiounit.*;
     public native void connect(AVAudioNode node1, AVAudioNode node2, @MachineSizedUInt long bus1, @MachineSizedUInt long bus2, AVAudioFormat format);
     @Method(selector = "connect:to:format:")
     public native void connect(AVAudioNode node1, AVAudioNode node2, AVAudioFormat format);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "connect:toConnectionPoints:fromBus:format:")
+    public native void connect(AVAudioNode sourceNode, NSArray<AVAudioConnectionPoint> destNodes, @MachineSizedUInt long sourceBus, AVAudioFormat format);
     @Method(selector = "disconnectNodeInput:bus:")
     public native void disconnectNodeInput(AVAudioNode node, @MachineSizedUInt long bus);
     @Method(selector = "disconnectNodeInput:")
@@ -127,5 +133,15 @@ import org.robovm.apple.audiounit.*;
     public native void reset();
     @Method(selector = "stop")
     public native void stop();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "inputConnectionPointForNode:inputBus:")
+    public native AVAudioConnectionPoint getInputConnectionPoint(AVAudioNode node, @MachineSizedUInt long bus);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "outputConnectionPointsForNode:outputBus:")
+    public native NSArray<AVAudioConnectionPoint> getOutputConnectionPoints(AVAudioNode node, @MachineSizedUInt long bus);
     /*</methods>*/
 }

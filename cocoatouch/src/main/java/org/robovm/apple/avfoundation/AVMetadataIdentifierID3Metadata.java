@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -114,8 +115,14 @@ import org.robovm.apple.audiounit.*;
      */
     public static final AVMetadataIdentifierID3Metadata Comments = new AVMetadataIdentifierID3Metadata("Comments");
     /**
-     * @since Available in iOS 8.0 and later.
+     * @since Available in iOS 9.0 and later.
      */
+    public static final AVMetadataIdentifierID3Metadata Commercial = new AVMetadataIdentifierID3Metadata("Commercial");
+    /**
+     * @since Available in iOS 8.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     public static final AVMetadataIdentifierID3Metadata Commerical = new AVMetadataIdentifierID3Metadata("Commerical");
     /**
      * @since Available in iOS 8.0 and later.
@@ -467,7 +474,7 @@ import org.robovm.apple.audiounit.*;
     public static final AVMetadataIdentifierID3Metadata UserURL = new AVMetadataIdentifierID3Metadata("UserURL");
     /*</constants>*/
     
-    private static /*<name>*/AVMetadataIdentifierID3Metadata/*</name>*/[] values = new /*<name>*/AVMetadataIdentifierID3Metadata/*</name>*/[] {/*<value_list>*/AudioEncryption, AttachedPicture, AudioSeekPointIndex, Comments, Commerical, Encryption, Equalization, Equalization2, EventTimingCodes, GeneralEncapsulatedObject, GroupIdentifier, InvolvedPeopleList_v23, Link, MusicCDIdentifier, MPEGLocationLookupTable, Ownership, Private, PlayCounter, Popularimeter, PositionSynchronization, RecommendedBufferSize, RelativeVolumeAdjustment, RelativeVolumeAdjustment2, Reverb, Seek, Signature, SynchronizedLyric, SynchronizedTempoCodes, AlbumTitle, BeatsPerMinute, Composer, ContentType, Copyright, Date, EncodingTime, PlaylistDelay, OriginalReleaseTime, RecordingTime, ReleaseTime, TaggingTime, EncodedBy, Lyricist, FileType, Time, InvolvedPeopleList_v24, ContentGroupDescription, TitleDescription, SubTitle, InitialKey, Language, Length, MusicianCreditsList, MediaType, Mood, OriginalAlbumTitle, OriginalFilename, OriginalLyricist, OriginalArtist, OriginalReleaseYear, FileOwner, LeadPerformer, Band, Conductor, ModifiedBy, PartOfASet, ProducedNotice, Publisher, TrackNumber, RecordingDates, InternetRadioStationName, InternetRadioStationOwner, Size, AlbumSortOrder, PerformerSortOrder, TitleSortOrder, InternationalStandardRecordingCode, EncodedWith, SetSubtitle, Year, UserText, UniqueFileIdentifier, TermsOfUse, UnsynchronizedLyric, CommercialInformation, CopyrightInformation, OfficialAudioFileWebpage, OfficialArtistWebpage, OfficialAudioSourceWebpage, OfficialInternetRadioStationHomepage, Payment, OfficialPublisherWebpage, UserURL/*</value_list>*/};
+    private static /*<name>*/AVMetadataIdentifierID3Metadata/*</name>*/[] values = new /*<name>*/AVMetadataIdentifierID3Metadata/*</name>*/[] {/*<value_list>*/AudioEncryption, AttachedPicture, AudioSeekPointIndex, Comments, Commercial, Commerical, Encryption, Equalization, Equalization2, EventTimingCodes, GeneralEncapsulatedObject, GroupIdentifier, InvolvedPeopleList_v23, Link, MusicCDIdentifier, MPEGLocationLookupTable, Ownership, Private, PlayCounter, Popularimeter, PositionSynchronization, RecommendedBufferSize, RelativeVolumeAdjustment, RelativeVolumeAdjustment2, Reverb, Seek, Signature, SynchronizedLyric, SynchronizedTempoCodes, AlbumTitle, BeatsPerMinute, Composer, ContentType, Copyright, Date, EncodingTime, PlaylistDelay, OriginalReleaseTime, RecordingTime, ReleaseTime, TaggingTime, EncodedBy, Lyricist, FileType, Time, InvolvedPeopleList_v24, ContentGroupDescription, TitleDescription, SubTitle, InitialKey, Language, Length, MusicianCreditsList, MediaType, Mood, OriginalAlbumTitle, OriginalFilename, OriginalLyricist, OriginalArtist, OriginalReleaseYear, FileOwner, LeadPerformer, Band, Conductor, ModifiedBy, PartOfASet, ProducedNotice, Publisher, TrackNumber, RecordingDates, InternetRadioStationName, InternetRadioStationOwner, Size, AlbumSortOrder, PerformerSortOrder, TitleSortOrder, InternationalStandardRecordingCode, EncodedWith, SetSubtitle, Year, UserText, UniqueFileIdentifier, TermsOfUse, UnsynchronizedLyric, CommercialInformation, CopyrightInformation, OfficialAudioFileWebpage, OfficialArtistWebpage, OfficialAudioSourceWebpage, OfficialInternetRadioStationHomepage, Payment, OfficialPublisherWebpage, UserURL/*</value_list>*/};
     
     /*<name>*/AVMetadataIdentifierID3Metadata/*</name>*/ (String getterName) {
         super(Values.class, getterName);
@@ -511,8 +518,15 @@ import org.robovm.apple.audiounit.*;
         @GlobalValue(symbol="AVMetadataIdentifierID3MetadataComments", optional=true)
         public static native NSString Comments();
         /**
-         * @since Available in iOS 8.0 and later.
+         * @since Available in iOS 9.0 and later.
          */
+        @GlobalValue(symbol="AVMetadataIdentifierID3MetadataCommercial", optional=true)
+        public static native NSString Commercial();
+        /**
+         * @since Available in iOS 8.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
+         */
+        @Deprecated
         @GlobalValue(symbol="AVMetadataIdentifierID3MetadataCommerical", optional=true)
         public static native NSString Commerical();
         /**

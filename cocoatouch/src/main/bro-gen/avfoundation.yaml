@@ -1,11 +1,12 @@
 package: org.robovm.apple.avfoundation
-include: [foundation.yaml, corefoundation.yaml, dispatch.yaml, coreanimation.yaml, coregraphics.yaml, coreaudio.yaml, coremedia.yaml, corevideo.yaml, mediatoolbox.yaml, audiotoolbox.yaml, audiounit.yaml ]
+include: [foundation.yaml, corefoundation.yaml, dispatch.yaml, coreanimation.yaml, coreimage.yaml, coregraphics.yaml, coreaudio.yaml, coremedia.yaml, corevideo.yaml, mediatoolbox.yaml, audiotoolbox.yaml, audiounit.yaml ]
 library: AVFoundation
 framework: AVFoundation
 clang_args: ['-x', 'objective-c']
 headers:
     - /System/Library/Frameworks/AVFoundation.framework/Headers/AVFoundation.h
     - /System/Library/Frameworks/AVFoundation.framework/Headers/AVBase.h
+    - /System/Library/Frameworks/AVFoundation.framework/Headers/AVFAudio.h
 typedefs:
     'void (^)(CMSampleBufferRef, NSError *)': '@Block VoidBlock2<CMSampleBuffer, NSError>'
     'void (^)(CMTime)': '@Block VoidBlock1<CMTime>'
@@ -20,6 +21,9 @@ enums:
     AVAssetWriterStatus: { first: AVAssetWriterStatusUnknown }
     AVAudio3DMixingRenderingAlgorithm: {}
     AVAudioCommonFormat: { suffix: Format }
+    AVAudioConverterInputStatus: {}
+    AVAudioConverterOutputStatus: {}
+    AVAudioConverterPrimeMethod: {}
     AVAudioEnvironmentDistanceAttenuationModel: {}
     AVAudioPlayerNodeBufferOptions: {}
     AVAudioSessionInterruptionOptions: { prefix: AVAudioSessionInterruptionOption }
@@ -29,9 +33,7 @@ enums:
     AVAudioSessionCategoryOptions: {}
     AVAudioSessionInterruptionType: { marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     AVAudioSessionErrorCode: { prefix: AVAudioSessionErrorCode, AVAudioSessionErrorInsufficientPriority: InsufficientPriority }
-    AVAudioSessionInterruptionFlags: { first: AVAudioSessionInterruptionFlags_ShouldResume, prefix: AVAudioSessionInterruptionFlags_, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
     AVAudioSessionRecordPermission: {}
-    AVAudioSessionSetActiveFlags: { first: AVAudioSessionSetActiveFlags_NotifyOthersOnDeactivation, prefix: AVAudioSessionSetActiveFlags_, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
     AVAudioSessionSilenceSecondaryAudioHintType: {}
     AVAudioQuality: { first: AVAudioQualityMin }
     AVAudioUnitReverbPreset: {}
@@ -46,17 +48,20 @@ enums:
     AVCaptureAutoFocusSystem: {}
     AVCaptureExposureMode: {}
     AVCaptureDeviceTransportControlsPlaybackMode: {}
+    AVCaptureSessionInterruptionReason: {}
     AVCaptureVideoOrientation: {}
     AVCaptureVideoStabilizationMode: {}
     AVCaptureWhiteBalanceMode: {}
     AVErrorCode: { first: AVErrorUnknown, prefix: AVError, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler }
     AVKeyValueStatus: { first: AVKeyValueStatusUnknown }
+    AVMusicSequenceLoadOptions: {skip_none: true}
     AVPlayerStatus: { first: AVPlayerStatusUnknown }
     AVPlayerActionAtItemEnd: { first: AVPlayerActionAtItemEndAdvance }
     AVPlayerItemStatus: { first: AVPlayerItemStatusUnknown }
     AVQueuedSampleBufferRenderingStatus: {}
     AVSampleBufferDisplayLayerQueueManagement: {}
     AVSpeechBoundary: {}
+    AVSpeechSynthesisVoiceQuality: {}
     AVVideoFieldMode: {}
     
 categories:
@@ -84,6 +89,8 @@ classes:
     AVAudio3DPoint: {}
     AVAudio3DVector: {}
     AVAudio3DVectorOrientation: {}
+    AVAudioConverterPrimeInfo: {}
+    AVBeatRange: {}
     AVCaptureWhiteBalanceGains: {}
     AVCaptureWhiteBalanceChromaticityValues: {}
     AVCaptureWhiteBalanceTemperatureAndTintValues: {}
@@ -95,9 +102,10 @@ classes:
         annotations: ['@StronglyLinked']
 
     AVAsset: # DONE
+        skip_handle_constructor: false
         properties:
             'tracks':
-                type: NSArray<AVAssetTrack>
+                type: 'NSArray<? extends AVAssetTrack>'
             'trackGroups':
                 type: NSArray<AVAssetTrackGroup>
             'commonMetadata':
@@ -115,7 +123,7 @@ classes:
         methods:
             '+assetWithURL:':
                 name: create
-                return_type: AVAsset
+                constructor: true                
             '-trackWithTrackID:':
                 name: getTrack
             '-tracksWithMediaType:':
@@ -155,6 +163,31 @@ classes:
                         type: AVMediaCharacteristic
             '-unusedTrackID':
                 property: true
+    AVAssetDownloadTask: # DONE
+        properties:
+            'options':
+                type: AVAssetDownloadTaskOptions
+            'loadedTimeRanges':
+                type: List<CMTimeRange>
+                marshaler: CMTimeRange.AsValuedListMarshaler
+    AVAssetDownloadURLSession: # DONE
+        methods:
+            '-assetDownloadTaskWithURLAsset:destinationURL:options:':
+                name: newAssetDownloadTask
+                parameters:
+                    options:
+                        type: AVAssetDownloadTaskOptions
+            '-dataTaskWith.*':
+                name: newDataTask
+            '-uploadTaskWith.*':
+                name: newUploadTask
+            '-downloadTaskWith.*':
+                name: newDownloadTask
+            '+sharedSession':
+                property: true
+            '+sessionWith.*':
+                name: create
+                constructor: true
     AVAssetExportSession: # DONE
         properties:
             'presetName':
@@ -192,10 +225,7 @@ classes:
                     presetName:
                         type: AVAssetExportPreset
             '+exportSessionWithAsset:presetName:':
-                name: create
-                parameters:
-                    presetName:
-                        type: AVAssetExportPreset
+                exclude: true
     AVAssetImageGenerator: # DONE
         properties:
             'apertureMode':
@@ -216,7 +246,7 @@ classes:
                     handler: 
                         type: '@Block VoidBlock5<CMTime, CGImage, CMTime, AVAssetImageGeneratorResult, NSError>'
             '+assetImageGeneratorWithAsset:':
-                name: create
+                exclude: true
     AVAssetReader: # DONE
         properties:
             'outputs':
@@ -230,8 +260,7 @@ classes:
             '-addOutput:':
                 trim_after_first_colon: true
             '+assetReaderWithAsset:error:':
-                name: create
-                throws: NSErrorException
+                exclude: true
     AVAssetReaderAudioMixOutput: # DONE
         properties:
             'audioTracks':
@@ -249,12 +278,7 @@ classes:
                     audioSettings:
                         type: AVAudioSettings
             '+assetReaderAudioMixOutputWithAudioTracks:audioSettings:':
-                name: create
-                parameters:
-                    audioTracks:
-                        type: NSArray<AVAssetTrack>
-                    audioSettings:
-                        type: AVAudioSettings
+                exclude: true
     AVAssetReaderOutput: # DONE
         properties:
             'mediaType':
@@ -274,13 +298,13 @@ classes:
             '-init.*':
                 name: init
             '+assetReaderOutputMetadataAdaptorWithAssetReaderTrackOutput:':
-                name: create
+                exclude: true
     AVAssetReaderSampleReferenceOutput: # DONE
         methods:
             '-init.*':
                 name: init
             '+assetReaderSampleReferenceOutputWithTrack:':
-                name: create
+                exclude: true
     AVAssetReaderTrackOutput: # DONE
         properties:
             'outputSettings':
@@ -292,8 +316,7 @@ classes:
                 name: init
                 constructor: false
             '+assetReaderTrackOutputWithTrack:outputSettings:':
-                name: create
-                visibility: protected
+                exclude: true
     AVAssetReaderVideoCompositionOutput: # DONE
         properties:
             'videoTracks':
@@ -309,11 +332,7 @@ classes:
                     videoTracks:
                         type: NSArray<AVAssetTrack>
             '+assetReaderVideoCompositionOutputWithVideoTracks:videoSettings:':
-                name: create
-                visibility: protected
-                parameters:
-                    videoTracks:
-                        type: NSArray<AVAssetTrack>
+                exclude: true
     AVAssetResourceLoader: # DONE
         properties:
             'delegateQueue':
@@ -337,6 +356,15 @@ classes:
             '-streamingContentKeyRequestDataForApp:contentIdentifier:options:error:':
                 name: getStreamingContentKeyRequestData
                 throws: NSErrorException
+                parameters:
+                    options:
+                        type: AVAssetResourceLoadingRequestOptions
+            '-persistentContentKeyFromKeyVendorResponse:options:error:':
+                name: getPersistentContentKey
+                throws: NSErrorException
+                parameters:
+                    options:
+                        type: AVAssetResourceLoadingRequestOptions
             '-finishLoadingWithResponse:data:redirect:':
                 name: finishLoading
     AVAssetResourceRenewalRequest: {} # DONE
@@ -412,8 +440,7 @@ classes:
             '-finishWritingWithCompletionHandler:':
                 name: finishWriting
             '+assetWriterWithURL:fileType:error:':
-                name: create
-                throws: NSErrorException
+                exclude: true
             '-canAddInputGroup:':
                 trim_after_first_colon: true
             '-addInputGroup:':
@@ -447,17 +474,9 @@ classes:
             '-appendSampleBuffer:':
                 trim_after_first_colon: true
             '+assetWriterInputWithMediaType:outputSettings:':
-                name: create
-                visibility: protected # can be either AVAudioSettings or AVVideoSettings
-                parameters:
-                    mediaType:
-                        type: AVMediaType
+                exclude: true
             '+assetWriterInputWithMediaType:outputSettings:sourceFormatHint:':
-                name: create
-                visibility: protected # can be either AVAudioSettings or AVVideoSettings
-                parameters:
-                    mediaType:
-                        type: AVMediaType
+                exclude: true
             '-canAddTrackAssociationWithTrackOfInput:type:':
                 name: canAddTrackAssociation
                 parameters:
@@ -482,10 +501,7 @@ classes:
                     inputs:
                         type: NSArray<AVAssetWriterInput>
             '+assetWriterInputGroupWithInputs:defaultInput:':
-                name: create
-                parameters:
-                    inputs:
-                        type: NSArray<AVAssetWriterInput>
+                exclude: true
     AVAssetWriterInputMetadataAdaptor: # DONE
         methods:
             '-initWithAssetWriterInput:':
@@ -493,7 +509,7 @@ classes:
             '-appendTimedMetadataGroup:':
                 trim_after_first_colon: true
             '+assetWriterInputMetadataAdaptorWithAssetWriterInput:':
-                name: create
+                exclude: true
     AVAssetWriterInputPassDescription: # DONE
         properties:
             'sourceTimeRanges':
@@ -516,11 +532,11 @@ classes:
                 name: appendPixelBuffer
                 annotations: ['@WeaklyLinked']
             '+assetWriterInputPixelBufferAdaptorWithAssetWriterInput:sourcePixelBufferAttributes:':
-                name: create
-                annotations: ['@WeaklyLinked']
-                parameters:
-                    sourcePixelBufferAttributes:
-                        type: CVPixelBufferAttributes
+                exclude: true
+    AVAsynchronousCIImageFilteringRequest: # DONE
+        methods:
+            '-finish.*':
+                name: finish
     AVAsynchronousVideoCompositionRequest: # DONE
         properties:
             'sourceTrackIDs':
@@ -553,11 +569,52 @@ classes:
                 parameters:
                     object:
                         type: AVAudioChannelLayout
-            '+layoutWithLayout:':
-                name: create
-                annotations: ['@WeaklyLinked']
             '+layoutWith.*':
-                name: create
+                exclude: true
+    AVAudioCompressedBuffer: # DONE
+        properties:
+            'data':
+                name: dataPointer
+                type: '@Pointer long'
+        methods:
+            '-init.*':
+                name: init
+    AVAudioConnectionPoint: # DONE
+        methods:
+            '-initWithNode:bus:':
+                name: init
+    AVAudioConverter: # DONE
+        properties:
+            'channelMap':
+                type: List<Integer>
+                marshaler: NSArray.AsIntegerListMarshaler
+            'sampleRateConverterQuality':
+                type: AVAudioQuality
+            'sampleRateConverterAlgorithm':
+                type: AVSampleRateConverterAlgorithm
+            'bitRateStrategy':
+                type: AVAudioBitRateStrategy
+            '(availableEncodeBitRates|applicableEncodeBitRates)':
+                type: List<Integer>
+                marshaler: NSArray.AsIntegerListMarshaler
+            '(availableEncodeSampleRates|applicableEncodeSampleRates)':
+                type: List<Integer>
+                marshaler: NSArray.AsIntegerListMarshaler
+            'availableEncodeChannelLayoutTags':
+                type: List<Integer>
+                marshaler: NSArray.AsIntegerListMarshaler
+        methods:
+            '-initFromFormat:toFormat:':
+                name: init
+            '-convertToBuffer:fromBuffer:error:':
+                name: convert
+                throws: NSErrorException
+            '-convertToBuffer:error:withInputFromBlock:':
+                name: convert
+                visibility: protected
+                parameters:
+                    inputBlock:
+                        type: '@Block Block2<Integer, MachineSizedSIntPtr, AVAudioBuffer>'
     AVAudioEngine: # DONE
         properties:
             'musicSequence':
@@ -573,6 +630,11 @@ classes:
                 trim_after_first_colon: true
             '-connect:to:format:':
                 trim_after_first_colon: true
+            '-connect:toConnectionPoints:fromBus:format:':
+                trim_after_first_colon: true
+                parameters:
+                    destNodes:
+                        type: NSArray<AVAudioConnectionPoint>
             '-disconnectNodeInput:bus:':
                 trim_after_first_colon: true
             '-disconnectNodeInput:':
@@ -584,12 +646,17 @@ classes:
             '-startAndReturnError:':
                 name: start
                 throws: NSErrorException
+            '-inputConnectionPointForNode:inputBus:':
+                name: getInputConnectionPoint
+            '-outputConnectionPointsForNode:outputBus:':
+                name: getOutputConnectionPoints
+                return_type: NSArray<AVAudioConnectionPoint>
     AVAudioEnvironmentDistanceAttenuationParameters: {} # DONE
     AVAudioEnvironmentNode: # DONE
-        methods:
-            '-applicableRenderingAlgorithms':
-                name: getApplicableRenderingAlgorithms
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(AVAudio3DMixingRenderingAlgorithm.AsListMarshaler.class) List<AVAudio3DMixingRenderingAlgorithm>'
+        properties:
+            'applicableRenderingAlgorithms':
+                type: List<AVAudio3DMixingRenderingAlgorithm>
+                marshaler: AVAudio3DMixingRenderingAlgorithm.AsListMarshaler
     AVAudioEnvironmentReverbParameters: # DONE
         methods:
             '-loadFactoryReverbPreset:':
@@ -645,6 +712,7 @@ classes:
             'inputParameters':
                 type: NSArray<AVAudioMixInputParameters>
     AVAudioMixInputParameters: # DONE
+        skip_handle_constructor: false
         properties:
             'audioTimePitchAlgorithm':
                 type: AVAudioTimePitchAlgorithm
@@ -657,6 +725,7 @@ classes:
                 parameters:
                     timeRange:
                         type: CMTimeRange.CMTimeRangePtr
+    AVAudioMixingDestination: {} # DONE
     AVAudioNode: # DONE
         methods:
             '-inputFormatForBus:':
@@ -737,10 +806,53 @@ classes:
                 name: getPeakPowerForChannel
             '-averagePowerForChannel:':
                 name: getAveragePowerForChannel
+    AVAudioSequencer: # DONE
+        properties:
+            'tracks':
+                type: NSArray<AVMusicTrack>
+            'userInfo':
+                type: 'NSDictionary<NSString, ?>'
+        methods:
+            '-initWithAudioEngine:':
+                name: init
+            '-loadFrom.*':
+                name: load
+                throws: NSErrorException
+            '-writeToURL:SMPTEResolution:replaceExisting:error:':
+                name: write
+                throws: NSErrorException
+            '-dataWithSMPTEResolution:error:':
+                name: getData
+                throws: NSErrorException
+            '-secondsForBeats:':
+                name: convertBeatsToSeconds
+            '-beatsForSeconds:':
+                name: convertSecondsToBeats
+            '-hostTimeForBeats:error:':
+                name: convertBeatsToHostTime
+                throws: NSErrorException
+                parameters:
+                    inBeats:
+                        name: beats
+            '-beatsForHostTime:error:':
+                name: convertHostTimeToBeats
+                throws: NSErrorException
+                parameters:
+                    inHostTime:
+                        name: hostTime
+            '-startAndReturnError:':
+                name: start
+                throws: NSErrorException
     AVAudioSession: # DONE
         properties:
+            'availableCategories':
+                type: List<AVAudioSessionCategory>
+                marshaler: AVAudioSessionCategory.AsListMarshaler
             'category':
                 type: AVAudioSessionCategory
+            'availableModes':
+                type: List<AVAudioSessionMode>
+                marshaler: AVAudioSessionMode.AsListMarshaler
             'mode':
                 type: AVAudioSessionMode
             'inputIsAvailable':
@@ -857,11 +969,8 @@ classes:
                 name: init
             '-extrapolateTimeFromAnchor:':
                 trim_after_first_colon: true
-            '+timeWithAudioTimeStamp:sampleRate:':
-                name: create
-                annotations: ['@WeaklyLinked']
             '+timeWith.*':
-                name: create
+                exclude: true
             '+hostTimeForSeconds:':
                 name: convertSecondsToHostTime
             '+secondsForHostTime:':
@@ -874,6 +983,36 @@ classes:
             '-loadAudioUnitPresetAtURL:error:':
                 name: loadAudioUnitPreset
                 throws: NSErrorException
+            '+instantiateWithComponentDescription:options:completionHandler:':
+                name: instantiate
+                parameters:
+                    completionHandler:
+                        type: '@Block VoidBlock2<AVAudioUnit, NSError>'
+    AVAudioUnitComponent: # DONE
+        properties:
+            'allTagNames':
+                type: List<String>
+                marshaler: NSArray.AsStringListMarshaler
+    AVAudioUnitComponentManager: # DONE
+        properties:
+            '(tagNames|standardLocalizedTagNames)':
+                type: List<String>
+                marshaler: NSArray.AsStringListMarshaler
+        methods:
+            '-componentsMatchingPredicate:':
+                name: getComponentsMatchingPredicate
+                return_type: NSArray<AVAudioUnitComponent>
+            '-componentsPassingTest:':
+                name: getComponentsPassingTest
+                return_type: NSArray<AVAudioUnitComponent>
+                parameters:
+                    testHandler:
+                        type: '@Block Block2<AVAudioUnitComponent, BooleanPtr, Boolean>'
+            '-componentsMatchingDescription:':
+                name: getComponentsMatchingDescription
+                return_type: NSArray<AVAudioUnitComponent>
+            '+sharedAudioUnitComponentManager':
+                property: true
     AVAudioUnitDelay: {} # DONE
     AVAudioUnitDistortion: # DONE
         methods:
@@ -965,7 +1104,9 @@ classes:
         methods:
             '+autoExposureSettingsWithExposureTargetBias:':
                 name: create
-    AVCaptureBracketedStillImageSettings: {} # DONE
+                constructor: true
+    AVCaptureBracketedStillImageSettings: # DONE
+        skip_handle_constructor: false
     AVCaptureConnection: # DONE
         properties:
             'inputPorts':
@@ -981,12 +1122,9 @@ classes:
             '-initWithInputPort:videoPreviewLayer:':
                 name: init
             '+connectionWithInputPorts:output:':
-                name: create
-                parameters:
-                    ports:
-                        type: NSArray<AVCaptureInputPort>
+                exclude: true
             '+connectionWithInputPort:videoPreviewLayer:':
-                name: create
+                exclude: true
     AVCaptureDevice: # DONE
         properties:
             'formats':
@@ -1079,9 +1217,7 @@ classes:
                 name: init
                 throws: NSErrorException
             '+deviceInputWithDevice:error:':
-                name: create
-                return_type: AVCaptureDeviceInput
-                throws: NSErrorException
+                exclude: true
     AVCaptureDeviceInputSource: {} # DONE
     AVCaptureFileOutput: # DONE
         methods:
@@ -1099,6 +1235,16 @@ classes:
         methods:
             '+manualExposureSettingsWithExposureDuration:ISO:':
                 name: create
+                constructor: true
+    AVCaptureMetadataInput: # DONE
+        methods:
+            '-initWithFormatDescription:clock:':
+                name: init
+            '-appendTimedMetadataGroup:error:':
+                trim_after_first_colon: true
+                throws: NSErrorException
+            '+metadataInputWithFormatDescription:clock:':
+                exclude: true
     AVCaptureMetadataOutput: # DONE
         properties:
             'availableMetadataObjectTypes':
@@ -1115,6 +1261,11 @@ classes:
         properties:
             'metadata':
                 type: NSArray<AVMetadataItem>
+        methods:
+            '-recordsVideoOrientationAndMirroringChangesAsMetadataTrackForConnection:':
+                name: recordsVideoOrientationAndMirroringChangesAsMetadataTrack
+            '-setRecordsVideoOrientationAndMirroringChanges:asMetadataTrackForConnection:':
+                name: setRecordsVideoOrientationAndMirroringChangesAsMetadataTrack
     AVCaptureOutput: # DONE
         properties:
             'connections':
@@ -1220,7 +1371,8 @@ classes:
                 type: AVLayerVideoGravity
         methods:
             '-initWithSessionWithNoConnection:':
-                exclude: true
+                name: initWithNoConnection
+                constructor: false
             '-initWithSession:':
                 name: init
             '-captureDevicePointOfInterestForPoint:':
@@ -1233,16 +1385,30 @@ classes:
                 name: getRectOfInterestInMetadataOutputCoordinates
             '-transformedMetadataObjectForMetadataObject:':
                 name: getTransformedMetadataObject
-            '+layerWithSession:':
-                name: create
-                return_type: AVCaptureVideoPreviewLayer
-            '+layerWithSessionWithNoConnection:':
-                name: createWithNoConnection
-                return_type: AVCaptureVideoPreviewLayer
+            '+layerWithSession.*':
+                exclude: true
     AVComposition: # DONE
+        skip_handle_constructor: false
         properties:
             'tracks':
                 type: NSArray<AVAssetTrack>
+            'URLAssetInitializationOptions':
+                type: AVURLAssetOptions
+        methods:
+            '-trackWithTrackID:':
+                name: getTrack
+            '-tracksWithMediaType:':
+                name: getTracksForMediaType
+                return_type: NSArray<AVCompositionTrack>
+                parameters:
+                    mediaType:
+                        type: AVMediaType
+            '-tracksWithMediaCharacteristic:':
+                name: getTracksForMediaCharacteristic
+                return_type: NSArray<AVCompositionTrack>
+                parameters:
+                    mediaCharacteristic:
+                        type: AVMediaCharacteristic
     AVCompositionTrack: # DONE
         properties:
             'segments':
@@ -1253,11 +1419,51 @@ classes:
                 name: init
             '-initWithTimeRange:':
                 name: init
-            '+compositionTrackSegmentWithURL:trackID:sourceTimeRange:targetTimeRange:':
+            '+compositionTrackSegmentWith.*':
+                exclude: true
+    AVDateRangeMetadataGroup: # DONE
+        properties:
+            'items':
+                type: NSArray<AVMetadataItem>
+        methods:
+            '-initWithItems:startDate:endDate:':
+                name: init
+                parameters:
+                    items:
+                        type: NSArray<AVMetadataItem>
+    AVFragmentedAsset: # DONE
+        properties:
+            'tracks':
+                type: NSArray<AVFragmentedAssetTrack>
+        methods:
+            '+fragmentedAssetWithURL:options:':
                 name: create
-            '+compositionTrackSegmentWithTimeRange:':
-                name: create
+                constructor: true
+                parameters:
+                    options:
+                        type: AVURLAssetOptions
+            '-trackWithTrackID:':
+                name: getTrack
+            '-tracksWithMediaType:':
+                name: getTracksForMediaType
+                return_type: NSArray<AVFragmentedAssetTrack>
+                parameters:
+                    mediaType:
+                        type: AVMediaType
+            '-tracksWithMediaCharacteristic:':
+                name: getTracksForMediaCharacteristic
+                return_type: NSArray<AVFragmentedAssetTrack>
+                parameters:
+                    mediaCharacteristic:
+                        type: AVMediaCharacteristic
+    AVFragmentedAssetTrack: {} # DONE
     AVFrameRateRange: {} # DONE
+    AVMediaSelection: # DONE
+        methods:
+            '-selectedMediaOptionInMediaSelectionGroup:':
+                name: getSelectedMediaOptionInMediaSelectionGroup
+            '-mediaSelectionCriteriaCanBeAppliedAutomaticallyToMediaSelectionGroup:':
+                trim_after_first_colon: true
     AVMediaSelectionGroup: # DONE
         properties:
             'options':
@@ -1334,6 +1540,10 @@ classes:
             '-displayNameWithLocale:':
                 name: getDisplayName
     AVMetadataFaceObject: {} # DONE
+    AVMetadataGroup: # DONE
+        properties:
+            'items':
+                type: NSArray<AVMetadataItem>
     AVMetadataItem: # DONE
         properties:
             'identifier':
@@ -1420,10 +1630,26 @@ classes:
                 parameters:
                     identifier:
                         type: AVMetadataIdentifier
+            '+metadataItemWithPropertiesOfMetadataItem:valueLoadingHandler:':
+                name: create
+                constructor: true
+                parameters:
+                    handler:
+                        type: '@Block VoidBlock1<AVMetadataItemValueRequest>'
     AVMetadataItemFilter: # DONE
         methods:
             '+metadataItemFilterForSharing':
-                name: createForSharing
+                name: getSharingFilter
+    AVMetadataItemValueRequest: # DONE
+        methods:
+            '-respondWithValue:':
+                name: respond
+                return_type: void
+                parameters:
+                    value:
+                        type: NSObject
+            '-respondWithError:':
+                name: respond
     AVMetadataMachineReadableCodeObject: # DONE
         properties:
             'corners':
@@ -1439,13 +1665,14 @@ classes:
                 throws: NSErrorException
             '-play:':
                 trim_after_first_colon: true
+    AVMusicTrack: {} # DONE
     AVMutableAudioMix: # DONE
         properties:
             'inputParameters':
                 type: NSArray<AVAudioMixInputParameters>
         methods:
             '+audioMix':
-                name: create
+                exclude: true
     AVMutableAudioMixInputParameters: # DONE
         properties:
             'audioTimePitchAlgorithm':
@@ -1459,15 +1686,23 @@ classes:
                 trim_after_first_colon: true
             '+audioMixInputParametersWithTrack:':
                 name: create
+                constructor: true
             '+audioMixInputParameters':
-                name: create
+                exclude: true
     AVMutableComposition: # DONE
         properties:
             'tracks':
                 type: NSArray<AVAssetTrack>
         methods:
             '+composition':
+                exclude: true
+            '+compositionWithURLAssetInitializationOptions:':
                 name: create
+                constructor: true
+                parameters:
+                    URLAssetInitializationOptions:
+                        name: urlAssetInitializationOptions
+                        type: AVURLAssetOptions
             '-insertTimeRange:ofAsset:atTime:error:':
                 trim_after_first_colon: true
                 throws: NSErrorException
@@ -1486,6 +1721,22 @@ classes:
                 trim_after_first_colon: true
             '-mutableTrackCompatibleWithTrack:':
                 name: getCompatibleMutableTrack
+            '-trackWithTrackID:':
+                name: getTrack
+            '-tracksWithMediaType:':
+                name: getTracksForMediaType
+                return_type: NSArray<AVCompositionTrack>
+                parameters:
+                    mediaType:
+                        type: AVMediaType
+            '-tracksWithMediaCharacteristic:':
+                name: getTracksForMediaCharacteristic
+                return_type: NSArray<AVCompositionTrack>
+                parameters:
+                    mediaCharacteristic:
+                        type: AVMediaCharacteristic
+                
+                
     AVMutableCompositionTrack: # DONE
         properties:
             'segments':
@@ -1514,6 +1765,14 @@ classes:
                 parameters:
                     trackSegments:
                         type: NSArray<AVCompositionTrackSegment>
+    AVMutableDateRangeMetadataGroup: # DONE
+        properties:
+            'items':
+                type: NSArray<AVMetadataItem>
+    AVMutableMediaSelection: # DONE
+        methods:
+            '-selectMediaOption:inMediaSelectionGroup:':
+                trim_after_first_colon: true
     AVMutableMetadataItem: # DONE
         properties:
             'identifier':
@@ -1530,7 +1789,7 @@ classes:
                 type: AVMetadataExtraAttributes
         methods:
             '+metadataItem':
-                name: create
+                exclude: true
     AVMutableTimedMetadataGroup: # DONE
         properties:
             'items':
@@ -1543,9 +1802,17 @@ classes:
                 type: NSArray<AVVideoCompositionInstruction>
         methods:
             '+videoComposition':
-                name: create
+                exclude: true
             '+videoCompositionWithPropertiesOfAsset:':
                 name: create
+                constructor: true
+            '+videoCompositionWithAsset:applyingCIFiltersWithHandler:':
+                name: create
+                constructor: true
+                parameters:
+                    applier:
+                        name: ciFiltersApplier
+                        type: '@Block VoidBlock1<AVAsynchronousCIImageFilteringRequest>'
     AVMutableVideoCompositionInstruction: # DONE
         properties:
             'layerInstructions':
@@ -1554,7 +1821,7 @@ classes:
                 name: postProcessingEnabled
         methods:
             '+videoCompositionInstruction':
-                name: create
+                exclude: true
     AVMutableVideoCompositionLayerInstruction: # DONE
         methods:
             '-setTransformRampFromStartTransform:toEndTransform:timeRange:':
@@ -1571,8 +1838,9 @@ classes:
                 trim_after_first_colon: true
             '+videoCompositionLayerInstructionWithAssetTrack:':
                 name: create
+                constructor: true
             '+videoCompositionLayerInstruction':
-                name: create
+                exclude: true
     AVOutputSettingsAssistant: # DONE
         properties:
             'audioSettings':
@@ -1585,6 +1853,7 @@ classes:
                 return_type: '@org.robovm.rt.bro.annotation.Marshaler(AVOutputSettingsPreset.AsListMarshaler.class) List<AVOutputSettingsPreset>'
             '+outputSettingsAssistantWithPreset:':
                 name: create
+                constructor: true
                 parameters:
                     presetIdentifier:
                         type: AVOutputSettingsPreset
@@ -1598,11 +1867,9 @@ classes:
             '-initWithPlayerItem:':
                 name: init
             '+playerWithURL:':
-                name: create
-                return_type: AVPlayer
+                exclude: true
             '+playerWithPlayerItem:':
-                name: create
-                return_type: AVPlayer
+                exclude: true
             '-replaceCurrentItemWithPlayerItem:':
                 name: replaceCurrentItem
             '-currentTime':
@@ -1660,15 +1927,8 @@ classes:
                 parameters:
                     automaticallyLoadedAssetKeys:
                         type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
-            '+playerItemWithURL:':
-                name: create
-            '+playerItemWithAsset:':
-                name: create
-            '+playerItemWithAsset:automaticallyLoadedAssetKeys:':
-                name: create
-                parameters:
-                    automaticallyLoadedAssetKeys:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+            '+playerItemWith.*':
+                exclude: true
             '-currentTime':
                 property: true
             '-seekToTime.*':
@@ -1771,9 +2031,12 @@ classes:
         properties:
             'videoGravity':
                 type: AVLayerVideoGravity
+            'pixelBufferAttributes':
+                type: CVPixelBufferAttributes
         methods:
             '+playerLayerWithPlayer:':
                 name: create
+                constructor: true
     AVPlayerMediaSelectionCriteria: # DONE
         properties:
             'preferredLanguages':
@@ -1805,11 +2068,7 @@ classes:
             '-removeItem:':
                 trim_after_first_colon: true
             '+queuePlayerWithItems:':
-                name: create
-                return_type: AVQueuePlayer
-                parameters:
-                    items:
-                        type: NSArray<AVPlayerItem>
+                exclude: true
     AVSampleBufferDisplayLayer: # DONE
         annotations: ['@WeaklyLinked']
         properties:
@@ -1830,6 +2089,13 @@ classes:
                 name: getCurrentLanguageCode
             '+voiceWithLanguage:':
                 name: create
+                constructor: true
+            '+voiceWithIdentifier:':
+                name: create
+                constructor: true
+                parameters:
+                    identifier:
+                        type: AVSpeechSynthesisVoiceIdentifier
     AVSpeechSynthesizer: # DONE
         methods:
             '-speakUtterance:':
@@ -1843,12 +2109,13 @@ classes:
             '-initWithString:':
                 name: init
             '+speechUtteranceWithString:':
-                name: create
+                exclude: true
     AVSynchronizedLayer: # DONE
         annotations: ['@WeaklyLinked']
         methods:
             '+synchronizedLayerWithPlayerItem:':
                 name: create
+                constructor: true
     AVTextStyleRule: # DONE
         properties:
             'textMarkupAttributes':
@@ -1871,16 +2138,8 @@ classes:
                 parameters:
                     plist:
                         type: NSPropertyList
-            '+textStyleRuleWithTextMarkupAttributes:':
-                name: create
-                parameters:
-                    textMarkupAttributes:
-                        type: CMTextMarkupAttributes
-            '+textStyleRuleWithTextMarkupAttributes:textSelector:':
-                name: create
-                parameters:
-                    textMarkupAttributes:
-                        type: CMTextMarkupAttributes
+            '+textStyleRuleWith.*':
+                exclude: true
     AVTimedMetadataGroup: # DONE
         properties:
             'items':
@@ -1898,6 +2157,7 @@ classes:
                 return_marshaler: CFType.NoRetainMarshaler
                 annotations: ['@WeaklyLinked']
     AVURLAsset: # DONE
+        skip_handle_constructor: false
         methods:
             '-initWithURL:options:':
                 name: init
@@ -1906,20 +2166,20 @@ classes:
                         type: AVURLAssetOptions
             '+audiovisualTypes':
                 property: true
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                return_type: List<String>
+                return_marshaler: NSArray.AsStringListMarshaler
             '+audiovisualMIMETypes':
                 property: true
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                return_type: List<String>
+                return_marshaler: NSArray.AsStringListMarshaler
             '+isPlayableExtendedMIMEType:':
                 trim_after_first_colon: true
             '+URLAssetWithURL:options:':
-                name: create
-                parameters:
-                    options:
-                        type: AVURLAssetOptions
+                exclude: true
             '-compatibleTrackForCompositionTrack:':
                 name: getCompatibleTrack
     AVVideoComposition: # DONE
+        skip_handle_constructor: false
         properties:
             'instructions':
                 type: NSArray<AVVideoCompositionInstruction>
@@ -1928,18 +2188,29 @@ classes:
         methods:
             '+videoCompositionWithPropertiesOfAsset:':
                 name: create
+                constructor: true
+            '+videoCompositionWithAsset:applyingCIFiltersWithHandler:':
+                name: create
+                constructor: true
+                parameters:
+                    applier:
+                        name: ciFiltersApplier
+                        type: '@Block VoidBlock1<AVAsynchronousCIImageFilteringRequest>'
             '-isValidForAsset:timeRange:validationDelegate:':
                 name: isValid
     AVVideoCompositionCoreAnimationTool: # DONE
         methods:
             '+videoCompositionCoreAnimationToolWithAdditionalLayer:asTrackID:':
                 name: create
+                constructor: true
                 annotations: ['@WeaklyLinked']
             '+videoCompositionCoreAnimationToolWithPostProcessingAsVideoLayer:inLayer:':
                 name: create
+                constructor: true
                 annotations: ['@WeaklyLinked']
             '+videoCompositionCoreAnimationToolWithPostProcessingAsVideoLayers:inLayer:':
                 name: create
+                constructor: true
                 annotations: ['@WeaklyLinked']
                 parameters:
                     videoLayers:
@@ -1953,6 +2224,7 @@ classes:
             'requiredSourceTrackIDs':
                 type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsIntegerListMarshaler.class) List<Integer>'
     AVVideoCompositionLayerInstruction: # DONE
+        skip_handle_constructor: false
         methods:
             '-getTransformRampForTime:startTransform:endTransform:timeRange:':
                 name: getTransformRamp
@@ -1987,6 +2259,16 @@ classes:
                 annotations: ['@WeaklyLinked']
 
 protocols:
+    AVAssetDownloadDelegate: # DONE
+        methods:
+            '-URLSession:assetDownloadTask:didLoadTimeRange:totalTimeRangesLoaded:timeRangeExpectedToLoad:':
+                name: didLoadTimeRange
+                parameters:
+                    loadedTimeRanges:
+                        type: List<CMTimeRange>
+                        marshaler: CMTimeRange.AsValuedListMarshaler
+            '-URLSession:assetDownloadTask:didResolveMediaSelection:':
+                name: didResolveMediaSelection
     AVAssetResourceLoaderDelegate: # DONE
         methods:
             '-resourceLoader:shouldWaitForLoadingOfRequestedResource:':
@@ -2011,8 +2293,11 @@ protocols:
                 parameters:
                     key:
                         type: AVMetadataKey
-    AVAudio3DMixing: {}
-    AVAudioMixing: {}
+    AVAudio3DMixing: {} # DONE
+    AVAudioMixing: # DONE
+        methods:
+            '-destinationForMixer:bus:':
+                name: getDestinationForMixer
     AVAudioStereoMixing: {}
     AVAudioPlayerDelegate: # DONE
         methods:
@@ -2023,9 +2308,9 @@ protocols:
             '-audioPlayerBeginInterruption:':
                 name: beginInterruption
             '-audioPlayerEndInterruption:withOptions:':
-                name: endInterruptionWithOptions
+                name: endInterruption
             '-audioPlayerEndInterruption:withFlags:':
-                name: endInterruptionWithFlags
+                name: endInterruption
             '-audioPlayerEndInterruption:':
                 name: endInterruption
     AVAudioRecorderDelegate: # DONE
@@ -2037,9 +2322,9 @@ protocols:
             '-audioRecorderBeginInterruption:':
                 name: beginInterruption
             '-audioRecorderEndInterruption:withOptions:':
-                name: endInterruptionWithOptions
+                name: endInterruption
             '-audioRecorderEndInterruption:withFlags:':
-                name: endInterruptionWithFlags
+                name: endInterruption
             '-audioRecorderEndInterruption:':
                 name: endInterruption
     AVAudioSessionDelegate: # DONE
@@ -2048,7 +2333,7 @@ protocols:
                 name: endInterruption
                 parameters:
                     flags:
-                        type: AVAudioSessionInterruptionFlags
+                        type: AVAudioSessionInterruptionOptions
             '-inputIsAvailableChanged:':
                 name: inputAvailabilityChanged
     AVCaptureAudioDataOutputSampleBufferDelegate: # DONE
@@ -2080,6 +2365,8 @@ protocols:
                 name: didOutputSampleBuffer
             '-captureOutput:didDropSampleBuffer:fromConnection:':
                 name: didDropSampleBuffer
+    AVFragmentMinding: # DONE
+        skip_adapter: true
     AVPlayerItemLegibleOutputPushDelegate: # DONE
         methods:
             '-legibleOutput:didOutputAttributedStrings:nativeSampleBuffers:forItemTime:':
@@ -2168,6 +2455,23 @@ values:
         class: AVFoundation
         name: '#{g[0]}'
 
+    # AVAsset
+    AVAsset((Duration|ChapterMetadataGroups|MediaSelectionGroups)DidChangeNotification):
+        class: AVAsset
+        name: '#{g[0]}'
+        type: NSString
+
+    # AVAssetDownloadURLSession
+    AVAssetDownloadTask(.*)Key:
+        dictionary: AVAssetDownloadTaskOptions
+        name: '#{g[0]}'
+        type: NSString
+        methods:
+            MinimumRequiredMediaBitrate:
+                type: long
+            MediaSelection:
+                type: AVMediaSelection
+
     # AVAssetExportSession
     AVAssetExportPreset(640x480|960x540|1280x720|1920x1080):
         enum: AVAssetExportPreset
@@ -2184,9 +2488,35 @@ values:
         name: '#{g[0]}'
         type: NSString
 
+    # AVFragmentedAssetTrack
+    AVAssetTrack((TimeRange|Segments)DidChangeNotification):
+        class: AVFragmentedAssetTrack
+        name: '#{g[0]}'
+        type: NSString
+
+    # AVAssetResourceLoadingRequest
+    AVAssetResourceLoadingRequest(StreamingContentKeyRequestRequiresPersistentKey):
+        dictionary: AVAssetResourceLoadingRequestOptions
+        name: '#{g[0]}'
+        type: NSString
+        methods:
+            StreamingContentKeyRequestRequiresPersistentKey:
+                name: requiresPersistentKey
+                type: boolean
+
     # AVAssetTrack
     AVTrackAssociationType(.*):
         enum: AVTrackAssociationType
+        name: '#{g[0]}'
+        type: NSString
+    AVAssetTrack(.*Notification):
+        class: AVAssetTrack
+        name: '#{g[0]}'
+        type: NSString
+
+    # AVAudioUnitComponent
+    AVAudioUnitComponent(TagsDidChangeNotification):
+        class: AVAudioUnitComponent
         name: '#{g[0]}'
         type: NSString
 
@@ -2250,6 +2580,16 @@ values:
         type: NSString
         visibility: protected
 
+    # AVAudioUnit
+    AVAudioUnitType(.*):
+        enum: AVAudioUnitType
+        name: '#{g[0]}'
+        type: NSString
+    AVAudioUnitManufacturerName(.*):
+        enum: AVAudioUnitManufacturerName
+        name: '#{g[0]}'
+        type: NSString
+
     # AVCaptureDevice
     AVCaptureDevice(.*Notification):
         class: AVCaptureDevice
@@ -2278,7 +2618,7 @@ values:
         class: AVCaptureSession
         name: '#{g[0]}'
         type: NSString
-    AVCaptureSession(ErrorKey):
+    AVCaptureSession((Error|InterruptionReason)Key):
         class: AVCaptureSession
         name: 'Notification#{g[0]}'
         type: NSString
@@ -2398,6 +2738,8 @@ values:
                 type: String
             BaseURI:
                 type: String
+            Info:
+                type: String
 
     # AVOutputSettingsAssistant
     AVOutputSettingsPreset(.*):
@@ -2433,6 +2775,12 @@ values:
         type: NSString
         visibility: protected
 
+    # AVSpeechSynthesis
+    AVSpeechSynthesisVoiceIdentifier(.*):
+        enum: AVSpeechSynthesisVoiceIdentifier
+        name: '#{g[0]}'
+        type: NSString
+
     # AVSpeechUtterance
     AVSpeechUtterance(.*):
         class: AVSpeechUtterance
@@ -2453,6 +2801,10 @@ values:
                 type: NSArray<NSHTTPCookie>
 
     # Constants
+    AV(StreamingKeyDelivery(PersistentContent|Content)Key)Type:
+        enum: AVFileType
+        name: '#{g[0]}'
+        type: NSString
     AVFileType(3.*):
         enum: AVFileType
         name: '_#{g[0]}'
@@ -2620,6 +2972,14 @@ values:
         name: 'Value__#{g[0]}'
 
 constants:
+    AVAudioSessionInterruptionFlags_ShouldResume:
+        exclude: true
+    AVAudioSessionSetActiveFlags_NotifyOthersOnDeactivation:
+        exclude: true
+
+    AVMusicTrack(LoopCountForever):
+        exclude: true
+
     # Make sure we don't miss any constants if new ones are introduced in a later version
     (k?AV.*):
         class: AVFoundation

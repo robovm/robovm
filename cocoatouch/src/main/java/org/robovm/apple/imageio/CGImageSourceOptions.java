@@ -227,6 +227,23 @@ import org.robovm.apple.coregraphics.*;
         set(Keys.CreateThumbnailWithTransform(), CFBoolean.valueOf(shouldCreateThumbnailWithTransform));
         return this;
     }
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public int getSubsampleFactor() {
+        if (has(Keys.SubsampleFactor())) {
+            CFNumber val = get(Keys.SubsampleFactor(), CFNumber.class);
+            return val.intValue();
+        }
+        return 0;
+    }
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public CGImageSourceOptions setSubsampleFactor(int subsampleFactor) {
+        set(Keys.SubsampleFactor(), CFNumber.valueOf(subsampleFactor));
+        return this;
+    }
     /*</methods>*/
     
     /*<keys>*/
@@ -273,6 +290,11 @@ import org.robovm.apple.coregraphics.*;
          */
         @GlobalValue(symbol="kCGImageSourceCreateThumbnailWithTransform", optional=true)
         public static native CFString CreateThumbnailWithTransform();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="kCGImageSourceSubsampleFactor", optional=true)
+        public static native CFString SubsampleFactor();
     }
     /*</keys>*/
 }

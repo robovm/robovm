@@ -15,11 +15,11 @@
  */
 #include <robovm.h>
 
-JavaThread* Java_java_lang_Thread_currentThread(Env* env, Class* cls) {
+Object* Java_java_lang_Thread_currentThread(Env* env, Class* cls) {
     return env->currentThread->threadObj;
 }
 
-void Java_java_lang_Thread_internalStart(Env* env, Class* cls, JavaThread* t) {
+void Java_java_lang_Thread_internalStart(Env* env, Class* cls, Object* t) {
     rvmStartThread(env, t);
 }
 
@@ -27,9 +27,9 @@ void Java_java_lang_Thread_internalSleep(Env* env, Class* cls, jlong millis, jin
     rvmThreadSleep(env, millis, nanos);
 }
 
-void Java_java_lang_Thread_internalSetName(Env* env, Class* cls, JavaThread* threadObj, Object* threadName) {
+void Java_java_lang_Thread_internalSetName(Env* env, Class* cls, Object* threadObj, Object* threadName) {
     rvmLockThreadsList();
-    Thread* thread = (Thread*) LONG_TO_PTR(threadObj->threadPtr);
+    Thread* thread = rvmRTGetNativeThread(env, threadObj);
     if (thread) {
         rvmThreadNameChanged(env, thread);
     }
@@ -42,9 +42,9 @@ jboolean Java_java_lang_Thread_internalInterrupted(Env* env, Class* cls) {
     return interrupted;
 }
 
-jboolean Java_java_lang_Thread_internalIsInterrupted(Env* env, Class* cls, JavaThread* threadObj) {
+jboolean Java_java_lang_Thread_internalIsInterrupted(Env* env, Class* cls, Object* threadObj) {
     rvmLockThreadsList();
-    Thread* thread = (Thread*) LONG_TO_PTR(threadObj->threadPtr);
+    Thread* thread = rvmRTGetNativeThread(env, threadObj);
     jboolean interrupted = FALSE;
     if (thread) {
         interrupted = thread->interrupted;
@@ -53,9 +53,9 @@ jboolean Java_java_lang_Thread_internalIsInterrupted(Env* env, Class* cls, JavaT
     return interrupted;
 }
 
-void Java_java_lang_Thread_internalInterrupt(Env* env, Class* cls, JavaThread* threadObj) {
+void Java_java_lang_Thread_internalInterrupt(Env* env, Class* cls, Object* threadObj) {
     rvmLockThreadsList();
-    Thread* thread = (Thread*) LONG_TO_PTR(threadObj->threadPtr);
+    Thread* thread = rvmRTGetNativeThread(env, threadObj);
     if (thread) {
         rvmThreadInterrupt(env, thread);
     }
@@ -77,9 +77,9 @@ void Java_java_lang_Thread_internalYield(Env* env, Class* cls) {
     sched_yield();
 }
 
-jint Java_java_lang_Thread_internalGetState(Env* env, Class* cls, JavaThread* threadObj) {
+jint Java_java_lang_Thread_internalGetState(Env* env, Class* cls, Object* threadObj) {
     rvmLockThreadsList();
-    Thread* thread = (Thread*) LONG_TO_PTR(threadObj->threadPtr);
+    Thread* thread = rvmRTGetNativeThread(env, threadObj);
     jint status = THREAD_ZOMBIE; // If thread==NULL we assume the thread has been finished
     if (thread) {
         status = thread->status;
@@ -88,17 +88,17 @@ jint Java_java_lang_Thread_internalGetState(Env* env, Class* cls, JavaThread* th
     return status;
 }
 
-void Java_java_lang_Thread_internalSetPriority(Env* env, Class* cls, JavaThread* threadObj, jint priority) {
+void Java_java_lang_Thread_internalSetPriority(Env* env, Class* cls, Object* threadObj, jint priority) {
     rvmLockThreadsList();
-    Thread* thread = (Thread*) LONG_TO_PTR(threadObj->threadPtr);
+    Thread* thread = rvmRTGetNativeThread(env, threadObj);
     if (thread) {
         rvmChangeThreadPriority(env, thread, priority);
     }
     rvmUnlockThreadsList();
 }
 
-ObjectArray* Java_java_lang_Thread_internalGetStackTrace(Env* env, Class* cls, JavaThread* threadObj) {
-    Thread* thread = (Thread*) LONG_TO_PTR(threadObj->threadPtr);
+ObjectArray* Java_java_lang_Thread_internalGetStackTrace(Env* env, Class* cls, Object* threadObj) {
+    Thread* thread = rvmRTGetNativeThread(env, threadObj);
     CallStack* callStack = NULL;
     if (thread) {
         callStack = rvmCaptureCallStackForThread(env, thread);
@@ -106,6 +106,6 @@ ObjectArray* Java_java_lang_Thread_internalGetStackTrace(Env* env, Class* cls, J
     return rvmCallStackToStackTraceElements(env, callStack, 0);
 }
 
-void Java_java_lang_Thread_hookThreadCreated(Env* env, Class* cls, JavaThread* threadObj) {
+void Java_java_lang_Thread_hookThreadCreated(Env* env, Class* cls, Object* threadObj) {
     rvmHookThreadCreated(env, threadObj);
 }

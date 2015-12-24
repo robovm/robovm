@@ -53,6 +53,8 @@ import org.robovm.apple.corelocation.*;
     public UICollectionViewController() {}
     protected UICollectionViewController(SkipInit skipInit) { super(skipInit); }
     public UICollectionViewController(UICollectionViewLayout layout) { super((SkipInit) null); initObject(init(layout)); }
+    public UICollectionViewController(String nibNameOrNil, NSBundle nibBundleOrNil) { super((SkipInit) null); initObject(init(nibNameOrNil, nibBundleOrNil)); }
+    public UICollectionViewController(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "collectionView")
@@ -78,11 +80,25 @@ import org.robovm.apple.corelocation.*;
      */
     @Property(selector = "collectionViewLayout")
     public native UICollectionViewLayout getCollectionViewLayout();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "installsStandardGestureForInteractiveMovement")
+    public native boolean installsStandardGestureForInteractiveMovement();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setInstallsStandardGestureForInteractiveMovement:")
+    public native void setInstallsStandardGestureForInteractiveMovement(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithCollectionViewLayout:")
     protected native @Pointer long init(UICollectionViewLayout layout);
+    @Method(selector = "initWithNibName:bundle:")
+    protected native @Pointer long init(String nibNameOrNil, NSBundle nibBundleOrNil);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     @Method(selector = "collectionView:shouldHighlightItemAtIndexPath:")
     public native boolean shouldHighlightItem(UICollectionView collectionView, NSIndexPath indexPath);
     @Method(selector = "collectionView:didHighlightItemAtIndexPath:")
@@ -119,6 +135,16 @@ import org.robovm.apple.corelocation.*;
     public native void performAction(UICollectionView collectionView, Selector action, NSIndexPath indexPath, NSObject sender);
     @Method(selector = "collectionView:transitionLayoutForOldLayout:newLayout:")
     public native UICollectionViewTransitionLayout getTransitionLayout(UICollectionView collectionView, UICollectionViewLayout fromLayout, UICollectionViewLayout toLayout);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "collectionView:targetIndexPathForMoveFromItemAtIndexPath:toProposedIndexPath:")
+    public native NSIndexPath getTargetIndexPathForMoveFromItem(UICollectionView collectionView, NSIndexPath originalIndexPath, NSIndexPath proposedIndexPath);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "collectionView:targetContentOffsetForProposedContentOffset:")
+    public native @ByVal CGPoint getTargetContentOffsetForProposedContentOffset(UICollectionView collectionView, @ByVal CGPoint proposedContentOffset);
     @Method(selector = "scrollViewDidScroll:")
     public native void didScroll(UIScrollView scrollView);
     /**
@@ -162,5 +188,15 @@ import org.robovm.apple.corelocation.*;
     public native @MachineSizedSInt long getNumberOfSections(UICollectionView collectionView);
     @Method(selector = "collectionView:viewForSupplementaryElementOfKind:atIndexPath:")
     public native UICollectionReusableView getViewForSupplementaryElement(UICollectionView collectionView, String kind, NSIndexPath indexPath);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "collectionView:canMoveItemAtIndexPath:")
+    public native boolean canMoveItemAt(UICollectionView collectionView, NSIndexPath indexPath);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "collectionView:moveItemAtIndexPath:toIndexPath:")
+    public native void moveItemAt(UICollectionView collectionView, NSIndexPath sourceIndexPath, NSIndexPath destinationIndexPath);
     /*</methods>*/
 }

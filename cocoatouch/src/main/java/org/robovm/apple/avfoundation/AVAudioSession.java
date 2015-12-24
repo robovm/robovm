@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -58,7 +59,7 @@ import org.robovm.apple.audiounit.*;
             return NSNotificationCenter.getDefaultCenter().addObserver(InterruptionNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke(NSNotification a) {
-                    NSDictionary<NSString, NSObject> userInfo = a.getUserInfo();
+                    NSDictionary<?, ?> userInfo = a.getUserInfo();
                     AVAudioSessionInterruptionNotification data = null;
                     if (userInfo != null) {
                         data = new AVAudioSessionInterruptionNotification(userInfo);
@@ -75,7 +76,7 @@ import org.robovm.apple.audiounit.*;
             return NSNotificationCenter.getDefaultCenter().addObserver(RouteChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke(NSNotification a) {
-                    NSDictionary<NSString, NSObject> userInfo = a.getUserInfo();
+                    NSDictionary<?, ?> userInfo = a.getUserInfo();
                     AVAudioSessionRouteChangeNotification data = null;
                     if (userInfo != null) {
                         data = new AVAudioSessionRouteChangeNotification(userInfo);
@@ -113,7 +114,7 @@ import org.robovm.apple.audiounit.*;
             return NSNotificationCenter.getDefaultCenter().addObserver(SilenceSecondaryAudioHintNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke(NSNotification a) {
-                    NSDictionary<NSString, NSObject> userInfo = a.getUserInfo();
+                    NSDictionary<?, ?> userInfo = a.getUserInfo();
                     AVAudioSessionSilenceSecondaryAudioHintType type = null;
                     if (userInfo.containsKey(SilenceSecondaryAudioHintTypeKey())) {
                         NSNumber val = (NSNumber)userInfo.get(SilenceSecondaryAudioHintTypeKey());
@@ -133,6 +134,11 @@ import org.robovm.apple.audiounit.*;
     protected AVAudioSession(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "availableCategories")
+    public native @org.robovm.rt.bro.annotation.Marshaler(AVAudioSessionCategory.AsListMarshaler.class) List<AVAudioSessionCategory> getAvailableCategories();
     @Property(selector = "category")
     public native AVAudioSessionCategory getCategory();
     /**
@@ -140,6 +146,11 @@ import org.robovm.apple.audiounit.*;
      */
     @Property(selector = "categoryOptions")
     public native AVAudioSessionCategoryOptions getCategoryOptions();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "availableModes")
+    public native @org.robovm.rt.bro.annotation.Marshaler(AVAudioSessionMode.AsListMarshaler.class) List<AVAudioSessionMode> getAvailableModes();
     /**
      * @since Available in iOS 5.0 and later.
      */
@@ -267,48 +278,6 @@ import org.robovm.apple.audiounit.*;
      */
     @Property(selector = "IOBufferDuration")
     public native double getIOBufferDuration();
-    /**
-     * @since Available in iOS 4.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    @Property(selector = "delegate")
-    public native AVAudioSessionDelegate getDelegate();
-    /**
-     * @since Available in iOS 4.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    @Property(selector = "setDelegate:", strongRef = true)
-    public native void setDelegate(AVAudioSessionDelegate v);
-    /**
-     * @since Available in iOS 3.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    @Property(selector = "currentHardwareSampleRate")
-    public native double getCurrentHardwareSampleRate();
-    /**
-     * @since Available in iOS 3.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    @Property(selector = "currentHardwareInputNumberOfChannels")
-    public native @MachineSizedSInt long getCurrentHardwareInputNumberOfChannels();
-    /**
-     * @since Available in iOS 3.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    @Property(selector = "currentHardwareOutputNumberOfChannels")
-    public native @MachineSizedSInt long getCurrentHardwareOutputNumberOfChannels();
-    /**
-     * @since Available in iOS 3.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    @Property(selector = "preferredHardwareSampleRate")
-    public native double getPreferredHardwareSampleRate();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -533,41 +502,5 @@ import org.robovm.apple.audiounit.*;
      */
     @Method(selector = "setOutputDataSource:error:")
     private native boolean setOutputDataSource(AVAudioSessionDataSourceDescription dataSource, NSError.NSErrorPtr outError);
-    /**
-     * @since Available in iOS 4.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    public boolean setActive(boolean active, @MachineSizedSInt long flags) throws NSErrorException {
-       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
-       boolean result = setActive(active, flags, ptr);
-       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
-       return result;
-    }
-    /**
-     * @since Available in iOS 4.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    @Method(selector = "setActive:withFlags:error:")
-    private native boolean setActive(boolean active, @MachineSizedSInt long flags, NSError.NSErrorPtr outError);
-    /**
-     * @since Available in iOS 3.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    public boolean setPreferredHardwareSampleRate(double sampleRate) throws NSErrorException {
-       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
-       boolean result = setPreferredHardwareSampleRate(sampleRate, ptr);
-       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
-       return result;
-    }
-    /**
-     * @since Available in iOS 3.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    @Method(selector = "setPreferredHardwareSampleRate:error:")
-    private native boolean setPreferredHardwareSampleRate(double sampleRate, NSError.NSErrorPtr outError);
     /*</methods>*/
 }

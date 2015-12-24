@@ -39,9 +39,17 @@ import org.robovm.apple.dispatch.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/MTLResourceOptions/*</name>*/ extends Bits</*<name>*/MTLResourceOptions/*</name>*/> {
     /*<values>*/
-    public static final MTLResourceOptions None = new MTLResourceOptions(0L);
-    public static final MTLResourceOptions Default = new MTLResourceOptions(0L);
-    public static final MTLResourceOptions WriteCombined = new MTLResourceOptions(1L);
+    public static final MTLResourceOptions CPUCacheModeDefaultCache = new MTLResourceOptions(0L);
+    public static final MTLResourceOptions CPUCacheModeWriteCombined = new MTLResourceOptions(1L);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final MTLResourceOptions StorageModeShared = new MTLResourceOptions(0L);
+    public static final MTLResourceOptions StorageModeManaged = new MTLResourceOptions(16L);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final MTLResourceOptions StorageModePrivate = new MTLResourceOptions(32L);
     /*</values>*/
 
     /*<bind>*/

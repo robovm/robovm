@@ -88,32 +88,46 @@ import org.robovm.apple.corefoundation.*;
 
     /*<constants>*/
     /**
-     * @since Available in iOS 5.0 and later.
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static final ABPersonSocialProfileService Twitter = new ABPersonSocialProfileService("Twitter");
     /**
-     * @since Available in iOS 6.0 and later.
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static final ABPersonSocialProfileService SinaWeibo = new ABPersonSocialProfileService("SinaWeibo");
     /**
-     * @since Available in iOS 5.0 and later.
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static final ABPersonSocialProfileService GameCenter = new ABPersonSocialProfileService("GameCenter");
     /**
-     * @since Available in iOS 5.0 and later.
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static final ABPersonSocialProfileService Facebook = new ABPersonSocialProfileService("Facebook");
     /**
-     * @since Available in iOS 5.0 and later.
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static final ABPersonSocialProfileService Myspace = new ABPersonSocialProfileService("Myspace");
     /**
-     * @since Available in iOS 5.0 and later.
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static final ABPersonSocialProfileService LinkedIn = new ABPersonSocialProfileService("LinkedIn");
     /**
-     * @since Available in iOS 5.0 and later.
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static final ABPersonSocialProfileService Flickr = new ABPersonSocialProfileService("Flickr");
     /*</constants>*/
     
@@ -141,38 +155,52 @@ import org.robovm.apple.corefoundation.*;
 
         /*<values>*/
         /**
-         * @since Available in iOS 5.0 and later.
+         * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="kABPersonSocialProfileServiceTwitter", optional=true)
         public static native CFString Twitter();
         /**
-         * @since Available in iOS 6.0 and later.
+         * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="kABPersonSocialProfileServiceSinaWeibo", optional=true)
         public static native CFString SinaWeibo();
         /**
-         * @since Available in iOS 5.0 and later.
+         * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="kABPersonSocialProfileServiceGameCenter", optional=true)
         public static native CFString GameCenter();
         /**
-         * @since Available in iOS 5.0 and later.
+         * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="kABPersonSocialProfileServiceFacebook", optional=true)
         public static native CFString Facebook();
         /**
-         * @since Available in iOS 5.0 and later.
+         * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="kABPersonSocialProfileServiceMyspace", optional=true)
         public static native CFString Myspace();
         /**
-         * @since Available in iOS 5.0 and later.
+         * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="kABPersonSocialProfileServiceLinkedIn", optional=true)
         public static native CFString LinkedIn();
         /**
-         * @since Available in iOS 5.0 and later.
+         * @since Available in iOS 2.0 and later.
+         * @deprecated Deprecated in iOS 9.0.
          */
+        @Deprecated
         @GlobalValue(symbol="kABPersonSocialProfileServiceFlickr", optional=true)
         public static native CFString Flickr();
         /*</values>*/

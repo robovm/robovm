@@ -152,12 +152,12 @@ import org.robovm.apple.dispatch.*;
      * @param url
      * @param opts
      * @return
-     * @since Available in iOS 7.0 and later.
+     * @since Available in iOS 9.0 and later.
      * @throws NSErrorException
      */
     @WeaklyLinked
     public boolean read(NSURL url, NSAttributedStringDocumentAttributes opts) throws NSErrorException {
-        return NSMutableAttributedStringExtensions.readFromFileURL(this, url, opts);
+        return NSMutableAttributedStringExtensions.read(this, url, opts);
     }
     /**
      * 
@@ -169,7 +169,7 @@ import org.robovm.apple.dispatch.*;
      */
     @WeaklyLinked
     public boolean read(NSData data, NSAttributedStringDocumentAttributes opts) throws NSErrorException {
-        return NSMutableAttributedStringExtensions.readFromData(this, data, opts);
+        return NSMutableAttributedStringExtensions.read(this, data, opts);
     }
     /**
      * @since Available in iOS 7.0 and later.
@@ -182,11 +182,11 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "replaceCharactersInRange:withString:")
     public native void replace(@ByVal NSRange range, String str);
     @Method(selector = "setAttributes:range:")
-    public native void setAttributes(NSDictionary attrs, @ByVal NSRange range);
+    public native void setAttributes(NSDictionary<NSString, ?> attrs, @ByVal NSRange range);
     @Method(selector = "addAttribute:value:range:")
     public native void addAttribute(NSString name, NSObject value, @ByVal NSRange range);
     @Method(selector = "addAttributes:range:")
-    public native void addAttributes(NSDictionary attrs, @ByVal NSRange range);
+    public native void addAttributes(NSDictionary<NSString, ?> attrs, @ByVal NSRange range);
     @Method(selector = "removeAttribute:range:")
     public native void removeAttribute(NSString name, @ByVal NSRange range);
     @Method(selector = "replaceCharactersInRange:withAttributedString:")

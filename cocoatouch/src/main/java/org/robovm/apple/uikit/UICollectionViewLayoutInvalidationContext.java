@@ -93,6 +93,21 @@ import org.robovm.apple.corelocation.*;
      */
     @Property(selector = "setContentSizeAdjustment:")
     public native void setContentSizeAdjustment(@ByVal CGSize v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "previousIndexPathsForInteractivelyMovingItems")
+    public native NSArray<NSIndexPath> getPreviousIndexPathsForInteractivelyMovingItems();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "targetIndexPathsForInteractivelyMovingItems")
+    public native NSArray<NSIndexPath> getTargetIndexPathsForInteractivelyMovingItems();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "interactiveMovementTarget")
+    public native @ByVal CGPoint getInteractiveMovementTarget();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

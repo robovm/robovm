@@ -26,4 +26,4 @@ ${JAVAC} -d classes `find src -name '*.java'`
 rm classes/android/test/anno/MissingAnnotation.class
 
 # RoboVM note: Call robovm-builder instead of dx
-$ROBOVM_DEV_ROOT/tests/dalvik/robovm-builder -cp classes Main > robovm.log 2>&1
+$BASE/tests/dalvik/robovm-builder -cp classes Main > robovm.log 2>&1

@@ -9,9 +9,9 @@ typedefs: {}
     
 enums:
     MFMailComposeResult: {}
-    MFMailComposeErrorCode: { prefix: MFMailComposeErrorCode }
-    MessageComposeResult: {}
-        
+    MFMailComposeErrorCode: {prefix: MFMailComposeErrorCode}
+    MFMessageComposeResult: {first: MessageComposeResultCancelled}
+
 classes:
     MFMailComposeError:
         extends: NSError
@@ -26,21 +26,26 @@ classes:
             '-setBccRecipients:':
                 parameters:
                     bccRecipients:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: List<String>
+                        marshaler: NSArray.AsStringListMarshaler
             '-setCcRecipients:':
                 parameters:
                     ccRecipients:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: List<String>
+                        marshaler: NSArray.AsStringListMarshaler
             '-setToRecipients:':
                 parameters:
                     toRecipients:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                        type: List<String>
+                        marshaler: NSArray.AsStringListMarshaler
     MFMessageComposeViewController: # DONE
         properties:
             'recipients':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: List<String>
+                marshaler: NSArray.AsStringListMarshaler
             'attachments':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(MFMessageComposeViewControllerAttachment.AsListMarshaler.class) List<MFMessageComposeViewControllerAttachment>'
+                type: List<MFMessageComposeViewControllerAttachment>
+                marshaler: MFMessageComposeViewControllerAttachment.AsListMarshaler
         methods:
             '-addAttachmentURL:withAlternateFilename:':
                 name: addAttachment
@@ -58,6 +63,9 @@ protocols:
         methods:
             '-messageComposeViewController:didFinishWithResult:':
                 name: didFinish
+                parameters:
+                    result:
+                        type: MFMessageComposeResult
 
 functions:
     # Make sure we don't miss any functions if new ones are introduced in a later version

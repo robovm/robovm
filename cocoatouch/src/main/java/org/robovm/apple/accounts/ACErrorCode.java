@@ -57,7 +57,9 @@ public enum /*<name>*/ACErrorCode/*</name>*/ implements NSErrorCode {
     CoreDataSaveFailed(18L),
     FailedSerializingAccountInfo(19L),
     InvalidCommand(20L),
-    MissingTransportMessageID(21L);
+    MissingTransportMessageID(21L),
+    CredentialItemNotFound(22L),
+    CredentialItemNotExpired(23L);
     /*</values>*/
 
     /*<bind>*/

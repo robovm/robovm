@@ -57,8 +57,10 @@ classes:
         methods:
             '+circleWithCenterCoordinate:radius:':
                 name: create
+                constructor: true
             '+circleWithMapRect:':
                 name: create
+                constructor: true
     MKCircleRenderer: # DONE
         methods:
             '-init.*':
@@ -101,9 +103,11 @@ classes:
             '+polylineWithPoints:count:':
                 name: create
                 visibility: private
+                return_type: '@Pointer long'
             '+polylineWithCoordinates:count:':
                 name: create
                 visibility: private
+                return_type: '@Pointer long'
     MKLocalSearch: # DONE
         methods:
             '-initWithRequest:':
@@ -121,9 +125,13 @@ classes:
     MKMapCamera: # DONE
         methods:
             '+camera':
-                name: create
+                exclude: true
             '+cameraLookingAtCenterCoordinate:fromEyeCoordinate:eyeAltitude:':
                 name: create
+                constructor: true
+            '+cameraLookingAtCenterCoordinate:fromDistance:pitch:heading:':
+                name: create
+                constructor: true
     MKMapItem: # DONE
         properties:
             'isCurrentLocation':
@@ -168,11 +176,14 @@ classes:
     MKMapView: # DONE
         properties:
             'annotations':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<? extends MKAnnotation>'
+                type: 'List<? extends MKAnnotation>'
+                marshaler: NSArray.AsListMarshaler
             'selectedAnnotations':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<? extends MKAnnotation>'
+                type: 'List<? extends MKAnnotation>'
+                marshaler: NSArray.AsListMarshaler
             'overlays':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<? extends MKOverlay>'
+                type: 'List<? extends MKOverlay>'
+                marshaler: NSArray.AsListMarshaler
         methods:
             '-setRegion:animated:':
                 trim_after_first_colon: true
@@ -206,17 +217,20 @@ classes:
                 trim_after_first_colon: true
                 parameters:
                     annotations:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<? extends MKAnnotation>'
+                        type: 'List<? extends MKAnnotation>'
+                        marshaler: NSArray.AsListMarshaler
             '-removeAnnotation:':
                 trim_after_first_colon: true
             '-removeAnnotations:':
                 trim_after_first_colon: true
                 parameters:
                     annotations:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<? extends MKAnnotation>'
+                        type: 'List<? extends MKAnnotation>'
+                        marshaler: NSArray.AsListMarshaler
             '-annotationsInMapRect:':
                 name: getAnnotations
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSSet.AsSetMarshaler.class) Set<? extends MKAnnotation>'
+                return_type: 'Set<? extends MKAnnotation>'
+                return_marshaler: NSSet.AsSetMarshaler
             '-viewForAnnotation:':
                 name: getView
             '-dequeueReusableAnnotationViewWithIdentifier:':
@@ -229,21 +243,24 @@ classes:
                 trim_after_first_colon: true
                 parameters:
                     annotations:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<? extends MKAnnotation>'
+                        type: 'List<? extends MKAnnotation>'
+                        marshaler: NSArray.AsListMarshaler
             '-addOverlay:level:':
                 trim_after_first_colon: true
             '-addOverlays:level:':
                 trim_after_first_colon: true
                 parameters:
                     overlays:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<? extends MKOverlay>'
+                        type: 'List<? extends MKOverlay>'
+                        marshaler: NSArray.AsListMarshaler
             '-removeOverlay:':
                 trim_after_first_colon: true
             '-removeOverlays:':
                 trim_after_first_colon: true
                 parameters:
                     overlays:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<? extends MKOverlay>'
+                        type: 'List<? extends MKOverlay>'
+                        marshaler: NSArray.AsListMarshaler
             '-insertOverlay:atIndex:level:':
                 trim_after_first_colon: true
             '-insertOverlay:aboveOverlay:':
@@ -254,7 +271,8 @@ classes:
                 trim_after_first_colon: true
             '-overlaysInLevel:':
                 name: getOverlays
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<? extends MKOverlay>'
+                return_type: 'List<? extends MKOverlay>'
+                return_marshaler: NSArray.AsListMarshaler
             '-rendererForOverlay:':
                 name: getOverlayRenderer
             '-viewForOverlay:':
@@ -265,12 +283,16 @@ classes:
                 trim_after_first_colon: true
                 parameters:
                     overlays:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<? extends MKOverlay>'
+                        type: 'List<? extends MKOverlay>'
+                        marshaler: NSArray.AsListMarshaler
             '-insertOverlay:atIndex:':
                 trim_after_first_colon: true
             '-exchangeOverlayAtIndex:withOverlayAtIndex:':
                 name: exchangeOverlay
+            '-_handleSelectionAtPoint:':
+                name: handleSelectionAtPoint
     MKMultiPoint: # DONE
+        skip_handle_constructor: false
         methods:
             '-points':
                 name: getPoints0
@@ -344,7 +366,10 @@ classes:
                 name: setNeedsDisplay
             '-setNeedsDisplayInMapRect:zoomScale:':
                 name: setNeedsDisplay
-    MKPinAnnotationView: {} # DONE
+    MKPinAnnotationView: # DONE
+        methods:
+            '+.*PinColor':
+                property: true
     MKPlacemark: # DONE
         skip_def_constructor: true
         methods:
@@ -362,18 +387,22 @@ classes:
             '+polygonWithPoints:count:':
                 name: create
                 visibility: private
+                return_type: '@Pointer long'
             '+polygonWithPoints:count:interiorPolygons:':
                 name: create
                 visibility: private
+                return_type: '@Pointer long'
                 parameters:
                     interiorPolygons:
                         type: NSArray<MKPolygon>
             '+polygonWithCoordinates:count:':
                 name: create
                 visibility: private
+                return_type: '@Pointer long'
             '+polygonWithCoordinates:count:interiorPolygons:':
                 name: create
                 visibility: private
+                return_type: '@Pointer long'
                 parameters:
                     interiorPolygons:
                         type: NSArray<MKPolygon>   
@@ -386,13 +415,16 @@ classes:
             '-initWithPolygon:':
                 name: init
     MKPolyline: # DONE
+        skip_handle_constructor: false
         methods:
             '+polylineWithPoints:count:':
                 name: create
                 visibility: private
+                return_type: '@Pointer long'
             '+polylineWithCoordinates:count:':
                 name: create
                 visibility: private
+                return_type: '@Pointer long'
     MKPolylineRenderer: # DONE
         methods:
             '-initWithPolyline:':
@@ -404,11 +436,13 @@ classes:
     MKRoute: # DONE
         properties:
             'advisoryNotices':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                type: List<String>
+                marshaler: NSArray.AsStringListMarshaler
             'steps':
                 type: NSArray<MKRouteStep>
     MKRouteStep: {} # DONE
-    MKShape: {} # DONE
+    MKShape: # DONE
+        skip_handle_constructor: false
     MKTileOverlay: # DONE
         methods:
             '-initWithURLTemplate:':
@@ -495,20 +529,28 @@ functions:
         class: MKCoordinateRegion
         name: create
         static: true
+        return_type: '@Pointer long'
+        visibility: private
     MKCoordinateRegionMakeWithDistance:
         class: MKCoordinateRegion
         name: create
         static: true
+        return_type: '@Pointer long'
+        visibility: private
     MKCoordinateRegionForMapRect:
         class: MKCoordinateRegion
         name: create
         static: true
+        return_type: '@Pointer long'
+        visibility: private
 
     # MKMapPoint
     MKMapPointForCoordinate:
         class: MKMapPoint
         name: create
         static: true
+        return_type: '@Pointer long'
+        visibility: private
     MKCoordinateForMapPoint:
         class: MKMapPoint
         name: toCoordinate

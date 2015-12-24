@@ -46,7 +46,13 @@ public enum /*<name>*/UIAccessibilityScrollDirection/*</name>*/ implements Value
     Left(2L),
     Up(3L),
     Down(4L),
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     Next(5L),
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     Previous(6L);
     /*</values>*/
 

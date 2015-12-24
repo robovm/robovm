@@ -2,7 +2,7 @@
 
 BASE=$(cd $(dirname $0); pwd -P)
 BUILD=$(printf "%08d" `git log --oneline | wc -l`)
-BUCKET=binaries.robovm.org
+BUCKET=binaries.robovm.com
 ENDPOINT=http://$BUCKET.s3-website-eu-west-1.amazonaws.com
 
 if which md5sum > /dev/null; then

@@ -89,7 +89,7 @@ import org.robovm.apple.avkit.*;
      */
     @Deprecated
     @Property(selector = "setRequiredContentSizeIdentifiers:")
-    public native void setRequiredContentSizeIdentifiers(@org.robovm.rt.bro.annotation.Marshaler(ADBannerContentSizeIdentifier.AsListMarshaler.class)List<ADBannerContentSizeIdentifier> v);
+    public native void setRequiredContentSizeIdentifiers(@org.robovm.rt.bro.annotation.Marshaler(ADBannerContentSizeIdentifier.AsListMarshaler.class) List<ADBannerContentSizeIdentifier> v);
     /**
      * @since Available in iOS 4.0 and later.
      * @deprecated Deprecated in iOS 6.0.

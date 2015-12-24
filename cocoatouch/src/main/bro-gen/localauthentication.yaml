@@ -1,5 +1,5 @@
 package: org.robovm.apple.localauthentication
-include: [foundation.yaml]
+include: [foundation.yaml, security.yaml]
 library: LocalAuthentication
 framework: LocalAuthentication
 clang_args: ['-x', 'objective-c']
@@ -10,8 +10,10 @@ typedefs:
     'void (^)(BOOL, NSError *)': '@Block VoidBlock2<Boolean, NSError>'
     
 enums:
-    LAPolicy: { prefix: LAPolicy }
-    LAErrorCode: { first: LAErrorAuthenticationFailed }
+    LAPolicy: {prefix: LAPolicy}
+    LAErrorCode: {first: LAErrorAuthenticationFailed}
+    LAAccessControlOperation: {}
+    LACredentialType: {prefix: LACredentialType}
         
 classes:
     LAError:
@@ -25,6 +27,13 @@ classes:
                 throws: NSErrorException
             '-evaluatePolicy:localizedReason:reply:':
                 trim_after_first_colon: true
+            '-setCredential:type:':
+                trim_after_first_colon: true
+            '-isCredentialSet:':
+                trim_after_first_colon: true
+            '-evaluateAccessControl:operation:localizedReason:reply:':
+                trim_after_first_colon: true
+
 protocols: {}
 
 functions:
@@ -37,6 +46,11 @@ values:
     LAErrorDomain:
         class: LAError
         name: getClassDomain
+
+    # LAContext
+    LATouchIDAuthentication(MaximumAllowableReuseDuration):
+        class: LAContext
+        name: 'get#{g[0]}'
    
     # Make sure we don't miss any values if new ones are introduced in a later version
     (k?LA.*):
@@ -46,6 +60,8 @@ values:
 constants:
     # Unused
     kLAPolicyDeviceOwnerAuthenticationWithBiometrics:
+        exclude: true
+    kLAPolicyDeviceOwnerAuthentication:
         exclude: true
     kLAError.*:
         exclude: true

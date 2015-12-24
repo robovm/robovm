@@ -40,7 +40,7 @@ import org.robovm.apple.avfoundation.*;
  */
 /*</javadoc>*/
 /*<annotations>*/@Library("Photos") @NativeClass/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/PHFetchResultChangeDetails/*</name>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/PHFetchResultChangeDetails/*</name>*/ <T extends PHObject>
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
@@ -50,26 +50,27 @@ import org.robovm.apple.avfoundation.*;
     /*<constructors>*/
     public PHFetchResultChangeDetails() {}
     protected PHFetchResultChangeDetails(SkipInit skipInit) { super(skipInit); }
+    public PHFetchResultChangeDetails(PHFetchResult<T> fromResult, PHFetchResult<T> toResult, NSArray<T> changedObjects) { super(create(fromResult, toResult, changedObjects)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "fetchResultBeforeChanges")
-    public native PHFetchResult getFetchResultBeforeChanges();
+    public native PHFetchResult<T> getFetchResultBeforeChanges();
     @Property(selector = "fetchResultAfterChanges")
-    public native PHFetchResult getFetchResultAfterChanges();
+    public native PHFetchResult<T> getFetchResultAfterChanges();
     @Property(selector = "hasIncrementalChanges")
     public native boolean hasIncrementalChanges();
     @Property(selector = "removedIndexes")
     public native NSIndexSet getRemovedIndexes();
     @Property(selector = "removedObjects")
-    public native NSArray<PHObject> getRemovedObjects();
+    public native NSArray<T> getRemovedObjects();
     @Property(selector = "insertedIndexes")
     public native NSIndexSet getInsertedIndexes();
     @Property(selector = "insertedObjects")
-    public native NSArray<PHObject> getInsertedObjects();
+    public native NSArray<T> getInsertedObjects();
     @Property(selector = "changedIndexes")
     public native NSIndexSet getChangedIndexes();
     @Property(selector = "changedObjects")
-    public native NSArray<PHObject> getChangedObjects();
+    public native NSArray<T> getChangedObjects();
     @Property(selector = "hasMoves")
     public native boolean hasMoves();
     /*</properties>*/
@@ -78,6 +79,6 @@ import org.robovm.apple.avfoundation.*;
     @Method(selector = "enumerateMovesWithBlock:")
     public native void enumerateMoves(@Block("(@MachineSizedUInt,@MachineSizedUInt)") VoidBlock2<Long, Long> handler);
     @Method(selector = "changeDetailsFromFetchResult:toFetchResult:changedObjects:")
-    public static native PHFetchResultChangeDetails create(PHFetchResult fromResult, PHFetchResult toResult, NSArray<PHObject> changedObjects);
+    protected static native @Pointer <T extends PHObject> long create(PHFetchResult<T> fromResult, PHFetchResult<T> toResult, NSArray<T> changedObjects);
     /*</methods>*/
 }

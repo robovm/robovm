@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -56,6 +57,7 @@ import org.robovm.apple.audiounit.*;
     /*<constructors>*/
     public AVCaptureAutoExposureBracketedStillImageSettings() {}
     protected AVCaptureAutoExposureBracketedStillImageSettings(SkipInit skipInit) { super(skipInit); }
+    public AVCaptureAutoExposureBracketedStillImageSettings(float exposureTargetBias) { super(create(exposureTargetBias)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "exposureTargetBias")
@@ -64,6 +66,6 @@ import org.robovm.apple.audiounit.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "autoExposureSettingsWithExposureTargetBias:")
-    public static native AVCaptureAutoExposureBracketedStillImageSettings create(float exposureTargetBias);
+    protected static native @Pointer long create(float exposureTargetBias);
     /*</methods>*/
 }

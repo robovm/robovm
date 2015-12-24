@@ -60,10 +60,6 @@ import org.robovm.apple.dispatch.*;
      */
     @Property(selector = "subscribedCentrals")
     public native NSArray<CBCentral> getSubscribedCentrals();
-    @Property(selector = "UUID")
-    public native CBUUID getUUID();
-    @Property(selector = "setUUID:")
-    public native void setUUID(CBUUID v);
     @Property(selector = "properties")
     public native CBCharacteristicProperties getProperties();
     @Property(selector = "setProperties:")

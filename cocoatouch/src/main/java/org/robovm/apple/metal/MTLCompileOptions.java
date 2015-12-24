@@ -52,11 +52,21 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "preprocessorMacros")
     public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String> getPreprocessorMacros();
     @Property(selector = "setPreprocessorMacros:")
-    public native void setPreprocessorMacros(@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class)Map<String, String> v);
+    public native void setPreprocessorMacros(@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String> v);
     @Property(selector = "fastMathEnabled")
     public native boolean isFastMathEnabled();
     @Property(selector = "setFastMathEnabled:")
     public native void setFastMathEnabled(boolean v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "languageVersion")
+    public native MTLLanguageVersion getLanguageVersion();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setLanguageVersion:")
+    public native void setLanguageVersion(MTLLanguageVersion v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

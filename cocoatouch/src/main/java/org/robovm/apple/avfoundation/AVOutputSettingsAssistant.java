@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -56,6 +57,7 @@ import org.robovm.apple.audiounit.*;
     /*<constructors>*/
     public AVOutputSettingsAssistant() {}
     protected AVOutputSettingsAssistant(SkipInit skipInit) { super(skipInit); }
+    public AVOutputSettingsAssistant(AVOutputSettingsPreset presetIdentifier) { super(create(presetIdentifier)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "audioSettings")
@@ -95,6 +97,6 @@ import org.robovm.apple.audiounit.*;
     @Method(selector = "availableOutputSettingsPresets")
     public static native @org.robovm.rt.bro.annotation.Marshaler(AVOutputSettingsPreset.AsListMarshaler.class) List<AVOutputSettingsPreset> getAvailableOutputSettingsPresets();
     @Method(selector = "outputSettingsAssistantWithPreset:")
-    public static native AVOutputSettingsAssistant create(AVOutputSettingsPreset presetIdentifier);
+    protected static native @Pointer long create(AVOutputSettingsPreset presetIdentifier);
     /*</methods>*/
 }

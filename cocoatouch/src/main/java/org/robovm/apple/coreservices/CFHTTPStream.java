@@ -60,12 +60,16 @@ import org.robovm.apple.corefoundation.*;
     /*<methods>*/
     /**
      * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @Bridge(symbol="CFReadStreamCreateForHTTPRequest", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(NSObject.NoRetainMarshaler.class) NSInputStream create(CFAllocator alloc, CFHTTPMessage request);
     /**
      * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @Bridge(symbol="CFReadStreamCreateForStreamedHTTPRequest", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(NSObject.NoRetainMarshaler.class) NSInputStream create(CFAllocator alloc, CFHTTPMessage requestHeaders, NSInputStream requestBody);
     /*</methods>*/

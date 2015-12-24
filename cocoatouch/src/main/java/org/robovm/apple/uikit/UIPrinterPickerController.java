@@ -52,6 +52,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UIPrinterPickerController() {}
     protected UIPrinterPickerController(SkipInit skipInit) { super(skipInit); }
+    public UIPrinterPickerController(UIPrinter printer) { super(create(printer)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "selectedPrinter")
@@ -72,6 +73,6 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "dismissAnimated:")
     public native void dismissAnimated(boolean animated);
     @Method(selector = "printerPickerControllerWithInitiallySelectedPrinter:")
-    public static native UIPrinterPickerController create(UIPrinter printer);
+    protected static native @Pointer long create(UIPrinter printer);
     /*</methods>*/
 }

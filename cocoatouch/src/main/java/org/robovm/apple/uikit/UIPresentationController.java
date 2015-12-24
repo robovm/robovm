@@ -71,6 +71,9 @@ import org.robovm.apple.corelocation.*;
     public native UITraitCollection getOverrideTraitCollection();
     @Property(selector = "setOverrideTraitCollection:")
     public native void setOverrideTraitCollection(UITraitCollection v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "traitCollection")
     public native UITraitCollection getTraitCollection();
     /*</properties>*/
@@ -105,6 +108,9 @@ import org.robovm.apple.corelocation.*;
     public native void dismissalTransitionWillBegin();
     @Method(selector = "dismissalTransitionDidEnd:")
     public native void dismissalTransitionDidEnd(boolean completed);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "traitCollectionDidChange:")
     public native void traitCollectionDidChange(UITraitCollection previousTraitCollection);
     /*</methods>*/

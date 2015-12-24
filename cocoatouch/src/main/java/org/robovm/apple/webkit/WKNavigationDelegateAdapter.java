@@ -30,6 +30,7 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.security.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -68,5 +69,10 @@ import org.robovm.apple.coregraphics.*;
     public void didFailNavigation(WKWebView webView, WKNavigation navigation, NSError error) {}
     @NotImplemented("webView:didReceiveAuthenticationChallenge:completionHandler:")
     public void didReceiveAuthenticationChallenge(WKWebView webView, NSURLAuthenticationChallenge challenge, @Block VoidBlock2<NSURLSessionAuthChallengeDisposition, NSURLCredential> completionHandler) {}
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @NotImplemented("webViewWebContentProcessDidTerminate:")
+    public void webContentProcessDidTerminate(WKWebView webView) {}
     /*</methods>*/
 }

@@ -53,6 +53,7 @@ import org.robovm.apple.corelocation.*;
     public UIPageViewController() {}
     protected UIPageViewController(SkipInit skipInit) { super(skipInit); }
     public UIPageViewController(UIPageViewControllerTransitionStyle style, UIPageViewControllerNavigationOrientation navigationOrientation, UIPageViewControllerOptions options) { super((SkipInit) null); initObject(init(style, navigationOrientation, options)); }
+    public UIPageViewController(NSCoder coder) { super((SkipInit) null); initObject(init(coder)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "delegate")
@@ -82,6 +83,8 @@ import org.robovm.apple.corelocation.*;
     /*<methods>*/
     @Method(selector = "initWithTransitionStyle:navigationOrientation:options:")
     protected native @Pointer long init(UIPageViewControllerTransitionStyle style, UIPageViewControllerNavigationOrientation navigationOrientation, UIPageViewControllerOptions options);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder coder);
     @Method(selector = "setViewControllers:direction:animated:completion:")
     public native void setViewControllers(NSArray<UIViewController> viewControllers, UIPageViewControllerNavigationDirection direction, boolean animated, @Block VoidBooleanBlock completion);
     /*</methods>*/

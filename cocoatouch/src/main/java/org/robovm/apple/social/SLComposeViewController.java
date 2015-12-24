@@ -49,14 +49,15 @@ import org.robovm.apple.accounts.*;
     /*<constructors>*/
     public SLComposeViewController() {}
     protected SLComposeViewController(SkipInit skipInit) { super(skipInit); }
+    public SLComposeViewController(SLServiceType serviceType) { super(create(serviceType)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "serviceType")
     public native SLServiceType getServiceType();
     @Property(selector = "completionHandler")
-    public native @Block VoidBlock3<String, SLRequestMethod, NSURL> getCompletionHandler();
+    public native @Block VoidBlock1<SLComposeViewControllerResult> getCompletionHandler();
     @Property(selector = "setCompletionHandler:")
-    public native void setCompletionHandler(@Block VoidBlock3<String, SLRequestMethod, NSURL> v);
+    public native void setCompletionHandler(@Block VoidBlock1<SLComposeViewControllerResult> v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -73,6 +74,6 @@ import org.robovm.apple.accounts.*;
     @Method(selector = "isAvailableForServiceType:")
     public static native boolean isAvailable(SLServiceType serviceType);
     @Method(selector = "composeViewControllerForServiceType:")
-    public static native SLComposeViewController create(SLServiceType serviceType);
+    protected static native @Pointer long create(SLServiceType serviceType);
     /*</methods>*/
 }

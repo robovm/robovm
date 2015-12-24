@@ -49,6 +49,7 @@ import org.robovm.rt.annotation.WeaklyLinked;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public CAAnimation() {}
+    protected CAAnimation(long handle) { super(handle); }
     protected CAAnimation(SkipInit skipInit) { super(skipInit); }
     public CAAnimation(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
@@ -142,8 +143,6 @@ import org.robovm.rt.annotation.WeaklyLinked;
     
     @Method(selector = "shouldArchiveValueForKey:")
     public native boolean shouldArchiveValue(String key);
-    @Method(selector = "animation")
-    public static native CAAnimation create();
     @Method(selector = "defaultValueForKey:")
     public static native NSObject getDefaultValue(String key);
     @Method(selector = "encodeWithCoder:")
@@ -151,6 +150,6 @@ import org.robovm.rt.annotation.WeaklyLinked;
     @Method(selector = "initWithCoder:")
     protected native @Pointer long init(NSCoder aDecoder);
     @Method(selector = "runActionForKey:object:arguments:")
-    public native void runAction(String event, NSObject anObject, @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject> dict);
+    public native void runAction(String event, NSObject anObject, NSDictionary<NSString, ?> dict);
     /*</methods>*/
 }

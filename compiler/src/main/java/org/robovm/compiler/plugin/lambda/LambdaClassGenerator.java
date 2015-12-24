@@ -16,32 +16,7 @@
  */
 package org.robovm.compiler.plugin.lambda;
 
-import static org.objectweb.asm.Opcodes.ACC_BRIDGE;
-import static org.objectweb.asm.Opcodes.ACC_FINAL;
-import static org.objectweb.asm.Opcodes.ACC_PRIVATE;
-import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
-import static org.objectweb.asm.Opcodes.ACC_STATIC;
-import static org.objectweb.asm.Opcodes.ACC_SUPER;
-import static org.objectweb.asm.Opcodes.ACC_SYNTHETIC;
-import static org.objectweb.asm.Opcodes.ALOAD;
-import static org.objectweb.asm.Opcodes.ARETURN;
-import static org.objectweb.asm.Opcodes.DLOAD;
-import static org.objectweb.asm.Opcodes.DRETURN;
-import static org.objectweb.asm.Opcodes.DUP;
-import static org.objectweb.asm.Opcodes.FLOAD;
-import static org.objectweb.asm.Opcodes.FRETURN;
-import static org.objectweb.asm.Opcodes.GETFIELD;
-import static org.objectweb.asm.Opcodes.ILOAD;
-import static org.objectweb.asm.Opcodes.INVOKEINTERFACE;
-import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
-import static org.objectweb.asm.Opcodes.INVOKESTATIC;
-import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
-import static org.objectweb.asm.Opcodes.IRETURN;
-import static org.objectweb.asm.Opcodes.LLOAD;
-import static org.objectweb.asm.Opcodes.LRETURN;
-import static org.objectweb.asm.Opcodes.NEW;
-import static org.objectweb.asm.Opcodes.PUTFIELD;
-import static org.objectweb.asm.Opcodes.RETURN;
+import static org.objectweb.asm.Opcodes.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -207,13 +182,15 @@ public class LambdaClassGenerator {
         // invoke dynamic call. We need to handle that parameter separately as
         // it's not part of the method signature of the implementation
         boolean paramsContainReceiver = isInstanceMethod
-                & !caller.getName().equals(implMethod.getMethodRef().declaringClass().getName());
+                & !caller.getName().equals(implMethod.getMethodRef().declaringClass().getName())
+                && parameters.size() > implMethod.getMethodRef().parameterTypes().size();
         int paramsIndex = 0;
         int localIndex = 1; // we start at slot index 1, because this occupies
                             // slot 0
         if (paramsContainReceiver && !parameters.isEmpty()) {
             Type param = parameters.get(0);
             mv.visitVarInsn(loadOpcodeForType(param), localIndex);
+            castOrWiden(mv, caster, param, implMethod.getMethodRef().declaringClass().getType());
             localIndex += slotsForType(param);
             paramsIndex++;
         }
@@ -257,9 +234,18 @@ public class LambdaClassGenerator {
             if (isBoxedType(expected)) {
                 caster.box(expectedAsmType);
             }
+        } else if (isPrimitiveType(expected) && actual instanceof RefType) {
+            // actual could be java.lang.Number or even java.lang.Object when
+            // expected is a primitive. We need to unbox in this case too.
+            // unbox() will do the right thing, e.g. ((Number) v).longValue() if
+            // expected is long.
+            caster.unbox(getAsmPrimitiveType(expected));
+        } else if (isPrimitiveType(actual) && expected instanceof RefType) {
+            // The inverse of the previous "else if". Boxing is needed.
+            caster.box(getAsmPrimitiveType(actual));
         } else {
             // simple cast which will throw a ClassCastException at runtime
-            mv.visitTypeInsn(Opcodes.CHECKCAST, ((RefType) expected).getClassName().replace('.', '/'));
+            mv.visitTypeInsn(Opcodes.CHECKCAST, Types.getInternalName(expected));
         }
     }
 

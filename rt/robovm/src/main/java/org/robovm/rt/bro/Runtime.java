@@ -44,6 +44,10 @@ public final class Runtime {
     private static final List<String> searchPaths;
     
     static {
+        searchPaths = setupDyLdPaths();
+    }
+    
+    private static List<String> setupDyLdPaths() {
         List<String> paths = new ArrayList<String>();
         String home = System.getProperty("user.home");
 
@@ -120,9 +124,9 @@ public final class Runtime {
             }
         }
         
-        searchPaths = uniq(paths);
+        return uniq(paths);        
     }
-
+    
     private static List<String> uniq(List<String> l) {
         Set<String> seen = new HashSet<String>();
         List<String> result = new ArrayList<String>();
@@ -134,7 +138,7 @@ public final class Runtime {
         }
         return result;
     }
-    
+
     private static void readLdSoConf(File f, List<String> paths) throws IOException {
         if (!f.exists() || !f.isFile()) {
             return;
@@ -294,6 +298,18 @@ public final class Runtime {
                         handle = Dl.open(name);
                         if (handle == 0L) {
                             handle = Dl.open(libName);
+                            // on iOS 9+, opening just by
+                            // library name does not work anymore.
+                            // We bruteforce through search paths
+                            // instead
+                            if (handle == 0L) {
+                                for (String searchPath : searchPaths) {
+                                    handle = Dl.open(new File(searchPath, libName).getAbsolutePath());
+                                    if (handle != 0L) {
+                                        break;
+                                    }
+                                }
+                            }
                         }
                     }
                 }

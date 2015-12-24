@@ -38,7 +38,14 @@ public enum /*<name>*/NSPersistentStoreRequestType/*</name>*/ implements ValuedE
     /*<values>*/
     Fetch(1L),
     Save(2L),
-    BatchUpdate(6L);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    BatchUpdate(6L),
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    BatchDelete(7L);
     /*</values>*/
 
     private final long n;

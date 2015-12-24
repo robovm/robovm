@@ -3,6 +3,7 @@ project(robovm-rt-core)
 include_directories(../../core/include ${CMAKE_BINARY_DIR}/gc/include)
 
 set(SRC
+  rt.c
   reflection_helpers.c 
   java_lang_Class.c 
   java_lang_ClassCache.c 
@@ -29,8 +30,7 @@ set(SRC
 
 if(DARWIN)
   add_definitions(-DNOUNCRYPT)
-  set(SRC ${SRC} minizip/ioapi.c minizip/unzip.c)
-  set(OBJC_SRC darwin.m JARURLProtocol.m)
+  set(OBJC_SRC darwin.m)
   set(SRC ${SRC} ${OBJC_SRC})
   set(OBJC_FLAGS "-x objective-c")
   if(IOS)

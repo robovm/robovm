@@ -140,23 +140,31 @@ import org.robovm.apple.corefoundation.*;
     }
     /*<methods>*/
     /**
-     * @since Available in iOS 5.0 and later.
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @GlobalValue(symbol="kABPersonSocialProfileURLKey", optional=true)
     protected static native CFString URLKey();
     /**
-     * @since Available in iOS 5.0 and later.
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @GlobalValue(symbol="kABPersonSocialProfileServiceKey", optional=true)
     protected static native CFString ServiceKey();
     /**
-     * @since Available in iOS 5.0 and later.
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @GlobalValue(symbol="kABPersonSocialProfileUsernameKey", optional=true)
     protected static native CFString UsernameKey();
     /**
-     * @since Available in iOS 5.0 and later.
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @GlobalValue(symbol="kABPersonSocialProfileUserIdentifierKey", optional=true)
     protected static native CFString UserIdentifierKey();
     /*</methods>*/

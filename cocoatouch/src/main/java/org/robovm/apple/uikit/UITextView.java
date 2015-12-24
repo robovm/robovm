@@ -84,6 +84,7 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
      * @since Available in iOS 7.0 and later.
      */
     public UITextView(@ByVal CGRect frame, NSTextContainer textContainer) { super((SkipInit) null); initObject(init(frame, textContainer)); }
+    public UITextView(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     
     public UITextView(CGRect frame) {
@@ -94,7 +95,7 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
      * @since Available in iOS 7.0 and later.
      */
     public NSAttributedStringAttributes getLinkTextAttributes() {
-        NSDictionary<NSString, NSObject> dict = getLinkTextAttributesDictionary();
+        NSDictionary<NSString, ?> dict = getLinkTextAttributesDictionary();
         if (dict == null) return null;
         return new NSAttributedStringAttributes(dict);
     }
@@ -103,7 +104,7 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
      */
     @WeaklyLinked
     public CMTextMarkupAttributes getLinkTextMarkupAttributes() {
-        NSDictionary<NSString, NSObject> dict = getLinkTextAttributesDictionary();
+        NSDictionary<NSString, ?> dict = getLinkTextAttributesDictionary();
         if (dict == null) return null;
         return new CMTextMarkupAttributes(dict.as(CFDictionary.class));
     }
@@ -112,7 +113,7 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
      */
     @WeaklyLinked
     public CTAttributedStringAttributes getLinkCoreTextAttributes() {
-        NSDictionary<NSString, NSObject> dict = getLinkTextAttributesDictionary();
+        NSDictionary<NSString, ?> dict = getLinkTextAttributesDictionary();
         if (dict == null) return null;
         return new CTAttributedStringAttributes(dict.as(CFDictionary.class));
     }
@@ -154,7 +155,7 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
      * @since Available in iOS 6.0 and later.
      */
     public NSAttributedStringAttributes getTypingAttributes() {
-        NSDictionary<NSString, NSObject> dict = getTypingAttributesDictionary();
+        NSDictionary<NSString, ?> dict = getTypingAttributesDictionary();
         if (dict == null) return null;
         return new NSAttributedStringAttributes(dict);
     }
@@ -163,7 +164,7 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
      */
     @WeaklyLinked
     public CMTextMarkupAttributes getTypingTextMarkupAttributes() {
-        NSDictionary<NSString, NSObject> dict = getTypingAttributesDictionary();
+        NSDictionary<NSString, ?> dict = getTypingAttributesDictionary();
         if (dict == null) return null;
         return new CMTextMarkupAttributes(dict.as(CFDictionary.class));
     }
@@ -172,7 +173,7 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
      */
     @WeaklyLinked
     public CTAttributedStringAttributes getTypingCoreTextAttributes() {
-        NSDictionary<NSString, NSObject> dict = getTypingAttributesDictionary();
+        NSDictionary<NSString, ?> dict = getTypingAttributesDictionary();
         if (dict == null) return null;
         return new CTAttributedStringAttributes(dict.as(CFDictionary.class));
     }
@@ -281,12 +282,12 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "typingAttributes")
-    public native NSDictionary getTypingAttributesDictionary();
+    public native NSDictionary<NSString, ?> getTypingAttributesDictionary();
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "setTypingAttributes:")
-    public native void setTypingAttributesDictionary(NSDictionary v);
+    public native void setTypingAttributesDictionary(NSDictionary<NSString, ?> v);
     @Property(selector = "inputView")
     public native UIView getInputView();
     @Property(selector = "setInputView:")
@@ -334,12 +335,12 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "linkTextAttributes")
-    public native NSDictionary getLinkTextAttributesDictionary();
+    public native NSDictionary<NSString, ?> getLinkTextAttributesDictionary();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "setLinkTextAttributes:")
-    public native void setLinkTextAttributesDictionary(NSDictionary v);
+    public native void setLinkTextAttributesDictionary(NSDictionary<NSString, ?> v);
     @Property(selector = "selectedTextRange")
     public native UITextRange getSelectedTextRange();
     @Property(selector = "setSelectedTextRange:")
@@ -421,6 +422,8 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
      */
     @Method(selector = "initWithFrame:textContainer:")
     protected native @Pointer long init(@ByVal CGRect frame, NSTextContainer textContainer);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     @Method(selector = "textInRange:")
     public native String getText(UITextRange range);
     @Method(selector = "replaceRange:withText:")
@@ -485,6 +488,21 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
     public native @ByVal CGRect getDictationResultPlaceholderFrame(NSObject placeholder);
     @Method(selector = "removeDictationResultPlaceholder:willInsertResult:")
     public native void removeDictationResultPlaceholder(NSObject placeholder, boolean willInsertResult);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "beginFloatingCursorAtPoint:")
+    public native void beginFloatingCursor(@ByVal CGPoint point);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "updateFloatingCursorAtPoint:")
+    public native void updateFloatingCursor(@ByVal CGPoint point);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "endFloatingCursor")
+    public native void endFloatingCursor();
     @Method(selector = "hasText")
     public native boolean hasText();
     @Method(selector = "insertText:")

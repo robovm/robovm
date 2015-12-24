@@ -57,7 +57,7 @@ import org.robovm.apple.uikit.*;
     @Method(selector = "previewController:frameForPreviewItem:inSourceView:")
     @ByVal CGRect getFrame(QLPreviewController controller, QLPreviewItem item, UIView.UIViewPtr view);
     @Method(selector = "previewController:transitionImageForPreviewItem:contentRect:")
-    UIImage getTransitionImage(QLPreviewController controller, QLPreviewItem item, CGRect contentRect);
+    UIImage getTransitionImage(QLPreviewController controller, QLPreviewItem item, @ByVal CGRect contentRect);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

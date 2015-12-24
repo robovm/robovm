@@ -45,6 +45,7 @@ public enum /*<name>*/MTLTextureType/*</name>*/ implements ValuedEnum {
     _2DArray(3L),
     _2DMultisample(4L),
     Cube(5L),
+    CubeArray(6L),
     _3D(7L);
     /*</values>*/
 

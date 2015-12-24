@@ -53,6 +53,7 @@ import org.robovm.apple.corelocation.*;
     public UICollectionView() {}
     protected UICollectionView(SkipInit skipInit) { super(skipInit); }
     public UICollectionView(@ByVal CGRect frame, UICollectionViewLayout layout) { super((SkipInit) null); initObject(init(frame, layout)); }
+    public UICollectionView(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "collectionViewLayout")
@@ -84,6 +85,8 @@ import org.robovm.apple.corelocation.*;
     /*<methods>*/
     @Method(selector = "initWithFrame:collectionViewLayout:")
     protected native @Pointer long init(@ByVal CGRect frame, UICollectionViewLayout layout);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     @Method(selector = "registerClass:forCellWithReuseIdentifier:")
     public native void registerReusableCellClass(Class<? extends UICollectionViewCell> cellClass, String identifier);
     @Method(selector = "registerNib:forCellWithReuseIdentifier:")
@@ -144,6 +147,21 @@ import org.robovm.apple.corelocation.*;
     public native NSArray<UICollectionViewCell> getVisibleCells();
     @Method(selector = "indexPathsForVisibleItems")
     public native NSArray<NSIndexPath> getIndexPathsForVisibleItems();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "supplementaryViewForElementKind:atIndexPath:")
+    public native UICollectionReusableView getSupplementaryView(String elementKind, NSIndexPath indexPath);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "visibleSupplementaryViewsOfKind:")
+    public native NSArray<UICollectionReusableView> getVisibleSupplementaryViews(String elementKind);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "indexPathsForVisibleSupplementaryElementsOfKind:")
+    public native NSArray<NSIndexPath> getIndexPathsForVisibleSupplementaryElements(String elementKind);
     @Method(selector = "scrollToItemAtIndexPath:atScrollPosition:animated:")
     public native void scrollToItem(NSIndexPath indexPath, UICollectionViewScrollPosition scrollPosition, boolean animated);
     @Method(selector = "insertSections:")
@@ -164,5 +182,25 @@ import org.robovm.apple.corelocation.*;
     public native void moveItem(NSIndexPath indexPath, NSIndexPath newIndexPath);
     @Method(selector = "performBatchUpdates:completion:")
     public native void performBatchUpdates(@Block Runnable updates, @Block VoidBooleanBlock completion);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "beginInteractiveMovementForItemAtIndexPath:")
+    public native boolean beginInteractiveMovement(NSIndexPath indexPath);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "updateInteractiveMovementTargetPosition:")
+    public native void updateInteractiveMovement(@ByVal CGPoint targetPosition);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "endInteractiveMovement")
+    public native void endInteractiveMovement();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "cancelInteractiveMovement")
+    public native void cancelInteractiveMovement();
     /*</methods>*/
 }

@@ -1,0 +1,464 @@
+package: org.robovm.apple.gameplaykit
+include: [foundation.yaml]
+library: GameplayKit
+framework: GameplayKit
+clang_args: ['-x', 'objective-c']
+headers:
+    - /System/Library/Frameworks/GameplayKit.framework/Headers/GameplayKit.h
+    - /System/Library/Frameworks/GameplayKit.framework/Headers/GameplayKitBase.h
+typedefs: {}
+private_typedefs:
+    ComponentType: GKComponent
+    
+enums:
+        
+classes:
+    GKAgent: {} # DONE
+    GKAgent2D: # DONE
+        methods:
+            '-updateWithDeltaTime:':
+                name: update
+    GKARC4RandomSource: # DONE
+        methods:
+            '-initWithSeed:':
+                name: init
+            '-dropValuesWithCount:':
+                name: dropValues
+    GKBehavior: # DONE
+        methods:
+            '-setWeight:forGoal:':
+                name: setGoalWeight
+                visibility: private
+            '-weightForGoal:':
+                name: getGoalWeight
+            '-removeGoal:':
+                trim_after_first_colon: true
+            '-objectAtIndexedSubscript:':
+                name: get
+                visibility: protected
+            '-setObject:forKeyedSubscript:':
+                exclude: true
+            '-objectForKeyedSubscript:':
+                exclude: true
+            '+behaviorWithGoal:weight:':
+                name: create
+                constructor: true
+            '+behaviorWithGoals.*':
+                name: create
+                constructor: true
+                parameters:
+                    goals:
+                        type: NSArray<GKGoal>
+                    weights:
+                        type: NSArray<NSNumber>
+            '+behaviorWithWeightedGoals:':
+                name: create
+                constructor: true
+    GKCircleObstacle: # DONE
+        methods:
+            '-initWithRadius:':
+                name: init
+            '+obstacleWithRadius:':
+                exclude: true
+    GKComponent: # DONE
+        methods:
+            '-updateWithDeltaTime:':
+                name: update
+    GKComponentSystem: # DONE
+        skip_def_constructor: true
+        properties:
+            'componentClass':
+                type: 'Class<? extends T>'
+            'components':
+                type: NSArray<T>
+        methods:
+            '-objectAtIndexedSubscript:':
+                name: get
+                visibility: protected
+                return_type: T
+            '-initWithComponentClass:':
+                name: init
+                parameters:
+                    cls:
+                        type: 'Class<? extends T>'
+            '-addComponent.*':
+                name: addComponent
+                parameters:
+                    component:
+                        type: T
+            '-removeComponent.*':
+                name: removeComponent
+                parameters:
+                    component:
+                        type: T
+            '-updateWithDeltaTime:':
+                name: update
+    GKEntity: # DONE
+        properties:
+            'components':
+                type: NSArray<GKComponent>
+        methods:
+            '-updateWithDeltaTime:':
+                name: update
+            '-addComponent:':
+                trim_after_first_colon: true
+            '-removeComponentForClass:':
+                name: removeComponent
+                parameters:
+                    componentClass:
+                        type: 'Class<? extends GKComponent>'
+            '-componentForClass:':
+                name: getComponent
+                parameters:
+                    componentClass:
+                        type: 'Class<? extends GKComponent>'
+            '+entity':
+                exclude: true
+    GKGaussianDistribution: # DONE
+        methods:
+            '-init.*':
+                name: init
+    GKGoal: # DONE
+        methods:
+            '+goalToSeekAgent:':
+                name: seekAgent
+            '+goalToFleeAgent:':
+                name: fleeAgent
+            '+goalToAvoidObstacles:maxPredictionTime:':
+                name: avoidObstacles
+                parameters:
+                    obstacles:
+                        type: NSArray<GKObstacle>
+            '+goalToAvoidAgents:maxPredictionTime:':
+                name: avoidAgents
+                parameters:
+                    agents:
+                        type: NSArray<GKAgent>
+            '+goalToSeparateFromAgents:maxDistance:maxAngle:':
+                name: separateFromAgents
+                parameters:
+                    agents:
+                        type: NSArray<GKAgent>
+            '+goalToAlignWithAgents:maxDistance:maxAngle:':
+                name: alignWithAgents
+                parameters:
+                    agents:
+                        type: NSArray<GKAgent>
+            '+goalToCohereWithAgents:maxDistance:maxAngle:':
+                name: cohereWithAgents
+                parameters:
+                    agents:
+                        type: NSArray<GKAgent>
+            '+goalToReachTargetSpeed:':
+                name: reachTargetSpeed
+            '+goalToWander:':
+                name: wander
+            '+goalToInterceptAgent:maxPredictionTime:':
+                name: interceptAgent
+            '+goalToFollowPath:maxPredictionTime:forward:':
+                name: followPath
+            '+goalToStayOnPath:maxPredictionTime:':
+                name: stayOnPath
+    GKGraph: # DONE
+        properties:
+            'nodes':
+                type: NSArray<GKGraph>
+        methods:
+            '-initWithNodes:':
+                name: init
+                parameters:
+                    nodes:
+                        type: NSArray<GKGraph>
+            '-connectNodeToLowestCostNode:bidirectional:':
+                trim_after_first_colon: true
+            '-(remove|add)Nodes:':
+                trim_after_first_colon: true
+                parameters:
+                    nodes:
+                        type: NSArray<GKGraph>
+            '-findPathFromNode:toNode:':
+                name: findPathBetweenNodes
+                return_type: NSArray<GKGraphNode>
+            '+graphWithNodes:':
+                exclude: true
+    GKGraphNode: # DONE
+        properties:
+            'connectedNodes':
+                type: NSArray<GKGraphNode>
+        methods:
+            '-(add|remove)ConnectionsToNodes:bidirectional:':
+                trim_after_first_colon: true
+                parameters:
+                    nodes:
+                        type: NSArray<GKGraphNode>
+            '-estimatedCostToNode:':
+                name: getEstimatedCostToNode
+            '-costToNode:':
+                name: getCostToNode
+            '-findPath(To|From)Node:':
+                trim_after_first_colon: true
+                return_type: NSArray<GKGraphNode>
+    GKGraphNode2D: # DONE
+        methods:
+            '-initWithPoint:':
+                name: init
+            '+nodeWithPoint:':
+                exclude: true
+    GKGridGraph: # DONE
+        properties:
+            'diagonalsAllowed':
+                getter: areDiagonalsAllowed
+        methods:
+            '-initFromGridStartingAt:width:height:diagonalsAllowed:':
+                name: init
+            '-nodeAtGridPosition:':
+                name: getNodeAtGridPosition
+            '-connectNodeToAdjacentNodes:':
+                trim_after_first_colon: true
+            '+graphFromGridStartingAt:width:height:diagonalsAllowed:':
+                exclude: true
+    GKGridGraphNode: # DONE
+        methods:
+            '-initWithGridPosition:':
+                name: init
+            '+nodeWithGridPosition:':
+                exclude: true
+    GKLinearCongruentialRandomSource: # DONE
+        methods:
+            '-initWithSeed:':
+                name: init
+    GKMersenneTwisterRandomSource: # DONE
+        methods:
+            '-initWithSeed:':
+                name: init
+    GKMinmaxStrategist: # DONE
+        methods:
+            '-bestMoveForPlayer:':
+                name: getBestMoveForPlayer
+            '-randomMoveForPlayer:fromNumberOfBestMoves:':
+                name: getRandomMoveForPlayer
+    GKNSPredicateRule: # DONE
+        methods:
+            '-initWithPredicate:':
+                name: init
+            '-evaluatePredicateWithSystem:':
+                name: evaluatePredicate
+    GKObstacle: {} # DONE
+    GKObstacleGraph: # DONE
+        properties:
+            'obstacles':
+                type: NSArray<GKPolygonObstacle>
+        methods:
+            '-initWithObstacles:bufferRadius:':
+                name: init
+                parameters:
+                    obstacles:
+                        type: NSArray<GKPolygonObstacle>
+            '-connectNodeUsingObstacles:':
+                name: connectNode
+            '-connectNodeUsingObstacles:ignoringObstacles:':
+                name: connectNodeIgnoringObstacles
+                parameters:
+                    obstaclesBufferRadiusToIgnore:
+                        type: NSArray<GKPolygonObstacle>
+            '-connectNodeUsingObstacles:ignoringBufferRadiusOfObstacles:':
+                name: connectNodeIgnoringBufferRadiusOfObstacles
+                parameters:
+                    obstaclesBufferRadiusToIgnore:
+                        type: NSArray<GKPolygonObstacle>
+            '-(add|remove)Obstacles:':
+                trim_after_first_colon: true
+                parameters:
+                    obstacles:
+                        type: NSArray<GKPolygonObstacle>
+            '-nodesForObstacle:':
+                name: getNodesForObstacle
+                return_type: NSArray<GKGraphNode2D>
+            '-lockConnectionFromNode:toNode:':
+                name: lockConnectionBetweenNodes
+            '-unlockConnectionFromNode:toNode:':
+                name: unlockConnectionBetweenNodes
+            '-isConnectionLockedFromNode:toNode:':
+                name: isConnectionLockedBetweenNodes
+            '+graphWithObstacles:bufferRadius:':
+                exclude: true
+    GKPath: # DONE
+        methods:
+            '-initWithPoints:count:radius:cyclical:':
+                name: init
+                constructor: false
+            '-initWithGraphNodes:radius:':
+                name: init
+                parameters:
+                    graphNodes:
+                        type: NSArray<GKGraphNode2D>
+            '-pointAtIndex:':
+                name: getPoint
+            '+pathWithPoints:count:radius:cyclical:':
+                exclude: true
+            '+pathWithGraphNodes:radius:':
+                exclude: true
+    GKPolygonObstacle: # DONE
+        methods:
+            '-initWithPoints:count:':
+                name: init
+                constructor: false
+            '-vertexAtIndex:':
+                name: getVertex
+            '+obstacleWithPoints:count:':
+                exclude: true
+    GKRandomDistribution: # DONE
+        methods:
+            '-initWithRandomSource:lowestValue:highestValue:':
+                name: init
+            '-nextIntWithUpperBound:':
+                name: nextInt
+            '+distributionWithLowestValue:highestValue:':
+                name: create
+                constructor: true
+            '+distributionForDieWithSideCount:':
+                name: die
+    GKRandomSource: # DONE
+        methods:
+            '-initWithCoder:':
+                name: init
+            '-arrayByShufflingObjectsInArray:':
+                name: shuffleArray
+            '+sharedRandom':
+                property: true
+    GKRule: # DONE
+        methods:
+            '-evaluatePredicateWithSystem:':
+                name: evaluatePredicate
+            '-performActionWithSystem:':
+                name: performAction
+            '+ruleWithPredicate:assertingFact:grade:':
+                name: createAssertingFact
+            '+ruleWithPredicate:retractingFact:grade:':
+                name: createRetractingFact
+            '+ruleWithBlockPredicate:action:':
+                name: create
+                constructor: true
+                parameters:
+                    predicate:
+                        type: '@Block Block1<GKRuleSystem, Boolean>'
+                    action:
+                        type: '@Block VoidBlock1<GKRuleSystem>'
+    GKRuleSystem: # DONE
+        properties:
+            '(rules|agenda|executed)':
+                type: NSArray<GKRule>
+        methods:
+            '-addRule:':
+                name: addRule
+            '-addRulesFromArray:':
+                name: addRules
+                parameters:
+                    rules:
+                        type: NSArray<GKRule>
+            '-gradeForFact:':
+                name: getGradeForFact
+            '-minimumGradeForFacts:':
+                name: getMinimumGradeForFacts
+            '-maximumGradeForFacts:':
+                name: getMaximumGradeForFacts
+            '-assertFact.*':
+                trim_after_first_colon: true
+            '-retractFact.*':
+                trim_after_first_colon: true
+    GKShuffledDistribution: {} # DONE
+    GKState: # DONE
+        methods:
+            '-isValidNextState:':
+                trim_after_first_colon: true
+                parameters:
+                    stateClass:
+                        type: 'Class<? extends GKState>'
+            '-didEnterWithPreviousState:':
+                name: didEnter
+            '-updateWithDeltaTime:':
+                name: update
+            '-willExitWithNextState:':
+                name: willExit
+            '+state':
+                exclude: true
+    GKStateMachine: # DONE
+        methods:
+            '-initWithStates:':
+                name: init
+                parameters:
+                    states:
+                        type: NSArray<GKState>
+            '-updateWithDeltaTime:':
+                name: update
+            '-stateForClass:':
+                name: getState
+                parameters:
+                    stateClass: 
+                        type: 'Class<? extends GKState>'
+            '-canEnterState:':
+                trim_after_first_colon: true
+                parameters:
+                    stateClass:
+                        type: 'Class<? extends GKState>'
+            '-enterState:':
+                trim_after_first_colon: true
+                parameters:
+                    stateClass:
+                        type: 'Class<? extends GKState>'
+            '+stateMachineWithStates:':
+                exclude: true
+
+protocols:
+    GKAgentDelegate: # DONE
+        methods:
+            '-agentWillUpdate:':
+                name: willUpdate
+            '-agentDidUpdate:':
+                name: didUpdate
+    GKGameModel: # DONE
+        skip_adapter: true
+        properties:
+            'players':
+                type: List<GKGameModelPlayer>
+                marshaler: NSArray.AsListMarshaler
+        methods:
+            '-gameModelUpdatesForPlayer:':
+                name: getGameModelUpdatesForPlayer
+                return_type: List<GKGameModelUpdate>
+                return_marshaler: NSArray.AsListMarshaler
+            '-applyGameModelUpdate:':
+                trim_after_first_colon: true
+            '-scoreForPlayer:':
+                name: getScoreForPlayer
+            '-isWinForPlayer:':
+                trim_after_first_colon: true
+            '-isLossForPlayer:':
+                trim_after_first_colon: true
+    GKGameModelPlayer: # DONE
+        skip_adapter: true
+    GKGameModelUpdate: # DONE
+        skip_adapter: true
+    GKRandom: # DONE
+        skip_adapter: true
+        methods:
+            '-nextIntWithUpperBound:':
+                name: nextInt
+
+functions:
+    # Make sure we don't miss any functions if new ones are introduced in a later version
+    (k?GK.*):
+        class: GameplayKit
+        name: 'Function__#{g[0]}'
+
+values:
+    # Make sure we don't miss any values if new ones are introduced in a later version
+    (k?GK.*):
+        class: GameplayKit
+        name: 'Value__#{g[0]}'
+
+constants:
+    # Make sure we don't miss any constants if new ones are introduced in a later version
+    (k?GK.*):
+        class: GameplayKit
+        name: 'Constant__#{g[0]}'

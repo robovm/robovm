@@ -52,10 +52,21 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UIAlertController() {}
     protected UIAlertController(SkipInit skipInit) { super(skipInit); }
+    public UIAlertController(String title, String message, UIAlertControllerStyle preferredStyle) { super(create(title, message, preferredStyle)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "actions")
     public native NSArray<UIAlertAction> getActions();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "preferredAction")
+    public native UIAlertAction getPreferredAction();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setPreferredAction:")
+    public native void setPreferredAction(UIAlertAction v);
     @Property(selector = "textFields")
     public native NSArray<UITextField> getTextFields();
     @Property(selector = "title")
@@ -76,6 +87,6 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "addTextFieldWithConfigurationHandler:")
     public native void addTextField(@Block VoidBlock1<UITextField> configurationHandler);
     @Method(selector = "alertControllerWithTitle:message:preferredStyle:")
-    public static native UIAlertController create(String title, String message, UIAlertControllerStyle preferredStyle);
+    protected static native @Pointer long create(String title, String message, UIAlertControllerStyle preferredStyle);
     /*</methods>*/
 }

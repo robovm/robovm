@@ -59,7 +59,7 @@ import org.robovm.apple.foundation.*;
             return NSNotificationCenter.getDefaultCenter().addObserver(DidSaveNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke(NSNotification a) {
-                    NSDictionary<NSString, NSObject> userInfo = a.getUserInfo();
+                    NSDictionary<?, ?> userInfo = a.getUserInfo();
                     NSManagedObjectContextNotification data = null;
                     if (userInfo != null) {
                         data = new NSManagedObjectContextNotification(userInfo);
@@ -75,7 +75,7 @@ import org.robovm.apple.foundation.*;
             return NSNotificationCenter.getDefaultCenter().addObserver(ObjectsDidChangeNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke(NSNotification a) {
-                    NSDictionary<NSString, NSObject> userInfo = a.getUserInfo();
+                    NSDictionary<?, ?> userInfo = a.getUserInfo();
                     NSManagedObjectContextNotification data = null;
                     if (userInfo != null) {
                         data = new NSManagedObjectContextNotification(userInfo);
@@ -134,7 +134,7 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "userInfo")
-    public native NSMutableDictionary getUserInfo();
+    public native NSMutableDictionary<?, ?> getUserInfo();
     /**
      * @since Available in iOS 5.0 and later.
      */
@@ -156,6 +156,16 @@ import org.robovm.apple.foundation.*;
     public native NSSet<NSManagedObject> getRetainsRegisteredObjects();
     @Property(selector = "setRetainsRegisteredObjects:")
     public native void setRetainsRegisteredObjects(NSSet<NSManagedObject> v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "shouldDeleteInaccessibleFaults")
+    public native boolean shouldDeleteInaccessibleFaults();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setShouldDeleteInaccessibleFaults:")
+    public native void setShouldDeleteInaccessibleFaults(boolean v);
     @Property(selector = "stalenessInterval")
     public native double getStalenessInterval();
     @Property(selector = "setStalenessInterval:")
@@ -287,6 +297,11 @@ import org.robovm.apple.foundation.*;
     @Method(selector = "save:")
     private native boolean save(NSError.NSErrorPtr error);
     /**
+     * @since Available in iOS 8.3 and later.
+     */
+    @Method(selector = "refreshAllObjects")
+    public native void refreshAllObjects();
+    /**
      * @since Available in iOS 3.0 and later.
      * @deprecated Deprecated in iOS 8.0.
      */
@@ -308,6 +323,11 @@ import org.robovm.apple.foundation.*;
     @Method(selector = "tryLock")
     public native boolean tryLock();
     /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "shouldHandleInaccessibleFault:forObjectID:triggeredByProperty:")
+    public native boolean shouldHandleInaccessibleFault(NSManagedObject fault, NSManagedObjectID oid, NSPropertyDescription property);
+    /**
      * @since Available in iOS 3.0 and later.
      */
     public boolean obtainPermanentIDsForObjects(NSArray<NSManagedObject> objects) throws NSErrorException {
@@ -326,6 +346,11 @@ import org.robovm.apple.foundation.*;
      */
     @Method(selector = "mergeChangesFromContextDidSaveNotification:")
     public native void mergeChangesFromContextDidSaveNotification(NSNotification notification);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "mergeChangesFromRemoteContextSave:intoContexts:")
+    public static native void mergeChangesFromRemoteContextSave(NSDictionary<?, ?> changeNotificationData, NSArray<NSManagedObjectContext> contexts);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder coder);
     @Method(selector = "initWithCoder:")

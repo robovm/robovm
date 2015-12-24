@@ -48,7 +48,7 @@ import org.robovm.apple.foundation.*;
             return NSNotificationCenter.getDefaultCenter().addObserver(StoresWillChangeNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke(NSNotification a) {
-                    NSDictionary<NSString, NSObject> userInfo = a.getUserInfo();
+                    NSDictionary<?, ?> userInfo = a.getUserInfo();
                     NSPersistentStoreCoordinatorChangeNotification data = null;
                     if (userInfo != null) {
                         data = new NSPersistentStoreCoordinatorChangeNotification(userInfo);
@@ -64,7 +64,7 @@ import org.robovm.apple.foundation.*;
             return NSNotificationCenter.getDefaultCenter().addObserver(StoresDidChangeNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke(NSNotification a) {
-                    NSDictionary<NSString, NSObject> userInfo = a.getUserInfo();
+                    NSDictionary<?, ?> userInfo = a.getUserInfo();
                     NSPersistentStoreCoordinatorChangeNotification data = null;
                     if (userInfo != null) {
                         data = new NSPersistentStoreCoordinatorChangeNotification(userInfo);
@@ -230,7 +230,7 @@ import org.robovm.apple.foundation.*;
     @Method(selector = "setMetadata:forPersistentStore:")
     public native void setMetadataForPersistentStore(NSPersistentStoreMetadata metadata, NSPersistentStore store);
     @Method(selector = "metadataForPersistentStore:")
-    public native NSDictionary getMetadataForPersistentStore(NSPersistentStore store);
+    public native NSDictionary<?, ?> getMetadataForPersistentStore(NSPersistentStore store);
     @Method(selector = "managedObjectIDForURIRepresentation:")
     public native NSManagedObjectID getManagedObjectIDForURIRepresentation(NSURL url);
     /**
@@ -255,6 +255,34 @@ import org.robovm.apple.foundation.*;
     }
     @Method(selector = "migratePersistentStore:toURL:options:withType:error:")
     private native NSPersistentStore migratePersistentStore(NSPersistentStore store, NSURL URL, NSPersistentStoreOptions options, String storeType, NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public boolean destroyPersistentStore(NSURL url, String storeType, NSPersistentStoreOptions options) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = destroyPersistentStore(url, storeType, options, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "destroyPersistentStoreAtURL:withType:options:error:")
+    private native boolean destroyPersistentStore(NSURL url, String storeType, NSPersistentStoreOptions options, NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public boolean replacePersistentStore(NSURL destinationURL, NSPersistentStoreOptions destinationOptions, NSURL sourceURL, NSPersistentStoreOptions sourceOptions, String storeType) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = replacePersistentStore(destinationURL, destinationOptions, sourceURL, sourceOptions, storeType, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "replacePersistentStoreAtURL:destinationOptions:withPersistentStoreFromURL:sourceOptions:storeType:error:")
+    private native boolean replacePersistentStore(NSURL destinationURL, NSPersistentStoreOptions destinationOptions, NSURL sourceURL, NSPersistentStoreOptions sourceOptions, String storeType, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 8.0 and later.
      */
@@ -290,15 +318,45 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "registeredStoreTypes")
-    public static native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSPersistentStore> getRegisteredStoreTypes();
+    public static native NSDictionary<NSString, NSPersistentStore> getRegisteredStoreTypes();
     /**
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "registerStoreClass:forStoreType:")
     public static native void registerStoreClassForType(Class<? extends NSPersistentStore> storeClass, String storeType);
     /**
-     * @since Available in iOS 3.0 and later.
+     * @since Available in iOS 7.0 and later.
      */
+    public static NSPersistentStoreMetadata getMetadataForPersistentStoreType(String storeType, NSURL url, NSPersistentStoreOptions options) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       NSPersistentStoreMetadata result = getMetadataForPersistentStoreType(storeType, url, options, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Method(selector = "metadataForPersistentStoreOfType:URL:options:error:")
+    private static native NSPersistentStoreMetadata getMetadataForPersistentStoreType(String storeType, NSURL url, NSPersistentStoreOptions options, NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static boolean setMetadataForPersistentStoreType(NSPersistentStoreMetadata metadata, String storeType, NSURL url, NSPersistentStoreOptions options) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = setMetadataForPersistentStoreType(metadata, storeType, url, options, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Method(selector = "setMetadata:forPersistentStoreOfType:URL:options:error:")
+    private static native boolean setMetadataForPersistentStoreType(NSPersistentStoreMetadata metadata, String storeType, NSURL url, NSPersistentStoreOptions options, NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 3.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     public static NSPersistentStoreMetadata getMetadataForPersistentStoreType(String storeType, NSURL url) throws NSErrorException {
        NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
        NSPersistentStoreMetadata result = getMetadataForPersistentStoreType(storeType, url, ptr);
@@ -307,12 +365,16 @@ import org.robovm.apple.foundation.*;
     }
     /**
      * @since Available in iOS 3.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @Method(selector = "metadataForPersistentStoreOfType:URL:error:")
     private static native NSPersistentStoreMetadata getMetadataForPersistentStoreType(String storeType, NSURL url, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 3.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     public static boolean setMetadataForPersistentStoreType(NSPersistentStoreMetadata metadata, String storeType, NSURL url) throws NSErrorException {
        NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
        boolean result = setMetadataForPersistentStoreType(metadata, storeType, url, ptr);
@@ -321,7 +383,9 @@ import org.robovm.apple.foundation.*;
     }
     /**
      * @since Available in iOS 3.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @Method(selector = "setMetadata:forPersistentStoreOfType:URL:error:")
     private static native boolean setMetadataForPersistentStoreType(NSPersistentStoreMetadata metadata, String storeType, NSURL url, NSError.NSErrorPtr error);
     /**

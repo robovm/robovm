@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -114,6 +115,16 @@ import org.robovm.apple.audiounit.*;
     public native AVMetadataExtraAttributes getExtraAttributes();
     @Property(selector = "setExtraAttributes:")
     public native void setExtraAttributes(AVMetadataExtraAttributes v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "startDate")
+    public native NSDate getStartDate();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setStartDate:")
+    public native void setStartDate(NSDate v);
     @Property(selector = "keySpace")
     public native AVMetadataKeySpace getKeySpace();
     @Property(selector = "setKeySpace:")
@@ -125,7 +136,6 @@ import org.robovm.apple.audiounit.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "metadataItem")
-    public static native AVMutableMetadataItem create();
+    
     /*</methods>*/
 }

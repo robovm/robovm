@@ -28,6 +28,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -36,7 +37,7 @@ import org.robovm.apple.foundation.*;
  */
 /*</javadoc>*/
 /*<annotations>*/@Library("HomeKit") @NativeClass/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/HMCharacteristicWriteAction/*</name>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/HMCharacteristicWriteAction/*</name>*/ <T extends NSObject> 
     extends /*<extends>*/HMAction/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
@@ -44,21 +45,20 @@ import org.robovm.apple.foundation.*;
     /*<bind>*/static { ObjCRuntime.bind(HMCharacteristicWriteAction.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public HMCharacteristicWriteAction() {}
     protected HMCharacteristicWriteAction(SkipInit skipInit) { super(skipInit); }
-    public HMCharacteristicWriteAction(HMCharacteristic characteristic, NSObject targetValue) { super((SkipInit) null); initObject(init(characteristic, targetValue)); }
+    public HMCharacteristicWriteAction(HMCharacteristic characteristic, T targetValue) { super((SkipInit) null); initObject(init(characteristic, targetValue)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "characteristic")
     public native HMCharacteristic getCharacteristic();
     @Property(selector = "targetValue")
-    public native NSObject getTargetValue();
+    public native T getTargetValue();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithCharacteristic:targetValue:")
-    protected native @Pointer long init(HMCharacteristic characteristic, NSObject targetValue);
+    protected native @Pointer long init(HMCharacteristic characteristic, T targetValue);
     @Method(selector = "updateTargetValue:completionHandler:")
-    public native void updateTargetValue(NSObject targetValue, @Block VoidBlock1<NSError> completion);
+    public native void updateTargetValue(T targetValue, @Block VoidBlock1<NSError> completion);
     /*</methods>*/
 }

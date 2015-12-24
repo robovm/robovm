@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -125,9 +126,13 @@ import org.robovm.apple.audiounit.*;
      * @since Available in iOS 7.0 and later.
      */
     public static final AVAudioSessionMode VideoChat = new AVAudioSessionMode("VideoChat");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final AVAudioSessionMode SpokenAudio = new AVAudioSessionMode("SpokenAudio");
     /*</constants>*/
     
-    private static /*<name>*/AVAudioSessionMode/*</name>*/[] values = new /*<name>*/AVAudioSessionMode/*</name>*/[] {/*<value_list>*/Default, VoiceChat, GameChat, VideoRecording, Measurement, MoviePlayback, VideoChat/*</value_list>*/};
+    private static /*<name>*/AVAudioSessionMode/*</name>*/[] values = new /*<name>*/AVAudioSessionMode/*</name>*/[] {/*<value_list>*/Default, VoiceChat, GameChat, VideoRecording, Measurement, MoviePlayback, VideoChat, SpokenAudio/*</value_list>*/};
     
     /*<name>*/AVAudioSessionMode/*</name>*/ (String getterName) {
         super(Values.class, getterName);
@@ -185,6 +190,11 @@ import org.robovm.apple.audiounit.*;
          */
         @GlobalValue(symbol="AVAudioSessionModeVideoChat", optional=true)
         public static native NSString VideoChat();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="AVAudioSessionModeSpokenAudio", optional=true)
+        public static native NSString SpokenAudio();
         /*</values>*/
     }
 }

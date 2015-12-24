@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -78,9 +79,9 @@ import org.robovm.apple.audiounit.*;
     @Property(selector = "sampleBufferCallbackQueue")
     public native DispatchQueue getSampleBufferCallbackQueue();
     @Property(selector = "videoSettings")
-    protected native NSDictionary getVideoSettings0();
+    protected native NSDictionary<?, ?> getVideoSettings0();
     @Property(selector = "setVideoSettings:")
-    protected native void setVideoSettings0(NSDictionary v);
+    protected native void setVideoSettings0(NSDictionary<?, ?> v);
     /**
      * @since Available in iOS 5.0 and later.
      */
@@ -119,6 +120,6 @@ import org.robovm.apple.audiounit.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "recommendedVideoSettingsForAssetWriterWithOutputFileType:")
-    protected native NSDictionary getRecommendedVideoSettings0(String outputFileType);
+    protected native NSDictionary<?, ?> getRecommendedVideoSettings0(String outputFileType);
     /*</methods>*/
 }

@@ -56,6 +56,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 3.0 and later.
      */
     public UITableViewCell(UITableViewCellStyle style, String reuseIdentifier) { super((SkipInit) null); initObject(init(style, reuseIdentifier)); }
+    public UITableViewCell(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     
     public UITableViewCell(CGRect frame) {
@@ -169,6 +170,8 @@ import org.robovm.apple.corelocation.*;
      */
     @Method(selector = "initWithStyle:reuseIdentifier:")
     protected native @Pointer long init(UITableViewCellStyle style, String reuseIdentifier);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     @Method(selector = "prepareForReuse")
     public native void prepareForReuse();
     @Method(selector = "setSelected:animated:")

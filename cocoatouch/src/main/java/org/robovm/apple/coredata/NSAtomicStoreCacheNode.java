@@ -52,9 +52,9 @@ import org.robovm.apple.foundation.*;
     @Property(selector = "objectID")
     public native NSManagedObjectID getObjectID();
     @Property(selector = "propertyCache")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject> getPropertyCache();
+    public native NSDictionary<NSString, ?> getPropertyCache();
     @Property(selector = "setPropertyCache:")
-    public native void setPropertyCache(@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject> v);
+    public native void setPropertyCache(NSDictionary<NSString, ?> v);
     /*</properties>*/
     /*<members>*//*</members>*/
     public void setValue(String key, NSObject value) {

@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -53,6 +54,10 @@ public final class /*<name>*/AVAudioSessionCategoryOptions/*</name>*/ extends Bi
     public static final AVAudioSessionCategoryOptions DuckOthers = new AVAudioSessionCategoryOptions(2L);
     public static final AVAudioSessionCategoryOptions AllowBluetooth = new AVAudioSessionCategoryOptions(4L);
     public static final AVAudioSessionCategoryOptions DefaultToSpeaker = new AVAudioSessionCategoryOptions(8L);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final AVAudioSessionCategoryOptions InterruptSpokenAudioAndMixWithOthers = new AVAudioSessionCategoryOptions(17L);
     /*</values>*/
 
     /*<bind>*/

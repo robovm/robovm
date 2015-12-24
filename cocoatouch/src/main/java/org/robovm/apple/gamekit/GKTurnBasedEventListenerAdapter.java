@@ -77,6 +77,11 @@ import org.robovm.apple.uikit.*;
     @NotImplemented("player:receivedExchangeReplies:forCompletedExchange:forMatch:")
     public void receivedExchangeReplies(GKPlayer player, NSArray<GKTurnBasedExchange> replies, GKTurnBasedExchange exchange, GKTurnBasedMatch match) {}
     /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @NotImplemented("player:wantsToQuitMatch:")
+    public void wantsToQuitMatch(GKPlayer player, GKTurnBasedMatch match) {}
+    /**
      * @since Available in iOS 7.0 and later.
      * @deprecated Deprecated in iOS 8.0.
      */

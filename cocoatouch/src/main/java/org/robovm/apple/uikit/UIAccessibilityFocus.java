@@ -67,6 +67,11 @@ import org.robovm.apple.corelocation.*;
      */
     @Method(selector = "accessibilityElementIsFocused")
     boolean isFocused();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "accessibilityAssistiveTechnologyFocusedIdentifiers")
+    @org.robovm.rt.bro.annotation.Marshaler(NSSet.AsStringSetMarshaler.class) Set<String> getAssistiveTechnologyFocusedIdentifiers();
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

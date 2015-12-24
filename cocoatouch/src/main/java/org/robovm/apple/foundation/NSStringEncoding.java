@@ -62,11 +62,11 @@ public enum /*<name>*/NSStringEncoding/*</name>*/ implements ValuedEnum {
     ISO2022JP(21L),
     MacOSRoman(30L),
     UTF16(10L),
-    UTF16BigEndian(-1879047936L),
-    UTF16LittleEndian(-1811939072L),
-    UTF32(-1946156800L),
-    UTF32BigEndian(-1744830208L),
-    UTF32LittleEndian(-1677721344L),
+    UTF16BigEndian(2415919360L),
+    UTF16LittleEndian(2483028224L),
+    UTF32(2348810496L),
+    UTF32BigEndian(2550137088L),
+    UTF32LittleEndian(2617245952L),
     Proprietary(65536L);
     /*</values>*/
 

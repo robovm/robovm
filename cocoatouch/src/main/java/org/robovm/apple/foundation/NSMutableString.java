@@ -58,6 +58,12 @@ import org.robovm.apple.dispatch.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public boolean applyTransform(NSStringTransform transform, boolean reverse, NSRange range, NSRange resultingRange) {
+        return applyTransform(transform.value().toString(), reverse, range, resultingRange);
+    }
     /*<methods>*/
     @Method(selector = "replaceCharactersInRange:withString:")
     public native void replaceCharacters(@ByVal NSRange range, String aString);
@@ -69,9 +75,14 @@ import org.robovm.apple.dispatch.*;
     public native void append(String aString);
     @Method(selector = "setString:")
     public native void setString(String aString);
-    @Method(selector = "initWithCapacity:")
-    protected native @Pointer long init(@MachineSizedUInt long capacity);
     @Method(selector = "replaceOccurrencesOfString:withString:options:range:")
     public native @MachineSizedUInt long replaceAll(String target, String replacement, NSStringCompareOptions options, @ByVal NSRange searchRange);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "applyTransform:reverse:range:updatedRange:")
+    public native boolean applyTransform(String transform, boolean reverse, @ByVal NSRange range, NSRange resultingRange);
+    @Method(selector = "initWithCapacity:")
+    protected native @Pointer long init(@MachineSizedUInt long capacity);
     /*</methods>*/
 }

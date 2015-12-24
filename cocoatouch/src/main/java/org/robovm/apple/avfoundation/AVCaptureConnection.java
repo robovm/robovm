@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -216,15 +217,5 @@ import org.robovm.apple.audiounit.*;
      */
     @Method(selector = "initWithInputPort:videoPreviewLayer:")
     protected native @Pointer long init(AVCaptureInputPort port, AVCaptureVideoPreviewLayer layer);
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @Method(selector = "connectionWithInputPorts:output:")
-    public static native AVCaptureConnection create(NSArray<AVCaptureInputPort> ports, AVCaptureOutput output);
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @Method(selector = "connectionWithInputPort:videoPreviewLayer:")
-    public static native AVCaptureConnection create(AVCaptureInputPort port, AVCaptureVideoPreviewLayer layer);
     /*</methods>*/
 }

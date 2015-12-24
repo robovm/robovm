@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -55,6 +56,10 @@ import org.robovm.apple.audiounit.*;
     /*<constructors>*/
     public AVMetadataItem() {}
     protected AVMetadataItem(SkipInit skipInit) { super(skipInit); }
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public AVMetadataItem(AVMetadataItem metadataItem, @Block VoidBlock1<AVMetadataItemValueRequest> handler) { super(create(metadataItem, handler)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     /**
@@ -85,6 +90,11 @@ import org.robovm.apple.audiounit.*;
     public native NSObject getValue();
     @Property(selector = "extraAttributes")
     public native AVMetadataExtraAttributes getExtraAttributes();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "startDate")
+    public native NSDate getStartDate();
     @Property(selector = "stringValue")
     public native String getStringValue();
     @Property(selector = "numberValue")
@@ -151,6 +161,11 @@ import org.robovm.apple.audiounit.*;
      */
     @Method(selector = "keyForIdentifier:")
     public static native AVMetadataKey getKeyForIdentifier(AVMetadataIdentifier identifier);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "metadataItemWithPropertiesOfMetadataItem:valueLoadingHandler:")
+    protected static native @Pointer long create(AVMetadataItem metadataItem, @Block VoidBlock1<AVMetadataItemValueRequest> handler);
     @Method(selector = "metadataItemsFromArray:withLocale:")
     public static native NSArray<AVMetadataItem> filterMetadataItemsByLocale(NSArray<AVMetadataItem> metadataItems, NSLocale locale);
     @Method(selector = "metadataItemsFromArray:withKey:keySpace:")

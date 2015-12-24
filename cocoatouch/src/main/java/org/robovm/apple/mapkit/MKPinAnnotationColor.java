@@ -37,7 +37,9 @@ import org.robovm.apple.dispatch.*;
 /*<javadoc>*/
 /**
  * @since Available in iOS 3.0 and later.
+ * @deprecated Deprecated in iOS 9.0.
  */
+@Deprecated
 /*</javadoc>*/
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/MKPinAnnotationColor/*</name>*/ implements ValuedEnum {

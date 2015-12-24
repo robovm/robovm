@@ -82,7 +82,5 @@ import org.robovm.apple.metal.*;
     /*<methods>*/
     @Method(selector = "nextDrawable")
     public native CAMetalDrawable nextDrawable();
-    @Method(selector = "newDrawable")
-    public native CAMetalDrawable newDrawable();
     /*</methods>*/
 }

@@ -1,0 +1,395 @@
+package: org.robovm.apple.modelio
+include: [foundation.yaml, coregraphics.yaml]
+library: ModelIO
+framework: ModelIO
+clang_args: ['-x', 'objective-c']
+headers:
+    - /System/Library/Frameworks/ModelIO.framework/Headers/ModelIO.h
+typedefs: {}
+    
+enums:
+    MDLLightType: {}
+    MDLGeometryType: {prefix: MDLGeometryType, ignore: '.*Kind.*'}
+    MDLIndexBitDepth: {}
+    MDLMaterialMipMapFilterMode: {}
+    MDLMaterialPropertyType: {}
+    MDLMaterialSemantic: {}
+    MDLMaterialTextureFilterMode: {}
+    MDLMaterialTextureWrapMode: {}
+    MDLMeshBufferType: {}
+    MDLTextureChannelEncoding: {}
+    MDLVertexFormat: {}
+        
+classes:
+    # Structs
+    MDLAxisAlignedBoundingBox: {} # DONE
+    MDLVoxelIndexExtent: {} # DONE
+
+    MDLAreaLight: {} # DONE
+    MDLAsset: # DONE
+        methods:
+            '-initWithURL:vertexDescriptor:bufferAllocator:preserveTopology:error:':
+                name: init
+                throws: NSErrorException
+            '-init.*':
+                name: init
+            '-exportAssetToURL:':
+                exclude: true
+            '-exportAssetToURL:error:':
+                name: export
+                throws: NSErrorException
+            '-boundingBoxAtTime:':
+                name: getBoundingBox
+            '-addObject:':
+                trim_after_first_colon: true
+            '-removeObject:':
+                trim_after_first_colon: true
+            '-objectAtIndexedSubscript:':
+                exclude: true
+            '-objectAtIndex:':
+                name: getObject
+            '+canImportFileExtension:':
+                trim_after_first_colon: true
+            '+canExportFileExtension:':
+                trim_after_first_colon: true
+    MDLCamera: # DONE
+        methods:
+            '-frameBoundingBox:setNearAndFar:':
+                trim_after_first_colon: true
+            '-lookAt.*':
+                trim_after_first_colon: true
+            '-rayTo:forViewPort:':
+                trim_after_first_colon: true
+            '-bokehKernelWithSize:':
+                name: newBokehKernel
+    MDLCheckerboardTexture: # DONE
+        methods:
+            '-init.*':
+                name: init
+    MDLColorSwatchTexture: # DONE
+        methods:
+            '-init.*':
+                name: init
+    MDLLight: # DONE
+        methods:
+            '-irradianceAtPoint:.*':
+                name: getIrradiance
+    MDLLightProbe: # DONE
+        methods:
+            '-initWithReflectiveTexture:irradianceTexture:':
+                name: init
+            '-generateSphericalHarmonicsFromIrradiance:':
+                name: generateSphericalHarmonics
+            '+lightProbeWithTextureSize:forLocation:lightsToConsider:objectsToConsider:reflectiveCubemap:irradianceCubemap:':
+                exclude: true
+    MDLMaterial: # DONE
+        methods:
+            '-init.*':
+                name: init
+            '-removeProperty:':
+                trim_after_first_colon: true
+            '-propertyNamed:':
+                name: getProperty
+            '-propertyWithSemantic:':
+                name: getProperty
+            '-objectAtIndexedSubscript:':
+                name: getProperty
+            '-objectForKeyedSubscript:':
+                exclude: true
+    MDLMaterialProperty: # DONE
+        methods:
+            '-init.*':
+                name: init
+    MDLMesh: # DONE
+        properties:
+            'submeshes':
+                type: NSMutableArray<MDLSubmesh>
+        methods:
+            '-initWithVertexBuffer:vertexCount:descriptor:submeshes:':
+                name: init
+                parameters:
+                    submeshes:
+                        type: NSMutableArray<MDLSubmesh>
+            '-initWithVertexBuffers:vertexCount:descriptor:submeshes:':
+                name: init
+                parameters:
+                    vertexBuffers:
+                        type: List<MDLMeshBuffer>
+                        marshaler: NSArray.AsListMarshaler
+                    submeshes:
+                        type: NSMutableArray<MDLSubmesh>
+            '-vertexAttributeDataForAttributeNamed:':
+                name: getVertexAttributeData
+            '-addAttributeWithName:format:':
+                name: addAttribute
+            '-addNormalsWithAttributeNamed:creaseThreshold:':
+                name: addNormals
+            '-addTangentBasisForTextureCoordinateAttributeNamed:tangentAttributeNamed:bitangentAttributeNamed:':
+                name: addTangentBasis
+            '-addTangentBasisForTextureCoordinateAttributeNamed:normalAttributeNamed:tangentAttributeNamed:':
+                name: addTangentBasisWithNormals
+            '+newBoxWithDimensions:segments:geometryType:inwardNormals:allocator:':
+                name: newBox
+            '+newEllipsoidWithRadii:radialSegments:verticalSegments:geometryType:inwardNormals:hemisphere:allocator:':
+                name: newEllipsoid
+            '+newCylinderWithHeight:radii:radialSegments:verticalSegments:geometryType:inwardNormals:allocator:':
+                name: newCylinder
+            '+newEllipticalConeWithHeight:radii:radialSegments:verticalSegments:geometryType:inwardNormals:allocator:':
+                name: newEllipticalCone
+            '+newPlaneWithDimensions:segments:geometryType:allocator:':
+                name: newPlane
+            '+newIcosahedronWithRadius:inwardNormals:allocator:':
+                name: newIcosahedron
+            '+newSubdividedMesh:submeshIndex:subdivisionLevels:':
+                trim_after_first_colon: true
+            '-generateAmbientOcclusionTexture.*':
+                name: generateAmbientOcclusionTexture
+                parameters:
+                    objectsToConsider:
+                        type: NSArray<MDLObject>
+            '-generateAmbientOcclusionVertexColors.*':
+                name: generateAmbientOcclusionVertexColors
+                parameters:
+                    objectsToConsider:
+                        type: NSArray<MDLObject>
+            '-generateLightMapTexture.*':
+                name: generateLightMapTexture
+                parameters:
+                    objectsToConsider:
+                        type: NSArray<MDLObject>
+                    lightsToConsider:
+                        type: NSArray<MDLLight>
+            '-generateLightMapVertexColorsWithLightsToConsider:objectsToConsider:vertexAttributeNamed:':
+                name: generateLightMapVertexColors
+                parameters:
+                    objectsToConsider:
+                        type: NSArray<MDLObject>
+                    lightsToConsider:
+                        type: NSArray<MDLLight>            
+    MDLMeshBufferData: # DONE
+        methods:
+            '-init.*':
+                name: init
+    MDLMeshBufferDataAllocator: {} # DONE
+    MDLMeshBufferMap: # DONE
+        properties:
+            'bytes':
+                type: '@Pointer long'
+        methods:
+            '-initWithBytes:deallocator:':
+                name: init
+                parameters:
+                    bytes:
+                        type: '@Pointer long'
+    MDLMeshBufferZoneDefault: {} # DONE
+    MDLNoiseTexture: # DONE
+        methods:
+            '-init.*':
+                name: init
+    MDLNormalMapTexture: # DONE
+        methods:
+            '-init.*':
+                name: init
+    MDLObject: # DONE
+        methods:
+            '-setComponent:forProtocol:':
+                name: setComponent
+            '-componentConformingToProtocol:':
+                name: getComponent
+            '-addChild:':
+                trim_after_first_colon: true
+            '-boundingBoxAtTime:':
+                name: getBoundingBox
+    MDLObjectContainer: {} # DONE
+    MDLPhotometricLight: # DONE
+        methods:
+            '-initWithIESProfile:':
+                name: init
+            '-generateSphericalHarmonicsFromLight:':
+                name: generateSphericalHarmonics
+            '-generateCubemapFromLight:':
+                name: generateCubemap
+    MDLPhysicallyPlausibleLight: {} # DONE
+    MDLPhysicallyPlausibleScatteringFunction: {} # DONE
+    MDLScatteringFunction: {} # DONE
+    MDLSkyCubeTexture: # DONE
+        methods:
+            '-init.*':
+                name: init
+    MDLStereoscopicCamera: {} # DONE
+    MDLSubmesh: # DONE
+        methods:
+            '-init.*':
+                name: init
+    MDLSubmeshTopology: {} # DONE
+    MDLTexture: # DONE
+        methods:
+            '-initWithData:topLeftOrigin:name:dimensions:rowStride:channelCount:channelEncoding:isCube:':
+                name: init
+            '-writeToURL.*':
+                name: write
+                parameters:
+                    type:
+                        type: String
+            '-imageFromTexture':
+                name: getImage
+            '-texelDataWithTopLeftOrigin.*':
+                name: getTexelDataWithTopLeftOrigin
+            '-texelDataWithBottomLeftOrigin.*':
+                name: getTexelDataWithBottomLeftOrigin
+            '+textureNamed.*':
+                name: create
+                constructor: true
+            '+textureCubeWithImagesNamed.*':
+                name: newTextureCube
+                parameters:
+                    names:
+                        type: List<String>
+                        marshaler: NSArray.AsStringListMarshaler
+            '+irradianceTextureCube.*':
+                name: newIrradianceTextureCube
+    MDLTextureFilter: {} # DONE
+    MDLTextureSampler: {} # DONE
+    MDLTransform: # DONE
+        methods:
+            '-initWithIdentity':
+                constructor: false
+            '-init.*':
+                name: init
+            '-translationAtTime:':
+                name: getTranslation
+            '-rotationAtTime:':
+                name: getRotation
+            '-shearAtTime:':
+                name: getShear
+            '-scaleAtTime:':
+                name: getScale
+            '-set.*':
+                trim_after_first_colon: true
+            '-rotationMatrixAtTime:':
+                name: getRotationMatrix
+    MDLURLTexture: # DONE
+        methods:
+            '-init.*':
+                name: init
+    MDLVertexAttribute: # DONE
+        methods:
+            '-init.*':
+                name: init
+    MDLVertexAttributeData: {} # DONE
+    MDLVertexBufferLayout: {} # DONE
+    MDLVertexDescriptor: # DONE
+        properties:
+            'attributes':
+                type: NSMutableArray<MDLVertexAttribute>
+            'layouts':
+                type: NSMutableArray<MDLVertexBufferLayout>
+        methods:
+            '-initWithVertexDescriptor:':
+                name: init
+            '-attributeNamed:':
+                name: getAttribute
+            '-addOrReplaceAttribute:':
+                trim_after_first_colon: true
+    MDLVoxelArray: # DONE
+        methods:
+            '-init.*':
+                name: init
+            '-meshUsingAllocator:':
+                name: getMesh
+            '-voxelExistsAtIndex:allowAnyX:allowAnyY:allowAnyZ:allowAnyShell:':
+                name: voxelExists
+            '-setVoxelAtIndex:':
+                name: setVoxel
+            '-setVoxels.*':
+                name: setVoxels
+            '-voxelsWithinExtent:':
+                name: getVoxelsWithinExtent
+            '-voxelIndices':
+                property: true
+            '-unionWithVoxels:':
+                name: union
+            '-differenceWithVoxels:':
+                name: difference
+            '-intersectWithVoxels:':
+                name: intersect
+            '-indexOfSpatialLocation:':
+                name: indexOfSpatialLocation
+            '-spatialLocationOfIndex:':
+                name: getSpatialLocation
+            '-voxelBoundingBoxAtIndex:':
+                name: getVoxelBoundingBox
+
+protocols:
+    MDLComponent: # DONE
+        skip_adapter: true
+    MDLMeshBuffer: # DONE
+        skip_adapter: true
+        methods:
+            '-fillData:offset:':
+                name: fill
+            '-map':
+                property: true
+    MDLMeshBufferAllocator: # DONE
+        skip_adapter: true
+        methods:
+            '-newZone:':
+                trim_after_first_colon: true
+            '-newZoneForBuffersWithSize:andType:':
+                name: newZone
+                parameters:
+                    sizes:
+                        type: List<Integer>
+                        marshaler: NSArray.AsIntegerListMarshaler
+                    types:
+                        type: List<MDLMeshBufferType>
+                        marshaler: MDLMeshBufferType.AsListMarshaler
+            '-newBuffer.*':
+                name: newBuffer
+    MDLMeshBufferZone: # DONE
+        skip_adapter: true
+    MDLNamed: # DONE
+        skip_adapter: true
+    MDLObjectContainerComponent: # DONE
+        skip_adapter: true
+        properties:
+            'objects':
+                type: NSArray<MDLObject>
+        methods:
+            '-addObject:':
+                trim_after_first_colon: true
+            '-removeObject:':
+                trim_after_first_colon: true
+    MDLTransformComponent: # DONE
+        skip_adapter: true
+        methods:
+            '-setLocalTransform.*':
+                trim_after_first_colon: true
+            '-localTransformAtTime:':
+                name: getLocalTransform
+            '+globalTransformWithObject:atTime:':
+                name: getGlobalTransform
+                exclude: true
+
+functions:
+    # Make sure we don't miss any functions if new ones are introduced in a later version
+    (k?MDL.*):
+        class: ModelIO
+        name: 'Function__#{g[0]}'
+
+values:
+    MDLVertexAttribute(.*):
+        enum: MDLVertexAttributeName
+        name: '#{g[0]}'
+        type: NSString
+
+    # Make sure we don't miss any values if new ones are introduced in a later version
+    (k?MDL.*):
+        class: ModelIO
+        name: 'Value__#{g[0]}'
+
+constants:
+    # Make sure we don't miss any constants if new ones are introduced in a later version
+    (k?MDL.*):
+        class: ModelIO
+        name: 'Constant__#{g[0]}'

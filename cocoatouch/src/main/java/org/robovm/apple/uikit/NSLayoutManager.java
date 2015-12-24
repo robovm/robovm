@@ -52,7 +52,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public NSLayoutManager() {}
     protected NSLayoutManager(SkipInit skipInit) { super(skipInit); }
-    public NSLayoutManager(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
+    public NSLayoutManager(NSCoder coder) { super((SkipInit) null); initObject(init(coder)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "textStorage")
@@ -81,10 +81,19 @@ import org.robovm.apple.corelocation.*;
     public native boolean usesFontLeading();
     @Property(selector = "setUsesFontLeading:")
     public native void setUsesFontLeading(boolean v);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Property(selector = "allowsNonContiguousLayout")
     public native boolean allowsNonContiguousLayout();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Property(selector = "setAllowsNonContiguousLayout:")
     public native void setAllowsNonContiguousLayout(boolean v);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Property(selector = "hasNonContiguousLayout")
     public native boolean hasNonContiguousLayout();
     @Property(selector = "numberOfGlyphs")
@@ -124,6 +133,8 @@ import org.robovm.apple.corelocation.*;
 
     
     /*<methods>*/
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder coder);
     @Method(selector = "addTextContainer:")
     public native void addTextContainer(NSTextContainer container);
     @Method(selector = "insertTextContainer:atIndex:")
@@ -134,12 +145,18 @@ import org.robovm.apple.corelocation.*;
     public native void textContainerChangedGeometry(NSTextContainer container);
     @Method(selector = "invalidateGlyphsForCharacterRange:changeInLength:actualCharacterRange:")
     public native void invalidateGlyphs(@ByVal NSRange charRange, @MachineSizedSInt long delta, NSRange actualCharRange);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "invalidateLayoutForCharacterRange:actualCharacterRange:")
     public native void invalidateLayout(@ByVal NSRange charRange, NSRange actualCharRange);
     @Method(selector = "invalidateDisplayForCharacterRange:")
     public native void invalidateDisplayForCharacterRange(@ByVal NSRange charRange);
     @Method(selector = "invalidateDisplayForGlyphRange:")
     public native void invalidateDisplayForGlyphRange(@ByVal NSRange glyphRange);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "processEditingForTextStorage:edited:range:changeInLength:invalidatedRange:")
     public native void processEditing(NSTextStorage textStorage, NSTextStorageEditActions editMask, @ByVal NSRange newCharRange, @MachineSizedSInt long delta, @ByVal NSRange invalidatedCharRange);
     @Method(selector = "ensureGlyphsForCharacterRange:")
@@ -154,20 +171,25 @@ import org.robovm.apple.corelocation.*;
     public native void ensureLayoutForTextContainer(NSTextContainer container);
     @Method(selector = "ensureLayoutForBoundingRect:inTextContainer:")
     public native void ensureLayoutForBoundingRect(@ByVal CGRect bounds, NSTextContainer container);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "setGlyphs:properties:characterIndexes:font:forGlyphRange:")
     public native void setGlyphs(ShortPtr glyphs, MachineSizedSIntPtr props, MachineSizedUIntPtr charIndexes, UIFont aFont, @ByVal NSRange glyphRange);
-    @Method(selector = "glyphAtIndex:isValidIndex:")
-    public native short getGlyph(@MachineSizedUInt long glyphIndex, BooleanPtr isValidIndex);
-    @Method(selector = "glyphAtIndex:")
-    public native short getGlyph(@MachineSizedUInt long glyphIndex);
     @Method(selector = "isValidGlyphIndex:")
     public native boolean isValidGlyphIndex(@MachineSizedUInt long glyphIndex);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "propertyForGlyphAtIndex:")
     public native NSGlyphProperty getPropertyForGlyph(@MachineSizedUInt long glyphIndex);
     @Method(selector = "characterIndexForGlyphAtIndex:")
     public native @MachineSizedUInt long getCharacterIndexForGlyph(@MachineSizedUInt long glyphIndex);
     @Method(selector = "glyphIndexForCharacterAtIndex:")
     public native @MachineSizedUInt long getGlyphIndexForCharacter(@MachineSizedUInt long charIndex);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "getGlyphsInRange:glyphs:properties:characterIndexes:bidiLevels:")
     public native @MachineSizedUInt long getGlyphs(@ByVal NSRange glyphRange, ShortPtr glyphBuffer, MachineSizedSIntPtr props, MachineSizedUIntPtr charIndexBuffer, BytePtr bidiLevelBuffer);
     @Method(selector = "setTextContainer:forGlyphRange:")
@@ -192,12 +214,27 @@ import org.robovm.apple.corelocation.*;
     public native @MachineSizedUInt long getFirstUnlaidGlyphIndex();
     @Method(selector = "textContainerForGlyphAtIndex:effectiveRange:")
     public native NSTextContainer getTextContainer(@MachineSizedUInt long glyphIndex, NSRange effectiveGlyphRange);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "textContainerForGlyphAtIndex:effectiveRange:withoutAdditionalLayout:")
+    public native NSTextContainer getTextContainer(@MachineSizedUInt long glyphIndex, NSRange effectiveGlyphRange, boolean withoutAdditionalLayout);
     @Method(selector = "usedRectForTextContainer:")
     public native @ByVal CGRect getUsedRectForTextContainer(NSTextContainer container);
     @Method(selector = "lineFragmentRectForGlyphAtIndex:effectiveRange:")
     public native @ByVal CGRect getLineFragmentRect(@MachineSizedUInt long glyphIndex, NSRange effectiveGlyphRange);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "lineFragmentRectForGlyphAtIndex:effectiveRange:withoutAdditionalLayout:")
+    public native @ByVal CGRect getLineFragmentRect(@MachineSizedUInt long glyphIndex, NSRange effectiveGlyphRange, boolean withoutAdditionalLayout);
     @Method(selector = "lineFragmentUsedRectForGlyphAtIndex:effectiveRange:")
     public native @ByVal CGRect getLineFragmentUsedRect(@MachineSizedUInt long glyphIndex, NSRange effectiveGlyphRange);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "lineFragmentUsedRectForGlyphAtIndex:effectiveRange:withoutAdditionalLayout:")
+    public native @ByVal CGRect getLineFragmentUsedRect(@MachineSizedUInt long glyphIndex, NSRange effectiveGlyphRange, boolean withoutAdditionalLayout);
     @Method(selector = "locationForGlyphAtIndex:")
     public native @ByVal CGPoint getLocation(@MachineSizedUInt long glyphIndex);
     @Method(selector = "notShownAttributeForGlyphAtIndex:")
@@ -206,6 +243,9 @@ import org.robovm.apple.corelocation.*;
     public native boolean getDrawsOutsideLineFragment(@MachineSizedUInt long glyphIndex);
     @Method(selector = "attachmentSizeForGlyphAtIndex:")
     public native @ByVal CGSize getAttachmentSize(@MachineSizedUInt long glyphIndex);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "truncatedGlyphRangeInLineFragmentForGlyphAtIndex:")
     public native @ByVal NSRange getTruncatedGlyphRangeInLineFragment(@MachineSizedUInt long glyphIndex);
     @Method(selector = "glyphRangeForCharacterRange:actualCharacterRange:")
@@ -232,16 +272,28 @@ import org.robovm.apple.corelocation.*;
     public native @MachineSizedUInt long getCharacterIndexForPoint(@ByVal CGPoint point, NSTextContainer container, MachineSizedFloatPtr partialFraction);
     @Method(selector = "getLineFragmentInsertionPointsForCharacterAtIndex:alternatePositions:inDisplayOrder:positions:characterIndexes:")
     public native @MachineSizedUInt long getLineFragmentInsertionPoints(@MachineSizedUInt long charIndex, boolean aFlag, boolean dFlag, MachineSizedFloatPtr positions, MachineSizedUIntPtr charIndexes);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "enumerateLineFragmentsForGlyphRange:usingBlock:")
     public native void enumerateLineFragments(@ByVal NSRange glyphRange, @Block("(@ByVal, @ByVal, , @ByVal, )") VoidBlock5<CGRect, CGRect, NSTextContainer, NSRange, BytePtr> block);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "enumerateEnclosingRectsForGlyphRange:withinSelectedGlyphRange:inTextContainer:usingBlock:")
     public native void enumerateEnclosingRects(@ByVal NSRange glyphRange, @ByVal NSRange selectedRange, NSTextContainer textContainer, @Block("(@ByVal, )") VoidBlock2<CGRect, BytePtr> block);
     @Method(selector = "drawBackgroundForGlyphRange:atPoint:")
     public native void drawBackground(@ByVal NSRange glyphsToShow, @ByVal CGPoint origin);
     @Method(selector = "drawGlyphsForGlyphRange:atPoint:")
     public native void drawGlyphs(@ByVal NSRange glyphsToShow, @ByVal CGPoint origin);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "showCGGlyphs:positions:count:font:matrix:attributes:inContext:")
-    protected native void showCGGlyphs(@Pointer long glyphs, CGPoint positions, @MachineSizedUInt long glyphCount, UIFont font, @ByVal CGAffineTransform textMatrix, NSDictionary attributes, CGContext graphicsContext);
+    protected native void showCGGlyphs(@Pointer long glyphs, CGPoint positions, @MachineSizedUInt long glyphCount, UIFont font, @ByVal CGAffineTransform textMatrix, NSDictionary<?, ?> attributes, CGContext graphicsContext);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "fillBackgroundRectArray:count:forCharacterRange:color:")
     protected native void fillBackground(CGRect rectArray, @MachineSizedUInt long rectCount, @ByVal NSRange charRange, UIColor color);
     @Method(selector = "drawUnderlineForGlyphRange:underlineType:baselineOffset:lineFragmentRect:lineFragmentGlyphRange:containerOrigin:")
@@ -252,9 +304,11 @@ import org.robovm.apple.corelocation.*;
     public native void drawStrikethrough(@ByVal NSRange glyphRange, NSUnderlineStyle strikethroughVal, @MachineSizedFloat double baselineOffset, @ByVal CGRect lineRect, @ByVal NSRange lineGlyphRange, @ByVal CGPoint containerOrigin);
     @Method(selector = "strikethroughGlyphRange:strikethroughType:lineFragmentRect:lineFragmentGlyphRange:containerOrigin:")
     public native void strikethrough(@ByVal NSRange glyphRange, NSUnderlineStyle strikethroughVal, @ByVal CGRect lineRect, @ByVal NSRange lineGlyphRange, @ByVal CGPoint containerOrigin);
+    @Method(selector = "glyphAtIndex:isValidIndex:")
+    public native short getGlyph(@MachineSizedUInt long glyphIndex, BooleanPtr isValidIndex);
+    @Method(selector = "glyphAtIndex:")
+    public native short getGlyph(@MachineSizedUInt long glyphIndex);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder coder);
-    @Method(selector = "initWithCoder:")
-    protected native @Pointer long init(NSCoder aDecoder);
     /*</methods>*/
 }

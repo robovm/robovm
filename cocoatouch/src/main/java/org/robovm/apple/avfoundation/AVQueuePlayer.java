@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -77,7 +78,5 @@ import org.robovm.apple.audiounit.*;
     public native void removeItem(AVPlayerItem item);
     @Method(selector = "removeAllItems")
     public native void removeAllItems();
-    @Method(selector = "queuePlayerWithItems:")
-    public static native AVQueuePlayer create(NSArray<AVPlayerItem> items);
     /*</methods>*/
 }

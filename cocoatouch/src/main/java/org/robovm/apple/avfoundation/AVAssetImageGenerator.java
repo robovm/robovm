@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -124,7 +125,5 @@ import org.robovm.apple.audiounit.*;
     public native void generateCGImagesAsynchronously(@org.robovm.rt.bro.annotation.Marshaler(CMTime.AsValuedListMarshaler.class) List<CMTime> requestedTimes, @Block VoidBlock5<CMTime, CGImage, CMTime, AVAssetImageGeneratorResult, NSError> handler);
     @Method(selector = "cancelAllCGImageGeneration")
     public native void cancelAllCGImageGeneration();
-    @Method(selector = "assetImageGeneratorWithAsset:")
-    public static native AVAssetImageGenerator create(AVAsset asset);
     /*</methods>*/
 }

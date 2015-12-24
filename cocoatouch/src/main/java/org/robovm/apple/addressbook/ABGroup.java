@@ -86,36 +86,75 @@ import org.robovm.apple.corefoundation.*;
         return this;
     }
     /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Bridge(symbol="ABGroupCreate", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(ABRecord.NoRetainMarshaler.class) ABGroup create();
     /**
-     * @since Available in iOS 4.0 and later.
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @Bridge(symbol="ABGroupCreateInSource", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(ABRecord.NoRetainMarshaler.class) ABGroup create(ABSource source);
     /**
-     * @since Available in iOS 4.0 and later.
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @Bridge(symbol="ABGroupCopySource", optional=true)
     public native @org.robovm.rt.bro.annotation.Marshaler(ABRecord.NoRetainMarshaler.class) ABSource getSource();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Bridge(symbol="ABGroupCopyArrayOfAllMembers", optional=true)
     public native @org.robovm.rt.bro.annotation.Marshaler(ABPerson.AsListMarshaler.class) List<ABPerson> getAllMembers();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Bridge(symbol="ABGroupCopyArrayOfAllMembersWithSortOrdering", optional=true)
     public native @org.robovm.rt.bro.annotation.Marshaler(ABPerson.AsListMarshaler.class) List<ABPerson> getAllMembers(ABPersonSortOrdering sortOrdering);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     public boolean addMember(ABPerson person) throws NSErrorException {
        NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
        boolean result = addMember(person, ptr);
        if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
        return result;
     }
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Bridge(symbol="ABGroupAddMember", optional=true)
     private native boolean addMember(ABPerson person, NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     public boolean removeMember(ABPerson member) throws NSErrorException {
        NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
        boolean result = removeMember(member, ptr);
        if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
        return result;
     }
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Bridge(symbol="ABGroupRemoveMember", optional=true)
     private native boolean removeMember(ABPerson member, NSError.NSErrorPtr error);
     /*</methods>*/

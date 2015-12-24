@@ -92,6 +92,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
     public static final String IBOUTLET = "L" + OBJC_ANNOTATIONS_PACKAGE + "/IBOutlet;";
     public static final String IBOUTLETCOLLECTION = "L" + OBJC_ANNOTATIONS_PACKAGE + "/IBOutletCollection;";
     public static final String NATIVE_CLASS = "L" + OBJC_ANNOTATIONS_PACKAGE + "/NativeClass;";
+    public static final String NATIVE_PROTOCOL_PROXY = "L" + OBJC_ANNOTATIONS_PACKAGE + "/NativeProtocolProxy;";
     public static final String TYPE_ENCODING = "L" + OBJC_ANNOTATIONS_PACKAGE + "/TypeEncoding;";
     public static final String SELECTOR = "org.robovm.objc.Selector";
     public static final String OBJC_SUPER = "org.robovm.objc.ObjCSuper";
@@ -491,7 +492,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
     }
 
     private boolean isCustomClass(SootClass cls) {
-        return !hasAnnotation(cls, NATIVE_CLASS) && isNSObject(cls.getType());
+        return !hasAnnotation(cls, NATIVE_CLASS) && !hasAnnotation(cls, NATIVE_PROTOCOL_PROXY) && isNSObject(cls.getType());
     }
 
     @Override

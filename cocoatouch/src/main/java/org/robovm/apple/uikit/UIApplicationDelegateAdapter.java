@@ -100,13 +100,25 @@ import org.robovm.apple.corelocation.*;
     public void didBecomeActive(UIApplication application) {}
     @NotImplemented("applicationWillResignActive:")
     public void willResignActive(UIApplication application) {}
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @NotImplemented("application:handleOpenURL:")
     public boolean handleOpenURL(UIApplication application, NSURL url) { return false; }
     /**
      * @since Available in iOS 4.2 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @NotImplemented("application:openURL:sourceApplication:annotation:")
     public boolean openURL(UIApplication application, NSURL url, String sourceApplication, NSPropertyList annotation) { return false; }
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @NotImplemented("application:openURL:options:")
+    public boolean openURL(UIApplication app, NSURL url, UIApplicationOpenURLOptions options) { return false; }
     @NotImplemented("applicationWillTerminate:")
     public void willTerminate(UIApplication application) {}
     @NotImplemented("applicationSignificantTimeChange:")
@@ -150,10 +162,20 @@ import org.robovm.apple.corelocation.*;
     @NotImplemented("application:handleActionWithIdentifier:forLocalNotification:completionHandler:")
     public void handleLocalNotificationAction(UIApplication application, String identifier, UILocalNotification notification, @Block Runnable completionHandler) {}
     /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @NotImplemented("application:handleActionWithIdentifier:forRemoteNotification:withResponseInfo:completionHandler:")
+    public void handleRemoteNotificationAction(UIApplication application, String identifier, UIRemoteNotification userInfo, NSDictionary<?, ?> responseInfo, @Block Runnable completionHandler) {}
+    /**
      * @since Available in iOS 8.0 and later.
      */
     @NotImplemented("application:handleActionWithIdentifier:forRemoteNotification:completionHandler:")
     public void handleRemoteNotificationAction(UIApplication application, String identifier, UIRemoteNotification userInfo, @Block Runnable completionHandler) {}
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @NotImplemented("application:handleActionWithIdentifier:forLocalNotification:withResponseInfo:completionHandler:")
+    public void handleLocalNotificationAction(UIApplication application, String identifier, UILocalNotification notification, NSDictionary<?, ?> responseInfo, @Block Runnable completionHandler) {}
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -173,7 +195,12 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 8.2 and later.
      */
     @NotImplemented("application:handleWatchKitExtensionRequest:reply:")
-    public void handleWatchKitExtensionRequest(UIApplication application, NSDictionary userInfo, @Block VoidBlock1<NSDictionary<?, ?>> reply) {}
+    public void handleWatchKitExtensionRequest(UIApplication application, NSDictionary<?, ?> userInfo, @Block VoidBlock1<NSDictionary<?, ?>> reply) {}
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @NotImplemented("applicationShouldRequestHealthAuthorization:")
+    public void shouldRequestHealthAuthorization(UIApplication application) {}
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -198,7 +225,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 6.0 and later.
      */
     @NotImplemented("application:supportedInterfaceOrientationsForWindow:")
-    public @MachineSizedUInt long getSupportedInterfaceOrientations(UIApplication application, UIWindow window) { return 0; }
+    public UIInterfaceOrientationMask getSupportedInterfaceOrientations(UIApplication application, UIWindow window) { return null; }
     /**
      * @since Available in iOS 8.0 and later.
      */

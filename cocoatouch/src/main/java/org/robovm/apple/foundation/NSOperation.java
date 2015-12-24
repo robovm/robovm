@@ -53,6 +53,7 @@ import org.robovm.apple.dispatch.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public NSOperation() {}
+    protected NSOperation(long handle) { super(handle); }
     protected NSOperation(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/

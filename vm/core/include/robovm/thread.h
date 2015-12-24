@@ -49,7 +49,7 @@ enum {
 extern jboolean rvmInitThreads(Env* env);
 extern void rvmLockThreadsList();
 extern void rvmUnlockThreadsList();
-extern jlong rvmStartThread(Env* env, JavaThread* threadObj);
+extern jlong rvmStartThread(Env* env, Object* threadObj);
 extern void rvmThreadYield(Env* env);
 extern jint rvmAttachCurrentThread(VM* vm, Env** env, char* name, Object* group);
 extern jint rvmAttachCurrentThreadAsDaemon(VM* vm, Env** env, char* name, Object* group);

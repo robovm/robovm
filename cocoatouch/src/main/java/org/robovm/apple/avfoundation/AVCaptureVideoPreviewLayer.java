@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -58,6 +59,13 @@ import org.robovm.apple.audiounit.*;
     protected AVCaptureVideoPreviewLayer(SkipInit skipInit) { super(skipInit); }
     public AVCaptureVideoPreviewLayer(AVCaptureSession session) { super((SkipInit) null); initObject(init(session)); }
     /*</constructors>*/
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public AVCaptureVideoPreviewLayer(AVCaptureSession session, boolean noConnection) {
+        super((SkipInit) null);
+        initObject(noConnection ? initWithNoConnection(session) : init(session));
+    }
     /*<properties>*/
     @Property(selector = "session")
     public native AVCaptureSession getSession();
@@ -72,67 +80,16 @@ import org.robovm.apple.audiounit.*;
     public native AVLayerVideoGravity getVideoGravity();
     @Property(selector = "setVideoGravity:")
     public native void setVideoGravity(AVLayerVideoGravity v);
-    /**
-     * @since Available in iOS 4.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    @Property(selector = "isOrientationSupported")
-    public native boolean isOrientationSupported();
-    /**
-     * @since Available in iOS 4.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    @Property(selector = "orientation")
-    public native AVCaptureVideoOrientation getOrientation();
-    /**
-     * @since Available in iOS 4.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    @Property(selector = "setOrientation:")
-    public native void setOrientation(AVCaptureVideoOrientation v);
-    /**
-     * @since Available in iOS 4.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    @Property(selector = "isMirroringSupported")
-    public native boolean isMirroringSupported();
-    /**
-     * @since Available in iOS 4.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    @Property(selector = "automaticallyAdjustsMirroring")
-    public native boolean automaticallyAdjustsMirroring();
-    /**
-     * @since Available in iOS 4.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    @Property(selector = "setAutomaticallyAdjustsMirroring:")
-    public native void setAutomaticallyAdjustsMirroring(boolean v);
-    /**
-     * @since Available in iOS 4.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    @Property(selector = "isMirrored")
-    public native boolean isMirrored();
-    /**
-     * @since Available in iOS 4.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    @Property(selector = "setMirrored:")
-    public native void setMirrored(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithSession:")
     protected native @Pointer long init(AVCaptureSession session);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "initWithSessionWithNoConnection:")
+    protected native @Pointer long initWithNoConnection(AVCaptureSession session);
     /**
      * @since Available in iOS 8.0 and later.
      */
@@ -163,12 +120,5 @@ import org.robovm.apple.audiounit.*;
      */
     @Method(selector = "transformedMetadataObjectForMetadataObject:")
     public native AVMetadataObject getTransformedMetadataObject(AVMetadataObject metadataObject);
-    @Method(selector = "layerWithSession:")
-    public static native AVCaptureVideoPreviewLayer create(AVCaptureSession session);
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @Method(selector = "layerWithSessionWithNoConnection:")
-    public static native AVCaptureVideoPreviewLayer createWithNoConnection(AVCaptureSession session);
     /*</methods>*/
 }

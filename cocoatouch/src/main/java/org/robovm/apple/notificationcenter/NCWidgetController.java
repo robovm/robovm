@@ -55,7 +55,5 @@ import org.robovm.apple.uikit.*;
     /*<methods>*/
     @Method(selector = "setHasContent:forWidgetWithBundleIdentifier:")
     public native void setHasContentForWidgetWithBundleID(boolean flag, String bundleID);
-    @Method(selector = "widgetController")
-    public static native NCWidgetController create();
     /*</methods>*/
 }

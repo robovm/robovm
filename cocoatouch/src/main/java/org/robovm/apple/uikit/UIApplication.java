@@ -44,7 +44,7 @@ import org.robovm.apple.corelocation.*;
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIApplication/*</name>*/ 
     extends /*<extends>*/UIResponder/*</extends>*/ 
-    /*<implements>*/implements UIActionSheetDelegate/*</implements>*/ {
+    /*<implements>*//*</implements>*/ {
 
     public static class Notifications {
         /**
@@ -244,16 +244,10 @@ import org.robovm.apple.corelocation.*;
     public native void setNetworkActivityIndicatorVisible(boolean v);
     @Property(selector = "statusBarStyle")
     public native UIStatusBarStyle getStatusBarStyle();
-    @Property(selector = "setStatusBarStyle:")
-    public native void setStatusBarStyle(UIStatusBarStyle v);
     @Property(selector = "isStatusBarHidden")
     public native boolean isStatusBarHidden();
-    @Property(selector = "setStatusBarHidden:")
-    public native void setStatusBarHidden(boolean v);
     @Property(selector = "statusBarOrientation")
     public native UIInterfaceOrientation getStatusBarOrientation();
-    @Property(selector = "setStatusBarOrientation:")
-    public native void setStatusBarOrientation(UIInterfaceOrientation v);
     @Property(selector = "statusBarOrientationAnimationDuration")
     public native double getStatusBarOrientationAnimationDuration();
     @Property(selector = "statusBarFrame")
@@ -312,6 +306,27 @@ import org.robovm.apple.corelocation.*;
      */
     @Property(selector = "setScheduledLocalNotifications:")
     public native void setScheduledLocalNotifications(NSArray<UILocalNotification> v);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
+    @Property(selector = "setStatusBarOrientation:")
+    public native void setStatusBarOrientation(UIInterfaceOrientation v);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
+    @Property(selector = "setStatusBarStyle:")
+    public native void setStatusBarStyle(UIStatusBarStyle v);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
+    @Property(selector = "setStatusBarHidden:")
+    public native void setStatusBarHidden(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
     
@@ -501,20 +516,11 @@ import org.robovm.apple.corelocation.*;
     public native void sendEvent(UIEvent event);
     @Method(selector = "sendAction:to:from:forEvent:")
     public native boolean sendAction(Selector action, NSObject target, NSObject sender, UIEvent event);
-    @Method(selector = "setStatusBarStyle:animated:")
-    public native void setStatusBarStyle(UIStatusBarStyle statusBarStyle, boolean animated);
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @Method(selector = "setStatusBarHidden:withAnimation:")
-    public native void setStatusBarHidden(boolean hidden, UIStatusBarAnimation animation);
-    @Method(selector = "setStatusBarOrientation:animated:")
-    public native void setStatusBarOrientation(UIInterfaceOrientation interfaceOrientation, boolean animated);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "supportedInterfaceOrientationsForWindow:")
-    public native @MachineSizedUInt long getSupportedInterfaceOrientations(UIWindow window);
+    public native UIInterfaceOrientationMask getSupportedInterfaceOrientations(UIWindow window);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -535,16 +541,6 @@ import org.robovm.apple.corelocation.*;
      */
     @Method(selector = "setMinimumBackgroundFetchInterval:")
     public native void setMinimumBackgroundFetchInterval(double minimumBackgroundFetchInterval);
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Method(selector = "setKeepAliveTimeout:handler:")
-    public native boolean setKeepAliveTimeout(double timeout, @Block Runnable keepAliveHandler);
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Method(selector = "clearKeepAliveTimeout")
-    public native void clearKeepAliveTimeout();
     @Method(selector = "sharedApplication")
     public static native UIApplication getSharedApplication();
     /**
@@ -616,6 +612,11 @@ import org.robovm.apple.corelocation.*;
      */
     @Method(selector = "endReceivingRemoteControlEvents")
     public native void endReceivingRemoteControlEvents();
+    /**
+     * @since Available in iOS 9.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Method(selector = "setNewsstandIconImage:")
     public native void setNewsstandIconImage(UIImage image);
     /**
@@ -638,17 +639,40 @@ import org.robovm.apple.corelocation.*;
      */
     @Method(selector = "registerObjectForStateRestoration:restorationIdentifier:")
     public static native void registerObjectForStateRestoration(UIStateRestoring object, String restorationIdentifier);
-    @Method(selector = "actionSheet:clickedButtonAtIndex:")
-    public native void clicked(UIActionSheet actionSheet, @MachineSizedSInt long buttonIndex);
-    @Method(selector = "actionSheetCancel:")
-    public native void cancel(UIActionSheet actionSheet);
-    @Method(selector = "willPresentActionSheet:")
-    public native void willPresent(UIActionSheet actionSheet);
-    @Method(selector = "didPresentActionSheet:")
-    public native void didPresent(UIActionSheet actionSheet);
-    @Method(selector = "actionSheet:willDismissWithButtonIndex:")
-    public native void willDismiss(UIActionSheet actionSheet, @MachineSizedSInt long buttonIndex);
-    @Method(selector = "actionSheet:didDismissWithButtonIndex:")
-    public native void didDismiss(UIActionSheet actionSheet, @MachineSizedSInt long buttonIndex);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
+    @Method(selector = "setStatusBarOrientation:animated:")
+    public native void setStatusBarOrientation(UIInterfaceOrientation interfaceOrientation, boolean animated);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
+    @Method(selector = "setStatusBarStyle:animated:")
+    public native void setStatusBarStyle(UIStatusBarStyle statusBarStyle, boolean animated);
+    /**
+     * @since Available in iOS 3.2 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
+    @Method(selector = "setStatusBarHidden:withAnimation:")
+    public native void setStatusBarHidden(boolean hidden, UIStatusBarAnimation animation);
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
+    @Method(selector = "setKeepAliveTimeout:handler:")
+    public native boolean setKeepAliveTimeout(double timeout, @Block Runnable keepAliveHandler);
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
+    @Method(selector = "clearKeepAliveTimeout")
+    public native void clearKeepAliveTimeout();
     /*</methods>*/
 }

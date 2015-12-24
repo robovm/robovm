@@ -80,5 +80,15 @@ import org.robovm.apple.corelocation.*;
      */
     @Method(selector = "touchesForGestureRecognizer:")
     public native NSSet<UITouch> getTouches(UIGestureRecognizer gesture);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "coalescedTouchesForTouch:")
+    public native NSArray<UITouch> getCoalescedTouches(UITouch touch);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "predictedTouchesForTouch:")
+    public native NSArray<UITouch> getPredictedTouches(UITouch touch);
     /*</methods>*/
 }

@@ -31,13 +31,13 @@ char* toBinaryName(Env* env, Object* className) {
     return classNameUTF;
 }
 
-Class* Java_java_lang_VMClassLoader_findLoadedClass(Env* env, Class* cls, ClassLoader* cl, Object* name) {
+Class* Java_java_lang_VMClassLoader_findLoadedClass(Env* env, Class* cls, Object* cl, Object* name) {
     char* classNameUTF = toBinaryName(env, name);
     if (!classNameUTF) return NULL;
     return rvmFindLoadedClass(env, classNameUTF, cl);
 }
 
-Class* Java_java_lang_VMClassLoader_findClassInClasspathForLoader(Env* env, Class* cls, ClassLoader* cl, Object* name) {
+Class* Java_java_lang_VMClassLoader_findClassInClasspathForLoader(Env* env, Class* cls, Object* cl, Object* name) {
     char* classNameUTF = toBinaryName(env, name);
     if (!classNameUTF) return NULL;
     Class* clazz = rvmFindClassInClasspathForLoader(env, classNameUTF, cl);

@@ -41,7 +41,7 @@ import org.robovm.apple.dispatch.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
+/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/NSUbiquitousKeyValueStoreChangeReason/*</name>*/ implements ValuedEnum {
     /*<values>*/
     /**

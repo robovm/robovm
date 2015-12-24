@@ -95,6 +95,11 @@ import org.robovm.apple.corelocation.*;
     @NotImplemented("layoutManager:boundingBoxForControlGlyphAtIndex:forTextContainer:proposedLineFragment:glyphPosition:characterIndex:")
     public @ByVal CGRect getBoundingBoxForControlGlyph(NSLayoutManager layoutManager, @MachineSizedUInt long glyphIndex, NSTextContainer textContainer, @ByVal CGRect proposedRect, @ByVal CGPoint glyphPosition, @MachineSizedUInt long charIndex) { return null; }
     /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @NotImplemented("layoutManager:shouldSetLineFragmentRect:lineFragmentUsedRect:baselineOffset:inTextContainer:forGlyphRange:")
+    public boolean shouldSetLineFragmentRect(NSLayoutManager layoutManager, CGRect lineFragmentRect, CGRect lineFragmentUsedRect, MachineSizedFloatPtr baselineOffset, NSTextContainer textContainer, @ByVal NSRange glyphRange) { return false; }
+    /**
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("layoutManagerDidInvalidateLayout:")

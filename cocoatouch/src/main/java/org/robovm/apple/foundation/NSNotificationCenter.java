@@ -95,7 +95,7 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "postNotificationName:object:")
     public native void postNotification(NSString name, NSObject anObject);
     @Method(selector = "postNotificationName:object:userInfo:")
-    public native void postNotification(NSString name, NSObject anObject, NSDictionary userInfo);
+    public native void postNotification(NSString name, NSObject anObject, NSDictionary<?, ?> userInfo);
     @Method(selector = "removeObserver:")
     public native void removeObserver(NSObject observer);
     @Method(selector = "removeObserver:name:object:")

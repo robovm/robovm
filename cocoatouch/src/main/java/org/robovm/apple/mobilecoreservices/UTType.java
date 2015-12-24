@@ -251,6 +251,11 @@ import org.robovm.apple.corefoundation.*;
         @GlobalValue(symbol="kUTTypeObjectiveCSource", optional=true)
         public static native String ObjectiveCSource();
         /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="kUTTypeSwiftSource", optional=true)
+        public static native String SwiftSource();
+        /**
          * @since Available in iOS 3.0 and later.
          */
         @GlobalValue(symbol="kUTTypeCPlusPlusSource", optional=true)

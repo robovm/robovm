@@ -440,7 +440,7 @@ DoubleArray* Java_org_robovm_rt_VM_newDoubleArray(Env* env, Class* c, jlong addr
     return array;
 }
 
-ObjectArray* Java_org_robovm_rt_VM_listClasses0(Env* env, Class* c, Class* instanceofClass, ClassLoader* classLoader) {
+ObjectArray* Java_org_robovm_rt_VM_listClasses0(Env* env, Class* c, Class* instanceofClass, Object* classLoader) {
     return rvmListClasses(env, instanceofClass, classLoader);
 }
 

@@ -118,18 +118,6 @@ import org.robovm.apple.coretext.*;
      */
     public static final CFURLUbiquitousItemProperty IsUploading = new CFURLUbiquitousItemProperty("IsUploading");
     /**
-     * @since Available in iOS 5.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    public static final CFURLUbiquitousItemProperty PercentDownloaded = new CFURLUbiquitousItemProperty("PercentDownloaded");
-    /**
-     * @since Available in iOS 5.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    public static final CFURLUbiquitousItemProperty PercentUploaded = new CFURLUbiquitousItemProperty("PercentUploaded");
-    /**
      * @since Available in iOS 7.0 and later.
      */
     public static final CFURLUbiquitousItemProperty DownloadingStatus = new CFURLUbiquitousItemProperty("DownloadingStatus");
@@ -143,7 +131,7 @@ import org.robovm.apple.coretext.*;
     public static final CFURLUbiquitousItemProperty UploadingError = new CFURLUbiquitousItemProperty("UploadingError");
     /*</constants>*/
     
-    private static /*<name>*/CFURLUbiquitousItemProperty/*</name>*/[] values = new /*<name>*/CFURLUbiquitousItemProperty/*</name>*/[] {/*<value_list>*/IsUbiquitousItem, HasUnresolvedConflicts, IsDownloaded, IsDownloading, IsUploaded, IsUploading, PercentDownloaded, PercentUploaded, DownloadingStatus, DownloadingError, UploadingError/*</value_list>*/};
+    private static /*<name>*/CFURLUbiquitousItemProperty/*</name>*/[] values = new /*<name>*/CFURLUbiquitousItemProperty/*</name>*/[] {/*<value_list>*/IsUbiquitousItem, HasUnresolvedConflicts, IsDownloaded, IsDownloading, IsUploaded, IsUploading, DownloadingStatus, DownloadingError, UploadingError/*</value_list>*/};
     
     /*<name>*/CFURLUbiquitousItemProperty/*</name>*/ (String getterName) {
         super(Values.class, getterName);
@@ -198,20 +186,6 @@ import org.robovm.apple.coretext.*;
          */
         @GlobalValue(symbol="kCFURLUbiquitousItemIsUploadingKey", optional=true)
         public static native CFString IsUploading();
-        /**
-         * @since Available in iOS 5.0 and later.
-         * @deprecated Deprecated in iOS 6.0.
-         */
-        @Deprecated
-        @GlobalValue(symbol="kCFURLUbiquitousItemPercentDownloadedKey", optional=true)
-        public static native CFString PercentDownloaded();
-        /**
-         * @since Available in iOS 5.0 and later.
-         * @deprecated Deprecated in iOS 6.0.
-         */
-        @Deprecated
-        @GlobalValue(symbol="kCFURLUbiquitousItemPercentUploadedKey", optional=true)
-        public static native CFString PercentUploaded();
         /**
          * @since Available in iOS 7.0 and later.
          */

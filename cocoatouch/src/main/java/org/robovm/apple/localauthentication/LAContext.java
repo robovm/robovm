@@ -28,6 +28,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.security.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -53,18 +54,43 @@ import org.robovm.apple.foundation.*;
     @Property(selector = "setLocalizedFallbackTitle:")
     public native void setLocalizedFallbackTitle(String v);
     /**
-     * @since Available in iOS 8.1 and later.
+     * @since Available in iOS 8.3 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @Property(selector = "maxBiometryFailures")
     public native NSNumber getMaxBiometryFailures();
     /**
-     * @since Available in iOS 8.1 and later.
+     * @since Available in iOS 8.3 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @Property(selector = "setMaxBiometryFailures:")
     public native void setMaxBiometryFailures(NSNumber v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "evaluatedPolicyDomainState")
+    public native NSData getEvaluatedPolicyDomainState();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "touchIDAuthenticationAllowableReuseDuration")
+    public native double getTouchIDAuthenticationAllowableReuseDuration();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setTouchIDAuthenticationAllowableReuseDuration:")
+    public native void setTouchIDAuthenticationAllowableReuseDuration(double v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @GlobalValue(symbol="LATouchIDAuthenticationMaximumAllowableReuseDuration", optional=true)
+    public static native double getMaximumAllowableReuseDuration();
+    
     public boolean canEvaluatePolicy(LAPolicy policy) throws NSErrorException {
        NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
        boolean result = canEvaluatePolicy(policy, ptr);
@@ -75,5 +101,25 @@ import org.robovm.apple.foundation.*;
     private native boolean canEvaluatePolicy(LAPolicy policy, NSError.NSErrorPtr error);
     @Method(selector = "evaluatePolicy:localizedReason:reply:")
     public native void evaluatePolicy(LAPolicy policy, String localizedReason, @Block VoidBlock2<Boolean, NSError> reply);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "invalidate")
+    public native void invalidate();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "setCredential:type:")
+    public native boolean setCredential(NSData credential, LACredentialType type);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "isCredentialSet:")
+    public native boolean isCredentialSet(LACredentialType type);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "evaluateAccessControl:operation:localizedReason:reply:")
+    public native void evaluateAccessControl(SecAccessControl accessControl, LAAccessControlOperation operation, String localizedReason, @Block VoidBlock2<Boolean, NSError> reply);
     /*</methods>*/
 }

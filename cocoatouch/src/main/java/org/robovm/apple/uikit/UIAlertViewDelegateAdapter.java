@@ -54,18 +54,53 @@ import org.robovm.apple.corelocation.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @NotImplemented("alertView:clickedButtonAtIndex:")
     public void clicked(UIAlertView alertView, @MachineSizedSInt long buttonIndex) {}
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @NotImplemented("alertViewCancel:")
     public void cancel(UIAlertView alertView) {}
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @NotImplemented("willPresentAlertView:")
     public void willPresent(UIAlertView alertView) {}
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @NotImplemented("didPresentAlertView:")
     public void didPresent(UIAlertView alertView) {}
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @NotImplemented("alertView:willDismissWithButtonIndex:")
     public void willDismiss(UIAlertView alertView, @MachineSizedSInt long buttonIndex) {}
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @NotImplemented("alertView:didDismissWithButtonIndex:")
     public void didDismiss(UIAlertView alertView, @MachineSizedSInt long buttonIndex) {}
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @NotImplemented("alertViewShouldEnableFirstOtherButton:")
     public boolean shouldEnableFirstOtherButton(UIAlertView alertView) { return false; }
     /*</methods>*/

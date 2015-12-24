@@ -53,6 +53,8 @@ import org.robovm.apple.corelocation.*;
     public UIReferenceLibraryViewController() {}
     protected UIReferenceLibraryViewController(SkipInit skipInit) { super(skipInit); }
     public UIReferenceLibraryViewController(String term) { super((SkipInit) null); initObject(init(term)); }
+    public UIReferenceLibraryViewController(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
+    public UIReferenceLibraryViewController(String nibNameOrNil, NSBundle nibBundleOrNil) { super((SkipInit) null); initObject(init(nibNameOrNil, nibBundleOrNil)); }
     /*</constructors>*/
     /*<properties>*/
     
@@ -61,6 +63,10 @@ import org.robovm.apple.corelocation.*;
     /*<methods>*/
     @Method(selector = "initWithTerm:")
     protected native @Pointer long init(String term);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
+    @Method(selector = "initWithNibName:bundle:")
+    protected native @Pointer long init(String nibNameOrNil, NSBundle nibBundleOrNil);
     @Method(selector = "dictionaryHasDefinitionForTerm:")
     public static native boolean dictionaryHasDefinitionForTerm(String term);
     /*</methods>*/

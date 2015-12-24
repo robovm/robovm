@@ -35,6 +35,7 @@ import org.robovm.apple.coreimage.*;
 import org.robovm.apple.avfoundation.*;
 import org.robovm.apple.glkit.*;
 import org.robovm.apple.scenekit.*;
+import org.robovm.apple.gameplaykit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -62,6 +63,31 @@ import org.robovm.apple.scenekit.*;
     public native SKSceneScaleMode getScaleMode();
     @Property(selector = "setScaleMode:")
     public native void setScaleMode(SKSceneScaleMode v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "camera")
+    public native SKCameraNode getCamera();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setCamera:", strongRef = true)
+    public native void setCamera(SKCameraNode v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "listener")
+    public native SKNode getListener();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setListener:", strongRef = true)
+    public native void setListener(SKNode v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "audioEngine")
+    public native AVAudioEngine getAudioEngine();
     @Property(selector = "backgroundColor")
     public native UIColor getBackgroundColor();
     @Property(selector = "setBackgroundColor:")
@@ -115,7 +141,5 @@ import org.robovm.apple.scenekit.*;
     public native void willMoveFromView(SKView view);
     @Method(selector = "didChangeSize:")
     public native void didChangeSize(@ByVal CGSize oldSize);
-    @Method(selector = "sceneWithSize:")
-    public static native SKScene create(@ByVal CGSize size);
     /*</methods>*/
 }

@@ -70,10 +70,25 @@ import org.robovm.apple.corefoundation.*;
             + /*<name>*/ABPropertyLabel/*</name>*/.class.getName());
     }
     /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="kABWorkLabel", optional=true)
     protected static native CFString WorkLabel();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="kABHomeLabel", optional=true)
     protected static native CFString HomeLabel();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="kABOtherLabel", optional=true)
     protected static native CFString OtherLabel();
     /*</methods>*/

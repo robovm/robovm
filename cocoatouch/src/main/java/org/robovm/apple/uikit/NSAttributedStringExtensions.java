@@ -54,35 +54,25 @@ import org.robovm.apple.corelocation.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
-    public static NSAttributedString createFromURL(NSURL url, NSAttributedStringDocumentAttributes options) throws NSErrorException {
-        NSAttributedString thiz = alloc(NSAttributedString.class);
-        initObject(thiz, init(thiz, url, options, null));
-        return thiz;
-    }
-    public static NSAttributedString createFromData(NSData data, NSAttributedStringDocumentAttributes options) throws NSErrorException {
-        NSAttributedString thiz = alloc(NSAttributedString.class);
-        initObject(thiz, init(thiz, data, options, null));
-        return thiz;
-    }
     /*<methods>*/
     /**
-     * @since Available in iOS 7.0 and later.
+     * @since Available in iOS 9.0 and later.
      */
-    protected static @Pointer long init(NSAttributedString thiz, NSURL url, NSAttributedStringDocumentAttributes options, NSDictionary.NSDictionaryPtr dict) throws NSErrorException {
+    public static @Pointer long init(NSAttributedString thiz, NSURL url, NSAttributedStringDocumentAttributes options, NSDictionary.NSDictionaryPtr dict) throws NSErrorException {
        NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
        long result = init(thiz, url, options, dict, ptr);
        if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
        return result;
     }
     /**
-     * @since Available in iOS 7.0 and later.
+     * @since Available in iOS 9.0 and later.
      */
-    @Method(selector = "initWithFileURL:options:documentAttributes:error:")
+    @Method(selector = "initWithURL:options:documentAttributes:error:")
     private static native @Pointer long init(NSAttributedString thiz, NSURL url, NSAttributedStringDocumentAttributes options, NSDictionary.NSDictionaryPtr dict, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 7.0 and later.
      */
-    protected static @Pointer long init(NSAttributedString thiz, NSData data, NSAttributedStringDocumentAttributes options, NSDictionary.NSDictionaryPtr dict) throws NSErrorException {
+    public static @Pointer long init(NSAttributedString thiz, NSData data, NSAttributedStringDocumentAttributes options, NSDictionary.NSDictionaryPtr dict) throws NSErrorException {
        NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
        long result = init(thiz, data, options, dict, ptr);
        if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
@@ -122,6 +112,29 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "fileWrapperFromRange:documentAttributes:error:")
     private static native NSFileWrapper getFileWrapper(NSAttributedString thiz, @ByVal NSRange range, NSAttributedStringDocumentAttributes dict, NSError.NSErrorPtr error);
     /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "containsAttachmentsInRange:")
+    public static native boolean containsAttachments(NSAttributedString thiz, @ByVal NSRange range);
+    /**
+     * @since Available in iOS 7.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
+    public static @Pointer long initWithFileURL(NSAttributedString thiz, NSURL url, NSAttributedStringDocumentAttributes options, NSDictionary.NSDictionaryPtr dict) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       long result = initWithFileURL(thiz, url, options, dict, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
+    @Method(selector = "initWithFileURL:options:documentAttributes:error:")
+    private static native @Pointer long initWithFileURL(NSAttributedString thiz, NSURL url, NSAttributedStringDocumentAttributes options, NSDictionary.NSDictionaryPtr dict, NSError.NSErrorPtr error);
+    /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "size")
@@ -150,7 +163,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "attributedStringWithAttachment:")
-    protected static native NSAttributedString create(ObjCClass clazz, NSTextAttachment attachment);
-    public static NSAttributedString create(NSTextAttachment attachment) { return create(ObjCClass.getByType(NSAttributedString.class), attachment); }
+    protected static native @Pointer long create(ObjCClass clazz, NSTextAttachment attachment);
+    public static @Pointer long create(NSTextAttachment attachment) { return create(ObjCClass.getByType(NSAttributedString.class), attachment); }
     /*</methods>*/
 }

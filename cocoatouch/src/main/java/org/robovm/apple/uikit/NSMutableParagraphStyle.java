@@ -126,9 +126,33 @@ import org.robovm.apple.corelocation.*;
      */
     @Property(selector = "setDefaultTabInterval:")
     public native void setDefaultTabInterval(@MachineSizedFloat double v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "allowsDefaultTighteningForTruncation")
+    public native boolean allowsDefaultTighteningForTruncation();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setAllowsDefaultTighteningForTruncation:")
+    public native void setAllowsDefaultTighteningForTruncation(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "addTabStop:")
+    public native void addTabStop(NSTextTab anObject);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "removeTabStop:")
+    public native void removeTabStop(NSTextTab anObject);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "setParagraphStyle:")
+    public native void setParagraphStyle(NSParagraphStyle obj);
     /*</methods>*/
 }

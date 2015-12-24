@@ -50,6 +50,10 @@ import org.robovm.apple.metal.*;
     public CAKeyframeAnimation() {}
     protected CAKeyframeAnimation(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
+    public CAKeyframeAnimation(String path) {
+        super(create(path));
+        retain(getHandle());
+    }
     /*<properties>*/
     @Property(selector = "values")
     public native NSArray<NSObject> getValues();
@@ -89,12 +93,8 @@ import org.robovm.apple.metal.*;
     public native void setRotationMode(CAAnimationRotationMode v);
     /*</properties>*/
     /*<members>*//*</members>*/
-
     @Method(selector = "animationWithKeyPath:")
-    public static native CAKeyframeAnimation create(String path);
-    @Method(selector = "animation")
-    public static native CAKeyframeAnimation create();
-    
+    protected static native @Pointer long create(String path);
     /*<methods>*/
     
     /*</methods>*/

@@ -52,6 +52,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UIBlurEffect() {}
     protected UIBlurEffect(SkipInit skipInit) { super(skipInit); }
+    public UIBlurEffect(UIBlurEffectStyle style) { super(create(style)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     
@@ -59,6 +60,6 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "effectWithStyle:")
-    public static native UIBlurEffect create(UIBlurEffectStyle style);
+    protected static native @Pointer long create(UIBlurEffectStyle style);
     /*</methods>*/
 }

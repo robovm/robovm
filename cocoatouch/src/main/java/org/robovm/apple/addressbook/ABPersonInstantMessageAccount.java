@@ -99,8 +99,18 @@ import org.robovm.apple.corefoundation.*;
         return this;
     }
     /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="kABPersonInstantMessageServiceKey", optional=true)
     protected static native CFString ServiceKey();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="kABPersonInstantMessageUsernameKey", optional=true)
     protected static native CFString UsernameKey();
     /*</methods>*/

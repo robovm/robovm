@@ -60,18 +60,15 @@ import org.robovm.apple.scenekit.SCNVector4;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "objCType")
-    protected native BytePtr objCType();
+    public native @org.robovm.rt.bro.annotation.Marshaler(StringMarshalers.AsAsciiZMarshaler.class) String getObjCType();
     @Property(selector = "nonretainedObjectValue")
     public native NSObject objectValue();
+    @Property(selector = "pointerValue")
+    public native @Pointer long pointerValue();
     @Property(selector = "rangeValue")
     public native @ByVal NSRange rangeValue();
     /*</properties>*/
     /*<members>*//*</members>*/
-
-    public String getObjCType() {
-        BytePtr p = objCType();
-        return p == null ? null : p.toStringAsciiZ();
-    }
 
     public static NSValue valueOf(VoidPtr value, String type) {
         BytePtr p = type == null ? null : BytePtr.toBytePtrAsciiZ(type);
@@ -245,8 +242,6 @@ import org.robovm.apple.scenekit.SCNVector4;
     protected native @Pointer long init(NSCoder aDecoder);
     @Method(selector = "valueWithBytes:objCType:")
     public static native NSValue valueOf(VoidPtr value, BytePtr type);
-    @Method(selector = "pointerValue")
-    public native VoidPtr pointerValue();
     @Method(selector = "isEqualToValue:")
     public native boolean equalsTo(NSValue value);
     @Method(selector = "valueWithNonretainedObject:")

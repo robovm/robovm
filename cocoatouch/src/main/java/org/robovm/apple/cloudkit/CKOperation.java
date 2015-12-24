@@ -29,6 +29,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.corelocation.*;
+import org.robovm.apple.contacts.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -53,8 +54,18 @@ import org.robovm.apple.corelocation.*;
     public native CKContainer getContainer();
     @Property(selector = "setContainer:")
     public native void setContainer(CKContainer v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Property(selector = "usesBackgroundSession")
     public native boolean usesBackgroundSession();
+    /**
+     * @since Available in iOS 8.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     @Property(selector = "setUsesBackgroundSession:")
     public native void setUsesBackgroundSession(boolean v);
     @Property(selector = "allowsCellularAccess")
@@ -64,6 +75,7 @@ import org.robovm.apple.corelocation.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    
+    @Method(selector = "activityStart")
+    public native long activityStart();
     /*</methods>*/
 }

@@ -30,6 +30,7 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.apple.addressbook.*;
+import org.robovm.apple.contacts.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -64,5 +65,10 @@ import org.robovm.apple.addressbook.*;
     public static native boolean canMakePayments();
     @Method(selector = "canMakePaymentsUsingNetworks:")
     public static native boolean canMakePaymentsUsingNetworks(@org.robovm.rt.bro.annotation.Marshaler(PKPaymentNetwork.AsListMarshaler.class) List<PKPaymentNetwork> supportedNetworks);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Method(selector = "canMakePaymentsUsingNetworks:capabilities:")
+    public static native boolean canMakePaymentsUsingNetworks(@org.robovm.rt.bro.annotation.Marshaler(PKPaymentNetwork.AsListMarshaler.class) List<PKPaymentNetwork> supportedNetworks, PKMerchantCapability capabilties);
     /*</methods>*/
 }

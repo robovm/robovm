@@ -33,18 +33,62 @@ import org.robovm.apple.imageio.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 4.0 and later.
+ * @deprecated Deprecated in iOS 9.0.
+ */
+@Deprecated
 /*</javadoc>*/
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/ALAssetOrientation/*</name>*/ implements ValuedEnum {
     /*<values>*/
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     Up(0L),
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     Down(1L),
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     Left(2L),
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     Right(3L),
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     UpMirrored(4L),
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     DownMirrored(5L),
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     LeftMirrored(6L),
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
+     */
+    @Deprecated
     RightMirrored(7L);
     /*</values>*/
 

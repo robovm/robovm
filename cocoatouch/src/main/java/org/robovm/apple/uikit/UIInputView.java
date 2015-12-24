@@ -53,14 +53,27 @@ import org.robovm.apple.corelocation.*;
     public UIInputView() {}
     protected UIInputView(SkipInit skipInit) { super(skipInit); }
     public UIInputView(@ByVal CGRect frame, UIInputViewStyle inputViewStyle) { super((SkipInit) null); initObject(init(frame, inputViewStyle)); }
+    public UIInputView(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "inputViewStyle")
     public native UIInputViewStyle getInputViewStyle();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "allowsSelfSizing")
+    public native boolean allowsSelfSizing();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setAllowsSelfSizing:")
+    public native void setAllowsSelfSizing(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithFrame:inputViewStyle:")
     protected native @Pointer long init(@ByVal CGRect frame, UIInputViewStyle inputViewStyle);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     /*</methods>*/
 }

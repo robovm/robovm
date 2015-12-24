@@ -52,7 +52,11 @@ public enum /*<name>*/UIReturnKeyType/*</name>*/ implements ValuedEnum {
     Send(7L),
     Yahoo(8L),
     Done(9L),
-    EmergencyCall(10L);
+    EmergencyCall(10L),
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    Continue(11L);
     /*</values>*/
 
     private final long n;

@@ -35,6 +35,7 @@ import org.robovm.apple.coreimage.*;
 import org.robovm.apple.avfoundation.*;
 import org.robovm.apple.glkit.*;
 import org.robovm.apple.scenekit.*;
+import org.robovm.apple.gameplaykit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -98,12 +99,10 @@ import org.robovm.apple.scenekit.*;
     protected native @Pointer long init(NSCoder aDecoder);
     @WeaklyLinked
     @Method(selector = "hitTest:options:")
-    public native NSArray<SCNHitTestResult> hitTest(@ByVal CGPoint thePoint, SCNHitTestOptions options);
+    public native NSArray<SCNHitTestResult> hitTest(@ByVal CGPoint point, SCNHitTestOptions options);
     @Method(selector = "projectPoint:")
     public native @ByVal SKVector3 projectPoint(@ByVal SKVector3 point);
     @Method(selector = "unprojectPoint:")
     public native @ByVal SKVector3 unprojectPoint(@ByVal SKVector3 point);
-    @Method(selector = "nodeWithViewportSize:")
-    public static native SK3DNode create(@ByVal CGSize viewportSize);
     /*</methods>*/
 }

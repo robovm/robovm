@@ -51,6 +51,22 @@ import org.robovm.apple.dispatch.*;
     public MKPolygon() {}
     protected MKPolygon(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
+    public MKPolygon(MKMapPoint[] points) {
+        super(create0(points));
+        retain(getHandle());
+    }
+    public MKPolygon(MKMapPoint[] points, NSArray<MKPolygon> interiorPolygons) {
+        super(create0(points, interiorPolygons));
+        retain(getHandle());
+    }
+    public MKPolygon(CLLocationCoordinate2D[] coords) {
+        super(create0(coords));
+        retain(getHandle());
+    }
+    public MKPolygon(CLLocationCoordinate2D[] coords, NSArray<MKPolygon> interiorPolygons) {
+        super(create0(coords, interiorPolygons));
+        retain(getHandle());
+    }
     /*<properties>*/
     @Property(selector = "interiorPolygons")
     public native NSArray<MKPolygon> getInteriorPolygons();
@@ -60,35 +76,35 @@ import org.robovm.apple.dispatch.*;
     public native @ByVal MKMapRect getBoundingMapRect();
     /*</properties>*/
     /*<members>*//*</members>*/
-    public static MKPolygon create(MKMapPoint[] points) {
+    private static long create0(MKMapPoint[] points) {
         MKMapPoint first = Struct.allocate(MKMapPoint.class, points.length);
         first.update(points);
         return create(first, points.length);
     }
-    public static MKPolygon create(MKMapPoint[] points, NSArray<MKPolygon> interiorPolygons) {
+    private static long create0(MKMapPoint[] points, NSArray<MKPolygon> interiorPolygons) {
         MKMapPoint first = Struct.allocate(MKMapPoint.class, points.length);
         first.update(points);
         return create(first, points.length, interiorPolygons);
     }
-    public static MKPolygon create(CLLocationCoordinate2D[] coords) {
+    private static long create0(CLLocationCoordinate2D[] coords) {
         CLLocationCoordinate2D first = Struct.allocate(CLLocationCoordinate2D.class, coords.length);
         first.update(coords);
         return create(first, coords.length);
     }
-    public static MKPolygon create(CLLocationCoordinate2D[] coords, NSArray<MKPolygon> interiorPolygons) {
+    private static long create0(CLLocationCoordinate2D[] coords, NSArray<MKPolygon> interiorPolygons) {
         CLLocationCoordinate2D first = Struct.allocate(CLLocationCoordinate2D.class, coords.length);
         first.update(coords);
         return create(first, coords.length, interiorPolygons);
     }
     /*<methods>*/
     @Method(selector = "polygonWithPoints:count:")
-    private static native MKPolygon create(MKMapPoint points, @MachineSizedUInt long count);
+    private static native @Pointer long create(MKMapPoint points, @MachineSizedUInt long count);
     @Method(selector = "polygonWithPoints:count:interiorPolygons:")
-    private static native MKPolygon create(MKMapPoint points, @MachineSizedUInt long count, NSArray<MKPolygon> interiorPolygons);
+    private static native @Pointer long create(MKMapPoint points, @MachineSizedUInt long count, NSArray<MKPolygon> interiorPolygons);
     @Method(selector = "polygonWithCoordinates:count:")
-    private static native MKPolygon create(CLLocationCoordinate2D coords, @MachineSizedUInt long count);
+    private static native @Pointer long create(CLLocationCoordinate2D coords, @MachineSizedUInt long count);
     @Method(selector = "polygonWithCoordinates:count:interiorPolygons:")
-    private static native MKPolygon create(CLLocationCoordinate2D coords, @MachineSizedUInt long count, NSArray<MKPolygon> interiorPolygons);
+    private static native @Pointer long create(CLLocationCoordinate2D coords, @MachineSizedUInt long count, NSArray<MKPolygon> interiorPolygons);
     @Method(selector = "intersectsMapRect:")
     public native boolean intersects(@ByVal MKMapRect mapRect);
     /**

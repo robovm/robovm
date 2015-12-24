@@ -85,6 +85,36 @@ import org.robovm.apple.dispatch.*;
     public native MTLResourceOptions getResourceOptions();
     @Property(selector = "setResourceOptions:")
     public native void setResourceOptions(MTLResourceOptions v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "cpuCacheMode")
+    public native MTLCPUCacheMode getCpuCacheMode();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setCpuCacheMode:")
+    public native void setCpuCacheMode(MTLCPUCacheMode v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "storageMode")
+    public native MTLStorageMode getStorageMode();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setStorageMode:")
+    public native void setStorageMode(MTLStorageMode v);
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "usage")
+    public native MTLTextureUsage getUsage();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setUsage:")
+    public native void setUsage(MTLTextureUsage v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

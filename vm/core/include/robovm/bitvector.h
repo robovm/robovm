@@ -20,7 +20,7 @@
 #ifndef ROBOVM_BITVECTOR_H_
 #define ROBOVM_BITVECTOR_H_
 
-#include <jni_types.h>
+#include <jni.h>
 #include <stdint.h>
 
 typedef struct BitVector BitVector;

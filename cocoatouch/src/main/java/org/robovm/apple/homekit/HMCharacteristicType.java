@@ -28,6 +28,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -200,6 +201,10 @@ import org.robovm.apple.foundation.*;
      */
     public static final HMCharacteristicType AdminOnlyAccess = new HMCharacteristicType("AdminOnlyAccess");
     /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMCharacteristicType SecuritySystemAlarmType = new HMCharacteristicType("SecuritySystemAlarmType");
+    /**
      * @since Available in iOS 8.0 and later.
      */
     public static final HMCharacteristicType MotionDetected = new HMCharacteristicType("MotionDetected");
@@ -223,9 +228,153 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 8.0 and later.
      */
     public static final HMCharacteristicType LockManagementAutoSecureTimeout = new HMCharacteristicType("LockManagementAutoSecureTimeout");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMCharacteristicType AirParticulateDensity = new HMCharacteristicType("AirParticulateDensity");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMCharacteristicType AirParticulateSize = new HMCharacteristicType("AirParticulateSize");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMCharacteristicType AirQuality = new HMCharacteristicType("AirQuality");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMCharacteristicType BatteryLevel = new HMCharacteristicType("BatteryLevel");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMCharacteristicType CarbonDioxideDetected = new HMCharacteristicType("CarbonDioxideDetected");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMCharacteristicType CarbonDioxideLevel = new HMCharacteristicType("CarbonDioxideLevel");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMCharacteristicType CarbonDioxidePeakLevel = new HMCharacteristicType("CarbonDioxidePeakLevel");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMCharacteristicType CarbonMonoxideDetected = new HMCharacteristicType("CarbonMonoxideDetected");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMCharacteristicType CarbonMonoxideLevel = new HMCharacteristicType("CarbonMonoxideLevel");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMCharacteristicType CarbonMonoxidePeakLevel = new HMCharacteristicType("CarbonMonoxidePeakLevel");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMCharacteristicType ChargingState = new HMCharacteristicType("ChargingState");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMCharacteristicType ContactState = new HMCharacteristicType("ContactState");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMCharacteristicType CurrentHorizontalTilt = new HMCharacteristicType("CurrentHorizontalTilt");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMCharacteristicType CurrentLightLevel = new HMCharacteristicType("CurrentLightLevel");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMCharacteristicType CurrentPosition = new HMCharacteristicType("CurrentPosition");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMCharacteristicType CurrentSecuritySystemState = new HMCharacteristicType("CurrentSecuritySystemState");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMCharacteristicType CurrentVerticalTilt = new HMCharacteristicType("CurrentVerticalTilt");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMCharacteristicType FirmwareVersion = new HMCharacteristicType("FirmwareVersion");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMCharacteristicType HardwareVersion = new HMCharacteristicType("HardwareVersion");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMCharacteristicType HoldPosition = new HMCharacteristicType("HoldPosition");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMCharacteristicType InputEvent = new HMCharacteristicType("InputEvent");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMCharacteristicType LeakDetected = new HMCharacteristicType("LeakDetected");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMCharacteristicType OccupancyDetected = new HMCharacteristicType("OccupancyDetected");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMCharacteristicType OutputState = new HMCharacteristicType("OutputState");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMCharacteristicType PositionState = new HMCharacteristicType("PositionState");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMCharacteristicType SmokeDetected = new HMCharacteristicType("SmokeDetected");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMCharacteristicType SoftwareVersion = new HMCharacteristicType("SoftwareVersion");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMCharacteristicType StatusActive = new HMCharacteristicType("StatusActive");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMCharacteristicType StatusFault = new HMCharacteristicType("StatusFault");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMCharacteristicType StatusJammed = new HMCharacteristicType("StatusJammed");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMCharacteristicType StatusLowBattery = new HMCharacteristicType("StatusLowBattery");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMCharacteristicType StatusTampered = new HMCharacteristicType("StatusTampered");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMCharacteristicType TargetHorizontalTilt = new HMCharacteristicType("TargetHorizontalTilt");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMCharacteristicType TargetSecuritySystemState = new HMCharacteristicType("TargetSecuritySystemState");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMCharacteristicType TargetPosition = new HMCharacteristicType("TargetPosition");
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    public static final HMCharacteristicType TargetVerticalTilt = new HMCharacteristicType("TargetVerticalTilt");
     /*</constants>*/
     
-    private static /*<name>*/HMCharacteristicType/*</name>*/[] values = new /*<name>*/HMCharacteristicType/*</name>*/[] {/*<value_list>*/PowerState, Hue, Saturation, Brightness, TemperatureUnits, CurrentTemperature, TargetTemperature, CurrentHeatingCooling, TargetHeatingCooling, CoolingThreshold, HeatingThreshold, CurrentRelativeHumidity, TargetRelativeHumidity, CurrentDoorState, TargetDoorState, ObstructionDetected, Name, Manufacturer, Model, SerialNumber, Identify, RotationDirection, RotationSpeed, OutletInUse, Version, Logs, AudioFeedback, AdminOnlyAccess, MotionDetected, CurrentLockMechanismState, TargetLockMechanismState, LockMechanismLastKnownAction, LockManagementControlPoint, LockManagementAutoSecureTimeout/*</value_list>*/};
+    private static /*<name>*/HMCharacteristicType/*</name>*/[] values = new /*<name>*/HMCharacteristicType/*</name>*/[] {/*<value_list>*/PowerState, Hue, Saturation, Brightness, TemperatureUnits, CurrentTemperature, TargetTemperature, CurrentHeatingCooling, TargetHeatingCooling, CoolingThreshold, HeatingThreshold, CurrentRelativeHumidity, TargetRelativeHumidity, CurrentDoorState, TargetDoorState, ObstructionDetected, Name, Manufacturer, Model, SerialNumber, Identify, RotationDirection, RotationSpeed, OutletInUse, Version, Logs, AudioFeedback, AdminOnlyAccess, SecuritySystemAlarmType, MotionDetected, CurrentLockMechanismState, TargetLockMechanismState, LockMechanismLastKnownAction, LockManagementControlPoint, LockManagementAutoSecureTimeout, AirParticulateDensity, AirParticulateSize, AirQuality, BatteryLevel, CarbonDioxideDetected, CarbonDioxideLevel, CarbonDioxidePeakLevel, CarbonMonoxideDetected, CarbonMonoxideLevel, CarbonMonoxidePeakLevel, ChargingState, ContactState, CurrentHorizontalTilt, CurrentLightLevel, CurrentPosition, CurrentSecuritySystemState, CurrentVerticalTilt, FirmwareVersion, HardwareVersion, HoldPosition, InputEvent, LeakDetected, OccupancyDetected, OutputState, PositionState, SmokeDetected, SoftwareVersion, StatusActive, StatusFault, StatusJammed, StatusLowBattery, StatusTampered, TargetHorizontalTilt, TargetSecuritySystemState, TargetPosition, TargetVerticalTilt/*</value_list>*/};
     
     /*<name>*/HMCharacteristicType/*</name>*/ (String getterName) {
         super(Values.class, getterName);
@@ -389,6 +538,11 @@ import org.robovm.apple.foundation.*;
         @GlobalValue(symbol="HMCharacteristicTypeAdminOnlyAccess", optional=true)
         public static native NSString AdminOnlyAccess();
         /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicTypeSecuritySystemAlarmType", optional=true)
+        public static native NSString SecuritySystemAlarmType();
+        /**
          * @since Available in iOS 8.0 and later.
          */
         @GlobalValue(symbol="HMCharacteristicTypeMotionDetected", optional=true)
@@ -418,6 +572,186 @@ import org.robovm.apple.foundation.*;
          */
         @GlobalValue(symbol="HMCharacteristicTypeLockManagementAutoSecureTimeout", optional=true)
         public static native NSString LockManagementAutoSecureTimeout();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicTypeAirParticulateDensity", optional=true)
+        public static native NSString AirParticulateDensity();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicTypeAirParticulateSize", optional=true)
+        public static native NSString AirParticulateSize();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicTypeAirQuality", optional=true)
+        public static native NSString AirQuality();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicTypeBatteryLevel", optional=true)
+        public static native NSString BatteryLevel();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicTypeCarbonDioxideDetected", optional=true)
+        public static native NSString CarbonDioxideDetected();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicTypeCarbonDioxideLevel", optional=true)
+        public static native NSString CarbonDioxideLevel();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicTypeCarbonDioxidePeakLevel", optional=true)
+        public static native NSString CarbonDioxidePeakLevel();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicTypeCarbonMonoxideDetected", optional=true)
+        public static native NSString CarbonMonoxideDetected();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicTypeCarbonMonoxideLevel", optional=true)
+        public static native NSString CarbonMonoxideLevel();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicTypeCarbonMonoxidePeakLevel", optional=true)
+        public static native NSString CarbonMonoxidePeakLevel();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicTypeChargingState", optional=true)
+        public static native NSString ChargingState();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicTypeContactState", optional=true)
+        public static native NSString ContactState();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicTypeCurrentHorizontalTilt", optional=true)
+        public static native NSString CurrentHorizontalTilt();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicTypeCurrentLightLevel", optional=true)
+        public static native NSString CurrentLightLevel();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicTypeCurrentPosition", optional=true)
+        public static native NSString CurrentPosition();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicTypeCurrentSecuritySystemState", optional=true)
+        public static native NSString CurrentSecuritySystemState();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicTypeCurrentVerticalTilt", optional=true)
+        public static native NSString CurrentVerticalTilt();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicTypeFirmwareVersion", optional=true)
+        public static native NSString FirmwareVersion();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicTypeHardwareVersion", optional=true)
+        public static native NSString HardwareVersion();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicTypeHoldPosition", optional=true)
+        public static native NSString HoldPosition();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicTypeInputEvent", optional=true)
+        public static native NSString InputEvent();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicTypeLeakDetected", optional=true)
+        public static native NSString LeakDetected();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicTypeOccupancyDetected", optional=true)
+        public static native NSString OccupancyDetected();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicTypeOutputState", optional=true)
+        public static native NSString OutputState();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicTypePositionState", optional=true)
+        public static native NSString PositionState();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicTypeSmokeDetected", optional=true)
+        public static native NSString SmokeDetected();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicTypeSoftwareVersion", optional=true)
+        public static native NSString SoftwareVersion();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicTypeStatusActive", optional=true)
+        public static native NSString StatusActive();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicTypeStatusFault", optional=true)
+        public static native NSString StatusFault();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicTypeStatusJammed", optional=true)
+        public static native NSString StatusJammed();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicTypeStatusLowBattery", optional=true)
+        public static native NSString StatusLowBattery();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicTypeStatusTampered", optional=true)
+        public static native NSString StatusTampered();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicTypeTargetHorizontalTilt", optional=true)
+        public static native NSString TargetHorizontalTilt();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicTypeTargetSecuritySystemState", optional=true)
+        public static native NSString TargetSecuritySystemState();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicTypeTargetPosition", optional=true)
+        public static native NSString TargetPosition();
+        /**
+         * @since Available in iOS 9.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicTypeTargetVerticalTilt", optional=true)
+        public static native NSString TargetVerticalTilt();
         /*</values>*/
     }
 }

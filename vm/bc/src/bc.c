@@ -40,7 +40,6 @@ typedef struct {
 } BcTrycatchContext;
 
 const char* __attribute__ ((weak)) _bcMainClass = NULL;
-extern jboolean _bcDynamicJNI;
 extern char** _bcStaticLibs;
 extern char** _bcBootclasspath;
 extern char** _bcClasspath;
@@ -48,14 +47,14 @@ extern void* _bcBootClassesHash;
 extern void* _bcClassesHash;
 extern void* _bcStrippedMethodStubs;
 extern void* _bcRuntimeData;
-static Class* loadBootClass(Env*, const char*, ClassLoader*);
-static Class* loadUserClass(Env*, const char*, ClassLoader*);
+static Class* loadBootClass(Env*, const char*, Object*);
+static Class* loadUserClass(Env*, const char*, Object*);
 static void classInitialized(Env*, Class*);
 static Interface* loadInterfaces(Env*, Class*);
 static Field* loadFields(Env*, Class*);
 static Method* loadMethods(Env*, Class*);
 static Class* findClassAt(Env*, void*);
-static Class* createClass(Env*, ClassInfoHeader*, ClassLoader*);
+static Class* createClass(Env*, ClassInfoHeader*, Object*);
 static jboolean exceptionMatch(Env* env, TrycatchContext*);
 static ObjectArray* listBootClasses(Env*, Class*);
 static ObjectArray* listUserClasses(Env*, Class*);
@@ -76,7 +75,6 @@ static void initOptions() {
     options.loadMethods = loadMethods;
     options.findClassAt = findClassAt;
     options.exceptionMatch = exceptionMatch;
-    options.dynamicJNI = _bcDynamicJNI;
     options.staticLibs = _bcStaticLibs;
     options.runtimeData = &_bcRuntimeData;
     options.listBootClasses = listBootClasses;
@@ -168,7 +166,7 @@ static void iterateClassInfos(Env* env, jboolean (*callback)(Env*, ClassInfoHead
     }
 }
 
-static ObjectArray* listClasses(Env* env, Class* instanceofClazz, ClassLoader* classLoader, void* hash) {
+static ObjectArray* listClasses(Env* env, Class* instanceofClazz, Object* classLoader, void* hash) {
     if (instanceofClazz && (CLASS_IS_ARRAY(instanceofClazz) || CLASS_IS_PRIMITIVE(instanceofClazz))) {
         return NULL;
     }
@@ -220,7 +218,7 @@ static ObjectArray* listUserClasses(Env* env, Class* instanceofClazz) {
     return listClasses(env, instanceofClazz, systemClassLoader, _bcClassesHash);
 }
 
-static Class* loadClass(Env* env, const char* className, ClassLoader* classLoader, void* hash) {
+static Class* loadClass(Env* env, const char* className, Object* classLoader, void* hash) {
     ClassInfoHeader* header = lookupClassInfo(env, className, hash);
     if (!header) return NULL;
     if (header->flags & CI_ERROR) {
@@ -242,11 +240,11 @@ static Class* loadClass(Env* env, const char* className, ClassLoader* classLoade
     return createClass(env, header, classLoader);
 }
 
-static Class* loadBootClass(Env* env, const char* className, ClassLoader* classLoader) {
+static Class* loadBootClass(Env* env, const char* className, Object* classLoader) {
     return loadClass(env, className, classLoader, _bcBootClassesHash);
 }
 
-static Class* loadUserClass(Env* env, const char* className, ClassLoader* classLoader) {
+static Class* loadUserClass(Env* env, const char* className, Object* classLoader) {
     return loadClass(env, className, classLoader, _bcClassesHash);
 }
 
@@ -276,7 +274,7 @@ static void wrapClassNotFoundException(Env* env, const char* className) {
     }
 }
 
-static Class* createClass(Env* env, ClassInfoHeader* header, ClassLoader* classLoader) {
+static Class* createClass(Env* env, ClassInfoHeader* header, Object* classLoader) {
     ClassInfo ci;
     void* p = header;
     readClassInfo(&p, &ci);
@@ -309,14 +307,14 @@ static Class* createClass(Env* env, ClassInfoHeader* header, ClassLoader* classL
 
 static void classInitialized(Env* env, Class* clazz) {
     ClassInfoHeader* header = lookupClassInfo(env, clazz->name, 
-        !clazz->classLoader || !clazz->classLoader->parent ? _bcBootClassesHash : _bcClassesHash);
+        !clazz->classLoader || !rvmGetParentClassLoader(env, clazz->classLoader) ? _bcBootClassesHash : _bcClassesHash);
     if (!header) return;
     rvmAtomicStoreInt(&header->flags, header->flags | CI_INITIALIZED);
 }
 
 static Interface* loadInterfaces(Env* env, Class* clazz) {
     ClassInfoHeader* header = lookupClassInfo(env, clazz->name, 
-        !clazz->classLoader || !clazz->classLoader->parent ? _bcBootClassesHash : _bcClassesHash);
+        !clazz->classLoader || !rvmGetParentClassLoader(env, clazz->classLoader) ? _bcBootClassesHash : _bcClassesHash);
     if (!header) return NULL;
 
     ClassInfo ci;
@@ -345,7 +343,7 @@ error:
 
 static Field* loadFields(Env* env, Class* clazz) {
     ClassInfoHeader* header = lookupClassInfo(env, clazz->name, 
-        !clazz->classLoader || !clazz->classLoader->parent ? _bcBootClassesHash : _bcClassesHash);
+        !clazz->classLoader || !rvmGetParentClassLoader(env, clazz->classLoader) ? _bcBootClassesHash : _bcClassesHash);
     if (!header) return NULL;
 
     ClassInfo ci;
@@ -386,7 +384,7 @@ static inline jboolean isStrippedMethod(MethodInfo* mi) {
 
 static Method* loadMethods(Env* env, Class* clazz) {
     ClassInfoHeader* header = lookupClassInfo(env, clazz->name, 
-        !clazz->classLoader || !clazz->classLoader->parent ? _bcBootClassesHash : _bcClassesHash);
+        !clazz->classLoader || !rvmGetParentClassLoader(env, clazz->classLoader) ? _bcBootClassesHash : _bcClassesHash);
     if (!header) return NULL;
 
     ClassInfo ci;
@@ -500,7 +498,7 @@ Class* findClassAt(Env* env, void* pc) {
     ClassInfoHeader* header = result->classInfoHeader;
     Class* clazz = header->clazz;
     if (!clazz) {
-        ClassLoader* loader = NULL;
+        Object* loader = NULL;
         if (lookupClassInfo(env, header->className, _bcClassesHash) == header) {
             loader = systemClassLoader;
         }
@@ -550,7 +548,7 @@ jboolean exceptionMatch(Env* env, TrycatchContext* _tc) {
 static Class* ldcClass(Env* env, ClassInfoHeader* header) {
     Class* clazz = header->clazz;
     if (!clazz) {
-        ClassLoader* loader = NULL;
+        Object* loader = NULL;
         if (lookupClassInfo(env, header->className, _bcClassesHash) == header) {
             loader = systemClassLoader;
         }
@@ -999,7 +997,6 @@ void _bcPopCallbackFrame(Env* env) {
 
 void* _bcResolveNative(Env* env, Class* clazz, char* name, char* desc, char* shortMangledName, char* longMangledName, void** ptr) {
     if (*ptr != NULL) return *ptr;
-    ENTER;
     TRACEF("_bcResolveNative: owner=%s, name=%s, desc=%s, shortMangledName=%s, longMangledName=%s", 
         clazz->name, name, desc, shortMangledName, longMangledName);
     NativeMethod* method = (NativeMethod*) rvmGetMethod(env, clazz, name, desc);
@@ -1007,7 +1004,7 @@ void* _bcResolveNative(Env* env, Class* clazz, char* name, char* desc, char* sho
     if (method) {
         impl = rvmResolveNativeMethodImpl(env, method, shortMangledName, longMangledName, clazz->classLoader, ptr);
     }
-    LEAVE(impl);
+    return impl;
 }
 
 Env* _bcAttachThreadFromCallback(void) {

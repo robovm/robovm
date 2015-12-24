@@ -28,6 +28,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.security.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -45,7 +46,19 @@ public enum /*<name>*/LAErrorCode/*</name>*/ implements NSErrorCode {
     SystemCancel(-4L),
     PasscodeNotSet(-5L),
     TouchIDNotAvailable(-6L),
-    TouchIDNotEnrolled(-7L);
+    TouchIDNotEnrolled(-7L),
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    TouchIDLockout(-8L),
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    AppCancel(-9L),
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    InvalidContext(-10L);
     /*</values>*/
 
     /*<bind>*/

@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -56,6 +57,7 @@ import org.robovm.apple.audiounit.*;
     /*<constructors>*/
     public AVSynchronizedLayer() {}
     protected AVSynchronizedLayer(SkipInit skipInit) { super(skipInit); }
+    public AVSynchronizedLayer(AVPlayerItem playerItem) { super(create(playerItem)); retain(getHandle()); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "playerItem")
@@ -66,6 +68,6 @@ import org.robovm.apple.audiounit.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "synchronizedLayerWithPlayerItem:")
-    public static native AVSynchronizedLayer create(AVPlayerItem playerItem);
+    protected static native @Pointer long create(AVPlayerItem playerItem);
     /*</methods>*/
 }

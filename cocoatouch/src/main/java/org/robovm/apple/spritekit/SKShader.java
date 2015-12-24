@@ -35,6 +35,7 @@ import org.robovm.apple.coreimage.*;
 import org.robovm.apple.avfoundation.*;
 import org.robovm.apple.glkit.*;
 import org.robovm.apple.scenekit.*;
+import org.robovm.apple.gameplaykit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -57,6 +58,9 @@ import org.robovm.apple.scenekit.*;
     public SKShader(String source, NSArray<SKUniform> uniforms) { super((SkipInit) null); initObject(init(source, uniforms)); }
     public SKShader(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
+    public SKShader(File file) {
+        super(createWithFile(file.getAbsolutePath()));
+    }
     /*<properties>*/
     @Property(selector = "source")
     public native String getSource();
@@ -68,9 +72,6 @@ import org.robovm.apple.scenekit.*;
     public native void setUniforms(NSArray<SKUniform> v);
     /*</properties>*/
     /*<members>*//*</members>*/
-    public static SKShader create(File file) {
-        return createWithFile(file.getAbsolutePath());
-    }
     /*<methods>*/
     @Method(selector = "initWithSource:")
     protected native @Pointer long init(String source);
@@ -82,14 +83,8 @@ import org.robovm.apple.scenekit.*;
     public native SKUniform getUniform(String name);
     @Method(selector = "removeUniformNamed:")
     public native void removeUniform(String name);
-    @Method(selector = "shader")
-    public static native SKShader create();
-    @Method(selector = "shaderWithSource:")
-    public static native SKShader create(String source);
-    @Method(selector = "shaderWithSource:uniforms:")
-    public static native SKShader create(String source, NSArray<SKUniform> uniforms);
     @Method(selector = "shaderWithFileNamed:")
-    private static native SKShader createWithFile(String name);
+    protected static native @Pointer long createWithFile(String name);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder coder);
     @Method(selector = "initWithCoder:")

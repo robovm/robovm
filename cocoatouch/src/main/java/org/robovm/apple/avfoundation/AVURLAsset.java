@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
@@ -55,6 +56,7 @@ import org.robovm.apple.audiounit.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public AVURLAsset() {}
+    protected AVURLAsset(long handle) { super(handle); }
     protected AVURLAsset(SkipInit skipInit) { super(skipInit); }
     public AVURLAsset(NSURL URL, AVURLAssetOptions options) { super((SkipInit) null); initObject(init(URL, options)); }
     /*</constructors>*/
@@ -86,8 +88,6 @@ import org.robovm.apple.audiounit.*;
      */
     @Method(selector = "isPlayableExtendedMIMEType:")
     public static native boolean isPlayableExtendedMIMEType(String extendedMIMEType);
-    @Method(selector = "URLAssetWithURL:options:")
-    public static native AVURLAsset create(NSURL URL, AVURLAssetOptions options);
     @Method(selector = "compatibleTrackForCompositionTrack:")
     public native AVAssetTrack getCompatibleTrack(AVCompositionTrack compositionTrack);
     /*</methods>*/

@@ -35,6 +35,7 @@ import org.robovm.apple.coreimage.*;
 import org.robovm.apple.avfoundation.*;
 import org.robovm.apple.glkit.*;
 import org.robovm.apple.scenekit.*;
+import org.robovm.apple.gameplaykit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -53,7 +54,13 @@ import org.robovm.apple.scenekit.*;
     protected SKVideoNode(SkipInit skipInit) { super(skipInit); }
     @WeaklyLinked
     public SKVideoNode(AVPlayer player) { super((SkipInit) null); initObject(init(player)); }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     public SKVideoNode(String videoFile) { super((SkipInit) null); initObject(init(videoFile)); }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     public SKVideoNode(NSURL url) { super((SkipInit) null); initObject(init(url)); }
     public SKVideoNode(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
@@ -72,9 +79,15 @@ import org.robovm.apple.scenekit.*;
     @WeaklyLinked
     @Method(selector = "initWithAVPlayer:")
     protected native @Pointer long init(AVPlayer player);
-    @Method(selector = "initWithVideoFileNamed:")
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "initWithFileNamed:")
     protected native @Pointer long init(String videoFile);
-    @Method(selector = "initWithVideoURL:")
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "initWithURL:")
     protected native @Pointer long init(NSURL url);
     @Method(selector = "initWithCoder:")
     protected native @Pointer long init(NSCoder aDecoder);
@@ -82,12 +95,5 @@ import org.robovm.apple.scenekit.*;
     public native void play();
     @Method(selector = "pause")
     public native void pause();
-    @WeaklyLinked
-    @Method(selector = "videoNodeWithAVPlayer:")
-    public static native SKVideoNode create(AVPlayer player);
-    @Method(selector = "videoNodeWithVideoFileNamed:")
-    public static native SKVideoNode create(String videoFile);
-    @Method(selector = "videoNodeWithVideoURL:")
-    public static native SKVideoNode create(NSURL videoURL);
     /*</methods>*/
 }

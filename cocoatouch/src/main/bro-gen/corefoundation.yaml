@@ -1962,6 +1962,8 @@ values:
         class: CoreFoundationVersionNumber
         name: getVersion
         readonly: true
+    kCFNotFound:
+        exclude: true
 
     # Make sure we don't miss any values if new ones are introduced in a later CoreFoundation
     (k?CF.*):

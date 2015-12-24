@@ -50,6 +50,7 @@ import org.robovm.apple.metal.*;
     public CAMediaTimingFunction() {}
     protected CAMediaTimingFunction(SkipInit skipInit) { super(skipInit); }
     public CAMediaTimingFunction(float c1x, float c1y, float c2x, float c2y) { super((SkipInit) null); initObject(init(c1x, c1y, c2x, c2y)); }
+    public CAMediaTimingFunction(CAMediaTimingFunctionName name) { super(create(name)); retain(getHandle()); }
     public CAMediaTimingFunction(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
@@ -67,9 +68,7 @@ import org.robovm.apple.metal.*;
     @Method(selector = "getControlPointAtIndex:values:")
     protected native void getControlPoint(@MachineSizedUInt long idx, FloatPtr ptr);
     @Method(selector = "functionWithName:")
-    public static native CAMediaTimingFunction create(CAMediaTimingFunctionName name);
-    @Method(selector = "functionWithControlPoints::::")
-    public static native CAMediaTimingFunction create(float c1x, float c1y, float c2x, float c2y);
+    protected static native @Pointer long create(CAMediaTimingFunctionName name);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder coder);
     @Method(selector = "initWithCoder:")

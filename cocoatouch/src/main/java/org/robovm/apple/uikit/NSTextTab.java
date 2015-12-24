@@ -67,6 +67,9 @@ import org.robovm.apple.corelocation.*;
     /*<methods>*/
     @Method(selector = "initWithTextAlignment:location:options:")
     protected native @Pointer long init(NSTextAlignment alignment, @MachineSizedFloat double loc, NSTextTabOptions options);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "columnTerminatorsForLocale:")
     public static native NSCharacterSet getColumnTerminators(NSLocale aLocale);
     @Method(selector = "encodeWithCoder:")

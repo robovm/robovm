@@ -154,16 +154,34 @@ import org.robovm.apple.uikit.*;
     @Deprecated
     @Method(selector = "authenticateWithCompletionHandler:")
     public native void authenticate(@Block VoidBlock1<NSError> completionHandler);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "fetchSavedGamesWithCompletionHandler:")
     public native void fetchSavedGames(@Block VoidBlock2<NSArray<GKSavedGame>, NSError> handler);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "saveGameData:withName:completionHandler:")
     public native void saveGameData(NSData data, String name, @Block VoidBlock2<GKSavedGame, NSError> handler);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "deleteSavedGamesWithName:completionHandler:")
     public native void deleteSavedGames(String name, @Block VoidBlock1<NSError> handler);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "resolveConflictingSavedGames:withData:completionHandler:")
     public native void resolveConflictingSavedGames(NSArray<GKSavedGame> conflictingSavedGames, NSData data, @Block VoidBlock2<NSArray<GKSavedGame>, NSError> handler);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "player:didModifySavedGame:")
     public native void didModifySavedGame(GKPlayer player, GKSavedGame savedGame);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "player:hasConflictingSavedGames:")
     public native void hasConflictingSavedGames(GKPlayer player, NSArray<GKSavedGame> savedGames);
     /*</methods>*/

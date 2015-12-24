@@ -54,6 +54,7 @@ import org.robovm.apple.corelocation.*;
     protected UIDocumentMenuViewController(SkipInit skipInit) { super(skipInit); }
     public UIDocumentMenuViewController(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> allowedUTIs, UIDocumentPickerMode mode) { super((SkipInit) null); initObject(init(allowedUTIs, mode)); }
     public UIDocumentMenuViewController(NSURL url, UIDocumentPickerMode mode) { super((SkipInit) null); initObject(init(url, mode)); }
+    public UIDocumentMenuViewController(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "delegate")
@@ -67,6 +68,8 @@ import org.robovm.apple.corelocation.*;
     protected native @Pointer long init(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> allowedUTIs, UIDocumentPickerMode mode);
     @Method(selector = "initWithURL:inMode:")
     protected native @Pointer long init(NSURL url, UIDocumentPickerMode mode);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     @Method(selector = "addOptionWithTitle:image:order:handler:")
     public native void addOption(String title, UIImage image, UIDocumentMenuOrder order, @Block Runnable handler);
     /*</methods>*/

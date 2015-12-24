@@ -31,12 +31,15 @@
 #include "utlist.h"
 #include <unistd.h>
 
+#if !defined(NDEBUG)
+#   include <execinfo.h>
+#endif
+
 #define LOG_TAG "core.init"
-ClassLoader* systemClassLoader = NULL;
+Object* systemClassLoader = NULL;
 static Class* java_lang_Daemons = NULL;
 static Method* java_lang_Daemons_start = NULL;
 
-extern int registerCoreLibrariesJni(JNIEnv* env);
 #ifdef DARWIN
   extern void registerJARURLProtocol(void);
 #endif
@@ -353,6 +356,10 @@ Env* rvmStartup(Options* options) {
     if (!initClasspathEntries(env, options->resourcesPath, options->rawBootclasspath, &options->bootclasspath)) return NULL;
     if (!initClasspathEntries(env, options->resourcesPath, options->rawClasspath, &options->classpath)) return NULL;
 
+    // Add the current image (executable) to the list of native libs used for
+    // resolution of native methods in classes loaded by the boot ClassLoader.
+    rvmLoadNativeLibrary(env, NULL, NULL);
+
     // Call init on modules
     TRACE("Initializing classes");
     if (!rvmInitClasses(env)) return NULL;
@@ -379,11 +386,9 @@ Env* rvmStartup(Options* options) {
     TRACE("Initializing JNI");
     if (!rvmInitJNI(env)) return NULL;
 
-    // Initialize the RoboVM rt JNI code
-//    RT_JNI_OnLoad(&vm->javaVM, NULL);
-    // Initialize the dalvik rt JNI code
-    TRACE("Initializing dalvik's runtime JNI code");
-    registerCoreLibrariesJni((JNIEnv*) env);
+    // Initialize the rt JNI code
+    TRACEF("Initializing the %s runtime library", rvmRTGetName());
+    if (!rvmRTInit(env)) return NULL;
 
 #ifdef DARWIN
     TRACE("Initializing JAR NSURLProtocol");
@@ -393,7 +398,11 @@ Env* rvmStartup(Options* options) {
     TRACE("Creating system ClassLoader");
     systemClassLoader = rvmGetSystemClassLoader(env);
     if (rvmExceptionOccurred(env)) goto error_system_ClassLoader;
-    env->currentThread->threadObj->contextClassLoader = systemClassLoader;
+    rvmRTSetThreadContextClassLoader(env, env->currentThread->threadObj, systemClassLoader);
+
+    // Add the current image (executable) to the list of native libs used for
+    // resolution of native methods in classes loaded by the system ClassLoader.
+    rvmLoadNativeLibrary(env, NULL, systemClassLoader);
 
     TRACE("Initialization done");
     env->vm->initialized = TRUE;
@@ -522,6 +531,14 @@ void rvmAbort(char* format, ...) {
         va_end(args);
         fprintf(stderr, "\n");
     }
+#if !defined(NDEBUG)
+     void* callstack[256];
+     int frames = backtrace(callstack, 256);
+     char** strs = backtrace_symbols(callstack, frames);
+     for (int i = 0; i < frames; ++i) {
+         fprintf(stderr, "\t%s\n", strs[i]);
+     }
+#endif
     abort();
 }
 
@@ -536,7 +553,9 @@ DynamicLib* rvmOpenDynamicLib(Env* env, const char* file, char** errorMsg) {
         return NULL;
     }
 
-    TRACEF("Opening dynamic library '%s'", file);
+    if (file) {
+        TRACEF("Opening dynamic library '%s'", file);
+    }
 
     dlib = rvmAllocateMemoryAtomicUncollectable(env, sizeof(DynamicLib));
     if (!dlib) {
@@ -545,6 +564,11 @@ DynamicLib* rvmOpenDynamicLib(Env* env, const char* file, char** errorMsg) {
     }
 
     dlib->handle = handle;
+    if (file) {
+        strncpy(dlib->path, file, sizeof(dlib->path) - 1);
+    } else {
+        strncpy(dlib->path, env->vm->options->imagePath, sizeof(dlib->path) - 1);
+    }
 
     return dlib;
 }

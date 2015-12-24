@@ -95,7 +95,7 @@ Class* array_J;
 Class* array_F;
 Class* array_D;
 
-extern ClassLoader* systemClassLoader;
+extern Object* systemClassLoader;
 
 static Field FIELDS_NOT_LOADED = {0};
 static Method METHODS_NOT_LOADED = {0};
@@ -131,8 +131,8 @@ static uint32_t classIdCounter = 0x10000000;
 static ITable emptyITable = {NULL, {0}};
 static ITables emptyITables = {0, &emptyITable};
 
-static Class* findClassByDescriptor(Env* env, const char* desc, ClassLoader* classLoader, Class* (*loaderFunc)(Env*, const char*, ClassLoader*));
-static Class* findClass(Env* env, const char* className, ClassLoader* classLoader, Class* (*loaderFunc)(Env*, const char*, ClassLoader*));
+static Class* findClassByDescriptor(Env* env, const char* desc, Object* classLoader, Class* (*loaderFunc)(Env*, const char*, Object*));
+static Class* findClass(Env* env, const char* className, Object* classLoader, Class* (*loaderFunc)(Env*, const char*, Object*));
 static Class* findBootClass(Env* env, const char* className);
 
 inline uint32_t nextClassId(void) {
@@ -247,7 +247,7 @@ static Class* createArrayClass(Env* env, Class* componentType) {
     return clazz;
 }
 
-static Class* findClass(Env* env, const char* className, ClassLoader* classLoader, Class* (*loaderFunc)(Env*, const char*, ClassLoader*)) {
+static Class* findClass(Env* env, const char* className, Object* classLoader, Class* (*loaderFunc)(Env*, const char*, Object*)) {
     obtainClassLock();
     Class* clazz = getLoadedClass(env, className);
     if (clazz != NULL) {
@@ -314,7 +314,7 @@ static Class* findBootClass(Env* env, const char* className) {
 }
 
 
-static Class* findClassByDescriptor(Env* env, const char* desc, ClassLoader* classLoader, Class* (*loaderFunc)(Env*, const char*, ClassLoader*)) {
+static Class* findClassByDescriptor(Env* env, const char* desc, Object* classLoader, Class* (*loaderFunc)(Env*, const char*, Object*)) {
     switch (desc[0]) {
     case 'Z':
         return prim_Z;
@@ -345,7 +345,7 @@ static Class* findClassByDescriptor(Env* env, const char* desc, ClassLoader* cla
     return findClass(env, className, classLoader, loaderFunc);
 }
 
-Class* rvmFindClassByDescriptor(Env* env, const char* desc, ClassLoader* classLoader) {
+Class* rvmFindClassByDescriptor(Env* env, const char* desc, Object* classLoader) {
     switch (desc[0]) {
     case 'Z':
         return prim_Z;
@@ -752,16 +752,16 @@ jboolean rvmInitPrimitiveWrapperClasses(Env* env) {
 Class* rvmFindClass(Env* env, const char* className) {
     Method* method = rvmGetCallingMethod(env);
     if (rvmExceptionOccurred(env)) return NULL;
-    ClassLoader* classLoader = method ? method->clazz->classLoader : systemClassLoader;
+    Object* classLoader = method ? method->clazz->classLoader : systemClassLoader;
     return rvmFindClassUsingLoader(env, className, classLoader);
 }
 
-Class* rvmFindClassInClasspathForLoader(Env* env, const char* className, ClassLoader* classLoader) {
-    if (!classLoader || classLoader->parent == NULL) {
+Class* rvmFindClassInClasspathForLoader(Env* env, const char* className, Object* classLoader) {
+    if (!classLoader || rvmGetParentClassLoader(env, classLoader) == NULL) {
         // This is the bootstrap classloader
         return findBootClass(env, className);
     }
-    if (classLoader->parent->parent == NULL && classLoader->object.clazz->classLoader == NULL) {
+    if (rvmGetParentParentClassLoader(env, classLoader) == NULL && classLoader->clazz->classLoader == NULL) {
         // This is the system classloader
         Class* clazz = findClass(env, className, classLoader, env->vm->options->loadUserClass);
         if (rvmExceptionOccurred(env)) return NULL;
@@ -771,8 +771,8 @@ Class* rvmFindClassInClasspathForLoader(Env* env, const char* className, ClassLo
     return NULL;
 }
 
-Class* rvmFindClassUsingLoader(Env* env, const char* className, ClassLoader* classLoader) {
-    if (!classLoader || classLoader->parent == NULL) {
+Class* rvmFindClassUsingLoader(Env* env, const char* className, Object* classLoader) {
+    if (!classLoader || rvmGetParentClassLoader(env, classLoader) == NULL) {
         // This is the bootstrap classloader. No need to call ClassLoader.loadClass()
         return findBootClass(env, className);
     }
@@ -787,21 +787,21 @@ Class* rvmFindClassUsingLoader(Env* env, const char* className, ClassLoader* cla
     return (Class*) clazz;
 }
 
-Class* rvmFindLoadedClass(Env* env, const char* className, ClassLoader* classLoader) {
+Class* rvmFindLoadedClass(Env* env, const char* className, Object* classLoader) {
     Class* clazz = getLoadedClass(env, className);
     if (rvmExceptionOccurred(env)) return NULL;
     return clazz;
 }
 
-ClassLoader* rvmGetSystemClassLoader(Env* env) {
+Object* rvmGetSystemClassLoader(Env* env) {
     Class* holder = rvmFindClassUsingLoader(env, "java/lang/ClassLoader$SystemClassLoader", NULL);
     if (!holder) return NULL;
     ClassField* field = rvmGetClassField(env, holder, "loader", "Ljava/lang/ClassLoader;");
     if (!field) return NULL;
-    return (ClassLoader*) rvmGetObjectClassFieldValue(env, holder, field);
+    return (Object*) rvmGetObjectClassFieldValue(env, holder, field);
 }
 
-Class* rvmAllocateClass(Env* env, const char* className, Class* superclass, ClassLoader* classLoader, jint flags, TypeInfo* typeInfo,
+Class* rvmAllocateClass(Env* env, const char* className, Class* superclass, Object* classLoader, jint flags, TypeInfo* typeInfo,
         VITable* vitable, ITables* itables, jint classDataSize, jint instanceDataSize, jint instanceDataOffset, unsigned short classRefCount, 
         unsigned short instanceRefCount, void* attributes, void* initializer) {
 
@@ -1582,8 +1582,8 @@ void rvmDumpLoadedClasses(Env* env) {
     rvmIterateLoadedClasses(env, dumpClassesIterator, NULL);
 }
 
-ObjectArray* rvmListClasses(Env* env, Class* instanceofClass, ClassLoader* classLoader) {
-    if (!classLoader || classLoader->parent == NULL) {
+ObjectArray* rvmListClasses(Env* env, Class* instanceofClass, Object* classLoader) {
+    if (!classLoader || rvmGetParentClassLoader(env, classLoader) == NULL) {
         // This is the bootstrap classloader
         return env->vm->options->listBootClasses(env, instanceofClass);
     }
@@ -1595,4 +1595,13 @@ void rvmObtainClassLock(Env* env) {
 }
 void rvmReleaseClassLock(Env* env) {
     releaseClassLock();
+}
+
+Object* rvmGetParentClassLoader(Env* env, Object* classLoader) {
+    return rvmRTGetParentClassLoader(env, classLoader);
+}
+
+Object* rvmGetParentParentClassLoader(Env* env, Object* classLoader) {
+    Object* cl = rvmRTGetParentClassLoader(env, classLoader);
+    return cl ? rvmRTGetParentClassLoader(env, cl) : NULL;
 }

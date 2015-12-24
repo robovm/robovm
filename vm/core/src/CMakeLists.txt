@@ -2,6 +2,8 @@ project(core)
 
 include_directories(../include ${CMAKE_BINARY_DIR}/gc/include)
 
+add_definitions(-DROBOVM_CORE_BUILD)
+
 set(SRC
   array.c 
   attribute.c
@@ -25,6 +27,19 @@ set(SRC
   unwind.c
   hooks.c
 )
+
+if(DARWIN)
+  add_definitions(-DNOUNCRYPT)
+  set(SRC ${SRC} minizip/ioapi.c minizip/unzip.c)
+  set(OBJC_SRC JARURLProtocol.m)
+  set(SRC ${SRC} ${OBJC_SRC})
+  set(OBJC_FLAGS "-x objective-c")
+  if(IOS)
+    set(OBJC_FLAGS "${OBJC_FLAGS} -fobjc-abi-version=2")
+  endif()
+  set_property(SOURCE ${OBJC_SRC} PROPERTY LANGUAGE C)
+  set_property(SOURCE ${OBJC_SRC} PROPERTY COMPILE_FLAGS ${OBJC_FLAGS})
+endif()
 
 # The code in unwind.c doesn't work properly if compiled with tail call optimizations
 set_property(SOURCE unwind.c PROPERTY COMPILE_FLAGS "-fno-optimize-sibling-calls")

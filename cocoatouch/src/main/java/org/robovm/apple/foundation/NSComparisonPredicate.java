@@ -56,6 +56,7 @@ import org.robovm.apple.dispatch.*;
     protected NSComparisonPredicate(SkipInit skipInit) { super(skipInit); }
     public NSComparisonPredicate(NSExpression lhs, NSExpression rhs, NSComparisonPredicateModifier modifier, NSPredicateOperatorType type, NSComparisonPredicateOptions options) { super((SkipInit) null); initObject(init(lhs, rhs, modifier, type, options)); }
     public NSComparisonPredicate(NSExpression lhs, NSExpression rhs, Selector selector) { super((SkipInit) null); initObject(init(lhs, rhs, selector)); }
+    public NSComparisonPredicate(NSCoder coder) { super((SkipInit) null); initObject(init(coder)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "predicateOperatorType")
@@ -77,5 +78,7 @@ import org.robovm.apple.dispatch.*;
     protected native @Pointer long init(NSExpression lhs, NSExpression rhs, NSComparisonPredicateModifier modifier, NSPredicateOperatorType type, NSComparisonPredicateOptions options);
     @Method(selector = "initWithLeftExpression:rightExpression:customSelector:")
     protected native @Pointer long init(NSExpression lhs, NSExpression rhs, Selector selector);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder coder);
     /*</methods>*/
 }

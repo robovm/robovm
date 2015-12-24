@@ -58,6 +58,8 @@ import org.robovm.apple.dispatch.*;
     void didReceiveResponse(NSURLSession session, NSURLSessionDataTask dataTask, NSURLResponse response, @Block VoidBlock1<NSURLSessionResponseDisposition> completionHandler);
     @Method(selector = "URLSession:dataTask:didBecomeDownloadTask:")
     void didBecomeDownloadTask(NSURLSession session, NSURLSessionDataTask dataTask, NSURLSessionDownloadTask downloadTask);
+    @Method(selector = "URLSession:dataTask:didBecomeStreamTask:")
+    void didBecomeStreamTask(NSURLSession session, NSURLSessionDataTask dataTask, NSURLSessionStreamTask streamTask);
     @Method(selector = "URLSession:dataTask:didReceiveData:")
     void didReceiveData(NSURLSession session, NSURLSessionDataTask dataTask, NSData data);
     @Method(selector = "URLSession:dataTask:willCacheResponse:completionHandler:")

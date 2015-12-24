@@ -99,6 +99,16 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "setRightCalloutAccessoryView:")
     public native void setRightCalloutAccessoryView(UIView v);
     /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "detailCalloutAccessoryView")
+    public native UIView getDetailCalloutAccessoryView();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "setDetailCalloutAccessoryView:")
+    public native void setDetailCalloutAccessoryView(UIView v);
+    /**
      * @since Available in iOS 4.0 and later.
      */
     @Property(selector = "isDraggable")

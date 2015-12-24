@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.corelocation.*;
 import org.robovm.apple.addressbook.*;
+import org.robovm.apple.mapkit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -66,12 +67,19 @@ import org.robovm.apple.addressbook.*;
      */
     @Property(selector = "isCurrentUser")
     public native boolean isCurrentUser();
+    /**
+     * @since Available in iOS 9.0 and later.
+     */
+    @Property(selector = "contactPredicate")
+    public native NSPredicate getContactPredicate();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     /**
      * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 9.0.
      */
+    @Deprecated
     @WeaklyLinked
     @Method(selector = "ABRecordWithAddressBook:")
     public native ABRecord getAddessBookRecord(ABAddressBook addressBook);

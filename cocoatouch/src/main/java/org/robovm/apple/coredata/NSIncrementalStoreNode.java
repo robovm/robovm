@@ -46,7 +46,7 @@ import org.robovm.apple.foundation.*;
     /*<constructors>*/
     public NSIncrementalStoreNode() {}
     protected NSIncrementalStoreNode(SkipInit skipInit) { super(skipInit); }
-    public NSIncrementalStoreNode(NSManagedObjectID objectID, @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject> values, long version) { super((SkipInit) null); initObject(init(objectID, values, version)); }
+    public NSIncrementalStoreNode(NSManagedObjectID objectID, NSDictionary<NSString, ?> values, long version) { super((SkipInit) null); initObject(init(objectID, values, version)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "objectID")
@@ -57,9 +57,9 @@ import org.robovm.apple.foundation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithObjectID:withValues:version:")
-    protected native @Pointer long init(NSManagedObjectID objectID, @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject> values, long version);
+    protected native @Pointer long init(NSManagedObjectID objectID, NSDictionary<NSString, ?> values, long version);
     @Method(selector = "updateWithValues:version:")
-    public native void update(@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject> values, long version);
+    public native void update(NSDictionary<NSString, ?> values, long version);
     @Method(selector = "valueForPropertyDescription:")
     public native NSObject getValue(NSPropertyDescription prop);
     /*</methods>*/

@@ -200,19 +200,16 @@ public class Linker {
 
         mb.addGlobal(new Global("_bcRuntimeData", runtimeDataToBytes()));
 
-        mb.addGlobal(new Global("_bcDynamicJNI", new IntegerConstant(config.isUseDynamicJni() ? (byte) 1 : (byte) 0)));
         ArrayConstantBuilder staticLibs = new ArrayConstantBuilder(I8_PTR);
-        if (!config.isUseDynamicJni()) {
-            for (Config.Lib lib : config.getLibs()) {
-                String p = lib.getValue();
-                if (p.endsWith(".a")) {
-                    p = new File(p).getName();
-                    String libName = p.substring(0, p.length() - 2);
-                    if (libName.startsWith("lib")) {
-                        libName = libName.substring(3);
-                    }
-                    staticLibs.add(mb.getString(libName));
+        for (Config.Lib lib : config.getLibs()) {
+            String p = lib.getValue();
+            if (p.endsWith(".a")) {
+                p = new File(p).getName();
+                String libName = p.substring(0, p.length() - 2);
+                if (libName.startsWith("lib")) {
+                    libName = libName.substring(3);
                 }
+                staticLibs.add(mb.getString(libName));
             }
         }
         staticLibs.add(new NullConstant(Type.I8_PTR));

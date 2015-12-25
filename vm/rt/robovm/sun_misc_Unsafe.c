@@ -92,6 +92,12 @@ jint Java_sun_misc_Unsafe_getInt(Env* env, Object* unsafe, Object* obj, jlong of
     return *address;
 }
 
+jfloat Java_sun_misc_Unsafe_getFloat(Env* env, Object* unsafe, Object* obj, jlong offset) {
+    if (!checkNull(env, obj)) return 0;
+    jfloat* address = (jfloat*) getFieldAddress(obj, offset);
+    return *address;
+}
+
 jint Java_sun_misc_Unsafe_getIntVolatile(Env* env, Object* unsafe, Object* obj, jlong offset) {
     if (!checkNull(env, obj)) return 0;
     jint* address = (jint*) getFieldAddress(obj, offset);
@@ -125,6 +131,12 @@ Object* Java_sun_misc_Unsafe_getObjectVolatile(Env* env, Object* unsafe, Object*
 void Java_sun_misc_Unsafe_putInt(Env* env, Object* unsafe, Object* obj, jlong offset, jint newValue) {
     if (!checkNull(env, obj)) return;
     jint* address = (jint*) getFieldAddress(obj, offset);
+    *address = newValue;
+}
+
+void Java_sun_misc_Unsafe_putFloat(Env* env, Object* unsafe, Object* obj, jlong offset, jfloat newValue) {
+    if (!checkNull(env, obj)) return;
+    jfloat* address = (jfloat*) getFieldAddress(obj, offset);
     *address = newValue;
 }
 

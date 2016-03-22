@@ -982,8 +982,6 @@ public class MethodCompiler extends AbstractMethodCompiler {
                     }
                 } else if (rightOp instanceof XorExpr) {
                     function.add(new Xor(resultVar, op1, op2)).attach(stmt);
-                } else if (rightOp instanceof XorExpr) {
-                    function.add(new Xor(resultVar, op1, op2)).attach(stmt);
                 } else if (rightOp instanceof CmplExpr) {
                     FunctionRef f = op1.getType() == FLOAT ? FCMPL : DCMPL;
                     function.add(new Call(resultVar, f, op1, op2)).attach(stmt);

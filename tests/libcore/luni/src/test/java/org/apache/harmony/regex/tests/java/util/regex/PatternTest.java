@@ -916,7 +916,6 @@ public class PatternTest extends TestCase {
         Pattern.compile("ab(a)?(c)d");
         Pattern.compile("ab(a)?+cd");
         Pattern.compile("ab(a)??cd");
-        Pattern.compile("ab(a)??cd");
         Pattern.compile("ab(a){1,3}?(c)d");
     }
 

@@ -361,6 +361,32 @@ import org.robovm.apple.corelocation.*;
     public native void setAccessibilityIdentifier(String v);
     /*</properties>*/
     /*<members>*//*</members>*/
+    
+    /* GC save methods for adding and removing views. */
+    public void removeFromSuperview() {
+        UIView parent = getSuperview();
+        if (parent != null) {
+            parent.removeStrongRef(this);
+        }
+        removeFromSuperview0();
+    }
+    public void insertSubview(UIView view, @MachineSizedSInt long index) {
+        insertSubview0(view, index);
+        addStrongRef(view);
+    }
+    public void addSubview(UIView view) {
+        addSubview0(view);
+        addStrongRef(view);
+    }
+    public void insertSubviewBelow(UIView view, UIView siblingSubview) {
+        insertSubviewBelow0(view, siblingSubview);
+        addStrongRef(view);
+    }
+    public void insertSubviewAbove(UIView view, UIView siblingSubview) {
+        insertSubviewAbove0(view, siblingSubview);
+        addStrongRef(view);
+    }
+    
     /*<methods>*/
     /**
      * @since Available in iOS 6.0 and later.
@@ -397,17 +423,17 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "sizeToFit")
     public native void sizeToFit();
     @Method(selector = "removeFromSuperview")
-    public native void removeFromSuperview();
+    private native void removeFromSuperview0();
     @Method(selector = "insertSubview:atIndex:")
-    public native void insertSubview(UIView view, @MachineSizedSInt long index);
+    private native void insertSubview0(UIView view, @MachineSizedSInt long index);
     @Method(selector = "exchangeSubviewAtIndex:withSubviewAtIndex:")
     public native void exchangeSubview(@MachineSizedSInt long index1, @MachineSizedSInt long index2);
     @Method(selector = "addSubview:")
-    public native void addSubview(UIView view);
+    private native void addSubview0(UIView view);
     @Method(selector = "insertSubview:belowSubview:")
-    public native void insertSubviewBelow(UIView view, UIView siblingSubview);
+    private native void insertSubviewBelow0(UIView view, UIView siblingSubview);
     @Method(selector = "insertSubview:aboveSubview:")
-    public native void insertSubviewAbove(UIView view, UIView siblingSubview);
+    private native void insertSubviewAbove0(UIView view, UIView siblingSubview);
     @Method(selector = "bringSubviewToFront:")
     public native void bringSubviewToFront(UIView view);
     @Method(selector = "sendSubviewToBack:")

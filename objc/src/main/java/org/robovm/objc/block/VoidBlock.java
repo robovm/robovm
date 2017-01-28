@@ -44,5 +44,9 @@ public interface VoidBlock {
         public static ObjCBlock toObjCBlock(VoidBlock o) {
             return WRAPPER.toObjCBlock(o);
         }
+
+        public static Object toObject(Class cls, long handle, long flags) {
+            return null;
+        }
     }
 }

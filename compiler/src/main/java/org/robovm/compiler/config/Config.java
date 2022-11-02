@@ -81,6 +81,7 @@ import org.robovm.compiler.util.InfoPList;
 import org.robovm.compiler.util.io.RamDiskTools;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
+import org.simpleframework.xml.Order;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.convert.Converter;
@@ -96,6 +97,7 @@ import org.simpleframework.xml.stream.OutputNode;
  * Holds compiler configuration.
  */
 @Root
+@Order(elements = {"os", "arch", "forceLinkClasses", "libs", "frameworks", "resources", "classpath", "target" ,"iosSdkVersion", "iosInfoPList", "iosEntitlementsPList"})
 public class Config {
 
     /**

@@ -27,6 +27,7 @@ import org.robovm.compiler.target.Target;
 import org.robovm.compiler.util.AntPathMatcher;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
+import org.simpleframework.xml.Order;
 
 /**
  * Specifies resources needed by the application the compiler produces. A
@@ -129,6 +130,7 @@ import org.simpleframework.xml.ElementList;
  * </ul>
  * </p>
  */
+@Order(elements = {"targetPath", "directory", "includes", "excludes", "flatten"})
 public class Resource {
 
     /**

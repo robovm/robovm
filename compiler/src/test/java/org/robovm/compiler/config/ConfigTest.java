@@ -173,14 +173,10 @@ public class ConfigTest {
         return sortedXml;
     }
     private void sortElementRecursively(Element element) {
-        //System.out.println("root: " + element.toString());
         List<Element> children = element.getChildren();
-        //System.out.println("children of " + element + " : " + children.toString());
         children.sort(Comparator.comparing(Element::getName));
-        //System.out.println("sorted children : "+ children);
         for (Element child : children) {
             sortElementRecursively(child); // Recursively sort child elements
-            //System.out.println("next root is : "+ child);
         }
     }
 

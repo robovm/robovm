@@ -14,7 +14,15 @@
 
   <modules>
     <module>full</module>
-<!--    <module>small</module>
-    <module>tiny</module> -->
+    <!--    <module>small</module>
+        <module>tiny</module> -->
   </modules>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.jdom</groupId>
+      <artifactId>jdom2</artifactId>
+      <version>2.0.6</version> <!-- Use the latest version -->
+    </dependency>
+  </dependencies>
 </project>

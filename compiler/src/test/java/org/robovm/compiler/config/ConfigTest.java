@@ -118,8 +118,13 @@ public class ConfigTest {
 
     @Test
     public void testWriteConsole() throws Exception {
+        // Calculate the relative path
+        File targetFile = new File("libs/libmy.a");
+        File targetFile2 = new File("libs/foo.o");
+        File targetFile3 = new File("foo1.jar");
+        // build actual XML
         Config.Builder builder = new Config.Builder();
-        builder.addClasspathEntry(new File("foo1.jar"));
+        builder.addClasspathEntry(targetFile3);
         builder.addClasspathEntry(new File(tmp, "foo2.jar"));
         builder.addFramework("Foundation");
         builder.addFramework("AppKit");
@@ -144,19 +149,15 @@ public class ConfigTest {
         builder.write(out, wd);
         // Load the expected XML content from a resource file
         String expectedXml = IOUtils.toString(getClass().getResourceAsStream("ConfigTest.console.xml"));
-
-        // Calculate the relative path
-        File targetFile = new File("libs/libmy.a");
-        File targetFile2 = new File("libs/foo.o");
-        File targetFile3 = new File("foo1.jar");
+        String actualXml = out.toString();
         // Modify the XML content in the expectedXml with the calculated relative path
         expectedXml = expectedXml.replace("<lib>libs/libmy.a</lib>", "<lib>" + targetFile.getAbsolutePath() + "</lib>");
         expectedXml = expectedXml.replace("<lib>libs/foo.o</lib>", "<lib>" + targetFile2.getAbsolutePath() + "</lib>");
         expectedXml = expectedXml.replace("<classpathentry>foo1.jar</classpathentry>", "<classpathentry>" + targetFile3.getAbsolutePath() + "</classpathentry>");
-        // sort actual xml using JDOM
-        String actualXml = out.toString();
+        // sort XMLs using JDOM
         String sortedActualXml = getSortedXml(actualXml);
         String sortedExpectedXml = getSortedXml(expectedXml);
+        // test
         assertEquals(sortedExpectedXml, sortedActualXml);
     }
 
@@ -192,15 +193,27 @@ public class ConfigTest {
     
     @Test
     public void testWriteIOS() throws Exception {
+        File infoFile = new File("Info.plist");
+        File entitlementsFile = new File("entitlements.plist");
         Config.Builder builder = new Config.Builder();
         builder.iosSdkVersion("6.1");
-        builder.iosInfoPList(new File("Info.plist"));
-        builder.iosEntitlementsPList(new File("entitlements.plist"));        
+        builder.iosInfoPList(infoFile);
+        builder.iosEntitlementsPList(entitlementsFile);
         builder.targetType(IOSTarget.TYPE);
         
         StringWriter out = new StringWriter();
         builder.write(out, wd);
-        assertEquals(IOUtils.toString(getClass().getResourceAsStream("ConfigTest.ios.xml")), out.toString());
+        // Load the expected XML content from a resource file
+        String expectedXml = IOUtils.toString(getClass().getResourceAsStream("ConfigTest.ios.xml"));
+        String actualXml = out.toString();
+        // Calculate the relative path
+        expectedXml = expectedXml.replace("<iosInfoPList>Info.plist</iosInfoPList>", "<iosInfoPList>" + infoFile.getAbsolutePath() + "</iosInfoPList>");
+        expectedXml = expectedXml.replace("<iosEntitlementsPList>entitlements.plist</iosEntitlementsPList>", "<iosEntitlementsPList>" + entitlementsFile.getAbsolutePath() + "</iosEntitlementsPList>");
+        // sort XMLs using JDOM
+        String sortedActualXml = getSortedXml(actualXml);
+        String sortedExpectedXml = getSortedXml(expectedXml);
+        // test
+        assertEquals(sortedExpectedXml, sortedActualXml);
     }
     
     private File createMergeConfig(File tmpDir, String dir, String id, OS os, Arch arch, boolean jar) throws Exception {

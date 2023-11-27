@@ -14,7 +14,8 @@
 
   <modules>
     <module>full</module>
-<!--    <module>small</module>
-    <module>tiny</module> -->
+    <!--    <module>small</module>
+        <module>tiny</module> -->
   </modules>
+
 </project>

@@ -18,14 +18,12 @@ package org.robovm.compiler.config;
 
 import static org.junit.Assert.*;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.StringWriter;
+import java.io.*;
 import java.util.Arrays;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.jdom2.output.Format;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,6 +33,12 @@ import org.robovm.compiler.config.Config.Lib;
 import org.robovm.compiler.target.ConsoleTarget;
 import org.robovm.compiler.target.ios.IOSTarget;
 import org.zeroturnaround.zip.ZipUtil;
+
+import org.jdom2.*;
+import org.jdom2.input.SAXBuilder;
+import org.jdom2.output.XMLOutputter;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * Tests {@link Config}.
@@ -111,11 +115,16 @@ public class ConfigTest {
         assertEquals(1, config.getArchs().size());
         assertEquals(Arch.x86, config.getArchs().get(0));
     }
-    
+
     @Test
     public void testWriteConsole() throws Exception {
+        // Calculate the relative path
+        File targetFile = new File("libs/libmy.a");
+        File targetFile2 = new File("libs/foo.o");
+        File targetFile3 = new File("foo1.jar");
+        // build actual XML
         Config.Builder builder = new Config.Builder();
-        builder.addClasspathEntry(new File("foo1.jar"));
+        builder.addClasspathEntry(targetFile3);
         builder.addClasspathEntry(new File(tmp, "foo2.jar"));
         builder.addFramework("Foundation");
         builder.addFramework("AppKit");
@@ -129,16 +138,47 @@ public class ConfigTest {
         builder.addResource(new Resource(null, null).include("videos/**/*.avi"));
         builder.addResource(
                 new Resource(new File("/tmp/wd/resources"), "data")
-                    .include("**/*.png")
-                    .exclude("**/foo.png")
-                    .flatten(true));
+                        .include("**/*.png")
+                        .exclude("**/foo.png")
+                        .flatten(true));
         builder.addForceLinkClass("javax.**.*");
         builder.os(OS.macosx);
         builder.archs(Arch.x86, Arch.x86_64);
-        
+
         StringWriter out = new StringWriter();
         builder.write(out, wd);
-        assertEquals(IOUtils.toString(getClass().getResourceAsStream("ConfigTest.console.xml")), out.toString());
+        // Load the expected XML content from a resource file
+        String expectedXml = IOUtils.toString(getClass().getResourceAsStream("ConfigTest.console.xml"));
+        String actualXml = out.toString();
+        // Modify the XML content in the expectedXml with the calculated relative path
+        expectedXml = expectedXml.replace("<lib>libs/libmy.a</lib>", "<lib>" + targetFile.getAbsolutePath() + "</lib>");
+        expectedXml = expectedXml.replace("<lib>libs/foo.o</lib>", "<lib>" + targetFile2.getAbsolutePath() + "</lib>");
+        expectedXml = expectedXml.replace("<classpathentry>foo1.jar</classpathentry>", "<classpathentry>" + targetFile3.getAbsolutePath() + "</classpathentry>");
+        // sort XMLs using JDOM
+        String sortedActualXml = getSortedXml(actualXml);
+        String sortedExpectedXml = getSortedXml(expectedXml);
+        // test
+        assertEquals(sortedExpectedXml, sortedActualXml);
+    }
+
+    private String getSortedXml(String xml) throws JDOMException, IOException {
+        SAXBuilder saxBuilder = new SAXBuilder();
+        Document document = saxBuilder.build(new StringReader(xml));
+
+        // Get the parent element and its children
+        Element root = document.getRootElement();
+        sortElementRecursively(root);
+        // Serialize the sorted XML back to a string
+        XMLOutputter xmlOutputter = new XMLOutputter(Format.getPrettyFormat());
+        String sortedXml = xmlOutputter.outputString(document);
+        return sortedXml;
+    }
+    private void sortElementRecursively(Element element) {
+        List<Element> children = element.getChildren();
+        children.sort(Comparator.comparing(Element::getName));
+        for (Element child : children) {
+            sortElementRecursively(child); // Recursively sort child elements
+        }
     }
 
     @Test
@@ -153,15 +193,27 @@ public class ConfigTest {
     
     @Test
     public void testWriteIOS() throws Exception {
+        File infoFile = new File("Info.plist");
+        File entitlementsFile = new File("entitlements.plist");
         Config.Builder builder = new Config.Builder();
         builder.iosSdkVersion("6.1");
-        builder.iosInfoPList(new File("Info.plist"));
-        builder.iosEntitlementsPList(new File("entitlements.plist"));        
+        builder.iosInfoPList(infoFile);
+        builder.iosEntitlementsPList(entitlementsFile);
         builder.targetType(IOSTarget.TYPE);
         
         StringWriter out = new StringWriter();
         builder.write(out, wd);
-        assertEquals(IOUtils.toString(getClass().getResourceAsStream("ConfigTest.ios.xml")), out.toString());
+        // Load the expected XML content from a resource file
+        String expectedXml = IOUtils.toString(getClass().getResourceAsStream("ConfigTest.ios.xml"));
+        String actualXml = out.toString();
+        // Calculate the relative path
+        expectedXml = expectedXml.replace("<iosInfoPList>Info.plist</iosInfoPList>", "<iosInfoPList>" + infoFile.getAbsolutePath() + "</iosInfoPList>");
+        expectedXml = expectedXml.replace("<iosEntitlementsPList>entitlements.plist</iosEntitlementsPList>", "<iosEntitlementsPList>" + entitlementsFile.getAbsolutePath() + "</iosEntitlementsPList>");
+        // sort XMLs using JDOM
+        String sortedActualXml = getSortedXml(actualXml);
+        String sortedExpectedXml = getSortedXml(expectedXml);
+        // test
+        assertEquals(sortedExpectedXml, sortedActualXml);
     }
     
     private File createMergeConfig(File tmpDir, String dir, String id, OS os, Arch arch, boolean jar) throws Exception {

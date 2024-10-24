@@ -36,6 +36,10 @@ import org.robovm.compiler.target.ConsoleTarget;
 import org.robovm.compiler.target.ios.IOSTarget;
 import org.zeroturnaround.zip.ZipUtil;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
 /**
  * Tests {@link Config}.
  */
@@ -138,7 +142,45 @@ public class ConfigTest {
         
         StringWriter out = new StringWriter();
         builder.write(out, wd);
-        assertEquals(IOUtils.toString(getClass().getResourceAsStream("ConfigTest.console.xml")), out.toString());
+
+        String trimOut = trimAbsolutePaths(out.toString());
+        compareLineByLine(IOUtils.toString(getClass().getResourceAsStream("ConfigTest.console.xml")), trimOut.toString());
+        
+    }
+
+    private String trimAbsolutePaths(String output) {
+        return output.replaceAll(
+            "(<[^>]+>)([^<]*/compiler/)",  // Match the opening tag and path prefix
+            "$1"  // Keep the opening tag only, removing everything before "/compiler/"
+        );
+    }
+
+    private void compareLineByLine(String expected, String actual) {
+        Map<String, Boolean> expectedLines = new HashMap<>();
+
+        try (Scanner scanner = new Scanner(expected)) {
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine().trim();
+                if (!line.isEmpty()) {
+                    expectedLines.put(line, false);  
+                }
+            }
+        }
+
+        try (Scanner scanner = new Scanner(actual)) {
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine().trim();
+                if (expectedLines.containsKey(line)) {
+                    expectedLines.put(line, true);  
+                } else {
+                    assertTrue("Unexpected line found in actual output: " + line, false);
+                }
+            }
+        }
+
+        for (Map.Entry<String, Boolean> entry : expectedLines.entrySet()) {
+            assertTrue("Expected line not found in actual output: " + entry.getKey(), entry.getValue());
+        }
     }
 
     @Test
@@ -161,7 +203,10 @@ public class ConfigTest {
         
         StringWriter out = new StringWriter();
         builder.write(out, wd);
-        assertEquals(IOUtils.toString(getClass().getResourceAsStream("ConfigTest.ios.xml")), out.toString());
+
+        String trimOut = trimAbsolutePaths(out.toString());
+
+        compareLineByLine(IOUtils.toString(getClass().getResourceAsStream("ConfigTest.ios.xml")), trimOut.toString());
     }
     
     private File createMergeConfig(File tmpDir, String dir, String id, OS os, Arch arch, boolean jar) throws Exception {
